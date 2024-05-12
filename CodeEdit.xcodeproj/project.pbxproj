@@ -288,6 +288,7 @@
 		66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */; };
 		66AF6CE42BF17F6800D83C9D /* StatusBarFileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE32BF17F6800D83C9D /* StatusBarFileInfoView.swift */; };
 		66AF6CE72BF17FFB00D83C9D /* UpdateStatusBarInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE62BF17FFB00D83C9D /* UpdateStatusBarInfo.swift */; };
+		66AF6CF02BF183CA00D83C9D /* ImageDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CEF2BF183CA00D83C9D /* ImageDimensions.swift */; };
 		66F2C8C42BEAA939004674F7 /* PDFFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F2C8C32BEAA939004674F7 /* PDFFileView.swift */; };
 		66F370342BEE537B00D3B823 /* NonTextFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F370332BEE537B00D3B823 /* NonTextFileView.swift */; };
 		6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */; };
@@ -855,6 +856,7 @@
 		66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarViewModel.swift; sourceTree = "<group>"; };
 		66AF6CE32BF17F6800D83C9D /* StatusBarFileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarFileInfoView.swift; sourceTree = "<group>"; };
 		66AF6CE62BF17FFB00D83C9D /* UpdateStatusBarInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStatusBarInfo.swift; sourceTree = "<group>"; };
+		66AF6CEF2BF183CA00D83C9D /* ImageDimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDimensions.swift; sourceTree = "<group>"; };
 		66F2C8C32BEAA939004674F7 /* PDFFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFFileView.swift; sourceTree = "<group>"; };
 		66F370332BEE537B00D3B823 /* NonTextFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonTextFileView.swift; sourceTree = "<group>"; };
 		6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryEventStream.swift; sourceTree = "<group>"; };
@@ -1998,6 +2000,7 @@
 		588224FF292C280D00E83CDE /* StatusBar */ = {
 			isa = PBXGroup;
 			children = (
+				66AF6CEE2BF183C500D83C9D /* Models */,
 				66AF6CE52BF17FEF00D83C9D /* ViewModifiers */,
 				66AF6CE02BF17CB100D83C9D /* ViewModels */,
 				58822508292C280D00E83CDE /* Views */,
@@ -2343,6 +2346,14 @@
 				66AF6CE62BF17FFB00D83C9D /* UpdateStatusBarInfo.swift */,
 			);
 			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
+		66AF6CEE2BF183C500D83C9D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				66AF6CEF2BF183CA00D83C9D /* ImageDimensions.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		6C092EDC2A53A63E00489202 /* Views */ = {
@@ -3621,6 +3632,7 @@
 				77A01E8E2BC9A09C00F0EA38 /* EditCETaskView.swift in Sources */,
 				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
 				B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */,
+				66AF6CF02BF183CA00D83C9D /* ImageDimensions.swift in Sources */,
 				2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */,
 				3000516A2BBD3A8200A98562 /* ServiceType.swift in Sources */,
 				6C578D8C29CD372700DC73B2 /* ExtensionCommands.swift in Sources */,

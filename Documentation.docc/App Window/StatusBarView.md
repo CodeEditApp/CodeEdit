@@ -2,6 +2,10 @@
 
 ## Topics
 
+### Model
+
+- ``ImageDimensions``
+
 ### View Model
 
 - ``StatusBarViewModel``

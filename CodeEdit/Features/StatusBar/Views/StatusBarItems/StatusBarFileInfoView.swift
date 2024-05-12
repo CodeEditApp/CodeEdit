@@ -21,8 +21,8 @@ struct StatusBarFileInfoView: View {
         HStack(spacing: 15) {
 
             if let dimensions = statusBarViewModel.dimensions {
-                var width = numberStyle.format(dimensions.0)
-                var height = numberStyle.format(dimensions.1)
+                var width = numberStyle.format(dimensions.width)
+                var height = numberStyle.format(dimensions.height)
 
                 Text("\(width)x\(height)")
                     .font(statusBarViewModel.statusBarFont)

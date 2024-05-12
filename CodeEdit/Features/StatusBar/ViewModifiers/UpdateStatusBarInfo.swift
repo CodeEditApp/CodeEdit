@@ -24,7 +24,7 @@ struct UpdateStatusBarInfo: ViewModifier {
     /// This is returned by ``UpdateStatusBarInfo`` `.computeStatusBarInfo`.
     private struct ComputedStatusBarInfo {
         let fileSize: Int
-        let dimensions: (Int, Int)?
+        let dimensions: ImageDimensions?
     }
 
     /// Compute information that can be used to update properties in ``StatusBarFileInfoView``.
@@ -39,7 +39,7 @@ struct UpdateStatusBarInfo: ViewModifier {
         }
 
         if contentType.conforms(to: .image), let imageReps = NSImage(contentsOf: url)?.representations.first {
-            let dimensions = (imageReps.pixelsWide, imageReps.pixelsHigh)
+            let dimensions = ImageDimensions(width: imageReps.pixelsWide, height: imageReps.pixelsHigh)
             return ComputedStatusBarInfo(fileSize: fileSize, dimensions: dimensions)
         } else { // non-image file
             return ComputedStatusBarInfo(fileSize: fileSize, dimensions: nil)
