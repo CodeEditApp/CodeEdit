@@ -10,4 +10,4 @@
 - ``StatusBarEncodingSelector``
 - ``StatusBarLineEndSelector``
 - ``StatusBarToggleUtilityAreaButton``
-- ``StatusBarCursorLocationLabel``
+- ``StatusBarCursorPositionLabel``

@@ -1,5 +1,5 @@
 //
-//  StatusBarCursorLocationLabel.swift
+//  StatusBarCursorPositionLabel.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 22.03.22.
@@ -8,7 +8,7 @@
 import SwiftUI
 import CodeEditSourceEditor
 
-struct StatusBarCursorLocationLabel: View {
+struct StatusBarCursorPositionLabel: View {
     @Environment(\.controlActiveState)
     private var controlActive
     @Environment(\.modifierKeys)

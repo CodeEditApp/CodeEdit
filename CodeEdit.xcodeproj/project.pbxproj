@@ -201,7 +201,7 @@
 		58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */; };
 		58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250F292C280D00E83CDE /* StatusBarLineEndSelector.swift */; };
 		5882252A292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822510292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift */; };
-		5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */; };
+		5882252B292C280D00E83CDE /* StatusBarCursorPositionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822511292C280D00E83CDE /* StatusBarCursorPositionLabel.swift */; };
 		5882252C292C280D00E83CDE /* UtilityAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822513292C280D00E83CDE /* UtilityAreaView.swift */; };
 		5882252D292C280D00E83CDE /* UtilityAreaTerminalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822515292C280D00E83CDE /* UtilityAreaTerminalButton.swift */; };
 		5882252E292C280D00E83CDE /* UtilityAreaMaximizeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */; };
@@ -765,7 +765,7 @@
 		5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarEncodingSelector.swift; sourceTree = "<group>"; };
 		5882250F292C280D00E83CDE /* StatusBarLineEndSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarLineEndSelector.swift; sourceTree = "<group>"; };
 		58822510292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarToggleUtilityAreaButton.swift; sourceTree = "<group>"; };
-		58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarCursorLocationLabel.swift; sourceTree = "<group>"; };
+		58822511292C280D00E83CDE /* StatusBarCursorPositionLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarCursorPositionLabel.swift; sourceTree = "<group>"; };
 		58822513292C280D00E83CDE /* UtilityAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaView.swift; sourceTree = "<group>"; };
 		58822515292C280D00E83CDE /* UtilityAreaTerminalButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaTerminalButton.swift; sourceTree = "<group>"; };
 		58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaMaximizeButton.swift; sourceTree = "<group>"; };
@@ -2016,7 +2016,7 @@
 				5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */,
 				5882250F292C280D00E83CDE /* StatusBarLineEndSelector.swift */,
 				58822510292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift */,
-				58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */,
+				58822511292C280D00E83CDE /* StatusBarCursorPositionLabel.swift */,
 			);
 			path = StatusBarItems;
 			sourceTree = "<group>";
@@ -3413,7 +3413,7 @@
 				6C2C155A29B4F4CC00EA60A5 /* Variadic.swift in Sources */,
 				77A01E322BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift in Sources */,
 				B6E41C8F29DE9CD80088F9F4 /* AccountsSettingsDetailsView.swift in Sources */,
-				5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */,
+				5882252B292C280D00E83CDE /* StatusBarCursorPositionLabel.swift in Sources */,
 				5882252D292C280D00E83CDE /* UtilityAreaTerminalButton.swift in Sources */,
 				58798238292E30B90085B254 /* FeedbackWindowController.swift in Sources */,
 				587B9E6C29301D8F00AC7927 /* GitLabNamespace.swift in Sources */,

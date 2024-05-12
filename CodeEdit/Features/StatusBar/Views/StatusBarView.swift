@@ -36,7 +36,7 @@ struct StatusBarView: View {
 //            StatusBarDivider()
             Spacer()
             HStack(alignment: .center, spacing: 10) {
-                StatusBarCursorLocationLabel()
+                StatusBarCursorPositionLabel()
             }
             StatusBarDivider()
             StatusBarToggleUtilityAreaButton()
