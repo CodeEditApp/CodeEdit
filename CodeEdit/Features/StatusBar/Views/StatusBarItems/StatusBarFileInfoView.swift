@@ -14,15 +14,15 @@ struct StatusBarFileInfoView: View {
 
     @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
 
-    private let numberStyle = IntegerFormatStyle<Int>(locale: Locale(identifier: "en_US")).grouping(.never)
+    private let dimensionsNumberStyle = IntegerFormatStyle<Int>(locale: Locale(identifier: "en_US")).grouping(.never)
 
     var body: some View {
 
         HStack(spacing: 15) {
 
             if let dimensions = statusBarViewModel.dimensions {
-                var width = numberStyle.format(dimensions.width)
-                var height = numberStyle.format(dimensions.height)
+                let width = dimensionsNumberStyle.format(dimensions.width)
+                let height = dimensionsNumberStyle.format(dimensions.height)
 
                 Text("\(width)x\(height)")
                     .font(statusBarViewModel.statusBarFont)
