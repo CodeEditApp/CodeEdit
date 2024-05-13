@@ -224,9 +224,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         case .branchPicker:
             let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
             let view = NSHostingView(
-                rootView: ToolbarBranchPicker(
-                    workspaceFileManager: workspace?.workspaceFileManager
-                )
+                rootView: ToolbarBranchPicker(workspaceFileManager: workspace?.workspaceFileManager)
             )
             toolbarItem.view = view
 
