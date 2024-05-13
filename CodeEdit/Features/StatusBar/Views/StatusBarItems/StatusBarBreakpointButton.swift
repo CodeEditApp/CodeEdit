@@ -11,8 +11,6 @@ import CodeEditSymbols
 struct StatusBarBreakpointButton: View {
     @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
 
-    @State private var isBreakpointEnabled = false
-
     var body: some View {
         Button {
             statusBarViewModel.isBreakpointEnabled.toggle()

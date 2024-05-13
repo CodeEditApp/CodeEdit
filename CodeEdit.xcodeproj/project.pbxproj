@@ -203,7 +203,7 @@
 		5882252A292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822510292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift */; };
 		5882252B292C280D00E83CDE /* StatusBarCursorPositionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822511292C280D00E83CDE /* StatusBarCursorPositionLabel.swift */; };
 		5882252C292C280D00E83CDE /* UtilityAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822513292C280D00E83CDE /* UtilityAreaView.swift */; };
-		5882252D292C280D00E83CDE /* UtilityAreaTerminalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822515292C280D00E83CDE /* UtilityAreaTerminalButton.swift */; };
+		5882252D292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822515292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift */; };
 		5882252E292C280D00E83CDE /* UtilityAreaMaximizeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */; };
 		5882252F292C280D00E83CDE /* UtilityAreaClearButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822517292C280D00E83CDE /* UtilityAreaClearButton.swift */; };
 		58822530292C280D00E83CDE /* UtilityAreaFilterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */; };
@@ -771,7 +771,7 @@
 		58822510292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarToggleUtilityAreaButton.swift; sourceTree = "<group>"; };
 		58822511292C280D00E83CDE /* StatusBarCursorPositionLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarCursorPositionLabel.swift; sourceTree = "<group>"; };
 		58822513292C280D00E83CDE /* UtilityAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaView.swift; sourceTree = "<group>"; };
-		58822515292C280D00E83CDE /* UtilityAreaTerminalButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaTerminalButton.swift; sourceTree = "<group>"; };
+		58822515292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaSplitTerminalButton.swift; sourceTree = "<group>"; };
 		58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaMaximizeButton.swift; sourceTree = "<group>"; };
 		58822517292C280D00E83CDE /* UtilityAreaClearButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaClearButton.swift; sourceTree = "<group>"; };
 		58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaFilterTextField.swift; sourceTree = "<group>"; };
@@ -2050,7 +2050,7 @@
 		58822514292C280D00E83CDE /* Toolbar */ = {
 			isa = PBXGroup;
 			children = (
-				58822515292C280D00E83CDE /* UtilityAreaTerminalButton.swift */,
+				58822515292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift */,
 				58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */,
 				58822517292C280D00E83CDE /* UtilityAreaClearButton.swift */,
 				58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */,
@@ -3452,7 +3452,7 @@
 				77A01E322BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift in Sources */,
 				B6E41C8F29DE9CD80088F9F4 /* AccountsSettingsDetailsView.swift in Sources */,
 				5882252B292C280D00E83CDE /* StatusBarCursorPositionLabel.swift in Sources */,
-				5882252D292C280D00E83CDE /* UtilityAreaTerminalButton.swift in Sources */,
+				5882252D292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift in Sources */,
 				58798238292E30B90085B254 /* FeedbackWindowController.swift in Sources */,
 				587B9E6C29301D8F00AC7927 /* GitLabNamespace.swift in Sources */,
 				6C48D8F22972DAFC00D6D205 /* Env+IsFullscreen.swift in Sources */,

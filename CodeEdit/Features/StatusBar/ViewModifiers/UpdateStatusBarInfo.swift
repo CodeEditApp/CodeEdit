@@ -31,8 +31,8 @@ struct UpdateStatusBarInfo: ViewModifier {
     /// - Returns: The file size and its image dimensions (if any).
     private func computeStatusBarInfo(url: URL) -> ComputedStatusBarInfo? {
         guard let resourceValues = try? url.resourceValues(forKeys: [.contentTypeKey, .fileSizeKey]),
-              let fileSize = resourceValues.fileSize,
-              let contentType = resourceValues.contentType
+              let contentType = resourceValues.contentType,
+              let fileSize = resourceValues.fileSize
         else {
             return nil
         }

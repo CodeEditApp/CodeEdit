@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Shows media information about the currently opened file.
 ///
-/// This currently shows the file size and media dimensions, if available.
+/// This currently shows the file size and image dimensions, if available.
 struct StatusBarFileInfoView: View {
 
     @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
@@ -25,17 +25,15 @@ struct StatusBarFileInfoView: View {
                 let height = dimensionsNumberStyle.format(dimensions.height)
 
                 Text("\(width)x\(height)")
-                    .font(statusBarViewModel.statusBarFont)
-                    .foregroundStyle(statusBarViewModel.foregroundStyle)
             }
 
             if let fileSize = statusBarViewModel.fileSize {
                 Text(fileSize.formatted(.byteCount(style: .memory)))
-                    .font(statusBarViewModel.statusBarFont)
-                    .foregroundStyle(statusBarViewModel.foregroundStyle)
             }
 
         }
+        .font(statusBarViewModel.statusBarFont)
+        .foregroundStyle(statusBarViewModel.foregroundStyle)
     }
 
 }

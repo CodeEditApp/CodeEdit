@@ -1,5 +1,5 @@
 //
-//  UtilityAreaTerminalButton.swift
+//  UtilityAreaSplitTerminalButton.swift
 //  CodeEdit
 //
 //  Created by Stef Kors on 14/04/2022.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct UtilityAreaTerminalButton: View {
+struct UtilityAreaSplitTerminalButton: View {
     var body: some View {
         Button {
             // todo
