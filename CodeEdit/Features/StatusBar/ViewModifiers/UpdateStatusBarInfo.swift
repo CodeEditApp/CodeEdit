@@ -10,7 +10,7 @@ import SwiftUI
 /// Updates ``StatusBarFileInfoView``'s `fileSize` and `dimensions`.
 /// ```swift
 /// FileView
-///   .modifier(UpdateStatusBarInfo(with))
+///   .modifier(UpdateStatusBarInfo(withURL))
 /// ```
 struct UpdateStatusBarInfo: ViewModifier {
 
