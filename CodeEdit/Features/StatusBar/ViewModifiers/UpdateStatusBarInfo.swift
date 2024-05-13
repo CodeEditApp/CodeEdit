@@ -18,7 +18,6 @@ struct UpdateStatusBarInfo: ViewModifier {
     let withURL: URL
 
     @EnvironmentObject private var editorManager: EditorManager
-    @EnvironmentObject private var editor: Editor
     @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
 
     /// This is returned by ``UpdateStatusBarInfo`` `.computeStatusBarInfo`.
