@@ -519,6 +519,7 @@
 		B6F0517929D9E3C900D72287 /* SourceControlGitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0517829D9E3C900D72287 /* SourceControlGitView.swift */; };
 		B6F0517B29D9E46400D72287 /* SourceControlSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0517A29D9E46400D72287 /* SourceControlSettingsView.swift */; };
 		B6F0517D29D9E4B100D72287 /* TerminalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0517C29D9E4B100D72287 /* TerminalSettingsView.swift */; };
+		B6FA3F882BF41C940023DE9C /* ThemeSettingsThemeToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FA3F872BF41C940023DE9C /* ThemeSettingsThemeToken.swift */; };
 		B6FF04782B6C08AC002C2C78 /* DefaultThemes in Resources */ = {isa = PBXBuildFile; fileRef = B6FF04772B6C08AC002C2C78 /* DefaultThemes */; };
 		D7012EE827E757850001E1EF /* FindNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7012EE727E757850001E1EF /* FindNavigatorView.swift */; };
 		D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */; };
@@ -1096,6 +1097,7 @@
 		B6F0517829D9E3C900D72287 /* SourceControlGitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlGitView.swift; sourceTree = "<group>"; };
 		B6F0517A29D9E46400D72287 /* SourceControlSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlSettingsView.swift; sourceTree = "<group>"; };
 		B6F0517C29D9E4B100D72287 /* TerminalSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSettingsView.swift; sourceTree = "<group>"; };
+		B6FA3F872BF41C940023DE9C /* ThemeSettingsThemeToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsThemeToken.swift; sourceTree = "<group>"; };
 		B6FF04772B6C08AC002C2C78 /* DefaultThemes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = DefaultThemes; sourceTree = "<group>"; };
 		D7012EE727E757850001E1EF /* FindNavigatorView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = FindNavigatorView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localized+Ex.swift"; sourceTree = "<group>"; };
@@ -2285,6 +2287,7 @@
 				B6EA1FF729DB78DB001BF195 /* ThemeSettingThemeRow.swift */,
 				B6EA1FFA29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift */,
 				B6EA1FFC29DB792C001BF195 /* ThemeSettingsColorPreview.swift */,
+				B6FA3F872BF41C940023DE9C /* ThemeSettingsThemeToken.swift */,
 			);
 			path = ThemeSettings;
 			sourceTree = "<group>";
@@ -3814,6 +3817,7 @@
 				58798236292E30B90085B254 /* FeedbackType.swift in Sources */,
 				587B9E6D29301D8F00AC7927 /* GitLabEventNote.swift in Sources */,
 				587B9E9129301D8F00AC7927 /* BitBucketOAuthRouter.swift in Sources */,
+				B6FA3F882BF41C940023DE9C /* ThemeSettingsThemeToken.swift in Sources */,
 				B6E41C7429DD40010088F9F4 /* View+HideSidebarToggle.swift in Sources */,
 				611191FA2B08CC9000D4459B /* SearchIndexer.swift in Sources */,
 				58822532292C280D00E83CDE /* UtilityAreaViewModel.swift in Sources */,

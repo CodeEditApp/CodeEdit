@@ -57,46 +57,58 @@ struct ThemeSettingsThemeDetails: View {
                     )
                 }
                 Section {
-                    SettingsColorPicker(
-                        "Keywords",
-                        color: $theme.editor.keywords.swiftColor
-                    )
-                    SettingsColorPicker(
-                        "Commands",
-                        color: $theme.editor.commands.swiftColor
-                    )
-                    SettingsColorPicker(
-                        "Types",
-                        color: $theme.editor.types.swiftColor
-                    )
-                    SettingsColorPicker(
-                        "Attributes",
-                        color: $theme.editor.attributes.swiftColor
-                    )
-                    SettingsColorPicker(
-                        "Variables",
-                        color: $theme.editor.variables.swiftColor
-                    )
-                    SettingsColorPicker(
-                        "Values",
-                        color: $theme.editor.values.swiftColor
-                    )
-                    SettingsColorPicker(
-                        "Numbers",
-                        color: $theme.editor.numbers.swiftColor
-                    )
-                    SettingsColorPicker(
-                        "Strings",
-                        color: $theme.editor.strings.swiftColor
-                    )
-                    SettingsColorPicker(
-                        "Characters",
-                        color: $theme.editor.characters.swiftColor
-                    )
-                    SettingsColorPicker(
-                        "Comments",
-                        color: $theme.editor.comments.swiftColor
-                    )
+                    VStack(spacing: 0) {
+                        ThemeSettingsThemeToken(
+                            "Keywords",
+                            color: $theme.editor.keywords.swiftColor
+                        )
+                        Divider().padding(.leading, 10)
+                        ThemeSettingsThemeToken(
+                            "Commands",
+                            color: $theme.editor.commands.swiftColor
+                        )
+                        Divider().padding(.leading, 10)
+                        ThemeSettingsThemeToken(
+                            "Types",
+                            color: $theme.editor.types.swiftColor
+                        )
+                        Divider().padding(.leading, 10)
+                        ThemeSettingsThemeToken(
+                            "Attributes",
+                            color: $theme.editor.attributes.swiftColor
+                        )
+                        Divider().padding(.leading, 10)
+                        ThemeSettingsThemeToken(
+                            "Variables",
+                            color: $theme.editor.variables.swiftColor
+                        )
+                        Divider().padding(.leading, 10)
+                        ThemeSettingsThemeToken(
+                            "Values",
+                            color: $theme.editor.values.swiftColor
+                        )
+                        Divider().padding(.leading, 10)
+                        ThemeSettingsThemeToken(
+                            "Numbers",
+                            color: $theme.editor.numbers.swiftColor
+                        )
+                        Divider().padding(.leading, 10)
+                        ThemeSettingsThemeToken(
+                            "Strings",
+                            color: $theme.editor.strings.swiftColor
+                        )
+                        Divider().padding(.leading, 10)
+                        ThemeSettingsThemeToken(
+                            "Characters",
+                            color: $theme.editor.characters.swiftColor
+                        )
+                        Divider().padding(.leading, 10)
+                        ThemeSettingsThemeToken(
+                            "Comments",
+                            color: $theme.editor.comments.swiftColor
+                        )
+                    }
+                    .padding(-10)
                 }
             }.formStyle(.grouped)
             Divider()
