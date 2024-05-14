@@ -195,7 +195,13 @@ final class Editor: ObservableObject, Identifiable {
         if let index {
             tabs.insert(item, at: index)
         } else {
-            tabs.append(item)
+            guard let currentTab = selectedTab, let currentIndex = tabs.firstIndex(of: currentTab)
+            else {
+                tabs.append(item)
+                return
+            }
+            let nextIndex = tabs.index(after: currentIndex)
+            tabs.insert(item, at: nextIndex)
         }
         selectedTab = item
         if !fromHistory {
