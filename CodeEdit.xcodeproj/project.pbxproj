@@ -28,6 +28,7 @@
 		04BC1CDE2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */; };
 		04C3255B2801F86400C8DA2D /* ProjectNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6D27FE4B4A00E57D53 /* ProjectNavigatorViewController.swift */; };
 		04C3255C2801F86900C8DA2D /* ProjectNavigatorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* ProjectNavigatorMenu.swift */; };
+		0FD96BCE2BEF42530025A697 /* CodeEditWindowController+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD96BCD2BEF42530025A697 /* CodeEditWindowController+Toolbar.swift */; };
 		201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */; };
 		201169DB2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169DA2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift */; };
 		201169DD2837B3AC00F92B46 /* SourceControlNavigatorToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169DC2837B3AC00F92B46 /* SourceControlNavigatorToolbarBottom.swift */; };
@@ -588,6 +589,7 @@
 		04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorSyncView.swift; sourceTree = "<group>"; };
 		04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Push.swift"; sourceTree = "<group>"; };
 		04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorFileTabCloseButton.swift; sourceTree = "<group>"; };
+		0FD96BCD2BEF42530025A697 /* CodeEditWindowController+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditWindowController+Toolbar.swift"; sourceTree = "<group>"; };
 		201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorView.swift; sourceTree = "<group>"; };
 		201169DA2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorChangedFileView.swift; sourceTree = "<group>"; };
 		201169DC2837B3AC00F92B46 /* SourceControlNavigatorToolbarBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorToolbarBottom.swift; sourceTree = "<group>"; };
@@ -1495,6 +1497,7 @@
 				04660F6927E51E5C00477777 /* CodeEditWindowController.swift */,
 				B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */,
 				4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */,
+				0FD96BCD2BEF42530025A697 /* CodeEditWindowController+Toolbar.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -3380,6 +3383,7 @@
 				587B9E8D29301D8F00AC7927 /* GitHubAccount.swift in Sources */,
 				201169E72837B5CA00F92B46 /* SourceControlManager.swift in Sources */,
 				58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */,
+				0FD96BCE2BEF42530025A697 /* CodeEditWindowController+Toolbar.swift in Sources */,
 				6C7F37FE2A3EA6FA00217B83 /* View+focusedValue.swift in Sources */,
 				B6C4F2A12B3CA37500B2B140 /* SourceControlNavigatorHistoryView.swift in Sources */,
 				6CBE1CFB2B71DAA6003AC32E /* Loopable.swift in Sources */,
