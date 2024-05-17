@@ -81,7 +81,7 @@ struct SettingsView: View {
         .init(
             SettingsPage(
                 .location,
-                baseColor: .pink,
+                baseColor: .green,
                 icon: .system("externaldrive.fill")
             )
         ),
@@ -89,7 +89,7 @@ struct SettingsView: View {
         .init(
             SettingsPage(
                 .lspBinaries,
-                baseColor: .mint,
+                baseColor: .pink,
                 icon: .system("flask")
             )
         )
