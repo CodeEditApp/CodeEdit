@@ -81,8 +81,16 @@ struct SettingsView: View {
         .init(
             SettingsPage(
                 .location,
-                baseColor: .green,
+                baseColor: .pink,
                 icon: .system("externaldrive.fill")
+            )
+        ),
+        // TODO: REMOVE THIS SECTION WHEN WE HAVE A SOLUTION FOR GETTING LSP BINARIES
+        .init(
+            SettingsPage(
+                .lspBinaries,
+                baseColor: .mint,
+                icon: .system("flask")
             )
         )
     ]
@@ -166,6 +174,8 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
+                case .lspBinaries:
+                    LSPSettingsView()
                 default:
                     Text("Implementation Needed").frame(alignment: .center)
                 }
