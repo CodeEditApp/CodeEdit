@@ -1,6 +1,6 @@
 //
 //  StatusBarView.swift
-//  CodeEditModules/StatusBar
+//  CodeEdit
 //
 //  Created by Lukas Pistrol on 19.03.22.
 //
@@ -11,7 +11,9 @@ import SwiftUI
 ///
 /// A View that lives on the bottom of the window and offers information
 /// about compilation errors/warnings, git,  cursor position in text,
-/// indentation width (in spaces), text encoding and linebreak
+/// indentation width (in spaces), text encoding and linebreak.
+///
+/// Also information about the file size and dimensions, if available.
 ///
 /// Additionally it offers a togglable/resizable drawer which can
 /// host a terminal or additional debug information
@@ -19,8 +21,6 @@ import SwiftUI
 struct StatusBarView: View {
     @Environment(\.controlActiveState)
     private var controlActive
-
-    @EnvironmentObject private var model: UtilityAreaViewModel
 
     static let height = 28.0
 
@@ -37,8 +37,9 @@ struct StatusBarView: View {
 //            StatusBarBreakpointButton()
 //            StatusBarDivider()
             Spacer()
+            StatusBarFileInfoView()
             HStack(alignment: .center, spacing: 10) {
-                StatusBarCursorLocationLabel()
+                StatusBarCursorPositionLabel()
             }
             StatusBarDivider()
             StatusBarToggleUtilityAreaButton()

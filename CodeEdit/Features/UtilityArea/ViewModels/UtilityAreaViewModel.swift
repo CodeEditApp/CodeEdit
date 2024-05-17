@@ -9,11 +9,8 @@ import SwiftUI
 
 /// # UtilityAreaViewModel
 ///
-/// A model class to host and manage data for the ``StatusBarView``
-///
+/// A model class to host and manage data for the Utility area.
 class UtilityAreaViewModel: ObservableObject {
-    /// Returns the current location of the cursor in an editing view
-    @Published var cursorLocation: CursorLocation = .init(line: 1, column: 1) // Implementation needed!!
 
     @Published var terminals: [UtilityAreaTerminal] = []
 
@@ -28,23 +25,11 @@ class UtilityAreaViewModel: ObservableObject {
     /// The current height of the drawer. Zero if hidden
     @Published var currentHeight: Double = 0
 
-    /// Indicates whether the drawer is being resized or not
-    @Published var isDragging: Bool = false
-
-    /// Indicates whether the breakpoint is enabled or not
-    @Published var isBreakpointEnabled: Bool = true
-
-    /// Search value to filter in drawer
-    @Published var searchText: String = ""
-
-    /// The tab bar items for the DebugAreaView
+    /// The tab bar items for the UtilityAreaView
     @Published var tabItems: [UtilityAreaTab] = UtilityAreaTab.allCases
 
     /// The tab bar view model for UtilityAreaTabView
     @Published var tabViewModel = UtilityAreaTabViewModel()
-
-    /// Returns the font for status bar items to use
-    private(set) var toolbarFont: Font = .system(size: 11, weight: .medium)
 
     func removeTerminals(_ ids: Set<UUID>) {
         terminals.removeAll(where: { terminal in

@@ -13,7 +13,6 @@ import SwiftUI
 struct EditorAreaFileView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
-
     @EnvironmentObject private var editor: Editor
 
     @Environment(\.edgeInsets)

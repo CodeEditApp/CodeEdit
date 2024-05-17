@@ -17,25 +17,37 @@ struct NonTextFileView: View {
     /// The file document you wish to open.
     let fileDocument: CodeFileDocument
 
+    @EnvironmentObject private var editorManager: EditorManager
+    @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
+
     var body: some View {
 
-        if let fileURL = fileDocument.fileURL {
+        Group {
+            if let fileURL = fileDocument.fileURL {
 
-            switch fileDocument.utType {
-            case .some(.image):
-                ImageFileView(fileURL)
+                switch fileDocument.utType {
+                case .some(.image):
+                    ImageFileView(fileURL)
+                        .modifier(UpdateStatusBarInfo(withURL: fileURL))
 
-            case .some(.pdf):
-                PDFFileView(fileURL)
+                case .some(.pdf):
+                    PDFFileView(fileURL)
+                        .modifier(UpdateStatusBarInfo(withURL: fileURL))
 
-            default:
-                AnyFileView(fileURL)
+                default:
+                    AnyFileView(fileURL)
+                        .modifier(UpdateStatusBarInfo(withURL: fileURL))
+                }
+
+            } else {
+                ZStack {
+                    Text("Cannot retrieve URL to the file you opened.")
+                }
             }
-
-        } else {
-            ZStack {
-                Text("Cannot retrieve URL to the file you opened.")
-            }
+        }
+        .onDisappear {
+            statusBarViewModel.dimensions = nil
+            statusBarViewModel.fileSize = nil
         }
 
     }

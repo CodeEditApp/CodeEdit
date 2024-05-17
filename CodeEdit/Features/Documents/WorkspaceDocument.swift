@@ -30,6 +30,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
     }
 
+    var statusBarViewModel = StatusBarViewModel()
     var utilityAreaModel = UtilityAreaViewModel()
     var searchState: SearchState?
     var quickOpenViewModel: QuickOpenViewModel?

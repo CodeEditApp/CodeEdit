@@ -4,24 +4,22 @@
 
 ### Model
 
+- ``ImageDimensions``
+
+### View Model
+
 - ``StatusBarViewModel``
-- ``StatusBarTabType``
-- ``CursorLocation``
+
+### View Modifiers
+
+- ``UpdateStatusBarInfo``
 
 ### Items
 
-- ``StatusBarMenuLabel``
+- ``StatusBarMenuStyle``
 - ``StatusBarBreakpointButton``
 - ``StatusBarIndentSelector``
 - ``StatusBarEncodingSelector``
 - ``StatusBarLineEndSelector``
-- ``StatusBarToggleDrawerButton``
-- ``StatusBarCursorLocationLabel``
-
-### Drawer
-
-- ``UtilityAreaView``
-- ``StatusBarSplitTerminalButton``
-- ``StatusBarMaximizeButton``
-- ``StatusBarClearButton``
-- ``FilterTextField``
+- ``StatusBarToggleUtilityAreaButton``
+- ``StatusBarCursorPositionLabel``

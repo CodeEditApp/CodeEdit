@@ -1,15 +1,13 @@
 //
-//  StatusBarSplitTerminalButton.swift
-//  CodeEditModules/StatusBar
+//  UtilityAreaSplitTerminalButton.swift
+//  CodeEdit
 //
 //  Created by Stef Kors on 14/04/2022.
 //
 
 import SwiftUI
 
-struct StatusBarSplitTerminalButton: View {
-    @EnvironmentObject private var model: UtilityAreaViewModel
-
+struct UtilityAreaSplitTerminalButton: View {
     var body: some View {
         Button {
             // todo

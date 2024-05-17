@@ -202,15 +202,14 @@
 		58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */; };
 		58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882250F292C280D00E83CDE /* StatusBarLineEndSelector.swift */; };
 		5882252A292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822510292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift */; };
-		5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */; };
+		5882252B292C280D00E83CDE /* StatusBarCursorPositionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822511292C280D00E83CDE /* StatusBarCursorPositionLabel.swift */; };
 		5882252C292C280D00E83CDE /* UtilityAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822513292C280D00E83CDE /* UtilityAreaView.swift */; };
-		5882252D292C280D00E83CDE /* StatusBarSplitTerminalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822515292C280D00E83CDE /* StatusBarSplitTerminalButton.swift */; };
-		5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822516292C280D00E83CDE /* StatusBarMaximizeButton.swift */; };
-		5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822517292C280D00E83CDE /* StatusBarClearButton.swift */; };
-		58822530292C280D00E83CDE /* FilterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822518292C280D00E83CDE /* FilterTextField.swift */; };
+		5882252D292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822515292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift */; };
+		5882252E292C280D00E83CDE /* UtilityAreaMaximizeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */; };
+		5882252F292C280D00E83CDE /* UtilityAreaClearButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822517292C280D00E83CDE /* UtilityAreaClearButton.swift */; };
+		58822530292C280D00E83CDE /* UtilityAreaFilterTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */; };
 		58822531292C280D00E83CDE /* View+isHovering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251A292C280D00E83CDE /* View+isHovering.swift */; };
 		58822532292C280D00E83CDE /* UtilityAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251C292C280D00E83CDE /* UtilityAreaViewModel.swift */; };
-		58822534292C280D00E83CDE /* CursorLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5882251E292C280D00E83CDE /* CursorLocation.swift */; };
 		588847632992A2A200996D95 /* CEWorkspaceFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588847622992A2A200996D95 /* CEWorkspaceFile.swift */; };
 		588847692992ABCA00996D95 /* Array+SortURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 588847682992ABCA00996D95 /* Array+SortURLs.swift */; };
 		5894E59729FEF7740077E59C /* CEWorkspaceFile+Recursion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5894E59629FEF7740077E59C /* CEWorkspaceFile+Recursion.swift */; };
@@ -287,6 +286,10 @@
 		661EF7B82BEE215300C3E577 /* ImageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7B72BEE215300C3E577 /* ImageFileView.swift */; };
 		661EF7BD2BEE215300C3E577 /* LoadingFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */; };
 		669BC4082BED306400D1197C /* AnyFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669BC4072BED306400D1197C /* AnyFileView.swift */; };
+		66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */; };
+		66AF6CE42BF17F6800D83C9D /* StatusBarFileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE32BF17F6800D83C9D /* StatusBarFileInfoView.swift */; };
+		66AF6CE72BF17FFB00D83C9D /* UpdateStatusBarInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE62BF17FFB00D83C9D /* UpdateStatusBarInfo.swift */; };
+		66AF6CF02BF183CA00D83C9D /* ImageDimensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CEF2BF183CA00D83C9D /* ImageDimensions.swift */; };
 		66F2C8C42BEAA939004674F7 /* PDFFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F2C8C32BEAA939004674F7 /* PDFFileView.swift */; };
 		66F370342BEE537B00D3B823 /* NonTextFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66F370332BEE537B00D3B823 /* NonTextFileView.swift */; };
 		6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */; };
@@ -768,15 +771,14 @@
 		5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarEncodingSelector.swift; sourceTree = "<group>"; };
 		5882250F292C280D00E83CDE /* StatusBarLineEndSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarLineEndSelector.swift; sourceTree = "<group>"; };
 		58822510292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarToggleUtilityAreaButton.swift; sourceTree = "<group>"; };
-		58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarCursorLocationLabel.swift; sourceTree = "<group>"; };
+		58822511292C280D00E83CDE /* StatusBarCursorPositionLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarCursorPositionLabel.swift; sourceTree = "<group>"; };
 		58822513292C280D00E83CDE /* UtilityAreaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaView.swift; sourceTree = "<group>"; };
-		58822515292C280D00E83CDE /* StatusBarSplitTerminalButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarSplitTerminalButton.swift; sourceTree = "<group>"; };
-		58822516292C280D00E83CDE /* StatusBarMaximizeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarMaximizeButton.swift; sourceTree = "<group>"; };
-		58822517292C280D00E83CDE /* StatusBarClearButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarClearButton.swift; sourceTree = "<group>"; };
-		58822518292C280D00E83CDE /* FilterTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTextField.swift; sourceTree = "<group>"; };
+		58822515292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaSplitTerminalButton.swift; sourceTree = "<group>"; };
+		58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaMaximizeButton.swift; sourceTree = "<group>"; };
+		58822517292C280D00E83CDE /* UtilityAreaClearButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaClearButton.swift; sourceTree = "<group>"; };
+		58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaFilterTextField.swift; sourceTree = "<group>"; };
 		5882251A292C280D00E83CDE /* View+isHovering.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+isHovering.swift"; sourceTree = "<group>"; };
 		5882251C292C280D00E83CDE /* UtilityAreaViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityAreaViewModel.swift; sourceTree = "<group>"; };
-		5882251E292C280D00E83CDE /* CursorLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CursorLocation.swift; sourceTree = "<group>"; };
 		588847622992A2A200996D95 /* CEWorkspaceFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceFile.swift; sourceTree = "<group>"; };
 		588847682992ABCA00996D95 /* Array+SortURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+SortURLs.swift"; sourceTree = "<group>"; };
 		5894E59629FEF7740077E59C /* CEWorkspaceFile+Recursion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CEWorkspaceFile+Recursion.swift"; sourceTree = "<group>"; };
@@ -853,6 +855,10 @@
 		661EF7B72BEE215300C3E577 /* ImageFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFileView.swift; sourceTree = "<group>"; };
 		661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingFileView.swift; sourceTree = "<group>"; };
 		669BC4072BED306400D1197C /* AnyFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyFileView.swift; sourceTree = "<group>"; };
+		66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarViewModel.swift; sourceTree = "<group>"; };
+		66AF6CE32BF17F6800D83C9D /* StatusBarFileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarFileInfoView.swift; sourceTree = "<group>"; };
+		66AF6CE62BF17FFB00D83C9D /* UpdateStatusBarInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateStatusBarInfo.swift; sourceTree = "<group>"; };
+		66AF6CEF2BF183CA00D83C9D /* ImageDimensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDimensions.swift; sourceTree = "<group>"; };
 		66F2C8C32BEAA939004674F7 /* PDFFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFFileView.swift; sourceTree = "<group>"; };
 		66F370332BEE537B00D3B823 /* NonTextFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonTextFileView.swift; sourceTree = "<group>"; };
 		6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectoryEventStream.swift; sourceTree = "<group>"; };
@@ -1997,7 +2003,9 @@
 		588224FF292C280D00E83CDE /* StatusBar */ = {
 			isa = PBXGroup;
 			children = (
-				5882251B292C280D00E83CDE /* Models */,
+				66AF6CEE2BF183C500D83C9D /* Models */,
+				66AF6CE52BF17FEF00D83C9D /* ViewModifiers */,
+				66AF6CE02BF17CB100D83C9D /* ViewModels */,
 				58822508292C280D00E83CDE /* Views */,
 			);
 			path = StatusBar;
@@ -2022,7 +2030,8 @@
 				5882250E292C280D00E83CDE /* StatusBarEncodingSelector.swift */,
 				5882250F292C280D00E83CDE /* StatusBarLineEndSelector.swift */,
 				58822510292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift */,
-				58822511292C280D00E83CDE /* StatusBarCursorLocationLabel.swift */,
+				58822511292C280D00E83CDE /* StatusBarCursorPositionLabel.swift */,
+				66AF6CE32BF17F6800D83C9D /* StatusBarFileInfoView.swift */,
 			);
 			path = StatusBarItems;
 			sourceTree = "<group>";
@@ -2044,20 +2053,12 @@
 		58822514292C280D00E83CDE /* Toolbar */ = {
 			isa = PBXGroup;
 			children = (
-				58822515292C280D00E83CDE /* StatusBarSplitTerminalButton.swift */,
-				58822516292C280D00E83CDE /* StatusBarMaximizeButton.swift */,
-				58822517292C280D00E83CDE /* StatusBarClearButton.swift */,
-				58822518292C280D00E83CDE /* FilterTextField.swift */,
+				58822515292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift */,
+				58822516292C280D00E83CDE /* UtilityAreaMaximizeButton.swift */,
+				58822517292C280D00E83CDE /* UtilityAreaClearButton.swift */,
+				58822518292C280D00E83CDE /* UtilityAreaFilterTextField.swift */,
 			);
 			path = Toolbar;
-			sourceTree = "<group>";
-		};
-		5882251B292C280D00E83CDE /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				5882251E292C280D00E83CDE /* CursorLocation.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		58822539292C333600E83CDE /* ViewModels */ = {
@@ -2332,6 +2333,30 @@
 				613899BF2B6E70FE00A5CAF6 /* FuzzySearchTests.swift */,
 			);
 			path = FuzzySearch;
+			sourceTree = "<group>";
+		};
+		66AF6CE02BF17CB100D83C9D /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		66AF6CE52BF17FEF00D83C9D /* ViewModifiers */ = {
+			isa = PBXGroup;
+			children = (
+				66AF6CE62BF17FFB00D83C9D /* UpdateStatusBarInfo.swift */,
+			);
+			path = ViewModifiers;
+			sourceTree = "<group>";
+		};
+		66AF6CEE2BF183C500D83C9D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				66AF6CEF2BF183CA00D83C9D /* ImageDimensions.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		6C092EDC2A53A63E00489202 /* Views */ = {
@@ -3276,7 +3301,6 @@
 				3000516C2BBD3A9500A98562 /* ServiceWrapper.swift in Sources */,
 				77A01E1F2BB33FB500F0EA38 /* CEWorkspaceSettingsView.swift in Sources */,
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
-				58822534292C280D00E83CDE /* CursorLocation.swift in Sources */,
 				201169E52837B40300F92B46 /* SourceControlNavigatorRepositoryView.swift in Sources */,
 				587B9E6A29301D8F00AC7927 /* GitLabPermissions.swift in Sources */,
 				B6EA1FF529DA380E001BF195 /* TextEditingSettingsView.swift in Sources */,
@@ -3310,13 +3334,14 @@
 				6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */,
 				58F2EB08292FB2B0004A9BDE /* TextEditingSettings.swift in Sources */,
 				201169DB2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift in Sources */,
-				5882252E292C280D00E83CDE /* StatusBarMaximizeButton.swift in Sources */,
+				5882252E292C280D00E83CDE /* UtilityAreaMaximizeButton.swift in Sources */,
 				77A01E2E2BB4261200F0EA38 /* CEWorkspaceSettings.swift in Sources */,
 				6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */,
 				587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */,
 				587B9E6929301D8F00AC7927 /* GitLabEvent.swift in Sources */,
 				B60718442B17DBE5009CDAB4 /* SourceControlNavigatorRepositoryItem.swift in Sources */,
 				B67DB0F92AFDF638002DC647 /* IconButtonStyle.swift in Sources */,
+				66AF6CE42BF17F6800D83C9D /* StatusBarFileInfoView.swift in Sources */,
 				587B9E5E29301D8F00AC7927 /* GitLabCommitRouter.swift in Sources */,
 				58F2EB0D292FB2B0004A9BDE /* ThemeSettings.swift in Sources */,
 				587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */,
@@ -3365,6 +3390,7 @@
 				587B9E7329301D8F00AC7927 /* GitRouter.swift in Sources */,
 				6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */,
 				61A53A812B4449F00093BF8A /* WorkspaceDocument+Index.swift in Sources */,
+				66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */,
 				201169DD2837B3AC00F92B46 /* SourceControlNavigatorToolbarBottom.swift in Sources */,
 				587B9E8B29301D8F00AC7927 /* GitHubAccount+deleteReference.swift in Sources */,
 				58798237292E30B90085B254 /* FeedbackView.swift in Sources */,
@@ -3429,8 +3455,8 @@
 				6C2C155A29B4F4CC00EA60A5 /* Variadic.swift in Sources */,
 				77A01E322BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift in Sources */,
 				B6E41C8F29DE9CD80088F9F4 /* AccountsSettingsDetailsView.swift in Sources */,
-				5882252B292C280D00E83CDE /* StatusBarCursorLocationLabel.swift in Sources */,
-				5882252D292C280D00E83CDE /* StatusBarSplitTerminalButton.swift in Sources */,
+				5882252B292C280D00E83CDE /* StatusBarCursorPositionLabel.swift in Sources */,
+				5882252D292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift in Sources */,
 				58798238292E30B90085B254 /* FeedbackWindowController.swift in Sources */,
 				587B9E6C29301D8F00AC7927 /* GitLabNamespace.swift in Sources */,
 				6C48D8F22972DAFC00D6D205 /* Env+IsFullscreen.swift in Sources */,
@@ -3477,7 +3503,7 @@
 				850C631229D6B03400E1444C /* SettingsPage.swift in Sources */,
 				587B9E6729301D8F00AC7927 /* GitLabEventData.swift in Sources */,
 				B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */,
-				5882252F292C280D00E83CDE /* StatusBarClearButton.swift in Sources */,
+				5882252F292C280D00E83CDE /* UtilityAreaClearButton.swift in Sources */,
 				6CE622692A2A174A0013085C /* InspectorTab.swift in Sources */,
 				58F2EB04292FB2B0004A9BDE /* SourceControlSettings.swift in Sources */,
 				58710159298EB80000951BA4 /* CEWorkspaceFileManager.swift in Sources */,
@@ -3529,6 +3555,7 @@
 				587B9E8029301D8F00AC7927 /* GitHubConfiguration.swift in Sources */,
 				58822524292C280D00E83CDE /* StatusBarView.swift in Sources */,
 				581550D429FBD37D00684881 /* ProjectNavigatorToolbarBottom.swift in Sources */,
+				66AF6CE72BF17FFB00D83C9D /* UpdateStatusBarInfo.swift in Sources */,
 				587B9E7E29301D8F00AC7927 /* GitHubGistRouter.swift in Sources */,
 				B6AB09A52AAAC00F0003A3A6 /* EditorTabBarTrailingAccessories.swift in Sources */,
 				04BA7C0B2AE2A2D100584E1C /* GitBranch.swift in Sources */,
@@ -3609,6 +3636,7 @@
 				77A01E8E2BC9A09C00F0EA38 /* EditCETaskView.swift in Sources */,
 				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
 				B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */,
+				66AF6CF02BF183CA00D83C9D /* ImageDimensions.swift in Sources */,
 				2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */,
 				3000516A2BBD3A8200A98562 /* ServiceType.swift in Sources */,
 				6C578D8C29CD372700DC73B2 /* ExtensionCommands.swift in Sources */,
@@ -3619,7 +3647,7 @@
 				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
 				587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */,
 				588847692992ABCA00996D95 /* Array+SortURLs.swift in Sources */,
-				58822530292C280D00E83CDE /* FilterTextField.swift in Sources */,
+				58822530292C280D00E83CDE /* UtilityAreaFilterTextField.swift in Sources */,
 				6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */,
 				6C147C4929A32A080089B630 /* EditorLayoutView.swift in Sources */,
 				6C147C4129A328BF0089B630 /* EditorLayout.swift in Sources */,

@@ -41,6 +41,7 @@ struct ImageFileView: View {
                             maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
                             maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)
                         )
+
                 }
                 .frame(width: proxy.size.width, height: proxy.size.height)
             }
