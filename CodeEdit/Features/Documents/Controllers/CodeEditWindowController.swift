@@ -29,8 +29,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     internal var cancellables = [AnyCancellable]()
 
-    init(window: NSWindow, workspace: WorkspaceDocument) {
+    init(window: NSWindow?, workspace: WorkspaceDocument?) {
         super.init(window: window)
+        guard let workspace else { return }
         self.workspace = workspace
         self.workspaceSettings = CEWorkspaceSettings(workspaceDocument: workspace)
         setupSplitView(with: workspace)
@@ -46,7 +47,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 self?.navigatorCollapsed = item.isCollapsed
             }),
             splitViewController.splitViewItems.last!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
-                self?.navigatorCollapsed = item.isCollapsed
+                self?.inspectorCollapsed = item.isCollapsed
             })
         ]
 

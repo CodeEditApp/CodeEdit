@@ -184,6 +184,9 @@ For issues we want to focus on that are most relevant at any given time, please 
       <td align="center" valign="top" width="14.28%"><a href="http://knotbin.xyz"><img src="https://avatars.githubusercontent.com/u/118622417?v=4?s=100" width="100px;" alt="Roscoe Rubin-Rottenberg"/><br /><sub><b>Roscoe Rubin-Rottenberg</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=knotbin" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/plbstl"><img src="https://avatars.githubusercontent.com/u/49006567?v=4?s=100" width="100px;" alt="Paul Ebose"/><br /><sub><b>Paul Ebose</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aplbstl" title="Bug reports">🐛</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://danielz.xyz"><img src="https://avatars.githubusercontent.com/u/65467530?v=4?s=100" width="100px;" alt="Daniel Zhu"/><br /><sub><b>Daniel Zhu</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Adanielzsh" title="Bug reports">🐛</a></td>
+    </tr>
   </tbody>
 </table>
 
