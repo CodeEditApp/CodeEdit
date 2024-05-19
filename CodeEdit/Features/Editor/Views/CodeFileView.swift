@@ -54,10 +54,16 @@ struct CodeFileView: View {
 
     private let undoManager = CEUndoManager()
 
+    private var sourceEditorText: Binding<String>
+
     init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
         self.codeFile = codeFile
         self.textViewCoordinators = textViewCoordinators
         self.isEditable = isEditable
+        self.sourceEditorText = Binding(
+            get: { codeFile.content ?? "" },
+            set: { codeFile.content = $0 }
+        )
 
         if let openOptions = codeFile.openOptions {
             codeFile.openOptions = nil
@@ -109,7 +115,7 @@ struct CodeFileView: View {
 
     var body: some View {
         CodeEditSourceEditor(
-            $codeFile.content,
+            sourceEditorText,
             language: getLanguage(),
             theme: selectedTheme.editor.editorTheme,
             font: font,
@@ -160,8 +166,8 @@ struct CodeFileView: View {
         }
         return codeFile.language ?? CodeLanguage.detectLanguageFrom(
             url: url,
-            prefixBuffer: codeFile.content.getFirstLines(5),
-            suffixBuffer: codeFile.content.getLastLines(5)
+            prefixBuffer: codeFile.content?.getFirstLines(5),
+            suffixBuffer: codeFile.content?.getLastLines(5)
         )
     }
 

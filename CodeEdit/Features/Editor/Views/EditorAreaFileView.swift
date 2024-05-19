@@ -26,7 +26,7 @@ struct EditorAreaFileView: View {
     @ViewBuilder var editorAreaFileView: some View {
         if let document = file.fileDocument {
 
-            if let fileURL = document.fileURL, (try? String(contentsOf: fileURL)) != nil {
+            if let utType = document.utType, utType.conforms(to: .text) {
                 CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
             } else {
                 NonTextFileView(fileDocument: document)

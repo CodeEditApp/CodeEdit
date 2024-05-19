@@ -26,7 +26,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         let cursorPositions: [CursorPosition]
     }
 
-    @Published var content = ""
+    @Published var content: String?
 
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
@@ -51,7 +51,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
     /// type or any other form of data representation.
     var utType: UTType? {
-        if !self.content.isEmpty {
+        if self.content != nil {
             return .text
         }
         guard let fileType, let type = UTType(fileType) else {
@@ -117,7 +117,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     override func data(ofType _: String) throws -> Data {
-        guard let data = content.data(using: .utf8) else { throw CodeFileError.failedToEncode }
+        guard let data = content?.data(using: .utf8) else { throw CodeFileError.failedToEncode }
         return data
     }
 
