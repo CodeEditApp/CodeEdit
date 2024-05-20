@@ -67,11 +67,11 @@ extension SearchIndexer {
 
         var result = [TermCount]()
 
-        let document = SKDocumentCreateWithURL(url as CFURL).takeUnretainedValue()
+        let document = SKDocumentCreateWithURL(url as CFURL).takeRetainedValue()
         let documentID = SKIndexGetDocumentID(index, document)
 
         guard let termVals = SKIndexCopyTermIDArrayForDocumentID(index, documentID),
-              let terms = termVals.takeUnretainedValue() as? [CFIndex] else {
+              let terms = termVals.takeRetainedValue() as? [CFIndex] else {
             return []
         }
 

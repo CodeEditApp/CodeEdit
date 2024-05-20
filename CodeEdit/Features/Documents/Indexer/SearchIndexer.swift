@@ -67,7 +67,7 @@ public class SearchIndexer {
     private(set) lazy var stopWords: Set<String> = {
         var stopWords: Set<String> = []
         if let index = self.index,
-           let properties = SKIndexGetAnalysisProperties(self.index).takeUnretainedValue() as? [String: Any],
+           let properties = SKIndexGetAnalysisProperties(self.index).takeRetainedValue() as? [String: Any],
            let newStopWords = properties[kSKStopWords as String] as? Set<String> {
             stopWords = newStopWords
         }
