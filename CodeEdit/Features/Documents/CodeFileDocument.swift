@@ -26,7 +26,18 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         let cursorPositions: [CursorPosition]
     }
 
-    @Published var content = ""
+    /// The text content of the document, stored as a text storage
+    ///
+    /// This is intentionally not a `@Published` variable. If it were published, SwiftUI would do a string
+    /// compare each time the contents are updated, which could cause a hang on each keystroke if the file is large
+    /// enough.
+    ///
+    /// To receive notifications for content updates, subscribe to one of the publishers on ``contentCoordinator``.
+    var content: NSTextStorage = NSTextStorage(string: "")
+
+    /// The coordinator to use to subscribe to edit events and cursor location events.
+    /// See ``CodeEditSourceEditor/CombineCoordinator``.
+//    @Published var contentCoordinator: CombineCoordinator = CombineCoordinator()
 
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
@@ -117,15 +128,20 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     override func data(ofType _: String) throws -> Data {
-        guard let data = content.data(using: .utf8) else { throw CodeFileError.failedToEncode }
+        guard let data = (content.string as NSString).data(using: NSUTF8StringEncoding) else {
+            throw CodeFileError.failedToEncode
+        }
         return data
     }
 
     /// This function is used for decoding files.
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
     override func read(from data: Data, ofType _: String) throws {
-        guard let content = String(data: data, encoding: .utf8) else { return }
-        self.content = content
+        self.content = try NSTextStorage(
+            data: data,
+            options: [.documentType: NSAttributedString.DocumentType.plain],
+            documentAttributes: nil
+        )
     }
 
     /// Triggered when change occurred
@@ -148,5 +164,9 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         }
 
         self.isDocumentEditedSubject.send(self.isDocumentEdited)
+    }
+
+    deinit {
+        Swift.print("Deinit!")
     }
 }
