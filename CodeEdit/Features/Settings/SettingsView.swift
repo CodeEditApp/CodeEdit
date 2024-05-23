@@ -85,12 +85,11 @@ struct SettingsView: View {
                 icon: .system("externaldrive.fill")
             )
         ),
-        // TODO: REMOVE THIS SECTION WHEN WE HAVE A SOLUTION FOR GETTING LSP BINARIES
         .init(
             SettingsPage(
                 .developer,
                 baseColor: .pink,
-                icon: .system("flask")
+                icon: .system("bolt")
             )
         )
     ]

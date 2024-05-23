@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct KeyValueItem: Identifiable {
-    var id: String { key }
+    var id = UUID()
     let key: String
     let value: String
 }
@@ -16,14 +16,30 @@ struct KeyValueItem: Identifiable {
 private struct NewListTableItemView: View {
     @State private var key = ""
     @State private var value = ""
+
+    let keyColumnName: String
+    let valueColumnName: String
+    let newItemInstruction: String
     var completion: (String, String) -> Void
+
+    init(
+        _ keyColumnName: String,
+        _ valueColumnName: String,
+        _ newItemInstruction: String,
+        completion: @escaping (String, String) -> Void
+    ) {
+        self.keyColumnName = keyColumnName
+        self.valueColumnName = valueColumnName
+        self.newItemInstruction = newItemInstruction
+        self.completion = completion
+    }
 
     var body: some View {
         VStack {
-            Text("Enter new key-value pair")
-            TextField("Key", text: $key)
+            Text(newItemInstruction)
+            TextField(keyColumnName, text: $key)
                 .textFieldStyle(.roundedBorder)
-            TextField("Value", text: $value)
+            TextField(valueColumnName, text: $value)
                 .textFieldStyle(.roundedBorder)
             Button("Add") {
                 if !key.isEmpty && !value.isEmpty {
@@ -37,6 +53,11 @@ private struct NewListTableItemView: View {
 
 struct KeyValueTable: View {
     @Binding var items: [String: String]
+
+    let keyColumnName: String
+    let valueColumnName: String
+    let newItemInstruction: String
+
     @State private var showingModal = false
     @State private var selection: KeyValueItem.ID?
 
@@ -45,10 +66,10 @@ struct KeyValueTable: View {
 
         VStack {
             Table(tableItems, selection: $selection) {
-                TableColumn("Key") { item in
+                TableColumn(keyColumnName) { item in
                     Text(item.key)
                 }
-                TableColumn("Value") { item in
+                TableColumn(valueColumnName) { item in
                     Text(item.value)
                 }
             }
@@ -75,7 +96,11 @@ struct KeyValueTable: View {
                 Spacer()
             }
             .sheet(isPresented: $showingModal) {
-                NewListTableItemView { key, value in
+                NewListTableItemView(
+                    keyColumnName,
+                    valueColumnName,
+                    newItemInstruction
+                ) { key, value in
                     items[key] = value
                     showingModal = false
                 }
@@ -86,7 +111,9 @@ struct KeyValueTable: View {
 
     private func removeItem() {
         guard let selectedKey = selection else { return }
-        items.removeValue(forKey: selectedKey)
+        if let selectedItem = items.first(where: { $0.key == selectedKey.uuidString }) {
+            items.removeValue(forKey: selectedItem.key)
+        }
         selection = nil
     }
 }

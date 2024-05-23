@@ -15,12 +15,16 @@ struct DeveloperSettingsView: View {
     var body: some View {
         SettingsForm {
             Section {
-                KeyValueTable(items: $lspBinaries)
+                KeyValueTable(
+                    items: $lspBinaries,
+                    keyColumnName: "Language",
+                    valueColumnName: "Language Server Path",
+                    newItemInstruction: "Enter new language server path"
+                )
             } header: {
                 Text("LSP Binaries")
                 Text(
-                    "Add glob patterns to exclude matching files and folders from searches and open quickly. " +
-                    "This will inherit glob patterns from the Exclude from Project setting."
+                    "Specify the language and the absolute path to the language server binary."
                 )
             }
         }
