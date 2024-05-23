@@ -50,8 +50,8 @@ struct SettingsData: Codable, Hashable {
     /// Search Settings
     var search: SearchSettings = .init()
 
-    /// Language Server Protocol settings
-    var lspSettings: LSPSettings = .init()
+    /// Developer settings for CodeEdit developers
+    var developerSettings: DeveloperSettings = .init()
 
     /// Default initializer
     init() {}
@@ -74,7 +74,9 @@ struct SettingsData: Codable, Hashable {
             KeybindingsSettings.self,
             forKey: .keybindings
         ) ?? .init()
-        self.lspSettings = try container.decodeIfPresent(LSPSettings.self, forKey: .lspSettings) ?? .init()
+        self.developerSettings = try container.decodeIfPresent(
+            DeveloperSettings.self, forKey: .developerSettings
+        ) ?? .init()
     }
 
     // swiftlint:disable cyclomatic_complexity
@@ -100,8 +102,8 @@ struct SettingsData: Codable, Hashable {
             sourceControl.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .location:
             LocationsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .lspBinaries:
-            lspSettings.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .developer:
+            developerSettings.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .behavior: return [.init(name, settingName: "Error")]
         case .components: return [.init(name, settingName: "Error")]
         case .keybindings: return [.init(name, settingName: "Error")]

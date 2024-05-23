@@ -1,5 +1,5 @@
 //
-//  LSPSettings.swift
+//  DeveloperSettings.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 5/15/24.
@@ -8,11 +8,12 @@
 import Foundation
 
 extension SettingsData {
-    struct LSPSettings: Codable, Hashable, SearchableSettingsPage {
+    struct DeveloperSettings: Codable, Hashable, SearchableSettingsPage {
 
         /// The search keys
         var searchKeys: [String] {
             [
+                "Developer",
                 "Language Server Protocol",
                 "LSP Binaries"
             ]

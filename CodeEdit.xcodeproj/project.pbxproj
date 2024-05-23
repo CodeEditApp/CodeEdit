@@ -1344,14 +1344,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		30AB4EBF2BF724E500ED4431 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */,
-			);
-			path = Components;
-			sourceTree = "<group>";
-		};
 		3E0196712A392170002648D8 /* ShellIntegration */ = {
 			isa = PBXGroup;
 			children = (
@@ -1792,6 +1784,7 @@
 		587B9D8629300ABD00AC7927 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */,
 				B62AEDA92A1FCBE5009A9F52 /* AreaTabBar.swift */,
 				B65B10EB2B073913002852CF /* CEContentUnavailableView.swift */,
 				B65B10FA2B08B054002852CF /* Divided.swift */,
@@ -2653,7 +2646,6 @@
 		B658FB2E27DA9E0F00EA4DBD /* CodeEdit */ = {
 			isa = PBXGroup;
 			children = (
-				30AB4EBF2BF724E500ED4431 /* Components */,
 				5831E3C52933E6CB00D5A6D2 /* Features */,
 				D7211D4427E066D4008F2ED7 /* Localization */,
 				B658FB3527DA9E1000EA4DBD /* Preview Content */,

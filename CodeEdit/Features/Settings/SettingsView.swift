@@ -88,7 +88,7 @@ struct SettingsView: View {
         // TODO: REMOVE THIS SECTION WHEN WE HAVE A SOLUTION FOR GETTING LSP BINARIES
         .init(
             SettingsPage(
-                .lspBinaries,
+                .developer,
                 baseColor: .pink,
                 icon: .system("flask")
             )
@@ -174,8 +174,8 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
-                case .lspBinaries:
-                    LSPSettingsView()
+                case .developer:
+                    DeveloperSettingsView()
                 default:
                     Text("Implementation Needed").frame(alignment: .center)
                 }
