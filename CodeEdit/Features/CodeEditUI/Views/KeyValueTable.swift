@@ -8,15 +8,9 @@
 import SwiftUI
 
 struct KeyValueItem: Identifiable, Equatable {
-    let id: UUID
+    let id = UUID()
     let key: String
     let value: String
-
-    init(key: String, value: String) {
-        self.id = UUID()
-        self.key = key
-        self.value = value
-    }
 }
 
 private struct NewListTableItemView: View {
