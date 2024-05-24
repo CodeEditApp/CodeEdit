@@ -43,10 +43,14 @@ private struct NewListTableItemView: View {
     var body: some View {
         VStack {
             Text(newItemInstruction)
-            TextField(keyColumnName, text: $key)
-                .textFieldStyle(.roundedBorder)
-            TextField(valueColumnName, text: $value)
-                .textFieldStyle(.roundedBorder)
+            Form {
+                TextField(keyColumnName, text: $key)
+                    .textFieldStyle(.roundedBorder)
+                TextField(valueColumnName, text: $value)
+                    .textFieldStyle(.roundedBorder)
+            }
+            .formStyle(.grouped)
+
             Button("Add") {
                 if !key.isEmpty && !value.isEmpty {
                     completion(key, value)
