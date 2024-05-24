@@ -207,7 +207,7 @@ struct SettingsView: View {
             selectedPage = Self.pages[0].page
 
             // Monitor for the F12 key down event to toggle the developer settings
-            NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+            model.setKeyDownMonitor { event in
                 if event.keyCode == 111 {
                     showDeveloperSettings.toggle()
 
@@ -220,10 +220,31 @@ struct SettingsView: View {
                 return event
             }
         }
+        .onDisappear {
+            model.removeKeyDownMonitor()
+        }
     }
 }
 
 class SettingsViewModel: ObservableObject {
     @Published var backButtonVisible: Bool = false
     @Published var scrolledToTop: Bool = false
+
+    /// Holds a monitor closure for the `keyDown` event
+    private var keyDownEventMonitor: Any?
+
+    func setKeyDownMonitor(monitor: @escaping (NSEvent) -> NSEvent?) {
+        keyDownEventMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown, handler: monitor)
+    }
+
+    func removeKeyDownMonitor() {
+        if let eventMonitor = keyDownEventMonitor {
+            NSEvent.removeMonitor(eventMonitor)
+            self.keyDownEventMonitor = nil
+        }
+    }
+
+    deinit {
+        removeKeyDownMonitor()
+    }
 }
