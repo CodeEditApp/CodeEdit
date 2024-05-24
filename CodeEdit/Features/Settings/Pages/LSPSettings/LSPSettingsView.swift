@@ -19,13 +19,11 @@ struct DeveloperSettingsView: View {
                     items: $lspBinaries,
                     keyColumnName: "Language",
                     valueColumnName: "Language Server Path",
-                    newItemInstruction: "Enter new language server path"
+                    newItemInstruction: "Add a language server"
                 )
             } header: {
                 Text("LSP Binaries")
-                Text(
-                    "Specify the language and the absolute path to the language server binary."
-                )
+                Text("Specify the language and the absolute path to the language server binary.")
             }
         }
     }

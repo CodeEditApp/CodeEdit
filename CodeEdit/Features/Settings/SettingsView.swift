@@ -17,6 +17,7 @@ struct SettingsView: View {
     /// Variables for the selected Page, the current search text and software updater
     @State private var selectedPage: SettingsPage = Self.pages[0].page
     @State private var searchText: String = ""
+    @State private var showDeveloperSettings: Bool = false
 
     @Environment(\.presentationMode)
     var presentationMode
@@ -91,7 +92,7 @@ struct SettingsView: View {
                 baseColor: .pink,
                 icon: .system("bolt")
             )
-        )
+        ),
     ]
 
     @ObservedObject private var settings: Settings = .shared
@@ -137,7 +138,11 @@ struct SettingsView: View {
                 SettingsPageView(page, searchText: searchText)
             }
         } else if !page.isSetting {
-            SettingsPageView(page, searchText: searchText)
+            if page.name == .developer && !showDeveloperSettings {
+                EmptyView()
+            } else {
+                SettingsPageView(page, searchText: searchText)
+            }
         }
     }
 
@@ -200,6 +205,20 @@ struct SettingsView: View {
         .environmentObject(model)
         .onAppear {
             selectedPage = Self.pages[0].page
+
+            // Monitor for the F12 key down event to toggle the developer settings
+            NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+                if event.keyCode == 111 {
+                    showDeveloperSettings.toggle()
+
+                    // If the developer menu is hidden and is selected, go back to default page
+                    if !showDeveloperSettings && selectedPage.name == .developer {
+                        selectedPage = Self.pages[0].page
+                    }
+                    return nil
+                }
+                return event
+            }
         }
     }
 }
