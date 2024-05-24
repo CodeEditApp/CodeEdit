@@ -7,10 +7,16 @@
 
 import SwiftUI
 
-struct KeyValueItem: Identifiable {
-    var id = UUID()
+struct KeyValueItem: Identifiable, Equatable {
+    let id: UUID
     let key: String
     let value: String
+
+    init(key: String, value: String) {
+        self.id = UUID()
+        self.key = key
+        self.value = value
+    }
 }
 
 private struct NewListTableItemView: View {
@@ -59,11 +65,10 @@ struct KeyValueTable: View {
     let newItemInstruction: String
 
     @State private var showingModal = false
-    @State private var selection: KeyValueItem.ID?
+    @State private var selection: UUID?
+    @State private var tableItems: [KeyValueItem] = []
 
     var body: some View {
-        let tableItems = items.map { KeyValueItem(key: $0.key, value: $0.value) }
-
         VStack {
             Table(tableItems, selection: $selection) {
                 TableColumn(keyColumnName) { item in
@@ -102,17 +107,24 @@ struct KeyValueTable: View {
                     newItemInstruction
                 ) { key, value in
                     items[key] = value
+                    updateTableItems()
                     showingModal = false
                 }
             }
             .cornerRadius(6)
+            .onAppear(perform: updateTableItems)
         }
     }
 
+    private func updateTableItems() {
+        tableItems = items.map { KeyValueItem(key: $0.key, value: $0.value) }
+    }
+
     private func removeItem() {
-        guard let selectedKey = selection else { return }
-        if let selectedItem = items.first(where: { $0.key == selectedKey.uuidString }) {
+        guard let selectedId = selection else { return }
+        if let selectedItem = tableItems.first(where: { $0.id == selectedId }) {
             items.removeValue(forKey: selectedItem.key)
+            updateTableItems()
         }
         selection = nil
     }
