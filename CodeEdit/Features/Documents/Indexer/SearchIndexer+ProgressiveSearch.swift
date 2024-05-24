@@ -93,7 +93,7 @@ extension SearchIndexer {
 
             let partialResult: [SearchResult] = zip(urls[0..<foundCount], scores)
                 .compactMap { (cfurl, score) -> SearchResult? in
-                    guard let url  = cfurl?.takeUnretainedValue() as URL? else {
+                    guard let url  = cfurl?.takeRetainedValue() as URL? else {
                         return nil
                     }
 
