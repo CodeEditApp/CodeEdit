@@ -14,57 +14,99 @@ struct KeyValueItem: Identifiable, Equatable {
 }
 
 private struct NewListTableItemView: View {
+    @Environment(\.dismiss)
+    var dismiss
+
     @State private var key = ""
     @State private var value = ""
 
     let keyColumnName: String
     let valueColumnName: String
     let newItemInstruction: String
+    let headerView: AnyView?
     var completion: (String, String) -> Void
 
     init(
         _ keyColumnName: String,
         _ valueColumnName: String,
         _ newItemInstruction: String,
+        headerView: AnyView? = nil,
         completion: @escaping (String, String) -> Void
     ) {
         self.keyColumnName = keyColumnName
         self.valueColumnName = valueColumnName
         self.newItemInstruction = newItemInstruction
+        self.headerView = headerView
         self.completion = completion
     }
 
     var body: some View {
-        VStack {
-            Text(newItemInstruction)
+        VStack(spacing: 0) {
             Form {
-                TextField(keyColumnName, text: $key)
-                    .textFieldStyle(.roundedBorder)
-                TextField(valueColumnName, text: $value)
-                    .textFieldStyle(.roundedBorder)
+                Section {
+                    TextField(keyColumnName, text: $key)
+                        .textFieldStyle(.plain)
+                    TextField(valueColumnName, text: $value)
+                        .textFieldStyle(.plain)
+                } header: {
+                    headerView
+                }
             }
             .formStyle(.grouped)
-
-            Button("Add") {
+            .scrollDisabled(true)
+            .scrollContentBackground(.hidden)
+            .onSubmit {
                 if !key.isEmpty && !value.isEmpty {
                     completion(key, value)
                 }
             }
+
+            HStack {
+                Spacer()
+                Button("Cancel") {
+                    dismiss()
+                }
+                Button("Add") {
+                    if !key.isEmpty && !value.isEmpty {
+                        completion(key, value)
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(key.isEmpty || value.isEmpty)
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            .padding(.bottom, 20)
         }
-        .padding()
+        .frame(maxWidth: 480)
     }
 }
 
-struct KeyValueTable: View {
+struct KeyValueTable<Header: View>: View {
     @Binding var items: [String: String]
 
     let keyColumnName: String
     let valueColumnName: String
     let newItemInstruction: String
+    let header: () -> Header
 
     @State private var showingModal = false
     @State private var selection: UUID?
     @State private var tableItems: [KeyValueItem] = []
+
+    init(
+        items: Binding<[String: String]>,
+        keyColumnName: String,
+        valueColumnName: String,
+        newItemInstruction: String,
+        @ViewBuilder header: @escaping () -> Header = { EmptyView() }
+    ) {
+        self._items = items
+        self.keyColumnName = keyColumnName
+        self.valueColumnName = valueColumnName
+        self.newItemInstruction = newItemInstruction
+        self.header = header
+    }
 
     var body: some View {
         VStack {
@@ -102,7 +144,8 @@ struct KeyValueTable: View {
                 NewListTableItemView(
                     keyColumnName,
                     valueColumnName,
-                    newItemInstruction
+                    newItemInstruction,
+                    headerView: AnyView(header())
                 ) { key, value in
                     items[key] = value
                     updateTableItems()
