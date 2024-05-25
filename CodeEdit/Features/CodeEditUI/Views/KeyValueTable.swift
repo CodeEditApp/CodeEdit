@@ -75,7 +75,7 @@ private struct NewListTableItemView: View {
                 .disabled(key.isEmpty || value.isEmpty)
             }
             .padding(.horizontal, 20)
-            .padding(.top, 12)
+//            .padding(.top, 2)
             .padding(.bottom, 20)
         }
         .frame(maxWidth: 480)
