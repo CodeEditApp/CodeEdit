@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditSymbols
 
 /// A struct for settings
 struct SettingsView: View {
