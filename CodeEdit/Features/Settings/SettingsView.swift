@@ -188,9 +188,6 @@ struct SettingsView: View {
             }
         }
         .environmentObject(model)
-        .onAppear {
-            selectedPage = Self.pages[0].page
-        }
     }
 }
 
