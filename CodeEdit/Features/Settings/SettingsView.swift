@@ -203,8 +203,6 @@ struct SettingsView: View {
         }
         .environmentObject(model)
         .onAppear {
-            selectedPage = Self.pages[0].page
-
             // Monitor for the F12 key down event to toggle the developer settings
             model.setKeyDownMonitor { event in
                 if event.keyCode == 111 {
