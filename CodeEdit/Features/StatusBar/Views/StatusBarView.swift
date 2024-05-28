@@ -59,9 +59,11 @@ struct StatusBarView: View {
 
     /// A drag gesture to resize the drawer beneath the status bar
     private var dragGesture: some Gesture {
-        DragGesture(coordinateSpace: .global)
+        return DragGesture.init(coordinateSpace: .global)
             .onChanged { value in
-                proxy.setPosition(of: 0, position: value.location.y + Self.height / 2)
+                // not sure why but -20 seems to give the smoothest performance
+                proxy.setPosition(of: 0, position: value.location.y - 20 - Self.height)
+                proxy.setPosition(of: 1, position: value.location.y - 20)
             }
     }
 }

@@ -11,6 +11,7 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
 
     var axis: Axis
     var children: _VariadicView.Children
+    var showDividers: Bool
     @Binding var viewController: () -> SplitViewController?
 
     func makeNSViewController(context: Context) -> SplitViewController {
@@ -61,7 +62,7 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
     }
 
     func makeCoordinator() -> SplitViewController {
-        SplitViewController(parent: self, axis: axis)
+        SplitViewController(parent: self, axis: axis, showDividers: showDividers)
     }
 }
 
@@ -70,10 +71,12 @@ final class SplitViewController: NSSplitViewController {
     var items: [SplitViewItem] = []
     var axis: Axis
     var parentView: SplitViewControllerView
+    var showDividers: Bool
 
-    init(parent: SplitViewControllerView, axis: Axis = .horizontal) {
+    init(parent: SplitViewControllerView, axis: Axis = .horizontal, showDividers: Bool = true) {
         self.axis = axis
         self.parentView = parent
+        self.showDividers = showDividers
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -93,6 +96,14 @@ final class SplitViewController: NSSplitViewController {
 
     override func splitView(_ splitView: NSSplitView, shouldHideDividerAt dividerIndex: Int) -> Bool {
         false
+    }
+
+    override func splitView(_ splitView: NSSplitView, effectiveRect proposedEffectiveRect: NSRect, forDrawnRect drawnRect: NSRect, ofDividerAt dividerIndex: Int) -> NSRect {
+        if showDividers {
+            super.splitView(splitView, effectiveRect: proposedEffectiveRect, forDrawnRect: drawnRect, ofDividerAt: dividerIndex)
+        } else {
+            .zero
+        }
     }
 
     func collapse(for id: AnyHashable, enabled: Bool) {
