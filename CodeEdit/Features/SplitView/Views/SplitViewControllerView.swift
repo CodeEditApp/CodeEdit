@@ -98,9 +98,19 @@ final class SplitViewController: NSSplitViewController {
         false
     }
 
-    override func splitView(_ splitView: NSSplitView, effectiveRect proposedEffectiveRect: NSRect, forDrawnRect drawnRect: NSRect, ofDividerAt dividerIndex: Int) -> NSRect {
+    override func splitView(
+        _ splitView: NSSplitView,
+        effectiveRect proposedEffectiveRect: NSRect,
+        forDrawnRect drawnRect: NSRect,
+        ofDividerAt dividerIndex: Int
+    ) -> NSRect {
         if showDividers {
-            super.splitView(splitView, effectiveRect: proposedEffectiveRect, forDrawnRect: drawnRect, ofDividerAt: dividerIndex)
+            super.splitView(
+                splitView,
+                effectiveRect: proposedEffectiveRect,
+                forDrawnRect: drawnRect,
+                ofDividerAt: dividerIndex
+            )
         } else {
             .zero
         }

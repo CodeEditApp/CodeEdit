@@ -61,9 +61,8 @@ struct StatusBarView: View {
     private var dragGesture: some Gesture {
         return DragGesture.init(coordinateSpace: .global)
             .onChanged { value in
-                // not sure why but -20 seems to give the smoothest performance
-                proxy.setPosition(of: 0, position: value.location.y - 20 - Self.height)
-                proxy.setPosition(of: 1, position: value.location.y - 20)
+                proxy.setPosition(of: 0, position: value.location.y - Self.height / 2)
+                proxy.setPosition(of: 1, position: value.location.y + Self.height / 2)
             }
     }
 }
