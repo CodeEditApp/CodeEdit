@@ -205,6 +205,7 @@ Support CodeEdit's development by [becoming a sponsor](https://github.com/sponso
 <a title="panascais" href="https://github.com/panascais" target="_blank"><img src="https://avatars.githubusercontent.com/u/19628635?s=200&v=4" width="128"></a>
 <a title="DevUtilsApp" href="https://devutils.app/?utm_source=codeedit&utm_campaign=oss" target="_blank"><img src="https://devutils.app/512.png" width="128"></a>
 <a title="Proxyman" href="https://proxyman.io/" target="_blank"><img src="https://user-images.githubusercontent.com/35942988/215859653-0d3622e4-a214-4691-acbe-cd96ca833193.png" width="128"></a>
+<a title="TablePlus" href="https://tableplus.com/" target="_blank"><img src="https://avatars.githubusercontent.com/u/29408238?s=200&v=4" width="128"></a>
 
 ## Backers
 
