@@ -105,7 +105,7 @@ struct CodeFileView: View {
 
     var body: some View {
         CodeEditSourceEditor(
-            codeFile.content,
+            codeFile.content ?? NSTextStorage(),
             language: getLanguage(),
             theme: selectedTheme.editor.editorTheme,
             font: font,
@@ -156,8 +156,8 @@ struct CodeFileView: View {
         }
         return codeFile.language ?? CodeLanguage.detectLanguageFrom(
             url: url,
-            prefixBuffer: codeFile.content.string.getFirstLines(5),
-            suffixBuffer: codeFile.content.string.getLastLines(5)
+            prefixBuffer: codeFile.content?.string.getFirstLines(5),
+            suffixBuffer: codeFile.content?.string.getLastLines(5)
         )
     }
 

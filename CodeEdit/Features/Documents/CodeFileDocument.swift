@@ -33,11 +33,14 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// enough.
     ///
     /// To receive notifications for content updates, subscribe to one of the publishers on ``contentCoordinator``.
-    var content: NSTextStorage = NSTextStorage(string: "")
+    var content: NSTextStorage?
+
+    /// The string encoding of the original file. Used to save the file back to the encoding it was loaded from.
+    var sourceEncoding: FileEncoding?
 
     /// The coordinator to use to subscribe to edit events and cursor location events.
     /// See ``CodeEditSourceEditor/CombineCoordinator``.
-//    @Published var contentCoordinator: CombineCoordinator = CombineCoordinator()
+    @Published var contentCoordinator: CombineCoordinator = CombineCoordinator()
 
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
@@ -62,7 +65,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
     /// type or any other form of data representation.
     var utType: UTType? {
-        if !self.content.isEmpty {
+        if content != nil && (content?.length ?? 0) > 0 {
             return .text
         }
         guard let fileType, let type = UTType(fileType) else {
@@ -128,7 +131,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     override func data(ofType _: String) throws -> Data {
-        guard let data = (content.string as NSString).data(using: NSUTF8StringEncoding) else {
+        guard let sourceEncoding, let data = (content?.string as NSString?)?.data(using: sourceEncoding.nsValue) else {
             throw CodeFileError.failedToEncode
         }
         return data
@@ -138,8 +141,20 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
     override func read(from data: Data, ofType _: String) throws {
         var nsString: NSString?
-        NSString.stringEncoding(for: data, encodingOptions: nil, convertedString: &nsString, usedLossyConversion: nil)
-        self.content = nsString as? String ?? ""
+        let rawEncoding = NSString.stringEncoding(
+            for: data,
+            encodingOptions: [
+                .allowLossyKey: false, // Fail if using lossy encoding.
+                .suggestedEncodingsKey: FileEncoding.allCases.map { $0.nsValue },
+                .useOnlySuggestedEncodingsKey: true
+            ],
+            convertedString: &nsString,
+            usedLossyConversion: nil
+        )
+        if let validEncoding = FileEncoding(rawEncoding), let nsString {
+            self.sourceEncoding = validEncoding
+            self.content = NSTextStorage(string: nsString as String)
+        }
     }
 
     /// Triggered when change occurred

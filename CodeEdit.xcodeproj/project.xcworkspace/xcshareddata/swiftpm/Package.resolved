@@ -1,5 +1,5 @@
 {
-  "originHash" : "3f6921a5ec30d1ecb6d6b205cf27a816c318246bb00f0ea367b997cc66527d32",
+  "originHash" : "41fcbec1ecbb7853d9ead798bba9d46f35f28767f4d41a009c8eeee022e99a84",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditLanguages.git",
       "state" : {
-        "revision" : "620b463c88894741e20d4711c9435b33547de5d2",
-        "version" : "0.1.18"
+        "revision" : "5b27f139269e1ea49ceae5e56dca44a3ccad50a1",
+        "version" : "0.1.19"
       }
     },
     {
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
       "state" : {
-        "revision" : "7360f00bf7ec8e93b4833357bd254bef7e5c943d",
-        "version" : "0.7.2"
+        "revision" : "cf85789d527d569e94edfd674c5ac8071b244dd9",
+        "version" : "0.7.3"
       }
     },
     {
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "86b980464bcb67693e2053283c7a99bdc6f358bc",
-        "version" : "0.7.3"
+        "revision" : "80911be6bcdae5e35ef5ed351adf6dda9b57e555",
+        "version" : "0.7.4"
       }
     },
     {
@@ -85,7 +85,7 @@
     {
       "identity" : "logstream",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/LogStream",
+      "location" : "https://github.com/Wouter01/LogStream",
       "state" : {
         "revision" : "6f83694b2675dcf3b1cea0a52546ff4469c18282",
         "version" : "1.3.0"
