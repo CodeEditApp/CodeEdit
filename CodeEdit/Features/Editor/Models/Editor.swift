@@ -40,11 +40,11 @@ final class Editor: ObservableObject, Identifiable {
             let tab = history[historyOffset]
 
             if !tabs.contains(tab) {
-                if let selectedTab {
-                    openTab(file: tab.file, at: tabs.firstIndex(of: selectedTab), fromHistory: true)
-                } else {
-                    openTab(file: tab.file, fromHistory: true)
+                if let temporaryTab, tabs.contains(temporaryTab) {
+                    closeTab(file: temporaryTab.file, fromHistory: true)
                 }
+                temporaryTab = tab
+                openTab(file: tab.file, fromHistory: true)
             }
             selectedTab = tab
         }
@@ -64,29 +64,34 @@ final class Editor: ObservableObject, Identifiable {
 
     init() {
         self.tabs = []
+        self.temporaryTab = nil
         self.parent = nil
     }
 
     init(
         files: OrderedSet<CEWorkspaceFile> = [],
         selectedTab: Tab? = nil,
+        temporaryTab: Tab? = nil,
         parent: SplitViewData? = nil
     ) {
         self.tabs = []
         self.parent = parent
         files.forEach { openTab(file: $0) }
         self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(file: files.first!))
+        self.temporaryTab = temporaryTab
     }
 
     init(
         files: OrderedSet<Tab> = [],
         selectedTab: Tab? = nil,
+        temporaryTab: Tab? = nil,
         parent: SplitViewData? = nil
     ) {
         self.tabs = []
         self.parent = parent
         files.forEach { openTab(file: $0.file) }
         self.selectedTab = selectedTab ?? tabs.first
+        self.temporaryTab = temporaryTab
     }
 
     /// Closes the editor.
@@ -102,14 +107,15 @@ final class Editor: ObservableObject, Identifiable {
     /// Closes a tab in the editor.
     /// This will also write any changes to the file on disk and will add the tab to the tab history.
     /// - Parameter item: the tab to close.
-    func closeTab(file: CEWorkspaceFile) {
+    func closeTab(file: CEWorkspaceFile, fromHistory: Bool = false) {
         guard canCloseTab(file: file) else { return }
 
         if temporaryTab?.file == file {
             temporaryTab = nil
         }
-
-        historyOffset = 0
+        if !fromHistory {
+            historyOffset = 0
+        }
         if file != selectedTab?.file {
             history.prepend(EditorInstance(file: file))
         }
@@ -152,8 +158,9 @@ final class Editor: ObservableObject, Identifiable {
         case (.some(let tab), true):
             print("Temporary tab 1")
             if let index = tabs.firstIndex(of: tab) {
-                print("Going inside 1")
+                history.removeFirst(historyOffset)
                 history.prepend(item)
+                historyOffset = 0
                 tabs.remove(tab)
                 tabs.insert(item, at: index)
                 self.selectedTab = item
@@ -189,7 +196,11 @@ final class Editor: ObservableObject, Identifiable {
         if let index {
             tabs.insert(item, at: index)
         } else {
-            tabs.append(item)
+            if let selectedTab, let currentIndex = tabs.firstIndex(of: selectedTab) {
+                tabs.insert(item, at: tabs.index(after: currentIndex))
+            } else {
+                tabs.append(item)
+            }
         }
 
         print("Updated tabs: \(tabs)")

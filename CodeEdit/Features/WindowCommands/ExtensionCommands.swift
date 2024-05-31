@@ -17,7 +17,7 @@ struct ExtensionCommands: Commands {
     var body: some Commands {
         CommandMenu("Extensions") {
             Button("Open Extensions Window") {
-                openWindow(id: SceneID.extensions.rawValue)
+                openWindow(sceneID: .extensions)
             }
         }
     }

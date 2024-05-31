@@ -14,21 +14,26 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     @Published var navigatorCollapsed = false
     @Published var inspectorCollapsed = false
+    @Published var toolbarCollapsed = false
 
     var observers: [NSKeyValueObservation] = []
 
     var workspace: WorkspaceDocument?
-    var quickOpenPanel: OverlayPanel?
-    var commandPalettePanel: OverlayPanel?
+    var workspaceSettings: CEWorkspaceSettings?
+    var workspaceSettingsWindow: NSWindow?
+    var quickOpenPanel: SearchPanel?
+    var commandPalettePanel: SearchPanel?
     var navigatorSidebarViewModel: NavigatorSidebarViewModel?
 
     var splitViewController: NSSplitViewController!
 
     internal var cancellables = [AnyCancellable]()
 
-    init(window: NSWindow, workspace: WorkspaceDocument) {
+    init(window: NSWindow?, workspace: WorkspaceDocument?) {
         super.init(window: window)
+        guard let workspace else { return }
         self.workspace = workspace
+        self.workspaceSettings = CEWorkspaceSettings(workspaceDocument: workspace)
         setupSplitView(with: workspace)
 
         let view = CodeEditSplitView(controller: splitViewController).ignoresSafeArea()
@@ -42,7 +47,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 self?.navigatorCollapsed = item.isCollapsed
             }),
             splitViewController.splitViewItems.last!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
-                self?.navigatorCollapsed = item.isCollapsed
+                self?.inspectorCollapsed = item.isCollapsed
             })
         ]
 
@@ -50,9 +55,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         registerCommands()
     }
 
-    deinit {
-        cancellables.forEach({ $0.cancel() })
-    }
+    deinit { cancellables.forEach({ $0.cancel() }) }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
@@ -86,6 +89,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 WorkspaceView()
                     .environmentObject(workspace)
                     .environmentObject(workspace.editorManager)
+                    .environmentObject(workspace.statusBarViewModel)
                     .environmentObject(workspace.utilityAreaModel)
             }
         }
@@ -116,108 +120,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         self.listenToDocumentEdited(workspace: workspace)
     }
 
-    private func setupToolbar() {
-        let toolbar = NSToolbar(identifier: UUID().uuidString)
-        toolbar.delegate = self
-        toolbar.displayMode = .labelOnly
-        toolbar.showsBaselineSeparator = false
-        self.window?.titleVisibility = .hidden
-        self.window?.toolbarStyle = .unifiedCompact
-        if Settings[\.general].tabBarStyle == .native {
-            // Set titlebar background as transparent by default in order to
-            // style the toolbar background in native tab bar style.
-            self.window?.titlebarSeparatorStyle = .none
-        } else {
-            // In Xcode tab bar style, we use default toolbar background with
-            // line separator.
-            self.window?.titlebarSeparatorStyle = .automatic
-        }
-        self.window?.toolbar = toolbar
-    }
-
-    // MARK: - Toolbar
-
-    func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        [
-            .toggleFirstSidebarItem,
-            .sidebarTrackingSeparator,
-            .branchPicker,
-            .flexibleSpace,
-            .flexibleSpace,
-            .toggleLastSidebarItem
-        ]
-    }
-
-    func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-        [
-            .toggleFirstSidebarItem,
-            .sidebarTrackingSeparator,
-            .flexibleSpace,
-            .itemListTrackingSeparator,
-            .toggleLastSidebarItem,
-            .branchPicker
-        ]
-    }
-
-    func toolbar(
-        _ toolbar: NSToolbar,
-        itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
-        willBeInsertedIntoToolbar flag: Bool
-    ) -> NSToolbarItem? {
-        switch itemIdentifier {
-        case .itemListTrackingSeparator:
-            guard let splitViewController else {
-                return nil
-            }
-
-            return NSTrackingSeparatorToolbarItem(
-                identifier: .itemListTrackingSeparator,
-                splitView: splitViewController.splitView,
-                dividerIndex: 1
-            )
-        case .toggleFirstSidebarItem:
-            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleFirstSidebarItem)
-            toolbarItem.label = "Navigator Sidebar"
-            toolbarItem.paletteLabel = " Navigator Sidebar"
-            toolbarItem.toolTip = "Hide or show the Navigator"
-            toolbarItem.isBordered = true
-            toolbarItem.target = self
-            toolbarItem.action = #selector(self.toggleFirstPanel)
-            toolbarItem.image = NSImage(
-                systemSymbolName: "sidebar.leading",
-                accessibilityDescription: nil
-            )?.withSymbolConfiguration(.init(scale: .large))
-
-            return toolbarItem
-        case .toggleLastSidebarItem:
-            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.toggleLastSidebarItem)
-            toolbarItem.label = "Inspector Sidebar"
-            toolbarItem.paletteLabel = "Inspector Sidebar"
-            toolbarItem.toolTip = "Hide or show the Inspectors"
-            toolbarItem.isBordered = true
-            toolbarItem.target = self
-            toolbarItem.action = #selector(self.toggleLastPanel)
-            toolbarItem.image = NSImage(
-                systemSymbolName: "sidebar.trailing",
-                accessibilityDescription: nil
-            )?.withSymbolConfiguration(.init(scale: .large))
-
-            return toolbarItem
-        case .branchPicker:
-            let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
-            let view = NSHostingView(
-                rootView: ToolbarBranchPicker(
-                    workspaceFileManager: workspace?.workspaceFileManager
-                )
-            )
-            toolbarItem.view = view
-
-            return toolbarItem
-        default:
-            return NSToolbarItem(itemIdentifier: itemIdentifier)
-        }
-    }
-
     private func getSelectedCodeFile() -> CodeFileDocument? {
         workspace?.editorManager.activeEditor.selectedTab?.file.fileDocument
     }
@@ -241,9 +143,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     commandPalettePanel.makeKeyAndOrderFront(self)
                 }
             } else {
-                let panel = OverlayPanel()
+                let panel = SearchPanel()
                 self.commandPalettePanel = panel
-                let contentView = CommandPaletteView(state: state, closePalette: panel.close)
+                let contentView = QuickActionsView(state: state, closePalette: panel.close)
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
@@ -262,7 +164,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     quickOpenPanel.makeKeyAndOrderFront(self)
                 }
             } else {
-                let panel = OverlayPanel()
+                let panel = SearchPanel()
                 self.quickOpenPanel = panel
 
                 let contentView = QuickOpenView(state: state) {

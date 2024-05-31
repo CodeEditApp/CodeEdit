@@ -6,8 +6,12 @@
 //
 
 import Cocoa
+import SwiftUI
 
 final class CodeEditDocumentController: NSDocumentController {
+    @Environment(\.openWindow)
+    private var openWindow
+
     lazy var fileManager: FileManager = {
         FileManager.default
     }()
@@ -81,7 +85,7 @@ final class CodeEditDocumentController: NSDocumentController {
             switch Settings[\.general].reopenWindowAfterClose {
             case .showWelcomeWindow:
                 // Opens the welcome window
-                NSApp.openWindow(.welcome)
+                openWindow(sceneID: .welcome)
             case .quit:
                 // Quits CodeEdit
                 NSApplication.shared.terminate(nil)

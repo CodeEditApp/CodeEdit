@@ -31,8 +31,8 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
         case sourceControl = "Source Control"
         case components = "Components"
         case location = "Locations"
-        case featureFlags = "Feature Flags"
         case advanced = "Advanced"
+        case developer = "Developer"
     }
 
     let id: UUID = UUID()

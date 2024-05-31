@@ -14,10 +14,11 @@ extension WorkspaceDocument.SearchState {
     ///
     /// - Returns: A modified search term according to the specified search mode.
     func getSearchTerm(_ query: String) -> String {
-        let newQuery = caseSensitive ? query : query.lowercased()
+        let newQuery = stripSpecialCharacters(from: (caseSensitive ? query : query.lowercased()))
         guard let mode = selectedMode.third else {
             return newQuery
         }
+
         switch mode {
         case .Containing:
             return "*\(newQuery)*"
@@ -28,6 +29,16 @@ extension WorkspaceDocument.SearchState {
         default:
             return newQuery
         }
+    }
+
+    func stripSpecialCharacters(from string: String) -> String {
+        let regex = try? NSRegularExpression(pattern: "[^a-zA-Z0-9]+", options: .caseInsensitive)
+        return regex!.stringByReplacingMatches(
+            in: string,
+            options: [],
+            range: NSRange(location: 0, length: string.utf16.count),
+            withTemplate: "*"
+        )
     }
 
     /// Generates a regular expression pattern based on the specified query and search mode.
@@ -41,21 +52,23 @@ extension WorkspaceDocument.SearchState {
     /// Except its using the word boundary anchor(\b) instead of the asterisk(\*).
     /// This is needed to highlight the search results correctly.
     func getRegexPattern(_ query: String) -> String {
+        let newQuery = NSRegularExpression.escapedPattern(for: query.trimmingCharacters(in: .whitespacesAndNewlines))
+
         guard let mode = selectedMode.third else {
-            return query
+            return newQuery
         }
 
         switch mode {
         case .Containing:
-            return "\(query)"
+            return "\(newQuery)"
         case .StartingWith:
-            return "\\b\(query)"
+            return "\\b\(newQuery)"
         case .EndingWith:
-            return "\(query)\\b"
+            return "\(newQuery)\\b"
         case .MatchingWord:
-            return "\\b\(query)\\b"
+            return "\\b\(newQuery)\\b"
         default:
-            return query
+            return newQuery
         }
     }
 
@@ -175,7 +188,7 @@ extension WorkspaceDocument.SearchState {
         // Attempt to create a regular expression from the provided query
         guard let regex = try? NSRegularExpression(
             pattern: query,
-            options: caseSensitive ? [] : [.caseInsensitive]
+            options: caseSensitive ? [] : .caseInsensitive
         ) else {
             await setStatus(.failed(errorMessage: "Invalid regular expression."))
             return

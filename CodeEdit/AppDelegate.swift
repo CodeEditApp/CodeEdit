@@ -12,7 +12,11 @@ import CodeEditSymbols
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private let updater = SoftwareUpdater()
 
+    @Environment(\.openWindow)
+    private var openWindow
+
     func applicationDidFinishLaunching(_ notification: Notification) {
+        setupServiceContainer()
         enableWindowSizeSaveOnQuit()
         Settings.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
@@ -79,7 +83,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         switch behavior {
         case .welcome:
             if !tryFocusWindow(id: .welcome) {
-                NSApp.openWindow(.welcome)
+                openWindow(sceneID: .welcome)
             }
         case .openPanel:
             CodeEditDocumentController.shared.openDocument(self)
@@ -141,11 +145,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     // MARK: - Open windows
 
     @IBAction private func openWelcome(_ sender: Any) {
-        NSApp.openWindow(.welcome)
+        openWindow(sceneID: .welcome)
     }
 
     @IBAction private func openAbout(_ sender: Any) {
-        NSApp.openWindow(.about)
+        openWindow(sceneID: .about)
     }
 
     @IBAction func openFeedback(_ sender: Any) {
@@ -226,6 +230,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     func documentController(_ docController: NSDocumentController, didCloseAll: Bool, contextInfo: Any) {
         NSApplication.shared.reply(toApplicationShouldTerminate: didCloseAll)
     }
+}
+
+/// Setup all the services into a ServiceContainer for the application to use.
+private func setupServiceContainer() {
+    // Example for how services will be instantiated
+//    ServiceContainer.register(
+//        PasteboardService()
+//    )
 }
 
 extension AppDelegate {

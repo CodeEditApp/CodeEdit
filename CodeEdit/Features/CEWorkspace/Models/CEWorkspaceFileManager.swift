@@ -96,7 +96,9 @@ final class CEWorkspaceFileManager {
         if let file = flattenedFileItems[path] {
             return file
         } else if createIfNotFound {
-            let url = URL(fileURLWithPath: path, relativeTo: folderUrl)
+            guard let url = URL(string: path, relativeTo: folderUrl) else {
+                return nil
+            }
 
             // Drill down towards the file, indexing any directories needed. If file is not in the `folderURL` or
             // subdirectories, exit.

@@ -39,18 +39,20 @@ struct NavigateCommands: Commands {
                 Divider()
 
             }
-
             Group {
                 Button("Show Previous Tab") {
-
+                    editor?.selectPreviousTab()
                 }
-                .disabled(true)
+                .keyboardShortcut("{", modifiers: [.command])
+                .disabled(editor?.tabs.count ?? 0 <= 1)  // Disable if there's one or no tabs
 
                 Button("Show Next Tab") {
-
+                    editor?.selectNextTab()
                 }
-                .disabled(true)
-
+                .keyboardShortcut("}", modifiers: [.command])
+                .disabled(editor?.tabs.count ?? 0 <= 1)  // Disable if there's one or no tabs
+            }
+            Group {
                 Divider()
 
                 Button("Go Forward") {

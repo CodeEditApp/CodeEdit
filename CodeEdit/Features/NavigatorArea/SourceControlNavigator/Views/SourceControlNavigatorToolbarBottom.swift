@@ -12,8 +12,9 @@ struct SourceControlNavigatorToolbarBottom: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
     @State private var text = ""
-    @State private var stashChangesIsPresented: Bool = false
-    @State private var noChangesToStashIsPresented: Bool = false
+    @State private var stashChangesIsPresented = false
+    @State private var noChangesToStashIsPresented = false
+    @State private var noDiscardChangesIsPresented = false
 
     var body: some View {
         HStack(spacing: 5) {
@@ -33,6 +34,7 @@ struct SourceControlNavigatorToolbarBottom: View {
                         : Color(nsColor: .controlAccentColor)
                     )
                     .padding(.leading, 4)
+                    .help("Filter Changes Navigator")
                 },
                 clearable: true
             )
@@ -49,6 +51,11 @@ struct SourceControlNavigatorToolbarBottom: View {
     private var sourceControlMenu: some View {
         Menu {
             Button("Discard All Changes...") {
+                guard let sourceControlManager = workspace.sourceControlManager else { return }
+                if sourceControlManager.changedFiles.isEmpty {
+                    noDiscardChangesIsPresented = true
+                    return
+                }
                 if discardChangesDialog() {
                     workspace.sourceControlManager?.discardAllChanges()
                 }
@@ -71,6 +78,11 @@ struct SourceControlNavigatorToolbarBottom: View {
             SourceControlStashChangesView()
         }
         .alert("Cannot Stash Changes", isPresented: $noChangesToStashIsPresented) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("There are no uncommitted changes in the local repository for this project.")
+        }
+        .alert("Cannot Discard Changes", isPresented: $noDiscardChangesIsPresented) {
             Button("OK", role: .cancel) {}
         } message: {
             Text("There are no uncommitted changes in the local repository for this project.")

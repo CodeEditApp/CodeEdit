@@ -25,10 +25,13 @@ extension GitClient {
         if let branchName { branchNameString = "--first-parent \(branchName)" }
         if let maxCount { maxCountString = "-n \(maxCount)" }
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale.current
+
+        // Can't use `Locale.current`, since it'd give a nil date outside the US
+        dateFormatter.locale = Locale(identifier: Locale.current.identifier)
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
+
         let output = try await run(
-            "log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
+            "log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         )
         let remote = try await run("ls-remote --get-url")
@@ -37,7 +40,25 @@ extension GitClient {
         return output
             .split(separator: "\n")
             .map { line -> GitCommit in
-                let parameters = line.components(separatedBy: "¦")
+                let parameters = String(line).components(separatedBy: "¦")
+                let infoRef = parameters[safe: 9]
+                var refs: [String] = []
+                var tag = ""
+                if let infoRef = infoRef {
+                    if infoRef.contains("tag:") {
+                        tag = infoRef.components(separatedBy: "tag:")[1].trimmingCharacters(in: .whitespaces)
+                    } else {
+                        refs = infoRef.split(separator: ",").compactMap {
+                            var element = String($0)
+                            if element.contains("origin/HEAD") { return nil }
+                            if element.contains("HEAD -> ") {
+                                element = element.replacingOccurrences(of: "HEAD -> ", with: "")
+                            }
+                            return element.trimmingCharacters(in: .whitespaces)
+                        }
+                    }
+                }
+
                 return GitCommit(
                     hash: parameters[safe: 0] ?? "",
                     commitHash: parameters[safe: 1] ?? "",
@@ -46,6 +67,9 @@ extension GitClient {
                     authorEmail: parameters[safe: 4] ?? "",
                     committer: parameters[safe: 5] ?? "",
                     committerEmail: parameters[safe: 6] ?? "",
+                    body: parameters[safe: 8] ?? "",
+                    refs: refs,
+                    tag: tag,
                     remoteURL: remoteURL,
                     date: dateFormatter.date(from: parameters[safe: 7] ?? "") ?? Date()
                 )

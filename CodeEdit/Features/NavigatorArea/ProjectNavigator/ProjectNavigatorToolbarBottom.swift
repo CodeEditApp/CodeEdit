@@ -41,15 +41,18 @@ struct ProjectNavigatorToolbarBottom: View {
                         ? Color(nsColor: .secondaryLabelColor)
                         : Color(nsColor: .controlAccentColor)
                     )
+                    .help("Show files with matching name")
                 },
                 trailingAccessories: {
                     HStack(spacing: 0) {
                         Toggle(isOn: $recentsFilter) {
                             Image(systemName: "clock")
                         }
+                        .help("Show only recent files")
                         Toggle(isOn: $sourceControlFilter) {
                             Image(systemName: "plusminus.circle")
                         }
+                        .help("Show only files with source-control status")
                     }
                     .toggleStyle(.icon(font: .system(size: 14), size: CGSize(width: 18, height: 20)))
                     .padding(.trailing, 2.5)

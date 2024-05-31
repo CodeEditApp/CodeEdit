@@ -26,7 +26,7 @@ struct EffectView: NSViewRepresentable {
     ///
     /// By setting the
     /// [`emphasized`](https://developer.apple.com/documentation/appkit/nsvisualeffectview/1644721-isemphasized)
-    /// flag the emphasized state of the material will be used if available.
+    /// flag, the emphasized state of the material will be used if available.
     ///
     /// - Parameters:
     ///   - material: The material to use. Defaults to `.headerView`.

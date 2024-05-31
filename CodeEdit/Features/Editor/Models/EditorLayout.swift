@@ -44,6 +44,23 @@ enum EditorLayout: Equatable {
         }
     }
 
+    func find(editor id: UUID) -> Editor? {
+        switch self {
+        case .one(let editor):
+            if editor.id == id {
+                return editor
+            }
+        case .vertical(let splitViewData), .horizontal(let splitViewData):
+            for layout in splitViewData.editorLayouts {
+                if let editor = layout.find(editor: id) {
+                    return editor
+                }
+            }
+        }
+
+        return nil
+    }
+
     /// Forms a set of all files currently represented by tabs.
     func gatherOpenFiles() -> Set<CEWorkspaceFile> {
         switch self {
@@ -68,6 +85,24 @@ enum EditorLayout: Equatable {
                 self = one
             } else {
                 data.flatten()
+            }
+        }
+    }
+
+    /// Gets flattened splitviews.
+    func getFlattened(parent: SplitViewData) -> [Editor] {
+        switch self {
+        case .one(let editor):
+            return [editor]
+        case .horizontal(let data), .vertical(let data):
+            if data.editorLayouts.count == 1 {
+                let one = data.editorLayouts[0]
+                if case .one(let editor) = one {
+                    return [editor]
+                }
+                return []
+            } else {
+                return data.getFlattened()
             }
         }
     }

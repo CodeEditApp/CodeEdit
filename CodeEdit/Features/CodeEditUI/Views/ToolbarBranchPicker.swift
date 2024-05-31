@@ -31,19 +31,19 @@ struct ToolbarBranchPicker: View {
     }
 
     var body: some View {
-        HStack(alignment: .center, spacing: 5) {
-            if currentBranch != nil {
-                Image.branch
-                    .font(.title3)
-                    .imageScale(.large)
-                    .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
-            } else {
-                Image(systemName: "folder.fill.badge.gearshape")
-                    .font(.title3)
-                    .imageScale(.medium)
-                    .foregroundColor(controlActive == .inactive ? inactiveColor : .accentColor)
+        HStack(alignment: .center, spacing: 7) {
+            Group {
+                if currentBranch != nil {
+                    Image(symbol: "branch")
+                } else {
+                    Image(systemName: "folder.fill.badge.gearshape")
+                }
             }
-            VStack(alignment: .leading, spacing: 2) {
+            .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
+            .font(.system(size: 14))
+            .imageScale(.medium)
+            .frame(width: 17, height: 17)
+            VStack(alignment: .leading, spacing: 0) {
                 Text(title)
                     .font(.headline)
                     .foregroundColor(controlActive == .inactive ? inactiveColor : .primary)
@@ -57,11 +57,13 @@ struct ToolbarBranchPicker: View {
                     }, label: {
                         Text(currentBranch.name)
                             .font(.subheadline)
-                            .foregroundColor(controlActive == .inactive ? inactiveColor : .secondary)
+                            .foregroundColor(controlActive == .inactive ? inactiveColor : .gray)
                             .frame(height: 11)
                     })
+                    .menuIndicator(isHovering ? .visible : .hidden)
                     .buttonStyle(.borderless)
                     .padding(.leading, -3)
+                    .padding(.bottom, 2)
                 }
             }
         }
@@ -81,6 +83,7 @@ struct ToolbarBranchPicker: View {
         }
         .task {
             await self.sourceControlManager?.refreshCurrentBranch()
+            await self.sourceControlManager?.refreshBranches()
         }
     }
 
@@ -109,15 +112,15 @@ struct ToolbarBranchPicker: View {
                     }
                 }
 
-                let branches = sourceControlManager.branches
-                    .filter({ $0.isLocal && $0 != sourceControlManager.currentBranch })
+                let branches = sourceControlManager.orderedLocalBranches
+                    .filter({ $0 != sourceControlManager.currentBranch })
                 let branchesGroups = branches.reduce(into: [String: GitBranchesGroup]()) { result, branch in
                     guard let branchPrefix = branch.name.components(separatedBy: "/").first else {
                         return
                     }
 
                     result[
-                        branchPrefix,
+                        branchPrefix.lowercased(),
                         default: GitBranchesGroup(name: branchPrefix, branches: [])
                     ].branches.append(branch)
                 }
@@ -158,9 +161,6 @@ struct ToolbarBranchPicker: View {
             .padding(.top, 10)
             .padding(5)
             .frame(width: 340)
-            .task {
-                await sourceControlManager.refreshBranches()
-            }
         }
 
         func headerLabel(_ title: String) -> some View {
@@ -192,9 +192,6 @@ struct ToolbarBranchPicker: View {
                 self.title = title
             }
 
-            @Environment(\.dismiss)
-            private var dismiss
-
             var body: some View {
                 Button {
                     switchBranch()
@@ -214,9 +211,6 @@ struct ToolbarBranchPicker: View {
                 Task {
                     do {
                         try await sourceControlManager.checkoutBranch(branch: branch)
-                        await MainActor.run {
-                            dismiss()
-                        }
                     } catch {
                         await sourceControlManager.showAlertForError(title: "Failed to checkout", error: error)
                     }

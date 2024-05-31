@@ -132,8 +132,8 @@ struct EditorTabView: View {
                 )
                 .padding(.top, isActive && tabBarStyle == .native ? 1.22 : 0)
             // Tab content (icon and text).
-            HStack(alignment: .center, spacing: 5) {
-                Image(systemName: item.systemImage)
+            HStack(alignment: .center, spacing: 3) {
+                Image(nsImage: item.nsIcon)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(
@@ -142,7 +142,7 @@ struct EditorTabView: View {
                         ? item.iconColor
                         : .secondary
                     )
-                    .frame(width: 12, height: 12)
+                    .frame(width: 16, height: 16)
                 Text(item.name)
                     .font(
                         isTemporary
@@ -157,7 +157,7 @@ struct EditorTabView: View {
                 // To max-out the parent (tab bar) area.
                 maxHeight: .infinity
             )
-            .padding(.horizontal, tabBarStyle == .native ? 28 : 23)
+            .padding(.horizontal, tabBarStyle == .native ? 28 : 20)
             .overlay {
                 ZStack {
                     // Close Button with is file changed indicator

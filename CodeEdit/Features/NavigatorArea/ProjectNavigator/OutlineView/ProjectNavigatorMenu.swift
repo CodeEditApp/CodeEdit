@@ -59,9 +59,17 @@ final class ProjectNavigatorMenu: NSMenu {
         let newFolder = menuItem("New Folder", action: #selector(newFolder))
 
         let rename = menuItem("Rename", action: #selector(renameFile))
-        let delete = menuItem("Delete", action:
+
+        let trash = menuItem("Move to Trash", action:
+                                item.url != workspace?.workspaceFileManager?.folderUrl
+                              ? #selector(trash) : nil)
+
+        // trash has to be the previous menu item for delete.isAlternate to work correctly
+        let delete = menuItem("Delete Immediately...", action:
                                 item.url != workspace?.workspaceFileManager?.folderUrl
                               ? #selector(delete) : nil)
+        delete.keyEquivalentModifierMask = .option
+        delete.isAlternate = true
 
         let duplicate = menuItem("Duplicate \(item.isFolder ? "Folder" : "File")", action: #selector(duplicate))
 
@@ -87,6 +95,7 @@ final class ProjectNavigatorMenu: NSMenu {
             newFolder,
             NSMenuItem.separator(),
             rename,
+            trash,
             delete,
             duplicate,
             NSMenuItem.separator(),
@@ -229,7 +238,14 @@ final class ProjectNavigatorMenu: NSMenu {
         outlineView.window?.makeFirstResponder(cell.textField)
     }
 
-    /// Action that deletes the item.
+    /// Action that moves the item to trash.
+    @objc
+    private func trash() {
+        guard let item else { return }
+        workspace?.workspaceFileManager?.trash(file: item)
+    }
+
+    /// Action that deletes the item immediately.
     @objc
     private func delete() {
         guard let item else { return }

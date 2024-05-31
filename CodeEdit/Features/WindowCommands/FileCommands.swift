@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct FileCommands: Commands {
+    @Environment(\.openWindow)
+    private var openWindow
+
+    @State var windowController: CodeEditWindowController?
 
     @FocusedObject var utilityAreaViewModel: UtilityAreaViewModel?
 
@@ -37,12 +41,24 @@ struct FileCommands: Commands {
 
         CommandGroup(replacing: .saveItem) {
             Button("Close Tab") {
-                NSApp.sendAction(#selector(CodeEditWindowController.closeCurrentTab(_:)), to: nil, from: nil)
+                if NSApp.target(forAction: #selector(CodeEditWindowController.closeCurrentTab(_:))) != nil {
+                    NSApp.sendAction(#selector(CodeEditWindowController.closeCurrentTab(_:)), to: nil, from: nil)
+                } else {
+                    NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
+                }
             }
             .keyboardShortcut("w")
 
             Button("Close Editor") {
-                NSApp.sendAction(#selector(CodeEditWindowController.closeActiveEditor(_:)), to: nil, from: nil)
+                if NSApp.target(forAction: #selector(CodeEditWindowController.closeActiveEditor(_:))) != nil {
+                    NSApp.sendAction(
+                        #selector(CodeEditWindowController.closeActiveEditor(_:)),
+                        to: nil,
+                        from: nil
+                    )
+                } else {
+                    NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
+                }
             }
             .keyboardShortcut("w", modifiers: [.control, .shift, .command])
 
@@ -52,16 +68,27 @@ struct FileCommands: Commands {
             .keyboardShortcut("w", modifiers: [.shift, .command])
 
             Button("Close Workspace") {
-                // TODO: Determine how this is different than the "Close Window" command and adjust accordingly
-                NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
+                guard let keyWindow = NSApplication.shared.keyWindow else { return }
+                NSApp.sendAction(#selector(NSWindow.close), to: keyWindow, from: nil)
             }
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
+            .disabled(!(NSApplication.shared.keyWindow?.windowController is CodeEditWindowController))
 
             if let utilityAreaViewModel {
                 Button("Close Terminal") {
                     utilityAreaViewModel.removeTerminals(utilityAreaViewModel.selectedTerminals)
                 }
                 .keyboardShortcut(.delete)
+            }
+
+            Divider()
+
+            Button("Workspace Settings") {
+                NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
+            }
+            .disabled(windowController?.workspace == nil)
+            .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
+                windowController = window?.windowController as? CodeEditWindowController
             }
 
             Divider()

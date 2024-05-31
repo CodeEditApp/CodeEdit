@@ -37,9 +37,8 @@ class FileSystemTableViewCell: StandardTableViewCell {
     }
 
     func addIcon(item: CEWorkspaceFile) {
-        let image = NSImage(systemSymbolName: item.systemImage, accessibilityDescription: nil)!
         fileItem = item
-        icon.image = image
+        icon.image = item.nsIcon
         icon.contentTintColor = color(for: item)
         toolTip = item.labelFileName()
         label.stringValue = item.labelFileName()

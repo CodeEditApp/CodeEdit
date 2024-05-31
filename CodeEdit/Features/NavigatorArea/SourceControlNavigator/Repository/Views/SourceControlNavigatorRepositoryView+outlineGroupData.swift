@@ -15,7 +15,7 @@ extension SourceControlNavigatorRepositoryView {
                 label: "Branches",
                 systemImage: "externaldrive.fill",
                 imageColor: Color(nsColor: .secondaryLabelColor),
-                children: sourceControlManager.branches.filter({ $0.isLocal }).map { branch in
+                children: sourceControlManager.orderedLocalBranches.map { branch in
                         .init(
                             id: "Branch\(branch.name)",
                             label: branch.name,
