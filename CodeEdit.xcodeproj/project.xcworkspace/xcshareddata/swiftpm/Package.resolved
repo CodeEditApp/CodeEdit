@@ -85,7 +85,7 @@
     {
       "identity" : "logstream",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/LogStream",
+      "location" : "https://github.com/Wouter01/LogStream",
       "state" : {
         "revision" : "6f83694b2675dcf3b1cea0a52546ff4469c18282",
         "version" : "1.3.0"
