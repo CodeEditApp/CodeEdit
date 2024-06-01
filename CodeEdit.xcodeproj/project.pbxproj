@@ -4679,6 +4679,7 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.16.0;
+			};
 		};
 		6C0617D42BDB4432008C9C42 /* XCRemoteSwiftPackageReference "LogStream" */ = {
 			isa = XCRemoteSwiftPackageReference;
