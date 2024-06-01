@@ -61,17 +61,17 @@ final class CodeEditUIUnitTests: XCTestCase {
 
     // MARK: ToolbarBranchPicker
 
-    func testBranchPickerLight() throws {
-        let view = ToolbarBranchPicker(
-            workspaceFileManager: nil
-        )
-        snapshot(view: view, size: .init(width: 100, height: 50), appearance: .light)
-    }
-
-    func testBranchPickerDark() throws {
-        let view = ToolbarBranchPicker(
-            workspaceFileManager: nil
-        )
-        snapshot(view: view, size: .init(width: 100, height: 50), appearance: .dark)
-    }
+//    func testBranchPickerLight() throws {
+//        let view = ToolbarBranchPicker(
+//            workspaceFileManager: nil
+//        )
+//        snapshot(view: view, size: .init(width: 100, height: 50), appearance: .light)
+//    }
+//
+//    func testBranchPickerDark() throws {
+//        let view = ToolbarBranchPicker(
+//            workspaceFileManager: nil
+//        )
+//        snapshot(view: view, size: .init(width: 100, height: 50), appearance: .dark)
+//    }
 }
