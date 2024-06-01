@@ -322,6 +322,8 @@
 		6C4104E3297C87A000F472BA /* BlurButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */; };
 		6C4104E6297C884F00F472BA /* AboutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E5297C884F00F472BA /* AboutDetailView.swift */; };
 		6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E8297C970F00F472BA /* AboutDefaultView.swift */; };
+		6C48B5C52C0A2835001E9955 /* FileEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5C42C0A2835001E9955 /* FileEncoding.swift */; };
+		6C48B5C92C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5C72C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift */; };
 		6C48D8F22972DAFC00D6D205 /* Env+IsFullscreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F12972DAFC00D6D205 /* Env+IsFullscreen.swift */; };
 		6C48D8F42972DB1A00D6D205 /* Env+Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F32972DB1A00D6D205 /* Env+Window.swift */; };
 		6C48D8F72972E5F300D6D205 /* WindowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F62972E5F300D6D205 /* WindowObserver.swift */; };
@@ -890,6 +892,8 @@
 		6C4104E2297C87A000F472BA /* BlurButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurButtonStyle.swift; sourceTree = "<group>"; };
 		6C4104E5297C884F00F472BA /* AboutDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDetailView.swift; sourceTree = "<group>"; };
 		6C4104E8297C970F00F472BA /* AboutDefaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDefaultView.swift; sourceTree = "<group>"; };
+		6C48B5C42C0A2835001E9955 /* FileEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileEncoding.swift; sourceTree = "<group>"; };
+		6C48B5C72C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTextStorage+isEmpty.swift"; sourceTree = "<group>"; };
 		6C48D8F12972DAFC00D6D205 /* Env+IsFullscreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Env+IsFullscreen.swift"; sourceTree = "<group>"; };
 		6C48D8F32972DB1A00D6D205 /* Env+Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Env+Window.swift"; sourceTree = "<group>"; };
 		6C48D8F62972E5F300D6D205 /* WindowObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowObserver.swift; sourceTree = "<group>"; };
@@ -1129,6 +1133,7 @@
 				5831E3CE2933F3DE00D5A6D2 /* Controllers */,
 				611191F82B08CC8000D4459B /* Indexer */,
 				58798249292E78D80085B254 /* CodeFileDocument.swift */,
+				6C48B5C42C0A2835001E9955 /* FileEncoding.swift */,
 				043C321527E3201F006AE443 /* WorkspaceDocument.swift */,
 				043BCF02281DA18A000AC47C /* WorkspaceDocument+SearchState.swift */,
 				61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */,
@@ -2195,6 +2200,7 @@
 				588847672992AAB800996D95 /* Array */,
 				6CBD1BC42978DE3E006639D5 /* Text */,
 				5831E3D02934036D00D5A6D2 /* NSTableView */,
+				6C48B5C82C0B5F7A001E9955 /* NSTextStorage */,
 				5831E3CA2933E86F00D5A6D2 /* View */,
 				5831E3C72933E7F700D5A6D2 /* Bundle */,
 				5831E3C62933E7E600D5A6D2 /* Color */,
@@ -2435,6 +2441,15 @@
 			);
 			path = FindNavigatorResultList;
 			sourceTree = "<group>";
+		};
+		6C48B5C82C0B5F7A001E9955 /* NSTextStorage */ = {
+			isa = PBXGroup;
+			children = (
+				6C48B5C72C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift */,
+			);
+			name = NSTextStorage;
+			path = CodeEdit/Utils/Extensions/NSTextStorage;
+			sourceTree = SOURCE_ROOT;
 		};
 		6C48D8EF2972DAC300D6D205 /* Environment */ = {
 			isa = PBXGroup;
@@ -3488,6 +3503,7 @@
 				6C48D8F22972DAFC00D6D205 /* Env+IsFullscreen.swift in Sources */,
 				587B9E8729301D8F00AC7927 /* GitHubRepositories.swift in Sources */,
 				6CE6226B2A2A1C730013085C /* UtilityAreaTab.swift in Sources */,
+				6C48B5C52C0A2835001E9955 /* FileEncoding.swift in Sources */,
 				587B9DA329300ABD00AC7927 /* SettingsTextEditor.swift in Sources */,
 				B6F0517B29D9E46400D72287 /* SourceControlSettingsView.swift in Sources */,
 				6C147C4D29A32AA30089B630 /* EditorAreaView.swift in Sources */,
@@ -3738,6 +3754,7 @@
 				6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */,
 				613899BC2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift in Sources */,
 				611192002B08CCD700D4459B /* SearchIndexer+Memory.swift in Sources */,
+				6C48B5C92C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift in Sources */,
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
 				611191FE2B08CCD200D4459B /* SearchIndexer+File.swift in Sources */,
 				77A01E302BB4270F00F0EA38 /* ProjectCEWorkspaceSettingsView.swift in Sources */,
@@ -4932,7 +4949,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.7.2;
+				minimumVersion = 0.7.3;
 			};
 		};
 		6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
