@@ -24,7 +24,6 @@ struct StatusBarCursorPositionLabel: View {
     /// Updates the source of cursor position notifications.
     func updateSource() {
         tab = editorManager.activeEditor.selectedTab
-//        print(editorManager.activeEditor.selectedTab)
     }
 
     /// Finds the lines contained by a range in the currently selected document.
@@ -98,15 +97,12 @@ struct StatusBarCursorPositionLabel: View {
             updateSource()
         }
         .onReceive(editorManager.activeEditor.objectWillChange) { _ in
-//            print("editorManager.activeEditor.objectWillChange")
             updateSource()
         }
         .onChange(of: editorManager.activeEditor) { _ in
-//            print("editorManager.activeEditor")
             updateSource()
         }
         .onChange(of: editorManager.activeEditor.selectedTab) { _ in
-//            print("editorManager.activeEditor.selectedTab")
             updateSource()
         }
     }

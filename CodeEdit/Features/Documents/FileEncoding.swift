@@ -35,4 +35,4 @@ enum FileEncoding: CaseIterable {
             return nil
         }
     }
-    }
+}
