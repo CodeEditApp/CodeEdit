@@ -1,5 +1,5 @@
 //
-//  UtilityAreaDebugView.swift
+//  UtilityAreaOutputView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 5/25/23.
@@ -9,7 +9,7 @@ import SwiftUI
 import LogStream
 
 struct UtilityAreaOutputView: View {
-    @EnvironmentObject private var model: UtilityAreaViewModel
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
     @ObservedObject var extensionManager = ExtensionManager.shared
 
@@ -26,7 +26,7 @@ struct UtilityAreaOutputView: View {
     }
 
     var body: some View {
-        UtilityAreaTabView(model: model.tabViewModel) { _ in
+        UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { _ in
             Group {
                 if selectedOutputSource == nil {
                     Text("No output")
@@ -77,7 +77,7 @@ struct UtilityAreaOutputView: View {
                 .labelsHidden()
                 .controlSize(.small)
                 Spacer()
-                FilterTextField(title: "Filter", text: $filterText)
+                UtilityAreaFilterTextField(title: "Filter", text: $filterText)
                     .frame(maxWidth: 175)
                 Button {
                     output = []

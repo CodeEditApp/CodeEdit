@@ -76,7 +76,7 @@ Be part of the next revolution in code editing by contributing to the project. T
 
 This project spans [multiple repositories](https://github.com/CodeEditApp/CodeEdit#related-repositories) so instead of browsing issues in the issues tab, it may be helpful to find an issue to get started on in our [project board](https://github.com/orgs/CodeEditApp/projects/3/views/1).
 
-For issues we want to focus on that are most relevant at any given time, please see the issues scoped to our current iteration [here](https://github.com/orgs/CodeEditApp/projects/3/views/13).
+For issues we want to focus on that are most relevant at any given time, please see the issues scoped to our current iteration [here](https://github.com/orgs/CodeEditApp/projects/3/views/10).
 
 ## Contributors
 
@@ -182,6 +182,10 @@ For issues we want to focus on that are most relevant at any given time, please 
       <td align="center" valign="top" width="14.28%"><a href="http://ahnafmahmud.com"><img src="https://avatars.githubusercontent.com/u/44692189?v=4?s=100" width="100px;" alt="Ahnaf Mahmud"/><br /><sub><b>Ahnaf Mahmud</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=infinitepower18" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/DanKlaver15"><img src="https://avatars.githubusercontent.com/u/9391497?v=4?s=100" width="100px;" alt="Dan K"/><br /><sub><b>Dan K</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=DanKlaver15" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="http://knotbin.xyz"><img src="https://avatars.githubusercontent.com/u/118622417?v=4?s=100" width="100px;" alt="Roscoe Rubin-Rottenberg"/><br /><sub><b>Roscoe Rubin-Rottenberg</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=knotbin" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/plbstl"><img src="https://avatars.githubusercontent.com/u/49006567?v=4?s=100" width="100px;" alt="Paul Ebose"/><br /><sub><b>Paul Ebose</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Aplbstl" title="Bug reports">🐛</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="http://danielz.xyz"><img src="https://avatars.githubusercontent.com/u/65467530?v=4?s=100" width="100px;" alt="Daniel Zhu"/><br /><sub><b>Daniel Zhu</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Adanielzsh" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
@@ -201,6 +205,7 @@ Support CodeEdit's development by [becoming a sponsor](https://github.com/sponso
 <a title="panascais" href="https://github.com/panascais" target="_blank"><img src="https://avatars.githubusercontent.com/u/19628635?s=200&v=4" width="128"></a>
 <a title="DevUtilsApp" href="https://devutils.app/?utm_source=codeedit&utm_campaign=oss" target="_blank"><img src="https://devutils.app/512.png" width="128"></a>
 <a title="Proxyman" href="https://proxyman.io/" target="_blank"><img src="https://user-images.githubusercontent.com/35942988/215859653-0d3622e4-a214-4691-acbe-cd96ca833193.png" width="128"></a>
+<a title="TablePlus" href="https://tableplus.com/" target="_blank"><img src="https://avatars.githubusercontent.com/u/29408238?s=200&v=4" width="128"></a>
 
 ## Backers
 

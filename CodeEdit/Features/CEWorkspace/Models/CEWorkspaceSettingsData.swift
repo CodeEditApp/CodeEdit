@@ -8,12 +8,18 @@
 import SwiftUI
 import Foundation
 
+protocol WorkspaceSettingsGroup {
+    /// Determine if the settings are changed from the defaults.
+    /// Used to check if creating a `.codeedit` folder is necessary on the user's machine.
+    func isEmpty() -> Bool
+}
+
 /// # Workspace Settings
 ///
 /// The model of the workspace settings for `CodeEdit` that control the behavior of some functionality at the workspace
 /// level like the workspace name or defining tasks.  A `JSON` representation is persisted in the workspace's
 /// `./codeedit/settings.json`. file
-struct CEWorkspaceSettingsData: Codable, Hashable {
+struct CEWorkspaceSettingsData: Codable, Hashable, WorkspaceSettingsGroup {
     /// The project global settings
     var project: ProjectSettings = .init()
 
@@ -40,5 +46,9 @@ struct CEWorkspaceSettingsData: Codable, Hashable {
         }
 
         return settings
+    }
+
+    func isEmpty() -> Bool {
+        project.isEmpty() && tasks.isEmpty()
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 extension CEWorkspaceSettingsData {
     /// Workspace settings for the project tab.
-    struct ProjectSettings: Codable, Hashable, SearchableSettingsPage {
+    struct ProjectSettings: Codable, Hashable, SearchableSettingsPage, WorkspaceSettingsGroup {
         var searchKeys: [String] {
             [
                 "Project Name",
@@ -25,6 +25,10 @@ extension CEWorkspaceSettingsData {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.projectName = try container.decodeIfPresent(String.self, forKey: .projectName) ?? ""
+        }
+
+        func isEmpty() -> Bool {
+            projectName == ""
         }
     }
 }

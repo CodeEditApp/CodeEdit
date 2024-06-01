@@ -1,15 +1,13 @@
 //
-//  StatusBarClearButton.swift
-//  CodeEditModules/StatusBar
+//  UtilityAreaClearButton.swift
+//  CodeEdit
 //
 //  Created by Stef Kors on 12/04/2022.
 //
 
 import SwiftUI
 
-struct StatusBarClearButton: View {
-    @EnvironmentObject private var model: UtilityAreaViewModel
-
+struct UtilityAreaClearButton: View {
     var body: some View {
         Button {
             // Clear terminal

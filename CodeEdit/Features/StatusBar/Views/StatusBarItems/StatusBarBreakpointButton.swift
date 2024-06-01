@@ -1,6 +1,6 @@
 //
 //  StatusBarBreakpointButton.swift
-//  CodeEditModules/StatusBar
+//  CodeEdit
 //
 //  Created by Stef Kors on 14/04/2022.
 //
@@ -9,13 +9,13 @@ import SwiftUI
 import CodeEditSymbols
 
 struct StatusBarBreakpointButton: View {
-    @EnvironmentObject private var model: UtilityAreaViewModel
+    @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
 
     var body: some View {
         Button {
-            model.isBreakpointEnabled.toggle()
+            statusBarViewModel.isBreakpointEnabled.toggle()
         } label: {
-            if model.isBreakpointEnabled {
+            if statusBarViewModel.isBreakpointEnabled {
                 Image.breakpointFill
                     .foregroundColor(.accentColor)
             } else {

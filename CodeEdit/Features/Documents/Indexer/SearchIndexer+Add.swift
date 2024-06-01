@@ -22,7 +22,7 @@ extension SearchIndexer {
         }
 
         return modifyIndexQueue.sync {
-            SKIndexAddDocumentWithText(index, document.takeUnretainedValue(), text as CFString, canReplace)
+            SKIndexAddDocumentWithText(index, document.takeRetainedValue(), text as CFString, canReplace)
         }
     }
 
@@ -66,7 +66,7 @@ extension SearchIndexer {
         let mime = mimeType ?? self.detectMimeType(fileURL)
 
         return modifyIndexQueue.sync {
-            SKIndexAddDocument(index, document.takeUnretainedValue(), mime as CFString?, canReplace)
+            SKIndexAddDocument(index, document.takeRetainedValue(), mime as CFString?, canReplace)
         }
     }
 
@@ -107,7 +107,7 @@ extension SearchIndexer {
     /// - Returns: `true` if the document was successfully removed, `false` otherwise. 
     /// **Note:** If the document didn't exist, this also returns `true`.
     public func removeDocument(url: URL) -> Bool {
-        let document = SKDocumentCreateWithURL(url as CFURL).takeUnretainedValue()
+        let document = SKDocumentCreateWithURL(url as CFURL).takeRetainedValue()
         return self.remove(document: document)
     }
 

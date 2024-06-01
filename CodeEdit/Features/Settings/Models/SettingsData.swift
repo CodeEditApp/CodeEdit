@@ -47,8 +47,11 @@ struct SettingsData: Codable, Hashable {
     /// The global settings for keybindings
     var keybindings: KeybindingsSettings = .init()
 
-    /// Searh Settings
+    /// Search Settings
     var search: SearchSettings = .init()
+
+    /// Developer settings for CodeEdit developers
+    var developerSettings: DeveloperSettings = .init()
 
     /// Default initializer
     init() {}
@@ -70,6 +73,9 @@ struct SettingsData: Codable, Hashable {
         self.keybindings = try container.decodeIfPresent(
             KeybindingsSettings.self,
             forKey: .keybindings
+        ) ?? .init()
+        self.developerSettings = try container.decodeIfPresent(
+            DeveloperSettings.self, forKey: .developerSettings
         ) ?? .init()
     }
 
@@ -96,6 +102,8 @@ struct SettingsData: Codable, Hashable {
             sourceControl.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .location:
             LocationsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+        case .developer:
+            developerSettings.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .behavior: return [.init(name, settingName: "Error")]
         case .components: return [.init(name, settingName: "Error")]
         case .keybindings: return [.init(name, settingName: "Error")]
