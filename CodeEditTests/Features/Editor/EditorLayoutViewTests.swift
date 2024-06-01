@@ -86,6 +86,7 @@ final class EditorLayoutViewTests: XCTestCase {
         }
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
+            .environmentObject(StatusBarViewModel())
 
         snapshot(view: view, named: "Light", size: .init(width: 600, height: 150), appearance: .light)
         snapshot(view: view, named: "Dark", size: .init(width: 600, height: 150), appearance: .dark)
@@ -101,6 +102,7 @@ final class EditorLayoutViewTests: XCTestCase {
         }
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
+            .environmentObject(StatusBarViewModel())
 
         snapshot(view: view, named: "Light", size: .init(width: 300, height: 400), appearance: .light)
         snapshot(view: view, named: "Dark", size: .init(width: 300, height: 400), appearance: .dark)
@@ -118,6 +120,7 @@ final class EditorLayoutViewTests: XCTestCase {
         }
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
+            .environmentObject(StatusBarViewModel())
 
         snapshot(view: view, named: "Light", size: .init(width: 800, height: 800), appearance: .light)
         snapshot(view: view, named: "Dark", size: .init(width: 800, height: 800), appearance: .dark)
@@ -133,6 +136,7 @@ final class EditorLayoutViewTests: XCTestCase {
         }
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
+            .environmentObject(StatusBarViewModel())
 
         snapshot(view: view, named: "Light", size: .init(width: 800, height: 800), appearance: .light)
         snapshot(view: view, named: "Dark", size: .init(width: 800, height: 800), appearance: .dark)
@@ -150,6 +154,7 @@ final class EditorLayoutViewTests: XCTestCase {
         }
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
+            .environmentObject(StatusBarViewModel())
 
         snapshot(view: view, named: "Light", size: .init(width: 800, height: 800), appearance: .light)
         snapshot(view: view, named: "Dark", size: .init(width: 800, height: 800), appearance: .dark)
@@ -165,6 +170,7 @@ final class EditorLayoutViewTests: XCTestCase {
         }
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
+            .environmentObject(StatusBarViewModel())
 
         snapshot(view: view, named: "Light", size: .init(width: 800, height: 800), appearance: .light)
         snapshot(view: view, named: "Dark", size: .init(width: 800, height: 800), appearance: .dark)

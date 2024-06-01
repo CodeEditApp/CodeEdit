@@ -1,5 +1,5 @@
 //
-//  EditorViewUITests.swift
+//  EditorAreaViewUITests.swift
 //  CodeEditUITests
 //
 //  Created by Khan Winter on 1/5/24.
@@ -10,11 +10,11 @@ import Foundation
 import SwiftUI
 import XCTest
 
-final class EditorViewTests: XCTestCase {
+final class EditorAreaViewTests: XCTestCase {
 
     struct FocusWrapper: View {
         @FocusState var focus: Editor?
-        var editorView: (FocusState<Editor?>.Binding) -> EditorView
+        var editorView: (FocusState<Editor?>.Binding) -> EditorAreaView
 
         var body: some View {
             editorView($focus)
@@ -77,8 +77,11 @@ final class EditorViewTests: XCTestCase {
 
     func testEmptyEditor() throws {
         let view = FocusWrapper { focus in
-            EditorView(editor: Editor(), focus: focus)
-        }.environmentObject(EditorManager())
+            EditorAreaView(editor: Editor(), focus: focus)
+        }
+            .environmentObject(mockWorkspace)
+            .environmentObject(EditorManager())
+            .environmentObject(StatusBarViewModel())
 
         snapshot(view: view, named: "Light", size: .init(width: 400, height: 250), appearance: .light)
         snapshot(view: view, named: "Dark", size: .init(width: 400, height: 250), appearance: .dark)
@@ -90,10 +93,11 @@ final class EditorViewTests: XCTestCase {
         let tab = EditorInstance(file: CEWorkspaceFile(url: directory.appending(path: "File 1.txt")))
 
         let view = FocusWrapper { focus in
-            EditorView(editor: Editor(files: [tab], selectedTab: tab), focus: focus)
+            EditorAreaView(editor: Editor(files: [tab], selectedTab: tab), focus: focus)
         }
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
+            .environmentObject(StatusBarViewModel())
 
         snapshot(view: view, named: "Light", size: .init(width: 500, height: 250), appearance: .light)
         snapshot(view: view, named: "Dark", size: .init(width: 500, height: 250), appearance: .dark)
@@ -103,10 +107,11 @@ final class EditorViewTests: XCTestCase {
 
     func testMultipleTab() throws {
         var view = FocusWrapper { focus in
-            EditorView(editor: Editor(files: .init(self.files), selectedTab: self.files[2]), focus: focus)
+            EditorAreaView(editor: Editor(files: .init(self.files), selectedTab: self.files[2]), focus: focus)
         }
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
+            .environmentObject(StatusBarViewModel())
 
         // Test multiple tabs in dark and light modes.
         snapshot(view: view, named: "Tab 1 - Light", size: .init(width: 600, height: 250), appearance: .light)
@@ -122,10 +127,11 @@ final class EditorViewTests: XCTestCase {
         snapshot(view: view, named: "Tab 1 - Dark - Overflow", size: .init(width: 300, height: 250), appearance: .dark)
 
         view = FocusWrapper { focus in
-            EditorView(editor: Editor(files: .init(self.files), selectedTab: self.files[1]), focus: focus)
+            EditorAreaView(editor: Editor(files: .init(self.files), selectedTab: self.files[1]), focus: focus)
         }
         .environmentObject(mockWorkspace)
         .environmentObject(EditorManager())
+        .environmentObject(StatusBarViewModel())
 
         // Test multiple tabs in dark and light modes.
         snapshot(view: view, named: "Tab 2 - Light", size: .init(width: 600, height: 250), appearance: .light)
@@ -148,20 +154,22 @@ final class EditorViewTests: XCTestCase {
         editor.temporaryTab = self.files[2]
 
         var view = FocusWrapper { focus in
-            EditorView(editor: editor, focus: focus)
+            EditorAreaView(editor: editor, focus: focus)
         }
             .environmentObject(mockWorkspace)
             .environmentObject(EditorManager())
+            .environmentObject(StatusBarViewModel())
 
         snapshot(view: view, named: "Tab 1 - Light", size: .init(width: 600, height: 250), appearance: .light)
         snapshot(view: view, named: "Tab 1 - Dark", size: .init(width: 600, height: 250), appearance: .dark)
 
         editor.temporaryTab = self.files[1]
         view = FocusWrapper { focus in
-            EditorView(editor: editor, focus: focus)
+            EditorAreaView(editor: editor, focus: focus)
         }
-            .environmentObject(mockWorkspace)
-            .environmentObject(EditorManager())
+        .environmentObject(mockWorkspace)
+        .environmentObject(EditorManager())
+        .environmentObject(StatusBarViewModel())
 
         snapshot(view: view, named: "Tab 2 - Light", size: .init(width: 600, height: 250), appearance: .light)
         snapshot(view: view, named: "Tab 2 - Dark", size: .init(width: 600, height: 250), appearance: .dark)
