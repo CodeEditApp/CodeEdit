@@ -1,5 +1,5 @@
 //
-//  RecentProjectsList.swift
+//  RecentProjectsListView.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 02/02/2023.
