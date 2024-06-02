@@ -1414,6 +1414,8 @@
 		582213EE2918345500EFE361 /* About */ = {
 			isa = PBXGroup;
 			children = (
+				5878DA7D291862BC00DD95A3 /* Acknowledgements */,
+				284DC84B2978B5EB00BF2770 /* Contributors */,
 				582213F1291834E500EFE361 /* Views */,
 			);
 			path = About;
@@ -1435,11 +1437,9 @@
 			isa = PBXGroup;
 			children = (
 				582213EE2918345500EFE361 /* About */,
-				5878DA7D291862BC00DD95A3 /* Acknowledgements */,
 				588847642992A30900996D95 /* CEWorkspace */,
 				587B9D7529300ABD00AC7927 /* CodeEditUI */,
 				58FD7603291EA1CB0051D6E4 /* Commands */,
-				284DC84B2978B5EB00BF2770 /* Contributors */,
 				043C321227E31FE8006AE443 /* Documents */,
 				6C147C3C29A328020089B630 /* Editor */,
 				6C6BD6ED29CD123000235D17 /* Extensions */,
