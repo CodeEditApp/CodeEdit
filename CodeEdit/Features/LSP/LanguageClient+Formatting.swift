@@ -47,15 +47,15 @@ extension LanguageServer {
 
     func requestOnTypeFormatting(
         document documentURI: String,
-         _ position: Position,
-         character ch: String,
-         withFormat formattingOptions: FormattingOptions
+        _ position: Position,
+        character char: String,
+        withFormat formattingOptions: FormattingOptions
     ) async -> FormattingResult {
         do {
             let params = DocumentOnTypeFormattingParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
                 position: position,
-                ch: ch,
+                ch: char,
                 options: formattingOptions
             )
             return try await lspInstance.onTypeFormatting(params)
