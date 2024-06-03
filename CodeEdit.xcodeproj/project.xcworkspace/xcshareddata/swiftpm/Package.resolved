@@ -1,5 +1,5 @@
 {
-  "originHash" : "3f6921a5ec30d1ecb6d6b205cf27a816c318246bb00f0ea367b997cc66527d32",
+  "originHash" : "9c699d730017e749c2b945e8435c6edd8169fe23742cc8fd8a58078ae48764ac",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -31,7 +31,7 @@
     {
       "identity" : "codeeditsourceeditor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor.git",
       "state" : {
         "revision" : "7360f00bf7ec8e93b4833357bd254bef7e5c943d",
         "version" : "0.7.2"
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "86b980464bcb67693e2053283c7a99bdc6f358bc",
-        "version" : "0.7.3"
+        "revision" : "80911be6bcdae5e35ef5ed351adf6dda9b57e555",
+        "version" : "0.7.4"
       }
     },
     {
@@ -74,6 +74,24 @@
       }
     },
     {
+      "identity" : "fseventswrapper",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Frizlab/FSEventsWrapper",
+      "state" : {
+        "revision" : "70bbea4b108221fcabfce8dbced8502831c0ae04",
+        "version" : "2.1.0"
+      }
+    },
+    {
+      "identity" : "globpattern",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/GlobPattern",
+      "state" : {
+        "revision" : "4ebb9e89e07cc475efa74f87dc6d21f4a9e060f8",
+        "version" : "0.1.1"
+      }
+    },
+    {
       "identity" : "grdb.swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/GRDB.swift.git",
@@ -83,9 +101,36 @@
       }
     },
     {
+      "identity" : "jsonrpc",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/JSONRPC",
+      "state" : {
+        "revision" : "c6ec759d41a76ac88fe7327c41a77d9033943374",
+        "version" : "0.9.0"
+      }
+    },
+    {
+      "identity" : "languageclient",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/LanguageClient",
+      "state" : {
+        "revision" : "f8fdeaed850fbc3e542cd038e952758887f6be5d",
+        "version" : "0.8.0"
+      }
+    },
+    {
+      "identity" : "languageserverprotocol",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
+      "state" : {
+        "revision" : "ac76fccf0e981c8e30c5ee4de1b15adc1decd697",
+        "version" : "0.13.2"
+      }
+    },
+    {
       "identity" : "logstream",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/LogStream",
+      "location" : "https://github.com/Wouter01/LogStream",
       "state" : {
         "revision" : "6f83694b2675dcf3b1cea0a52546ff4469c18282",
         "version" : "1.3.0"
@@ -101,12 +146,39 @@
       }
     },
     {
+      "identity" : "processenv",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ChimeHQ/ProcessEnv",
+      "state" : {
+        "revision" : "83f1ebc9dd6fb1db0bd89a3fcae00488a0f3fdd9",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "queue",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattmassicotte/Queue",
+      "state" : {
+        "revision" : "8d6f936097888f97011610ced40313655dc5948d",
+        "version" : "0.1.4"
+      }
+    },
+    {
       "identity" : "rearrange",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/Rearrange",
       "state" : {
         "revision" : "5ff7f3363f7a08f77e0d761e38e6add31c2136e1",
         "version" : "1.8.1"
+      }
+    },
+    {
+      "identity" : "semaphore",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/groue/Semaphore",
+      "state" : {
+        "revision" : "f1c4a0acabeb591068dea6cffdd39660b86dec28",
+        "version" : "0.0.8"
       }
     },
     {
@@ -150,8 +222,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
       "state" : {
-        "revision" : "ea6d3ca895b49910f790e98e4b4ca658e0fe490e",
-        "version" : "0.54.0"
+        "revision" : "a0f7b12c7be228592d924f29f654ebbd924ac9c5",
+        "version" : "0.55.1"
       }
     },
     {

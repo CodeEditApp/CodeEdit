@@ -19,7 +19,7 @@ extension LanguageServer {
         } catch {
             print("requestGoToDeclaration Error \(error)")
         }
-        
+
         return nil
     }
 }

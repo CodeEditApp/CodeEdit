@@ -23,7 +23,12 @@ struct LanguageServer {
     private(set) var lspInstance: InitializingServer
     private(set) var rootPath: URL
 
-    static func createServer(for languageId: LanguageIdentifier, with binary: LanguageServerBinary, rootPath: URL, workspaceFolders: [WorkspaceFolder]?) throws -> Self {
+    static func createServer(
+        for languageId: LanguageIdentifier,
+        with binary: LanguageServerBinary,
+        rootPath: URL,
+        workspaceFolders: [WorkspaceFolder]?
+    ) throws -> Self {
         let executionParams = Process.ExecutionParameters(
             path: binary.execPath,
             arguments: binary.args,
@@ -43,14 +48,22 @@ struct LanguageServer {
             throw error
         }
         guard let channel = channel else {
-            throw NSError(domain: "LanguageClient", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to start server for language \(languageId.rawValue)"])
+            throw NSError(
+                domain: "LanguageClient",
+                code: 1,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to start server for language \(languageId.rawValue)"]
+            )
         }
 
         let localServer = LanguageServerProtocol.JSONRPCServerConnection(dataChannel: channel)
-        let server = InitializingServer(server: localServer, initializeParamsProvider: getInitParams(projectURL: rootPath))
+        let server = InitializingServer(
+            server: localServer,
+            initializeParamsProvider: getInitParams(projectURL: rootPath)
+        )
         return LanguageServer(languageId: languageId, binary: binary, lspInstance: server, rootPath: rootPath)
     }
 
+    // swiftlint:disable function_body_length line_length
     private static func getInitParams(projectURL: URL) -> InitializingServer.InitializeParamsProvider {
         let provider: InitializingServer.InitializeParamsProvider = {
             // Text Document Capabilities
@@ -92,14 +105,19 @@ struct LanguageServer {
             )
 
             // Workspace Capabilities
-            // TODO: ADD inlineValue?: InlineValueWorkspaceClientCapabilities; inlayHint?: InlayHintWorkspaceClientCapabilities; diagnostics?: DiagnosticWorkspaceClientCapabilities;
+            // TODO: ADD inlineValue?: InlineValueWorkspaceClientCapabilities;inlayHint?: InlayHintWorkspaceClientCapabilities; diagnostics?: DiagnosticWorkspaceClientCapabilities;
             let workspaceCapabilities = ClientCapabilities.Workspace(
                 applyEdit: true,
                 workspaceEdit: nil,
                 didChangeConfiguration: DidChangeConfigurationClientCapabilities(dynamicRegistration: true),
                 // TODO: NEED TO ADD https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#workspace_didChangeWatchedFiles `relativePatternSupport` VARIABLE
                 didChangeWatchedFiles: DidChangeWatchedFilesClientCapabilities(dynamicRegistration: true),
-                symbol: WorkspaceSymbolClientCapabilities(dynamicRegistration: true, symbolKind: nil, tagSupport: nil, resolveSupport: []),
+                symbol: WorkspaceSymbolClientCapabilities(
+                    dynamicRegistration: true,
+                    symbolKind: nil,
+                    tagSupport: nil,
+                    resolveSupport: []
+                ),
                 executeCommand: nil,
                 workspaceFolders: true,
                 configuration: true,
@@ -128,14 +146,17 @@ struct LanguageServer {
              )
         }
         return provider
+        // swiftlint:enable function_body_length line_length
     }
 
+    /// Initializes the language server if it hasn't been initialized already.
     public func initialize() async throws {
         // TODO: CATCH ERROR HERE, LOG ERROR OR SUCCESS
         // InitializationResponse is not returned because it is automatically stored inside `lspInstance`
         _ = try await lspInstance.initializeIfNeeded()
     }
 
+    /// Shuts down the language server and exits it.
     public func shutdown() async throws {
         try await lspInstance.shutdownAndExit()
     }

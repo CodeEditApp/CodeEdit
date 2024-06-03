@@ -21,7 +21,7 @@ extension LanguageServer {
         }
         return nil
     }
-    
+
     func requestSemanticTokensRange(document documentURI: String, _ range: LSPRange) async -> SemanticTokensResponse {
         do {
             let params = SemanticTokensRangeParams(textDocument: TextDocumentIdentifier(uri: documentURI), range: range)
@@ -31,10 +31,16 @@ extension LanguageServer {
         }
         return nil
     }
-    
-    func requestSemanticTokensFullDelta(document documentURI: String, _ previousResultId: String) async -> SemanticTokensDeltaResponse {
+
+    func requestSemanticTokensFullDelta(
+        document documentURI: String,
+        _ previousResultId: String
+    ) async -> SemanticTokensDeltaResponse {
         do {
-            let params = SemanticTokensDeltaParams(textDocument: TextDocumentIdentifier(uri: documentURI), previousResultId: previousResultId)
+            let params = SemanticTokensDeltaParams(
+                textDocument: TextDocumentIdentifier(uri: documentURI),
+                previousResultId: previousResultId
+            )
             return try await lspInstance.semanticTokensFullDelta(params)
         } catch {
             print("requestInlayHint Error \(error)")

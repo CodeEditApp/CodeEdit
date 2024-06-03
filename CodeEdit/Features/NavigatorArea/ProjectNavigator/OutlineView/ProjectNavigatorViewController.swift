@@ -276,26 +276,18 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
-        print("Trying to open by outlineViewSelectionDidChange")
         guard let outlineView = notification.object as? NSOutlineView else {
-            print("Cant find outline view")
             return
         }
 
         let selectedIndex = outlineView.selectedRow
 
-        guard let item = outlineView.item(atRow: selectedIndex) as? CEWorkspaceFile else {
-            print("Cant find item in outline view")
-            return
-        }
+        guard let item = outlineView.item(atRow: selectedIndex) as? CEWorkspaceFile else { return }
 
         if !item.isFolder && shouldSendSelectionUpdate {
-            print("Sending update in outlineViewSelectionDidChange")
             DispatchQueue.main.async {
                 self.workspace?.editorManager.activeEditor.openTab(file: item, asTemporary: true)
             }
-        } else {
-            print("Didnt send update in outlineViewSelectionDidChange [!item.isFolder]=\(!item.isFolder) shouldSendSelectionUpdate=\(shouldSendSelectionUpdate)")
         }
     }
 

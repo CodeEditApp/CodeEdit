@@ -9,9 +9,13 @@ import Foundation
 import LanguageServerProtocol
 
 extension LanguageServer {
-    /// The document highlight request is sent from the client to the server to resolve document highlights for a given text document position.
-    /// For programming languages this usually highlights all references to the symbol scoped to this file.
-    func requestDocumentHighlight(document documentURI: String, _ position: Position) async -> DocumentHighlightResponse {
+    /// The document highlight request is sent from the client to the server to resolve document
+    /// highlights for a given text document position. For programming languages this usually
+    /// highlights all references to the symbol scoped to this file.
+    func requestDocumentHighlight(
+        document documentURI: String,
+        _ position: Position
+    ) async -> DocumentHighlightResponse {
         do {
             let params = DocumentHighlightParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),

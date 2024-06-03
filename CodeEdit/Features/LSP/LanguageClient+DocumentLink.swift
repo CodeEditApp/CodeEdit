@@ -18,7 +18,7 @@ extension LanguageServer {
         }
         return []
     }
-    
+
     func requestDocumentLinkResolve(_ documentLink: DocumentLink) async -> DocumentLink? {
         do {
             return try await lspInstance.documentLinkResolve(documentLink)

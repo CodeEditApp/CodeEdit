@@ -14,9 +14,14 @@ extension LanguageServer {
         if let cachedResponse: CompletionResponse = lspCache.get(key: cacheKey) {
             return cachedResponse
         }
-        let completionParams = CompletionParams(uri: documentURI, position: position, triggerKind: .invoked, triggerCharacter: nil)
+        let completionParams = CompletionParams(
+            uri: documentURI,
+            position: position,
+            triggerKind: .invoked,
+            triggerCharacter: nil
+        )
         let response = try await lspInstance.completion(completionParams)
-        
+
         lspCache.set(key: cacheKey, value: response)
         return response
     }

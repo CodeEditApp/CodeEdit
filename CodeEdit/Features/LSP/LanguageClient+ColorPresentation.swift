@@ -9,7 +9,11 @@ import Foundation
 import LanguageServerProtocol
 
 extension LanguageServer {
-    func requestColorPresentation(document documentURI: String, _ color: Color, _ range: LSPRange) async -> ColorPresentationResponse {
+    func requestColorPresentation(
+        document documentURI: String,
+        _ color: Color,
+        _ range: LSPRange
+    ) async -> ColorPresentationResponse {
         let params = ColorPresentationParams(
             workDoneToken: nil,
             partialResultToken: nil,

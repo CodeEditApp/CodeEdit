@@ -10,7 +10,11 @@ import LanguageServerProtocol
 
 extension LanguageServer {
     /// Resolve project-wide references for the symbol denoted by the given text document position
-    func requestFindReferences(document documentURI: String, _ position: Position, _ includeDeclaration: Bool = false) async -> ReferenceResponse {
+    func requestFindReferences(
+        document documentURI: String,
+        _ position: Position,
+        _ includeDeclaration: Bool = false
+    ) async -> ReferenceResponse {
         do {
             let params = ReferenceParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),

@@ -144,19 +144,16 @@ final class Editor: ObservableObject, Identifiable {
     ///   - file: the file to open.
     ///   - asTemporary: indicates whether the tab should be opened as a temporary tab or a permanent tab.
     func openTab(file: CEWorkspaceFile, asTemporary: Bool) {
-        print("Attempting to open file: \(file.url)")
         let item = EditorInstance(file: file)
         // Item is already opened in a tab.
         guard !tabs.contains(item) || !asTemporary else {
             selectedTab = item
             history.prepend(item)
-            print("File already opened!")
             return
         }
 
         switch (temporaryTab, asTemporary) {
         case (.some(let tab), true):
-            print("Temporary tab 1")
             if let index = tabs.firstIndex(of: tab) {
                 history.removeFirst(historyOffset)
                 history.prepend(item)
@@ -168,16 +165,13 @@ final class Editor: ObservableObject, Identifiable {
             }
 
         case (.some(let tab), false) where tab == item:
-            print("2")
             temporaryTab = nil
 
         case (.none, true):
-            print("3")
             openTab(file: item.file)
             temporaryTab = item
 
         case (.none, false):
-            print("4")
             openTab(file: item.file)
 
         default:
@@ -192,7 +186,6 @@ final class Editor: ObservableObject, Identifiable {
     ///   - fromHistory: Indicates whether the tab has been opened from going back in history.
     func openTab(file: CEWorkspaceFile, at index: Int? = nil, fromHistory: Bool = false) {
         let item = Tab(file: file)
-        print("Tabs before update: \(tabs)")
         if let index {
             tabs.insert(item, at: index)
         } else {
@@ -203,9 +196,6 @@ final class Editor: ObservableObject, Identifiable {
             }
         }
 
-        print("Updated tabs: \(tabs)")
-        print("New item: \(item.file.url)")
-
         selectedTab = item
         if !fromHistory {
             history.removeFirst(historyOffset)
@@ -215,14 +205,12 @@ final class Editor: ObservableObject, Identifiable {
         do {
             try openFile(item: item)
         } catch {
-            print("openFile error")
             print(error)
         }
     }
 
     private func openFile(item: Tab) throws {
         guard item.file.fileDocument == nil else {
-            print("File document is nil, returning!")
             return
         }
 
@@ -235,7 +223,6 @@ final class Editor: ObservableObject, Identifiable {
         )
         item.file.fileDocument = codeFile
         CodeEditDocumentController.shared.addDocument(codeFile)
-        print("Successfully opened file")
     }
 
     func goBackInHistory() {

@@ -23,10 +23,10 @@ extension LanguageServer {
             // TODO: LOGGING
             print("addDocument: An error occurred: \(error)")
         }
-        
+
         return false
     }
-    
+
     /// Adds a TextDocumentItem to the tracked files and notifies the language server
     mutating func addDocument(_ document: TextDocumentItem) async -> Bool {
         do {
@@ -41,14 +41,14 @@ extension LanguageServer {
             // TODO: LOGGING
             print("addDocument: An error occurred: \(error)")
         }
-        
+
         return false
     }
 
     /// Stops tracking a file and notifies the language server
     mutating func closeDocument(_ uri: String) async -> Bool {
         guard let document = trackedDocuments.removeValue(forKey: uri) else { return false }
-        
+
         do {
             let params = DidCloseTextDocumentParams(textDocument:
                                                     TextDocumentIdentifier(uri: document.uri))
@@ -66,7 +66,12 @@ extension LanguageServer {
     ///   - uri: The URI of the document to update.
     ///   - newText: The new text to be set for the document.
     /// - Returns: `true` if the document was successfully updated, `false`
-    mutating func updateDocument(withUri uri: String, newText: String, range: LSPRange, rangeLength: Int) async -> Bool {
+    mutating func updateDocument(
+        withUri uri: String,
+        newText: String,
+        range: LSPRange,
+        rangeLength: Int
+    ) async -> Bool {
         // Update the document objects values, including the version
         guard let currentDocument = trackedDocuments[uri],
               let nsRange = convertLSPRangeToNSRange(range, in: currentDocument.text),
@@ -79,20 +84,25 @@ extension LanguageServer {
         var updatedText = currentDocument.text
         updatedText.replaceSubrange(stringRange, with: newText)
         let updatedVersion = currentDocument.version + 1
-        let updatedDocument = TextDocumentItem(uri: currentDocument.uri,
-                                               languageId: currentDocument.languageId,
-                                               version: updatedVersion,
-                                               text: updatedText)
+        let updatedDocument = TextDocumentItem(
+            uri: currentDocument.uri,
+            languageId: currentDocument.languageId,
+            version: updatedVersion,
+            text: updatedText
+        )
         trackedDocuments[uri] = updatedDocument
 
         // Notify the server
         do {
-            let change = TextDocumentContentChangeEvent(range: range,
-                                                        rangeLength: rangeLength,
-                                                        text: newText)
-            let params = DidChangeTextDocumentParams(textDocument: VersionedTextDocumentIdentifier(uri: uri,
-                                                version: updatedVersion),
-                                                contentChanges: [change])
+            let change = TextDocumentContentChangeEvent(
+                range: range,
+                rangeLength: rangeLength,
+                text: newText
+            )
+            let params = DidChangeTextDocumentParams(
+                textDocument: VersionedTextDocumentIdentifier(uri: uri, version: updatedVersion),
+                contentChanges: [change]
+            )
             try await lspInstance.textDocumentDidChange(params)
         } catch {
             // TODO: LOGGING
@@ -120,10 +130,18 @@ private func applyEditsToDocument(document: TextDocumentItem, edits: [TextEdit])
         updatedText.replaceSubrange(range, with: edit.newText)
     }
 
-    return TextDocumentItem(uri: document.uri, languageId: document.languageId, version: document.version, text: updatedText)
+    return TextDocumentItem(
+        uri: document.uri,
+        languageId: document.languageId,
+        version: document.version,
+        text: updatedText
+    )
 }
 
-private func updateDocumentWithChanges(document: TextDocumentItem, changes: [TextDocumentContentChangeEvent]) -> TextDocumentItem {
+private func updateDocumentWithChanges(
+    document: TextDocumentItem,
+    changes: [TextDocumentContentChangeEvent]
+) -> TextDocumentItem {
     var updatedText = document.text
 
     for change in changes {
@@ -138,7 +156,12 @@ private func updateDocumentWithChanges(document: TextDocumentItem, changes: [Tex
         }
     }
 
-    return TextDocumentItem(uri: document.uri, languageId: document.languageId, version: document.version, text: updatedText)
+    return TextDocumentItem(
+        uri: document.uri,
+        languageId: document.languageId,
+        version: document.version,
+        text: updatedText
+    )
 }
 
 private func convertLSPRangeToNSRange(_ range: LSPRange, in text: String) -> NSRange? {

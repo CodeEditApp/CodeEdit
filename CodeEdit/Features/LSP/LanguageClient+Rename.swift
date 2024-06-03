@@ -22,9 +22,13 @@ extension LanguageServer {
         }
         return nil
     }
-    
+
     /// Ask the server to compute a workspace change so that the client can perform a workspace-wide rename of a symbol
-    func requestRename(document documentURI: String, _ position: Position, newName name: String) async -> RenameResponse {
+    func requestRename(
+        document documentURI: String,
+        _ position: Position,
+        newName name: String
+    ) async -> RenameResponse {
         do {
             let params = RenameParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
