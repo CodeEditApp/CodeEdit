@@ -31,14 +31,14 @@ extension GitClient {
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
 
         let output = try await run(
-            "log --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
+            "log -z --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         )
         let remote = try await run("ls-remote --get-url")
         let remoteURL = URL(string: remote.trimmingCharacters(in: .whitespacesAndNewlines))
 
         return output
-            .split(separator: "\n")
+            .split(separator: "\0")
             .map { line -> GitCommit in
                 let parameters = String(line).components(separatedBy: "¦")
                 let infoRef = parameters[safe: 9]
