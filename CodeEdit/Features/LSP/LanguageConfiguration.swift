@@ -9,6 +9,8 @@ import Foundation
 import LanguageServerProtocol
 
 func loadLSPConfigurations(from configFile: URL?) -> [LanguageIdentifier: LanguageServerBinary] {
+    // TEMP: This is in a variable to avoid lint error
+    let rustPath = "/Users/abe/.vscode/extensions/rust-lang.rust-analyzer-0.3.1823-darwin-arm64/server/rust-analyzer"
     // TODO: LOAD FROM FILE
     return [
         .python: LanguageServerBinary(
@@ -20,7 +22,7 @@ func loadLSPConfigurations(from configFile: URL?) -> [LanguageIdentifier: Langua
             env: ProcessInfo.processInfo.environment
         ),
         .rust: LanguageServerBinary(
-            execPath: "/Users/abe/.vscode/extensions/rust-lang.rust-analyzer-0.3.1823-darwin-arm64/server/rust-analyzer",
+            execPath: rustPath,
             args: [
                 "--verbose",
                 "--log-file",
