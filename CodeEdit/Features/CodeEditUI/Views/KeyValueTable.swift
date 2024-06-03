@@ -152,7 +152,7 @@ struct KeyValueTable<Header: View>: View {
                     showingModal = false
                 }
             }
-            .cornerRadius(6)
+            .clipShape(RoundedRectangle(cornerRadius: 6))
             .onAppear(perform: updateTableItems)
         }
     }

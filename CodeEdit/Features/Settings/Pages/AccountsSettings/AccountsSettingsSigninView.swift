@@ -67,7 +67,7 @@ struct AccountsSettingsSigninView: View {
                             Image(provider.iconName)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .cornerRadius(12)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .frame(width: 52, height: 52)
                                 .padding(.top, 5)
                             Text("Sign in to \(provider.name)")
