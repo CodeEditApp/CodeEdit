@@ -75,7 +75,7 @@ struct SegmentedControlItem: View {
             .background(
                 background
             )
-            .cornerRadius(5)
+            .clipShape(RoundedRectangle(cornerRadius: 5))
             .onTapGesture {
                 action()
             }

@@ -78,7 +78,7 @@ struct ThemeSettingsColorPreviewColor: View {
     var body: some View {
         color
             .frame(width: 5, height: 5)
-            .cornerRadius(5)
+            .clipShape(RoundedRectangle(cornerRadius: 5))
             .overlay {
                 ZStack {
                     Circle()
