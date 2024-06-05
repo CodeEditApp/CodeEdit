@@ -24,6 +24,7 @@ class TemporaryFile {
         let folder = NSTemporaryDirectory()
         let name = UUID().uuidString
 
+        // swiftlint:disable:next force_unwrapping
         return NSURL.fileURL(withPathComponents: [folder, name])! as URL
     }()
 

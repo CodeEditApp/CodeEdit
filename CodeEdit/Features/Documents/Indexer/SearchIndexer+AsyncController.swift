@@ -165,12 +165,12 @@ extension SearchIndexer {
             let dispatchGroup = DispatchGroup()
 
             let fileManager = FileManager.default
-            let enumerator = fileManager.enumerator(
+            guard let enumerator = fileManager.enumerator(
                 at: url,
                 includingPropertiesForKeys: [.isRegularFileKey],
                 options: [.skipsHiddenFiles],
                 errorHandler: nil
-            )!
+            ) else { return }
 
             for case let fileURL as URL in enumerator {
                 dispatchGroup.enter()

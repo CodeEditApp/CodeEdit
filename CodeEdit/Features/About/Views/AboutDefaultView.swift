@@ -26,6 +26,7 @@ struct AboutDefaultView: View {
     @Environment(\.colorScheme)
     var colorScheme
 
+    // swiftlint:disable:next force_unwrapping
     private static var licenseURL = URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!
 
     let smallTitlebarHeight: CGFloat = 28
