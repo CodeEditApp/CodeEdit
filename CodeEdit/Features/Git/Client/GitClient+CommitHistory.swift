@@ -34,7 +34,7 @@ extension GitClient {
             "log -z --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         )
-        let remoteURL = await getRemoteURL()
+        let remoteURL = try await getRemoteURL()
 
         return output
             .split(separator: "\0")

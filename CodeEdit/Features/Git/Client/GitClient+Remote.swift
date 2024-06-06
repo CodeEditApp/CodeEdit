@@ -37,12 +37,15 @@ extension GitClient {
     /// > will be used, unless there’s an upstream branch configured for the current branch.
     /// > (Reference: https://git-scm.com/docs/git-ls-remote, https://git-scm.com/docs/git-fetch)
     /// - Returns: A URL if a remote is configured, nil otherwise
-    func getRemoteURL() async -> URL? {
+    /// - Throws: `GitClientError.outputError` if the underlying git command fails unexpectedly
+    func getRemoteURL() async throws -> URL? {
         do {
             let remote = try await run("ls-remote --get-url")
             return URL(string: remote.trimmingCharacters(in: .whitespacesAndNewlines))
-        } catch {
+        } catch GitClientError.noRemoteConfigured {
             return nil
+        } catch {
+            throw error
         }
     }
 }
