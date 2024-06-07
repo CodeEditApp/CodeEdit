@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import CodeEditSourceEditor
 import CodeEditSymbols
+import CodeEditSourceEditor
 
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private let updater = SoftwareUpdater()
@@ -234,10 +234,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
 /// Setup all the services into a ServiceContainer for the application to use.
 private func setupServiceContainer() {
-    // Example for how services will be instantiated
-//    ServiceContainer.register(
-//        PasteboardService()
-//    )
+    ServiceContainer.register(
+        LSPService()
+    )
 }
 
 extension AppDelegate {

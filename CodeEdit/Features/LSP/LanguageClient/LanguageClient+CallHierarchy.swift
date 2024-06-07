@@ -26,8 +26,7 @@ extension LanguageServer {
 //            callHierarchyItems[documentURI] = items
 //            return items
 //        } catch {
-//            // TODO: LOGGING
-//            print("requestPrepareCallHierarchy: Error \(error)")
+//            logger.error("requestPrepareCallHierarchy: Error \(error)")
 //        }
 
         return []
@@ -47,8 +46,7 @@ extension LanguageServer {
 //            }
 //            return incomingCalls
 //        } catch {
-//            // TODO: LOGGING
-//            print("requestCallHierarchyIncomingCalls: Error \(error)")
+//            logger.error("requestCallHierarchyIncomingCalls: Error \(error)")
 //        }
         return []
     }
@@ -67,8 +65,7 @@ extension LanguageServer {
             }
             return outgoingCalls
         } catch {
-            // TODO: LOGGING
-            print("requestCallHierarchyOutgoingCalls: Error \(error)")
+            logger.error("requestCallHierarchyOutgoingCalls: Error \(error)")
         }
         return []
     }

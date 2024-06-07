@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -64,7 +64,6 @@
 		3000516A2BBD3A8200A98562 /* ServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300051692BBD3A8200A98562 /* ServiceType.swift */; };
 		3000516C2BBD3A9500A98562 /* ServiceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3000516B2BBD3A9500A98562 /* ServiceWrapper.swift */; };
 		3026F50F2AC006C80061227E /* InspectorAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3026F50E2AC006C80061227E /* InspectorAreaViewModel.swift */; };
-		3083B3612C0A8C8F00C6642C /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */; };
 		30AB4EBB2BF718A100ED4431 /* DeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EBA2BF718A100ED4431 /* DeveloperSettings.swift */; };
 		30AB4EBD2BF71CA800ED4431 /* DeveloperSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EBC2BF71CA800ED4431 /* DeveloperSettingsView.swift */; };
 		30AB4EC22BF7253200ED4431 /* KeyValueTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */; };
@@ -93,9 +92,10 @@
 		30B088122C0D53080063A882 /* LanguageClient+TypeDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F52C0D53080063A882 /* LanguageClient+TypeDefinition.swift */; };
 		30B088132C0D53080063A882 /* LanguageConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F62C0D53080063A882 /* LanguageConfiguration.swift */; };
 		30B088142C0D53080063A882 /* LanguageServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F72C0D53080063A882 /* LanguageServer.swift */; };
-		30B088152C0D53080063A882 /* LanguageServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F82C0D53080063A882 /* LanguageServerManager.swift */; };
+		30B088152C0D53080063A882 /* LSPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F82C0D53080063A882 /* LSPService.swift */; };
 		30B088162C0D53080063A882 /* LSPCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F92C0D53080063A882 /* LSPCache.swift */; };
 		30B088172C0D53080063A882 /* LSPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087FA2C0D53080063A882 /* LSPUtil.swift */; };
+		30CB648D2C12680F00CC8A9E /* LSPEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CB648C2C12680F00CC8A9E /* LSPEventHandler.swift */; };
 		30E6D0012A6E505200A58B20 /* NavigatorSidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */; };
 		3E0196732A3921AC002648D8 /* codeedit_shell_integration.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */; };
 		3E01967A2A392B45002648D8 /* codeedit_shell_integration.bash in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */; };
@@ -693,9 +693,10 @@
 		30B087F52C0D53080063A882 /* LanguageClient+TypeDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+TypeDefinition.swift"; sourceTree = "<group>"; };
 		30B087F62C0D53080063A882 /* LanguageConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageConfiguration.swift; sourceTree = "<group>"; };
 		30B087F72C0D53080063A882 /* LanguageServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageServer.swift; sourceTree = "<group>"; };
-		30B087F82C0D53080063A882 /* LanguageServerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageServerManager.swift; sourceTree = "<group>"; };
+		30B087F82C0D53080063A882 /* LSPService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPService.swift; sourceTree = "<group>"; };
 		30B087F92C0D53080063A882 /* LSPCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPCache.swift; sourceTree = "<group>"; };
 		30B087FA2C0D53080063A882 /* LSPUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPUtil.swift; sourceTree = "<group>"; };
+		30CB648C2C12680F00CC8A9E /* LSPEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPEventHandler.swift; sourceTree = "<group>"; };
 		30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarViewModel.swift; sourceTree = "<group>"; };
 		3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = codeedit_shell_integration.zsh; sourceTree = "<group>"; };
 		3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = codeedit_shell_integration.bash; sourceTree = "<group>"; };
@@ -1147,7 +1148,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3083B3612C0A8C8F00C6642C /* CodeEditKit in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6CBE1D002B720565003AC32E /* CodeEditSourceEditor in Frameworks */,
@@ -1412,6 +1412,20 @@
 		30B087FB2C0D53080063A882 /* LSP */ = {
 			isa = PBXGroup;
 			children = (
+				30B0881E2C12626B0063A882 /* LanguageClient */,
+				30B087F72C0D53080063A882 /* LanguageServer.swift */,
+				30B087F62C0D53080063A882 /* LanguageConfiguration.swift */,
+				30B087F82C0D53080063A882 /* LSPService.swift */,
+				30B087F92C0D53080063A882 /* LSPCache.swift */,
+				30B087FA2C0D53080063A882 /* LSPUtil.swift */,
+				30CB648C2C12680F00CC8A9E /* LSPEventHandler.swift */,
+			);
+			path = LSP;
+			sourceTree = "<group>";
+		};
+		30B0881E2C12626B0063A882 /* LanguageClient */ = {
+			isa = PBXGroup;
+			children = (
 				30B087DF2C0D53080063A882 /* LanguageClient+CallHierarchy.swift */,
 				30B087E02C0D53080063A882 /* LanguageClient+CodeLens.swift */,
 				30B087E12C0D53080063A882 /* LanguageClient+ColorPresentation.swift */,
@@ -1435,13 +1449,8 @@
 				30B087F32C0D53080063A882 /* LanguageClient+SemanticTokens.swift */,
 				30B087F42C0D53080063A882 /* LanguageClient+SignatureHelp.swift */,
 				30B087F52C0D53080063A882 /* LanguageClient+TypeDefinition.swift */,
-				30B087F62C0D53080063A882 /* LanguageConfiguration.swift */,
-				30B087F72C0D53080063A882 /* LanguageServer.swift */,
-				30B087F82C0D53080063A882 /* LanguageServerManager.swift */,
-				30B087F92C0D53080063A882 /* LSPCache.swift */,
-				30B087FA2C0D53080063A882 /* LSPUtil.swift */,
 			);
-			path = LSP;
+			path = LanguageClient;
 			sourceTree = "<group>";
 		};
 		3E0196712A392170002648D8 /* ShellIntegration */ = {
@@ -3193,7 +3202,6 @@
 				6C6BD6F729CD14D100235D17 /* CodeEditKit */,
 				6C66C31229D05CDC00DE9ED2 /* GRDB */,
 				6CDEFC9529E22C2700B7C684 /* Introspect */,
-				6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */,
 				6CB4463F2B6DFF3A00539ED0 /* CodeEditSourceEditor */,
 				6CBE1CFF2B720565003AC32E /* CodeEditSourceEditor */,
 				6C0617D52BDB4432008C9C42 /* LogStream */,
@@ -3289,11 +3297,11 @@
 				6C6BD6F229CD142C00235D17 /* XCRemoteSwiftPackageReference "collectionconcurrencykit" */,
 				6C66C31129D05CC800DE9ED2 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
 				6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
-				6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 				6CBE1CFE2B720565003AC32E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 				6C0617D42BDB4432008C9C42 /* XCRemoteSwiftPackageReference "LogStream" */,
 				3083B3892C0BEEE300C6642C /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 				3083B38A2C0BEEFF00C6642C /* XCRemoteSwiftPackageReference "LanguageClient" */,
+				30B0881D2C1261F80063A882 /* XCLocalSwiftPackageReference "../CodeEditKit" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -3461,7 +3469,7 @@
 				587B9E7729301D8F00AC7927 /* String+PercentEncoding.swift in Sources */,
 				587B9E5B29301D8F00AC7927 /* GitCheckoutBranchView.swift in Sources */,
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
-				30B088152C0D53080063A882 /* LanguageServerManager.swift in Sources */,
+				30B088152C0D53080063A882 /* LSPService.swift in Sources */,
 				613899B92B6E704500A5CAF6 /* String+Normalise.swift in Sources */,
 				30B088002C0D53080063A882 /* LanguageClient+Declaration.swift in Sources */,
 				04BA7C192AE2D7C600584E1C /* GitClient+Branches.swift in Sources */,
@@ -3532,6 +3540,7 @@
 				6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */,
 				61A53A812B4449F00093BF8A /* WorkspaceDocument+Index.swift in Sources */,
 				66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */,
+				30CB648D2C12680F00CC8A9E /* LSPEventHandler.swift in Sources */,
 				201169DD2837B3AC00F92B46 /* SourceControlNavigatorToolbarBottom.swift in Sources */,
 				587B9E8B29301D8F00AC7927 /* GitHubAccount+deleteReference.swift in Sources */,
 				58798237292E30B90085B254 /* FeedbackView.swift in Sources */,
@@ -4743,6 +4752,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
@@ -4987,6 +4997,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		30B0881D2C1261F80063A882 /* XCLocalSwiftPackageReference "../CodeEditKit" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../CodeEditKit;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -5050,14 +5067,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.3.0;
-			};
-		};
-		6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CodeEditApp/CodeEditKit";
-			requirement = {
-				kind = exactVersion;
-				version = 0.1.1;
 			};
 		};
 		6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
@@ -5127,11 +5136,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C0617D42BDB4432008C9C42 /* XCRemoteSwiftPackageReference "LogStream" */;
 			productName = LogStream;
-		};
-		6C0F3A3B2A1D0D5000223D19 /* CodeEditKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6C0F3A3A2A1D0D5000223D19 /* XCRemoteSwiftPackageReference "CodeEditKit" */;
-			productName = CodeEditKit;
 		};
 		6C147C4429A329350089B630 /* OrderedCollections */ = {
 			isa = XCSwiftPackageProductDependency;

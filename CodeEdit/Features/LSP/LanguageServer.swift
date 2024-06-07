@@ -5,22 +5,25 @@
 //  Created by Abe Malla on 2/7/24.
 //
 
-import Foundation
 import JSONRPC
+import Foundation
 import LanguageClient
 import LanguageServerProtocol
 
-// TODO: ADD ACTIVATION EVENTS
-
 struct LanguageServer {
+    /// Identifies which language the server belongs to
     let languageId: LanguageIdentifier
+    /// Holds information about the language server binary
     let binary: LanguageServerBinary
+    /// A cache to hold responses from the server, to minimize duplicate server requests
+    let lspCache = LSPCache()
 
-    // TODO: REMOVE
+    // TODO: REMOVE WHEN NEW DOCUMENT TRACKER IS IMPLEMENTED. IS PART OF NEW FILE SOLUTION.
     var trackedDocuments: [String: TextDocumentItem] = [:]
-    var lspCache: LSPCache = LSPCache()
 
+    /// An instance of a language server, that may or may not be initialized
     private(set) var lspInstance: InitializingServer
+    /// The path to the root of the project
     private(set) var rootPath: URL
 
     static func createServer(
@@ -44,7 +47,6 @@ struct LanguageServer {
                 }
             )
         } catch {
-//            logger.error("Failed to start server for language \(languageId.rawValue)")
             throw error
         }
         guard let channel = channel else {
@@ -63,7 +65,7 @@ struct LanguageServer {
         return LanguageServer(languageId: languageId, binary: binary, lspInstance: server, rootPath: rootPath)
     }
 
-    // swiftlint:disable function_body_length line_length
+    // swiftlint:disable function_body_length
     private static func getInitParams(projectURL: URL) -> InitializingServer.InitializeParamsProvider {
         let provider: InitializingServer.InitializeParamsProvider = {
             // Text Document Capabilities
@@ -105,12 +107,10 @@ struct LanguageServer {
             )
 
             // Workspace Capabilities
-            // TODO: ADD inlineValue?: InlineValueWorkspaceClientCapabilities;inlayHint?: InlayHintWorkspaceClientCapabilities; diagnostics?: DiagnosticWorkspaceClientCapabilities;
             let workspaceCapabilities = ClientCapabilities.Workspace(
                 applyEdit: true,
                 workspaceEdit: nil,
                 didChangeConfiguration: DidChangeConfigurationClientCapabilities(dynamicRegistration: true),
-                // TODO: NEED TO ADD https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#workspace_didChangeWatchedFiles `relativePatternSupport` VARIABLE
                 didChangeWatchedFiles: DidChangeWatchedFilesClientCapabilities(dynamicRegistration: true),
                 symbol: WorkspaceSymbolClientCapabilities(
                     dynamicRegistration: true,
@@ -146,14 +146,18 @@ struct LanguageServer {
              )
         }
         return provider
-        // swiftlint:enable function_body_length line_length
+        // swiftlint:enable function_body_length
     }
 
     /// Initializes the language server if it hasn't been initialized already.
     public func initialize() async throws {
-        // TODO: CATCH ERROR HERE, LOG ERROR OR SUCCESS
-        // InitializationResponse is not returned because it is automatically stored inside `lspInstance`
-        _ = try await lspInstance.initializeIfNeeded()
+        do {
+            _ = try await lspInstance.initializeIfNeeded()
+            logger.info("Language server for \(languageId.rawValue) initialized successfully")
+        } catch {
+            logger.error("Failed to initialize \(languageId.rawValue) LSP instance: \(error.localizedDescription)")
+            throw error
+        }
     }
 
     /// Shuts down the language server and exits it.

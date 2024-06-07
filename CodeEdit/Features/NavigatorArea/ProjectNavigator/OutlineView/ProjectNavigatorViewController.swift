@@ -112,7 +112,6 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Expand or collapse the folder on double click
     @objc
     private func onItemDoubleClicked() {
-        print("Trying to open by double click")
         guard let item = outlineView.item(atRow: outlineView.clickedRow) as? CEWorkspaceFile else { return }
 
         if item.isFolder {

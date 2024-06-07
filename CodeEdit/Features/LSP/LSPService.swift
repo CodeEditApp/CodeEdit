@@ -1,5 +1,5 @@
 //
-//  LanguageServerManager.swift
+//  LSPService.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.
@@ -11,26 +11,63 @@ import Foundation
 import LanguageClient
 import LanguageServerProtocol
 
-final class LanguageServerManager: ObservableObject {
+/**
+ `LSPService` is a service class responsible for managing the lifecycle and event handling
+ of Language Server Protocol (LSP) clients within the CodeEdit application. It handles the initialization,
+ communication, and termination of language servers, ensuring that code assistance features
+ such as code completion, diagnostics, and more are available for various programming languages.
+
+ This class uses Swift's concurrency model to manage background tasks and event streams
+ efficiently. Each language server runs in its own asynchronous task, listening for events and
+ handling them as they occur. The `LSPService` class also provides functionality to start
+ and stop individual language servers, as well as to stop all running servers.
+
+ ## Usage:
+ To use `LSPService`, create an instance of the class, configure it with the necessary language
+ server binaries, and invoke the start or stop methods as needed. This class is designed to be
+ used within a macOS native code editor environment, leveraging the Swift concurrency model for
+ efficient background processing.
+
+ ## Example:
+ ```swift
+ @Service var lspService
+
+ try await lspService.startServer(
+    for: .python,
+    projectURL: projectURL,
+    workspaceFolders: workspaceFolders
+ )
+ try await lspService.stopServer(for: .python)
+ ```
+*/
+final class LSPService: ObservableObject {
+
     private let logger: Logger
+    /// Holds the active language clients
     private var languageClients: [LanguageIdentifier: LanguageServer] = [:]
+    /// Holds the language server configurations for all the installed language servers
     private var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
+    /// Holds all the event listeners for each active language client
+    private var eventListeningTasks: [LanguageIdentifier: Task<Void, Never>] = [:]
 
     init() {
-        self.logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LanguageServerManager")
+        self.logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
         self.languageConfigs = loadLSPConfigurations(
             from: Bundle.main.url(forResource: "lspConfigs", withExtension: "json")
         )
     }
 
+    /// Gets the language server for the specified language
     func server(for languageId: LanguageIdentifier) -> InitializingServer? {
         return languageClients[languageId]?.lspInstance
     }
 
+    /// Gets the language client for the specified language
     func languageClient(for languageId: LanguageIdentifier) -> LanguageServer? {
         return languageClients[languageId]
     }
 
+    /// Given a language, will attempt to start the language server
     func startServer(
         for languageId: LanguageIdentifier,
         projectURL: URL,
@@ -53,68 +90,29 @@ final class LanguageServerManager: ObservableObject {
         try await server.initialize()
         logger.info("Successfully initialized \(languageId.rawValue) language server")
 
-        // TODO: BACKGROUND THREAD TO LISTEN TO EVENTS FROM CLIENT
+        startListeningToEvents(for: languageId)
     }
 
-    func testListenEvents() async throws {
-//        guard var languageClient = self.languageClient(for: .python) else {
-//            print("Failed to get client")
-//            exit(1)
-//        }
-//
-//        print("Listening for events...")
-//        for await event in languageClient.lspInstance.eventSequence {
-//            switch event {
-//            case let .request(id: id, request: request):
-//                print("Request ID: \(id)")
-//
-//                switch request {
-//                case let .workspaceConfiguration(params, handler):
-//                    print("workspaceConfiguration: \(params)")
-//                case let .workspaceFolders(handler):
-//                    print("workspaceFolders: \(String(describing: handler))")
-//                case let .workspaceApplyEdit(params, handler):
-//                    print("workspaceApplyEdit: \(params)")
-//                case let .clientRegisterCapability(params, handler):
-//                    print("clientRegisterCapability: \(params)")
-//                case let .clientUnregisterCapability(params, handler):
-//                    print("clientUnregisterCapability: \(params)")
-//                case let .workspaceCodeLensRefresh(handler):
-//                    print("workspaceCodeLensRefresh: \(String(describing: handler))")
-//                case let .workspaceSemanticTokenRefresh(handler):
-//                    print("workspaceSemanticTokenRefresh: \(String(describing: handler))")
-//                case let .windowShowMessageRequest(params, handler):
-//                    print("windowShowMessageRequest: \(params)")
-//                case let .windowShowDocument(params, handler):
-//                    print("windowShowDocument: \(params)")
-//                case let .windowWorkDoneProgressCreate(params, handler):
-//                    print("windowWorkDoneProgressCreate: \(params)")
-//                }
-//
-//            case let .notification(notification):
-//                switch notification {
-//                case let .windowLogMessage(params):
-//                    print("windowLogMessage \(params.type)\n```\n\(params.message)\n```\n")
-//                case let .windowShowMessage(params):
-//                    print("windowShowMessage \(params.type)\n```\n\(params.message)\n```\n")
-//                case let .textDocumentPublishDiagnostics(params):
-//                    print("textDocumentPublishDiagnostics: \(params)")
-//                case let .telemetryEvent(params):
-//                    print("telemetryEvent: \(params)")
-//                case let .protocolCancelRequest(params):
-//                    print("protocolCancelRequest: \(params)")
-//                case let .protocolProgress(params):
-//                    print("protocolProgress: \(params)")
-//                case let .protocolLogTrace(params):
-//                    print("protocolLogTrace: \(params)")
-//                }
-//
-//            case let .error(error):
-//                print("Error from EventStream: \(error)")
-//            }
-//        }
+    /// Notify the proper language server that we opened a document.
+    func documentWasOpened(for languageId: LanguageIdentifier, file fileURL: URL) async throws -> bool {
+        guard var languageClient = self.languageClient(for: .python) else {
+            logger.error("Failed to get \(languageId.rawValue) client")
+            throw ServerManagerError.languageClientNotFound
+        }
+        return await languageClient.addDocument(fileURL)
     }
 
+    /// Notify the proper language server that we closed a document so we can stop tracking the file.
+    func documentWasClosed(for languageId: LanguageIdentifier, file fileURL: URL) async throws {
+        guard var languageClient = self.languageClient(for: .python) else {
+            logger.error("Failed to get \(languageId.rawValue) client")
+            throw ServerManagerError.languageClientNotFound
+        }
+        return await languageClient.closeDocument(fileURL)
+    }
+
+    /// NOTE: This function is intended to be removed when the frontend is being developed.
+    /// For now this is just for reference of a working example.
     func testCompletion() async throws {
         do {
             guard var languageClient = self.languageClient(for: .python) else {
@@ -122,7 +120,7 @@ final class LanguageServerManager: ObservableObject {
                 throw ServerManagerError.languageClientNotFound
             }
 
-            let testFilePathStr = "/Users/abe/Documents/Python/FastestFastAPI/main.py"
+            let testFilePathStr = ""
             let testFileURL = URL(fileURLWithPath: testFilePathStr)
 
             // Tell server we opened a document
@@ -168,6 +166,8 @@ final class LanguageServerManager: ObservableObject {
         }
     }
 
+    /// Attempts to stop a running language server. Throws an error if the server is not found
+    /// or if the language server throws an error while trying to shutdown.
     func stopServer(for languageId: LanguageIdentifier) async throws {
         guard let server = self.server(for: languageId) else {
             logger.error("Server not found for language \(languageId.rawValue) during stop operation")
@@ -181,21 +181,13 @@ final class LanguageServerManager: ObservableObject {
         languageClients.removeValue(forKey: languageId)
         logger.info("Server stopped for language \(languageId.rawValue)")
 
-        // TODO: STOP BACKGROUND THREAD FOR LISTENING TO EVENTS
+        stopListeningToEvents(for: languageId)
     }
 
-    func restartServer(for languageId: LanguageIdentifier) async throws {
-//        guard let langServer = languageClients[languageId] else {
-//            logger.error("Server not found for language \(languageId.rawValue) during restart operation")
-//            throw ServerManagerError.serverNotFound
-//        }
-        // TODO: RESTART SERVER
-    }
-
+    /// Goes through all active langauge servers and attempts to shut them down.
     func stopAllServers() async throws {
-        for (languageId, server) in languageClients {
-            try await server.lspInstance.shutdownAndExit()
-            languageClients.removeValue(forKey: languageId)
+        for languageId in languageClients.keys {
+            try await stopServer(for: languageId)
         }
     }
 }

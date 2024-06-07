@@ -115,7 +115,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         )
         self.lspManager = LanguageServerManager()
 
-        // TODO: ACTIVATION EVENTS HERE
+        // TODO: ACTIVATION EVENTS HERE, WHEN EXTENSIONS ARE AVAILABLE
         Task {
             try await self.lspManager?.startServer(
                 for: .python,

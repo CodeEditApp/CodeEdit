@@ -20,8 +20,7 @@ extension LanguageServer {
             )
             return await self.addDocument(textDocument)
         } catch {
-            // TODO: LOGGING
-            print("addDocument: An error occurred: \(error)")
+            logger.error("addDocument: An error occurred: \(error)")
         }
 
         return false
@@ -38,8 +37,7 @@ extension LanguageServer {
             try await lspInstance.textDocumentDidOpen(params)
             return true
         } catch {
-            // TODO: LOGGING
-            print("addDocument: An error occurred: \(error)")
+            logger.error("addDocument: An error occurred: \(error)")
         }
 
         return false
@@ -55,8 +53,7 @@ extension LanguageServer {
             try await lspInstance.textDocumentDidClose(params)
             return true
         } catch {
-            // TODO: LOGGING
-            print("closeDocument: An error occurred: \(error)")
+            logger.error("closeDocument: An error occurred: \(error)")
         }
         return false
     }
@@ -105,8 +102,7 @@ extension LanguageServer {
             )
             try await lspInstance.textDocumentDidChange(params)
         } catch {
-            // TODO: LOGGING
-            print("updateDocument: An error occurred: \(error)")
+            logger.error("updateDocument: An error occurred: \(error)")
         }
         return true
     }

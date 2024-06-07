@@ -10,7 +10,11 @@ import LanguageServerProtocol
 
 extension LanguageServer {
     func requestCompletion(document documentURI: String, position: Position) async throws -> CompletionResponse {
-        let cacheKey = CacheKey(uri: documentURI, requestType: "completion")
+        let cacheKey = CacheKey(
+            uri: documentURI,
+            requestType: "completion",
+            extraData: position
+        )
         if let cachedResponse: CompletionResponse = lspCache.get(key: cacheKey) {
             return cachedResponse
         }
