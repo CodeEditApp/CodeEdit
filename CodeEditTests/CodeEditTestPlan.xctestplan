@@ -1,0 +1,27 @@
+{
+  "configurations" : [
+    {
+      "id" : "1FA7FEAF-B66C-41EA-B95F-83313C239D0E",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "DocumentsUnitTests"
+      ],
+      "target" : {
+        "containerPath" : "container:CodeEdit.xcodeproj",
+        "identifier" : "B658FB3C27DA9E1000EA4DBD",
+        "name" : "CodeEditTests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -50,6 +50,7 @@ struct WorkspaceView: View {
                         .safeAreaInset(edge: .bottom, spacing: 0) {
                             StatusBarView(proxy: proxy)
                         }
+                        .accessibilityIdentifier("EditorArea")
                         UtilityAreaView()
                             .collapsable()
                             .collapsed($utilityAreaViewModel.isCollapsed)

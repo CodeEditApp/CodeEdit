@@ -95,5 +95,6 @@ struct EditorAreaView: View {
                 editor.temporaryTab = editor.tabs[0]
             }
         }
+        .accessibilityIdentifier("EditorView")
     }
 }
