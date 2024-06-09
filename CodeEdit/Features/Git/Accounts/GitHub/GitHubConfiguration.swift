@@ -181,6 +181,7 @@ enum GitHubOAuthRouter: GitRouter {
 
     var URLRequest: FoundationURLRequestType? {
         switch self {
+        // swiftlint:disable force_unwrapping
         case let .authorize(config):
             let url = URL(string: path, relativeTo: URL(string: config.webEndpoint!)!)
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
@@ -190,5 +191,6 @@ enum GitHubOAuthRouter: GitRouter {
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)
         }
+        // swiftlint:enable force_unwrapping
     }
 }

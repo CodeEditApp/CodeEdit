@@ -12,7 +12,7 @@ struct AcknowledgementDependency: Decodable {
     var repositoryLink: String
     var version: String
     var repositoryURL: URL {
-        URL(string: repositoryLink)!
+        URL.hardcoded(repositoryLink)
     }
 }
 

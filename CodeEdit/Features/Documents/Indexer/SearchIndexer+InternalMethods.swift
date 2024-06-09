@@ -42,10 +42,10 @@ extension SearchIndexer {
 
     /// Returns the number of terms of the specified document
     private func termCount(for document: SKDocumentID) -> Int {
-        guard self.index != nil else {
-            return 0
+        if let index = self.index {
+            return SKIndexGetDocumentTermCount(self.index, document)
         }
-        return SKIndexGetDocumentTermCount(self.index!, document)
+        return 0
     }
 
     /// Is the specified document empty (ie. it has no terms)

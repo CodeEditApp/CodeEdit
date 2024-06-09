@@ -158,7 +158,7 @@ public class FeedbackModel: ObservableObject {
             switch response {
             case .success(let issue):
                 if Settings[\.sourceControl].general.openFeedbackInBrowser {
-                    self.openIssueURL(issue.htmlURL ?? URL(string: "https://github.com/CodeEditApp/CodeEdit/issues")!)
+                    self.openIssueURL(issue.htmlURL ?? URL.hardcoded("https://github.com/CodeEditApp/CodeEdit/issues"))
                 }
                 self.isSubmitted.toggle()
                 print(issue)
