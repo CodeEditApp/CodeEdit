@@ -5,9 +5,13 @@ import PackageDescription
 #if TUIST
     import ProjectDescription
 
-    let packageSettings = PackageSettings(
-        // Override integration settings
-    )
+let packageSettings = PackageSettings(baseSettings: .settings(configurations: [
+    .debug(name: "Debug"),
+    .release(name: "Release"),
+    .release(name: "Alpha"),
+    .release(name: "Pre"),
+    .release(name: "Beta")
+]))
 #endif
 
 let package = Package(
