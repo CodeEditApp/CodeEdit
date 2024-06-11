@@ -1,0 +1,27 @@
+CODE_SIGN_ENTITLEMENTS=OpenWithCodeEdit/OpenWithCodeEdit.entitlements
+CODE_SIGN_IDENTITY=-
+CODE_SIGN_IDENTITY[sdk=macosx*]=-
+CODE_SIGN_STYLE=Automatic
+COMBINE_HIDPI_IMAGES=YES
+CURRENT_PROJECT_VERSION=38
+DEAD_CODE_STRIPPING=YES
+DEVELOPMENT_TEAM=
+ENABLE_HARDENED_RUNTIME=YES
+GENERATE_INFOPLIST_FILE=NO
+INFOPLIST_FILE=OpenWithCodeEdit/Info.plist
+INFOPLIST_KEY_CFBundleDisplayName=OpenWithCodeEdit
+INFOPLIST_KEY_LSUIElement=YES
+INFOPLIST_KEY_NSHumanReadableCopyright=
+MACOSX_DEPLOYMENT_TARGET=13.0
+MARKETING_VERSION=1.0
+PRODUCT_BUNDLE_IDENTIFIER=app.codeedit.CodeEdit.OpenWithCodeEdit
+PRODUCT_NAME=$(TARGET_NAME)
+SKIP_INSTALL=YES
+SWIFT_EMIT_LOC_STRINGS=YES
+SWIFT_VERSION=5.0
+
+LD_RUNPATH_SEARCH_PATHS[config=Alpha]=$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Beta]=$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Debug]=$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Pre]=$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Release]=$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks

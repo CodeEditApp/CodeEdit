@@ -72,6 +72,9 @@ Join our growing community on [Discord](https://discord.gg/vChUXVf9Em) and [GitH
 
 ## Contributing
 
+> [!NOTE]
+> CodeEdit uses [Tuist](https://tuist.io) to manage Xcode intricacies and streamline the development process. To get started, you'll need to [install Tuist](https://docs.tuist.io/guide/introduction/installation.html)  (we recommend via Mise), and then run `tuist generate` to generate the Xcode project.
+
 Be part of the next revolution in code editing by contributing to the project. This is a community-led effort, so we welcome as many contributors who can help. Read the [Contribution Guide](https://github.com/CodeEditApp/CodeEdit/blob/main/CONTRIBUTING.md) for more information.
 
 This project spans [multiple repositories](https://github.com/CodeEditApp/CodeEdit#related-repositories) so instead of browsing issues in the issues tab, it may be helpful to find an issue to get started on in our [project board](https://github.com/orgs/CodeEditApp/projects/3/views/1).

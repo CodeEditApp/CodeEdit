@@ -31,6 +31,7 @@ let project = Project(name: "CodeEditTuist",
                                     "./CodeEdit/Features/Extensions/codeedit.extension.appextensionpoint"
                                 ],
                                 dependencies: [
+                                    .target(name: "OpenWithCodeEdit"),
                                     .package(product: "SwiftLintPlugin", type: .plugin),
                                     .external(name: "CodeEditKit"),
                                     .external(name: "GRDB"),
@@ -50,6 +51,48 @@ let project = Project(name: "CodeEditTuist",
                                     .release(name: "Alpha", xcconfig: "xcconfigs/CodeEdit.xcconfig"),
                                     .release(name: "Pre", xcconfig: "xcconfigs/CodeEdit.xcconfig"),
                                     .release(name: "Beta", xcconfig: "xcconfigs/CodeEdit.xcconfig")
+                                  ])
+                               ),
+                        .target(name: "CodeEditTests",
+                                destinations: .macOS,
+                                product: .unitTests,
+                                bundleId: "app.codeedit.CodeEditTests",
+                                sources: .paths([
+                                    "CodeEditTests/**/*.swift"
+                                ]),
+                                resources: [
+                                    "CodeEditTests/Features/CodeEditUI/__Snapshots__/UnitTests/**/*.png"
+                                ],
+                                dependencies: [
+                                    .target(name: "CodeEdit"),
+                                    .external(name: "SnapshotTesting")
+                                ],
+                                settings: .settings(configurations: [
+                                    .debug(name: "Debug", xcconfig: "xcconfigs/CodeEditTests.xcconfig"),
+                                    .release(name: "Release", xcconfig: "xcconfigs/CodeEditTests.xcconfig"),
+                                    .release(name: "Alpha", xcconfig: "xcconfigs/CodeEditTests.xcconfig"),
+                                    .release(name: "Pre", xcconfig: "xcconfigs/CodeEditTests.xcconfig"),
+                                    .release(name: "Beta", xcconfig: "xcconfigs/CodeEditTests.xcconfig")
+                                  ])
+                               ),
+                        .target(name: "OpenWithCodeEdit",
+                                destinations: .macOS,
+                                product: .appExtension,
+                                bundleId: "app.codeedit.CodeEdit.OpenWithCodeEdit",
+                                infoPlist: .file(path: "OpenWithCodeEdit/Info.plist"),
+                                sources: .paths([
+                                    "OpenWithCodeEdit/**/*.swift"
+                                ]),
+                                resources: [
+                                    "OpenWithCodeEdit/Media.xcassets"
+                                ],
+                                dependencies: [],
+                                settings: .settings(configurations: [
+                                    .debug(name: "Debug", xcconfig: "xcconfigs/OpenWithCodeEdit.xcconfig"),
+                                    .release(name: "Release", xcconfig: "xcconfigs/OpenWithCodeEdit.xcconfig"),
+                                    .release(name: "Alpha", xcconfig: "xcconfigs/OpenWithCodeEdit.xcconfig"),
+                                    .release(name: "Pre", xcconfig: "xcconfigs/OpenWithCodeEdit.xcconfig"),
+                                    .release(name: "Beta", xcconfig: "xcconfigs/OpenWithCodeEdit.xcconfig")
                                   ])
                                )
                       ])
