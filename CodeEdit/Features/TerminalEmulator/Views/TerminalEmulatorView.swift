@@ -49,21 +49,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     /// Returns a string of a shell path to use
-    ///
-    /// Default implementation pulled from Example app from "SwiftTerm":
-    /// ```swift
-    ///    let bufsize = sysconf(_SC_GETPW_R_SIZE_MAX)
-    ///    guard bufsize != -1 else { return "/bin/bash" }
-    ///    let buffer = UnsafeMutablePointer<Int8>.allocate(capacity: bufsize)
-    /// defer {
-    ///        buffer.deallocate()
-    ///    }
-    ///    var pwd = passwd()
-    ///    var result: UnsafeMutablePointer<passwd>? = UnsafeMutablePointer<passwd>.allocate(capacity: 1)
-    ///
-    /// if getpwuid_r(getuid(), &pwd, buffer, bufsize, &result) != 0 { return "/bin/bash" }
-    ///    return String(cString: pwd.pw_shell)
-    /// ```
     private func getShell() -> String {
         if shellType != ""{
             return shellType
