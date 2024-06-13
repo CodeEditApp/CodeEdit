@@ -27,10 +27,11 @@ struct UtilityAreaFilterTextField: View {
         .padding(.horizontal, 5)
         .frame(height: 22)
         .background(Color(nsColor: isFocused ? .textBackgroundColor : .quaternaryLabelColor))
-        .cornerRadius(7)
+        .clipShape(RoundedRectangle(cornerRadius: 7))
         .overlay(
             RoundedRectangle(cornerRadius: 7)
-                .stroke(isFocused ? .secondary : .tertiary, lineWidth: 0.75).cornerRadius(7)
+                .stroke(isFocused ? .secondary : .tertiary, lineWidth: 0.75)
+                .clipShape(RoundedRectangle(cornerRadius: 7))
         )
     }
 

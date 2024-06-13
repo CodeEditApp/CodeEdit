@@ -48,22 +48,16 @@ struct CodeFileView: View {
 
     @StateObject private var themeModel: ThemeModel = .shared
 
-    private var cancellables = [AnyCancellable]()
+    private var cancellables = Set<AnyCancellable>()
 
     private let isEditable: Bool
 
     private let undoManager = CEUndoManager()
 
-    private var sourceEditorText: Binding<String>
-
     init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
-        self.codeFile = codeFile
-        self.textViewCoordinators = textViewCoordinators
+        self._codeFile = .init(wrappedValue: codeFile)
+        self.textViewCoordinators = textViewCoordinators + [codeFile.contentCoordinator]
         self.isEditable = isEditable
-        self.sourceEditorText = Binding(
-            get: { codeFile.content ?? "" },
-            set: { codeFile.content = $0 }
-        )
 
         if let openOptions = codeFile.openOptions {
             codeFile.openOptions = nil
@@ -71,16 +65,12 @@ struct CodeFileView: View {
         }
 
         codeFile
-            .$content
-            .dropFirst()
-            .debounce(
-                for: 0.25,
-                scheduler: DispatchQueue.main
-            )
+            .contentCoordinator
+            .textUpdatePublisher
+            .debounce(for: 0.25, scheduler: DispatchQueue.main)
             .sink { _ in
                 codeFile.updateChangeCount(.changeDone)
-                codeFile.autosave(withImplicitCancellability: false) { _ in
-                }
+                codeFile.autosave(withImplicitCancellability: false) { _ in }
             }
             .store(in: &cancellables)
 
@@ -115,7 +105,7 @@ struct CodeFileView: View {
 
     var body: some View {
         CodeEditSourceEditor(
-            sourceEditorText,
+            codeFile.content ?? NSTextStorage(),
             language: getLanguage(),
             theme: selectedTheme.editor.editorTheme,
             font: font,
@@ -166,8 +156,8 @@ struct CodeFileView: View {
         }
         return codeFile.language ?? CodeLanguage.detectLanguageFrom(
             url: url,
-            prefixBuffer: codeFile.content?.getFirstLines(5),
-            suffixBuffer: codeFile.content?.getLastLines(5)
+            prefixBuffer: codeFile.content?.string.getFirstLines(5),
+            suffixBuffer: codeFile.content?.string.getLastLines(5)
         )
     }
 

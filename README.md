@@ -186,6 +186,7 @@ For issues we want to focus on that are most relevant at any given time, please 
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://danielz.xyz"><img src="https://avatars.githubusercontent.com/u/65467530?v=4?s=100" width="100px;" alt="Daniel Zhu"/><br /><sub><b>Daniel Zhu</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Adanielzsh" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/simonwhitaker"><img src="https://avatars.githubusercontent.com/u/116432?v=4?s=100" width="100px;" alt="Simon Whitaker"/><br /><sub><b>Simon Whitaker</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Asimonwhitaker" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
@@ -205,6 +206,7 @@ Support CodeEdit's development by [becoming a sponsor](https://github.com/sponso
 <a title="panascais" href="https://github.com/panascais" target="_blank"><img src="https://avatars.githubusercontent.com/u/19628635?s=200&v=4" width="128"></a>
 <a title="DevUtilsApp" href="https://devutils.app/?utm_source=codeedit&utm_campaign=oss" target="_blank"><img src="https://devutils.app/512.png" width="128"></a>
 <a title="Proxyman" href="https://proxyman.io/" target="_blank"><img src="https://user-images.githubusercontent.com/35942988/215859653-0d3622e4-a214-4691-acbe-cd96ca833193.png" width="128"></a>
+<a title="TablePlus" href="https://tableplus.com/" target="_blank"><img src="https://avatars.githubusercontent.com/u/29408238?s=200&v=4" width="128"></a>
 
 ## Backers
 

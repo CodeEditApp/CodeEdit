@@ -141,7 +141,7 @@ struct WelcomeView: View {
                     Rectangle()
                         .frame(width: 104, height: 104)
                         .foregroundColor(.accentColor)
-                        .cornerRadius(24)
+                        .clipShape(RoundedRectangle(cornerRadius: 24))
                         .blur(radius: 64)
                         .opacity(0.5)
                 }

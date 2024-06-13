@@ -64,25 +64,24 @@ extension SearchIndexer {
 
         var isLeaf = true
 
-        let iterator = SKIndexDocumentIteratorCreate(index, inParentDocument).takeUnretainedValue()
+        let iterator = SKIndexDocumentIteratorCreate(index, inParentDocument).takeRetainedValue()
         while let skDocument = SKIndexDocumentIteratorCopyNext(iterator) {
             isLeaf = false
-            self.addLeafURLs(index: index, inParentDocument: skDocument.takeUnretainedValue(), docs: &docs)
+            self.addLeafURLs(index: index, inParentDocument: skDocument.takeRetainedValue(), docs: &docs)
         }
-
         if isLeaf, inParentDocument != nil,
            kSKDocumentStateNotIndexed != SKIndexGetDocumentState(index, inParentDocument) {
-            if let temp = SKDocumentCopyURL(inParentDocument) {
-                let baseURL = temp.takeUnretainedValue() as URL
-                let documentID = SKIndexGetDocumentID(index, inParentDocument)
-                docs.append(
-                    DocumentID(
-                        url: baseURL,
-                        document: inParentDocument!,
-                        documentID: documentID
-                    )
+            let url = SKDocumentCopyURL(inParentDocument).takeRetainedValue()
+
+            let documentID = SKIndexGetDocumentID(index, inParentDocument)
+            docs.append(
+                DocumentID(
+                    url: url as URL,
+                    document: inParentDocument!,
+                    documentID: documentID
                 )
-            }
+            )
+
         }
     }
 

@@ -20,7 +20,7 @@ struct AccountsSettingsProviderRow: View {
             Image(iconName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
-                .cornerRadius(6)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
                 .frame(width: 28, height: 28)
             Text(name)
             Spacer()

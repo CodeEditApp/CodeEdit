@@ -11,7 +11,7 @@ extension SettingsData {
 
     /// The global settings for text editing
     struct AccountsSettings: Codable, Hashable, SearchableSettingsPage {
-        /// An integer indicating how many spaces a `tab` will generate
+        /// The list of git accounts the user has saved
         var sourceControlAccounts: GitAccounts = .init()
 
         /// The search keys
