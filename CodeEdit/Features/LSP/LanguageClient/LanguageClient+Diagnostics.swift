@@ -15,7 +15,9 @@ extension LanguageServer {
             requestType: "diagnostics",
             extraData: NoExtraData()
         )
-        if let cachedResponse: DocumentDiagnosticReport = lspCache.get(key: cacheKey, as: DocumentDiagnosticReport.self) {
+        if let cachedResponse: DocumentDiagnosticReport = lspCache.get(
+            key: cacheKey, as: DocumentDiagnosticReport.self
+        ) {
             return cachedResponse
         }
 
