@@ -126,11 +126,23 @@ struct LanguageServer {
                 fileOperations: fileOperations
             )
 
+            let windowClientCapabilities = WindowClientCapabilities(
+                workDoneProgress: true,
+                showMessage: ShowMessageRequestClientCapabilities(
+                    messageActionItem: ShowMessageRequestClientCapabilities.MessageActionItemCapabilities(
+                        additionalPropertiesSupport: true
+                    )
+                ),
+                showDocument: ShowDocumentClientCapabilities(
+                    support: true
+                )
+            )
+
             // All Client Capabilities
             let capabilities = ClientCapabilities(
                 workspace: workspaceCapabilities,
                 textDocument: textDocumentCapabilities,
-                window: nil,
+                window: windowClientCapabilities,
                 general: nil,
                 experimental: nil
             )
@@ -153,9 +165,9 @@ struct LanguageServer {
     public func initialize() async throws {
         do {
             _ = try await lspInstance.initializeIfNeeded()
-            logger.info("Language server for \(languageId.rawValue) initialized successfully")
+            print("Language server for \(languageId.rawValue) initialized successfully")
         } catch {
-            logger.error("Failed to initialize \(languageId.rawValue) LSP instance: \(error.localizedDescription)")
+            print("Failed to initialize \(languageId.rawValue) LSP instance: \(error.localizedDescription)")
             throw error
         }
     }

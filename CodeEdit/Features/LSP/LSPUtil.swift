@@ -32,20 +32,20 @@ func getCompletionItemEdits(startPosition: Position, item: CompletionItem) -> [T
     }
     // If the `insertText` value was provided
     else if let insertText = item.insertText {
-        // TODO: COMPUTE EDIT BY FINDING MATCHING TEXT, ALSO CHECK FOR TRIGGER CHARACTERS
+        let endPosition = Position((startPosition.line, startPosition.character + insertText.count))
         edits.append(
             TextEdit(
-                range: LSPRange(from: startPosition, offsetCharacter: insertText.count),
+                range: LSPRange(start: startPosition, end: endPosition),
                 newText: insertText
             )
         )
     }
     // Fallback to the label
     else if item.label != "" {
-        // TODO: COMPUTE EDIT BY FINDING MATCHING TEXT, ALSO CHECK FOR TRIGGER CHARACTERS
+        let endPosition = Position((startPosition.line, startPosition.character + item.label.count))
         edits.append(
             TextEdit(
-                range: LSPRange(from: startPosition, offsetCharacter: item.label.count),
+                range: LSPRange(start: startPosition, end: endPosition),
                 newText: item.label
             )
         )

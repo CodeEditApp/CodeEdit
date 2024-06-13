@@ -9,7 +9,7 @@ import AppKit
 import SwiftUI
 import Combine
 import Foundation
-import WindowManagement
+//import WindowManagement
 import LanguageServerProtocol
 
 @objc(WorkspaceDocument)
@@ -35,7 +35,6 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var statusBarViewModel = StatusBarViewModel()
     var utilityAreaModel = UtilityAreaViewModel()
     var searchState: SearchState?
-    var lspManager: LanguageServerManager?
     var quickOpenViewModel: QuickOpenViewModel?
     var commandsPaletteState: QuickActionsViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
@@ -113,16 +112,6 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             workspaceURL: url,
             editorManager: editorManager
         )
-        self.lspManager = LanguageServerManager()
-
-        // TODO: ACTIVATION EVENTS HERE, WHEN EXTENSIONS ARE AVAILABLE
-        Task {
-            try await self.lspManager?.startServer(
-                for: .python,
-                projectURL: url,
-                workspaceFolders: [WorkspaceFolder(uri: url.absoluteString, name: "workspace_folder_name")]
-            )
-        }
 
         self.workspaceFileManager = .init(
             folderUrl: url,

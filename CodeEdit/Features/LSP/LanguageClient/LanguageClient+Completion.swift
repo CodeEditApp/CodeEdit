@@ -15,7 +15,7 @@ extension LanguageServer {
             requestType: "completion",
             extraData: position
         )
-        if let cachedResponse: CompletionResponse = lspCache.get(key: cacheKey) {
+        if let cachedResponse: CompletionResponse = lspCache.get(key: cacheKey, as: CompletionResponse.self) {
             return cachedResponse
         }
         let completionParams = CompletionParams(

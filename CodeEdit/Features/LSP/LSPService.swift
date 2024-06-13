@@ -22,13 +22,7 @@ import LanguageServerProtocol
  handling them as they occur. The `LSPService` class also provides functionality to start
  and stop individual language servers, as well as to stop all running servers.
 
- ## Usage:
- To use `LSPService`, create an instance of the class, configure it with the necessary language
- server binaries, and invoke the start or stop methods as needed. This class is designed to be
- used within a macOS native code editor environment, leveraging the Swift concurrency model for
- efficient background processing.
-
- ## Example:
+ ## Example Usage
  ```swift
  @Service var lspService
 
@@ -42,19 +36,30 @@ import LanguageServerProtocol
 */
 final class LSPService: ObservableObject {
 
-    private let logger: Logger
+    internal let logger: Logger
     /// Holds the active language clients
-    private var languageClients: [LanguageIdentifier: LanguageServer] = [:]
+    internal var languageClients: [LanguageIdentifier: LanguageServer] = [:]
     /// Holds the language server configurations for all the installed language servers
-    private var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
+    internal var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
     /// Holds all the event listeners for each active language client
-    private var eventListeningTasks: [LanguageIdentifier: Task<Void, Never>] = [:]
+    internal var eventListeningTasks: [LanguageIdentifier: Task<Void, Never>] = [:]
+
+    @AppSettings(\.developerSettings.lspBinaries)
+    internal var lspBinaries
 
     init() {
         self.logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
-        self.languageConfigs = loadLSPConfigurations(
-            from: Bundle.main.url(forResource: "lspConfigs", withExtension: "json")
-        )
+
+        // Load the LSP binaries from the developer menu
+        for binary in lspBinaries {
+            if let language = LanguageIdentifier(rawValue: binary.key) {
+                self.languageConfigs[language] = LanguageServerBinary(
+                    execPath: binary.value,
+                    args: [],
+                    env: ProcessInfo.processInfo.environment
+                )
+            }
+        }
     }
 
     /// Gets the language server for the specified language
@@ -90,11 +95,12 @@ final class LSPService: ObservableObject {
         try await server.initialize()
         logger.info("Successfully initialized \(languageId.rawValue) language server")
 
-        startListeningToEvents(for: languageId)
+        self.startListeningToEvents(for: languageId)
     }
 
     /// Notify the proper language server that we opened a document.
-    func documentWasOpened(for languageId: LanguageIdentifier, file fileURL: URL) async throws -> bool {
+    func documentWasOpened(for languageId: LanguageIdentifier, file fileURL: URL) async throws -> Bool {
+        // TODO: GET FILE TYPE FROM DOCUMENT, USING NEW FILE SOLUTION
         guard var languageClient = self.languageClient(for: .python) else {
             logger.error("Failed to get \(languageId.rawValue) client")
             throw ServerManagerError.languageClientNotFound
@@ -103,12 +109,13 @@ final class LSPService: ObservableObject {
     }
 
     /// Notify the proper language server that we closed a document so we can stop tracking the file.
-    func documentWasClosed(for languageId: LanguageIdentifier, file fileURL: URL) async throws {
+    func documentWasClosed(for languageId: LanguageIdentifier, file fileURL: URL) async throws -> Bool {
+        // TODO: GET FILE TYPE FROM DOCUMENT, USING NEW FILE SOLUTION
         guard var languageClient = self.languageClient(for: .python) else {
             logger.error("Failed to get \(languageId.rawValue) client")
             throw ServerManagerError.languageClientNotFound
         }
-        return await languageClient.closeDocument(fileURL)
+        return await languageClient.closeDocument(fileURL.absoluteString)
     }
 
     /// NOTE: This function is intended to be removed when the frontend is being developed.

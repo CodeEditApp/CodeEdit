@@ -14,8 +14,12 @@ extension LanguageServer {
         document documentURI: String,
         position: Position
     ) async throws -> DefinitionResponse {
-        let cacheKey = CacheKey(uri: documentURI, requestType: "goToDefinition")
-        if let cachedResponse: DefinitionResponse = lspCache.get(key: cacheKey) {
+        let cacheKey = CacheKey(
+            uri: documentURI,
+            requestType: "goToDefinition",
+            extraData: NoExtraData()
+        )
+        if let cachedResponse: DefinitionResponse = lspCache.get(key: cacheKey, as: DefinitionResponse.self) {
             return cachedResponse
         }
 

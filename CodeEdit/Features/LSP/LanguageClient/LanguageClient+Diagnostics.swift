@@ -9,7 +9,22 @@ import Foundation
 import LanguageServerProtocol
 
 extension LanguageServer {
-    func requestPullDiagnostics() async {
-        // TODO: IMPLEMENTATION
+    func requestPullDiagnostics(document documentURI: String) async throws -> DocumentDiagnosticReport {
+        let cacheKey = CacheKey(
+            uri: documentURI,
+            requestType: "diagnostics",
+            extraData: NoExtraData()
+        )
+        if let cachedResponse: DocumentDiagnosticReport = lspCache.get(key: cacheKey, as: DocumentDiagnosticReport.self) {
+            return cachedResponse
+        }
+
+        let response = try await lspInstance.diagnostics(
+            DocumentDiagnosticParams(
+                textDocument: TextDocumentIdentifier(uri: documentURI)
+            )
+        )
+        lspCache.set(key: cacheKey, value: response)
+        return response
     }
 }

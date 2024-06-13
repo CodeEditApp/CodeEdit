@@ -68,7 +68,6 @@
 		30AB4EBD2BF71CA800ED4431 /* DeveloperSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EBC2BF71CA800ED4431 /* DeveloperSettingsView.swift */; };
 		30AB4EC22BF7253200ED4431 /* KeyValueTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */; };
 		30B087FC2C0D53080063A882 /* LanguageClient+CallHierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087DF2C0D53080063A882 /* LanguageClient+CallHierarchy.swift */; };
-		30B087FD2C0D53080063A882 /* LanguageClient+CodeLens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E02C0D53080063A882 /* LanguageClient+CodeLens.swift */; };
 		30B087FE2C0D53080063A882 /* LanguageClient+ColorPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E12C0D53080063A882 /* LanguageClient+ColorPresentation.swift */; };
 		30B087FF2C0D53080063A882 /* LanguageClient+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E22C0D53080063A882 /* LanguageClient+Completion.swift */; };
 		30B088002C0D53080063A882 /* LanguageClient+Declaration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E32C0D53080063A882 /* LanguageClient+Declaration.swift */; };
@@ -90,12 +89,13 @@
 		30B088102C0D53080063A882 /* LanguageClient+SemanticTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F32C0D53080063A882 /* LanguageClient+SemanticTokens.swift */; };
 		30B088112C0D53080063A882 /* LanguageClient+SignatureHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F42C0D53080063A882 /* LanguageClient+SignatureHelp.swift */; };
 		30B088122C0D53080063A882 /* LanguageClient+TypeDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F52C0D53080063A882 /* LanguageClient+TypeDefinition.swift */; };
-		30B088132C0D53080063A882 /* LanguageConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F62C0D53080063A882 /* LanguageConfiguration.swift */; };
 		30B088142C0D53080063A882 /* LanguageServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F72C0D53080063A882 /* LanguageServer.swift */; };
 		30B088152C0D53080063A882 /* LSPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F82C0D53080063A882 /* LSPService.swift */; };
 		30B088162C0D53080063A882 /* LSPCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F92C0D53080063A882 /* LSPCache.swift */; };
 		30B088172C0D53080063A882 /* LSPUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087FA2C0D53080063A882 /* LSPUtil.swift */; };
 		30CB648D2C12680F00CC8A9E /* LSPEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CB648C2C12680F00CC8A9E /* LSPEventHandler.swift */; };
+		30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64902C16CA8100CC8A9E /* LanguageServerProtocol */; };
+		30CB64942C16CA9100CC8A9E /* LanguageClient in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64932C16CA9100CC8A9E /* LanguageClient */; };
 		30E6D0012A6E505200A58B20 /* NavigatorSidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */; };
 		3E0196732A3921AC002648D8 /* codeedit_shell_integration.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */; };
 		3E01967A2A392B45002648D8 /* codeedit_shell_integration.bash in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */; };
@@ -669,7 +669,6 @@
 		30AB4EBC2BF71CA800ED4431 /* DeveloperSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsView.swift; sourceTree = "<group>"; };
 		30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueTable.swift; sourceTree = "<group>"; };
 		30B087DF2C0D53080063A882 /* LanguageClient+CallHierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+CallHierarchy.swift"; sourceTree = "<group>"; };
-		30B087E02C0D53080063A882 /* LanguageClient+CodeLens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+CodeLens.swift"; sourceTree = "<group>"; };
 		30B087E12C0D53080063A882 /* LanguageClient+ColorPresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+ColorPresentation.swift"; sourceTree = "<group>"; };
 		30B087E22C0D53080063A882 /* LanguageClient+Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Completion.swift"; sourceTree = "<group>"; };
 		30B087E32C0D53080063A882 /* LanguageClient+Declaration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Declaration.swift"; sourceTree = "<group>"; };
@@ -691,7 +690,6 @@
 		30B087F32C0D53080063A882 /* LanguageClient+SemanticTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+SemanticTokens.swift"; sourceTree = "<group>"; };
 		30B087F42C0D53080063A882 /* LanguageClient+SignatureHelp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+SignatureHelp.swift"; sourceTree = "<group>"; };
 		30B087F52C0D53080063A882 /* LanguageClient+TypeDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+TypeDefinition.swift"; sourceTree = "<group>"; };
-		30B087F62C0D53080063A882 /* LanguageConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageConfiguration.swift; sourceTree = "<group>"; };
 		30B087F72C0D53080063A882 /* LanguageServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageServer.swift; sourceTree = "<group>"; };
 		30B087F82C0D53080063A882 /* LSPService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPService.swift; sourceTree = "<group>"; };
 		30B087F92C0D53080063A882 /* LSPCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPCache.swift; sourceTree = "<group>"; };
@@ -1153,11 +1151,13 @@
 				6CBE1D002B720565003AC32E /* CodeEditSourceEditor in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */,
+				30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */,
 				6C6BD6F429CD142C00235D17 /* CollectionConcurrencyKit in Frameworks */,
 				6CB446402B6DFF3A00539ED0 /* CodeEditSourceEditor in Frameworks */,
 				5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */,
 				6CDEFC9629E22C2700B7C684 /* Introspect in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
+				30CB64942C16CA9100CC8A9E /* LanguageClient in Frameworks */,
 				6C6BD6F829CD14D100235D17 /* CodeEditKit in Frameworks */,
 				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 			);
@@ -1414,7 +1414,6 @@
 			children = (
 				30B0881E2C12626B0063A882 /* LanguageClient */,
 				30B087F72C0D53080063A882 /* LanguageServer.swift */,
-				30B087F62C0D53080063A882 /* LanguageConfiguration.swift */,
 				30B087F82C0D53080063A882 /* LSPService.swift */,
 				30B087F92C0D53080063A882 /* LSPCache.swift */,
 				30B087FA2C0D53080063A882 /* LSPUtil.swift */,
@@ -1427,7 +1426,6 @@
 			isa = PBXGroup;
 			children = (
 				30B087DF2C0D53080063A882 /* LanguageClient+CallHierarchy.swift */,
-				30B087E02C0D53080063A882 /* LanguageClient+CodeLens.swift */,
 				30B087E12C0D53080063A882 /* LanguageClient+ColorPresentation.swift */,
 				30B087E22C0D53080063A882 /* LanguageClient+Completion.swift */,
 				30B087E32C0D53080063A882 /* LanguageClient+Declaration.swift */,
@@ -3205,6 +3203,8 @@
 				6CB4463F2B6DFF3A00539ED0 /* CodeEditSourceEditor */,
 				6CBE1CFF2B720565003AC32E /* CodeEditSourceEditor */,
 				6C0617D52BDB4432008C9C42 /* LogStream */,
+				30CB64902C16CA8100CC8A9E /* LanguageServerProtocol */,
+				30CB64932C16CA9100CC8A9E /* LanguageClient */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -3299,9 +3299,9 @@
 				6CDEFC9429E22C2700B7C684 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				6CBE1CFE2B720565003AC32E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 				6C0617D42BDB4432008C9C42 /* XCRemoteSwiftPackageReference "LogStream" */,
-				3083B3892C0BEEE300C6642C /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
-				3083B38A2C0BEEFF00C6642C /* XCRemoteSwiftPackageReference "LanguageClient" */,
-				30B0881D2C1261F80063A882 /* XCLocalSwiftPackageReference "../CodeEditKit" */,
+				30CB648F2C16CA8100CC8A9E /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
+				30CB64922C16CA9100CC8A9E /* XCRemoteSwiftPackageReference "LanguageClient" */,
+				30CB64952C16CAA200CC8A9E /* XCLocalSwiftPackageReference "../CodeEditKit" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -3516,7 +3516,6 @@
 				041FC6AD2AE437CE00C1F65A /* SourceControlNavigatorNewBranchView.swift in Sources */,
 				77A01E432BBC3A2800F0EA38 /* CETask.swift in Sources */,
 				6C48D8F72972E5F300D6D205 /* WindowObserver.swift in Sources */,
-				30B087FD2C0D53080063A882 /* LanguageClient+CodeLens.swift in Sources */,
 				6CED16E42A3E660D000EC962 /* String+Lines.swift in Sources */,
 				587B9E6B29301D8F00AC7927 /* GitLabAvatarURL.swift in Sources */,
 				58798233292E30B90085B254 /* FeedbackToolbar.swift in Sources */,
@@ -3613,7 +3612,6 @@
 				5882252B292C280D00E83CDE /* StatusBarCursorPositionLabel.swift in Sources */,
 				5882252D292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift in Sources */,
 				58798238292E30B90085B254 /* FeedbackWindowController.swift in Sources */,
-				30B088132C0D53080063A882 /* LanguageConfiguration.swift in Sources */,
 				587B9E6C29301D8F00AC7927 /* GitLabNamespace.swift in Sources */,
 				30AB4EC22BF7253200ED4431 /* KeyValueTable.swift in Sources */,
 				6C48D8F22972DAFC00D6D205 /* Env+IsFullscreen.swift in Sources */,
@@ -4998,7 +4996,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		30B0881D2C1261F80063A882 /* XCLocalSwiftPackageReference "../CodeEditKit" */ = {
+		30CB64952C16CAA200CC8A9E /* XCLocalSwiftPackageReference "../CodeEditKit" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../CodeEditKit;
 		};
@@ -5021,7 +5019,7 @@
 				minimumVersion = 0.2.2;
 			};
 		};
-		3083B3892C0BEEE300C6642C /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */ = {
+		30CB648F2C16CA8100CC8A9E /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChimeHQ/LanguageServerProtocol";
 			requirement = {
@@ -5029,7 +5027,7 @@
 				minimumVersion = 0.13.2;
 			};
 		};
-		3083B38A2C0BEEFF00C6642C /* XCRemoteSwiftPackageReference "LanguageClient" */ = {
+		30CB64922C16CA9100CC8A9E /* XCRemoteSwiftPackageReference "LanguageClient" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChimeHQ/LanguageClient";
 			requirement = {
@@ -5116,6 +5114,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */;
 			productName = CodeEditSymbols;
+		};
+		30CB64902C16CA8100CC8A9E /* LanguageServerProtocol */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 30CB648F2C16CA8100CC8A9E /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */;
+			productName = LanguageServerProtocol;
+		};
+		30CB64932C16CA9100CC8A9E /* LanguageClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 30CB64922C16CA9100CC8A9E /* XCRemoteSwiftPackageReference "LanguageClient" */;
+			productName = LanguageClient;
 		};
 		583E529B29361BAB001AB554 /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;

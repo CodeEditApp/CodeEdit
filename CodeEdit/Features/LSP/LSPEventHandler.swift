@@ -5,9 +5,12 @@
 //  Created by Abe Malla on 6/1/24.
 //
 
+import LanguageClient
+import LanguageServerProtocol
+
 extension LSPService {
 
-    private func startListeningToEvents(for languageId: LanguageIdentifier) {
+    internal func startListeningToEvents(for languageId: LanguageIdentifier) {
         guard let languageClient = languageClients[languageId] else {
             logger.error("Language client not found for \(languageId.rawValue)")
             return
@@ -22,14 +25,14 @@ extension LSPService {
         eventListeningTasks[languageId] = task
     }
 
-    private func stopListeningToEvents(for languageId: LanguageIdentifier) {
+    internal func stopListeningToEvents(for languageId: LanguageIdentifier) {
         if let task = eventListeningTasks[languageId] {
             task.cancel()
             eventListeningTasks.removeValue(forKey: languageId)
         }
     }
 
-    private func handleEvent(_ event: LSPEvent, for languageId: LanguageIdentifier) {
+    private func handleEvent(_ event: ServerEvent, for languageId: LanguageIdentifier) {
         switch event {
         case let .request(id, request):
             print("Request ID: \(id) for \(languageId.rawValue)")
@@ -41,7 +44,7 @@ extension LSPService {
         }
     }
 
-    private func handleRequest(_ request: LSPRequest) {
+    private func handleRequest(_ request: ServerRequest) {
         switch request {
         case let .workspaceConfiguration(params, handler):
             print("workspaceConfiguration: \(params)")
@@ -63,10 +66,14 @@ extension LSPService {
             print("windowShowDocument: \(params)")
         case let .windowWorkDoneProgressCreate(params, handler):
             print("windowWorkDoneProgressCreate: \(params)")
+
+        // TODO:
+        default:
+            print()
         }
     }
 
-    private func handleNotification(_ notification: LSPNotification) {
+    private func handleNotification(_ notification: ServerNotification) {
         switch notification {
         case let .windowLogMessage(params):
             print("windowLogMessage \(params.type)\n```\n\(params.message)\n```\n")
