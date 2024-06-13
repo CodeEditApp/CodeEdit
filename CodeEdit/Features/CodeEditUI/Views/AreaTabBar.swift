@@ -185,7 +185,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
         case next
     }
 
-    // swiftlint: disable function_parameter_count
+    // swiftlint:disable function_parameter_count
     private func swapTab(
         tab: Tab,
         currentIndex: Int,
@@ -236,7 +236,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
             items.swapAt(currentIndex, swapIndex)
         }
     }
-    // swiftlint: enable function_parameter_count
+    // swiftlint:enable function_parameter_count
 
     private func isWithinPrevTopBounds(
         _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat

@@ -44,6 +44,7 @@ extension LSPService {
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     private func handleRequest(_ request: ServerRequest) {
         switch request {
         case let .workspaceConfiguration(params, handler):
@@ -70,6 +71,7 @@ extension LSPService {
         default:
             print()
         }
+        // swiftlint:enable cyclomatic_complexity
     }
 
     private func handleNotification(_ notification: ServerNotification) {
