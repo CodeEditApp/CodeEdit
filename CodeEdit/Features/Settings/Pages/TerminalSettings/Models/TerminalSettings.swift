@@ -54,6 +54,12 @@ extension SettingsData {
         // Use font settings from Text Editing
         var useTextEditorFont: Bool = true
 
+        /// If `true`, use injection scripts for terminal features like automatic tab title.
+        var useShellIntegration: Bool = true
+
+        /// If `true`, use a login shell.
+        var useLoginShell: Bool = true
+
         /// Default initializer
         init() {}
 
@@ -70,6 +76,8 @@ extension SettingsData {
             ) ?? .block
             self.cursorBlink = try container.decodeIfPresent(Bool.self, forKey: .cursorBlink) ?? false
             self.useTextEditorFont = try container.decodeIfPresent(Bool.self, forKey: .useTextEditorFont) ?? true
+            self.useShellIntegration = try container.decodeIfPresent(Bool.self, forKey: .useShellIntegration) ?? true
+            self.useLoginShell = try container.decodeIfPresent(Bool.self, forKey: .useLoginShell) ?? true
         }
     }
 

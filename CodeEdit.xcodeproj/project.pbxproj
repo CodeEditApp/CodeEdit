@@ -68,7 +68,7 @@
 		30AB4EBD2BF71CA800ED4431 /* DeveloperSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EBC2BF71CA800ED4431 /* DeveloperSettingsView.swift */; };
 		30AB4EC22BF7253200ED4431 /* KeyValueTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */; };
 		30E6D0012A6E505200A58B20 /* NavigatorSidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */; };
-		3E0196732A3921AC002648D8 /* codeedit_shell_integration.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */; };
+		3E0196732A3921AC002648D8 /* codeedit_shell_integration_rc.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196722A3921AC002648D8 /* codeedit_shell_integration_rc.zsh */; };
 		3E01967A2A392B45002648D8 /* codeedit_shell_integration.bash in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */; };
 		4E7F066629602E7B00BB3C12 /* CodeEditSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */; };
 		4EE96ECB2960565E00FFBEA8 /* DocumentsUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */; };
@@ -314,6 +314,7 @@
 		6C18620A298BF5A800C663EA /* RecentProjectsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C186209298BF5A800C663EA /* RecentProjectsListView.swift */; };
 		6C1CC9982B1E770B0002349B /* AsyncFileIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1CC9972B1E770B0002349B /* AsyncFileIterator.swift */; };
 		6C1CC99B2B1E7CBC0002349B /* FindNavigatorIndexBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1CC99A2B1E7CBC0002349B /* FindNavigatorIndexBar.swift */; };
+		6C1F3DA22C18C55800F6DEF6 /* ShellIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1F3DA12C18C55800F6DEF6 /* ShellIntegrationTests.swift */; };
 		6C2C155829B4F49100EA60A5 /* SplitViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155729B4F49100EA60A5 /* SplitViewItem.swift */; };
 		6C2C155A29B4F4CC00EA60A5 /* Variadic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155929B4F4CC00EA60A5 /* Variadic.swift */; };
 		6C2C155D29B4F4E500EA60A5 /* SplitViewReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */; };
@@ -324,6 +325,12 @@
 		6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E8297C970F00F472BA /* AboutDefaultView.swift */; };
 		6C48B5C52C0A2835001E9955 /* FileEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5C42C0A2835001E9955 /* FileEncoding.swift */; };
 		6C48B5C92C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5C72C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift */; };
+		6C48B5CE2C0C1BE4001E9955 /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5CD2C0C1BE4001E9955 /* Shell.swift */; };
+		6C48B5D12C0D0519001E9955 /* ShellIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5D02C0D0519001E9955 /* ShellIntegration.swift */; };
+		6C48B5D42C0D0743001E9955 /* codeedit_shell_integration_env.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 6C48B5D32C0D0743001E9955 /* codeedit_shell_integration_env.zsh */; };
+		6C48B5D62C0D08C5001E9955 /* codeedit_shell_integration_profile.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 6C48B5D52C0D08C5001E9955 /* codeedit_shell_integration_profile.zsh */; };
+		6C48B5D82C0D5DB5001E9955 /* codeedit_shell_integration_login.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 6C48B5D72C0D5DB5001E9955 /* codeedit_shell_integration_login.zsh */; };
+		6C48B5DA2C0D5FC5001E9955 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5D92C0D5FC5001E9955 /* CurrentUser.swift */; };
 		6C48D8F22972DAFC00D6D205 /* Env+IsFullscreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F12972DAFC00D6D205 /* Env+IsFullscreen.swift */; };
 		6C48D8F42972DB1A00D6D205 /* Env+Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F32972DB1A00D6D205 /* Env+Window.swift */; };
 		6C48D8F72972E5F300D6D205 /* WindowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F62972E5F300D6D205 /* WindowObserver.swift */; };
@@ -642,7 +649,7 @@
 		30AB4EBC2BF71CA800ED4431 /* DeveloperSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsView.swift; sourceTree = "<group>"; };
 		30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueTable.swift; sourceTree = "<group>"; };
 		30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarViewModel.swift; sourceTree = "<group>"; };
-		3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = codeedit_shell_integration.zsh; sourceTree = "<group>"; };
+		3E0196722A3921AC002648D8 /* codeedit_shell_integration_rc.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = codeedit_shell_integration_rc.zsh; sourceTree = "<group>"; };
 		3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = codeedit_shell_integration.bash; sourceTree = "<group>"; };
 		4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditSplitViewController.swift; sourceTree = "<group>"; };
 		4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsUnitTests.swift; sourceTree = "<group>"; };
@@ -885,6 +892,7 @@
 		6C186209298BF5A800C663EA /* RecentProjectsListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentProjectsListView.swift; sourceTree = "<group>"; };
 		6C1CC9972B1E770B0002349B /* AsyncFileIterator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncFileIterator.swift; sourceTree = "<group>"; };
 		6C1CC99A2B1E7CBC0002349B /* FindNavigatorIndexBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorIndexBar.swift; sourceTree = "<group>"; };
+		6C1F3DA12C18C55800F6DEF6 /* ShellIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellIntegrationTests.swift; sourceTree = "<group>"; };
 		6C2C155729B4F49100EA60A5 /* SplitViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewItem.swift; sourceTree = "<group>"; };
 		6C2C155929B4F4CC00EA60A5 /* Variadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variadic.swift; sourceTree = "<group>"; };
 		6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewReader.swift; sourceTree = "<group>"; };
@@ -894,6 +902,12 @@
 		6C4104E8297C970F00F472BA /* AboutDefaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDefaultView.swift; sourceTree = "<group>"; };
 		6C48B5C42C0A2835001E9955 /* FileEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileEncoding.swift; sourceTree = "<group>"; };
 		6C48B5C72C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTextStorage+isEmpty.swift"; sourceTree = "<group>"; };
+		6C48B5CD2C0C1BE4001E9955 /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
+		6C48B5D02C0D0519001E9955 /* ShellIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellIntegration.swift; sourceTree = "<group>"; };
+		6C48B5D32C0D0743001E9955 /* codeedit_shell_integration_env.zsh */ = {isa = PBXFileReference; lastKnownFileType = text; path = codeedit_shell_integration_env.zsh; sourceTree = "<group>"; };
+		6C48B5D52C0D08C5001E9955 /* codeedit_shell_integration_profile.zsh */ = {isa = PBXFileReference; lastKnownFileType = text; path = codeedit_shell_integration_profile.zsh; sourceTree = "<group>"; };
+		6C48B5D72C0D5DB5001E9955 /* codeedit_shell_integration_login.zsh */ = {isa = PBXFileReference; lastKnownFileType = text; name = codeedit_shell_integration_login.zsh; path = ../Features/TerminalEmulator/codeedit_shell_integration_login.zsh; sourceTree = "<group>"; };
+		6C48B5D92C0D5FC5001E9955 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		6C48D8F12972DAFC00D6D205 /* Env+IsFullscreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Env+IsFullscreen.swift"; sourceTree = "<group>"; };
 		6C48D8F32972DB1A00D6D205 /* Env+Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Env+Window.swift"; sourceTree = "<group>"; };
 		6C48D8F62972E5F300D6D205 /* WindowObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowObserver.swift; sourceTree = "<group>"; };
@@ -1359,7 +1373,10 @@
 			isa = PBXGroup;
 			children = (
 				3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */,
-				3E0196722A3921AC002648D8 /* codeedit_shell_integration.zsh */,
+				3E0196722A3921AC002648D8 /* codeedit_shell_integration_rc.zsh */,
+				6C48B5D52C0D08C5001E9955 /* codeedit_shell_integration_profile.zsh */,
+				6C48B5D72C0D5DB5001E9955 /* codeedit_shell_integration_login.zsh */,
+				6C48B5D32C0D0743001E9955 /* codeedit_shell_integration_env.zsh */,
 			);
 			path = ShellIntegration;
 			sourceTree = "<group>";
@@ -1732,8 +1749,8 @@
 		5879827E292ED0FB0085B254 /* TerminalEmulator */ = {
 			isa = PBXGroup;
 			children = (
-				58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */,
-				58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */,
+				6C48B5DB2C0D664A001E9955 /* Model */,
+				6C48B5DC2C0D6654001E9955 /* Views */,
 			);
 			path = TerminalEmulator;
 			sourceTree = "<group>";
@@ -1767,11 +1784,12 @@
 		587B60FE293416C900D5CD8F /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				613899BD2B6E70E200A5CAF6 /* Search */,
 				283BDCC22972F211002AFF81 /* Acknowledgements */,
 				4EE96EC82960562000FFBEA8 /* Documents */,
 				583E527429361B39001AB554 /* CodeEditUI */,
 				587B612C2934199800D5CD8F /* CodeFile */,
+				613899BD2B6E70E200A5CAF6 /* Search */,
+				6C1F3DA02C18C53C00F6DEF6 /* TerminalEmulator */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -2442,6 +2460,14 @@
 			path = FindNavigatorResultList;
 			sourceTree = "<group>";
 		};
+		6C1F3DA02C18C53C00F6DEF6 /* TerminalEmulator */ = {
+			isa = PBXGroup;
+			children = (
+				6C1F3DA12C18C55800F6DEF6 /* ShellIntegrationTests.swift */,
+			);
+			path = TerminalEmulator;
+			sourceTree = "<group>";
+		};
 		6C48B5C82C0B5F7A001E9955 /* NSTextStorage */ = {
 			isa = PBXGroup;
 			children = (
@@ -2450,6 +2476,25 @@
 			name = NSTextStorage;
 			path = CodeEdit/Utils/Extensions/NSTextStorage;
 			sourceTree = SOURCE_ROOT;
+		};
+		6C48B5DB2C0D664A001E9955 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6C48B5D92C0D5FC5001E9955 /* CurrentUser.swift */,
+				6C48B5CD2C0C1BE4001E9955 /* Shell.swift */,
+				6C48B5D02C0D0519001E9955 /* ShellIntegration.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6C48B5DC2C0D6654001E9955 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				58798280292ED0FB0085B254 /* TerminalEmulatorView.swift */,
+				58798281292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
 		};
 		6C48D8EF2972DAC300D6D205 /* Environment */ = {
 			isa = PBXGroup;
@@ -3231,12 +3276,15 @@
 				B6FF04782B6C08AC002C2C78 /* DefaultThemes in Resources */,
 				283BDCBD2972EEBD002AFF81 /* Package.resolved in Resources */,
 				B658FB3727DA9E1000EA4DBD /* Preview Assets.xcassets in Resources */,
-				3E0196732A3921AC002648D8 /* codeedit_shell_integration.zsh in Resources */,
+				3E0196732A3921AC002648D8 /* codeedit_shell_integration_rc.zsh in Resources */,
 				58A5DFA529339F6400D1BD5D /* default_keybindings.json in Resources */,
+				6C48B5D42C0D0743001E9955 /* codeedit_shell_integration_env.zsh in Resources */,
 				3E01967A2A392B45002648D8 /* codeedit_shell_integration.bash in Resources */,
 				D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */,
+				6C48B5D62C0D08C5001E9955 /* codeedit_shell_integration_profile.zsh in Resources */,
 				284DC8512978BA2600BF2770 /* .all-contributorsrc in Resources */,
 				B658FB3427DA9E1000EA4DBD /* Assets.xcassets in Resources */,
+				6C48B5D82C0D5DB5001E9955 /* codeedit_shell_integration_login.zsh in Resources */,
 				6C6BD6FC29CD152400235D17 /* codeedit.extension.appextensionpoint in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3400,6 +3448,7 @@
 				611192022B08CCDC00D4459B /* SearchIndexer+Search.swift in Sources */,
 				04BA7C272AE2E9F100584E1C /* GitClient+Push.swift in Sources */,
 				B664C3B32B96634F00816B4E /* NavigationSettingsView.swift in Sources */,
+				6C48B5D12C0D0519001E9955 /* ShellIntegration.swift in Sources */,
 				2B7A583527E4BA0100D25D4E /* AppDelegate.swift in Sources */,
 				D7012EE827E757850001E1EF /* FindNavigatorView.swift in Sources */,
 				58A5DF8029325B5A00D1BD5D /* GitClient.swift in Sources */,
@@ -3648,6 +3697,7 @@
 				B65B11042B09DB1C002852CF /* GitClient+Fetch.swift in Sources */,
 				5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */,
 				B6E41C7929DE02800088F9F4 /* AccountSelectionView.swift in Sources */,
+				6C48B5CE2C0C1BE4001E9955 /* Shell.swift in Sources */,
 				6CA1AE952B46950000378EAB /* EditorInstance.swift in Sources */,
 				30AB4EBB2BF718A100ED4431 /* DeveloperSettings.swift in Sources */,
 				B6C4F2A92B3CB00100B2B140 /* CommitDetailsHeaderView.swift in Sources */,
@@ -3661,6 +3711,7 @@
 				61A53A7E2B4449870093BF8A /* WorkspaceDocument+Find.swift in Sources */,
 				6CABB19E29C5591D00340467 /* NSTableViewWrapper.swift in Sources */,
 				5879821B292D92370085B254 /* SearchResultMatchModel.swift in Sources */,
+				6C48B5DA2C0D5FC5001E9955 /* CurrentUser.swift in Sources */,
 				04BA7C1E2AE2D8A000584E1C /* GitClient+Clone.swift in Sources */,
 				58F2EB09292FB2B0004A9BDE /* TerminalSettings.swift in Sources */,
 				6C578D8429CD343800DC73B2 /* ExtensionDetailView.swift in Sources */,
@@ -3785,6 +3836,7 @@
 				587B60F82934124200D5CD8F /* CEWorkspaceFileManagerTests.swift in Sources */,
 				6130535F2B23A31300D767E3 /* MemorySearchTests.swift in Sources */,
 				587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */,
+				6C1F3DA22C18C55800F6DEF6 /* ShellIntegrationTests.swift in Sources */,
 				283BDCC52972F236002AFF81 /* AcknowledgementsTests.swift in Sources */,
 				4EE96ECB2960565E00FFBEA8 /* DocumentsUnitTests.swift in Sources */,
 				4EE96ECE296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift in Sources */,

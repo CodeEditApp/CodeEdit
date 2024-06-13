@@ -1,17 +1,54 @@
-#!/bin/sh
-
 #  codeedit_shell_intergration.bash
 #  CodeEdit
 #
 #  Created by Qian Qian "Cubik" (@Cubik65536) on 2023-06-13.
 #
 #  This script is used to configure bash shells
-#  so the terminal title would be setted properly
+#  so the terminal title can be set properly
 #  with shell name or program's command name
 #
 #  bash-preexec.sh (https://github.com/rcaloras/bash-preexec, licensed under MIT)
 #  is used so we can use ZSH-like 'preexec' and 'precmd' functions
 #
+#  Parts of this file also use modified versions of a source file from Microsoft's VSCode. MIT License.
+#  Permalink to original, licensed file:
+#  https://github.com/microsoft/vscode/blob/60d7343892f10e0c5f09cb55a6a3f268eb0dd4fb/src/vs/workbench/contrib/terminal/browser/media/shellIntegration-bash.sh
+
+# BEGIN: Modified Microsoft code
+
+# Prevent the script recursing when setting up
+if [[ -n "${CE_SHELL_INTEGRATION}" ]]; then
+	builtin return
+fi
+
+CE_SHELL_INTEGRATION=1
+
+# Run relevant rc/profile only if shell integration has been injected, not when run manually
+if [ "$CE_INJECTION" == "1" ]; then
+	if [ -z "$CE_SHELL_LOGIN" ]; then
+		if [ -r ~/.bashrc ]; then
+			. ~/.bashrc
+		fi
+	else
+		# Imitate -l because --init-file doesn't support it:
+		# run the first of these files that exists
+		if [ -r /etc/profile ]; then
+			. /etc/profile
+		fi
+		# execute the first that exists
+		if [ -r ~/.bash_profile ]; then
+			. ~/.bash_profile
+		elif [ -r ~/.bash_login ]; then
+			. ~/.bash_login
+		elif [ -r ~/.profile ]; then
+			. ~/.profile
+		fi
+		builtin unset CE_SHELL_LOGIN
+	fi
+	builtin unset CE_INJECTION
+fi
+
+# END: Modified Microsoft code
 
 # Wrap bash-preexec.sh in a function so that, if it exits early due to having
 # been sourced elsewhere, it doesn't exit our entire script.
