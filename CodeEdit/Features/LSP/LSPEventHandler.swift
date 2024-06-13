@@ -67,7 +67,6 @@ extension LSPService {
         case let .windowWorkDoneProgressCreate(params, handler):
             print("windowWorkDoneProgressCreate: \(params)")
 
-        // TODO:
         default:
             print()
         }
