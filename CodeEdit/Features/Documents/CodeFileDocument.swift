@@ -65,7 +65,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
     /// type or any other form of data representation.
     var utType: UTType? {
-        if content != nil {
+        if content != nil && content?.isEmpty ?? true {
             return .text
         }
         guard let fileType, let type = UTType(fileType) else {
