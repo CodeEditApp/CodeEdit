@@ -86,11 +86,10 @@ private extension TerminalSettingsView {
             format: .number
         )
     }
-    
+
     @ViewBuilder private var fontWeightSelector: some View {
         FontWeightPicker(selection: $settings.font.weight)
     }
-
 
     @ViewBuilder private var injectionOptions: some View {
         VStack {
