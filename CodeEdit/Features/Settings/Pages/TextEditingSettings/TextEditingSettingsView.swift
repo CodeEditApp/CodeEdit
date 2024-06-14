@@ -22,6 +22,7 @@ struct TextEditingSettingsView: View {
             Section {
                 fontSelector
                 fontSizeSelector
+                fontWeightSelector
                 lineHeight
                 letterSpacing
             }
@@ -49,6 +50,10 @@ private extension TextEditingSettingsView {
             step: 1,
             format: .number
         )
+    }
+
+    @ViewBuilder private var fontWeightSelector: some View {
+        FontWeightPicker(selection: $textEditing.font.weight)
     }
 
     @ViewBuilder private var autocompleteBraces: some View {
