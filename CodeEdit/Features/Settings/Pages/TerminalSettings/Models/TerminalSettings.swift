@@ -103,7 +103,7 @@ extension SettingsData {
 
         /// The name of the custom font
         var name: String = "SF Mono"
-        
+
         /// The weight of the custom font
         var weight: NSFont.Weight = .medium
 
