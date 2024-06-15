@@ -7,41 +7,17 @@
 
 import Foundation
 
-struct AnyHashableData: Hashable {
-    private let value: Any
-    private let hashValueFunc: () -> Int
-    private let equalsFunc: (Any) -> Bool
-
-    init<T: Hashable>(_ value: T) {
-        self.value = value
-        self.hashValueFunc = { value.hashValue }
-        self.equalsFunc = { ($0 as? T) == value }
-    }
-
-    static func == (lhs: AnyHashableData, rhs: AnyHashableData) -> Bool {
-        return lhs.equalsFunc(rhs.value)
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(hashValueFunc())
-    }
-
-    var description: String {
-        return String(describing: value)
-    }
-}
-
 struct NoExtraData: Hashable { }
 
 struct CacheKey: Hashable {
     let uri: String
     let requestType: String
-    let extraData: AnyHashableData?
+    let extraData: AnyHashable?
 
-    init<ExtraData: Hashable>(uri: String, requestType: String, extraData: ExtraData? = nil) {
+    init(uri: String, requestType: String, extraData: AnyHashable? = nil) {
         self.uri = uri
         self.requestType = requestType
-        self.extraData = extraData.map(AnyHashableData.init)
+        self.extraData = extraData
     }
 
     static func == (lhs: CacheKey, rhs: CacheKey) -> Bool {
