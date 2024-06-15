@@ -1,5 +1,5 @@
 //
-//  LanguageClient+DocumentHighlight.swift
+//  LanguageServer+DocumentHighlight.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.

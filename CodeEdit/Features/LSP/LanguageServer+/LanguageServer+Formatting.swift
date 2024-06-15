@@ -1,5 +1,5 @@
 //
-//  LanguageClient+Formatting.swift
+//  LanguageServer+Formatting.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.

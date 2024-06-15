@@ -67,28 +67,28 @@
 		30AB4EBB2BF718A100ED4431 /* DeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EBA2BF718A100ED4431 /* DeveloperSettings.swift */; };
 		30AB4EBD2BF71CA800ED4431 /* DeveloperSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EBC2BF71CA800ED4431 /* DeveloperSettingsView.swift */; };
 		30AB4EC22BF7253200ED4431 /* KeyValueTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */; };
-		30B087FC2C0D53080063A882 /* LanguageClient+CallHierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087DF2C0D53080063A882 /* LanguageClient+CallHierarchy.swift */; };
-		30B087FE2C0D53080063A882 /* LanguageClient+ColorPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E12C0D53080063A882 /* LanguageClient+ColorPresentation.swift */; };
-		30B087FF2C0D53080063A882 /* LanguageClient+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E22C0D53080063A882 /* LanguageClient+Completion.swift */; };
-		30B088002C0D53080063A882 /* LanguageClient+Declaration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E32C0D53080063A882 /* LanguageClient+Declaration.swift */; };
-		30B088012C0D53080063A882 /* LanguageClient+Definition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E42C0D53080063A882 /* LanguageClient+Definition.swift */; };
-		30B088022C0D53080063A882 /* LanguageClient+Diagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E52C0D53080063A882 /* LanguageClient+Diagnostics.swift */; };
-		30B088032C0D53080063A882 /* LanguageClient+DocumentColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E62C0D53080063A882 /* LanguageClient+DocumentColor.swift */; };
-		30B088042C0D53080063A882 /* LanguageClient+DocumentHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E72C0D53080063A882 /* LanguageClient+DocumentHighlight.swift */; };
-		30B088052C0D53080063A882 /* LanguageClient+DocumentLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E82C0D53080063A882 /* LanguageClient+DocumentLink.swift */; };
-		30B088062C0D53080063A882 /* LanguageClient+DocumentSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E92C0D53080063A882 /* LanguageClient+DocumentSymbol.swift */; };
-		30B088072C0D53080063A882 /* LanguageClient+DocumentUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087EA2C0D53080063A882 /* LanguageClient+DocumentUtil.swift */; };
-		30B088082C0D53080063A882 /* LanguageClient+FoldingRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087EB2C0D53080063A882 /* LanguageClient+FoldingRange.swift */; };
-		30B088092C0D53080063A882 /* LanguageClient+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087EC2C0D53080063A882 /* LanguageClient+Formatting.swift */; };
-		30B0880A2C0D53080063A882 /* LanguageClient+Hover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087ED2C0D53080063A882 /* LanguageClient+Hover.swift */; };
-		30B0880B2C0D53080063A882 /* LanguageClient+Implementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087EE2C0D53080063A882 /* LanguageClient+Implementation.swift */; };
-		30B0880C2C0D53080063A882 /* LanguageClient+InlayHint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087EF2C0D53080063A882 /* LanguageClient+InlayHint.swift */; };
-		30B0880D2C0D53080063A882 /* LanguageClient+References.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F02C0D53080063A882 /* LanguageClient+References.swift */; };
-		30B0880E2C0D53080063A882 /* LanguageClient+Rename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F12C0D53080063A882 /* LanguageClient+Rename.swift */; };
-		30B0880F2C0D53080063A882 /* LanguageClient+SelectionRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F22C0D53080063A882 /* LanguageClient+SelectionRange.swift */; };
-		30B088102C0D53080063A882 /* LanguageClient+SemanticTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F32C0D53080063A882 /* LanguageClient+SemanticTokens.swift */; };
-		30B088112C0D53080063A882 /* LanguageClient+SignatureHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F42C0D53080063A882 /* LanguageClient+SignatureHelp.swift */; };
-		30B088122C0D53080063A882 /* LanguageClient+TypeDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F52C0D53080063A882 /* LanguageClient+TypeDefinition.swift */; };
+		30B087FC2C0D53080063A882 /* LanguageServer+CallHierarchy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087DF2C0D53080063A882 /* LanguageServer+CallHierarchy.swift */; };
+		30B087FE2C0D53080063A882 /* LanguageServer+ColorPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E12C0D53080063A882 /* LanguageServer+ColorPresentation.swift */; };
+		30B087FF2C0D53080063A882 /* LanguageServer+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E22C0D53080063A882 /* LanguageServer+Completion.swift */; };
+		30B088002C0D53080063A882 /* LanguageServer+Declaration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E32C0D53080063A882 /* LanguageServer+Declaration.swift */; };
+		30B088012C0D53080063A882 /* LanguageServer+Definition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E42C0D53080063A882 /* LanguageServer+Definition.swift */; };
+		30B088022C0D53080063A882 /* LanguageServer+Diagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E52C0D53080063A882 /* LanguageServer+Diagnostics.swift */; };
+		30B088032C0D53080063A882 /* LanguageServer+DocumentColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E62C0D53080063A882 /* LanguageServer+DocumentColor.swift */; };
+		30B088042C0D53080063A882 /* LanguageServer+DocumentHighlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E72C0D53080063A882 /* LanguageServer+DocumentHighlight.swift */; };
+		30B088052C0D53080063A882 /* LanguageServer+DocumentLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E82C0D53080063A882 /* LanguageServer+DocumentLink.swift */; };
+		30B088062C0D53080063A882 /* LanguageServer+DocumentSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087E92C0D53080063A882 /* LanguageServer+DocumentSymbol.swift */; };
+		30B088072C0D53080063A882 /* LanguageServer+DocumentUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087EA2C0D53080063A882 /* LanguageServer+DocumentUtil.swift */; };
+		30B088082C0D53080063A882 /* LanguageServer+FoldingRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087EB2C0D53080063A882 /* LanguageServer+FoldingRange.swift */; };
+		30B088092C0D53080063A882 /* LanguageServer+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087EC2C0D53080063A882 /* LanguageServer+Formatting.swift */; };
+		30B0880A2C0D53080063A882 /* LanguageServer+Hover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087ED2C0D53080063A882 /* LanguageServer+Hover.swift */; };
+		30B0880B2C0D53080063A882 /* LanguageServer+Implementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087EE2C0D53080063A882 /* LanguageServer+Implementation.swift */; };
+		30B0880C2C0D53080063A882 /* LanguageServer+InlayHint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087EF2C0D53080063A882 /* LanguageServer+InlayHint.swift */; };
+		30B0880D2C0D53080063A882 /* LanguageServer+References.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F02C0D53080063A882 /* LanguageServer+References.swift */; };
+		30B0880E2C0D53080063A882 /* LanguageServer+Rename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F12C0D53080063A882 /* LanguageServer+Rename.swift */; };
+		30B0880F2C0D53080063A882 /* LanguageServer+SelectionRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F22C0D53080063A882 /* LanguageServer+SelectionRange.swift */; };
+		30B088102C0D53080063A882 /* LanguageServer+SemanticTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F32C0D53080063A882 /* LanguageServer+SemanticTokens.swift */; };
+		30B088112C0D53080063A882 /* LanguageServer+SignatureHelp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F42C0D53080063A882 /* LanguageServer+SignatureHelp.swift */; };
+		30B088122C0D53080063A882 /* LanguageServer+TypeDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F52C0D53080063A882 /* LanguageServer+TypeDefinition.swift */; };
 		30B088142C0D53080063A882 /* LanguageServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F72C0D53080063A882 /* LanguageServer.swift */; };
 		30B088152C0D53080063A882 /* LSPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F82C0D53080063A882 /* LSPService.swift */; };
 		30B088162C0D53080063A882 /* LSPCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B087F92C0D53080063A882 /* LSPCache.swift */; };
@@ -383,6 +383,7 @@
 		6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6B829BFE34900495C54 /* HelpCommands.swift */; };
 		6C82D6BC29C00CD900495C54 /* FirstResponderPropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */; };
 		6C82D6C629C012AD00495C54 /* NSApp+openWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C82D6C529C012AD00495C54 /* NSApp+openWindow.swift */; };
+		6C85BB3C2C1E3D1000EB5DEF /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C85BB3B2C1E3D1000EB5DEF /* CodeEditKit */; };
 		6C91D57229B176FF0059A90D /* EditorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C91D57129B176FF0059A90D /* EditorManager.swift */; };
 		6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */; };
 		6CA1AE952B46950000378EAB /* EditorInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA1AE942B46950000378EAB /* EditorInstance.swift */; };
@@ -668,28 +669,28 @@
 		30AB4EBA2BF718A100ED4431 /* DeveloperSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettings.swift; sourceTree = "<group>"; };
 		30AB4EBC2BF71CA800ED4431 /* DeveloperSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsView.swift; sourceTree = "<group>"; };
 		30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueTable.swift; sourceTree = "<group>"; };
-		30B087DF2C0D53080063A882 /* LanguageClient+CallHierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+CallHierarchy.swift"; sourceTree = "<group>"; };
-		30B087E12C0D53080063A882 /* LanguageClient+ColorPresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+ColorPresentation.swift"; sourceTree = "<group>"; };
-		30B087E22C0D53080063A882 /* LanguageClient+Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Completion.swift"; sourceTree = "<group>"; };
-		30B087E32C0D53080063A882 /* LanguageClient+Declaration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Declaration.swift"; sourceTree = "<group>"; };
-		30B087E42C0D53080063A882 /* LanguageClient+Definition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Definition.swift"; sourceTree = "<group>"; };
-		30B087E52C0D53080063A882 /* LanguageClient+Diagnostics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Diagnostics.swift"; sourceTree = "<group>"; };
-		30B087E62C0D53080063A882 /* LanguageClient+DocumentColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+DocumentColor.swift"; sourceTree = "<group>"; };
-		30B087E72C0D53080063A882 /* LanguageClient+DocumentHighlight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+DocumentHighlight.swift"; sourceTree = "<group>"; };
-		30B087E82C0D53080063A882 /* LanguageClient+DocumentLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+DocumentLink.swift"; sourceTree = "<group>"; };
-		30B087E92C0D53080063A882 /* LanguageClient+DocumentSymbol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+DocumentSymbol.swift"; sourceTree = "<group>"; };
-		30B087EA2C0D53080063A882 /* LanguageClient+DocumentUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+DocumentUtil.swift"; sourceTree = "<group>"; };
-		30B087EB2C0D53080063A882 /* LanguageClient+FoldingRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+FoldingRange.swift"; sourceTree = "<group>"; };
-		30B087EC2C0D53080063A882 /* LanguageClient+Formatting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Formatting.swift"; sourceTree = "<group>"; };
-		30B087ED2C0D53080063A882 /* LanguageClient+Hover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Hover.swift"; sourceTree = "<group>"; };
-		30B087EE2C0D53080063A882 /* LanguageClient+Implementation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Implementation.swift"; sourceTree = "<group>"; };
-		30B087EF2C0D53080063A882 /* LanguageClient+InlayHint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+InlayHint.swift"; sourceTree = "<group>"; };
-		30B087F02C0D53080063A882 /* LanguageClient+References.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+References.swift"; sourceTree = "<group>"; };
-		30B087F12C0D53080063A882 /* LanguageClient+Rename.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+Rename.swift"; sourceTree = "<group>"; };
-		30B087F22C0D53080063A882 /* LanguageClient+SelectionRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+SelectionRange.swift"; sourceTree = "<group>"; };
-		30B087F32C0D53080063A882 /* LanguageClient+SemanticTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+SemanticTokens.swift"; sourceTree = "<group>"; };
-		30B087F42C0D53080063A882 /* LanguageClient+SignatureHelp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+SignatureHelp.swift"; sourceTree = "<group>"; };
-		30B087F52C0D53080063A882 /* LanguageClient+TypeDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageClient+TypeDefinition.swift"; sourceTree = "<group>"; };
+		30B087DF2C0D53080063A882 /* LanguageServer+CallHierarchy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+CallHierarchy.swift"; sourceTree = "<group>"; };
+		30B087E12C0D53080063A882 /* LanguageServer+ColorPresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+ColorPresentation.swift"; sourceTree = "<group>"; };
+		30B087E22C0D53080063A882 /* LanguageServer+Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+Completion.swift"; sourceTree = "<group>"; };
+		30B087E32C0D53080063A882 /* LanguageServer+Declaration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+Declaration.swift"; sourceTree = "<group>"; };
+		30B087E42C0D53080063A882 /* LanguageServer+Definition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+Definition.swift"; sourceTree = "<group>"; };
+		30B087E52C0D53080063A882 /* LanguageServer+Diagnostics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+Diagnostics.swift"; sourceTree = "<group>"; };
+		30B087E62C0D53080063A882 /* LanguageServer+DocumentColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+DocumentColor.swift"; sourceTree = "<group>"; };
+		30B087E72C0D53080063A882 /* LanguageServer+DocumentHighlight.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+DocumentHighlight.swift"; sourceTree = "<group>"; };
+		30B087E82C0D53080063A882 /* LanguageServer+DocumentLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+DocumentLink.swift"; sourceTree = "<group>"; };
+		30B087E92C0D53080063A882 /* LanguageServer+DocumentSymbol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+DocumentSymbol.swift"; sourceTree = "<group>"; };
+		30B087EA2C0D53080063A882 /* LanguageServer+DocumentUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+DocumentUtil.swift"; sourceTree = "<group>"; };
+		30B087EB2C0D53080063A882 /* LanguageServer+FoldingRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+FoldingRange.swift"; sourceTree = "<group>"; };
+		30B087EC2C0D53080063A882 /* LanguageServer+Formatting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+Formatting.swift"; sourceTree = "<group>"; };
+		30B087ED2C0D53080063A882 /* LanguageServer+Hover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+Hover.swift"; sourceTree = "<group>"; };
+		30B087EE2C0D53080063A882 /* LanguageServer+Implementation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+Implementation.swift"; sourceTree = "<group>"; };
+		30B087EF2C0D53080063A882 /* LanguageServer+InlayHint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+InlayHint.swift"; sourceTree = "<group>"; };
+		30B087F02C0D53080063A882 /* LanguageServer+References.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+References.swift"; sourceTree = "<group>"; };
+		30B087F12C0D53080063A882 /* LanguageServer+Rename.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+Rename.swift"; sourceTree = "<group>"; };
+		30B087F22C0D53080063A882 /* LanguageServer+SelectionRange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+SelectionRange.swift"; sourceTree = "<group>"; };
+		30B087F32C0D53080063A882 /* LanguageServer+SemanticTokens.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+SemanticTokens.swift"; sourceTree = "<group>"; };
+		30B087F42C0D53080063A882 /* LanguageServer+SignatureHelp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+SignatureHelp.swift"; sourceTree = "<group>"; };
+		30B087F52C0D53080063A882 /* LanguageServer+TypeDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LanguageServer+TypeDefinition.swift"; sourceTree = "<group>"; };
 		30B087F72C0D53080063A882 /* LanguageServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageServer.swift; sourceTree = "<group>"; };
 		30B087F82C0D53080063A882 /* LSPService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPService.swift; sourceTree = "<group>"; };
 		30B087F92C0D53080063A882 /* LSPCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPCache.swift; sourceTree = "<group>"; };
@@ -1149,6 +1150,7 @@
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6CBE1D002B720565003AC32E /* CodeEditSourceEditor in Frameworks */,
+				6C85BB3C2C1E3D1000EB5DEF /* CodeEditKit in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */,
 				30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */,
@@ -1412,7 +1414,7 @@
 		30B087FB2C0D53080063A882 /* LSP */ = {
 			isa = PBXGroup;
 			children = (
-				30B0881E2C12626B0063A882 /* LanguageClient */,
+				30B0881E2C12626B0063A882 /* LanguageServer+ */,
 				30B087F72C0D53080063A882 /* LanguageServer.swift */,
 				30B087F82C0D53080063A882 /* LSPService.swift */,
 				30B087F92C0D53080063A882 /* LSPCache.swift */,
@@ -1422,33 +1424,33 @@
 			path = LSP;
 			sourceTree = "<group>";
 		};
-		30B0881E2C12626B0063A882 /* LanguageClient */ = {
+		30B0881E2C12626B0063A882 /* LanguageServer+ */ = {
 			isa = PBXGroup;
 			children = (
-				30B087DF2C0D53080063A882 /* LanguageClient+CallHierarchy.swift */,
-				30B087E12C0D53080063A882 /* LanguageClient+ColorPresentation.swift */,
-				30B087E22C0D53080063A882 /* LanguageClient+Completion.swift */,
-				30B087E32C0D53080063A882 /* LanguageClient+Declaration.swift */,
-				30B087E42C0D53080063A882 /* LanguageClient+Definition.swift */,
-				30B087E52C0D53080063A882 /* LanguageClient+Diagnostics.swift */,
-				30B087E62C0D53080063A882 /* LanguageClient+DocumentColor.swift */,
-				30B087E72C0D53080063A882 /* LanguageClient+DocumentHighlight.swift */,
-				30B087E82C0D53080063A882 /* LanguageClient+DocumentLink.swift */,
-				30B087E92C0D53080063A882 /* LanguageClient+DocumentSymbol.swift */,
-				30B087EA2C0D53080063A882 /* LanguageClient+DocumentUtil.swift */,
-				30B087EB2C0D53080063A882 /* LanguageClient+FoldingRange.swift */,
-				30B087EC2C0D53080063A882 /* LanguageClient+Formatting.swift */,
-				30B087ED2C0D53080063A882 /* LanguageClient+Hover.swift */,
-				30B087EE2C0D53080063A882 /* LanguageClient+Implementation.swift */,
-				30B087EF2C0D53080063A882 /* LanguageClient+InlayHint.swift */,
-				30B087F02C0D53080063A882 /* LanguageClient+References.swift */,
-				30B087F12C0D53080063A882 /* LanguageClient+Rename.swift */,
-				30B087F22C0D53080063A882 /* LanguageClient+SelectionRange.swift */,
-				30B087F32C0D53080063A882 /* LanguageClient+SemanticTokens.swift */,
-				30B087F42C0D53080063A882 /* LanguageClient+SignatureHelp.swift */,
-				30B087F52C0D53080063A882 /* LanguageClient+TypeDefinition.swift */,
+				30B087DF2C0D53080063A882 /* LanguageServer+CallHierarchy.swift */,
+				30B087E12C0D53080063A882 /* LanguageServer+ColorPresentation.swift */,
+				30B087E22C0D53080063A882 /* LanguageServer+Completion.swift */,
+				30B087E32C0D53080063A882 /* LanguageServer+Declaration.swift */,
+				30B087E42C0D53080063A882 /* LanguageServer+Definition.swift */,
+				30B087E52C0D53080063A882 /* LanguageServer+Diagnostics.swift */,
+				30B087E62C0D53080063A882 /* LanguageServer+DocumentColor.swift */,
+				30B087E72C0D53080063A882 /* LanguageServer+DocumentHighlight.swift */,
+				30B087E82C0D53080063A882 /* LanguageServer+DocumentLink.swift */,
+				30B087E92C0D53080063A882 /* LanguageServer+DocumentSymbol.swift */,
+				30B087EA2C0D53080063A882 /* LanguageServer+DocumentUtil.swift */,
+				30B087EB2C0D53080063A882 /* LanguageServer+FoldingRange.swift */,
+				30B087EC2C0D53080063A882 /* LanguageServer+Formatting.swift */,
+				30B087ED2C0D53080063A882 /* LanguageServer+Hover.swift */,
+				30B087EE2C0D53080063A882 /* LanguageServer+Implementation.swift */,
+				30B087EF2C0D53080063A882 /* LanguageServer+InlayHint.swift */,
+				30B087F02C0D53080063A882 /* LanguageServer+References.swift */,
+				30B087F12C0D53080063A882 /* LanguageServer+Rename.swift */,
+				30B087F22C0D53080063A882 /* LanguageServer+SelectionRange.swift */,
+				30B087F32C0D53080063A882 /* LanguageServer+SemanticTokens.swift */,
+				30B087F42C0D53080063A882 /* LanguageServer+SignatureHelp.swift */,
+				30B087F52C0D53080063A882 /* LanguageServer+TypeDefinition.swift */,
 			);
-			path = LanguageClient;
+			path = "LanguageServer+";
 			sourceTree = "<group>";
 		};
 		3E0196712A392170002648D8 /* ShellIntegration */ = {
@@ -3205,6 +3207,7 @@
 				6C0617D52BDB4432008C9C42 /* LogStream */,
 				30CB64902C16CA8100CC8A9E /* LanguageServerProtocol */,
 				30CB64932C16CA9100CC8A9E /* LanguageClient */,
+				6C85BB3B2C1E3D1000EB5DEF /* CodeEditKit */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -3301,7 +3304,7 @@
 				6C0617D42BDB4432008C9C42 /* XCRemoteSwiftPackageReference "LogStream" */,
 				30CB648F2C16CA8100CC8A9E /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 				30CB64922C16CA9100CC8A9E /* XCRemoteSwiftPackageReference "LanguageClient" */,
-				30CB64952C16CAA200CC8A9E /* XCLocalSwiftPackageReference "../CodeEditKit" */,
+				6C85BB3A2C1E3D1000EB5DEF /* XCLocalSwiftPackageReference "../CodeEditKit" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -3424,7 +3427,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				58798285292ED0FB0085B254 /* TerminalEmulatorView+Coordinator.swift in Sources */,
-				30B0880E2C0D53080063A882 /* LanguageClient+Rename.swift in Sources */,
+				30B0880E2C0D53080063A882 /* LanguageServer+Rename.swift in Sources */,
 				587B9E7D29301D8F00AC7927 /* GitHubPullRequestRouter.swift in Sources */,
 				B67DB0EF2AF3E381002DC647 /* PaneTextField.swift in Sources */,
 				5878DA842918642000DD95A3 /* ParsePackagesResolved.swift in Sources */,
@@ -3460,7 +3463,7 @@
 				6C82D6C629C012AD00495C54 /* NSApp+openWindow.swift in Sources */,
 				6C14CEB028777D3C001468FE /* FindNavigatorListViewController.swift in Sources */,
 				587B9E7F29301D8F00AC7927 /* GitHubUserRouter.swift in Sources */,
-				30B088042C0D53080063A882 /* LanguageClient+DocumentHighlight.swift in Sources */,
+				30B088042C0D53080063A882 /* LanguageServer+DocumentHighlight.swift in Sources */,
 				B62AEDBC2A210DBB009A9F52 /* UtilityAreaTerminalTab.swift in Sources */,
 				B67DB0F62AFC2A7A002DC647 /* FindNavigatorToolbarBottom.swift in Sources */,
 				04BA7C142AE2AA7300584E1C /* GitCloneViewModel.swift in Sources */,
@@ -3471,7 +3474,7 @@
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
 				30B088152C0D53080063A882 /* LSPService.swift in Sources */,
 				613899B92B6E704500A5CAF6 /* String+Normalise.swift in Sources */,
-				30B088002C0D53080063A882 /* LanguageClient+Declaration.swift in Sources */,
+				30B088002C0D53080063A882 /* LanguageServer+Declaration.swift in Sources */,
 				04BA7C192AE2D7C600584E1C /* GitClient+Branches.swift in Sources */,
 				587B9E8829301D8F00AC7927 /* GitHubFiles.swift in Sources */,
 				77A01E232BB423A800F0EA38 /* CEWorkspaceSettingsPage.swift in Sources */,
@@ -3481,7 +3484,7 @@
 				58F2EB08292FB2B0004A9BDE /* TextEditingSettings.swift in Sources */,
 				201169DB2837B34000F92B46 /* SourceControlNavigatorChangedFileView.swift in Sources */,
 				5882252E292C280D00E83CDE /* UtilityAreaMaximizeButton.swift in Sources */,
-				30B0880D2C0D53080063A882 /* LanguageClient+References.swift in Sources */,
+				30B0880D2C0D53080063A882 /* LanguageServer+References.swift in Sources */,
 				77A01E2E2BB4261200F0EA38 /* CEWorkspaceSettings.swift in Sources */,
 				6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */,
 				587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */,
@@ -3502,7 +3505,7 @@
 				B6C4F2A62B3CABD200B2B140 /* HistoryInspectorItemView.swift in Sources */,
 				B65B10FE2B08B07D002852CF /* SourceControlNavigatorChangesList.swift in Sources */,
 				58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */,
-				30B087FE2C0D53080063A882 /* LanguageClient+ColorPresentation.swift in Sources */,
+				30B087FE2C0D53080063A882 /* LanguageServer+ColorPresentation.swift in Sources */,
 				66F2C8C42BEAA939004674F7 /* PDFFileView.swift in Sources */,
 				611192042B08CCED00D4459B /* SearchIndexer+ProgressiveSearch.swift in Sources */,
 				611192022B08CCDC00D4459B /* SearchIndexer+Search.swift in Sources */,
@@ -3555,7 +3558,7 @@
 				B66A4E4C29C9179B004573B4 /* CodeEditApp.swift in Sources */,
 				661EF7B82BEE215300C3E577 /* ImageFileView.swift in Sources */,
 				4E7F066629602E7B00BB3C12 /* CodeEditSplitViewController.swift in Sources */,
-				30B088022C0D53080063A882 /* LanguageClient+Diagnostics.swift in Sources */,
+				30B088022C0D53080063A882 /* LanguageServer+Diagnostics.swift in Sources */,
 				587B9E8D29301D8F00AC7927 /* GitHubAccount.swift in Sources */,
 				201169E72837B5CA00F92B46 /* SourceControlManager.swift in Sources */,
 				58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */,
@@ -3563,8 +3566,8 @@
 				6C7F37FE2A3EA6FA00217B83 /* View+focusedValue.swift in Sources */,
 				B6C4F2A12B3CA37500B2B140 /* SourceControlNavigatorHistoryView.swift in Sources */,
 				6CBE1CFB2B71DAA6003AC32E /* Loopable.swift in Sources */,
-				30B088092C0D53080063A882 /* LanguageClient+Formatting.swift in Sources */,
-				30B088102C0D53080063A882 /* LanguageClient+SemanticTokens.swift in Sources */,
+				30B088092C0D53080063A882 /* LanguageServer+Formatting.swift in Sources */,
+				30B088102C0D53080063A882 /* LanguageServer+SemanticTokens.swift in Sources */,
 				B6C6A43029771F7100A3D28F /* EditorTabBackground.swift in Sources */,
 				B60718372B170638009CDAB4 /* SourceControlNavigatorRenameBranchView.swift in Sources */,
 				6C578D8129CD294800DC73B2 /* ExtensionActivatorView.swift in Sources */,
@@ -3574,7 +3577,7 @@
 				9D36E1BF2B5E7D7500443C41 /* GitBranchesGroup.swift in Sources */,
 				587B9E8229301D8F00AC7927 /* GitHubPreviewHeader.swift in Sources */,
 				611191FC2B08CCB800D4459B /* SearchIndexer+AsyncController.swift in Sources */,
-				30B088112C0D53080063A882 /* LanguageClient+SignatureHelp.swift in Sources */,
+				30B088112C0D53080063A882 /* LanguageServer+SignatureHelp.swift in Sources */,
 				6C578D8929CD36E400DC73B2 /* Commands+ForEach.swift in Sources */,
 				611192082B08CCFD00D4459B /* SearchIndexer+Terms.swift in Sources */,
 				28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */,
@@ -3589,7 +3592,7 @@
 				613899B12B6E6FDC00A5CAF6 /* Collection+FuzzySearch.swift in Sources */,
 				581550D129FBD30400684881 /* TextTableViewCell.swift in Sources */,
 				587B9E6629301D8F00AC7927 /* GitLabProjectHook.swift in Sources */,
-				30B088032C0D53080063A882 /* LanguageClient+DocumentColor.swift in Sources */,
+				30B088032C0D53080063A882 /* LanguageServer+DocumentColor.swift in Sources */,
 				587B9E9329301D8F00AC7927 /* BitBucketOAuthConfiguration.swift in Sources */,
 				6C18620A298BF5A800C663EA /* RecentProjectsListView.swift in Sources */,
 				58F2EB0A292FB2B0004A9BDE /* SettingsData.swift in Sources */,
@@ -3655,7 +3658,7 @@
 				669BC4082BED306400D1197C /* AnyFileView.swift in Sources */,
 				20D839AE280E0CA700B27357 /* HistoryPopoverView.swift in Sources */,
 				B6E41C7029DD157F0088F9F4 /* AccountsSettingsView.swift in Sources */,
-				30B088122C0D53080063A882 /* LanguageClient+TypeDefinition.swift in Sources */,
+				30B088122C0D53080063A882 /* LanguageServer+TypeDefinition.swift in Sources */,
 				6CFF967A29BEBD2400182D6F /* ViewCommands.swift in Sources */,
 				850C631229D6B03400E1444C /* SettingsPage.swift in Sources */,
 				587B9E6729301D8F00AC7927 /* GitLabEventData.swift in Sources */,
@@ -3722,7 +3725,7 @@
 				587B9E7129301D8F00AC7927 /* GitURLSession.swift in Sources */,
 				610C0FDA2B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift in Sources */,
 				5882252C292C280D00E83CDE /* UtilityAreaView.swift in Sources */,
-				30B088072C0D53080063A882 /* LanguageClient+DocumentUtil.swift in Sources */,
+				30B088072C0D53080063A882 /* LanguageServer+DocumentUtil.swift in Sources */,
 				2847019E27FDDF7600F87B6B /* ProjectNavigatorOutlineView.swift in Sources */,
 				B607184C2B17E037009CDAB4 /* SourceControlStashChangesView.swift in Sources */,
 				6C14CEB32877A68F001468FE /* FindNavigatorMatchListCell.swift in Sources */,
@@ -3738,15 +3741,15 @@
 				286471AB27ED51FD0039369D /* ProjectNavigatorView.swift in Sources */,
 				B6E41C7C29DE2B110088F9F4 /* AccountsSettingsProviderRow.swift in Sources */,
 				B62AEDB52A1FE295009A9F52 /* UtilityAreaDebugView.swift in Sources */,
-				30B0880B2C0D53080063A882 /* LanguageClient+Implementation.swift in Sources */,
+				30B0880B2C0D53080063A882 /* LanguageServer+Implementation.swift in Sources */,
 				6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */,
-				30B088062C0D53080063A882 /* LanguageClient+DocumentSymbol.swift in Sources */,
+				30B088062C0D53080063A882 /* LanguageServer+DocumentSymbol.swift in Sources */,
 				04BA7C0E2AE2A76E00584E1C /* SourceControlNavigatorChangesCommitView.swift in Sources */,
 				615AA21A2B0CFD480013FCCC /* LazyStringLoader.swift in Sources */,
 				6CAAF68A29BC9C2300A1F48A /* (null) in Sources */,
 				30AB4EBD2BF71CA800ED4431 /* DeveloperSettingsView.swift in Sources */,
 				6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */,
-				30B087FF2C0D53080063A882 /* LanguageClient+Completion.swift in Sources */,
+				30B087FF2C0D53080063A882 /* LanguageServer+Completion.swift in Sources */,
 				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
 				B60718462B17DC15009CDAB4 /* RepoOutlineGroupItem.swift in Sources */,
 				613899B32B6E6FEE00A5CAF6 /* FuzzySearchable.swift in Sources */,
@@ -3770,7 +3773,7 @@
 				6CA1AE952B46950000378EAB /* EditorInstance.swift in Sources */,
 				30AB4EBB2BF718A100ED4431 /* DeveloperSettings.swift in Sources */,
 				B6C4F2A92B3CB00100B2B140 /* CommitDetailsHeaderView.swift in Sources */,
-				30B088012C0D53080063A882 /* LanguageClient+Definition.swift in Sources */,
+				30B088012C0D53080063A882 /* LanguageServer+Definition.swift in Sources */,
 				B6EA1FFB29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift in Sources */,
 				587B9E7029301D8F00AC7927 /* GitLabUser.swift in Sources */,
 				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
@@ -3779,7 +3782,7 @@
 				587B9E6129301D8F00AC7927 /* GitLabOAuthConfiguration.swift in Sources */,
 				587B9E6229301D8F00AC7927 /* GitLabConfiguration.swift in Sources */,
 				61A53A7E2B4449870093BF8A /* WorkspaceDocument+Find.swift in Sources */,
-				30B0880A2C0D53080063A882 /* LanguageClient+Hover.swift in Sources */,
+				30B0880A2C0D53080063A882 /* LanguageServer+Hover.swift in Sources */,
 				6CABB19E29C5591D00340467 /* NSTableViewWrapper.swift in Sources */,
 				5879821B292D92370085B254 /* SearchResultMatchModel.swift in Sources */,
 				04BA7C1E2AE2D8A000584E1C /* GitClient+Clone.swift in Sources */,
@@ -3826,7 +3829,7 @@
 				6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */,
 				284DC84F2978B7B400BF2770 /* ContributorsView.swift in Sources */,
 				B62AEDC92A2704F3009A9F52 /* UtilityAreaTabView.swift in Sources */,
-				30B088052C0D53080063A882 /* LanguageClient+DocumentLink.swift in Sources */,
+				30B088052C0D53080063A882 /* LanguageServer+DocumentLink.swift in Sources */,
 				58798250292E78D80085B254 /* CodeFileDocument.swift in Sources */,
 				5878DAA5291AE76700DD95A3 /* QuickOpenView.swift in Sources */,
 				201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */,
@@ -3838,8 +3841,8 @@
 				58D01C9A293167DC00C5B6B4 /* CodeEditKeychain.swift in Sources */,
 				B62AEDAA2A1FCBE5009A9F52 /* AreaTabBar.swift in Sources */,
 				20D839AB280DEB2900B27357 /* NoSelectionInspectorView.swift in Sources */,
-				30B0880F2C0D53080063A882 /* LanguageClient+SelectionRange.swift in Sources */,
-				30B0880C2C0D53080063A882 /* LanguageClient+InlayHint.swift in Sources */,
+				30B0880F2C0D53080063A882 /* LanguageServer+SelectionRange.swift in Sources */,
+				30B0880C2C0D53080063A882 /* LanguageServer+InlayHint.swift in Sources */,
 				587B9E5A29301D8F00AC7927 /* GitCloneView.swift in Sources */,
 				B65B10F52B081A0C002852CF /* SourceControlAddRemoteView.swift in Sources */,
 				58D01C99293167DC00C5B6B4 /* String+MD5.swift in Sources */,
@@ -3862,7 +3865,7 @@
 				587B9E9629301D8F00AC7927 /* BitBucketRepositories.swift in Sources */,
 				5878DAA6291AE76700DD95A3 /* QuickOpenPreviewView.swift in Sources */,
 				58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */,
-				30B087FC2C0D53080063A882 /* LanguageClient+CallHierarchy.swift in Sources */,
+				30B087FC2C0D53080063A882 /* LanguageServer+CallHierarchy.swift in Sources */,
 				6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */,
 				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* EditorPathBarMenu.swift in Sources */,
@@ -3895,7 +3898,7 @@
 				B6AB09B32AB919CF0003A3A6 /* View+actionBar.swift in Sources */,
 				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
 				588847632992A2A200996D95 /* CEWorkspaceFile.swift in Sources */,
-				30B088082C0D53080063A882 /* LanguageClient+FoldingRange.swift in Sources */,
+				30B088082C0D53080063A882 /* LanguageServer+FoldingRange.swift in Sources */,
 				6C2C155D29B4F4E500EA60A5 /* SplitViewReader.swift in Sources */,
 				B65B10EF2B07C454002852CF /* GitClient+Remote.swift in Sources */,
 				58AFAA2F2933C69E00482B53 /* EditorItemID.swift in Sources */,
@@ -4996,7 +4999,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		30CB64952C16CAA200CC8A9E /* XCLocalSwiftPackageReference "../CodeEditKit" */ = {
+		6C85BB3A2C1E3D1000EB5DEF /* XCLocalSwiftPackageReference "../CodeEditKit" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../CodeEditKit;
 		};
@@ -5173,6 +5176,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = DequeModule;
+		};
+		6C85BB3B2C1E3D1000EB5DEF /* CodeEditKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditKit;
 		};
 		6CB4463F2B6DFF3A00539ED0 /* CodeEditSourceEditor */ = {
 			isa = XCSwiftPackageProductDependency;

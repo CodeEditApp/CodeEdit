@@ -1,5 +1,5 @@
 //
-//  LanguageClient+Rename.swift
+//  LanguageServer+Rename.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.

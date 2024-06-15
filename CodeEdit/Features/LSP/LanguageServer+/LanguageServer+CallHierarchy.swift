@@ -1,5 +1,5 @@
 //
-//  LanguageClient+CallHierarchy.swift
+//  LanguageServer+CallHierarchy.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.

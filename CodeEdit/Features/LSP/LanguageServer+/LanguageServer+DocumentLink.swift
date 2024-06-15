@@ -1,5 +1,5 @@
 //
-//  LanguageClient+DocumentLink.swift
+//  LanguageServer+DocumentLink.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.

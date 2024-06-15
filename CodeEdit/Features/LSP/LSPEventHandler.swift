@@ -10,7 +10,7 @@ import LanguageServerProtocol
 
 extension LSPService {
 
-    internal func startListeningToEvents(for languageId: LanguageIdentifier) {
+    func startListeningToEvents(for languageId: LanguageIdentifier) {
         guard let languageClient = languageClients[languageId] else {
             logger.error("Language client not found for \(languageId.rawValue)")
             return
@@ -25,7 +25,7 @@ extension LSPService {
         eventListeningTasks[languageId] = task
     }
 
-    internal func stopListeningToEvents(for languageId: LanguageIdentifier) {
+    func stopListeningToEvents(for languageId: LanguageIdentifier) {
         if let task = eventListeningTasks[languageId] {
             task.cancel()
             eventListeningTasks.removeValue(forKey: languageId)

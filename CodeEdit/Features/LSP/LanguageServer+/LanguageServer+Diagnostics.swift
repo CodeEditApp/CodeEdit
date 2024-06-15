@@ -1,5 +1,5 @@
 //
-//  LanguageClient+Diagnostics.swift
+//  LanguageServer+Diagnostics.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.

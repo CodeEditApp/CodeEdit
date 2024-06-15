@@ -1,5 +1,5 @@
 //
-//  LanguageClient+SemanticTokens.swift
+//  LanguageServer+SemanticTokens.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.

@@ -1,5 +1,5 @@
 //
-//  LanguageClient+ColorPresentation.swift
+//  LanguageServer+ColorPresentation.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.

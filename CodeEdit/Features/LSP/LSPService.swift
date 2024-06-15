@@ -11,45 +11,41 @@ import Foundation
 import LanguageClient
 import LanguageServerProtocol
 
-/**
- `LSPService` is a service class responsible for managing the lifecycle and event handling
- of Language Server Protocol (LSP) clients within the CodeEdit application. It handles the initialization,
- communication, and termination of language servers, ensuring that code assistance features
- such as code completion, diagnostics, and more are available for various programming languages.
-
- This class uses Swift's concurrency model to manage background tasks and event streams
- efficiently. Each language server runs in its own asynchronous task, listening for events and
- handling them as they occur. The `LSPService` class also provides functionality to start
- and stop individual language servers, as well as to stop all running servers.
-
- ## Example Usage
- ```swift
- @Service var lspService
-
- try await lspService.startServer(
-    for: .python,
-    projectURL: projectURL,
-    workspaceFolders: workspaceFolders
- )
- try await lspService.stopServer(for: .python)
- ```
-*/
+/// `LSPService` is a service class responsible for managing the lifecycle and event handling
+/// of Language Server Protocol (LSP) clients within the CodeEdit application. It handles the initialization,
+/// communication, and termination of language servers, ensuring that code assistance features
+/// such as code completion, diagnostics, and more are available for various programming languages.
+///
+/// This class uses Swift's concurrency model to manage background tasks and event streams
+/// efficiently. Each language server runs in its own asynchronous task, listening for events and
+/// handling them as they occur. The `LSPService` class also provides functionality to start
+/// and stop individual language servers, as well as to stop all running servers.
+///
+/// ## Example Usage
+/// ```swift
+/// @Service var lspService
+///
+/// try await lspService.startServer(
+///    for: .python,
+///    projectURL: projectURL,
+///    workspaceFolders: workspaceFolders
+/// )
+/// try await lspService.stopServer(for: .python)
+/// ```
 final class LSPService: ObservableObject {
+    let logger: Logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
 
-    internal let logger: Logger
     /// Holds the active language clients
-    internal var languageClients: [LanguageIdentifier: LanguageServer] = [:]
+    var languageClients: [LanguageIdentifier: LanguageServer] = [:]
     /// Holds the language server configurations for all the installed language servers
-    internal var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
+    var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
     /// Holds all the event listeners for each active language client
-    internal var eventListeningTasks: [LanguageIdentifier: Task<Void, Never>] = [:]
+    var eventListeningTasks: [LanguageIdentifier: Task<Void, Never>] = [:]
 
     @AppSettings(\.developerSettings.lspBinaries)
-    internal var lspBinaries
+    var lspBinaries
 
     init() {
-        self.logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
-
         // Load the LSP binaries from the developer menu
         for binary in lspBinaries {
             if let language = LanguageIdentifier(rawValue: binary.key) {

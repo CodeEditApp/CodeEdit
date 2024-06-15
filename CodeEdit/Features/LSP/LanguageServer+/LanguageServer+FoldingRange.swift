@@ -1,5 +1,5 @@
 //
-//  LanguageClient+FoldingRange.swift
+//  LanguageServer+FoldingRange.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.

@@ -1,5 +1,5 @@
 //
-//  LanguageClient+DocumentSymbol.swift
+//  LanguageServer+DocumentSymbol.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.
