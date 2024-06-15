@@ -8,16 +8,37 @@
 import Foundation
 import LanguageServerProtocol
 
-/// Helper function to get the edits from a completion item
-/// - Parameters:
-///  - startPosition: The position where the completion was requested
-///  - item: The completion item
-///  - Returns: An array of TextEdit objects
-func getCompletionItemEdits(startPosition: Position, item: CompletionItem) -> [TextEdit] {
-    var edits: [TextEdit] = []
+enum LSPCompletionItemsUtil {
 
-    // If a TextEdit or InsertReplaceEdit value was provided
-    if let edit = item.textEdit {
+    /// Helper function to get the edits from a completion item
+    /// - Parameters:
+    ///  - startPosition: The position where the completion was requested
+    ///  - item: The completion item
+    ///  - Returns: An array of TextEdit objects
+    static func getCompletionItemEdits(startPosition: Position, item: CompletionItem) -> [TextEdit] {
+        var edits: [TextEdit] = []
+
+        // If a TextEdit or InsertReplaceEdit value was provided
+        if let edit = item.textEdit {
+            editOrReplaceItem(edit: edit, &edits)
+        } else if let insertText = item.insertText {
+            // If the `insertText` value was provided
+            insertTextItem(startPosition: startPosition, insertText: insertText, &edits)
+        } else if !item.label.isEmpty {
+            // Fallback to the label
+            labelItem(startPosition: startPosition, label: item.label, &edits)
+        }
+
+        // If additional edits were provided
+        // An example would be to also include an 'import' statement at the top of the file
+        if let additionalEdits = item.additionalTextEdits {
+            edits.append(contentsOf: additionalEdits)
+        }
+
+        return edits
+    }
+
+    private static func editOrReplaceItem(edit: TwoTypeOption<TextEdit, InsertReplaceEdit>, _ edits: inout [TextEdit]) {
         switch edit {
         case .optionA(let textEdit):
             edits.append(textEdit)
@@ -30,8 +51,8 @@ func getCompletionItemEdits(startPosition: Position, item: CompletionItem) -> [T
             )
         }
     }
-    // If the `insertText` value was provided
-    else if let insertText = item.insertText {
+
+    private static func insertTextItem(startPosition: Position, insertText: String, _ edits: inout [TextEdit]) {
         let endPosition = Position((startPosition.line, startPosition.character + insertText.count))
         edits.append(
             TextEdit(
@@ -40,22 +61,14 @@ func getCompletionItemEdits(startPosition: Position, item: CompletionItem) -> [T
             )
         )
     }
-    // Fallback to the label
-    else if item.label != "" {
-        let endPosition = Position((startPosition.line, startPosition.character + item.label.count))
+
+    private static func labelItem(startPosition: Position, label: String, _ edits: inout [TextEdit]) {
+        let endPosition = Position((startPosition.line, startPosition.character + label.count))
         edits.append(
             TextEdit(
                 range: LSPRange(start: startPosition, end: endPosition),
-                newText: item.label
+                newText: label
             )
         )
     }
-
-    // If additional edits were provided
-    // An example would be to also include an 'import' statement at the top of the file
-    if let additionalEdits = item.additionalTextEdits {
-        edits.append(contentsOf: additionalEdits)
-    }
-
-    return edits
 }

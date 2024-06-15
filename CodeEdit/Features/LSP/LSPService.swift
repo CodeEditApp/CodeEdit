@@ -140,7 +140,10 @@ final class LSPService: ObservableObject {
                 // Handle the case where completions is an array of CompletionItem
                 print("\n*******\nCompletion Items:\n*******\n")
                 for item in completionItems {
-                    let textEdits = getCompletionItemEdits(startPosition: textPosition, item: item)
+                    let textEdits = LSPCompletionItemsUtil.getCompletionItemEdits(
+                        startPosition: textPosition,
+                        item: item
+                    )
                     for edit in textEdits {
                         print(edit)
                     }
@@ -150,7 +153,10 @@ final class LSPService: ObservableObject {
                 // Handle the case where completions is a CompletionList
                 print("\n*******\nCompletion Items:\n*******\n")
                 for item in completionList.items {
-                    let textEdits = getCompletionItemEdits(startPosition: textPosition, item: item)
+                    let textEdits = LSPCompletionItemsUtil.getCompletionItemEdits(
+                        startPosition: textPosition,
+                        item: item
+                    )
                     for edit in textEdits {
                         print(edit)
                     }
