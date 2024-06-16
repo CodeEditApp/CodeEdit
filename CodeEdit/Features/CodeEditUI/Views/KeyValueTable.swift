@@ -23,6 +23,7 @@ private struct NewListTableItemView: View {
     let keyColumnName: String
     let valueColumnName: String
     let newItemInstruction: String
+    let validKeys: [String]
     let headerView: AnyView?
     var completion: (String, String) -> Void
 
@@ -30,12 +31,14 @@ private struct NewListTableItemView: View {
         _ keyColumnName: String,
         _ valueColumnName: String,
         _ newItemInstruction: String,
+        validKeys: [String],
         headerView: AnyView? = nil,
         completion: @escaping (String, String) -> Void
     ) {
         self.keyColumnName = keyColumnName
         self.valueColumnName = valueColumnName
         self.newItemInstruction = newItemInstruction
+        self.validKeys = validKeys
         self.headerView = headerView
         self.completion = completion
     }
@@ -44,8 +47,18 @@ private struct NewListTableItemView: View {
         VStack(spacing: 0) {
             Form {
                 Section {
-                    TextField(keyColumnName, text: $key)
-                        .textFieldStyle(.plain)
+                    if validKeys.isEmpty {
+                        TextField(keyColumnName, text: $key)
+                            .textFieldStyle(.plain)
+                    } else {
+                        Picker(keyColumnName, selection: $key) {
+                            ForEach(validKeys, id: \.self) { key in
+                                Text(key).tag(key)
+                            }
+                            Divider()
+                            Text("No Selection").tag("")
+                        }
+                    }
                     TextField(valueColumnName, text: $value)
                         .textFieldStyle(.plain)
                 } header: {
@@ -75,7 +88,6 @@ private struct NewListTableItemView: View {
                 .disabled(key.isEmpty || value.isEmpty)
             }
             .padding(.horizontal, 20)
-//            .padding(.top, 2)
             .padding(.bottom, 20)
         }
         .frame(maxWidth: 480)
@@ -85,6 +97,7 @@ private struct NewListTableItemView: View {
 struct KeyValueTable<Header: View>: View {
     @Binding var items: [String: String]
 
+    let validKeys: [String]
     let keyColumnName: String
     let valueColumnName: String
     let newItemInstruction: String
@@ -96,12 +109,14 @@ struct KeyValueTable<Header: View>: View {
 
     init(
         items: Binding<[String: String]>,
+        validKeys: [String] = [],
         keyColumnName: String,
         valueColumnName: String,
         newItemInstruction: String,
         @ViewBuilder header: @escaping () -> Header = { EmptyView() }
     ) {
         self._items = items
+        self.validKeys = validKeys
         self.keyColumnName = keyColumnName
         self.valueColumnName = valueColumnName
         self.newItemInstruction = newItemInstruction
@@ -109,52 +124,51 @@ struct KeyValueTable<Header: View>: View {
     }
 
     var body: some View {
-        VStack {
-            Table(tableItems, selection: $selection) {
-                TableColumn(keyColumnName) { item in
-                    Text(item.key)
-                }
-                TableColumn(valueColumnName) { item in
-                    Text(item.value)
-                }
+        Table(tableItems, selection: $selection) {
+            TableColumn(keyColumnName) { item in
+                Text(item.key)
             }
-            .frame(height: 200)
-            .actionBar {
-                HStack(spacing: 2) {
-                    Button {
-                        showingModal = true
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-
-                    Divider()
-                        .frame(minHeight: 15)
-
-                    Button {
-                        removeItem()
-                    } label: {
-                        Image(systemName: "minus")
-                    }
-                    .disabled(selection == nil)
-                    .opacity(selection == nil ? 0.5 : 1)
-                }
-                Spacer()
+            TableColumn(valueColumnName) { item in
+                Text(item.value)
             }
-            .sheet(isPresented: $showingModal) {
-                NewListTableItemView(
-                    keyColumnName,
-                    valueColumnName,
-                    newItemInstruction,
-                    headerView: AnyView(header())
-                ) { key, value in
-                    items[key] = value
-                    updateTableItems()
-                    showingModal = false
-                }
-            }
-            .cornerRadius(6)
-            .onAppear(perform: updateTableItems)
         }
+        .frame(height: 200)
+        .actionBar {
+            HStack(spacing: 2) {
+                Button {
+                    showingModal = true
+                } label: {
+                    Image(systemName: "plus")
+                }
+
+                Divider()
+                    .frame(minHeight: 15)
+
+                Button {
+                    removeItem()
+                } label: {
+                    Image(systemName: "minus")
+                }
+                .disabled(selection == nil)
+                .opacity(selection == nil ? 0.5 : 1)
+            }
+            Spacer()
+        }
+        .sheet(isPresented: $showingModal) {
+            NewListTableItemView(
+                keyColumnName,
+                valueColumnName,
+                newItemInstruction,
+                validKeys: validKeys,
+                headerView: AnyView(header())
+            ) { key, value in
+                items[key] = value
+                updateTableItems()
+                showingModal = false
+            }
+        }
+        .cornerRadius(6)
+        .onAppear(perform: updateTableItems)
     }
 
     private func updateTableItems() {
