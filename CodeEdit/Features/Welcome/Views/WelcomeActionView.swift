@@ -42,6 +42,6 @@ struct WelcomeActionButtonStyle: ButtonStyle {
             .padding(7)
             .frame(height: 36)
             .background(Color(.labelColor).opacity(configuration.isPressed ? 0.1 : 0.05))
-            .cornerRadius(8)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 }

@@ -50,6 +50,6 @@ struct BlurButtonStyle: ButtonStyle {
                     Color.black
                 }
             }
-            .cornerRadius(6)
+            .clipShape(RoundedRectangle(cornerRadius: 6))
     }
 }

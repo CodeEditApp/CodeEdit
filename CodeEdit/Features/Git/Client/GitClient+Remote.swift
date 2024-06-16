@@ -31,6 +31,23 @@ extension GitClient {
     func removeRemote(name: String) async throws {
         _ = try await run("remote rm \(name)")
     }
+
+    /// Get the URL of the remote
+    /// > Note: If a git repository has multiple remotes, by default the `origin` remote
+    /// > will be used, unless there’s an upstream branch configured for the current branch.
+    /// > (Reference: https://git-scm.com/docs/git-ls-remote, https://git-scm.com/docs/git-fetch)
+    /// - Returns: A URL if a remote is configured, nil otherwise
+    /// - Throws: `GitClientError.outputError` if the underlying git command fails unexpectedly
+    func getRemoteURL() async throws -> URL? {
+        do {
+            let remote = try await run("ls-remote --get-url")
+            return URL(string: remote.trimmingCharacters(in: .whitespacesAndNewlines))
+        } catch GitClientError.noRemoteConfigured {
+            return nil
+        } catch {
+            throw error
+        }
+    }
 }
 
 func parseGitRemotes(from output: String) -> [GitRemote] {
