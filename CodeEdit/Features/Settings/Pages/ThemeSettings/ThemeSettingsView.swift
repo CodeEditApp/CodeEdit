@@ -82,7 +82,7 @@ struct ThemeSettingsView: View {
                     }
                     VStack(spacing: 0) {
                         ForEach(selectedAppearance == .dark ? themeModel.darkThemes : themeModel.lightThemes) { theme in
-                            Divider()
+                            Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeRow(
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
                                 active: getThemeActive(theme),
@@ -90,7 +90,7 @@ struct ThemeSettingsView: View {
                             ).id(theme)
                         }
                         ForEach(selectedAppearance == .dark ? themeModel.lightThemes : themeModel.darkThemes) { theme in
-                            Divider()
+                            Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeRow(
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
                                 active: getThemeActive(theme),
@@ -100,6 +100,14 @@ struct ThemeSettingsView: View {
                     }
                 }
                 .padding(-10)
+            } footer: {
+                HStack {
+                    Spacer()
+                    Button("Import...") {
+                        themeModel.importTheme()
+                    }
+                }
+                .padding(.top, 10)
             }
         }
     }

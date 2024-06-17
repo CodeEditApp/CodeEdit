@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// The Theme View Model. Accessible via the singleton "``ThemeModel/shared``".
 ///
@@ -199,6 +200,10 @@ final class ThemeModel: ObservableObject {
                         }
                     }
 
+                    theme.isBundled = fileURL.path.contains(bundledThemesURL.path)
+
+                    theme.fileURL = fileURL
+
                     // add the theme to themes array
                     self.themes.append(theme)
 
@@ -264,20 +269,19 @@ final class ThemeModel: ObservableObject {
     ///
     /// - Parameter theme: The theme to delete
     func delete(_ theme: Theme) {
-        let url = themesURL
-            .appendingPathComponent(theme.name)
-            .appendingPathExtension("cetheme")
-        do {
-            // remove the theme from the list
-            try filemanager.removeItem(at: url)
+        if let url = theme.fileURL {
+            do {
+                // remove the theme from the list
+                try filemanager.removeItem(at: url)
 
-            // remove from overrides in `settings.json`
-            Settings.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
+                // remove from overrides in `settings.json`
+                Settings.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
 
-            // reload themes
-            try self.loadThemes()
-        } catch {
-            print(error)
+                // reload themes
+                try self.loadThemes()
+            } catch {
+                print(error)
+            }
         }
     }
 
@@ -325,4 +329,61 @@ final class ThemeModel: ObservableObject {
             }
         }
     }
+
+    func importTheme() {
+        let openPanel = NSOpenPanel()
+        let allowedTypes = [UTType(filenameExtension: "cetheme")!]
+
+        openPanel.prompt = "Import"
+        openPanel.allowedContentTypes = allowedTypes
+        openPanel.canChooseFiles = true
+        openPanel.canChooseDirectories = false
+        openPanel.allowsMultipleSelection = false
+
+        openPanel.begin { result in
+            if result.rawValue == NSApplication.ModalResponse.OK.rawValue {
+                if let url = openPanel.urls.first {
+                    self.duplicate(url)
+                }
+            }
+        }
+    }
+
+    func duplicate(_ url: URL) {
+        do {
+            // Construct the destination file URL
+            var destinationFileURL = self.themesURL.appendingPathComponent(url.lastPathComponent)
+
+            // Check if the file already exists
+            var iterator = 1
+            while FileManager.default.fileExists(atPath: destinationFileURL.path) {
+                // Extract the base filename and extension
+                let fileExtension = destinationFileURL.pathExtension
+                var fileName = destinationFileURL.deletingPathExtension().lastPathComponent
+
+                // Remove any existing iterator
+                if let range = fileName.range(of: " \\d+$", options: .regularExpression) {
+                    fileName = String(fileName[..<range.lowerBound])
+                }
+
+                // Generate a new filename with an iterator
+                let newFileName = "\(fileName) \(iterator)"
+                destinationFileURL = self.themesURL.appendingPathComponent(newFileName).appendingPathExtension(fileExtension)
+                iterator += 1
+            }
+
+            // Copy the file from selected URL to the destination
+            try FileManager.default.copyItem(at: url, to: destinationFileURL)
+
+            try self.loadThemes()
+
+            if var newTheme = self.themes.first(where: { $0.fileURL == destinationFileURL }) {
+                newTheme.name = newTheme.fileURL?.lastPathComponent ?? ""
+                self.selectedTheme = newTheme
+            }
+        } catch {
+            print("Error adding theme: \(error.localizedDescription)")
+        }
+    }
+
 }

@@ -12,6 +12,8 @@ struct ThemeSettingsThemeRow: View {
     var active: Bool
     var action: (Theme) -> Void
 
+    @ObservedObject private var themeModel: ThemeModel = .shared
+
     @State private var presentingDetails: Bool = false
 
     @State private var isHovering = false
@@ -28,21 +30,39 @@ struct ThemeSettingsThemeRow: View {
                     .font(.footnote)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            Button {
-                presentingDetails = true
-            } label: {
-                Text("Details...")
+            if !active {
+                Button {
+                    action(theme)
+                } label: {
+                    Text("Choose")
+                }
+                .buttonStyle(.bordered)
+                .opacity(isHovering ? 1 : 0)
             }
-            .buttonStyle(.bordered)
-            .opacity(isHovering ? 1 : 0)
             ThemeSettingsColorPreview(theme)
+            Menu {
+                Button("Details...") {
+                    presentingDetails = true
+                }
+                Button("Duplicate") {
+                    if let fileURL = theme.fileURL {
+                        themeModel.duplicate(fileURL)
+                    }
+                }
+                Divider()
+                Button("Delete") {
+                    themeModel.delete(theme)
+                }
+                .disabled(theme.isBundled)
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .font(.system(size: 16))
+            }
+            .buttonStyle(.icon)
         }
         .padding(10)
         .onHover { hovering in
             isHovering = hovering
-        }
-        .onTapGesture {
-            action(theme)
         }
         .sheet(isPresented: $presentingDetails) {
             ThemeSettingsThemeDetails($theme)
