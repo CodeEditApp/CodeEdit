@@ -10,9 +10,11 @@ import SwiftUI
 struct SplitView<Content: View>: View {
     var axis: Axis
     var content: Content
+    var showDividers: Bool = false
 
-    init(axis: Axis, @ViewBuilder content: () -> Content) {
+    init(axis: Axis, showDividers: Bool = false, @ViewBuilder content: () -> Content) {
         self.axis = axis
+        self.showDividers = showDividers
         self.content = content()
     }
 
@@ -21,7 +23,7 @@ struct SplitView<Content: View>: View {
     var body: some View {
         VStack {
             content.variadic { children in
-                SplitViewControllerView(axis: axis, children: children, viewController: $viewController)
+                SplitViewControllerView(axis: axis, children: children, showDividers: showDividers, viewController: $viewController)
             }
         }
         ._trait(SplitViewControllerLayoutValueKey.self, viewController)

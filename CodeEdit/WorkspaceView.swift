@@ -35,7 +35,7 @@ struct WorkspaceView: View {
         if workspace.workspaceFileManager != nil {
             VStack {
                 SplitViewReader { proxy in
-                    SplitView(axis: .vertical) {
+                    SplitView(axis: .vertical, showDividers: false) {
                         EditorLayoutView(
                             layout: editorManager.isFocusingActiveEditor
                             ? editorManager.activeEditor.getEditorLayout() ?? editorManager.editorLayout
@@ -46,10 +46,9 @@ struct WorkspaceView: View {
                         .collapsed($utilityAreaViewModel.isMaximized)
                         .frame(minHeight: 170 + 29 + 29)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .holdingPriority(.init(1))
-                        .safeAreaInset(edge: .bottom, spacing: 0) {
-                            StatusBarView(proxy: proxy)
-                        }
+
+                        StatusBarView(proxy: proxy)
+
                         UtilityAreaView()
                             .collapsable()
                             .collapsed($utilityAreaViewModel.isCollapsed)
