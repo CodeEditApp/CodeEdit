@@ -25,7 +25,7 @@ struct AccountsSettingsAccountLink: View {
                 Image(account.provider.iconName)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .cornerRadius(6)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
                     .frame(width: 26, height: 26)
                     .padding(.top, 2)
                     .padding(.bottom, 2)

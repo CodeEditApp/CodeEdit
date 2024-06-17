@@ -186,6 +186,7 @@ For issues we want to focus on that are most relevant at any given time, please 
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="http://danielz.xyz"><img src="https://avatars.githubusercontent.com/u/65467530?v=4?s=100" width="100px;" alt="Daniel Zhu"/><br /><sub><b>Daniel Zhu</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Adanielzsh" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/simonwhitaker"><img src="https://avatars.githubusercontent.com/u/116432?v=4?s=100" width="100px;" alt="Simon Whitaker"/><br /><sub><b>Simon Whitaker</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Asimonwhitaker" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>

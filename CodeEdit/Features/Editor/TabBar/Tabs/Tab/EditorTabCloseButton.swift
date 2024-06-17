@@ -65,7 +65,7 @@ struct EditorTabCloseButton: View {
             )
         )
         .foregroundColor(isPressingClose ? .primary : .secondary)
-        .cornerRadius(2)
+        .clipShape(RoundedRectangle(cornerRadius: 2))
         .contentShape(Rectangle())
         .gesture(
             DragGesture(minimumDistance: 0)
