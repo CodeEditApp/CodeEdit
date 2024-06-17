@@ -20,6 +20,7 @@ extension SettingsData {
                 "Wrap lines to editor width",
                 "Font",
                 "Font Size",
+                "Font Weight",
                 "Line Height",
                 "Letter Spacing",
                 "Autocomplete braces",
@@ -48,8 +49,8 @@ extension SettingsData {
         /// A flag indicating whether to wrap lines to editor width
         var wrapLinesToEditorWidth: Bool = true
 
-        /// A multiplier for setting the line height. Defaults to `1.45`
-        var lineHeightMultiple: Double = 1.45
+        /// A multiplier for setting the line height. Defaults to `1.2`
+        var lineHeightMultiple: Double = 1.2
 
         /// A multiplier for setting the letter spacing, `1` being no spacing and
         /// `2` is one character of spacing between letters, defaults to `1`.
@@ -87,7 +88,7 @@ extension SettingsData {
             self.lineHeightMultiple = try container.decodeIfPresent(
                 Double.self,
                 forKey: .lineHeightMultiple
-            ) ?? 1.45
+            ) ?? 1.2
             self.letterSpacing = try container.decodeIfPresent(
                 Double.self,
                 forKey: .letterSpacing
@@ -167,6 +168,9 @@ extension SettingsData {
         /// The name of the custom font
         var name: String = "SF Mono"
 
+        /// The weight of the custom font
+        var weight: NSFont.Weight = .medium
+
         /// Default initializer
         init() {}
 
@@ -175,6 +179,7 @@ extension SettingsData {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.size = try container.decodeIfPresent(Double.self, forKey: .size) ?? size
             self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? name
+            self.weight = try container.decodeIfPresent(NSFont.Weight.self, forKey: .weight) ?? weight
         }
 
         /// Returns an NSFont representation of the current configuration.
@@ -182,7 +187,8 @@ extension SettingsData {
         /// Returns the custom font, if enabled and able to be instantiated.
         /// Otherwise returns a default system font monospaced.
         var current: NSFont {
-            return NSFont(name: name, size: size) ?? NSFont.monospacedSystemFont(ofSize: size, weight: .medium)
+            let customFont = NSFont(name: name, size: size)?.withWeight(weight: weight)
+            return customFont ?? NSFont.monospacedSystemFont(ofSize: size, weight: .medium)
         }
     }
 }

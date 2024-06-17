@@ -22,6 +22,7 @@ struct TerminalSettingsView: View {
                 if !settings.useTextEditorFont {
                     fontSelector
                     fontSizeSelector
+                    fontWeightSelector
                 }
             }
             Section {
@@ -84,6 +85,10 @@ private extension TerminalSettingsView {
             step: 1,
             format: .number
         )
+    }
+
+    @ViewBuilder private var fontWeightSelector: some View {
+        FontWeightPicker(selection: $settings.font.weight)
     }
 
     @ViewBuilder private var injectionOptions: some View {
