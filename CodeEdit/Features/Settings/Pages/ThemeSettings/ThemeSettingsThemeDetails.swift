@@ -28,8 +28,6 @@ struct ThemeSettingsThemeDetails: View {
     var body: some View {
         VStack(spacing: 0) {
             Form {
-                Text(theme.fileURL?.absoluteString ?? "")
-                Text(originalTheme.author)
                 Group {
                     Section {
                         TextField("Name", text: $theme.displayName)
