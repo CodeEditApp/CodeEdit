@@ -77,11 +77,13 @@ struct CodeFileView: View {
         codeFile.undoManager = self.undoManager.manager
     }
 
+    // swiftlint:disable:next force_unwrapping
     @State private var selectedTheme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
 
     @State private var font: NSFont = Settings[\.textEditing].font.current
 
     @State private var bracketPairHighlight: BracketPairHighlight? = {
+        // swiftlint:disable:next force_unwrapping
         let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
         let color = Settings[\.textEditing].bracketHighlight.useCustomColor
         ? Settings[\.textEditing].bracketHighlight.color.nsColor
@@ -162,6 +164,7 @@ struct CodeFileView: View {
     }
 
     private func getBracketPairHighlight() -> BracketPairHighlight? {
+        // swiftlint:disable:next force_unwrapping
         let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
         let color = Settings[\.textEditing].bracketHighlight.useCustomColor
         ? Settings[\.textEditing].bracketHighlight.color.nsColor

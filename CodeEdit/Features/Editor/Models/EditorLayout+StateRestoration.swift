@@ -215,6 +215,7 @@ extension Editor: Codable {
         let id = try container.decode(UUID.self, forKey: .id)
         self.init(
             files: OrderedSet(fileURLs.map { CEWorkspaceFile(url: $0) }),
+            // swiftlint:disable:next force_unwrapping
             selectedTab: selectedTab == nil ? nil : EditorInstance(file: CEWorkspaceFile(url: selectedTab!)),
             parent: nil
         )

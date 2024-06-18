@@ -126,8 +126,10 @@ final class ExtensionDiscovery: ObservableObject {
         return try await dbQueue.write { table in
             try identifiers.map { identifier in
                 SettingsStoreRecord(
+                    // swiftlint:disable force_unwrapping
                     // swiftlint:disable:next line_length
                     identifier: "\(Bundle.main.bundleIdentifier!)::\(Self.endPointIdentifier):\(identifier.bundleID):\(identifier.devID)",
+                    // swiftlint:enable force_unwrapping
                     timestamp: String(Date.now.description.dropLast(6)),
                     userElection: 1
                 )

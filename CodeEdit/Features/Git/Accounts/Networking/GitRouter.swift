@@ -89,6 +89,7 @@ extension GitRouter {
     var gitErrorKey: String { "ErrorKey" }
 
     func request() -> URLRequest? {
+        // swiftlint:disable:next force_unwrapping
         let url = URL(string: path, relativeTo: URL(string: configuration?.apiEndpoint ?? "")!)
 
         var parameters = encoding == .json ? [:] : params
@@ -97,8 +98,10 @@ extension GitRouter {
             parameters[configuration?.accessTokenFieldName ?? ""] = accessToken as Any?
         }
 
+        // swiftlint:disable:next force_unwrapping
         let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
 
+        // swiftlint:disable:next force_unwrapping
         var urlRequest = request(components!, parameters: parameters)
 
         if let accessToken = configuration?.accessToken, let tokenType = configuration?.authorizationHeader {
@@ -180,6 +183,7 @@ extension GitRouter {
             // clear the query items as they go into the body
             urlComponents.queryItems = nil
 
+            // swiftlint:disable:next force_unwrapping
             var mutableURLRequest = Foundation.URLRequest(url: urlComponents.url!)
 
             mutableURLRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")

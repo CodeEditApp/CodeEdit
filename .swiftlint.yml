@@ -8,6 +8,7 @@ type_name:
     - ID
 
 identifier_name:
+  allowed_symbols: ['$', '_']
   excluded:
     - id
     - vc
@@ -23,7 +24,7 @@ opt_in_rules:
   - closure_spacing
   - contains_over_first_not_nil
   - missing_docs
-#  - implicit_return
+  - force_unwrapping
   - modifier_order
   - convenience_type
   - pattern_matching_keywords

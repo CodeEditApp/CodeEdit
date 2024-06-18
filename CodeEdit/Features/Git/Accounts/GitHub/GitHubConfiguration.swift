@@ -30,6 +30,7 @@ struct GitHubTokenConfiguration: GitRouterConfiguration {
 
     init(_ token: String? = nil, url: String? = nil, previewHeaders: [GitHubPreviewHeader] = []) {
         apiEndpoint = url ?? provider.apiURL?.absoluteString
+        // swiftlint:disable:next force_unwrapping
         accessToken = token?.data(using: .utf8)!.base64EncodedString()
         previewCustomHeaders = previewHeaders.map { $0.header }
     }
@@ -181,6 +182,7 @@ enum GitHubOAuthRouter: GitRouter {
 
     var URLRequest: FoundationURLRequestType? {
         switch self {
+        // swiftlint:disable force_unwrapping
         case let .authorize(config):
             let url = URL(string: path, relativeTo: URL(string: config.webEndpoint!)!)
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
@@ -190,5 +192,6 @@ enum GitHubOAuthRouter: GitRouter {
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)
         }
+        // swiftlint:enable force_unwrapping
     }
 }

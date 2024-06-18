@@ -130,13 +130,16 @@ final class MemoryIndexingTests: XCTestCase {
 
         // Save the current index.
         let savedIndex = index.getAsData()
-        XCTAssertNotNil(savedIndex, "Failed to save the index.")
+        guard let savedIndex = savedIndex else {
+            XCTFail("Failed to save the index.")
+            return
+        }
 
         // Close the index, i.e. the index gets deallocated form memory.
         index.close()
 
         // Load the saved index
-        guard let loadedIndex = SearchIndexer.Memory(data: savedIndex!) else {
+        guard let loadedIndex = SearchIndexer.Memory(data: savedIndex) else {
             XCTFail("Failed to create an index")
             return
         }

@@ -121,7 +121,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 (doc as? WorkspaceDocument)?.fileURL?.path
             }
             .filter { $0 != nil }
-            .map { $0! }
+            .compactMap { $0 }
 
         UserDefaults.standard.set(projects, forKey: AppDelegate.recoverWorkspacesKey)
 
