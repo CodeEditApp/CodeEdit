@@ -135,9 +135,22 @@ struct ThemeSettingsThemeDetails: View {
             Divider()
             HStack {
                 if !themeModel.isAdding {
-                    Button("Duplicate...") {
+                    Button {
                         if let fileURL = theme.fileURL {
                             themeModel.duplicate(fileURL)
+                        }
+                    } label: {
+                        Text("Duplicate")
+                            .frame(minWidth: 56)
+                    }
+                    if !theme.isBundled {
+                        Button(role: .destructive) {
+                            themeModel.delete(theme)
+                            dismiss()
+                        } label: {
+                            Text("Delete")
+                                .foregroundStyle(.red)
+                                .frame(minWidth: 56)
                         }
                     }
                 }
@@ -152,6 +165,7 @@ struct ThemeSettingsThemeDetails: View {
                     dismiss()
                 } label: {
                     Text("Cancel")
+                        .frame(minWidth: 56)
                 }
                 .buttonStyle(.bordered)
                 Button {
@@ -159,6 +173,7 @@ struct ThemeSettingsThemeDetails: View {
                     dismiss()
                 } label: {
                     Text("Done")
+                        .frame(minWidth: 56)
                 }
                 .buttonStyle(.borderedProminent)
             }
