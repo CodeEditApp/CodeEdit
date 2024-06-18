@@ -254,7 +254,9 @@ extension ThemeModel {
     func save(_ theme: Theme) {
         do {
             if let fileURL = theme.fileURL {
-                let data = try JSONEncoder().encode(theme)
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = [.sortedKeys]
+                let data = try encoder.encode(theme)
                 let json = try JSONSerialization.jsonObject(with: data)
                 let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
                 try prettyJSON.write(to: fileURL, options: .atomic)
