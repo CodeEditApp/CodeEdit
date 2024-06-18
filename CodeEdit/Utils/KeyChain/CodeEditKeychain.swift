@@ -127,7 +127,8 @@ class CodeEditKeychain {
      */
     func get(_ key: String) -> String? {
         if let data = getData(key) {
-
+            // Use the optional version here
+            // swiftlint:disable:next non_optional_string_data_conversion
             if let currentString = String(data: data, encoding: .utf8) {
                 return currentString
             }

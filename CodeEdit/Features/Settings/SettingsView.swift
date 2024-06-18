@@ -130,10 +130,7 @@ struct SettingsView: View {
                             .padding(.leading, 22)
                     }
                 }
-            } else if
-                page.name.rawValue.lowercased().contains(searchText.lowercased()) &&
-                !page.isSetting
-            {
+            } else if page.name.rawValue.lowercased().contains(searchText.lowercased()) && !page.isSetting {
                 SettingsPageView(page, searchText: searchText)
             }
         } else if !page.isSetting {

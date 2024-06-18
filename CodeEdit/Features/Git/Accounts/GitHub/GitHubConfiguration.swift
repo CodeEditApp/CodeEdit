@@ -89,7 +89,8 @@ struct GitHubOAuthConfiguration: GitRouterConfiguration {
                     if response.statusCode != 200 {
                         return
                     } else {
-                        if let data, let string = String(data: data, encoding: .utf8) {
+                        if let data {
+                            let string = String(decoding: data, as: UTF8.self)
                             let accessToken = self.accessTokenFromResponse(string)
                             if let accessToken {
                                 let config = GitHubTokenConfiguration(accessToken, url: self.apiEndpoint ?? "")
