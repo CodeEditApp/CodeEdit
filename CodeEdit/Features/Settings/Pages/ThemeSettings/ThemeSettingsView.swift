@@ -111,7 +111,9 @@ struct ThemeSettingsView: View {
             }
         }
         .sheet(item: $themeModel.detailsTheme) { theme in
-            if let index = themeModel.themes.firstIndex(where: { $0.fileURL?.absoluteString == theme.fileURL?.absoluteString }) {
+            if let index = themeModel.themes.firstIndex(where: {
+                $0.fileURL?.absoluteString == theme.fileURL?.absoluteString
+            }) {
                 ThemeSettingsThemeDetails(theme: Binding(
                     get: { themeModel.themes[index] },
                     set: { newValue in

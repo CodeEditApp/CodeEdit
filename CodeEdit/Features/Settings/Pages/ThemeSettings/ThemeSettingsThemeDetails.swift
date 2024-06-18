@@ -29,6 +29,7 @@ struct ThemeSettingsThemeDetails: View {
         VStack(spacing: 0) {
             Form {
                 Text(theme.fileURL?.absoluteString ?? "")
+                Text(originalTheme.author)
                 Group {
                     Section {
                         TextField("Name", text: $theme.displayName)
@@ -135,14 +136,21 @@ struct ThemeSettingsThemeDetails: View {
             .formStyle(.grouped)
             Divider()
             HStack {
-                Button("Duplicate...") {
-                    if let fileURL = theme.fileURL {
-                        themeModel.duplicate(fileURL)
+                if !themeModel.isAdding {
+                    Button("Duplicate...") {
+                        if let fileURL = theme.fileURL {
+                            themeModel.duplicate(fileURL)
+                        }
                     }
                 }
                 Spacer()
                 Button {
-                    theme = originalTheme
+                    if themeModel.isAdding {
+                        themeModel.delete(theme)
+                    } else {
+                        themeModel.cancelDetails(theme)
+                    }
+
                     dismiss()
                 } label: {
                     Text("Cancel")
