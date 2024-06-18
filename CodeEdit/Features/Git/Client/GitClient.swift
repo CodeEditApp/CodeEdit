@@ -13,12 +13,14 @@ class GitClient {
         case outputError(String)
         case notGitRepository
         case failedToDecodeURL
+        case noRemoteConfigured
 
         var description: String {
             switch self {
             case .outputError(let string): string
             case .notGitRepository: "Not a git repository"
             case .failedToDecodeURL: "Failed to decode URL"
+            case .noRemoteConfigured: "No remote configured"
             }
         }
     }
@@ -61,6 +63,10 @@ class GitClient {
     private func processCommonErrors(_ output: String) throws -> String {
         if output.contains("fatal: not a git repository") {
             throw GitClientError.notGitRepository
+        }
+
+        if output.contains("fatal: No remote configured") {
+            throw GitClientError.noRemoteConfigured
         }
 
         if output.hasPrefix("fatal:") {

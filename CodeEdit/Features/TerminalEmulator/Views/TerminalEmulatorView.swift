@@ -49,21 +49,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     /// Returns a string of a shell path to use
-    ///
-    /// Default implementation pulled from Example app from "SwiftTerm":
-    /// ```swift
-    ///    let bufsize = sysconf(_SC_GETPW_R_SIZE_MAX)
-    ///    guard bufsize != -1 else { return "/bin/bash" }
-    ///    let buffer = UnsafeMutablePointer<Int8>.allocate(capacity: bufsize)
-    /// defer {
-    ///        buffer.deallocate()
-    ///    }
-    ///    var pwd = passwd()
-    ///    var result: UnsafeMutablePointer<passwd>? = UnsafeMutablePointer<passwd>.allocate(capacity: 1)
-    ///
-    /// if getpwuid_r(getuid(), &pwd, buffer, bufsize, &result) != 0 { return "/bin/bash" }
-    ///    return String(cString: pwd.pw_shell)
-    /// ```
     private func getShell() -> String {
         if shellType != ""{
             return shellType
@@ -92,95 +77,10 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Gets the default shell from the current user and returns the string of the shell path.
     private func autoDetectDefaultShell() -> String {
-        let bufsize = sysconf(_SC_GETPW_R_SIZE_MAX)
-        guard bufsize != -1 else { return "/bin/bash" }
-        let buffer = UnsafeMutablePointer<Int8>.allocate(capacity: bufsize)
-        defer {
-            buffer.deallocate()
+        guard let currentUser = CurrentUser.getCurrentUser() else {
+            return "/bin/bash"
         }
-        var pwd = passwd()
-        var result: UnsafeMutablePointer<passwd>? = UnsafeMutablePointer<passwd>.allocate(capacity: 1)
-
-        if getpwuid_r(getuid(), &pwd, buffer, bufsize, &result) != 0 { return "/bin/bash" }
-        return String(cString: pwd.pw_shell)
-    }
-
-    /// Check if the source command for shell integration already exists
-    /// Returns true if it already exists or encountered an error, no new commands will be added to user's source file
-    /// Returns false if it's not there, new commands will be added to user's source file
-    private func shellIntegrationInstalled(sourceScriptPath: String, command: String) -> Bool {
-        do {
-            // Get user's shell's source file
-            let sourceScript = try String(contentsOfFile: sourceScriptPath)
-            let sourceScriptSeperatedByLines = sourceScript.components(separatedBy: .newlines)
-            // Check line by line
-            for line in sourceScriptSeperatedByLines where line == command {
-                // If one line matches the command, no new commands are needed
-                return true
-            }
-            // If no line matches the command, new command is needed
-            return false
-        } catch {
-            if let error = error as NSError? {
-                switch error._code {
-                case 260:
-                    // If error 260 is thrown, it's just the source file is missing
-                    // Create a new file and add new command
-                    FileManager.default.createFile(atPath: sourceScriptPath, contents: nil, attributes: nil)
-                    return false
-                default:
-                    // Otherwise just abort the shell integration setup
-                    print("Cannot setup shell integration, error: \(error)")
-                    return true
-                }
-            }
-        }
-    }
-
-    /// Configure shell integration script
-    private func setupShellIntegration(shell: String, environment: [String]) {
-        // Get user's home dir
-        var homePath: String = ""
-        environment.forEach { value in
-            if value.starts(with: "HOME=") {
-                homePath = value
-            }
-        }
-        homePath.removeSubrange(homePath.startIndex..<homePath.index(homePath.startIndex, offsetBy: 5))
-
-        if let shellIntegrationScript = Bundle.main.url(
-            forResource: "codeedit_shell_integration", withExtension: shell
-        ) {
-            // Get the path of shell integration script
-            let shellIntegrationScriptPath = (
-                shellIntegrationScript.absoluteString[7..<shellIntegrationScript.absoluteString.count]
-            ) ?? ""
-
-            // Get the path of user's shell's source file
-            // Only zsh and bash are supported for now
-            var sourceScriptPath: String = ""
-            switch shell {
-            case "bash":
-                sourceScriptPath = homePath + "/.profile"
-            case "zsh":
-                sourceScriptPath = homePath + "/.zshrc"
-            default:
-                return
-            }
-
-            // Get the command for setting up shell integration
-            let sourceCommand = "[[ \"$TERM_PROGRAM\" == \"CodeEditApp_Terminal\" ]] &&"
-                            + " . \"\(shellIntegrationScriptPath)\""
-
-            // Add the shell integration setup command if needed
-            if !shellIntegrationInstalled(sourceScriptPath: sourceScriptPath, command: sourceCommand) {
-                if let handle = FileHandle(forWritingAtPath: sourceScriptPath) {
-                    handle.seekToEndOfFile()
-                    handle.write("\n\(sourceCommand)\n".data(using: .utf8)!)
-                    handle.closeFile()
-                }
-            }
-        }
+        return currentUser.shell
     }
 
     /// Returns true if the `option` key should be treated as the `meta` key.
@@ -251,18 +151,17 @@ struct TerminalEmulatorView: NSViewRepresentable {
     /// Inherited from NSViewRepresentable.makeNSView(context:).
     func makeNSView(context: Context) -> LocalProcessTerminalView {
         terminal.processDelegate = context.coordinator
-        setupSession()
+        do {
+            try setupSession()
+        } catch {
+            terminal.feed(text: "Failed to start a terminal session: \(error.localizedDescription)")
+        }
         return terminal
     }
 
-    func setupSession() {
+    func setupSession() throws {
         terminal.getTerminal().silentLog = true
         if TerminalEmulatorView.lastTerminal[url.path] == nil {
-            let shell = getShell()
-            let shellName = NSString(string: shell).lastPathComponent
-            onTitleChange(shellName)
-            let shellIdiom = "-" + shellName
-
             // changes working directory to project root
             // TODO: Get rid of FileManager shared instance to prevent problems
             // using shared instance of FileManager might lead to problems when using
@@ -273,9 +172,29 @@ struct TerminalEmulatorView: NSViewRepresentable {
             var terminalEnvironment: [String] = Terminal.getEnvironmentVariables()
             terminalEnvironment.append("TERM_PROGRAM=CodeEditApp_Terminal")
 
-            setupShellIntegration(shell: shellName, environment: terminalEnvironment)
+            let shellPath = getShell()
+            guard let shell = Shell(rawValue: NSString(string: shellPath).lastPathComponent) else {
+                return
+            }
+            onTitleChange(shell.rawValue)
 
-            terminal.startProcess(executable: shell, environment: terminalEnvironment, execName: shellIdiom)
+            let shellArgs: [String]
+            if terminalSettings.useShellIntegration {
+                shellArgs = try ShellIntegration.setUpIntegration(
+                    for: shell,
+                    environment: &terminalEnvironment,
+                    useLogin: terminalSettings.useLoginShell
+                )
+            } else {
+                shellArgs = []
+            }
+
+            terminal.startProcess(
+                executable: shellPath,
+                args: shellArgs,
+                environment: terminalEnvironment,
+                execName: shell.rawValue
+            )
             terminal.font = font
             terminal.configureNativeColors()
             terminal.installColors(self.colors)

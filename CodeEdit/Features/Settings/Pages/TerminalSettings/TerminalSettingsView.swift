@@ -22,11 +22,16 @@ struct TerminalSettingsView: View {
                 if !settings.useTextEditorFont {
                     fontSelector
                     fontSizeSelector
+                    fontWeightSelector
                 }
             }
             Section {
                 cursorStyle
                 cursorBlink
+            }
+            Section {
+                injectionOptions
+                useLoginShell
             }
         }
     }
@@ -38,7 +43,7 @@ private extension TerminalSettingsView {
             Text("System Default")
                 .tag(SettingsData.TerminalShell.system)
             Divider()
-            Text("ZSH")
+            Text("Zsh")
                 .tag(SettingsData.TerminalShell.zsh)
             Text("Bash")
                 .tag(SettingsData.TerminalShell.bash)
@@ -80,5 +85,35 @@ private extension TerminalSettingsView {
             step: 1,
             format: .number
         )
+    }
+
+    @ViewBuilder private var fontWeightSelector: some View {
+        FontWeightPicker(selection: $settings.font.weight)
+    }
+
+    @ViewBuilder private var injectionOptions: some View {
+        VStack {
+            Toggle("Shell Integration", isOn: $settings.useShellIntegration)
+            // swiftlint:disable:next line_length
+                .help("CodeEdit supports integrating with common shells such as Bash and Zsh. This enables features like terminal title detection.")
+            if !settings.useShellIntegration {
+                HStack {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundStyle(Color(NSColor.systemYellow))
+                    Text("Warning: Disabling integration disables features such as terminal title detection.")
+                    Spacer()
+                }
+            }
+        }
+    }
+
+    @ViewBuilder private var useLoginShell: some View {
+        if settings.useShellIntegration {
+            Toggle("Use Login Shell", isOn: $settings.useLoginShell)
+            // swiftlint:disable:next line_length
+                .help("Whether or not to use a login shell when starting a terminal session. By default, a login shell is used used similar to Terminal.app.")
+        } else {
+            EmptyView()
+        }
     }
 }

@@ -34,7 +34,7 @@ extension TerminalEmulatorView {
                 return
             }
             source.feed(text: "Exit code: \(exitCode)\n\r\n")
-            source.feed(text: "To open a new session close and reopen the terminal drawer")
+            source.feed(text: "To open a new session, create a new terminal tab.")
             TerminalEmulatorView.lastTerminal[url.path] = nil
         }
     }

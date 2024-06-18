@@ -134,15 +134,13 @@ struct EditorTabView: View {
             // Tab content (icon and text).
             HStack(alignment: .center, spacing: 3) {
                 Image(nsImage: item.nsIcon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 16, height: 16)
                     .foregroundColor(
                         fileIconStyle == .color
                         && activeState != .inactive && isActiveEditor
                         ? item.iconColor
                         : .secondary
                     )
-                    .frame(width: 16, height: 16)
                 Text(item.name)
                     .font(
                         isTemporary
