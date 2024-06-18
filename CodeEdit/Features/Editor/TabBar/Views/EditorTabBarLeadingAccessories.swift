@@ -22,7 +22,7 @@ struct EditorTabBarLeadingAccessories: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            if let otherEditor {
+            if otherEditor != nil {
                 EditorTabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
                     action: { [weak editor] in
