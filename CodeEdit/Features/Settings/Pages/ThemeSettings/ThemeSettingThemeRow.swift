@@ -42,7 +42,7 @@ struct ThemeSettingsThemeRow: View {
             ThemeSettingsColorPreview(theme)
             Menu {
                 Button("Details...") {
-                    presentingDetails = true
+                    themeModel.detailsTheme = theme
                 }
                 Button("Duplicate") {
                     if let fileURL = theme.fileURL {
@@ -63,9 +63,6 @@ struct ThemeSettingsThemeRow: View {
         .padding(10)
         .onHover { hovering in
             isHovering = hovering
-        }
-        .sheet(isPresented: $presentingDetails) {
-            ThemeSettingsThemeDetails($theme)
         }
     }
 }

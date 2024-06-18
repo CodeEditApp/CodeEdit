@@ -67,23 +67,17 @@ final class ThemeModel: ObservableObject {
         }
     }
 
+    @Published var presentingDetails: Bool = false
+
+    @Published var detailsTheme: Theme?
+
     /// The selected appearance in the sidebar.
     /// - **0**: dark mode themes
     /// - **1**: light mode themes
     @Published var selectedAppearance: Int = 0
 
-    /// The selected tab in the main section.
-    /// - **0**: Preview
-    /// - **1**: Editor
-    /// - **2**: Terminal
-    @Published var selectedTab: Int = 1
-
     /// An array of loaded ``Theme``.
-    @Published var themes: [Theme] = [] {
-        didSet {
-            saveThemes()
-        }
-    }
+    @Published var themes: [Theme] = []
 
     /// The currently selected ``Theme``.
     @Published var selectedTheme: Theme? {
@@ -244,23 +238,6 @@ final class ThemeModel: ObservableObject {
         }
     }
 
-    /// Removes all overrides of the given theme in
-    /// `~/Library/Application Support/CodeEdit/settings.json`
-    ///
-    /// After removing overrides, themes are reloaded
-    /// from `~/Library/Application Support/CodeEdit/Themes`. See ``loadThemes()``
-    /// for more information.
-    ///
-    /// - Parameter theme: The theme to reset
-    func reset(_ theme: Theme) {
-        Settings.shared.preferences.theme.overrides[theme.name] = [:]
-        do {
-            try self.loadThemes()
-        } catch {
-            print(error)
-        }
-    }
-
     /// Removes the given theme from `–/Library/Application Support/CodeEdit/themes`
     ///
     /// After removing the theme, themes are reloaded
@@ -279,51 +256,6 @@ final class ThemeModel: ObservableObject {
 
                 // reload themes
                 try self.loadThemes()
-            } catch {
-                print(error)
-            }
-        }
-    }
-
-    /// Saves changes on theme properties to `overrides`
-    /// in `~/Library/Application Support/CodeEdit/settings.json`.
-    private func saveThemes() {
-        let url = themesURL
-        themes.forEach { theme in
-            do {
-                // load the original theme from `~/Library/Application Support/CodeEdit/Themes/`
-                let originalUrl = url.appendingPathComponent(theme.name).appendingPathExtension("cetheme")
-                let originalData = try Data(contentsOf: originalUrl)
-                let originalTheme = try JSONDecoder().decode(Theme.self, from: originalData)
-
-                // get properties of the current theme as well as the original
-                guard let terminalColors = try theme.terminal.allProperties() as? [String: Theme.Attributes],
-                      let editorColors = try theme.editor.allProperties() as? [String: Theme.Attributes],
-                      let oTermColors = try originalTheme.terminal.allProperties() as? [String: Theme.Attributes],
-                      let oEditColors = try originalTheme.editor.allProperties() as? [String: Theme.Attributes]
-                else {
-                    // TODO: Throw a proper error
-                    throw NSError() // swiftlint:disable:this discouraged_direct_init
-                }
-
-                // compare the properties and if there are differences, save to overrides
-                // in `settings.json
-                var newAttr: [String: [String: Theme.Attributes]] = ["terminal": [:], "editor": [:]]
-                terminalColors.forEach { (key, value) in
-                    if value != oTermColors[key] {
-                        newAttr["terminal"]?[key] = value
-                    }
-                }
-
-                editorColors.forEach { (key, value) in
-                    if value != oEditColors[key] {
-                        newAttr["editor"]?[key] = value
-                    }
-                }
-                DispatchQueue.main.async {
-                    Settings.shared.preferences.theme.overrides[theme.name] = newAttr
-                }
-
             } catch {
                 print(error)
             }
@@ -349,17 +281,70 @@ final class ThemeModel: ObservableObject {
         }
     }
 
+    func rename(to newName: String, theme: Theme) {
+        do {
+            guard let oldURL = theme.fileURL else {
+                throw NSError(
+                    domain: "ThemeModel",
+                    code: 1,
+                    userInfo: [NSLocalizedDescriptionKey: "Theme file URL not found"]
+                )
+            }
+
+            var iterator = 1
+            var finalName = newName
+            var finalURL = themesURL.appendingPathComponent(finalName).appendingPathExtension("cetheme")
+
+            // Check for existing display names in themes
+            while themes.contains(where: { theme != $0 && $0.displayName == finalName }) {
+                finalName = "\(newName) \(iterator)"
+                finalURL = themesURL.appendingPathComponent(finalName).appendingPathExtension("cetheme")
+                iterator += 1
+            }
+
+            try filemanager.moveItem(at: oldURL, to: finalURL)
+
+            try self.loadThemes()
+
+            if let index = themes.firstIndex(where: { $0.fileURL == finalURL }) {
+                themes[index].displayName = finalName
+                themes[index].fileURL = finalURL
+                themes[index].name = finalName.lowercased().replacingOccurrences(of: " ", with: "-")
+            }
+
+        } catch {
+            print("Error renaming theme: \(error.localizedDescription)")
+        }
+    }
+
     func duplicate(_ url: URL) {
         do {
             // Construct the destination file URL
             var destinationFileURL = self.themesURL.appendingPathComponent(url.lastPathComponent)
 
+            // Extract the base filename and extension
+            let fileExtension = destinationFileURL.pathExtension
+
+            var fileName = destinationFileURL.deletingPathExtension().lastPathComponent
+            var newFileName = fileName
+
             // Check if the file already exists
             var iterator = 1
+
+            let isBundled = url.absoluteString.hasPrefix(bundledThemesURL?.absoluteString ?? "")
+            let isImporting =
+                !url.absoluteString.hasPrefix(bundledThemesURL?.absoluteString ?? "")
+                && !url.absoluteString.hasPrefix(themesURL.absoluteString)
+
+            if isBundled {
+                newFileName = "\(fileName) \(iterator)"
+                destinationFileURL = self.themesURL
+                    .appendingPathComponent(newFileName)
+                    .appendingPathExtension(fileExtension)
+            }
+
             while FileManager.default.fileExists(atPath: destinationFileURL.path) {
-                // Extract the base filename and extension
-                let fileExtension = destinationFileURL.pathExtension
-                var fileName = destinationFileURL.deletingPathExtension().lastPathComponent
+                fileName = destinationFileURL.deletingPathExtension().lastPathComponent
 
                 // Remove any existing iterator
                 if let range = fileName.range(of: " \\d+$", options: .regularExpression) {
@@ -367,8 +352,11 @@ final class ThemeModel: ObservableObject {
                 }
 
                 // Generate a new filename with an iterator
-                let newFileName = "\(fileName) \(iterator)"
-                destinationFileURL = self.themesURL.appendingPathComponent(newFileName).appendingPathExtension(fileExtension)
+                newFileName = "\(fileName) \(iterator)"
+                destinationFileURL = self.themesURL
+                    .appendingPathComponent(newFileName)
+                    .appendingPathExtension(fileExtension)
+
                 iterator += 1
             }
 
@@ -377,13 +365,31 @@ final class ThemeModel: ObservableObject {
 
             try self.loadThemes()
 
-            if var newTheme = self.themes.first(where: { $0.fileURL == destinationFileURL }) {
-                newTheme.name = newTheme.fileURL?.lastPathComponent ?? ""
-                self.selectedTheme = newTheme
+            if var index = self.themes.firstIndex(where: { $0.fileURL == destinationFileURL }) {
+                self.themes[index].displayName = newFileName
+                self.themes[index].name = newFileName.lowercased().replacingOccurrences(of: " ", with: "-")
+                if isImporting != true {
+                    self.themes[index].author = NSFullUserName()
+                }
+                self.selectedTheme = self.themes[index]
+                self.detailsTheme = self.themes[index]
             }
         } catch {
             print("Error adding theme: \(error.localizedDescription)")
         }
     }
 
+    /// Save theme to file
+    func save(_ theme: Theme) {
+        do {
+            if let fileURL = theme.fileURL {
+                let data = try JSONEncoder().encode(theme)
+                let json = try JSONSerialization.jsonObject(with: data)
+                let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
+                try prettyJSON.write(to: fileURL, options: .atomic)
+            }
+        } catch {
+            print("Error saving theme: \(error.localizedDescription)")
+        }
+    }
 }

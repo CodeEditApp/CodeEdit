@@ -110,6 +110,18 @@ struct ThemeSettingsView: View {
                 .padding(.top, 10)
             }
         }
+        .sheet(item: $themeModel.detailsTheme) { theme in
+            if let index = themeModel.themes.firstIndex(where: { $0.fileURL?.absoluteString == theme.fileURL?.absoluteString }) {
+                ThemeSettingsThemeDetails(theme: Binding(
+                    get: { themeModel.themes[index] },
+                    set: { newValue in
+                        themeModel.themes[index] = newValue
+                        themeModel.save(newValue)
+                    }
+                ))
+            }
+
+        }
     }
 }
 
