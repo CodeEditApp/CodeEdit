@@ -131,6 +131,7 @@ class EditorManager: ObservableObject {
         if activeEditorHistory.isEmpty {
             activeEditor = findSomeEditor(excluding: editor)
         } else {
+            // swiftlint:disable:next force_unwrapping
             activeEditor = activeEditorHistory.removeFirst()()!
         }
     }

@@ -64,6 +64,7 @@ extension GitHubAccount {
         completion: @escaping (_ response: Result<[GitHubRepositories], Error>) -> Void
     ) -> GitURLSessionDataTaskProtocol? {
         let router = (owner != nil)
+            // swiftlint:disable:next force_unwrapping
             ? GitHubRepositoryRouter.readRepositories(configuration, owner!, page, perPage)
             : GitHubRepositoryRouter.readAuthenticatedRepositories(configuration, page, perPage)
 

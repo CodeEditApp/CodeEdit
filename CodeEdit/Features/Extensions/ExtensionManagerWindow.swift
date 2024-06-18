@@ -21,6 +21,7 @@ struct ExtensionManagerWindow: Scene {
                 case 0:
                     Text("Select an extension")
                 case 1:
+                    // swiftlint:disable:next force_unwrapping
                     ExtensionDetailView(ext: selection.first!)
                 default:
                     Text("\(selection.count) selected")

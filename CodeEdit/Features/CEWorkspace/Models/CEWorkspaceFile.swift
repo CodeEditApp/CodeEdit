@@ -62,6 +62,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
             return customImage
         } else {
             return NSImage(systemSymbolName: systemImage, accessibilityDescription: systemImage)
+                // swiftlint:disable:next force_unwrapping
                 ?? NSImage(systemSymbolName: "doc", accessibilityDescription: "doc")!
         }
     }

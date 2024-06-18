@@ -31,6 +31,7 @@ struct ConstrainHeightToWindowViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .frame(height: height-100)
+            // swiftlint:disable:next force_unwrapping
             .onReceive(NSApp.settingsWindow!.publisher(for: \.frame)) { newValue in
                 height = newValue.height
             }

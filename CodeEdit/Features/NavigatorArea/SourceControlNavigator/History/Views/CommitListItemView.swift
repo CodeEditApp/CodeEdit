@@ -184,6 +184,7 @@ struct CommitListItemView: View {
                 if let commitRemoteURL = commit.commitBaseURL?.absoluteString {
                     Button("View on \(commit.remoteString)...") {
                         let commitURL = "\(commitRemoteURL)/\(commit.commitHash)"
+                        // swiftlint:disable:next force_unwrapping
                         openCommit(URL(string: commitURL)!)
                     }
                     Divider()

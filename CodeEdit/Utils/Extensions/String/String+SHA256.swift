@@ -27,6 +27,7 @@ extension String {
 
         // compute the hash
         // (note that `String.data(using: .utf8)!` is safe since it will never fail)
+        // swiftlint:disable:next force_unwrapping
         let computed = SHA256.hash(data: string.data(using: .utf8)!)
 
         // map the result to a hex string and return

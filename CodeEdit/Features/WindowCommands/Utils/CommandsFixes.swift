@@ -41,6 +41,7 @@ extension NSMenuItem {
         let originalMethodSet = class_getInstanceMethod(self as AnyClass, origSelector)
         let swizzledMethodSet = class_getInstanceMethod(self as AnyClass, swizzledSelector)
 
+        // swiftlint:disable:next force_unwrapping
         method_exchangeImplementations(originalMethodSet!, swizzledMethodSet!)
     }
 }

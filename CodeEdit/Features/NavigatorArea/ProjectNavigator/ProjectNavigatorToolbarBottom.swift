@@ -89,6 +89,7 @@ struct ProjectNavigatorToolbarBottom: View {
                 var pathComponents = activeTabFileURL.pathComponents
                 pathComponents.removeLast()
 
+                // swiftlint:disable:next force_unwrapping
                 let fileURL = NSURL.fileURL(withPathComponents: pathComponents)! as URL
                 return fileURL
             }

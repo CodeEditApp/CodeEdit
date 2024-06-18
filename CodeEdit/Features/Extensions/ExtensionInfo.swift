@@ -101,6 +101,7 @@ extension ExtensionInfo {
     }
 
     var lastPathOfBundleIdentifier: String {
+        // swiftlint:disable:next force_unwrapping
         String(endpoint.bundleIdentifier.split(separator: ".").last!)
     }
 

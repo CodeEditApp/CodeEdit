@@ -26,6 +26,7 @@ struct FindCommands: Commands {
                 .keyboardShortcut("f")
 
                 Button("Find and Replace...") {
+                    // swiftlint:disable:next force_unwrapping
                     send(.init(rawValue: 12)!)
                 }
                 .keyboardShortcut("f", modifiers: [.option, .command])

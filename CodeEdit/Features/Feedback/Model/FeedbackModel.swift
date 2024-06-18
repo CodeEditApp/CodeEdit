@@ -141,6 +141,7 @@ public class FeedbackModel: ObservableObject {
         let gitAccounts = Settings[\.accounts].sourceControlAccounts.gitAccounts
         let firstGitAccount = gitAccounts.first
 
+        // swiftlint:disable:next force_unwrapping
         let config = GitHubTokenConfiguration(keychain.get(firstGitAccount!.name))
         GitHubAccount(config).postIssue(
             owner: "CodeEditApp",

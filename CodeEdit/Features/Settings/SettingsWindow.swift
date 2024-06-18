@@ -15,6 +15,7 @@ struct SettingsWindow: Scene {
             SettingsView(updater: updater)
                 .frame(minWidth: 715, maxWidth: 715)
                 .task {
+                    // swiftlint:disable:next force_unwrapping
                     let window = NSApp.windows.first { $0.identifier?.rawValue == SceneID.settings.rawValue }!
                     window.titlebarAppearsTransparent = true
                 }

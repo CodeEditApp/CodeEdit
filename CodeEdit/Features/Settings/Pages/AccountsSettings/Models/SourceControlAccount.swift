@@ -124,7 +124,8 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
                     return URL.hardcoded("https://support.atlassian.com/bitbucket-cloud/docs/app-passwords/")
             case .bitbucketServer:
                     return URL.hardcoded(
-                    "https://confluence.atlassian.com/bitbucketserver/personal-access-tokens-939515499.html")
+                        "https://confluence.atlassian.com/bitbucketserver/personal-access-tokens-939515499.html"
+                    )
             case .github:
                     return URL.hardcoded("https://github.com/settings/tokens/new")
             case .githubEnterprise:

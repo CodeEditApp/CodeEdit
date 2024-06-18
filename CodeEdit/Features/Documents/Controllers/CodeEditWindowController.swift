@@ -43,12 +43,14 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         contentViewController = NSHostingController(rootView: view)
 
         observers = [
+            // swiftlint:disable force_unwrapping
             splitViewController.splitViewItems.first!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
                 self?.navigatorCollapsed = item.isCollapsed
             }),
             splitViewController.splitViewItems.last!.observe(\.isCollapsed, changeHandler: { [weak self] item, _ in
                 self?.inspectorCollapsed = item.isCollapsed
             })
+            // swiftlint:enable force_unwrapping
         ]
 
         setupToolbar()
@@ -85,6 +87,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         splitVC.addSplitViewItem(navigator)
 
         let workspaceView = SettingsInjector {
+            // swiftlint:disable:next force_unwrapping
             WindowObserver(window: window!) {
                 WorkspaceView()
                     .environmentObject(workspace)

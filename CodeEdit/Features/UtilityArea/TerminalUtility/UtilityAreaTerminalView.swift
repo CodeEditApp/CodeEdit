@@ -89,6 +89,7 @@ struct UtilityAreaTerminalView: View {
     private func updateTerminal(_ id: UUID, title: String? = nil) {
         let terminalIndex = utilityAreaViewModel.terminals.firstIndex(where: { $0.id == id })
         if terminalIndex != nil {
+            // swiftlint:disable:next force_unwrapping
             updateTerminalByReference(of: &utilityAreaViewModel.terminals[terminalIndex!], title: title)
         }
     }
@@ -132,6 +133,7 @@ struct UtilityAreaTerminalView: View {
                 }
                 ForEach(utilityAreaViewModel.terminals) { terminal in
                     TerminalEmulatorView(
+                        // swiftlint:disable:next force_unwrapping
                         url: terminal.url!,
                         shellType: terminal.shell,
                         onTitleChange: { newTitle in

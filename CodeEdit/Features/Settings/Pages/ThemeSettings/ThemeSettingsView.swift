@@ -84,6 +84,7 @@ struct ThemeSettingsView: View {
                         ForEach(selectedAppearance == .dark ? themeModel.darkThemes : themeModel.lightThemes) { theme in
                             Divider()
                             ThemeSettingsThemeRow(
+                                // swiftlint:disable:next force_unwrapping
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
                                 active: getThemeActive(theme),
                                 action: activateTheme
@@ -92,6 +93,7 @@ struct ThemeSettingsView: View {
                         ForEach(selectedAppearance == .dark ? themeModel.lightThemes : themeModel.darkThemes) { theme in
                             Divider()
                             ThemeSettingsThemeRow(
+                                // swiftlint:disable:next force_unwrapping
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
                                 active: getThemeActive(theme),
                                 action: activateTheme

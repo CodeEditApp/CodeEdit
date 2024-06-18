@@ -126,12 +126,15 @@ final class ProjectNavigatorMenu: NSMenu {
             if type.conforms(to: .propertyList) {
                 primaryItems.append(.propertyList())
             }
+            // swiftlint:disable:next force_unwrapping
             if type.conforms(to: UTType(filenameExtension: "xcassets")!) {
                 primaryItems.append(NSMenuItem(title: "Asset Catalog Document", action: nil, keyEquivalent: ""))
             }
+            // swiftlint:disable:next force_unwrapping
             if type.conforms(to: UTType(filenameExtension: "xib")!) {
                 primaryItems.append(NSMenuItem(title: "Interface Builder XIB Document", action: nil, keyEquivalent: ""))
             }
+            // swiftlint:disable:next force_unwrapping
             if type.conforms(to: UTType(filenameExtension: "xcodeproj")!) {
                 primaryItems.append(NSMenuItem(title: "Xcode Project", action: nil, keyEquivalent: ""))
             }

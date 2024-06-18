@@ -83,6 +83,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
         if !item.isFolder && prefs.fileIconStyle == .color {
             return NSColor(item.iconColor)
         } else {
+            // swiftlint:disable:next force_unwrapping
             return NSColor(named: "FolderBlue")!
         }
     }

@@ -157,6 +157,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
 
                 // Update the last dragging location if there's enough offset
                 let currentLocationOnAxis = ((position == .top) ? value.location.x : value.location.y)
+                // swiftlint:disable:next force_unwrapping
                 if draggingLastLocation == nil || abs(currentLocationOnAxis - draggingLastLocation!) >= 10 {
                     draggingLastLocation = (position == .top) ? value.location.x : value.location.y
                 }
@@ -231,7 +232,9 @@ struct AreaTabBar<Tab: AreaTab>: View {
         // Swap tab positions
         if isWithinBounds {
             let changing = swapTabWidth - 1
+            // swiftlint:disable:next force_unwrapping
             draggingStartLocation! += direction == .previous ? -changing : changing
+            // swiftlint:disable:next force_unwrapping
             tabOffsets[tab]! += direction == .previous ? changing : -changing
             items.swapAt(currentIndex, swapIndex)
         }

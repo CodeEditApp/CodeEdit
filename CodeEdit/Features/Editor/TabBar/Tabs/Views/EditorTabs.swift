@@ -169,8 +169,10 @@ struct EditorTabs: View {
                         previousTabLocation.minX + currentTabWidth * 0.9
                     ) {
                         let changing = previousTabWidth - 1 // One offset for overlapping divider.
+                        // swiftlint:disable:next force_unwrapping
                         draggingStartLocation! -= changing
                         withAnimation {
+                            // swiftlint:disable:next force_unwrapping
                             tabOffsets[id]! += changing
                             openedTabs.move(
                                 fromOffsets: IndexSet(integer: previousTabIndex),
@@ -192,8 +194,10 @@ struct EditorTabs: View {
                         nextTabLocation.maxX - currentTabWidth * 0.9
                     ) {
                         let changing = nextTabWidth - 1 // One offset for overlapping divider.
+                        // swiftlint:disable:next force_unwrapping
                         draggingStartLocation! += changing
                         withAnimation {
+                            // swiftlint:disable:next force_unwrapping
                             tabOffsets[id]! -= changing
                             openedTabs.move(
                                 fromOffsets: IndexSet(integer: nextTabIndex),
@@ -204,6 +208,7 @@ struct EditorTabs: View {
                     }
                 }
                 // Only update the last dragging location when there is enough offset.
+                // swiftlint:disable:next force_unwrapping
                 if draggingLastLocation == nil || abs(value.location.x - draggingLastLocation!) >= 10 {
                     draggingLastLocation = value.location.x
                 }

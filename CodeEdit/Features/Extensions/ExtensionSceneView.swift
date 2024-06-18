@@ -75,6 +75,7 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
 
             Task {
                 do {
+                    // swiftlint:disable:next force_unwrapping
                     try await connection!.withService { (service: EnvironmentPublisherObjc) in
                         service.publishEnvironment(data: $value)
                     }

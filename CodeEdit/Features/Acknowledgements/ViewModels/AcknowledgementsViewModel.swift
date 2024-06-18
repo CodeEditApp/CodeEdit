@@ -28,6 +28,7 @@ final class AcknowledgementsViewModel: ObservableObject {
         do {
             if let bundlePath = Bundle.main.path(forResource: "Package", ofType: "resolved") {
                 let jsonData = try String(contentsOfFile: bundlePath).data(using: .utf8)
+                // swiftlint:disable:next force_unwrapping
                 let parsedJSON = try JSONDecoder().decode(AcknowledgementObject.self, from: jsonData!)
                 for dependency in parsedJSON.pins.sorted(by: { $0.identity < $1.identity })
                 where dependency.identity.range(
