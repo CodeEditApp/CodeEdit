@@ -69,11 +69,10 @@ extension GitJSONPostRouter {
                         with: data,
                         options: .mutableContainers
                     ) as? [String: Any] {
-
                         userInfo[gitErrorKey] = json as Any?
-
-                    } else if let data {
-                        userInfo[gitErrorKey] = String(decoding: data, as: UTF8.self) as Any?
+                        // swiftlint:disable:next non_optional_string_data_conversion
+                    } else if let data, let string = String(data: data, encoding: .utf8) {
+                        userInfo[gitErrorKey] = string as Any?
                     }
 
                     let error = NSError(
