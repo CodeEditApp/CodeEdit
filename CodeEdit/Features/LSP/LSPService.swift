@@ -185,7 +185,8 @@ final class LSPService: ObservableObject {
         do {
             try await server.shutdownAndExit()
         } catch {
-            logger.error("Failed to stop server for language \(languageId.rawValue)")
+            logger.error("Failed to stop server for language \(languageId.rawValue): \(error.localizedDescription)")
+            throw error
         }
         languageClients.removeValue(forKey: languageId)
         logger.info("Server stopped for language \(languageId.rawValue)")

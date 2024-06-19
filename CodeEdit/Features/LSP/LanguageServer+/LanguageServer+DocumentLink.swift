@@ -8,16 +8,9 @@
 import Foundation
 import LanguageServerProtocol
 
-extension LanguageServer {
-//    func requestDocumentLink() async -> DocumentLinkResponse {
-//        do {
-//            // TODO: DocumentLinkParams IS MISSING `textDocument: TextDocumentIdentifier;` FIELD IN LSP LIBRARY
-//        } catch {
-//            print("requestDocumentLink Error: \(error)")
-//        }
-//        return []
-//    }
+// TODO: DocumentLinkParams IS MISSING `textDocument: TextDocumentIdentifier;` FIELD IN LSP LIBRARY
 
+extension LanguageServer {
     func requestDocumentLinkResolve(_ documentLink: DocumentLink) async -> DocumentLink? {
         do {
             return try await lspInstance.documentLinkResolve(documentLink)
