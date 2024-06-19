@@ -224,9 +224,9 @@ extension ThemeModel {
                 )
             }
 
-            var iterator = 1
             var finalName = newName
             var finalURL = themesURL.appendingPathComponent(finalName).appendingPathExtension("cetheme")
+            var iterator = 1
 
             // Check for existing display names in themes
             while themes.contains(where: { theme != $0 && $0.displayName == finalName }) {
@@ -276,13 +276,10 @@ extension ThemeModel {
     func delete(_ theme: Theme) {
         if let url = theme.fileURL {
             do {
-                // remove the theme from the list
                 try filemanager.removeItem(at: url)
 
-                // remove from overrides in `settings.json`
                 Settings.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
 
-                // reload themes
                 try self.loadThemes()
             } catch {
                 print(error)
