@@ -24,9 +24,6 @@ struct EditorTabs: View {
 
     @EnvironmentObject private var editor: Editor
 
-    @AppSettings(\.general.tabBarStyle)
-    var tabBarStyle
-
     /// The tab id of current dragging tab.
     ///
     /// It will be `nil` when there is no tab dragged currently.
@@ -71,11 +68,6 @@ struct EditorTabs: View {
     /// This is used to determine the tab offset of every tab (by their tab id) while dragging.
     @State private var tabOffsets: [TabID: CGFloat] = [:]
 
-    /// The expected tab width in native tab bar style.
-    ///
-    /// This is computed by the total width of tab bar. It is updated automatically.
-    @State private var expectedTabWidth: CGFloat = 0
-
     /// This state is used to detect if the mouse is hovering over tabs.
     /// If it is true, then we do not update the expected tab width immediately.
     @State private var isHoveringOverTabs: Bool = false
@@ -103,17 +95,6 @@ struct EditorTabs: View {
 
     @State private var scrollTrailingOffset: CGFloat? = 0
 
-    /// Update the expected tab width when corresponding UI state is updated.
-    ///
-    /// This function will be called when the number of tabs or the parent size is changed.
-    private func updateExpectedTabWidth(proxy: GeometryProxy) {
-        expectedTabWidth = max(
-            // Equally divided size of a native tab.
-            (proxy.size.width + 1) / CGFloat(editor.tabs.count) + 1,
-            // Min size of a native tab.
-            CGFloat(140)
-        )
-    }
     // Disable the rule because this function is implementing the drag gesture and its animations.
     // It is fairly complicated, so ignore the function body length limitation for now.
     // swiftlint:disable function_body_length cyclomatic_complexity
@@ -256,19 +237,10 @@ struct EditorTabs: View {
         }
     }
 
-    /// Conditionally updates the `expectedTabWidth`.
     /// Called when the tab count changes or the temporary tab changes.
     /// - Parameter geometryProxy: The geometry proxy to calculate the new width using.
     private func updateForTabCountChange(geometryProxy: GeometryProxy) {
         openedTabs = editor.tabs.map(\.file.id)
-
-        // Only update the expected width when user is not hovering over tabs.
-        // This should give users a better experience on closing multiple tabs continuously.
-        if !isHoveringOverTabs {
-            withAnimation(.easeOut(duration: 0.15)) {
-                updateExpectedTabWidth(proxy: geometryProxy)
-            }
-        }
     }
 
     // swiftlint:enable function_body_length cyclomatic_complexity
@@ -289,7 +261,6 @@ struct EditorTabs: View {
                         ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
                             if let item = editor.tabs.first(where: { $0.file.id == id }) {
                                 EditorTabView(
-                                    expectedWidth: expectedTabWidth,
                                     item: item.file,
                                     index: index,
                                     draggingTabId: draggingTabId,
@@ -325,12 +296,8 @@ struct EditorTabs: View {
                             }
                         }
                     }
-                    // This padding is to hide dividers at two ends under the accessory view divider.
-                    .padding(.horizontal, tabBarStyle == .native ? -1 : 0)
                     .onAppear {
                         openedTabs = editor.tabs.map(\.file.id)
-                        // On view appeared, compute the initial expected width for tabs.
-                        updateExpectedTabWidth(proxy: geometryProxy)
                         // On first tab appeared, jump to the corresponding position.
                         scrollReader.scrollTo(editor.selectedTab)
                     }
@@ -339,7 +306,7 @@ struct EditorTabs: View {
                             updateForTabCountChange(geometryProxy: geometryProxy)
                         } else {
                             withAnimation(
-                                .easeOut(duration: tabBarStyle == .native ? 0.15 : 0.20)
+                                .easeOut(duration: 0.20)
                             ) {
                                 updateForTabCountChange(geometryProxy: geometryProxy)
                             }
@@ -360,7 +327,6 @@ struct EditorTabs: View {
 
                     // When window size changes, re-compute the expected tab width.
                     .onChange(of: geometryProxy.size.width) { _ in
-                        updateExpectedTabWidth(proxy: geometryProxy)
                         withAnimation {
                             scrollReader.scrollTo(editor.selectedTab?.file.id)
                         }
@@ -368,47 +334,28 @@ struct EditorTabs: View {
                     // When user is not hovering anymore, re-compute the expected tab width immediately.
                     .onHover { isHovering in
                         isHoveringOverTabs = isHovering
-                        if !isHovering {
-                            withAnimation(.easeOut(duration: 0.15)) {
-                                updateExpectedTabWidth(proxy: geometryProxy)
-                            }
-                        }
                     }
                     .frame(height: EditorTabBarView.height)
                 }
 
                 // To fill up the parent space of tab bar.
                 .frame(maxWidth: .infinity)
-                .background {
-                    if tabBarStyle == .native {
-                        EditorTabBarNativeInactiveBackground()
-                    }
-                }
-            }
-            .background {
-                if tabBarStyle == .native {
-                    EditorTabBarAccessoryNativeBackground(dividerAt: .none)
-                }
             }
             .overlay(alignment: .leading) {
-                if tabBarStyle == .xcode {
-                    EditorTabsOverflowShadow(
-                        width: colorScheme == .dark ? 5 : 7,
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                    .opacity(scrollOffset >= 0 ? 0 : 1)
-                }
+                EditorTabsOverflowShadow(
+                    width: colorScheme == .dark ? 5 : 7,
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .opacity(scrollOffset >= 0 ? 0 : 1)
             }
             .overlay(alignment: .trailing) {
-                if tabBarStyle == .xcode {
-                    EditorTabsOverflowShadow(
-                        width: colorScheme == .dark ? 5 : 7,
-                        startPoint: .trailing,
-                        endPoint: .leading
-                    )
-                    .opacity((scrollTrailingOffset ?? 0) <= 0 ? 0 : 1)
-                }
+                EditorTabsOverflowShadow(
+                    width: colorScheme == .dark ? 5 : 7,
+                    startPoint: .trailing,
+                    endPoint: .leading
+                )
+                .opacity((scrollTrailingOffset ?? 0) <= 0 ? 0 : 1)
             }
         }
     }
