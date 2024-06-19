@@ -162,7 +162,6 @@ extension ThemeModel {
             var fileName = destinationFileURL.deletingPathExtension().lastPathComponent
             var newFileName = fileName
 
-            // Check if the file already exists
             var iterator = 1
 
             let isBundled = url.absoluteString.hasPrefix(bundledThemesURL?.absoluteString ?? "")
@@ -177,6 +176,7 @@ extension ThemeModel {
                     .appendingPathExtension(fileExtension)
             }
 
+            // Check if the file already exists
             while FileManager.default.fileExists(atPath: destinationFileURL.path) {
                 fileName = destinationFileURL.deletingPathExtension().lastPathComponent
 
