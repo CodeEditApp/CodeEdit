@@ -2120,7 +2120,6 @@
 			children = (
 				588847652992A35800996D95 /* Models */,
 				77A01E1A2BB33F1E00F0EA38 /* Views */,
-				77A01E1B2BB33F3D00F0EA38 /* Extensions */,
 			);
 			path = CEWorkspace;
 			sourceTree = "<group>";
@@ -2136,6 +2135,8 @@
 				6CB52DC82AC8DC3E002E75B3 /* CEWorkspaceFileManager+FileManagement.swift */,
 				77A01E2D2BB4261200F0EA38 /* CEWorkspaceSettings.swift */,
 				77A01E262BB4249800F0EA38 /* CEWorkspaceSettingsData.swift */,
+				77A01E292BB424EA00F0EA38 /* CEWorkspaceSettingsData+ProjectSettings.swift */,
+				77A01E2B2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift */,
 				77A01E222BB423A800F0EA38 /* CEWorkspaceSettingsPage.swift */,
 				77A01E332BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift */,
 				6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */,
@@ -2574,15 +2575,6 @@
 				77A01E7F2BC5101200F0EA38 /* EnvironmentVariableListItem.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		77A01E1B2BB33F3D00F0EA38 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				77A01E292BB424EA00F0EA38 /* CEWorkspaceSettingsData+ProjectSettings.swift */,
-				77A01E2B2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift */,
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 		77A01E372BB4291700F0EA38 /* Pages */ = {
