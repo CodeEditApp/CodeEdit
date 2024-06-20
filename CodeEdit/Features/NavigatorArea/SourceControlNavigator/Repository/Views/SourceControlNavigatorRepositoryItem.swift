@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SourceControlNavigatorRepositoryItem: View {
+    @AppSettings(\.general.fileIconStyle)
+    var fileIconStyle
+
     let item: RepoOutlineGroupItem
 
     @Environment(\.controlActiveState)
@@ -49,11 +52,11 @@ struct SourceControlNavigatorRepositoryItem: View {
                 if item.symbolImage != nil {
                     Image(symbol: item.symbolImage ?? "")
                         .opacity(controlActiveState == .inactive ? 0.5 : 1)
-                        .foregroundStyle(item.imageColor ?? .accentColor)
+                        .foregroundStyle(fileIconStyle == .color ? item.imageColor ?? .accentColor : Color("CoolGray"))
                 } else {
                     Image(systemName: item.systemImage ?? "")
                         .opacity(controlActiveState == .inactive ? 0.5 : 1)
-                        .foregroundStyle(item.imageColor ?? .accentColor)
+                        .foregroundStyle(fileIconStyle == .color ? item.imageColor ?? .accentColor : Color("CoolGray"))
                 }
             })
             .padding(.leading, 1)
