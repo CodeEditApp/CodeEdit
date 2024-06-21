@@ -65,22 +65,19 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
     /// type or any other form of data representation.
     var utType: UTType? {
-        if content != nil && content?.isEmpty ?? true {
-            return .text
-        }
         guard let fileType, let type = UTType(fileType) else {
             return nil
         }
-        if type.conforms(to: .text) {
+
+        switch type {
+        case .data:
+            return .text
+        default:
+            if type.isDeclared {
+                return type
+            }
             return .text
         }
-        if type.conforms(to: .image) {
-            return .image
-        }
-        if type.conforms(to: .pdf) {
-            return .pdf
-        }
-        return type
     }
 
     /// Specify options for opening the file such as the initial cursor positions.
