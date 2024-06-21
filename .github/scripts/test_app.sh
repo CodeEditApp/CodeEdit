@@ -9,7 +9,7 @@ elif [ $1 = "arm" ]; then
 fi
 
 echo "Building with arch: ${ARCH}"
-swiftlint --version
+echo "SwiftLint Version: $(swiftlint --version)"
 
 export LC_CTYPE=en_US.UTF-8
 

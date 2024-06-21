@@ -54,6 +54,12 @@ extension SettingsData {
         // Use font settings from Text Editing
         var useTextEditorFont: Bool = true
 
+        /// If `true`, use injection scripts for terminal features like automatic tab title.
+        var useShellIntegration: Bool = true
+
+        /// If `true`, use a login shell.
+        var useLoginShell: Bool = true
+
         /// Default initializer
         init() {}
 
@@ -70,6 +76,8 @@ extension SettingsData {
             ) ?? .block
             self.cursorBlink = try container.decodeIfPresent(Bool.self, forKey: .cursorBlink) ?? false
             self.useTextEditorFont = try container.decodeIfPresent(Bool.self, forKey: .useTextEditorFont) ?? true
+            self.useShellIntegration = try container.decodeIfPresent(Bool.self, forKey: .useShellIntegration) ?? true
+            self.useLoginShell = try container.decodeIfPresent(Bool.self, forKey: .useLoginShell) ?? true
         }
     }
 
@@ -96,6 +104,9 @@ extension SettingsData {
         /// The name of the custom font
         var name: String = "SF Mono"
 
+        /// The weight of the custom font
+        var weight: NSFont.Weight = .medium
+
         /// Default initializer
         init() {}
 
@@ -104,6 +115,7 @@ extension SettingsData {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.size = try container.decodeIfPresent(Double.self, forKey: .size) ?? size
             self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? name
+            self.weight = try container.decodeIfPresent(NSFont.Weight.self, forKey: .weight) ?? weight
         }
 
         /// Returns an NSFont representation of the current configuration.
@@ -111,7 +123,8 @@ extension SettingsData {
         /// Returns the custom font, if enabled and able to be instantiated.
         /// Otherwise returns a default system font monospaced.
         var current: NSFont {
-            return NSFont(name: name, size: size) ?? NSFont.monospacedSystemFont(ofSize: size, weight: .medium)
+            let customFont = NSFont(name: name, size: size)?.withWeight(weight: weight)
+            return customFont ?? NSFont.monospacedSystemFont(ofSize: size, weight: .medium)
         }
     }
 }
