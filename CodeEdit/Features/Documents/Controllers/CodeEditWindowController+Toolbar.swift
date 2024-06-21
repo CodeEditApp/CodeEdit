@@ -70,6 +70,7 @@ extension CodeEditWindowController {
         }
     }
 
+    // swiftlint:disable:next function_body_length
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
