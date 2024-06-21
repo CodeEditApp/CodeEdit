@@ -38,6 +38,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var listenerModel: WorkspaceNotificationModel = .init()
     var sourceControlManager: SourceControlManager?
 
+    var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
+
     private var cancellables = Set<AnyCancellable>()
 
     deinit {
@@ -89,7 +91,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
         let windowController = CodeEditWindowController(
             window: window,
-            workspace: self
+            workspace: self,
+            taskNotificationHandler: taskNotificationHandler
         )
 
         if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
