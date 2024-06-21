@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -3349,7 +3349,7 @@
 				6C0617D42BDB4432008C9C42 /* XCRemoteSwiftPackageReference "LogStream" */,
 				30CB648F2C16CA8100CC8A9E /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 				30CB64922C16CA9100CC8A9E /* XCRemoteSwiftPackageReference "LanguageClient" */,
-				6C85BB3A2C1E3D1000EB5DEF /* XCLocalSwiftPackageReference "../CodeEditKit" */,
+				305F53292C26363200EC94BA /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -5050,13 +5050,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		6C85BB3A2C1E3D1000EB5DEF /* XCLocalSwiftPackageReference "../CodeEditKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../CodeEditKit;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -5072,6 +5065,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.2.2;
+			};
+		};
+		305F53292C26363200EC94BA /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.0;
 			};
 		};
 		30CB648F2C16CA8100CC8A9E /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */ = {
