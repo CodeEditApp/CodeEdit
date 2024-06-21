@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-/// A view that implements the `Theme` preference section
 struct ThemeSettingsView: View {
     @Environment(\.colorScheme)
     var colorScheme
@@ -19,6 +18,7 @@ struct ThemeSettingsView: View {
 
     @State private var listView: Bool = false
     @State private var selectedAppearance: ThemeSettingsAppearances = .dark
+    @State private var themeSearchQuery: String = ""
 
     enum ThemeSettingsAppearances: String, CaseIterable {
         case light = "Light Appearance"
@@ -80,16 +80,12 @@ struct ThemeSettingsView: View {
                         .labelsHidden()
                         .padding(10)
                     }
+                    TextField("Search Themes", text: $themeSearchQuery)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding(.bottom, 10)
+                        .padding(.horizontal, 10)
                     VStack(spacing: 0) {
-                        ForEach(selectedAppearance == .dark ? themeModel.darkThemes : themeModel.lightThemes) { theme in
-                            Divider()
-                            ThemeSettingsThemeRow(
-                                theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                active: getThemeActive(theme),
-                                action: activateTheme
-                            ).id(theme)
-                        }
-                        ForEach(selectedAppearance == .dark ? themeModel.lightThemes : themeModel.darkThemes) { theme in
+                        ForEach(filteredThemes) { theme in
                             Divider()
                             ThemeSettingsThemeRow(
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
@@ -100,6 +96,17 @@ struct ThemeSettingsView: View {
                     }
                 }
                 .padding(-10)
+            }
+        }
+    }
+
+    private var filteredThemes: [Theme] {
+        let themes = selectedAppearance == .dark ? themeModel.darkThemes : themeModel.lightThemes
+        if themeSearchQuery.isEmpty {
+            return themes
+        } else {
+            return themes.filter {
+                $0.name.localizedCaseInsensitiveContains(themeSearchQuery)
             }
         }
     }
