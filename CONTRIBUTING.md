@@ -2,7 +2,8 @@
 
 Feel free to join and collaborate on our [Discord Server](https://discord.gg/vChUXVf9Em).
 
-> ⚠️ Please do not submit `localization` related pull requests at this time. 
+> [!WARNING]
+> Please do not submit `localization` related pull requests at this time. 
 > Once we are ready to support more languages we will let you know with a guide on how to contribute here and on our [Discord Server](https://discord.gg/vChUXVf9Em).
 
 ## Fork & Clone CodeEdit
@@ -12,6 +13,10 @@ Tap the **"Fork"** button on the top of the site. After forking clone the forked
 ## Explore Issues
 
 Find issues from the [Issues tab](https://github.com/CodeEditApp/CodeEdit/issues) or from the To Do column in our [project](https://github.com/orgs/CodeEditApp/projects/3). If you find an issue you want to work on, please indicate it in the issue and/or attach a draft PR once available. An admin or maintainer will then assign the Issue and/or PR to you.
+
+> [!IMPORTANT]
+> Please make sure to first comment under an issue or ask a maintainer to assign you to the issue before working on it. This helps prevent multiple people from working on the same
+> thing, which could result in your work not being merged. Additionally, some issues might be reserved for those with more in-depth knowledge of the codebase.
 
 ## Getting Started
 
@@ -40,12 +45,14 @@ The `PR` should include following information:
 
 Request a review from one of our admins @austincondiff, @lukepistrol, @MarcoCarnevali, @jasonplatts, @pkasila or maintainers @cstef, @linusS1, @RayZhao1998, @wdg.
 
-Note: If it is your first PR, an admin will need to request a review for you.
+> [!TIP]
+> If it is your first PR, an admin will need to request a review for you.
 
+> [!IMPORTANT]
 > Please resolve all `Violation` errors in Xcode (except: _TODO:_ warnings). Otherwise the swiftlint check on GitHub will fail.
 
 Once you submit the `PR` GitHub will run a couple of actions which run tests and `SwiftLint` (this can take a couple of minutes). Should a test fail, it cannot be merged until tests succeed.
 
 Make sure to resolve all merge-conflicts otherwise the `PR` cannot be merged.
-
-> **Important**: make sure your code is well documented so others can interact with your code easily!
+> [!IMPORTANT]
+> Make sure your code is well documented so others can interact with your code easily!
