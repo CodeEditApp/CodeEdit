@@ -22,20 +22,13 @@ class LazyStringLoader {
         if fileHandle == nil {
             do {
                 fileHandle = try FileHandle(forReadingFrom: fileURL)
+                guard let data = try fileHandle?.read(upToCount: chunkSize) else {
+                    return nil
+                }
+                return String(decoding: data, as: UTF8.self)
             } catch {
-
+                return nil
             }
-
-            var data = Data()
-            let semaphore = DispatchSemaphore(value: 0)
-
-            do {
-                data = try fileHandle?.read(upToCount: chunkSize) ?? Data()
-            } catch {
-
-            }
-
-            return String(data: data, encoding: .utf8)
         }
         return nil
     }

@@ -1,5 +1,5 @@
 //
-//  BlurView.swift
+//  EffectView.swift
 //  CodeEditModules/CodeEditUI
 //
 //  Created by Rehatbir Singh on 15/03/2022.

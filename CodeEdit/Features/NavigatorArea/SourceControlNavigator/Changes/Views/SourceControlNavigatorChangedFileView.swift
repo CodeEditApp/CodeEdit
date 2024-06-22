@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SourceControlNavigatorChangedFileView: View {
+    @AppSettings(\.general.fileIconStyle)
+    var fileIconStyle
+
     @EnvironmentObject var sourceControlManager: SourceControlManager
     @Binding var changedFile: CEWorkspaceFile
     @State var staged: Bool
@@ -53,7 +56,7 @@ struct SourceControlNavigatorChangedFileView: View {
                     .truncationMode(.middle)
             }, icon: {
                 Image(nsImage: changedFile.nsIcon)
-                    .foregroundStyle(changedFile.iconColor)
+                    .foregroundStyle(fileIconStyle == .color ? changedFile.iconColor : Color("CoolGray"))
             })
 
             Spacer()

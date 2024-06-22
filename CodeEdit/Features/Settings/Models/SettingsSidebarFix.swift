@@ -5,7 +5,6 @@
 //  Created by Wouter Hennen on 13/04/2023.
 //
 
-import Foundation
 import AppKit
 
 extension NSSplitViewItem {

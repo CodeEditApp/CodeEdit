@@ -34,6 +34,5 @@ final class QuickActionsViewModel: ObservableObject {
         }
         self.filteredCommands = CommandManager.shared.commands.filter { $0.title.localizedCaseInsensitiveContains(val) }
         self.selected = self.filteredCommands.first
-
     }
 }

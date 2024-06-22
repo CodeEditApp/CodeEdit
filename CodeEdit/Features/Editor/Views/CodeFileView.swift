@@ -67,7 +67,7 @@ struct CodeFileView: View {
         codeFile
             .contentCoordinator
             .textUpdatePublisher
-            .debounce(for: 0.25, scheduler: DispatchQueue.main)
+            .debounce(for: 1.0, scheduler: DispatchQueue.main)
             .sink { _ in
                 codeFile.updateChangeCount(.changeDone)
                 codeFile.autosave(withImplicitCancellability: false) { _ in }

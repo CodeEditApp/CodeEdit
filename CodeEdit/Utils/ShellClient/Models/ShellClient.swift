@@ -37,7 +37,7 @@ class ShellClient {
         let (task, pipe) = generateProcessAndPipe(args)
         try task.run()
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        return String(data: data, encoding: .utf8) ?? ""
+        return String(decoding: data, as: UTF8.self)
     }
 
     /// Run a command with Publisher
@@ -65,12 +65,9 @@ class ShellClient {
                     subject.send(completion: .finished)
                     return
                 }
-                if let line = String(data: data, encoding: .utf8)?
-                    .split(whereSeparator: \.isNewline) {
-                    line
-                        .map(String.init)
-                        .forEach(subject.send(_:))
-                }
+                String(decoding: data, as: UTF8.self)
+                    .split(whereSeparator: \.isNewline)
+                    .forEach({ subject.send(String($0)) })
                 outputHandler.waitForDataInBackgroundAndNotify()
             }
         task.launch()
@@ -87,9 +84,9 @@ class ShellClient {
             pipe.fileHandleForReading.readabilityHandler = { [unowned pipe] fileHandle in
                 let data = fileHandle.availableData
                 if !data.isEmpty {
-                    if let line = String(data: data, encoding: .utf8)?.split(whereSeparator: \.isNewline) {
-                        line.map(String.init).forEach({ continuation.yield($0) })
-                    }
+                    String(decoding: data, as: UTF8.self)
+                        .split(whereSeparator: \.isNewline)
+                        .forEach({ continuation.yield(String($0)) })
                 } else {
                     if !task.isRunning && task.terminationStatus != 0 {
                         continuation.finish(

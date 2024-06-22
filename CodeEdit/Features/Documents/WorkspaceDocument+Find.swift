@@ -180,10 +180,10 @@ extension WorkspaceDocument.SearchState {
     /// await evaluateFile(query: "example", searchResult: &resultModel)
     /// ```
     private func evaluateFile(query: String, searchResult: inout SearchResultModel) async {
-        guard let data = try? Data(contentsOf: searchResult.file.url),
-              let fileContent = String(data: data, encoding: .utf8) else {
+        guard let data = try? Data(contentsOf: searchResult.file.url) else {
             return
         }
+        let fileContent = String(decoding: data, as: UTF8.self)
 
         // Attempt to create a regular expression from the provided query
         guard let regex = try? NSRegularExpression(

@@ -206,8 +206,8 @@ final class SourceControlManager: ObservableObject {
     }
 
     /// Apply stash entry
-    func applyStashEntry(stashEntry: GitStashEntry?) async throws {
-        try await gitClient.applyStashEntry(stashEntry?.index)
+    func applyStashEntry(stashEntry: GitStashEntry) async throws {
+        try await gitClient.applyStashEntry(stashEntry.index)
         try await refreshStashEntries()
         await refreshAllChangedFiles()
     }

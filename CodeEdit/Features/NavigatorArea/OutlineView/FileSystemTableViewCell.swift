@@ -80,10 +80,14 @@ class FileSystemTableViewCell: StandardTableViewCell {
     /// - Parameter item: The `FileItem` to get the color for
     /// - Returns: A `NSColor` for the given `FileItem`.
     func color(for item: CEWorkspaceFile) -> NSColor {
-        if !item.isFolder && prefs.fileIconStyle == .color {
-            return NSColor(item.iconColor)
+        if prefs.fileIconStyle == .color {
+            if !item.isFolder {
+                return NSColor(item.iconColor)
+            } else {
+                return NSColor(named: "FolderBlue") ?? NSColor(.cyan)
+            }
         } else {
-            return NSColor(named: "FolderBlue")!
+            return NSColor(named: "CoolGray") ?? NSColor(.gray)
         }
     }
 }
