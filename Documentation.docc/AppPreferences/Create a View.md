@@ -20,7 +20,6 @@ struct GeneralSettingsView: View {
             Section {
                 appearance
                 fileIconStyle
-                tabBarStyle
                 navigatorTabBarPosition
                 inspectorTabBarPosition
                 ...

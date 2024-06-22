@@ -96,7 +96,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     // MARK: - NSDocument
 
-    override class var autosavesInPlace: Bool {
+    override static var autosavesInPlace: Bool {
         Settings.shared.preferences.general.isAutoSaveOn
     }
 

@@ -37,7 +37,6 @@ struct GeneralSettingsView: View {
             Section {
                 appearance
                 fileIconStyle
-                tabBarStyle
                 showEditorPathBar
                 dimEditorsWithoutFocus
                 navigatorTabBarPosition
@@ -146,16 +145,6 @@ private extension GeneralSettingsView {
                 .tag(SettingsData.FileIconStyle.color)
             Text("Monochrome")
                 .tag(SettingsData.FileIconStyle.monochrome)
-        }
-        .pickerStyle(.radioGroup)
-    }
-
-    var tabBarStyle: some View {
-        Picker("Tab Bar Style", selection: $settings.tabBarStyle) {
-            Text("Xcode")
-                .tag(SettingsData.TabBarStyle.xcode)
-            Text("Native")
-                .tag(SettingsData.TabBarStyle.native)
         }
         .pickerStyle(.radioGroup)
     }
