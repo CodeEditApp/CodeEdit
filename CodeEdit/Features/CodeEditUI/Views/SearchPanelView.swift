@@ -1,5 +1,5 @@
 //
-//  OverlayWindow.swift
+//  SearchPanelView.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 3/17/23.

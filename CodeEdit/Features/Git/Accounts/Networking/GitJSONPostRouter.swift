@@ -69,11 +69,9 @@ extension GitJSONPostRouter {
                         with: data,
                         options: .mutableContainers
                     ) as? [String: Any] {
-
                         userInfo[gitErrorKey] = json as Any?
-
-                    } else if let data,
-                              let string = String(data: data, encoding: .utf8) {
+                        // swiftlint:disable:next non_optional_string_data_conversion
+                    } else if let data, let string = String(data: data, encoding: .utf8) {
                         userInfo[gitErrorKey] = string as Any?
                     }
 
@@ -125,10 +123,9 @@ extension GitJSONPostRouter {
                     with: responseTuple.0,
                     options: .mutableContainers
                 ) as? [String: Any] {
-
                     userInfo[gitErrorKey] = json as Any?
-
-                } else if let string = String(data: responseTuple.0, encoding: String.Encoding.utf8) {
+                // swiftlint:disable:next non_optional_string_data_conversion
+                } else if let string = String(data: responseTuple.0, encoding: .utf8) {
                     userInfo[gitErrorKey] = string as Any?
                 }
                 throw NSError(domain: configuration?.errorDomain ?? "", code: response.statusCode, userInfo: userInfo)
@@ -165,9 +162,8 @@ extension GitJSONPostRouter {
                     with: data,
                     options: .mutableContainers
                 ) as? [String: Any] {
-
                     userInfo[gitErrorKey] = json as Any?
-
+                    // swiftlint:disable:next non_optional_string_data_conversion
                 } else if let data, let string = String(data: data, encoding: String.Encoding.utf8) {
                     userInfo[gitErrorKey] = string as Any?
                 }
@@ -219,8 +215,8 @@ extension GitJSONPostRouter {
                 with: responseTuple.0,
                 options: .mutableContainers
             ) as? [String: Any] {
-
                 userInfo[gitErrorKey] = json as Any?
+                // swiftlint:disable:next non_optional_string_data_conversion
             } else if let string = String(data: responseTuple.0, encoding: String.Encoding.utf8) {
                 userInfo[gitErrorKey] = string as Any?
             }
