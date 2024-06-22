@@ -8,7 +8,6 @@
 import Combine
 import Foundation
 import DequeModule
-import OrderedCollections
 import os
 
 class EditorManager: ObservableObject {
@@ -29,8 +28,6 @@ class EditorManager: ObservableObject {
 
     /// History of last-used editors.
     var activeEditorHistory: Deque<() -> Editor?> = []
-
-    var fileDocuments: [CEWorkspaceFile: CodeFileDocument] = [:]
 
     /// notify listeners whenever tab selection changes on the active editor.
     var tabBarTabIdSubject = PassthroughSubject<String?, Never>()

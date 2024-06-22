@@ -46,10 +46,10 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let randomCount = Int.random(in: 1 ... 100)
         let files = generateRandomFiles(amount: randomCount)
         try files.forEach {
-            let fakeData = "fake string".data(using: .utf8)
+            let fakeData = Data("fake string".utf8)
             let fileUrl = directory
                 .appendingPathComponent($0)
-            try fakeData!.write(to: fileUrl)
+            try fakeData.write(to: fileUrl)
         }
         let client = CEWorkspaceFileManager(
             folderUrl: directory,
@@ -83,10 +83,10 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         var files = client.flattenedFileItems.map { $0.value.name }
         files.append(newFile)
         try files.forEach {
-            let fakeData = "fake string".data(using: .utf8)
+            let fakeData = Data("fake string".utf8)
             let fileUrl = directory
                 .appendingPathComponent($0)
-            try fakeData!.write(to: fileUrl)
+            try fakeData.write(to: fileUrl)
         }
 
         wait(for: [expectation])

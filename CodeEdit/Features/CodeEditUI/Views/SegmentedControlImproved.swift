@@ -80,7 +80,7 @@ struct XcodeButtonStyle: ButtonStyle {
             return (3, 8)
         case .large:
             return (6, 12)
-        @unknown default:
+        default:
             return (4, 8)
         }
     }
