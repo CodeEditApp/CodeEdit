@@ -33,17 +33,17 @@ import LanguageServerProtocol
 /// try await lspService.stopServer(for: .python)
 /// ```
 final class LSPService: ObservableObject {
-    let logger: Logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
+    internal let logger: Logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
 
     /// Holds the active language clients
-    var languageClients: [LanguageIdentifier: LanguageServer] = [:]
+    internal var languageClients: [LanguageIdentifier: LanguageServer] = [:]
     /// Holds the language server configurations for all the installed language servers
-    var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
+    internal var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
     /// Holds all the event listeners for each active language client
-    var eventListeningTasks: [LanguageIdentifier: Task<Void, Never>] = [:]
+    internal var eventListeningTasks: [LanguageIdentifier: Task<Void, Never>] = [:]
 
     @AppSettings(\.developerSettings.lspBinaries)
-    var lspBinaries
+    internal var lspBinaries
 
     init() {
         // Load the LSP binaries from the developer menu

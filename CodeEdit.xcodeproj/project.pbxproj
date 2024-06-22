@@ -351,7 +351,6 @@
 		6C4104E6297C884F00F472BA /* AboutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E5297C884F00F472BA /* AboutDetailView.swift */; };
 		6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4104E8297C970F00F472BA /* AboutDefaultView.swift */; };
 		6C48B5C52C0A2835001E9955 /* FileEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5C42C0A2835001E9955 /* FileEncoding.swift */; };
-		6C48B5C92C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5C72C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift */; };
 		6C48B5CE2C0C1BE4001E9955 /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5CD2C0C1BE4001E9955 /* Shell.swift */; };
 		6C48B5D12C0D0519001E9955 /* ShellIntegration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48B5D02C0D0519001E9955 /* ShellIntegration.swift */; };
 		6C48B5D42C0D0743001E9955 /* codeedit_shell_integration_env.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 6C48B5D32C0D0743001E9955 /* codeedit_shell_integration_env.zsh */; };
@@ -957,7 +956,6 @@
 		6C4104E5297C884F00F472BA /* AboutDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDetailView.swift; sourceTree = "<group>"; };
 		6C4104E8297C970F00F472BA /* AboutDefaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDefaultView.swift; sourceTree = "<group>"; };
 		6C48B5C42C0A2835001E9955 /* FileEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileEncoding.swift; sourceTree = "<group>"; };
-		6C48B5C72C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTextStorage+isEmpty.swift"; sourceTree = "<group>"; };
 		6C48B5CD2C0C1BE4001E9955 /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
 		6C48B5D02C0D0519001E9955 /* ShellIntegration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellIntegration.swift; sourceTree = "<group>"; };
 		6C48B5D32C0D0743001E9955 /* codeedit_shell_integration_env.zsh */ = {isa = PBXFileReference; lastKnownFileType = text; path = codeedit_shell_integration_env.zsh; sourceTree = "<group>"; };
@@ -1166,7 +1164,6 @@
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6CBE1D002B720565003AC32E /* CodeEditSourceEditor in Frameworks */,
-				6C85BB3C2C1E3D1000EB5DEF /* CodeEditKit in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */,
 				30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */,
@@ -2567,15 +2564,6 @@
 			path = TerminalEmulator;
 			sourceTree = "<group>";
 		};
-		6C48B5C82C0B5F7A001E9955 /* NSTextStorage */ = {
-			isa = PBXGroup;
-			children = (
-				6C48B5C72C0B5F7A001E9955 /* NSTextStorage+isEmpty.swift */,
-			);
-			name = NSTextStorage;
-			path = CodeEdit/Utils/Extensions/NSTextStorage;
-			sourceTree = SOURCE_ROOT;
-		};
 		6C48B5DB2C0D664A001E9955 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -3339,6 +3327,8 @@
 				6C0617D42BDB4432008C9C42 /* XCRemoteSwiftPackageReference "LogStream" */,
 				6C85BB3E2C2105ED00EB5DEF /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 				6C85BB422C210EFD00EB5DEF /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				303E88452C276FD100EEA8D9 /* XCRemoteSwiftPackageReference "LanguageClient" */,
+				303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -5057,12 +5047,20 @@
 				minimumVersion = 0.2.2;
 			};
 		};
-		305F53292C26363200EC94BA /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {
+		303E88452C276FD100EEA8D9 /* XCRemoteSwiftPackageReference "LanguageClient" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CodeEditApp/CodeEditKit.git";
+			repositoryURL = "https://github.com/ChimeHQ/LanguageClient";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				minimumVersion = 0.8.0;
+			};
+		};
+		303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChimeHQ/LanguageServerProtocol";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.13.2;
 			};
 		};
 		30CB648F2C16CA8100CC8A9E /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */ = {
