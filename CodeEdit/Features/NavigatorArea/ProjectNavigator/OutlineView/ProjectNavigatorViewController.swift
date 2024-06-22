@@ -28,7 +28,13 @@ final class ProjectNavigatorViewController: NSViewController {
 
     var workspace: WorkspaceDocument?
 
-    var iconColor: SettingsData.FileIconStyle = .color
+    var iconColor: SettingsData.FileIconStyle = .color {
+        willSet {
+            if newValue != iconColor {
+                outlineView.reloadData()
+            }
+        }
+    }
 
     var fileExtensionsVisibility: SettingsData.FileExtensionsVisibility = .showAll
     var shownFileExtensions: SettingsData.FileExtensions = .default
