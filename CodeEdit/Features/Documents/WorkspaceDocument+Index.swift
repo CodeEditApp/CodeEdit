@@ -11,15 +11,19 @@ extension WorkspaceDocument.SearchState {
     /// Adds the contents of the current workspace URL to the search index.
     /// That means that the contents of the workspace will be indexed and searchable.
     func addProjectToIndex() {
-        guard let indexer = indexer else {
-            return
-        }
-
-        guard let url = workspace.fileURL else {
-            return
-        }
+        guard let indexer = indexer else { return }
+        guard let url = workspace.fileURL else { return }
 
         indexStatus = .indexing(progress: 0.0)
+        let uuidString = UUID().uuidString
+        let createInfo: [String: Any] = [
+            "id": uuidString,
+            "action": "create",
+            "title": "Indexing | Processing files",
+            "message": "Creating an index to enable fast and accurate searches within your codebase.",
+            "isLoading": true
+        ]
+        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createInfo)
 
         Task.detached {
             let filePaths = self.getFileURLs(at: url)
@@ -37,6 +41,12 @@ extension WorkspaceDocument.SearchState {
                     await MainActor.run {
                         self.indexStatus = .indexing(progress: progress)
                     }
+                    let updateInfo: [String: Any] = [
+                        "id": uuidString,
+                        "action": "update",
+                        "percentage": progress
+                    ]
+                    NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: updateInfo)
                 }
             }
             asyncController.index.flush()
@@ -44,6 +54,20 @@ extension WorkspaceDocument.SearchState {
             await MainActor.run {
                 self.indexStatus = .done
             }
+            let updateInfo: [String: Any] = [
+                "id": uuidString,
+                "action": "update",
+                "title": "Finished indexing",
+                "isLoading": false
+            ]
+            NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: updateInfo)
+
+            let deleteInfo = [
+                "id": uuidString,
+                "action": "deleteWithDelay",
+                "delay": 4.0
+            ]
+            NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteInfo)
         }
     }
 

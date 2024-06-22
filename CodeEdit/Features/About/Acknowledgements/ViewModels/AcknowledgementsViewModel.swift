@@ -9,7 +9,7 @@ import SwiftUI
 
 final class AcknowledgementsViewModel: ObservableObject {
 
-    @Published private (set) var acknowledgements: [AcknowledgementDependency]
+    @Published private(set) var acknowledgements: [AcknowledgementDependency]
 
     var indexedAcknowledgements: [(index: Int, acknowledgement: AcknowledgementDependency)] {
       return Array(zip(acknowledgements.indices, acknowledgements))

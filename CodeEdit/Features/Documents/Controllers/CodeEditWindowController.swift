@@ -25,11 +25,18 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     var commandPalettePanel: SearchPanel?
     var navigatorSidebarViewModel: NavigatorSidebarViewModel?
 
+    var taskNotificationHandler: TaskNotificationHandler
+
     var splitViewController: NSSplitViewController!
 
     internal var cancellables = [AnyCancellable]()
 
-    init(window: NSWindow?, workspace: WorkspaceDocument?) {
+    init(
+        window: NSWindow?,
+        workspace: WorkspaceDocument?,
+        taskNotificationHandler: TaskNotificationHandler
+    ) {
+        self.taskNotificationHandler = taskNotificationHandler
         super.init(window: window)
         guard let workspace else { return }
         self.workspace = workspace
