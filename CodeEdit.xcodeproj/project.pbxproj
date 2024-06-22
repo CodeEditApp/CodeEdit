@@ -520,7 +520,6 @@
 		D7E201AE27E8B3C000CB86D0 /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */; };
 		D7E201B227E8D50000CB86D0 /* FindNavigatorForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E201B127E8D50000CB86D0 /* FindNavigatorForm.swift */; };
 		DE513F52281B672D002260B9 /* EditorTabBarAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F51281B672D002260B9 /* EditorTabBarAccessory.swift */; };
-		DE6405A62817734700881FDF /* EditorTabBarNative.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6405A52817734700881FDF /* EditorTabBarNative.swift */; };
 		DE6F77872813625500D00A76 /* EditorTabBarDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6F77862813625500D00A76 /* EditorTabBarDivider.swift */; };
 		EC0870F72A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0870F62A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift */; };
 /* End PBXBuildFile section */
@@ -1093,7 +1092,6 @@
 		D7E201B127E8D50000CB86D0 /* FindNavigatorForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorForm.swift; sourceTree = "<group>"; };
 		D7E201B327E9989900CB86D0 /* FindNavigatorResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorResultList.swift; sourceTree = "<group>"; };
 		DE513F51281B672D002260B9 /* EditorTabBarAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarAccessory.swift; sourceTree = "<group>"; };
-		DE6405A52817734700881FDF /* EditorTabBarNative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarNative.swift; sourceTree = "<group>"; };
 		DE6F77862813625500D00A76 /* EditorTabBarDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarDivider.swift; sourceTree = "<group>"; };
 		EC0870F62A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+NSMenuDelegate.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -2183,7 +2181,6 @@
 				DE513F51281B672D002260B9 /* EditorTabBarAccessory.swift */,
 				6CDA84AC284C1BA000C1CC3A /* EditorTabBarContextMenu.swift */,
 				DE6F77862813625500D00A76 /* EditorTabBarDivider.swift */,
-				DE6405A52817734700881FDF /* EditorTabBarNative.swift */,
 				287776E827E34BC700D46668 /* EditorTabBarView.swift */,
 				B6AB09A22AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift */,
 				B6AB09A42AAAC00F0003A3A6 /* EditorTabBarTrailingAccessories.swift */,
@@ -3569,7 +3566,6 @@
 				201169E22837B3D800F92B46 /* SourceControlNavigatorChangesView.swift in Sources */,
 				850C631029D6B01D00E1444C /* SettingsView.swift in Sources */,
 				77A01E6D2BC3EA2A00F0EA38 /* NSWindow+Child.swift in Sources */,
-				DE6405A62817734700881FDF /* EditorTabBarNative.swift in Sources */,
 				581550CF29FBD30400684881 /* StandardTableViewCell.swift in Sources */,
 				B62AEDB82A1FE2DC009A9F52 /* UtilityAreaOutputView.swift in Sources */,
 				B67DB0FC2AFDF71F002DC647 /* IconToggleStyle.swift in Sources */,

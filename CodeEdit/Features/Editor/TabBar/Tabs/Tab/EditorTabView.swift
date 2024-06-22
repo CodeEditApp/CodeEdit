@@ -23,9 +23,6 @@ struct EditorTabView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
-    @AppSettings(\.general.tabBarStyle)
-    var tabBarStyle
-
     @AppSettings(\.general.fileIconStyle)
     var fileIconStyle
 
@@ -45,9 +42,6 @@ struct EditorTabView: View {
     ///
     /// By default, this value is `false`. When the root view is appeared, it turns `true`.
     @State private var isAppeared: Bool = false
-
-    /// The expected tab width in native tab bar style.
-    private var expectedWidth: CGFloat
 
     /// The id associating with the tab that is currently being dragged.
     ///
@@ -108,14 +102,12 @@ struct EditorTabView: View {
     }
 
     init(
-        expectedWidth: CGFloat,
         item: CEWorkspaceFile,
         index: Int,
         draggingTabId: CEWorkspaceFile.ID?,
         onDragTabId: CEWorkspaceFile.ID?,
         closeButtonGestureActive: Binding<Bool>
     ) {
-        self.expectedWidth = expectedWidth
         self.item = item
         self.index = index
         self.draggingTabId = draggingTabId
@@ -127,10 +119,8 @@ struct EditorTabView: View {
         HStack(spacing: 0.0) {
             EditorTabDivider()
                 .opacity(
-                    (isActive || inHoldingState)
-                    && tabBarStyle == .xcode ? 0.0 : 1.0
+                    (isActive || inHoldingState) ? 0.0 : 1.0
                 )
-                .padding(.top, isActive && tabBarStyle == .native ? 1.22 : 0)
             // Tab content (icon and text).
             HStack(alignment: .center, spacing: 3) {
                 Image(nsImage: item.nsIcon)
@@ -150,12 +140,10 @@ struct EditorTabView: View {
                     .lineLimit(1)
             }
             .frame(
-                // To horizontally max-out the given width area ONLY in native tab bar style.
-                maxWidth: tabBarStyle == .native ? .infinity : nil,
                 // To max-out the parent (tab bar) area.
                 maxHeight: .infinity
             )
-            .padding(.horizontal, tabBarStyle == .native ? 28 : 20)
+            .padding(.horizontal, 20)
             .overlay {
                 ZStack {
                     // Close Button with is file changed indicator
@@ -174,36 +162,21 @@ struct EditorTabView: View {
                 // Inactive states for tab bar item content.
                 activeState != .inactive
                 ? 1.0
-                : (
-                    isActive
-                    ? (tabBarStyle == .xcode ? 0.6 : 0.35)
-                    : (tabBarStyle == .xcode ? 0.4 : 0.55)
-                )
+                : isActive ? 0.6 : 0.4
             )
             EditorTabDivider()
                 .opacity(
-                    (isActive || inHoldingState)
-                    && tabBarStyle == .xcode ? 0.0 : 1.0
+                    (isActive || inHoldingState) ? 0.0 : 1.0
                 )
-                .padding(.top, isActive && tabBarStyle == .native ? 1.22 : 0)
-        }
-        .overlay(alignment: .top) {
-            // Only show NativeTabShadow when `tabBarStyle` is native and this tab is not active.
-            EditorTabBarTopDivider()
-                .opacity(tabBarStyle == .native && !isActive ? 1 : 0)
         }
         .foregroundColor(
             isActive && isActiveEditor
             ? (
-                tabBarStyle == .xcode && colorScheme != .dark
+                colorScheme != .dark
                 ? Color(nsColor: .controlAccentColor)
                 : .primary
             )
-            : (
-                tabBarStyle == .xcode
-                ? .primary
-                : .secondary
-            )
+            : .primary
         )
         .frame(maxHeight: .infinity) // To vertically max-out the parent (tab bar) area.
         .contentShape(Rectangle()) // Make entire area clickable.
@@ -225,26 +198,8 @@ struct EditorTabView: View {
                 content
             }
             .background {
-                if tabBarStyle == .xcode {
-                    EditorTabBackground(isActive: isActive, isPressing: isPressing, isDragging: isDragging)
-                        .animation(.easeInOut(duration: 0.08), value: isHovering)
-                } else {
-                    if isFullscreen && isActive {
-                        EditorTabBarNativeActiveMaterial()
-                    } else {
-                        EditorTabBarNativeMaterial()
-                    }
-                    ZStack {
-                        // Native inactive tab background dim.
-                        EditorTabBarNativeInactiveBgColor()
-                        // Native inactive tab hover state.
-                        Color(nsColor: colorScheme == .dark ? .white : .black)
-                            .opacity(isHovering ? (colorScheme == .dark ? 0.08 : 0.05) : 0.0)
-                            .animation(.easeInOut(duration: 0.10), value: isHovering)
-                    }
-                    .padding(.horizontal, 1)
-                    .opacity(isActive ? 0 : 1)
-                }
+                EditorTabBackground(isActive: isActive, isPressing: isPressing, isDragging: isDragging)
+                    .animation(.easeInOut(duration: 0.08), value: isHovering)
             }
             // TODO: Enable the following code snippet when dragging-out behavior should be allowed.
             // Since we didn't handle the drop-outside event, dragging-out is disabled for now.
@@ -262,32 +217,20 @@ struct EditorTabView: View {
                     }
                 }
         )
-        .padding(
-            // This padding is to avoid background color overlapping with top divider.
-            .top, tabBarStyle == .xcode ? 1 : 0
-        )
+        // This padding is to avoid background color overlapping with top divider.
+        .padding(.top, 1)
 //        .offset(
-//            x: isAppeared || tabBarStyle == .native ? 0 : -14,
+//            x: isAppeared ? 0 : -14,
 //            y: 0
 //        )
 //        .opacity(isAppeared && onDragTabId != item.id ? 1.0 : 0.0)
         .zIndex(
             isActive
-            ? (tabBarStyle == .native ? -1 : 2)
+            ? 2
             : (isDragging ? 3 : (isPressing ? 1 : 0))
         )
-        .frame(
-            width: (
-                // Constrain the width of tab bar item for native tab style only.
-                tabBarStyle == .native
-                ? max(expectedWidth.isFinite ? expectedWidth : 0, 0)
-                : nil
-            )
-        )
         .onAppear {
-            withAnimation(
-                .easeOut(duration: tabBarStyle == .native ? 0.15 : 0.20)
-            ) {
+            withAnimation(.easeOut(duration: 0.20)) {
 //                isAppeared = true
             }
         }

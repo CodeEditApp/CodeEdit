@@ -17,9 +17,6 @@ struct WindowObserver<Content: View>: View {
     /// This will be passed into all child views as an environment variable.
     @State private var isFullscreen = false
 
-    @AppSettings(\.general.tabBarStyle)
-    var tabBarStyle
-
     @State var modifierFlags: NSEvent.ModifierFlags = []
 
     var body: some View {
@@ -35,16 +32,6 @@ struct WindowObserver<Content: View>: View {
             }
             .onReceive(NotificationCenter.default.publisher(for: NSWindow.willExitFullScreenNotification)) { _ in
                 self.isFullscreen = false
-            }
-            // When tab bar style is changed, update NSWindow configuration as follows.
-            .onChange(of: tabBarStyle) { newStyle in
-                DispatchQueue.main.async {
-                    if newStyle == .native {
-                        window.titlebarSeparatorStyle = .none
-                    } else {
-                        window.titlebarSeparatorStyle = .automatic
-                    }
-                }
             }
     }
 }
