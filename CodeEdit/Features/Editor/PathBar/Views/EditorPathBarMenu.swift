@@ -61,6 +61,7 @@ final class EditorPathBarMenu: NSMenu, NSMenuDelegate {
 final class PathBarMenuItem: NSMenuItem {
     private let fileItem: CEWorkspaceFile
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
+    private let generalSettings = Settings.shared.preferences.general
 
     init(
         fileItem: CEWorkspaceFile,
@@ -76,6 +77,9 @@ final class PathBarMenuItem: NSMenuItem {
             let subMenu = NSMenu()
             submenu = subMenu
             color = NSColor(named: "FolderBlue") ?? NSColor(.secondary)
+        }
+        if generalSettings.fileIconStyle == .monochrome {
+            color = NSColor(named: "CoolGray") ?? NSColor(.gray)
         }
         let image = fileItem.nsIcon.withSymbolConfiguration(.init(paletteColors: [color]))
         self.image = image
