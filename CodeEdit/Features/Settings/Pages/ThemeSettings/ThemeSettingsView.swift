@@ -102,12 +102,13 @@ struct ThemeSettingsView: View {
 
     private var filteredThemes: [Theme] {
         let themes = selectedAppearance == .dark ? themeModel.darkThemes : themeModel.lightThemes
-        if themeSearchQuery.isEmpty {
-            return themes
-        } else {
-            return themes.filter {
-                $0.name.localizedCaseInsensitiveContains(themeSearchQuery)
-            }
+        return themeSearchQuery.isEmpty ? themes : filterAndSortThemes(themes)
+    }
+    
+    private func filterAndSortThemes(_ themes: [Theme]) -> [Theme] {
+        let filteredThemes = themes.filter { $0.fuzzyMatch(query: themeSearchQuery).weight > 0 }
+        return filteredThemes.sorted {
+            $0.fuzzyMatch(query: themeSearchQuery).weight > $1.fuzzyMatch(query: themeSearchQuery).weight
         }
     }
 }

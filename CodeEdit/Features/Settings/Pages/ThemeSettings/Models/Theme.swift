@@ -440,3 +440,9 @@ extension Theme {
         }
     }
 }
+
+extension Theme: FuzzySearchable {
+    var searchableString: String {
+        return id
+    }
+}
