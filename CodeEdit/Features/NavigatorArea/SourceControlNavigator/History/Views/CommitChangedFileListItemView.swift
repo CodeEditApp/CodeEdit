@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct CommitChangedFileListItemView: View {
+    @AppSettings(\.general.fileIconStyle)
+    var fileIconStyle
+
     @EnvironmentObject var sourceControlManager: SourceControlManager
+
     @Binding var changedFile: CEWorkspaceFile
 
     var folder: String? {
@@ -34,7 +38,7 @@ struct CommitChangedFileListItemView: View {
                     .truncationMode(.middle)
             }, icon: {
                 Image(nsImage: changedFile.nsIcon)
-                    .foregroundStyle(changedFile.iconColor)
+                    .foregroundStyle(fileIconStyle == .color ? changedFile.iconColor : Color("CoolGray"))
             })
 
             Spacer()

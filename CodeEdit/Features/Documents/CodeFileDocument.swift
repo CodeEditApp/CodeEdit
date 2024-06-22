@@ -65,7 +65,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
     /// type or any other form of data representation.
     var utType: UTType? {
-        if content != nil && content?.isEmpty ?? true {
+        if content != nil {
             return .text
         }
         guard let fileType, let type = UTType(fileType) else {
@@ -96,7 +96,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     // MARK: - NSDocument
 
-    override class var autosavesInPlace: Bool {
+    override static var autosavesInPlace: Bool {
         Settings.shared.preferences.general.isAutoSaveOn
     }
 

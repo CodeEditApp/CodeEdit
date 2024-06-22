@@ -157,8 +157,8 @@ private extension TextEditingSettingsView {
                 )
                 .foregroundColor(
                     textEditing.bracketHighlight.useCustomColor
-                        ? Color(NSColor.labelColor)
-                        : Color(NSColor.secondaryLabelColor)
+                        ? Color(.labelColor)
+                        : Color(.secondaryLabelColor)
                 )
                 .disabled(!textEditing.bracketHighlight.useCustomColor)
             }

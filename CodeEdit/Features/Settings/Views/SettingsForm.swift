@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Introspect
+import SwiftUIIntrospect
 
 struct SettingsForm<Content: View>: View {
     @Environment(\.colorScheme)
@@ -45,8 +45,8 @@ struct SettingsForm<Content: View>: View {
             }
             content
         }
-        .introspectScrollView { scrollView in
-            scrollView.scrollerInsets.top = 50
+        .introspect(.scrollView, on: .macOS(.v10_15, .v11, .v12, .v13, .v14, .v15)) {
+            $0.scrollerInsets.top = 50
         }
         .formStyle(.grouped)
         .coordinateSpace(name: "scroll")

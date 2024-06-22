@@ -69,9 +69,6 @@ extension SettingsData {
         /// The style for file icons
         var fileIconStyle: FileIconStyle = .color
 
-        /// Choose between native-styled tab bar and Xcode-liked tab bar.
-        var tabBarStyle: TabBarStyle = .xcode
-
         /// The position for the navigator sidebar tab bar
         var navigatorTabBarPosition: SidebarTabBarPosition = .top
 
@@ -142,10 +139,6 @@ extension SettingsData {
                 FileIconStyle.self,
                 forKey: .fileIconStyle
             ) ?? .color
-            self.tabBarStyle = try container.decodeIfPresent(
-                TabBarStyle.self,
-                forKey: .tabBarStyle
-            ) ?? .xcode
             self.navigatorTabBarPosition = try container.decodeIfPresent(
                 SidebarTabBarPosition.self,
                 forKey: .navigatorTabBarPosition
@@ -258,14 +251,6 @@ extension SettingsData {
     enum FileIconStyle: String, Codable {
         case color
         case monochrome
-    }
-
-    /// The style for tab bar
-    /// - **native**: Native-styled tab bar (like Finder)
-    /// - **xcode**: Xcode-liked tab bar
-    enum TabBarStyle: String, Codable {
-        case native
-        case xcode
     }
 
     /// The position for a sidebar tab bar

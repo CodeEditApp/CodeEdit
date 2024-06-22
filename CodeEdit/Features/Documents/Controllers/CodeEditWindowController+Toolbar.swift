@@ -16,15 +16,7 @@ extension CodeEditWindowController {
         toolbar.showsBaselineSeparator = false
         self.window?.titleVisibility = toolbarCollapsed ? .visible : .hidden
         self.window?.toolbarStyle = .unifiedCompact
-        if Settings[\.general].tabBarStyle == .native {
-            // Set titlebar background as transparent by default in order to
-            // style the toolbar background in native tab bar style.
-            self.window?.titlebarSeparatorStyle = .none
-        } else {
-            // In Xcode tab bar style, we use default toolbar background with
-            // line separator.
-            self.window?.titlebarSeparatorStyle = .automatic
-        }
+        self.window?.titlebarSeparatorStyle = .automatic
         self.window?.toolbar = toolbar
     }
 
