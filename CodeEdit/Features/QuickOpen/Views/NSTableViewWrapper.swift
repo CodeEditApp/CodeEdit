@@ -59,11 +59,11 @@ struct NSTableViewWrapper<Content: View, Item: Identifiable & Hashable>: NSViewR
         }
     }
 
-    func makeCoordinator() -> Coordinator<Content> {
+    func makeCoordinator() -> Coordinator {
         Coordinator(parent: self)
     }
 
-    class Coordinator<Content: View>: NSObject, NSTableViewDelegate, NSTableViewDataSource {
+    class Coordinator: NSObject, NSTableViewDelegate, NSTableViewDataSource {
 
         var parent: NSTableViewWrapper
 

@@ -117,11 +117,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         let projects: [String] = CodeEditDocumentController.shared.documents
-            .map { doc in
-                (doc as? WorkspaceDocument)?.fileURL?.path
-            }
-            .filter { $0 != nil }
-            .map { $0! }
+            .compactMap { ($0 as? WorkspaceDocument)?.fileURL?.path }
 
         UserDefaults.standard.set(projects, forKey: AppDelegate.recoverWorkspacesKey)
 

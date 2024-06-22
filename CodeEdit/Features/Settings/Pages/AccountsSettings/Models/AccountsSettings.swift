@@ -9,7 +9,7 @@ import Foundation
 
 extension SettingsData {
 
-    /// The global settings for text editing
+    /// The global settings for source control accounts
     struct AccountsSettings: Codable, Hashable, SearchableSettingsPage {
         /// The list of git accounts the user has saved
         var sourceControlAccounts: GitAccounts = .init()

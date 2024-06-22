@@ -64,7 +64,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         ".DS_Store"
     ]
 
-    override class var autosavesInPlace: Bool {
+    override static var autosavesInPlace: Bool {
         false
     }
 

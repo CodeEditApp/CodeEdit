@@ -12,9 +12,7 @@ final class CodeEditDocumentController: NSDocumentController {
     @Environment(\.openWindow)
     private var openWindow
 
-    lazy var fileManager: FileManager = {
-        FileManager.default
-    }()
+    private let fileManager = FileManager.default
 
     override func newDocument(_ sender: Any?) {
         guard let newDocumentUrl = self.newDocumentUrl else { return }

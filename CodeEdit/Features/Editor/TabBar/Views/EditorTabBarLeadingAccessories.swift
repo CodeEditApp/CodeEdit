@@ -17,12 +17,9 @@ struct EditorTabBarLeadingAccessories: View {
 
     @State private var otherEditor: Editor?
 
-    @AppSettings(\.general.tabBarStyle)
-    var tabBarStyle
-
     var body: some View {
         HStack(spacing: 0) {
-            if let otherEditor {
+            if otherEditor != nil {
                 EditorTabBarAccessoryIcon(
                     icon: .init(systemName: "multiply"),
                     action: { [weak editor] in
@@ -120,11 +117,6 @@ struct EditorTabBarLeadingAccessories: View {
         .padding(.horizontal, 5)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
-        .background {
-            if tabBarStyle == .native {
-                EditorTabBarAccessoryNativeBackground(dividerAt: .trailing)
-            }
-        }
         .onAppear {
             otherEditor = editorManager.editorLayout.findSomeEditor(except: editor)
         }

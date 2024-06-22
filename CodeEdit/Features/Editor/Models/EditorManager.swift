@@ -8,7 +8,6 @@
 import Combine
 import Foundation
 import DequeModule
-import OrderedCollections
 import os
 
 class EditorManager: ObservableObject {
