@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 /// Manages task-related notifications.
 ///
@@ -102,16 +103,18 @@ import Foundation
 ///
 /// - Important: Please refer to ``CodeEdit/TaskNotificationModel`` and ensure you pass the correct values.
 final class TaskNotificationHandler: ObservableObject {
-    @Published var notifications: [TaskNotificationModel] = []
+    @Published private(set) var notifications: [TaskNotificationModel] = []
+    var cancellables: Set<AnyCancellable> = []
 
     /// Initialises a new `TaskNotificationHandler` and starts observing for task notifications.
     init() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleNotification(_:)),
-            name: .taskNotification,
-            object: nil
-        )
+        NotificationCenter.default
+            .publisher(for: .taskNotification)
+            .receive(on: DispatchQueue.main)
+            .sink { notification in
+                self.handleNotification(notification)
+            }
+            .store(in: &cancellables)
     }
 
     deinit {
@@ -121,8 +124,6 @@ final class TaskNotificationHandler: ObservableObject {
     /// Handles notifications about task events.
     ///
     /// - Parameter notification: The notification containing task information.
-    @MainActor
-    @objc
     private func handleNotification(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
               let taskID = userInfo["id"] as? String,
@@ -172,18 +173,13 @@ final class TaskNotificationHandler: ObservableObject {
     /// Updates an existing task with new information.
     ///
     /// - Parameter task: A dictionary containing task information.
-    @MainActor
     private func updateTask(task: [AnyHashable: Any]) {
         guard let taskID = task["id"] as? String else { return }
-        DispatchQueue.main.async {
             if let index = self.notifications.firstIndex(where: { $0.id == taskID }) {
-                print("FOUND!")
                 if let title = task["title"] as? String {
-                    print("Setting title")
                     self.notifications[index].title = title
                 }
                 if let message = task["message"] as? String {
-                    print("MEASSAGFE")
                     self.notifications[index].message = message
                 }
                 if let percentage = task["percentage"] as? Double {
@@ -193,17 +189,12 @@ final class TaskNotificationHandler: ObservableObject {
                     self.notifications[index].isLoading = isLoading
                 }
             }
-        }
     }
 
-    @MainActor
     private func deleteTask(taskID: String) {
-        DispatchQueue.main.async {
             self.notifications.removeAll { $0.id == taskID }
-        }
     }
 
-    @MainActor
     private func deleteTaskAfterDelay(taskID: String, delay: Double) {
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             self.notifications.removeAll { $0.id == taskID }

@@ -29,7 +29,13 @@ final class TaskNotificationHandlerTests: XCTestCase {
             "title": "Task Title"
         ]
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: userInfo)
-        XCTAssertEqual(taskNotificationHandler.notifications.first?.id, uuid)
+
+        let testExpectation = XCTestExpectation()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            XCTAssertEqual(self.taskNotificationHandler.notifications.first?.id, uuid)
+            testExpectation.fulfill()
+        }
+        wait(for: [testExpectation], timeout: 1)
     }
 
     func testCreateTaskWithPriority() {
@@ -46,7 +52,13 @@ final class TaskNotificationHandlerTests: XCTestCase {
             "title": "Priority Task Title"
         ]
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: task2)
-        XCTAssertEqual(taskNotificationHandler.notifications.first?.title, "Priority Task Title")
+
+        let testExpectation = XCTestExpectation()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            XCTAssertEqual(self.taskNotificationHandler.notifications.first?.title, "Priority Task Title")
+            testExpectation.fulfill()
+        }
+        wait(for: [testExpectation], timeout: 1)
     }
 
     func testUpdateTask() {
@@ -65,9 +77,12 @@ final class TaskNotificationHandlerTests: XCTestCase {
         ]
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: taskUpdateInfo)
 
+        let testExpectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             XCTAssertEqual(self.taskNotificationHandler.notifications.first?.title, "Updated Task Title")
+            testExpectation.fulfill()
         }
+        wait(for: [testExpectation], timeout: 1)
     }
 
     func testDeleteTask() {
@@ -83,9 +98,13 @@ final class TaskNotificationHandlerTests: XCTestCase {
             "action": "delete"
         ]
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteUserInfo)
+
+        let testExpectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             XCTAssertTrue(self.taskNotificationHandler.notifications.isEmpty)
+            testExpectation.fulfill()
         }
+        wait(for: [testExpectation], timeout: 1)
     }
 
     func testDeleteTaskWithDelay() {
@@ -99,14 +118,18 @@ final class TaskNotificationHandlerTests: XCTestCase {
         let deleteUserInfo: [String: Any] = [
             "id": uuid,
             "action": "deleteWithDelay",
-            "delay": 2.0
+            "delay": 0.2
         ]
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteUserInfo)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+
+        let testExpectation = XCTestExpectation()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             XCTAssertFalse(self.taskNotificationHandler.notifications.isEmpty)
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             XCTAssertTrue(self.taskNotificationHandler.notifications.isEmpty)
+            testExpectation.fulfill()
         }
+        wait(for: [testExpectation], timeout: 1)
     }
 }

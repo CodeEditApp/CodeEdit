@@ -13,12 +13,6 @@ struct ActivityViewer: View {
     var colorScheme
 
     @ObservedObject var taskNotificationHandler: TaskNotificationHandler
-
-    init(
-        taskNotificationHandler: TaskNotificationHandler
-    ) {
-        self.taskNotificationHandler = taskNotificationHandler
-    }
     var body: some View {
         HStack {
             HStack(spacing: 0) {
