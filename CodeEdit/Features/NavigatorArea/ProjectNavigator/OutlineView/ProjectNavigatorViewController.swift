@@ -28,7 +28,13 @@ final class ProjectNavigatorViewController: NSViewController {
 
     var workspace: WorkspaceDocument?
 
-    var iconColor: SettingsData.FileIconStyle = .color
+    var iconColor: SettingsData.FileIconStyle = .color {
+        willSet {
+            if newValue != iconColor {
+                outlineView.reloadData()
+            }
+        }
+    }
 
     var fileExtensionsVisibility: SettingsData.FileExtensionsVisibility = .showAll
     var shownFileExtensions: SettingsData.FileExtensions = .default
@@ -275,9 +281,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {
-        guard let outlineView = notification.object as? NSOutlineView else {
-            return
-        }
+        guard let outlineView = notification.object as? NSOutlineView else { return }
 
         let selectedIndex = outlineView.selectedRow
 
@@ -298,13 +302,9 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         guard
             let id = workspace?.editorManager.activeEditor.selectedTab?.file.id,
             let item = workspace?.workspaceFileManager?.getFile(id, createIfNotFound: true)
-        else {
-            return
-        }
+        else { return }
         /// update outline selection only if the parent of selected item match with expanded item
-        guard item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else {
-            return
-        }
+        guard item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else { return }
         /// select active file under collapsed folder only if its parent is expanding
         if outlineView.isItemExpanded(item.parent) {
             updateSelection(itemID: item.id)
