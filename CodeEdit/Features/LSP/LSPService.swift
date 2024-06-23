@@ -194,7 +194,7 @@ final class LSPService: ObservableObject {
         stopListeningToEvents(for: languageId)
     }
 
-    /// Goes through all active langauge servers and attempts to shut them down.
+    /// Goes through all active language servers and attempts to shut them down.
     func stopAllServers() async throws {
         for languageId in languageClients.keys {
             try await stopServer(for: languageId)

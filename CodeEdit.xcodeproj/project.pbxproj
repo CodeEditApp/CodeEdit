@@ -64,6 +64,7 @@
 		3000516A2BBD3A8200A98562 /* ServiceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 300051692BBD3A8200A98562 /* ServiceType.swift */; };
 		3000516C2BBD3A9500A98562 /* ServiceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3000516B2BBD3A9500A98562 /* ServiceWrapper.swift */; };
 		3026F50F2AC006C80061227E /* InspectorAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3026F50E2AC006C80061227E /* InspectorAreaViewModel.swift */; };
+		30571B762C282592009CD5BB /* LSPCache+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30571B752C282592009CD5BB /* LSPCache+Data.swift */; };
 		30AB4EBB2BF718A100ED4431 /* DeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EBA2BF718A100ED4431 /* DeveloperSettings.swift */; };
 		30AB4EBD2BF71CA800ED4431 /* DeveloperSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EBC2BF71CA800ED4431 /* DeveloperSettingsView.swift */; };
 		30AB4EC22BF7253200ED4431 /* KeyValueTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */; };
@@ -673,6 +674,7 @@
 		300051692BBD3A8200A98562 /* ServiceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceType.swift; sourceTree = "<group>"; };
 		3000516B2BBD3A9500A98562 /* ServiceWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceWrapper.swift; sourceTree = "<group>"; };
 		3026F50E2AC006C80061227E /* InspectorAreaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorAreaViewModel.swift; sourceTree = "<group>"; };
+		30571B752C282592009CD5BB /* LSPCache+Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LSPCache+Data.swift"; sourceTree = "<group>"; };
 		30AB4EBA2BF718A100ED4431 /* DeveloperSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettings.swift; sourceTree = "<group>"; };
 		30AB4EBC2BF71CA800ED4431 /* DeveloperSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettingsView.swift; sourceTree = "<group>"; };
 		30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyValueTable.swift; sourceTree = "<group>"; };
@@ -1427,17 +1429,18 @@
 		30B087FB2C0D53080063A882 /* LSP */ = {
 			isa = PBXGroup;
 			children = (
-				30B0881E2C12626B0063A882 /* LanguageServer+ */,
+				30B0881E2C12626B0063A882 /* LanguageServerExtensions */,
 				30B087F72C0D53080063A882 /* LanguageServer.swift */,
 				30B087F82C0D53080063A882 /* LSPService.swift */,
 				30B087F92C0D53080063A882 /* LSPCache.swift */,
 				30B087FA2C0D53080063A882 /* LSPUtil.swift */,
 				30CB648C2C12680F00CC8A9E /* LSPEventHandler.swift */,
+				30571B752C282592009CD5BB /* LSPCache+Data.swift */,
 			);
 			path = LSP;
 			sourceTree = "<group>";
 		};
-		30B0881E2C12626B0063A882 /* LanguageServer+ */ = {
+		30B0881E2C12626B0063A882 /* LanguageServerExtensions */ = {
 			isa = PBXGroup;
 			children = (
 				30B087DF2C0D53080063A882 /* LanguageServer+CallHierarchy.swift */,
@@ -1463,7 +1466,7 @@
 				30B087F42C0D53080063A882 /* LanguageServer+SignatureHelp.swift */,
 				30B087F52C0D53080063A882 /* LanguageServer+TypeDefinition.swift */,
 			);
-			path = "LanguageServer+";
+			path = LanguageServerExtensions;
 			sourceTree = "<group>";
 		};
 		3E0196712A392170002648D8 /* ShellIntegration */ = {
@@ -3521,6 +3524,7 @@
 				66AF6CE42BF17F6800D83C9D /* StatusBarFileInfoView.swift in Sources */,
 				587B9E5E29301D8F00AC7927 /* GitLabCommitRouter.swift in Sources */,
 				58F2EB0D292FB2B0004A9BDE /* ThemeSettings.swift in Sources */,
+				30571B762C282592009CD5BB /* LSPCache+Data.swift in Sources */,
 				587B9D9F29300ABD00AC7927 /* SegmentedControl.swift in Sources */,
 				6C7256D729A3D7D000C2D3E0 /* SplitViewControllerView.swift in Sources */,
 				B6EA1FE529DA33DB001BF195 /* ThemeModel.swift in Sources */,
