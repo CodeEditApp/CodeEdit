@@ -18,9 +18,6 @@ struct EditorTabCloseButton: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @AppSettings(\.general.tabBarStyle)
-    var tabBarStyle
-
     @State private var isPressingClose: Bool = false
     @State private var isHoveringClose: Bool = false
 
@@ -28,24 +25,19 @@ struct EditorTabCloseButton: View {
 
     var body: some View {
         HStack(alignment: .center) {
-            if tabBarStyle == .xcode {
-                Image(systemName: isDocumentEdited && !isHoveringTab ? "circlebadge.fill" : "xmark")
-                    .font(
-                        .system(
-                            size: isDocumentEdited && !isHoveringTab ? 9.5 : 11.5,
-                            weight: .regular,
-                            design: .rounded
-                        )
+            Image(systemName: isDocumentEdited && !isHoveringTab ? "circlebadge.fill" : "xmark")
+                .font(
+                    .system(
+                        size: isDocumentEdited && !isHoveringTab ? 9.5 : 11.5,
+                        weight: .regular,
+                        design: .rounded
                     )
-                    .foregroundColor(
-                        isActive
-                        ? colorScheme == .dark ? .primary : Color(.controlAccentColor)
-                        : .secondary
-                    )
-            } else {
-                Image(systemName: isDocumentEdited && !isHoveringTab ? "circlebadge.fill" : "xmark")
-                    .font(.system(size: 9.5, weight: .medium, design: .rounded))
-            }
+                )
+                .foregroundColor(
+                    isActive
+                    ? colorScheme == .dark ? .primary : Color(.controlAccentColor)
+                    : .secondary
+                )
         }
         .frame(width: buttonSize, height: buttonSize)
         .background(
@@ -53,15 +45,12 @@ struct EditorTabCloseButton: View {
             ? Color(nsColor: .white)
                 .opacity(isPressingClose ? 0.10 : isHoveringClose ? 0.05 : 0)
             : (
-                tabBarStyle == .xcode
-                ? Color(nsColor: isActive ? .controlAccentColor : .black)
+                Color(nsColor: isActive ? .controlAccentColor : .black)
                     .opacity(
                         isPressingClose
                         ? 0.25
                         : (isHoveringClose ? (isActive ? 0.10 : 0.06) : 0)
                     )
-                : Color(nsColor: .black)
-                    .opacity(isPressingClose ? 0.29 : (isHoveringClose ? 0.11 : 0))
             )
         )
         .foregroundColor(isPressingClose ? .primary : .secondary)

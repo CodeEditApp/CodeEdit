@@ -21,9 +21,6 @@ struct EditorTabBarTrailingAccessories: View {
 
     @EnvironmentObject private var editor: Editor
 
-    @AppSettings(\.general.tabBarStyle)
-    var tabBarStyle
-
     var body: some View {
         HStack(spacing: 0) {
             splitviewButton
@@ -31,11 +28,6 @@ struct EditorTabBarTrailingAccessories: View {
         .padding(.horizontal, 7)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
-        .background {
-            if tabBarStyle == .native {
-                EditorTabBarAccessoryNativeBackground(dividerAt: .leading)
-            }
-        }
     }
 
     var splitviewButton: some View {

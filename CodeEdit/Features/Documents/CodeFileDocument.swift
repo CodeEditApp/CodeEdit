@@ -65,19 +65,15 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
     /// type or any other form of data representation.
     var utType: UTType? {
+        if content != nil {
+            return .text
+        }
+
         guard let fileType, let type = UTType(fileType) else {
             return nil
         }
 
-        switch type {
-        case .data:
-            return .text
-        default:
-            if type.isDeclared {
-                return type
-            }
-            return .text
-        }
+        return type
     }
 
     /// Specify options for opening the file such as the initial cursor positions.
@@ -93,7 +89,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     // MARK: - NSDocument
 
-    override class var autosavesInPlace: Bool {
+    override static var autosavesInPlace: Bool {
         Settings.shared.preferences.general.isAutoSaveOn
     }
 
