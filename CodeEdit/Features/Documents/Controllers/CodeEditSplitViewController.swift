@@ -74,8 +74,6 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .inspectorCollapsed
             ) as? Bool ?? true
         }
-
-        self.insertToolbarItemIfNeeded()
     }
 
     override func viewDidAppear() {
@@ -107,11 +105,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
             let proposedWidth = view.frame.width - proposedPosition
             if proposedWidth <= CodeEditWindowController.minSidebarWidth / 2 {
                 splitViewItems.last?.isCollapsed = true
-                removeToolbarItemIfNeeded()
                 return proposedPosition
             }
             splitViewItems.last?.isCollapsed = false
-            insertToolbarItemIfNeeded()
             return min(view.frame.width - CodeEditWindowController.minSidebarWidth, proposedPosition)
         }
         return proposedPosition
@@ -137,27 +133,6 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     func saveInspectorCollapsedState(isCollapsed: Bool) {
         workspace.addToWorkspaceState(key: .inspectorCollapsed, value: isCollapsed)
-    }
-
-    /// Quick fix for list tracking separator needing to be added again after closing,
-    /// then opening the inspector with a drag.
-    private func insertToolbarItemIfNeeded() {
-        guard !(
-            view.window?.toolbar?.items.contains(where: { $0.itemIdentifier == .itemListTrackingSeparator }) ?? true
-        ) else {
-            return
-        }
-        view.window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
-    }
-
-    /// Quick fix for list tracking separator needing to be removed after closing the inspector with a drag
-    private func removeToolbarItemIfNeeded() {
-        guard let index = view.window?.toolbar?.items.firstIndex(
-                where: { $0.itemIdentifier == .itemListTrackingSeparator }
-              ) else {
-            return
-        }
-        view.window?.toolbar?.removeItem(at: index)
     }
 
     func hideInspectorToolbarBackground() {

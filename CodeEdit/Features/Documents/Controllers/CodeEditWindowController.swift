@@ -113,7 +113,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 .environmentObject(workspace.editorManager)
         }
 
-        let inspector = NSSplitViewItem(viewController: NSHostingController(rootView: inspectorView))
+        let inspector = NSSplitViewItem(inspectorWithViewController: NSHostingController(rootView: inspectorView))
         inspector.titlebarSeparatorStyle = .none
         inspector.minimumThickness = Self.minSidebarWidth
         inspector.isCollapsed = true

@@ -118,15 +118,34 @@ extension CodeEditWindowController {
         case .activityViewer:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.activityViewer)
             toolbarItem.visibilityPriority = .user
-            toolbarItem.view = NSHostingView(
+            let view = NSHostingView(
                 rootView: ActivityViewer(
                     taskNotificationHandler: taskNotificationHandler
                 )
             )
 
+            let weakWidth = view.widthAnchor.constraint(equalToConstant: 650)
+            weakWidth.priority = .defaultLow
+            let strongWidth = view.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
+            strongWidth.priority = .defaultHigh
+
+            NSLayoutConstraint.activate([
+                weakWidth,
+                strongWidth
+            ])
+
+            toolbarItem.view = view
             return toolbarItem
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }
+    }
+}
+
+class CETrackingSeparatorToolbarItem: NSTrackingSeparatorToolbarItem {
+    init(_ splitView: NSSplitView, dividerIndex: Int) {
+        super.init(itemIdentifier: .itemListTrackingSeparator)
+        self.splitView = splitView
+        self.dividerIndex = dividerIndex
     }
 }
