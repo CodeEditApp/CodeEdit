@@ -8,45 +8,21 @@
 import Cocoa
 import SwiftUI
 
-struct CodeEditSplitView: NSViewControllerRepresentable {
-    let controller: NSSplitViewController
-
-    func makeNSViewController(context: Context) -> NSSplitViewController {
-        controller
-    }
-
-    func updateNSViewController(_ nsViewController: NSSplitViewController, context: Context) {}
-}
-
-private extension CGFloat {
-    static let snapWidth: CGFloat = 272
-
-    static let minSnapWidth: CGFloat = snapWidth - 10
-    static let maxSnapWidth: CGFloat = snapWidth + 10
-}
-
 final class CodeEditSplitViewController: NSSplitViewController {
+    static let minSidebarWidth: CGFloat = 242
+    static let maxSnapWidth: CGFloat = minSidebarWidth + 10
+    static let minSnapWidth: CGFloat = minSidebarWidth + 10
+
     private var workspace: WorkspaceDocument
-    private var setWidthFromState = false
-    private var viewIsReady = false
-
-    // Properties
-    private(set) var isSnapped: Bool = false {
-        willSet {
-            if newValue, newValue != isSnapped && viewIsReady {
-                feedbackPerformer.perform(.alignment, performanceTime: .now)
-            }
-        }
-    }
-
-    // Dependencies
-    private let feedbackPerformer: NSHapticFeedbackPerformer
+    private var navigatorViewModel: NavigatorSidebarViewModel
+    private weak var windowRef: NSWindow?
 
     // MARK: - Initialization
 
-    init(workspace: WorkspaceDocument, feedbackPerformer: NSHapticFeedbackPerformer) {
+    init(workspace: WorkspaceDocument, navigatorViewModel: NavigatorSidebarViewModel, windowRef: NSWindow) {
         self.workspace = workspace
-        self.feedbackPerformer = feedbackPerformer
+        self.navigatorViewModel = navigatorViewModel
+        self.windowRef = windowRef
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -55,13 +31,67 @@ final class CodeEditSplitViewController: NSSplitViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        guard let windowRef else {
+            // swiftlint:disable:next line_length
+            assertionFailure("No WindowRef found, not initialized properly or the window was dereferenced and the controller was not.")
+            return
+        }
+
+        splitView.translatesAutoresizingMaskIntoConstraints = false
+
+        let settingsView = SettingsInjector {
+            NavigatorAreaView(workspace: workspace, viewModel: navigatorViewModel)
+                .environmentObject(workspace)
+                .environmentObject(workspace.editorManager)
+        }
+
+        let navigator = NSSplitViewItem(sidebarWithViewController: NSHostingController(rootView: settingsView))
+        navigator.titlebarSeparatorStyle = .none
+        navigator.isSpringLoaded = true
+        navigator.minimumThickness = Self.minSidebarWidth
+        navigator.collapseBehavior = .useConstraints
+
+        addSplitViewItem(navigator)
+
+        let workspaceView = SettingsInjector {
+            WindowObserver(window: windowRef) {
+                WorkspaceView()
+                    .environmentObject(workspace)
+                    .environmentObject(workspace.editorManager)
+                    .environmentObject(workspace.statusBarViewModel)
+                    .environmentObject(workspace.utilityAreaModel)
+            }
+        }
+
+        let mainContent = NSSplitViewItem(viewController: NSHostingController(rootView: workspaceView))
+        mainContent.titlebarSeparatorStyle = .line
+        mainContent.minimumThickness = 200
+
+        addSplitViewItem(mainContent)
+
+        let inspectorView = SettingsInjector {
+            InspectorAreaView(viewModel: InspectorAreaViewModel())
+                .environmentObject(workspace)
+                .environmentObject(workspace.editorManager)
+        }
+
+        let inspector = NSSplitViewItem(inspectorWithViewController: NSHostingController(rootView: inspectorView))
+        inspector.titlebarSeparatorStyle = .none
+        inspector.minimumThickness = Self.minSidebarWidth
+        inspector.maximumThickness = .greatestFiniteMagnitude
+        inspector.collapseBehavior = .useConstraints
+        inspector.isSpringLoaded = true
+
+        addSplitViewItem(inspector)
+    }
+
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        viewIsReady = false
-        let width = workspace.getFromWorkspaceState(.splitViewWidth) as? CGFloat
-        splitView.setPosition(width ?? .snapWidth, ofDividerAt: .zero)
-        setWidthFromState = true
+        let navigatorWidth = workspace.getFromWorkspaceState(.splitViewWidth) as? CGFloat
+        splitView.setPosition(navigatorWidth ?? Self.minSidebarWidth, ofDividerAt: 0)
 
         if let firstSplitView = splitViewItems.first {
             firstSplitView.isCollapsed = workspace.getFromWorkspaceState(
@@ -76,44 +106,62 @@ final class CodeEditSplitViewController: NSSplitViewController {
         }
     }
 
-    override func viewDidAppear() {
-        viewIsReady = true
-        hideInspectorToolbarBackground()
-    }
-
     // MARK: - NSSplitViewDelegate
 
+    /// Perform the spring loaded navigator splits.
+    /// - Note: This could be removed. The only additional functionality this provides over using just the
+    ///         `NSSplitViewItem.isSpringLoaded` & `NSSplitViewItem.minimumThickness` is the haptic feedback we add.
+    /// - Parameters:
+    ///   - splitView: The split view to use.
+    ///   - proposedPosition: The proposed drag position.
+    ///   - dividerIndex: The index of the divider being dragged.
+    /// - Returns: The position to move the divider to.
     override func splitView(
         _ splitView: NSSplitView,
         constrainSplitPosition proposedPosition: CGFloat,
         ofSubviewAt dividerIndex: Int
     ) -> CGFloat {
-        if dividerIndex == 0 {
+        switch dividerIndex {
+        case 0:
             // Navigator
-            if (CGFloat.minSnapWidth...CGFloat.maxSnapWidth).contains(proposedPosition) {
-                isSnapped = true
-                return .snapWidth
+            if (Self.minSnapWidth...Self.maxSnapWidth).contains(proposedPosition) {
+                return Self.minSidebarWidth
             } else {
-                isSnapped = false
-                if proposedPosition <= CodeEditWindowController.minSidebarWidth / 2 {
-                    splitViewItems.first?.isCollapsed = true
+                if proposedPosition <= Self.minSidebarWidth / 2 {
+                    hapticCollapse(splitViewItems.first, collapseAction: true)
                     return 0
                 }
-                return max(CodeEditWindowController.minSidebarWidth, proposedPosition)
+                hapticCollapse(splitViewItems.first, collapseAction: false)
+                return max(Self.minSidebarWidth, proposedPosition)
             }
-        } else if dividerIndex == 1 {
+        case 1:
             let proposedWidth = view.frame.width - proposedPosition
-            if proposedWidth <= CodeEditWindowController.minSidebarWidth / 2 {
-                splitViewItems.last?.isCollapsed = true
+            if proposedWidth <= Self.minSidebarWidth / 2 {
+                hapticCollapse(splitViewItems.last, collapseAction: true)
                 return proposedPosition
             }
-            splitViewItems.last?.isCollapsed = false
-            return min(view.frame.width - CodeEditWindowController.minSidebarWidth, proposedPosition)
+            hapticCollapse(splitViewItems.last, collapseAction: false)
+            return min(view.frame.width - Self.minSidebarWidth, proposedPosition)
+        default:
+            return proposedPosition
         }
-        return proposedPosition
     }
 
+    /// Performs a haptic feedback while collapsing or revealing a split item.
+    /// If the item was not previously in the new intended state, a haptic `.alignment` feedback is sent.
+    /// - Parameters:
+    ///   - item: The item to collapse or reveal
+    ///   - collapseAction: Whether or not to collapse the item. Set to true to collapse it.
+    private func hapticCollapse(_ item: NSSplitViewItem?, collapseAction: Bool) {
+        if item?.isCollapsed == !collapseAction {
+            NSHapticFeedbackManager.defaultPerformer.perform(.alignment, performanceTime: .now)
+        }
+        item?.isCollapsed = collapseAction
+    }
+
+    /// Save the width of the inspector and navigator between sessions.
     override func splitViewDidResizeSubviews(_ notification: Notification) {
+        super.splitViewDidResizeSubviews(notification)
         guard let resizedDivider = notification.userInfo?["NSSplitViewDividerIndex"] as? Int else {
             return
         }
@@ -121,7 +169,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         if resizedDivider == 0 {
             let panel = splitView.subviews[0]
             let width = panel.frame.size.width
-            if width > 0 && setWidthFromState {
+            if width > 0 {
                 workspace.addToWorkspaceState(key: .splitViewWidth, value: width)
             }
         }
@@ -133,16 +181,5 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     func saveInspectorCollapsedState(isCollapsed: Bool) {
         workspace.addToWorkspaceState(key: .inspectorCollapsed, value: isCollapsed)
-    }
-
-    func hideInspectorToolbarBackground() {
-        let controller = self.view.window?.perform(Selector(("titlebarViewController"))).takeUnretainedValue()
-        if let controller = controller as? NSViewController {
-            let effectViewCount = controller.view.subviews.filter { $0 is NSVisualEffectView }.count
-            guard effectViewCount > 2 else { return }
-            if let view = controller.view.subviews[0] as? NSVisualEffectView {
-                view.isHidden = true
-            }
-        }
     }
 }

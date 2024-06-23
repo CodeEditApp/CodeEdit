@@ -5,6 +5,7 @@
 //  Created by Austin Condiff on 3/21/22.
 //
 
+import AppKit
 import SwiftUI
 
 struct InspectorAreaView: View {
@@ -52,13 +53,6 @@ struct InspectorAreaView: View {
             }
         }
         .clipShape(Rectangle())
-        .frame(
-            minWidth: CodeEditWindowController.minSidebarWidth,
-            idealWidth: 300,
-            minHeight: 0,
-            maxHeight: .infinity,
-            alignment: .top
-        )
         .safeAreaInset(edge: .trailing, spacing: 0) {
             if sidebarPosition == .side {
                 HStack(spacing: 0) {
