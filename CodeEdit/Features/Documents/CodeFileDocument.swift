@@ -68,18 +68,11 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         if content != nil {
             return .text
         }
+
         guard let fileType, let type = UTType(fileType) else {
             return nil
         }
-        if type.conforms(to: .text) {
-            return .text
-        }
-        if type.conforms(to: .image) {
-            return .image
-        }
-        if type.conforms(to: .pdf) {
-            return .pdf
-        }
+
         return type
     }
 
