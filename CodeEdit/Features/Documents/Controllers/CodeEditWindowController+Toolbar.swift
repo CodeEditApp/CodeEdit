@@ -141,11 +141,3 @@ extension CodeEditWindowController {
         }
     }
 }
-
-class CETrackingSeparatorToolbarItem: NSTrackingSeparatorToolbarItem {
-    init(_ splitView: NSSplitView, dividerIndex: Int) {
-        super.init(itemIdentifier: .itemListTrackingSeparator)
-        self.splitView = splitView
-        self.dividerIndex = dividerIndex
-    }
-}
