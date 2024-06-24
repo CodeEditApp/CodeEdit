@@ -23,8 +23,14 @@ struct TaskNotificationView: View {
                         progress: notification.percentage,
                         currentTaskCount: taskNotificationHandler.notifications.count
                     )
-                    .padding(.leading, 5)
                     .frame(height: 15)
+                    .popover(isPresented: $isPresented) {
+                        TaskNotificationsDetailView(taskNotificationHandler: taskNotificationHandler)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        self.isPresented.toggle()
+                    }
                 } else {
                     if taskNotificationHandler.notifications.count > 1 {
                         Text("\(taskNotificationHandler.notifications.count)")
@@ -37,26 +43,10 @@ struct TaskNotificationView: View {
             }
             .animation(.easeInOut, value: notification)
             .padding(3)
-            .background {
-                if hovered {
-                    RoundedRectangle(cornerRadius: 5)
-                        .tint(.gray)
-                        .foregroundStyle(.ultraThickMaterial)
-                }
-            }
             .onHover { isHovered in
                 self.hovered = isHovered
             }
             .padding(-3)
-            .popover(isPresented: $isPresented) {
-                TaskNotificationsDetailView(taskNotificationHandler: taskNotificationHandler)
-            }.onTapGesture {
-                self.isPresented.toggle()
-            }
         }
     }
-}
-
-#Preview {
-    TaskNotificationView(taskNotificationHandler: TaskNotificationHandler())
 }

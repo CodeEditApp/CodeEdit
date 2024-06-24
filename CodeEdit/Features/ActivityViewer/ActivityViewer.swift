@@ -13,6 +13,7 @@ struct ActivityViewer: View {
     var colorScheme
 
     @ObservedObject var taskNotificationHandler: TaskNotificationHandler
+
     var body: some View {
         HStack {
             HStack(spacing: 0) {
@@ -27,13 +28,8 @@ struct ActivityViewer: View {
             }
             .padding(.horizontal, 10)
             .background {
-                if colorScheme == .dark {
-                    RoundedRectangle(cornerRadius: 5)
-                        .opacity(0.10)
-                } else {
-                    RoundedRectangle(cornerRadius: 5)
-                        .opacity(0.1)
-                }
+                RoundedRectangle(cornerRadius: 5)
+                    .opacity(0.1)
             }
             .frame(minWidth: 200, idealWidth: 680)
         }
