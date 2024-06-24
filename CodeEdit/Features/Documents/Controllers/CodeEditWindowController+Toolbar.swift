@@ -26,6 +26,8 @@ extension CodeEditWindowController {
             .sidebarTrackingSeparator,
             .branchPicker,
             .flexibleSpace,
+            .activityViewer,
+            .flexibleSpace,
             .itemListTrackingSeparator,
             .flexibleSpace,
             .toggleLastSidebarItem
@@ -39,7 +41,8 @@ extension CodeEditWindowController {
             .flexibleSpace,
             .itemListTrackingSeparator,
             .toggleLastSidebarItem,
-            .branchPicker
+            .branchPicker,
+            .activityViewer
         ]
     }
 
@@ -59,6 +62,7 @@ extension CodeEditWindowController {
         }
     }
 
+    // swiftlint:disable:next function_body_length
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
@@ -111,7 +115,16 @@ extension CodeEditWindowController {
             toolbarItem.view = view
 
             return toolbarItem
+        case .activityViewer:
+            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.activityViewer)
+            toolbarItem.visibilityPriority = .user
+            toolbarItem.view = NSHostingView(
+                rootView: ActivityViewer(
+                    taskNotificationHandler: taskNotificationHandler
+                )
+            )
 
+            return toolbarItem
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }
