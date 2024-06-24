@@ -74,6 +74,18 @@ struct FileCommands: Commands {
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
             .disabled(!(NSApplication.shared.keyWindow?.windowController is CodeEditWindowController))
 
+            Button("Go To Next Window Tab") {
+                NSApp.sendAction(#selector(NSWindow.selectNextTab), to: nil, from: nil)
+            }
+            .keyboardShortcut(.tab, modifiers: [.control])
+            .disabled(NSApplication.shared.mainWindow?.tabbedWindows == nil)
+
+            Button("Go To Previous Window Tab") {
+                NSApp.sendAction(#selector(NSWindow.selectPreviousTab), to: nil, from: nil)
+            }
+            .keyboardShortcut(.tab, modifiers: [.control, .shift])
+            .disabled(NSApplication.shared.mainWindow?.tabbedWindows == nil)
+
             if let utilityAreaViewModel {
                 Button("Close Terminal") {
                     utilityAreaViewModel.removeTerminals(utilityAreaViewModel.selectedTerminals)
