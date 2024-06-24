@@ -10,19 +10,27 @@ import SwiftUI
 
 final class CodeEditSplitViewController: NSSplitViewController {
     static let minSidebarWidth: CGFloat = 242
-    static let maxSnapWidth: CGFloat = minSidebarWidth + 10
-    static let minSnapWidth: CGFloat = minSidebarWidth + 10
+    static let maxSnapWidth: CGFloat = snapWidth + 10
+    static let snapWidth: CGFloat = 272
+    static let minSnapWidth: CGFloat = snapWidth - 10
 
     private var workspace: WorkspaceDocument
     private var navigatorViewModel: NavigatorSidebarViewModel
     private weak var windowRef: NSWindow?
+    private unowned var hapticPerformer: NSHapticFeedbackPerformer
 
     // MARK: - Initialization
 
-    init(workspace: WorkspaceDocument, navigatorViewModel: NavigatorSidebarViewModel, windowRef: NSWindow) {
+    init(
+        workspace: WorkspaceDocument,
+        navigatorViewModel: NavigatorSidebarViewModel,
+        windowRef: NSWindow,
+        hapticPerformer: NSHapticFeedbackPerformer = NSHapticFeedbackManager.defaultPerformer
+    ) {
         self.workspace = workspace
         self.navigatorViewModel = navigatorViewModel
         self.windowRef = windowRef
+        self.hapticPerformer = hapticPerformer
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -125,12 +133,11 @@ final class CodeEditSplitViewController: NSSplitViewController {
         case 0:
             // Navigator
             if (Self.minSnapWidth...Self.maxSnapWidth).contains(proposedPosition) {
-                return Self.minSidebarWidth
+                return Self.snapWidth
+            } else if proposedPosition <= Self.minSidebarWidth / 2 {
+                hapticCollapse(splitViewItems.first, collapseAction: true)
+                return 0
             } else {
-                if proposedPosition <= Self.minSidebarWidth / 2 {
-                    hapticCollapse(splitViewItems.first, collapseAction: true)
-                    return 0
-                }
                 hapticCollapse(splitViewItems.first, collapseAction: false)
                 return max(Self.minSidebarWidth, proposedPosition)
             }
@@ -139,9 +146,10 @@ final class CodeEditSplitViewController: NSSplitViewController {
             if proposedWidth <= Self.minSidebarWidth / 2 {
                 hapticCollapse(splitViewItems.last, collapseAction: true)
                 return proposedPosition
+            } else {
+                hapticCollapse(splitViewItems.last, collapseAction: false)
+                return min(view.frame.width - Self.minSidebarWidth, proposedPosition)
             }
-            hapticCollapse(splitViewItems.last, collapseAction: false)
-            return min(view.frame.width - Self.minSidebarWidth, proposedPosition)
         default:
             return proposedPosition
         }
@@ -154,7 +162,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
     ///   - collapseAction: Whether or not to collapse the item. Set to true to collapse it.
     private func hapticCollapse(_ item: NSSplitViewItem?, collapseAction: Bool) {
         if item?.isCollapsed == !collapseAction {
-            NSHapticFeedbackManager.defaultPerformer.perform(.alignment, performanceTime: .now)
+            hapticPerformer.perform(.alignment, performanceTime: .now)
         }
         item?.isCollapsed = collapseAction
     }
