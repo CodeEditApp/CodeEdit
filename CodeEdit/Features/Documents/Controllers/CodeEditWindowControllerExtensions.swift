@@ -13,9 +13,9 @@ extension CodeEditWindowController {
     func toggleFirstPanel() {
         guard let firstSplitView = splitViewController.splitViewItems.first else { return }
         firstSplitView.animator().isCollapsed.toggle()
-//        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
-//            codeEditSplitVC.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
-//        }
+        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
+            codeEditSplitVC.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
+        }
     }
 
     @objc
@@ -29,8 +29,7 @@ extension CodeEditWindowController {
             lastSplitView.animator().isCollapsed.toggle()
         }
 
-//        codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
-//        codeEditSplitVC.hideInspectorToolbarBackground()
+        codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
     }
 
     /// These are example items that added as commands to command palette
