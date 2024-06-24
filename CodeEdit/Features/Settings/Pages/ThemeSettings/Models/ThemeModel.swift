@@ -17,9 +17,6 @@ import SwiftUI
 final class ThemeModel: ObservableObject {
     static let shared: ThemeModel = .init()
 
-    @Environment(\.colorScheme)
-    var colorScheme
-
     @AppSettings(\.theme)
     var settings
 
@@ -49,6 +46,9 @@ final class ThemeModel: ObservableObject {
     internal var settingsURL: URL {
         baseURL.appendingPathComponent("settings.json", isDirectory: true)
     }
+
+    /// System color scheme
+    @Published var colorScheme: ColorScheme = .light
 
     /// Selected 'light' theme
     /// Used for auto-switching theme to match macOS system appearance
