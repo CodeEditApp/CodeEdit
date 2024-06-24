@@ -18,45 +18,6 @@ struct ThemeSettingsView: View {
     var useDarkTerminalAppearance
 
     @State private var listView: Bool = false
-    @State private var selectedAppearance: ThemeSettingsAppearances = .dark
-
-    enum ThemeSettingsAppearances: String, CaseIterable {
-        case light = "Light Appearance"
-        case dark = "Dark Appearance"
-    }
-
-    func getThemeActive (_ theme: Theme) -> Bool {
-        if settings.matchAppearance {
-            return selectedAppearance == .dark
-            ? themeModel.selectedDarkTheme == theme
-            : selectedAppearance == .light
-                ? themeModel.selectedLightTheme == theme
-                : themeModel.selectedTheme == theme
-        }
-        return themeModel.selectedTheme == theme
-    }
-
-    func activateTheme (_ theme: Theme) {
-        if settings.matchAppearance {
-            if selectedAppearance == .dark {
-                themeModel.selectedDarkTheme = theme
-            } else if selectedAppearance == .light {
-                themeModel.selectedLightTheme = theme
-            }
-            if (selectedAppearance == .dark && colorScheme == .dark)
-                || (selectedAppearance == .light && colorScheme == .light) {
-                themeModel.selectedTheme = theme
-            }
-        } else {
-            themeModel.selectedTheme = theme
-            if colorScheme == .light {
-                themeModel.selectedLightTheme = theme
-            }
-            if colorScheme == .dark {
-                themeModel.selectedDarkTheme = theme
-            }
-        }
-    }
 
     var body: some View {
         SettingsForm {
@@ -70,8 +31,8 @@ struct ThemeSettingsView: View {
             Section {
                 VStack(spacing: 0) {
                     if settings.matchAppearance {
-                        Picker("", selection: $selectedAppearance) {
-                            ForEach(ThemeSettingsAppearances.allCases, id: \.self) { tab in
+                        Picker("", selection: $themeModel.selectedAppearance) {
+                            ForEach(ThemeModel.ThemeSettingsAppearances.allCases, id: \.self) { tab in
                                 Text(tab.rawValue)
                                     .tag(tab)
                             }
@@ -81,20 +42,26 @@ struct ThemeSettingsView: View {
                         .padding(10)
                     }
                     VStack(spacing: 0) {
-                        ForEach(selectedAppearance == .dark ? themeModel.darkThemes : themeModel.lightThemes) { theme in
+                        ForEach(
+                            themeModel.selectedAppearance == .dark
+                                ? themeModel.darkThemes
+                                : themeModel.lightThemes
+                        ) { theme in
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeRow(
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                active: getThemeActive(theme),
-                                action: activateTheme
+                                active: themeModel.getThemeActive(theme)
                             ).id(theme)
                         }
-                        ForEach(selectedAppearance == .dark ? themeModel.lightThemes : themeModel.darkThemes) { theme in
+                        ForEach(
+                            themeModel.selectedAppearance == .dark
+                                ? themeModel.lightThemes
+                                : themeModel.darkThemes
+                        ) { theme in
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeRow(
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                active: getThemeActive(theme),
-                                action: activateTheme
+                                active: themeModel.getThemeActive(theme)
                             ).id(theme)
                         }
                     }
@@ -110,7 +77,9 @@ struct ThemeSettingsView: View {
                 .padding(.top, 10)
             }
         }
-        .sheet(item: $themeModel.detailsTheme) { theme in
+        .sheet(item: $themeModel.detailsTheme) {
+            themeModel.isAdding = false
+        } content: { theme in
             if let index = themeModel.themes.firstIndex(where: {
                 $0.fileURL?.absoluteString == theme.fileURL?.absoluteString
             }) {

@@ -134,7 +134,27 @@ struct ThemeSettingsThemeDetails: View {
             .formStyle(.grouped)
             Divider()
             HStack {
-                if !themeModel.isAdding {
+                if theme.isBundled {
+                    HStack {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.body)
+                            .foregroundStyle(Color.yellow)
+                        Text("Duplicate this theme to make changes.")
+                            .font(.subheadline)
+                            .lineLimit(2)
+                    }
+                    .help("Bundled themes must be duplicated to make changes.")
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Warning: Duplicate this theme to make changes.")
+                } else if !themeModel.isAdding {
+                    Button(role: .destructive) {
+                        themeModel.delete(theme)
+                        dismiss()
+                    } label: {
+                        Text("Delete")
+                            .foregroundStyle(.red)
+                            .frame(minWidth: 56)
+                    }
                     Button {
                         if let fileURL = theme.fileURL {
                             themeModel.duplicate(fileURL)
@@ -143,33 +163,36 @@ struct ThemeSettingsThemeDetails: View {
                         Text("Duplicate")
                             .frame(minWidth: 56)
                     }
-                    if !theme.isBundled {
-                        Button(role: .destructive) {
-                            themeModel.delete(theme)
-                            dismiss()
-                        } label: {
-                            Text("Delete")
-                                .foregroundStyle(.red)
-                                .frame(minWidth: 56)
-                        }
-                    }
                 }
                 Spacer()
-                Button {
-                    if themeModel.isAdding {
-                        themeModel.delete(theme)
-                    } else {
-                        themeModel.cancelDetails(theme)
+                if !themeModel.isAdding && theme.isBundled {
+                    Button {
+                        if let fileURL = theme.fileURL {
+                            themeModel.duplicate(fileURL)
+                        }
+                    } label: {
+                        Text("Duplicate")
+                            .frame(minWidth: 56)
                     }
+                } else {
+                    Button {
+                        if themeModel.isAdding {
+                            themeModel.delete(theme)
+                        } else {
+                            themeModel.cancelDetails(theme)
+                        }
 
-                    dismiss()
-                } label: {
-                    Text("Cancel")
-                        .frame(minWidth: 56)
+                        dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .frame(minWidth: 56)
+                    }
+                    .buttonStyle(.bordered)
                 }
-                .buttonStyle(.bordered)
                 Button {
-                    themeModel.rename(to: theme.displayName, theme: theme)
+                    if !theme.isBundled {
+                        themeModel.rename(to: theme.displayName, theme: theme)
+                    }
                     dismiss()
                 } label: {
                     Text("Done")

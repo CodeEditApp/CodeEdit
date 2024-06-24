@@ -10,7 +10,6 @@ import SwiftUI
 struct ThemeSettingsThemeRow: View {
     @Binding var theme: Theme
     var active: Bool
-    var action: (Theme) -> Void
 
     @ObservedObject private var themeModel: ThemeModel = .shared
 
@@ -32,7 +31,7 @@ struct ThemeSettingsThemeRow: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             if !active {
                 Button {
-                    action(theme)
+                    themeModel.activateTheme(theme)
                 } label: {
                     Text("Choose")
                 }

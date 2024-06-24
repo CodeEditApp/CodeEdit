@@ -202,11 +202,14 @@ extension ThemeModel {
             if var index = self.themes.firstIndex(where: { $0.fileURL == destinationFileURL }) {
                 self.themes[index].displayName = newFileName
                 self.themes[index].name = newFileName.lowercased().replacingOccurrences(of: " ", with: "-")
+
                 if isImporting != true {
                     self.themes[index].author = NSFullUserName()
                     self.save(self.themes[index])
                 }
-                self.selectedTheme = self.themes[index]
+
+                activateTheme(self.themes[index])
+
                 self.detailsTheme = self.themes[index]
             }
         } catch {
