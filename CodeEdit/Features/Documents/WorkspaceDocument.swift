@@ -5,10 +5,11 @@
 //  Created by Pavel Kasila on 17.03.22.
 //
 
-import Foundation
 import AppKit
 import SwiftUI
 import Combine
+import Foundation
+import LanguageServerProtocol
 
 @objc(WorkspaceDocument)
 final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
@@ -113,6 +114,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             workspaceURL: url,
             editorManager: editorManager
         )
+
         self.workspaceFileManager = .init(
             folderUrl: url,
             ignoredFilesAndFolders: Set(ignoredFilesAndDirectory),
