@@ -23,6 +23,23 @@ struct CETask: Identifiable, Hashable, Codable {
         workingDirectory.isEmpty
     }
 
+    /// Ensures that the environment variables are exported, the shell navigates to the correct folder,
+    /// and then executes the specified command.
+    var fullCommand: String {
+        // Export all necessary environment variables before starting the task
+        let environmentVariables = environmentVariables
+            .map { "export \($0.name)=\"\($0.value)\"" }
+            .joined(separator: " && ")
+            .appending(";")
+
+        // Move into the specified folder if needed
+        let changeDirectoryCommand = workingDirectory.isEmpty ? "" : "cd \(workingDirectory) && "
+
+        // Construct the full command
+        return "\(environmentVariables)\(changeDirectoryCommand)\(command)"
+
+    }
+
     enum CodingKeys: String, CodingKey {
         case name
         case target

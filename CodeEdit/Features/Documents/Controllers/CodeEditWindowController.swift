@@ -24,6 +24,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     var quickOpenPanel: SearchPanel?
     var commandPalettePanel: SearchPanel?
     var navigatorSidebarViewModel: NavigatorSidebarViewModel?
+    var taskManager: TaskManager?
 
     var taskNotificationHandler: TaskNotificationHandler
 
@@ -34,9 +35,11 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     init(
         window: NSWindow?,
         workspace: WorkspaceDocument?,
+        taskManager: TaskManager?,
         taskNotificationHandler: TaskNotificationHandler
     ) {
         self.taskNotificationHandler = taskNotificationHandler
+        self.taskManager = taskManager
         super.init(window: window)
         guard let workspace else { return }
         self.workspace = workspace
@@ -98,6 +101,13 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     .environmentObject(workspace.editorManager)
                     .environmentObject(workspace.statusBarViewModel)
                     .environmentObject(workspace.utilityAreaModel)
+                    .environmentObject(
+                        workspace.taskManager ??
+                        TaskManager(
+                            workspaceSettings: workspace.workspaceSettings ??
+                            CEWorkspaceSettings(workspaceDocument: workspace)
+                        )
+                    )
             }
         }
 

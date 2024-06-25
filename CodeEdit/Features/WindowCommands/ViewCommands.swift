@@ -76,6 +76,7 @@ struct ViewCommands: Commands {
                 windowController: windowController ?? CodeEditWindowController(
                     window: nil,
                     workspace: nil,
+                    taskManager: nil,
                     taskNotificationHandler: TaskNotificationHandler()
                 ),
                 utilityAreaModel: windowController?.workspace?.utilityAreaModel ?? UtilityAreaViewModel()

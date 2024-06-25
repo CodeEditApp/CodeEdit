@@ -38,6 +38,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var listenerModel: WorkspaceNotificationModel = .init()
     var sourceControlManager: SourceControlManager?
 
+    var taskManager: TaskManager?
+    var workspaceSettings: CEWorkspaceSettings?
     var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
 
     private var cancellables = Set<AnyCancellable>()
@@ -92,6 +94,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         let windowController = CodeEditWindowController(
             window: window,
             workspace: self,
+            taskManager: taskManager,
             taskNotificationHandler: taskNotificationHandler
         )
 
@@ -123,6 +126,10 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.searchState = .init(self)
         self.quickOpenViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
+        self.workspaceSettings = CEWorkspaceSettings(workspaceDocument: self)
+        if let workspaceSettings {
+            self.taskManager = TaskManager(workspaceSettings: workspaceSettings)
+        }
 
         editorManager.restoreFromState(self)
         utilityAreaModel.restoreFromState(self)
