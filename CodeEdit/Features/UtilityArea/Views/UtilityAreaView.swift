@@ -24,21 +24,26 @@ struct UtilityAreaView: View {
     @State var selection: UtilityAreaTab? = .terminal
 
     var body: some View {
-        VStack(spacing: 0) {
-            if let selection {
-                selection
-            } else {
-                Text("Tab not found")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+        GeometryReader { geometry in
+            VStack(spacing: 0) {
+                if let selection {
+                    selection
+                } else {
+                    Text("Tab not found")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+            }
+            .offset(y: utilityAreaViewModel.isCollapsed ? geometry.size.height : 0)
+            .safeAreaInset(edge: .leading, spacing: 0) {
+                HStack(spacing: 0) {
+                    AreaTabBar(items: $utilityAreaViewModel.tabItems, selection: $selection, position: .side)
+                        .offset(y: utilityAreaViewModel.isCollapsed ? geometry.size.height : 0)
+                    Divider()
+                        .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
+                }
             }
         }
-        .safeAreaInset(edge: .leading, spacing: 0) {
-            HStack(spacing: 0) {
-                AreaTabBar(items: $utilityAreaViewModel.tabItems, selection: $selection, position: .side)
-                Divider()
-                    .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
-            }
-        }
+        .animation(.snappy, value: utilityAreaViewModel.isCollapsed)
         .overlay(alignment: .bottomTrailing) {
             HStack(spacing: 5) {
                 Divider()
