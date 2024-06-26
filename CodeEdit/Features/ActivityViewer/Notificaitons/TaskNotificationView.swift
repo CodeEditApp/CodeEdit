@@ -28,12 +28,14 @@ struct TaskNotificationView: View {
                 } else {
                     if taskNotificationHandler.notifications.count > 1 {
                         Text("\(taskNotificationHandler.notifications.count)")
-                            .padding(3)
+                            .font(.caption)
+                            .padding(5)
                             .background(
                                 Circle()
                                     .foregroundStyle(.gray)
+                                    .opacity(0.3)
                             )
-                            .padding(-3)
+                            .padding(-5)
                     }
                 }
             }

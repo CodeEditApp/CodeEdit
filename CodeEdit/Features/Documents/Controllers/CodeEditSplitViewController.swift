@@ -70,6 +70,13 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environmentObject(workspace.editorManager)
                     .environmentObject(workspace.statusBarViewModel)
                     .environmentObject(workspace.utilityAreaModel)
+                    .environmentObject(
+                        workspace.taskManager ??
+                        TaskManager(
+                            workspaceSettings: workspace.workspaceSettings ??
+                            CEWorkspaceSettings(workspaceDocument: workspace)
+                        )
+                    )
             }
         }
 

@@ -22,6 +22,8 @@ struct TasksCEWorkspaceSettingsView: View {
             Section {
                 TextField("Name", text: $projectSettings.projectName)
                 Toggle("Tasks", isOn: $settings.enabled)
+            } header: {
+                Text("Workspace")
             }
             Section(
                 content: {

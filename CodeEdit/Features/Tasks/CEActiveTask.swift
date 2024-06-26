@@ -46,6 +46,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
                 message: "",
                 isLoading: false
             )
+            self?.deleteStatusTaskNotification()
             Task { [weak self] in
                 await self?.updateOutput("\nFinished running \(self?.task.name ?? "Task").\n\n")
                 await self?.updateTaskStatus(to: .finished)
@@ -56,7 +57,6 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
                 let data = fileHandle.availableData
                 if let outputString = String(data: data, encoding: .utf8), !outputString.isEmpty {
-                    print(outputString)
                     Task {
                         await self.updateOutput(outputString)
                     }
@@ -108,9 +108,10 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     private func deleteStatusTaskNotification() {
-        let deleteInfo = [
+        let deleteInfo: [String: Any] = [
             "id": "\(task.id.uuidString)",
-            "action": "delete",
+            "action": "deleteWithDelay",
+            "delay": 3.0
         ]
 
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteInfo)
