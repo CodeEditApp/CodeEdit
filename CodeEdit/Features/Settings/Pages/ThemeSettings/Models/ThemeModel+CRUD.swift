@@ -199,7 +199,7 @@ extension ThemeModel {
 
             try self.loadThemes()
 
-            if var index = self.themes.firstIndex(where: { $0.fileURL == destinationFileURL }) {
+            if let index = self.themes.firstIndex(where: { $0.fileURL == destinationFileURL }) {
                 self.themes[index].displayName = newFileName
                 self.themes[index].name = newFileName.lowercased().replacingOccurrences(of: " ", with: "-")
 

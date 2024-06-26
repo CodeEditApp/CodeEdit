@@ -88,6 +88,9 @@ struct ThemeSettingsView: View {
                     set: { newValue in
                         themeModel.themes[index] = newValue
                         themeModel.save(newValue)
+                        if settings.selectedTheme == theme.name {
+                            themeModel.activateTheme(newValue)
+                        }
                     }
                 ))
             }

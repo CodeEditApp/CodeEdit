@@ -126,14 +126,17 @@ final class ThemeModel: ObservableObject {
         }
     }
 
-    @Published var selectedAppearance: ThemeSettingsAppearances = .dark
+    /// Initialize to the app's current appearance.
+    @Published var selectedAppearance: ThemeSettingsAppearances = {
+        NSApp.effectiveAppearance.name == .darkAqua ? .dark : .light
+    }()
 
     enum ThemeSettingsAppearances: String, CaseIterable {
         case light = "Light Appearance"
         case dark = "Dark Appearance"
     }
 
-    func getThemeActive (_ theme: Theme) -> Bool {
+    func getThemeActive(_ theme: Theme) -> Bool {
         if settings.matchAppearance {
             return selectedAppearance == .dark
             ? selectedDarkTheme == theme
@@ -144,7 +147,10 @@ final class ThemeModel: ObservableObject {
         return selectedTheme == theme
     }
 
-    func activateTheme (_ theme: Theme) {
+    /// Activates the current theme, setting ``selectedTheme`` and ``selectedLightTheme``/``selectedDarkTheme`` as
+    /// necessary.
+    /// - Parameter theme: The theme to activate.
+    func activateTheme(_ theme: Theme) {
         if settings.matchAppearance {
             if selectedAppearance == .dark {
                 selectedDarkTheme = theme
