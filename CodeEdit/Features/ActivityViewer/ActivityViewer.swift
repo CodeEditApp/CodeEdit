@@ -30,13 +30,8 @@ struct ActivityViewer: View {
         .fixedSize(horizontal: false, vertical: false)
         .padding(.horizontal, 10)
         .background {
-            if colorScheme == .dark {
-                RoundedRectangle(cornerRadius: 5)
-                    .opacity(0.10)
-            } else {
-                RoundedRectangle(cornerRadius: 5)
-                    .opacity(0.1)
-            }
+            RoundedRectangle(cornerRadius: 5)
+                .opacity(0.1)
         }
     }
 }
