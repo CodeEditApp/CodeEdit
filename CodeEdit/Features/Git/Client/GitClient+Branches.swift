@@ -117,6 +117,17 @@ extension GitClient {
         }
     }
 
+    func getTrackedBranch() async throws -> String? {
+        do {
+            let output = try await run("rev-parse --abbrev-ref --symbolic-full-name @{u}")
+            return output.trimmingCharacters(in: .whitespacesAndNewlines)
+        } catch GitClientError.outputError(let output) where output.contains("fatal: no upstream configured for branch") {
+            return nil
+        } catch {
+            throw error
+        }
+    }
+
     private func parseBranchTrackInfo(from infoString: String) -> (ahead: Int, behind: Int) {
         let pattern = "\\[ahead (\\d+)(?:, behind (\\d+))?\\]|\\[behind (\\d+)\\]"
         // Create a regular expression object

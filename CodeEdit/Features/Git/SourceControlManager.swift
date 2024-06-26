@@ -24,6 +24,9 @@ final class SourceControlManager: ObservableObject {
     /// Current branch
     @Published var currentBranch: GitBranch?
 
+    /// Tracked branch name
+    @Published var trackedBranchName: String?
+
     /// All branches, local and remote
     @Published var branches: [GitBranch] = []
 
@@ -157,6 +160,14 @@ final class SourceControlManager: ObservableObject {
         }
     }
 
+    /// Refresh current branch
+    func refreshTrackedBranch() async {
+        let trackedBranchName = try? await gitClient.getTrackedBranch()
+        await MainActor.run {
+            self.trackedBranchName = trackedBranchName
+        }
+    }
+
     /// Refresh branches
     func refreshBranches() async {
         let branches = (try? await gitClient.getBranches()) ?? []
@@ -170,6 +181,7 @@ final class SourceControlManager: ObservableObject {
         try await gitClient.checkoutBranch(branch)
         await refreshBranches()
         await refreshCurrentBranch()
+        await refreshTrackedBranch()
     }
 
     /// Create new branch, can be created only from local branch
@@ -181,6 +193,7 @@ final class SourceControlManager: ObservableObject {
         try await gitClient.newBranch(name: name, from: from)
         await refreshBranches()
         await refreshCurrentBranch()
+        await refreshTrackedBranch()
     }
 
     /// Rename branch
@@ -257,6 +270,7 @@ final class SourceControlManager: ObservableObject {
 
         await self.refreshAllChangedFiles()
         await self.refreshNumberOfUnsyncedCommits()
+        await refreshTrackedBranch()
     }
 
     func add(_ files: [CEWorkspaceFile]) async throws {
