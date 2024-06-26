@@ -1,0 +1,21 @@
+ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=YES
+BUNDLE_LOADER=$(TEST_HOST)
+CODE_SIGN_STYLE=Automatic
+COMBINE_HIDPI_IMAGES=YES
+CURRENT_PROJECT_VERSION=38
+DEAD_CODE_STRIPPING=YES
+DEVELOPMENT_TEAM=
+GENERATE_INFOPLIST_FILE=YES
+MACOSX_DEPLOYMENT_TARGET=13.0
+MARKETING_VERSION=1.0
+PRODUCT_BUNDLE_IDENTIFIER=app.codeedit.CodeEditTests
+PRODUCT_NAME=$(TARGET_NAME)
+SWIFT_EMIT_LOC_STRINGS=NO
+SWIFT_VERSION=5.0
+TEST_HOST=$(BUILT_PRODUCTS_DIR)/CodeEdit.app/Contents/MacOS/CodeEdit
+
+LD_RUNPATH_SEARCH_PATHS[config=Alpha]=$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Beta]=$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Debug]=$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Pre]=$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks
+LD_RUNPATH_SEARCH_PATHS[config=Release]=$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks

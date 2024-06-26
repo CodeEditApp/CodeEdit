@@ -96,3 +96,8 @@ iOSInjectionProject/
 .codeedit
 .idea
 .vscode
+
+CodeEditTuist.xcodeproj/
+CodeEditTuist.xcworkspace/
+.package.resolved
+Derived/
