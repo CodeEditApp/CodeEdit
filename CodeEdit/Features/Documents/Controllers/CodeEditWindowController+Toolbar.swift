@@ -151,7 +151,7 @@ extension CodeEditWindowController {
         case .activityViewer:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.activityViewer)
             toolbarItem.visibilityPriority = .user
-            toolbarItem.view = NSHostingView(
+            let view = NSHostingView(
                 rootView: ActivityViewer(
                     workspaceFileManager: workspace?.workspaceFileManager,
                     workspaceSettings: workspaceSettings!, // TODO: Don't force unwrap
@@ -160,6 +160,17 @@ extension CodeEditWindowController {
                 )
             )
 
+            let weakWidth = view.widthAnchor.constraint(equalToConstant: 650)
+            weakWidth.priority = .defaultLow
+            let strongWidth = view.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
+            strongWidth.priority = .defaultHigh
+
+            NSLayoutConstraint.activate([
+                weakWidth,
+                strongWidth
+            ])
+
+            toolbarItem.view = view
             return toolbarItem
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
