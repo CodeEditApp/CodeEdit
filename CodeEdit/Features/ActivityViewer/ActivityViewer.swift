@@ -42,7 +42,7 @@ struct ActivityViewer: View {
                 workspaceFileManager: workspaceFileManager
             )
 
-            TasksDropDownMenuView(
+            TaskDropDownView(
                 taskManager: taskManager,
                 projectSettings: projectSettings,
                 tasksSettings: tasksSettings

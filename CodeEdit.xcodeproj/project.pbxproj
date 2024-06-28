@@ -328,6 +328,9 @@
 		618725A62C29F02500987354 /* DropdownMenuItemStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725A52C29F02500987354 /* DropdownMenuItemStyleModifier.swift */; };
 		618725A82C29F05500987354 /* OptionMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725A72C29F05500987354 /* OptionMenuItemView.swift */; };
 		618725AB2C29F2C000987354 /* TaskDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725AA2C29F2C000987354 /* TaskDropDownView.swift */; };
+		618725B02C2DBBE900987354 /* TaskSidebarTileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725AF2C2DBBE900987354 /* TaskSidebarTileView.swift */; };
+		618725B22C2DBC0C00987354 /* TaskOutputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725B12C2DBC0C00987354 /* TaskOutputView.swift */; };
+		618725B42C2DBC2800987354 /* TaskOutputActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725B32C2DBC2800987354 /* TaskOutputActionsView.swift */; };
 		6195E30D2B64044F007261CA /* WorkspaceDocument+SearchState+FindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6195E30C2B64044F007261CA /* WorkspaceDocument+SearchState+FindTests.swift */; };
 		6195E30F2B640474007261CA /* WorkspaceDocument+SearchState+FindAndReplaceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6195E30E2B640474007261CA /* WorkspaceDocument+SearchState+FindAndReplaceTests.swift */; };
 		6195E3112B640485007261CA /* WorkspaceDocument+SearchState+IndexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6195E3102B640485007261CA /* WorkspaceDocument+SearchState+IndexTests.swift */; };
@@ -950,6 +953,9 @@
 		618725A52C29F02500987354 /* DropdownMenuItemStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownMenuItemStyleModifier.swift; sourceTree = "<group>"; };
 		618725A72C29F05500987354 /* OptionMenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionMenuItemView.swift; sourceTree = "<group>"; };
 		618725AA2C29F2C000987354 /* TaskDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDropDownView.swift; sourceTree = "<group>"; };
+		618725AF2C2DBBE900987354 /* TaskSidebarTileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSidebarTileView.swift; sourceTree = "<group>"; };
+		618725B12C2DBC0C00987354 /* TaskOutputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskOutputView.swift; sourceTree = "<group>"; };
+		618725B32C2DBC2800987354 /* TaskOutputActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskOutputActionsView.swift; sourceTree = "<group>"; };
 		6195E30C2B64044F007261CA /* WorkspaceDocument+SearchState+FindTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+SearchState+FindTests.swift"; sourceTree = "<group>"; };
 		6195E30E2B640474007261CA /* WorkspaceDocument+SearchState+FindAndReplaceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+SearchState+FindAndReplaceTests.swift"; sourceTree = "<group>"; };
 		6195E3102B640485007261CA /* WorkspaceDocument+SearchState+IndexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+SearchState+IndexTests.swift"; sourceTree = "<group>"; };
@@ -3086,6 +3092,9 @@
 			isa = PBXGroup;
 			children = (
 				B62AEDB42A1FE295009A9F52 /* UtilityAreaDebugView.swift */,
+				618725B32C2DBC2800987354 /* TaskOutputActionsView.swift */,
+				618725AF2C2DBBE900987354 /* TaskSidebarTileView.swift */,
+				618725B12C2DBC0C00987354 /* TaskOutputView.swift */,
 			);
 			path = DebugUtility;
 			sourceTree = "<group>";
@@ -3743,6 +3752,7 @@
 				587B9E8E29301D8F00AC7927 /* BitBucketRepositoryRouter.swift in Sources */,
 				B61A606929F4481A009B43F9 /* MonospacedFontPicker.swift in Sources */,
 				B61DA9DF29D929E100BF4A43 /* GeneralSettingsView.swift in Sources */,
+				618725B22C2DBC0C00987354 /* TaskOutputView.swift in Sources */,
 				B6D7EA5C297107DD00301FAC /* InspectorField.swift in Sources */,
 				043C321427E31FF6006AE443 /* CodeEditDocumentController.swift in Sources */,
 				85E4122A2A46C8CA00183F2B /* LocationsSettings.swift in Sources */,
@@ -3768,6 +3778,7 @@
 				B6E41C8B29DE7AE80088F9F4 /* AccountsSettingsSigninView.swift in Sources */,
 				6C2C155A29B4F4CC00EA60A5 /* Variadic.swift in Sources */,
 				77A01E322BB4274B00F0EA38 /* TasksCEWorkspaceSettingsView.swift in Sources */,
+				618725B42C2DBC2800987354 /* TaskOutputActionsView.swift in Sources */,
 				B6E41C8F29DE9CD80088F9F4 /* AccountsSettingsDetailsView.swift in Sources */,
 				5882252B292C280D00E83CDE /* StatusBarCursorPositionLabel.swift in Sources */,
 				5882252D292C280D00E83CDE /* UtilityAreaSplitTerminalButton.swift in Sources */,
@@ -3921,6 +3932,7 @@
 				587B9DA629300ABD00AC7927 /* ToolbarBranchPicker.swift in Sources */,
 				6C6BD6F629CD145F00235D17 /* ExtensionInfo.swift in Sources */,
 				04BA7C202AE2D92B00584E1C /* GitClient+Status.swift in Sources */,
+				618725B02C2DBBE900987354 /* TaskSidebarTileView.swift in Sources */,
 				58F2EB05292FB2B0004A9BDE /* Settings.swift in Sources */,
 				6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */,
 				30E6D0012A6E505200A58B20 /* NavigatorSidebarViewModel.swift in Sources */,

@@ -35,27 +35,10 @@ public enum TaskShell: String {
         // which configure the environment variables and other shell settings.
         process.arguments = ["--login", "-c", command]
 
-        // Create a queue to handle output data
-        let outputDataQueue = DispatchQueue(label: "bash-output-queue")
-
         process.standardOutput = outputPipe
         process.standardError = outputPipe
 
         // Run the process
         try process.run()
-
-        // Wait for the process to exit
-        process.waitUntilExit()
-
-        // Remove the readability handlers
-        outputPipe.fileHandleForReading.readabilityHandler = nil
-
-        // Return the command output or throw an error if the process terminated with a non-zero status
-//        return outputDataQueue.sync {
-//            if process.terminationStatus != 0 {
-//                return "\(process.terminationStatus)"
-//            }
-//            return ""
-//        }
     }
 }

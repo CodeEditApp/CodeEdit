@@ -13,7 +13,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     @Published private(set) var output: String  = ""
 
     /// The status of the task.
-    @Published private(set) var status: CETaskStatus = .stopped
+    @Published private(set) var status: CETaskStatus = .notRunning
 
     /// The name of the associated task.
     let task: CETask
@@ -28,29 +28,13 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     func run() {
-        let command = task.fullCommand
-        guard let process, let outputPipe else {
-            return
-        }
-
-        Task {
-            await updateTaskStatus(to: .running)
-        }
-
+        guard let process, let outputPipe else { return }
+        
+        Task { await updateTaskStatus(to: .running) }
         createStatusTaskNotification()
 
         process.terminationHandler = { [weak self] _ in
-            self?.outputPipe?.fileHandleForReading.readabilityHandler = nil
-            self?.updateTaskNotification(
-                title: "Finished Running: \(self?.task.name ?? "Unknown")",
-                message: "",
-                isLoading: false
-            )
-            self?.deleteStatusTaskNotification()
-            Task { [weak self] in
-                await self?.updateOutput("\nFinished running \(self?.task.name ?? "Task").\n\n")
-                await self?.updateTaskStatus(to: .finished)
-            }
+            self?.handleProcessFinished()
         }
 
         Task.detached {
@@ -62,31 +46,87 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
                     }
                 }
             }
+
             do {
                 try TaskShell.executeCommandWithShell(
                     process: process,
-                    command: command,
-                    shell: TaskShell.zsh,
+                    command: self.task.fullCommand,
+                    shell: TaskShell.zsh, // TODO: Let user decide which shell he uses
                     outputPipe: outputPipe
                 )
-            } catch {
-                self.updateTaskNotification(
-                    title: "Task: \(self.task.name) failed",
-                    message: error.localizedDescription,
+            } catch { print(error) }
+        }
+    }
+
+    func handleProcessFinished() {
+        if let process {
+            // optional to use
+            self.handleTerminationStatus(process.terminationStatus)
+            if process.terminationStatus == 0 {
+                Task { [weak self] in
+                    await self?.updateOutput("\nFinished running \(self?.task.name ?? "Task").\n\n")
+                    await self?.updateTaskStatus(to: .finished)
+                }
+                updateTaskNotification(
+                    title: "Finished Running: \(task.name)",
+                    message: "",
                     isLoading: false
                 )
-                await self.updateTaskStatus(to: .finished)
-                print(error)
+            } else {
+                Task { [weak self] in
+                    await self?.updateOutput("\nFailed to run \(self?.task.name ?? "Task").\n\n")
+                    await self?.updateTaskStatus(to: .failed)
+                }
+                self.updateTaskNotification(
+                    title: "Failed Running: \(self.task.name)",
+                    message: "",
+                    isLoading: false
+                )
+            }
+        } else {
+            Task { [weak self] in
+                await self?.updateOutput("\nFinished running \(self?.task.name ?? "Task") with unkown status code.\n\n")
+                await self?.updateTaskStatus(to: .finished)
+            }
+            updateTaskNotification(
+                title: "Finished Running: \(task.name)",
+                message: "",
+                isLoading: false
+            )
+        }
+
+        self.outputPipe?.fileHandleForReading.readabilityHandler = nil
+
+        self.deleteStatusTaskNotification()
+    }
+
+    func renew() {
+        if let process {
+            if process.isRunning {
+                process.terminate()
+                process.waitUntilExit()
+            }
+            self.process = Process()
+            outputPipe = Pipe()
+        }
+    }
+
+    func suspend() {
+        if let process {
+            process.suspend()
+            Task {
+                await updateTaskStatus(to: .stopped)
             }
         }
     }
 
-    func renew() {
-        if process?.isRunning ?? false {
-            process!.terminate()
+    func resume() {
+        if let process {
+            process.resume()
+            Task {
+                await updateTaskStatus(to: .running)
+            }
         }
-        process = Process()
-        outputPipe = Pipe()
     }
 
     func clearOutput() async {
@@ -156,5 +196,25 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(output)
         hasher.combine(status)
+    }
+
+    // OPTIONAL
+    func handleTerminationStatus(_ status: Int32) {
+        switch status {
+        case 0:
+            print("Process completed successfully.")
+        case 1:
+            print("General error.")
+        case 2:
+            print("Misuse of shell builtins.")
+        case 126:
+            print("Command invoked cannot execute.")
+        case 127:
+            print("Command not found.")
+        case 128:
+            print("Invalid argument to exit.")
+        default:
+            print("Process ended with exit code \(status).")
+        }
     }
 }

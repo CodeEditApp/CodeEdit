@@ -9,14 +9,20 @@ import SwiftUI
 
 /// Enum to represent a task's status
 enum CETaskStatus {
+    // default state
+    case notRunning
+    // User suspended the process
     case stopped
     case running
+    // Processes finished with an error
     case failed
+    // Processes finished without an error
     case finished
 
     var color: Color {
         switch self {
-        case .stopped: return Color.gray
+        case .notRunning: return Color.gray
+        case .stopped: return Color.yellow
         case .running: return Color.orange
         case .failed: return Color.red
         case .finished: return Color.green

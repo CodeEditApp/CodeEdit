@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct TasksDropDownMenuView: View {
-    @Environment(\.colorScheme) 
+struct TaskDropDownView: View {
+    @Environment(\.colorScheme)
     private var colorScheme
 
     @ObservedObject var taskManager: TaskManager
@@ -25,6 +25,7 @@ struct TasksDropDownMenuView: View {
                 if let selectedActiveTask = taskManager.activeTasks[selectedTask.id] {
                     TaskView(activeTask: selectedActiveTask, isCompact: true)
                 } else {
+                    
                     defaultTaskView(task: selectedTask)
                 }
             } else {
@@ -78,7 +79,7 @@ struct TasksDropDownMenuView: View {
                 .font(.subheadline)
 
             Circle()
-                .fill(CETaskStatus.stopped.color)
+                .fill(CETaskStatus.notRunning.color)
                 .frame(width: 5, height: 5)
         }
     }
@@ -140,7 +141,7 @@ struct TaskView: View {
 }
 
 struct TasksPopoverView: View {
-    @Environment(\.dismiss) 
+    @Environment(\.dismiss)
     private var dismiss
 
     @ObservedObject var taskManager: TaskManager

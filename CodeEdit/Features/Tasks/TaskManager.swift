@@ -42,7 +42,7 @@ final class TaskManager: ObservableObject {
 
     var taskStatus: (UUID) -> CETaskStatus {
         return { taskID in
-            return self.activeTasks[taskID]?.status ?? .stopped
+            return self.activeTasks[taskID]?.status ?? .notRunning
         }
     }
 
@@ -55,9 +55,9 @@ final class TaskManager: ObservableObject {
     func runTask(task: CETask) {
         // A process can only be started once, that means we have to renew the Process and Pipe
         // but don't initialise a new object.
-        if activeTasks[task.id] != nil {
-            activeTasks[task.id]!.renew()
-            activeTasks[task.id]!.run()
+        if let activeTask = activeTasks[task.id] {
+            activeTask.renew()
+            activeTask.run()
         } else {
             let runningTask = CEActiveTask(task: task)
             runningTask.run()
@@ -91,8 +91,8 @@ final class TaskManager: ObservableObject {
     ///
     /// - Parameter taskID: The ID of the task to suspend.
     func suspendTask(taskID: UUID) {
-        if let process = activeTasks[taskID]?.process {
-            process.suspend()
+        if let activeTask = activeTasks[taskID] {
+            activeTask.suspend()
         }
     }
 
@@ -103,8 +103,8 @@ final class TaskManager: ObservableObject {
     ///
     /// - Parameter taskID: The ID of the task to resume.
     func resumeTask(taskID: UUID) {
-        if let process = activeTasks[taskID]?.process {
-            process.resume()
+        if let activeTask = activeTasks[taskID] {
+            activeTask.resume()
         }
     }
 
