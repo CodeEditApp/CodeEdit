@@ -54,13 +54,9 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// Document-specific overridden line wrap preference.
     @Published var wrapLines: Bool?
 
-    /// The type of data this document contains.
+    /// The type of data this file document contains.
     ///
-    /// If for example, the file ends with `.py`, its type is a text file.
-    /// Or if it ends with `.png`, then it is an image.
-    /// Same goes for PDF and video formats.
-    ///
-    /// Also, if the text content is not empty, it is a text file.
+    /// If its text content is not nil, a `text` UTType is returned.
     ///
     /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
     /// type or any other form of data representation.
