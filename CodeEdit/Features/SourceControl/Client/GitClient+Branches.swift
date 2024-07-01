@@ -9,13 +9,19 @@ import Foundation
 
 extension GitClient {
     /// Get branches
+    /// - Parameter remote: If passed, fetches branches for the specified remote
     /// - Returns: Array of branches
-    func getBranches() async throws -> [GitBranch] {
-        let command = "branch --format \"%(refname:short)|%(refname)|%(upstream:short) %(upstream:track)\" -a"
+    func getBranches(remote: String? = nil) async throws -> [GitBranch] {
+        var command = "branch --format \"%(refname:short)|%(refname)|%(upstream:short) %(upstream:track)\""
+        if let remote = remote {
+            command += " -r"
+        } else {
+            command += " -a"
+        }
 
         return try await run(command)
             .components(separatedBy: "\n")
-            .filter { $0 != "" && !$0.contains("HEAD") }
+            .filter { $0 != "" && !$0.contains("HEAD") && (remote == nil || $0.starts(with: "\(remote ?? "")/")) }
             .compactMap { line in
                 guard let branchPart = line.components(separatedBy: " ").first else { return nil }
                 let branchComponents = branchPart.components(separatedBy: "|")
@@ -27,8 +33,8 @@ extension GitClient {
                     .trimmingCharacters(in: .whitespacesWithoutNewlines)
                 let trackInfo = parseBranchTrackInfo(from: trackInfoString)
 
-                return .init(
-                    name: name,
+                return GitBranch(
+                    name: remote != nil ? extractBranchName(from: name, with: remote ?? "") : name,
                     longName: branchComponents[safe: 1] ?? name,
                     upstream: upstream?.isEmpty == true ? nil : upstream,
                     ahead: trackInfo.ahead,
@@ -117,17 +123,6 @@ extension GitClient {
         }
     }
 
-    func getTrackedBranch() async throws -> String? {
-        do {
-            let output = try await run("rev-parse --abbrev-ref --symbolic-full-name @{u}")
-            return output.trimmingCharacters(in: .whitespacesAndNewlines)
-        } catch GitClientError.outputError(let output) where output.contains("fatal: no upstream configured for branch") {
-            return nil
-        } catch {
-            throw error
-        }
-    }
-
     private func parseBranchTrackInfo(from infoString: String) -> (ahead: Int, behind: Int) {
         let pattern = "\\[ahead (\\d+)(?:, behind (\\d+))?\\]|\\[behind (\\d+)\\]"
         // Create a regular expression object
@@ -158,4 +153,17 @@ extension GitClient {
         }
         return (ahead, behind)
     }
+
+    private func extractBranchName(from fullBranchName: String, with remoteName: String) -> String {
+        // Ensure the fullBranchName starts with the remoteName followed by a slash
+        let prefix = "\(remoteName)/"
+        if fullBranchName.hasPrefix(prefix) {
+            // Remove the remoteName and the slash to get the branch name
+            return String(fullBranchName.dropFirst(prefix.count))
+        } else {
+            // If the fullBranchName does not start with the expected remoteName, return it unchanged
+            return fullBranchName
+        }
+    }
+
 }

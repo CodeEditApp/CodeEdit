@@ -27,10 +27,6 @@ struct SourceControlNavigatorChangesView: View {
         !sourceControlManager.changedFiles.isEmpty
     }
 
-    var hasTrackedBranch: Bool {
-        sourceControlManager.trackedBranchName != nil
-    }
-
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             if hasChanges || !hasRemotes || (!hasChanges && (hasUnsyncedCommits || hasCurrentBranch)) {
@@ -43,11 +39,7 @@ struct SourceControlNavigatorChangesView: View {
                             SourceControlNavigatorNoRemotesView()
                         }
                         if !hasChanges && (hasUnsyncedCommits || hasCurrentBranch) {
-                            if hasTrackedBranch {
-                                SourceControlNavigatorSyncView(sourceControlManager: sourceControlManager)
-                            } else {
-                                Text("No Tracked Branch")
-                            }
+                            SourceControlNavigatorSyncView(sourceControlManager: sourceControlManager)
                         }
                     }
                 }
@@ -65,7 +57,6 @@ struct SourceControlNavigatorChangesView: View {
         .task {
             await sourceControlManager.refreshAllChangedFiles()
             await sourceControlManager.refreshNumberOfUnsyncedCommits()
-            await sourceControlManager.refreshTrackedBranch()
         }
     }
 }

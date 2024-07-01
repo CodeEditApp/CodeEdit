@@ -12,7 +12,6 @@ struct SourceControlNavigatorToolbarBottom: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
     @State private var text = ""
-    @State private var stashChangesIsPresented = false
     @State private var noChangesToStashIsPresented = false
     @State private var noDiscardChangesIsPresented = false
 
@@ -64,7 +63,7 @@ struct SourceControlNavigatorToolbarBottom: View {
                 if sourceControlManager.changedFiles.isEmpty {
                     noChangesToStashIsPresented = true
                 } else {
-                    stashChangesIsPresented = true
+                    sourceControlManager.stashSheetIsPresented = true
                 }
             }
         } label: {}
@@ -74,9 +73,6 @@ struct SourceControlNavigatorToolbarBottom: View {
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
         .frame(maxWidth: 18, alignment: .center)
-        .sheet(isPresented: $stashChangesIsPresented) {
-            SourceControlStashChangesView()
-        }
         .alert("Cannot Stash Changes", isPresented: $noChangesToStashIsPresented) {
             Button("OK", role: .cancel) {}
         } message: {
