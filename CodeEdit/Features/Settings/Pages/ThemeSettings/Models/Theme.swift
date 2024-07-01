@@ -39,6 +39,12 @@ struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
     /// An URL for reference
     var distributionURL: String
 
+    /// If the theme is bundled with CodeEdit or not
+    var isBundled: Bool = false
+
+    /// The URL for the theme file
+    var fileURL: URL?
+
     /// The `unique name` of the theme
     var name: String
 
@@ -66,6 +72,7 @@ struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
         license: String,
         metadataDescription: String,
         distributionURL: String,
+        isBundled: Bool,
         name: String,
         displayName: String,
         appearance: ThemeType,
@@ -75,6 +82,7 @@ struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
         self.license = license
         self.metadataDescription = metadataDescription
         self.distributionURL = distributionURL
+        self.isBundled = isBundled
         self.name = name
         self.displayName = displayName
         self.appearance = appearance

@@ -20,25 +20,16 @@ extension CodeEditWindowController {
 
     @objc
     func toggleLastPanel() {
-        guard let lastSplitView = splitViewController.splitViewItems.last else { return }
-
-        if let toolbar = window?.toolbar,
-           lastSplitView.isCollapsed,
-           !toolbar.items.map(\.itemIdentifier).contains(.itemListTrackingSeparator) {
-            window?.toolbar?.insertItem(withItemIdentifier: .itemListTrackingSeparator, at: 4)
+        guard let lastSplitView = splitViewController.splitViewItems.last,
+              let codeEditSplitVC = splitViewController as? CodeEditSplitViewController else {
+            return
         }
+
         NSAnimationContext.runAnimationGroup { _ in
             lastSplitView.animator().isCollapsed.toggle()
-        } completionHandler: { [weak self] in
-            if lastSplitView.isCollapsed {
-                self?.window?.animator().toolbar?.removeItem(at: 4)
-            }
         }
 
-        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
-            codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
-            codeEditSplitVC.hideInspectorToolbarBackground()
-        }
+        codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
     }
 
     /// These are example items that added as commands to command palette

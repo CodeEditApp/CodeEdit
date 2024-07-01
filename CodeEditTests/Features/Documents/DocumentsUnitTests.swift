@@ -12,17 +12,26 @@ final class DocumentsUnitTests: XCTestCase {
     // Properties
     private var splitViewController: CodeEditSplitViewController!
     private var hapticFeedbackPerformerMock: NSHapticFeedbackPerformerMock!
+    private var navigatorViewModel: NavigatorSidebarViewModel!
+    private var window: NSWindow!
 
     // MARK: - Lifecycle
 
     override func setUp() {
         super.setUp()
-        hapticFeedbackPerformerMock = .init()
-        splitViewController = .init(workspace: WorkspaceDocument(), feedbackPerformer: hapticFeedbackPerformerMock)
+        hapticFeedbackPerformerMock = NSHapticFeedbackPerformerMock()
+        navigatorViewModel = .init()
+        window = NSWindow()
+        splitViewController = .init(
+            workspace: WorkspaceDocument(),
+            navigatorViewModel: navigatorViewModel,
+            windowRef: window,
+            hapticPerformer: hapticFeedbackPerformerMock
+        )
+        splitViewController.viewDidLoad()
     }
 
     override func tearDown() {
-        hapticFeedbackPerformerMock = nil
         splitViewController = nil
         super.tearDown()
     }
@@ -30,83 +39,103 @@ final class DocumentsUnitTests: XCTestCase {
     // MARK: - Tests
 
     func testSplitViewControllerSnappedWhenWidthInAppropriateRange() {
-        // Given
-        let position = (260...280).randomElement() ?? .zero
+        for _ in 0..<10 {
+            // Given
+            let position = CGFloat.random(
+                in: (CodeEditSplitViewController.minSnapWidth...CodeEditSplitViewController.maxSnapWidth)
+            )
 
-        // When
-        let result = splitViewController.splitView(
-            splitViewController.splitView,
-            constrainSplitPosition: .init(position),
-            ofSubviewAt: .zero
-        )
+            // When
+            let result = splitViewController.splitView(
+                splitViewController.splitView,
+                constrainSplitPosition: .init(position),
+                ofSubviewAt: .zero
+            )
 
-        // Then
-        XCTAssertEqual(result, 272)
+            // Then
+            XCTAssertEqual(result, CodeEditSplitViewController.snapWidth)
+        }
     }
 
     func testSplitViewControllerStopSnappedWhenWidthIsLowerAppropriateRange() {
-        // Given
-        // 242 is the minimum width of the sidebar
-        let position = (242..<260).randomElement() ?? .zero
+        for _ in 0..<10 {
+            // Given
+            let position = CGFloat.random(in: 0..<(CodeEditSplitViewController.minSidebarWidth / 2))
 
-        // When
-        let result = splitViewController.splitView(
-            splitViewController.splitView,
-            constrainSplitPosition: .init(position),
-            ofSubviewAt: .zero
-        )
+            // When
+            let result = splitViewController.splitView(
+                splitViewController.splitView,
+                constrainSplitPosition: .init(position),
+                ofSubviewAt: .zero
+            )
 
-        // Then
-        XCTAssertEqual(result, .init(position))
+            // Then
+            XCTAssertEqual(result, .zero)
+        }
     }
 
     func testSplitViewControllerStopSnappedWhenWidthIsHigherAppropriateRange() {
-        // Given
-        let position = (281...500).randomElement() ?? .zero
+        for _ in 0..<10 {
+            // Given
+            let position = CGFloat.random(in: (CodeEditSplitViewController.maxSnapWidth...500))
 
-        // When
-        let result = splitViewController.splitView(
-            splitViewController.splitView,
-            constrainSplitPosition: .init(position),
-            ofSubviewAt: .zero
-        )
+            // When
+            let result = splitViewController.splitView(
+                splitViewController.splitView,
+                constrainSplitPosition: .init(position),
+                ofSubviewAt: .zero
+            )
 
-        // Then
-        XCTAssertEqual(result, .init(position))
+            // Then
+            XCTAssertEqual(result, .init(position))
+        }
     }
 
+    // Test moving from collapsed to uncollapsed makes a haptic.
     func testSplitViewControllerProducedHapticFeedback() {
-        // Given
-        let position = (260...280).randomElement() ?? .zero
+        for _ in 0..<10 {
+            // Given
+            splitViewController.splitViewItems.first?.isCollapsed = true
+            let position = CGFloat.random(
+                in: (CodeEditSplitViewController.minSidebarWidth / 2)...CodeEditSplitViewController.minSidebarWidth
+            )
 
-        // When
-        _ = splitViewController.splitView(
-            splitViewController.splitView,
-            constrainSplitPosition: .init(position),
-            ofSubviewAt: .zero
-        )
-
-        // Then
-        XCTAssertTrue(hapticFeedbackPerformerMock.invokedPerform)
-        XCTAssertEqual(hapticFeedbackPerformerMock.invokedPerformCount, 1)
-    }
-
-    func testSplitViewControllerProducedHapticFeedbackOnceWhenPlentyChangesOccur() {
-        // Given
-        let firstPosition = (260...280).randomElement() ?? .zero
-        let secondPosition = 300
-
-        // When
-        [firstPosition, secondPosition].forEach { position in
+            // When
             _ = splitViewController.splitView(
                 splitViewController.splitView,
                 constrainSplitPosition: .init(position),
                 ofSubviewAt: .zero
             )
-        }
 
-        // Then
-        XCTAssertTrue(hapticFeedbackPerformerMock.invokedPerform)
-        XCTAssertEqual(hapticFeedbackPerformerMock.invokedPerformCount, 1)
+            // Then
+            XCTAssertTrue(hapticFeedbackPerformerMock.invokedPerform)
+            XCTAssertEqual(hapticFeedbackPerformerMock.invokedPerformCount, 1)
+            hapticFeedbackPerformerMock.reset()
+        }
+    }
+
+    func testSplitViewControllerProducedHapticFeedbackOnceWhenPlentyChangesOccur() {
+        for _ in 0..<10 {
+            // Given
+            splitViewController.splitViewItems.first?.isCollapsed = true
+            let firstPosition = CGFloat.random(in: 0..<(CodeEditSplitViewController.minSidebarWidth / 2))
+            let secondPosition = CGFloat.random(
+                in: (CodeEditSplitViewController.minSidebarWidth / 2)...CodeEditSplitViewController.minSidebarWidth
+            )
+
+            // When
+            [firstPosition, secondPosition].forEach { position in
+                _ = splitViewController.splitView(
+                    splitViewController.splitView,
+                    constrainSplitPosition: .init(position),
+                    ofSubviewAt: .zero
+                )
+            }
+
+            // Then
+            XCTAssertTrue(hapticFeedbackPerformerMock.invokedPerform)
+            XCTAssertEqual(hapticFeedbackPerformerMock.invokedPerformCount, 1)
+            hapticFeedbackPerformerMock.reset()
+        }
     }
 }

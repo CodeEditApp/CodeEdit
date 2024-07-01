@@ -69,7 +69,11 @@ struct WorkspaceView: View {
                             focusedEditor = newValue
                         }
                     }
+                    .task {
+                        themeModel.colorScheme = colorScheme
+                    }
                     .onChange(of: colorScheme) { newValue in
+                        themeModel.colorScheme = newValue
                         if matchAppearance {
                             themeModel.selectedTheme = newValue == .dark
                             ? themeModel.selectedDarkTheme

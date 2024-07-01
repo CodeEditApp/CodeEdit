@@ -8,6 +8,7 @@ type_name:
     - ID
 
 identifier_name:
+  allowed_symbols: ["$", "_"]
   excluded:
     - id
     - vc
