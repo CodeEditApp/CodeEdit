@@ -43,15 +43,15 @@ struct RemoteBranchPicker: View {
                 Text("Remote")
             }
             Picker(selection: $branch) {
-                if let branches = remote?.branches, !branches.isEmpty {
-                    if shouldCreateBranch {
-                        Label {
-                            Text("\(scm.currentBranch?.name ?? "") (Create)")
-                        } icon: {
-                            Image(symbol: "branch")
-                        }
-                        .tag(scm.currentBranch)
+                if shouldCreateBranch {
+                    Label {
+                        Text("\(scm.currentBranch?.name ?? "") (Create)")
+                    } icon: {
+                        Image(symbol: "branch")
                     }
+                    .tag(scm.currentBranch)
+                }
+                if let branches = remote?.branches, !branches.isEmpty {
                     ForEach(branches, id: \.longName) { branch in
                         Label {
                             Text(branch.name)

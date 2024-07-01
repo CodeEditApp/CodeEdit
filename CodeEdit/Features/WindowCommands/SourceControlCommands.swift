@@ -25,14 +25,14 @@ struct SourceControlCommands: Commands {
                 }
                 .keyboardShortcut("x", modifiers: [.command, .option])
                 Button("Fetch Changes") {
-                    //                scm.fetchSheetIsPresented = true
+//                    scm.fetchSheetIsPresented = true
                 }
                 Divider()
                 Button("Stage All Changes") {
-                    //                scm.stageAllChanges()
+//                    scm.stageAllChanges()
                 }
                 Button("Unstage All Changes") {
-                    //                scm.unstageAllChanges()
+//                    scm.unstageAllChanges()
                 }
                 Divider()
                 Button("Cherry-Pick...") {
@@ -49,4 +49,3 @@ struct SourceControlCommands: Commands {
         }
     }
 }
-

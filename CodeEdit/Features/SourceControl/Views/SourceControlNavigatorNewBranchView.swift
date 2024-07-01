@@ -66,7 +66,7 @@ struct SourceControlNavigatorNewBranchView: View {
                 .padding(.top, 12)
                 .padding(.bottom, 20)
             }
-            .frame(maxWidth: 480)
+            .frame(width: 500)
         }
     }
 }
