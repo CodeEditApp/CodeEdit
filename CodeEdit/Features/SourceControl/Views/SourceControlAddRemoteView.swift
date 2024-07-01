@@ -61,7 +61,7 @@ struct SourceControlAddRemoteView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
         }
-        .frame(minWidth: 480)
+        .frame(width: 500)
         .onAppear {
             let originExists = sourceControlManager.remotes.contains { $0.name == "origin" }
 

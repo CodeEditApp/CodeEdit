@@ -59,6 +59,6 @@ struct SourceControlStashView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
         }
-        .frame(width: 480)
+        .frame(width: 500)
     }
 }

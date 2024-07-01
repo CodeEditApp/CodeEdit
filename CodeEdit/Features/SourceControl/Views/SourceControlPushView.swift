@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SourceControlPushView: View {
+    @Environment(\.dismiss) 
+    private var dismiss
+
     @EnvironmentObject var scm: SourceControlManager
 
     @State var branch: GitBranch?
@@ -23,6 +26,7 @@ struct SourceControlPushView: View {
                     branch: branch?.name ?? nil,
                     setUpstream: scm.currentBranch?.upstream == nil
                 )
+                dismiss()
             } catch {
                 await scm.showAlertForError(title: "Failed to push", error: error)
             }
@@ -67,8 +71,6 @@ struct SourceControlPushView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
         }
-        .frame(minWidth: 480)
+        .frame(minWidth: 500)
     }
-
-    @Environment(\.dismiss) private var dismiss
 }

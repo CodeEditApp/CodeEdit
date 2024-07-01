@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct SourceControlPullView: View {
+    @Environment(\.dismiss) 
+    private var dismiss
+
     @EnvironmentObject var scm: SourceControlManager
 
     @State var branch: GitBranch?
@@ -18,6 +21,7 @@ struct SourceControlPullView: View {
         Task {
             do {
                 try await scm.pull(remote: remote?.name ?? nil, branch: branch?.name ?? nil, rebase: rebase)
+                dismiss()
             } catch {
                 await scm.showAlertForError(title: "Failed to pull", error: error)
             }
@@ -61,8 +65,6 @@ struct SourceControlPullView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
         }
-        .frame(minWidth: 480)
+        .frame(minWidth: 500)
     }
-
-    @Environment(\.dismiss) private var dismiss
 }
