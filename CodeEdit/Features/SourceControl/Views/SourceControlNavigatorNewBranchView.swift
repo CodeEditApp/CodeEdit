@@ -1,24 +1,25 @@
 //
-//  SourceControlNavigatorRenameBranchView.swift
+//  SourceControlNavigatorNewBranchView.swift
 //  CodeEdit
 //
-//  Created by Austin Condiff on 11/28/23.
+//  Created by Albert Vinizhanau on 10/21/23.
 //
 
 import SwiftUI
 
-struct SourceControlNavigatorRenameBranchView: View {
+struct SourceControlNavigatorNewBranchView: View {
     @Environment(\.dismiss)
     var dismiss
 
+    @EnvironmentObject var sourceControlManager: SourceControlManager
+
     @State var name: String = ""
-    let sourceControlManager: SourceControlManager
     let fromBranch: GitBranch?
 
     func submit(_ branch: GitBranch) {
         Task {
             do {
-                try await sourceControlManager.renameBranch(oldName: branch.name, newName: name)
+                try await sourceControlManager.newBranch(name: name, from: branch)
                 await MainActor.run {
                     dismiss()
                 }
@@ -39,8 +40,11 @@ struct SourceControlNavigatorRenameBranchView: View {
                         LabeledContent("From", value: branch.name)
                         TextField("To", text: $name)
                     } header: {
-                        Text("Rename branch")
-                        Text("All uncommited changes will be preserved on the renamed branch.")
+                        Text("Create a new branch")
+                        Text(
+                            "Create a branch from the current branch and switch to it. " +
+                            "All uncommited changes will be preserved on the new branch. "
+                        )
                     }
                 }
                 .formStyle(.grouped)
@@ -52,7 +56,7 @@ struct SourceControlNavigatorRenameBranchView: View {
                     Button("Cancel") {
                         dismiss()
                     }
-                    Button("Rename") {
+                    Button("Create") {
                         submit(branch)
                     }
                     .buttonStyle(.borderedProminent)
@@ -62,7 +66,7 @@ struct SourceControlNavigatorRenameBranchView: View {
                 .padding(.top, 12)
                 .padding(.bottom, 20)
             }
-            .frame(maxWidth: 480)
+            .frame(width: 500)
         }
     }
 }

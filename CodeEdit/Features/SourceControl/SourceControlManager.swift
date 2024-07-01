@@ -30,13 +30,29 @@ final class SourceControlManager: ObservableObject {
     /// All remotes
     @Published var remotes: [GitRemote] = []
 
-    /// All stash ebtrues
+    /// All stashed entries
     @Published var stashEntries: [GitStashEntry] = []
 
     /// Number of unsynced commits with remote in current branch
     @Published var numberOfUnsyncedCommits: (ahead: Int, behind: Int) = (ahead: 0, behind: 0)
 
+    /// Is project a git repository
     @Published var isGitRepository: Bool = false
+
+    /// Is the push sheet presented
+    @Published var pushSheetIsPresented: Bool = false
+
+    /// Is the pull sheet presented
+    @Published var pullSheetIsPresented: Bool = false
+
+    /// Is the fetch sheet presented
+    @Published var fetchSheetIsPresented: Bool = false
+
+    /// Is the stash sheet presented
+    @Published var stashSheetIsPresented: Bool = false
+
+    /// Is the remote sheet presented
+    @Published var remoteSheetIsPresented: Bool = false
 
     var orderedLocalBranches: [GitBranch] {
         var orderedBranches: [GitBranch] = [currentBranch].compactMap { $0 }
@@ -287,6 +303,33 @@ final class SourceControlManager: ObservableObject {
         await MainActor.run {
             self.remotes = remotes
         }
+        if !remotes.isEmpty {
+            try await self.refreshAllRemotesBranches()
+        }
+    }
+
+    /// Refresh branches for all remotes
+    func refreshAllRemotesBranches() async throws {
+        for remote in remotes {
+            try await refreshRemoteBranches(remote: remote)
+        }
+        print(self.remotes)
+    }
+
+    /// Refresh branches for a specific remote
+    func refreshRemoteBranches(remote: GitRemote) async throws {
+        let branches = try await getRemoteBranches(remote: remote.name)
+        if let index = remotes.firstIndex(of: remote) {
+            await MainActor.run {
+                remotes[index].branches = branches
+            }
+        }
+
+    }
+
+    /// Get branches for a specific remote
+    func getRemoteBranches(remote: String) async throws -> [GitBranch] {
+        try await gitClient.getBranches(remote: remote)
     }
 
     func refreshStashEntries() async throws {
@@ -297,23 +340,23 @@ final class SourceControlManager: ObservableObject {
     }
 
     /// Pull changes from remote
-    func pull() async throws {
-        try await gitClient.pullFromRemote()
+    func pull(remote: String? = nil, branch: String? = nil, rebase: Bool? = nil) async throws {
+        try await gitClient.pullFromRemote(remote: remote, branch: branch, rebase: rebase)
 
         await self.refreshNumberOfUnsyncedCommits()
     }
 
     /// Push changes to remote
-    func push() async throws {
+    func push(remote: String? = nil, branch: String? = nil, setUpstream: Bool? = nil) async throws {
         guard let currentBranch else { return }
 
-        if currentBranch.upstream == nil {
-            try await gitClient.pushToRemote(upstream: currentBranch.name)
-            await refreshCurrentBranch()
+        if let remote, let branch {
+            try await gitClient.pushToRemote(remote: remote, branch: branch, setUpstream: setUpstream)
         } else {
             try await gitClient.pushToRemote()
         }
 
+        await refreshCurrentBranch()
         await self.refreshNumberOfUnsyncedCommits()
     }
 

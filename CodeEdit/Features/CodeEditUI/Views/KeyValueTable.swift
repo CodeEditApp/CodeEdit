@@ -90,7 +90,7 @@ private struct NewListTableItemView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
         }
-        .frame(maxWidth: 480)
+        .frame(maxWidth: 500)
     }
 }
 

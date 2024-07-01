@@ -88,19 +88,20 @@ struct CommitListItemView: View {
                         if !commit.refs.isEmpty {
                             HStack {
                                 ForEach(commit.refs, id: \.self) { ref in
-                                    HStack {
+                                    HStack(spacing: 2.5) {
                                         Image.branch
                                             .imageScale(.small)
-                                            .foregroundColor(.primary)
+                                            .foregroundColor(.secondary)
                                             .help(ref)
                                         Text(ref)
-                                            .font(.system(size: 10, design: .monospaced))
                                     }
+                                    .font(.system(size: 10))
                                     .frame(height: 13)
                                     .background(
                                         RoundedRectangle(cornerRadius: 3)
                                             .padding(.vertical, -1)
-                                            .padding(.horizontal, -2.5)
+                                            .padding(.leading, -2.5)
+                                            .padding(.trailing, -4)
                                             .foregroundColor(Color(nsColor: .quaternaryLabelColor))
                                     )
                                     .padding(.trailing, 2.5)
@@ -109,20 +110,21 @@ struct CommitListItemView: View {
                         }
 
                         if !commit.tag.isEmpty {
-                            HStack {
-                                Image.breakpoint
+                            HStack(spacing: 2.5) {
+                                Image(systemName: "tag")
                                     .imageScale(.small)
                                     .foregroundColor(.primary)
                                     .help(commit.tag)
                                 Text(commit.tag)
-                                    .font(.system(size: 10, design: .monospaced))
                             }
+                            .font(.system(size: 10))
                             .frame(height: 13)
                             .background(
                                 RoundedRectangle(cornerRadius: 3)
                                     .padding(.vertical, -1)
-                                    .padding(.horizontal, -2.5)
-                                    .foregroundColor(Color(nsColor: .selectedContentBackgroundColor))
+                                    .padding(.leading, -2.5)
+                                    .padding(.trailing, -4)
+                                    .foregroundColor(Color(nsColor: .purple).opacity(0.2))
                             )
                             .padding(.trailing, 2.5)
                         }

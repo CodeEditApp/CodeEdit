@@ -40,7 +40,7 @@ enum NavigatorTab: AreaTab {
         case .project:
             return "Project"
         case .sourceControl:
-            return "Version Control"
+            return "Source Control"
         case .search:
             return "Search"
         case .uiExtension(_, let data):

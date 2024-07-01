@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceControlStashChangesView: View {
+struct SourceControlStashView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
     @Environment(\.dismiss)
     private var dismiss
@@ -59,6 +59,6 @@ struct SourceControlStashChangesView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
         }
-        .frame(width: 480)
+        .frame(width: 500)
     }
 }

@@ -1,24 +1,26 @@
 //
-//  SourceControlNavigatorNewBranchView.swift
+//  SourceControlNavigatorRenameBranchView.swift
 //  CodeEdit
 //
-//  Created by Albert Vinizhanau on 10/21/23.
+//  Created by Austin Condiff on 11/28/23.
 //
 
 import SwiftUI
 
-struct SourceControlNavigatorNewBranchView: View {
+struct SourceControlNavigatorRenameBranchView: View {
     @Environment(\.dismiss)
     var dismiss
 
+    @EnvironmentObject var sourceControlManager: SourceControlManager
+
     @State var name: String = ""
-    let sourceControlManager: SourceControlManager
+
     let fromBranch: GitBranch?
 
     func submit(_ branch: GitBranch) {
         Task {
             do {
-                try await sourceControlManager.newBranch(name: name, from: branch)
+                try await sourceControlManager.renameBranch(oldName: branch.name, newName: name)
                 await MainActor.run {
                     dismiss()
                 }
@@ -39,11 +41,8 @@ struct SourceControlNavigatorNewBranchView: View {
                         LabeledContent("From", value: branch.name)
                         TextField("To", text: $name)
                     } header: {
-                        Text("Create a new branch")
-                        Text(
-                            "Create a branch from the current branch and switch to it. " +
-                            "All uncommited changes will be preserved on the new branch. "
-                        )
+                        Text("Rename branch")
+                        Text("All uncommited changes will be preserved on the renamed branch.")
                     }
                 }
                 .formStyle(.grouped)
@@ -55,7 +54,7 @@ struct SourceControlNavigatorNewBranchView: View {
                     Button("Cancel") {
                         dismiss()
                     }
-                    Button("Create") {
+                    Button("Rename") {
                         submit(branch)
                     }
                     .buttonStyle(.borderedProminent)
@@ -65,7 +64,7 @@ struct SourceControlNavigatorNewBranchView: View {
                 .padding(.top, 12)
                 .padding(.bottom, 20)
             }
-            .frame(maxWidth: 480)
+            .frame(width: 500)
         }
     }
 }
