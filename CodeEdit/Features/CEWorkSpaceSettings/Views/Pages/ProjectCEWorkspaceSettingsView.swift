@@ -9,7 +9,7 @@ import SwiftUI
 
 /// A view that implements the `Project` workspace settings page
 struct ProjectCEWorkspaceSettingsView: View {
-    @State var settings: CEWorkspaceSettingsData.ProjectSettings
+    @State var settings: ProjectSettings
 
     var body: some View {
         SettingsForm {

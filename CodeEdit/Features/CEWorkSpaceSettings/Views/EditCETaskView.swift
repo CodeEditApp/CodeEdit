@@ -13,7 +13,7 @@ struct EditCETaskView: View {
     var dismiss
 
     @Binding var task: CETask
-    @Binding var settings: CEWorkspaceSettingsData.TasksSettings
+    @ObservedObject var settings: CEWorkspaceSettings
 
     var body: some View {
         VStack(spacing: 0) {
@@ -24,7 +24,7 @@ struct EditCETaskView: View {
             Divider()
             HStack {
                 Button("Remove...") {
-                    self.settings.items.removeAll(where: {
+                    self.settings.preferences.tasks.removeAll(where: {
                         $0.id == self.task.id
                     })
                     self.dismiss()

@@ -16,16 +16,12 @@ struct TaskDropDownView: View {
     @State private var isTaskPopOverPresented: Bool = false
     @State private var isHoveringTasks: Bool = false
 
-    var projectSettings: CEWorkspaceSettingsData.ProjectSettings?
-    var tasksSettings: CEWorkspaceSettingsData.TasksSettings?
-
     var body: some View {
         Group {
             if let selectedTask = taskManager.selectedTask {
                 if let selectedActiveTask = taskManager.activeTasks[selectedTask.id] {
                     TaskView(activeTask: selectedActiveTask, isCompact: true)
                 } else {
-                    
                     defaultTaskView(task: selectedTask)
                 }
             } else {

@@ -12,9 +12,6 @@ struct ActivityViewer: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @State var projectSettings: CEWorkspaceSettingsData.ProjectSettings?
-    @State var tasksSettings: CEWorkspaceSettingsData.TasksSettings?
-
     var workspaceFileManager: CEWorkspaceFileManager?
 
     @ObservedObject var taskNotificationHandler: TaskNotificationHandler
@@ -37,16 +34,11 @@ struct ActivityViewer: View {
     var body: some View {
         HStack(spacing: 0) {
             SchemeDropDownView(
-                projectSettings: projectSettings,
-                tasksSettings: tasksSettings,
+                workspaceSettings: workspaceSettings,
                 workspaceFileManager: workspaceFileManager
             )
 
-            TaskDropDownView(
-                taskManager: taskManager,
-                projectSettings: projectSettings,
-                tasksSettings: tasksSettings
-            )
+            TaskDropDownView(taskManager: taskManager)
 
             Spacer(minLength: 0)
 
@@ -64,13 +56,5 @@ struct ActivityViewer: View {
                     .opacity(0.1)
             }
         }
-        .onReceive(workspaceSettings.$preferences.eraseToAnyPublisher()) { workspaceSettings in
-            projectSettings = workspaceSettings.project
-            tasksSettings = workspaceSettings.tasks
-        }
-//        .onAppear {
-//            projectSettings = workspaceSettings.preferences.project
-//            tasksSettings = workspaceSettings.preferences.tasks
-//        }
     }
 }

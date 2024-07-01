@@ -52,6 +52,11 @@ struct UtilityAreaDebugView: View {
                         scrollProxy: $scrollProxy,
                         bottomID: _bottomID
                     )
+                    Button {
+                        print(String(describing: taskManager.availableTasks.first?.name))
+                    } label: {
+                        Image(systemName: "info")
+                    }
                 }
             } else {
                 Text("No Task Selected")

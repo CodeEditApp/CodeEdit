@@ -6,17 +6,16 @@
 //
 
 import Foundation
-import Dispatch
 import Combine
 
 /// This class handles the execution of tasks
-final class TaskManager: ObservableObject {
+class TaskManager: ObservableObject {
     @Published var activeTasks: [UUID: CEActiveTask] = [:]
     @Published var selectedTaskID: UUID?
 
-    var workspaceSettings: CEWorkspaceSettings
+    @Published var workspaceSettings: CEWorkspaceSettingsData
 
-    init(workspaceSettings: CEWorkspaceSettings) {
+    init(workspaceSettings: CEWorkspaceSettingsData) {
         self.workspaceSettings = workspaceSettings
     }
 
@@ -37,7 +36,7 @@ final class TaskManager: ObservableObject {
     }
 
     var availableTasks: [CETask] {
-        return workspaceSettings.preferences.tasks.items
+        return workspaceSettings.tasks
     }
 
     var taskStatus: (UUID) -> CETaskStatus {
@@ -47,7 +46,7 @@ final class TaskManager: ObservableObject {
     }
 
     func executeActiveTask() {
-        let task = workspaceSettings.preferences.tasks.items.first { $0.id == selectedTaskID }
+        let task = workspaceSettings.tasks.first { $0.id == selectedTaskID }
         guard let task else { return }
         runTask(task: task)
     }

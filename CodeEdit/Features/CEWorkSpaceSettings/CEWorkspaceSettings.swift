@@ -16,7 +16,7 @@ final class CEWorkspaceSettings: ObservableObject {
     private var storeTask: AnyCancellable!
     private let fileManager = FileManager.default
 
-    private var folderURL: URL? {
+    private var workspaceSettingsFolderURL: URL? {
         guard let workspaceURL = workspace.fileURL else {
             return nil
         }
@@ -26,7 +26,7 @@ final class CEWorkspaceSettings: ObservableObject {
     }
 
     private var settingsURL: URL? {
-        folderURL?
+        workspaceSettingsFolderURL?
             .appendingPathComponent("settings")
             .appendingPathExtension("json")
     }
@@ -36,9 +36,11 @@ final class CEWorkspaceSettings: ObservableObject {
 
         loadSettings()
 
-        self.storeTask = self.$preferences.throttle(for: 2.0, scheduler: RunLoop.main, latest: true).sink {
-            try? self.savePreferences($0)
-        }
+        self.storeTask = self.$preferences
+            .throttle(for: 2.0, scheduler: RunLoop.main, latest: true)
+            .sink {
+                try? self.savePreferences($0)
+            }
     }
 
     /// Load and construct ``CEWorkspaceSettings`` model from `.codeedit/settings.json`
@@ -58,10 +60,10 @@ final class CEWorkspaceSettings: ObservableObject {
         // If the user doesn't have any settings to save, don't save them.
         guard !data.isEmpty() else { return }
 
-        guard let folderURL, let settingsURL else { return }
+        guard let workspaceSettingsFolderURL, let settingsURL else { return }
 
-        if !fileManager.fileExists(atPath: folderURL.path()) {
-            try fileManager.createDirectory(at: folderURL, withIntermediateDirectories: true)
+        if !fileManager.fileExists(atPath: workspaceSettingsFolderURL.path()) {
+            try fileManager.createDirectory(at: workspaceSettingsFolderURL, withIntermediateDirectories: true)
         }
 
         let data = try JSONEncoder().encode(data)

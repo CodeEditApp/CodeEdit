@@ -40,8 +40,7 @@ struct CEWorkspaceSettingsView: View {
         VStack(spacing: 0) {
             TasksCEWorkspaceSettingsView(
                 workspace: workspace,
-                projectSettings: $settings.preferences.project,
-                settings: $settings.preferences.tasks
+                workspaceSettings: settings
             )
             Spacer()
             Divider()

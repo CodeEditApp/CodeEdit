@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 /// Stores the state of a task once it's executed
 class CEActiveTask: ObservableObject, Identifiable, Hashable {
@@ -16,20 +17,28 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     @Published private(set) var status: CETaskStatus = .notRunning
 
     /// The name of the associated task.
-    let task: CETask
+    @Published var task: CETask
 
     var process: Process?
     var outputPipe: Pipe?
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(task: CETask) {
         self.task = task
         self.process = Process()
         self.outputPipe = Pipe()
+        
+        self.task.objectWillChange
+            .sink { _ in
+                print("task was chnaged")
+            }
+            .store(in: &cancellables)
     }
 
     func run() {
         guard let process, let outputPipe else { return }
-        
+
         Task { await updateTaskStatus(to: .running) }
         createStatusTaskNotification()
 
@@ -190,12 +199,15 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     static func == (lhs: CEActiveTask, rhs: CEActiveTask) -> Bool {
         return lhs.output == rhs.output &&
-        lhs.status == rhs.status
+        lhs.status == rhs.status &&
+        lhs.process == rhs.process &&
+        lhs.task == rhs.task
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(output)
         hasher.combine(status)
+        hasher.combine(task)
     }
 
     // OPTIONAL

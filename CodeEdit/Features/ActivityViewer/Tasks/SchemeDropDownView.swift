@@ -14,16 +14,16 @@ struct SchemeDropDownView: View {
     @State var isSchemePopOverPresented: Bool = false
     @State private var isHoveringScheme: Bool = false
 
-    var projectSettings: CEWorkspaceSettingsData.ProjectSettings?
-    var tasksSettings: CEWorkspaceSettingsData.TasksSettings?
+    var workspaceSettings: CEWorkspaceSettings
     var workspaceFileManager: CEWorkspaceFileManager?
 
     var body: some View {
         HStack(spacing: 5) {
             Image(systemName: "folder.badge.gearshape")
                 .imageScale(.medium)
-            Text((projectSettings?.projectName ?? workspaceFileManager?.workspaceItem.fileName()) ?? "No Project set")
+            Text(workspaceSettings.preferences.project.projectName)
                 .font(.subheadline)
+//                  ?? workspaceFileManager?.workspaceItem.fileName()) ?? "No Project set")
         }
         .font(.caption)
         .padding(.trailing, 9)

@@ -12,12 +12,12 @@ struct AddCETaskView: View {
     @Environment(\.dismiss)
     var dismiss
 
-    @Binding private var settings: CEWorkspaceSettingsData.TasksSettings
+    @ObservedObject var settings: CEWorkspaceSettings
 
     @State private var task: CETask
 
-    init(workingDirectory: String, settings: Binding<CEWorkspaceSettingsData.TasksSettings>) {
-        self._settings = settings
+    init(workingDirectory: String, settings: CEWorkspaceSettings) {
+        self.settings = settings
         self._task = State(initialValue: CETask(
             target: "My Mac",
             workingDirectory: workingDirectory
@@ -37,7 +37,7 @@ struct AddCETaskView: View {
                 }
                 Spacer()
                 Button("Done") {
-                    self.settings.items.append(task)
+                    self.settings.preferences.tasks.append(task)
                     self.dismiss()
                 }
                 .disabled(task.isInvalid)

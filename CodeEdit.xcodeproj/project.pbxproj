@@ -1603,6 +1603,7 @@
 			isa = PBXGroup;
 			children = (
 				582213EE2918345500EFE361 /* About */,
+				618725B92C33107C00987354 /* CEWorkspaceSettings */,
 				6187259F2C29EA7500987354 /* CEWorkSpaceSettings */,
 				588847642992A30900996D95 /* CEWorkspace */,
 				61D435C52C29684100D032B8 /* Tasks */,
@@ -2551,14 +2552,11 @@
 		6187259F2C29EA7500987354 /* CEWorkSpaceSettings */ = {
 			isa = PBXGroup;
 			children = (
-				77A01E242BB4245300F0EA38 /* PageAndCEWorkspaceSettings.swift */,
 				77A01E422BBC3A2800F0EA38 /* CETask.swift */,
 				77A01E2D2BB4261200F0EA38 /* CEWorkspaceSettings.swift */,
 				77A01E262BB4249800F0EA38 /* CEWorkspaceSettingsData.swift */,
 				77A01E292BB424EA00F0EA38 /* CEWorkspaceSettingsData+ProjectSettings.swift */,
-				77A01E2B2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift */,
-				77A01E222BB423A800F0EA38 /* CEWorkspaceSettingsPage.swift */,
-				77A01E332BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift */,
+				618725B72C2EF6F800987354 /* not important */,
 				77A01E1A2BB33F1E00F0EA38 /* Views */,
 			);
 			path = CEWorkSpaceSettings;
@@ -2585,6 +2583,25 @@
 				617DB3CF2C25AFAE00B58BFE /* TaskNotificationHandler.swift */,
 			);
 			path = Notificaitons;
+			sourceTree = "<group>";
+		};
+		618725B72C2EF6F800987354 /* not important */ = {
+			isa = PBXGroup;
+			children = (
+				77A01E2B2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift */,
+				77A01E242BB4245300F0EA38 /* PageAndCEWorkspaceSettings.swift */,
+				77A01E222BB423A800F0EA38 /* CEWorkspaceSettingsPage.swift */,
+				77A01E332BB4282900F0EA38 /* CEWorkspaceSettingsSearchResult.swift */,
+			);
+			path = "not important";
+			sourceTree = "<group>";
+		};
+		618725B92C33107C00987354 /* CEWorkspaceSettings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = CEWorkspaceSettings;
+			path = CEWorkSpaceSettings/CEWorkspaceSettings;
 			sourceTree = "<group>";
 		};
 		61D435C52C29684100D032B8 /* Tasks */ = {

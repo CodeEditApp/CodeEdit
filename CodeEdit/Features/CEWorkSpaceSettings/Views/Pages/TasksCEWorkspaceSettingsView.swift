@@ -11,8 +11,7 @@ struct TasksCEWorkspaceSettingsView: View {
     let workspace: WorkspaceDocument
 
     // TODO: Separate Project Settings from Task Settings
-    @Binding var projectSettings: CEWorkspaceSettingsData.ProjectSettings
-    @Binding var settings: CEWorkspaceSettingsData.TasksSettings
+    @ObservedObject var workspaceSettings: CEWorkspaceSettings
 
     @State private var selectedTaskId: UUID?
     @State private var addTaskSheetPresented: Bool = false
@@ -20,19 +19,19 @@ struct TasksCEWorkspaceSettingsView: View {
     var body: some View {
         SettingsForm {
             Section {
-                TextField("Name", text: $projectSettings.projectName)
-                Toggle("Tasks", isOn: $settings.enabled)
+                TextField("Name", text: $workspaceSettings.preferences.project.projectName)
+//                Toggle("Tasks", isOn: $settings.enabled)
             } header: {
                 Text("Workspace")
             }
             Section(
                 content: {
-                    if settings.items.isEmpty {
+                    if workspaceSettings.preferences.tasks.isEmpty {
                         Text("No tasks")
                             .foregroundColor(.secondary)
                             .frame(maxWidth: .infinity, alignment: .center)
                     } else {
-                        ForEach(settings.items) { task in
+                        ForEach(workspaceSettings.preferences.tasks) { task in
                             HStack {
                                 Text(task.name)
                                 Spacer()
@@ -64,17 +63,17 @@ struct TasksCEWorkspaceSettingsView: View {
         }
         .scrollDisabled(true)
         .sheet(isPresented: $addTaskSheetPresented, content: {
-            if let selectedIndex = settings.items.firstIndex(where: {
+            if let selectedIndex = $workspaceSettings.preferences.tasks.firstIndex(where: {
                 $0.id == selectedTaskId
             }) {
                 EditCETaskView(
-                    task: $settings.items[selectedIndex],
-                    settings: $settings
+                    task: $workspaceSettings.preferences.tasks[selectedIndex],
+                    settings: workspaceSettings
                 )
             } else {
                 AddCETaskView(
                     workingDirectory: workspace.fileURL?.relativePath ?? "",
-                    settings: $settings
+                    settings: workspaceSettings
                 )
             }
         })
