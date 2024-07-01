@@ -53,8 +53,6 @@ struct SourceControlNavigatorSyncView: View {
                     }
                     .disabled(isLoading)
                 }
-            }            .onAppear {
-                print(currentBranch)
             }
         }
 
