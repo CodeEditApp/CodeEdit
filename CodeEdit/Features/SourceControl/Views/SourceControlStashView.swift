@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceControlStashChangesView: View {
+struct SourceControlStashView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
     @Environment(\.dismiss)
     private var dismiss

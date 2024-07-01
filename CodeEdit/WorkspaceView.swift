@@ -32,7 +32,7 @@ struct WorkspaceView: View {
     private var keybindings: KeybindingManager =  .shared
 
     var body: some View {
-        if workspace.workspaceFileManager != nil {
+        if workspace.workspaceFileManager != nil, let sourceControlManager = workspace.sourceControlManager {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
@@ -87,6 +87,7 @@ struct WorkspaceView: View {
                 }
             }
             .background(EffectView(.contentBackground))
+            .background(WorkspaceSheets().environmentObject(sourceControlManager))
         }
     }
 }

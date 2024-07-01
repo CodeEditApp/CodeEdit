@@ -11,8 +11,10 @@ struct SourceControlNavigatorRenameBranchView: View {
     @Environment(\.dismiss)
     var dismiss
 
+    @EnvironmentObject var sourceControlManager: SourceControlManager
+
     @State var name: String = ""
-    let sourceControlManager: SourceControlManager
+
     let fromBranch: GitBranch?
 
     func submit(_ branch: GitBranch) {
