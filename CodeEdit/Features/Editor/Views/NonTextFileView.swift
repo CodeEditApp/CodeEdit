@@ -24,17 +24,16 @@ struct NonTextFileView: View {
 
         Group {
             if let fileURL = fileDocument.fileURL {
+                if let utType = fileDocument.utType {
 
-                switch fileDocument.utType {
-                case .some(.image):
-                    ImageFileView(fileURL)
-                        .modifier(UpdateStatusBarInfo(withURL: fileURL))
-
-                case .some(.pdf):
-                    PDFFileView(fileURL)
-                        .modifier(UpdateStatusBarInfo(withURL: fileURL))
-
-                default:
+                    if utType.conforms(to: .image) {
+                        ImageFileView(fileURL)
+                            .modifier(UpdateStatusBarInfo(withURL: fileURL))
+                    } else if utType.conforms(to: .pdf) {
+                        PDFFileView(fileURL)
+                            .modifier(UpdateStatusBarInfo(withURL: fileURL))
+                    }
+                } else {
                     AnyFileView(fileURL)
                         .modifier(UpdateStatusBarInfo(withURL: fileURL))
                 }
