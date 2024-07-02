@@ -73,8 +73,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environmentObject(
                         workspace.taskManager ??
                         TaskManager(
-                            workspaceSettings: workspace.workspaceSettings?.preferences ??
-                            CEWorkspaceSettings(workspaceDocument: workspace).preferences
+                            workspaceSettings: workspace.workspaceSettingsManager?.settings ??
+                            CEWorkspaceSettingsManager(workspaceDocument: workspace).settings
                         )
                     )
             }

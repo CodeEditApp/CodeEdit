@@ -15,26 +15,26 @@ struct ActivityViewer: View {
     var workspaceFileManager: CEWorkspaceFileManager?
 
     @ObservedObject var taskNotificationHandler: TaskNotificationHandler
-    @ObservedObject var workspaceSettings: CEWorkspaceSettings
+    @ObservedObject var workspaceSettingsManager: CEWorkspaceSettingsManager
 
     // TODO: try to get this from the envrionment
     @ObservedObject var taskManager: TaskManager
 
     init(
         workspaceFileManager: CEWorkspaceFileManager?,
-        workspaceSettings: CEWorkspaceSettings,
+        workspaceSettingsManager: CEWorkspaceSettingsManager,
         taskNotificationHandler: TaskNotificationHandler,
         taskManager: TaskManager
     ) {
         self.workspaceFileManager = workspaceFileManager
-        self.workspaceSettings = workspaceSettings
+        self.workspaceSettingsManager = workspaceSettingsManager
         self.taskNotificationHandler = taskNotificationHandler
         self.taskManager = taskManager
     }
     var body: some View {
         HStack(spacing: 0) {
             SchemeDropDownView(
-                workspaceSettings: workspaceSettings,
+                workspaceSettingsManager: workspaceSettingsManager,
                 workspaceFileManager: workspaceFileManager
             )
 

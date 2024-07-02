@@ -13,9 +13,9 @@ class TaskManager: ObservableObject {
     @Published var activeTasks: [UUID: CEActiveTask] = [:]
     @Published var selectedTaskID: UUID?
 
-    @Published var workspaceSettings: CEWorkspaceSettingsData
+    @Published var workspaceSettings: CEWorkspaceSettings
 
-    init(workspaceSettings: CEWorkspaceSettingsData) {
+    init(workspaceSettings: CEWorkspaceSettings) {
         self.workspaceSettings = workspaceSettings
     }
 
