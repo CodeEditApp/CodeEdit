@@ -313,7 +313,6 @@ final class SourceControlManager: ObservableObject {
         for remote in remotes {
             try await refreshRemoteBranches(remote: remote)
         }
-        print(self.remotes)
     }
 
     /// Refresh branches for a specific remote
@@ -380,7 +379,28 @@ final class SourceControlManager: ObservableObject {
             return
         }
 
-        await showAlert(title: title, message: error.localizedDescription)
+        if let error = error as? LocalizedError {
+            var description = error.errorDescription ?? ""
+            if let failureReason = error.failureReason {
+                if description.isEmpty {
+                    description += failureReason
+                } else {
+                    description += "\n\n" + failureReason
+                }
+            }
+
+            if let recoverySuggestion = error.recoverySuggestion {
+                if description.isEmpty {
+                    description += recoverySuggestion
+                } else {
+                    description += "\n\n" + recoverySuggestion
+                }
+            }
+
+            await showAlert(title: title, message: description)
+        } else {
+            await showAlert(title: title, message: error.localizedDescription)
+        }
     }
 
     private func showAlert(title: String, message: String) async {

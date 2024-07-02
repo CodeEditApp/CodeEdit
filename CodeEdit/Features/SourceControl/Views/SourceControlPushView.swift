@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SourceControlPushView: View {
-    @Environment(\.dismiss) 
+    @Environment(\.dismiss)
     private var dismiss
 
     @EnvironmentObject var scm: SourceControlManager

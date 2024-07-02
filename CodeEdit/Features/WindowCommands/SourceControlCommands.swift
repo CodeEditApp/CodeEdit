@@ -8,44 +8,92 @@
 import SwiftUI
 
 struct SourceControlCommands: Commands {
-    @FocusedObject var scm: SourceControlManager?
+    @State private var windowController: CodeEditWindowController?
+
+    @State private var confirmDiscardChanges: Bool = false
+
+    var sourceControlManager: SourceControlManager? {
+        windowController?.workspace?.sourceControlManager
+    }
 
     var body: some Commands {
         CommandMenu("Source Control") {
-            if let scm = scm {
+            Group {
                 Button("Commit...") {
                     // TODO: Open Source Control Navigator to Changes tab
                 }
                 .disabled(true)
+
                 Button("Push...") {
-                    scm.pushSheetIsPresented = true
+                    sourceControlManager?.pushSheetIsPresented = true
                 }
+
                 Button("Pull...") {
-                    scm.pullSheetIsPresented = true
+                    sourceControlManager?.pullSheetIsPresented = true
                 }
                 .keyboardShortcut("x", modifiers: [.command, .option])
+
                 Button("Fetch Changes") {
-//                    scm.fetchSheetIsPresented = true
+                    sourceControlManager?.fetchSheetIsPresented = true
                 }
+
                 Divider()
+
                 Button("Stage All Changes") {
-//                    scm.stageAllChanges()
+                    guard let sourceControlManager else { return }
+                    Task {
+                        do {
+                            try await sourceControlManager.add(sourceControlManager.changedFiles)
+                        } catch {
+                            await sourceControlManager.showAlertForError(title: "Failed To Stage Changes", error: error)
+                        }
+                    }
                 }
+                .disabled(true)
+
                 Button("Unstage All Changes") {
-//                    scm.unstageAllChanges()
+                    guard let sourceControlManager else { return }
+                    Task {
+                        do {
+                            try await sourceControlManager.reset(sourceControlManager.changedFiles)
+                        } catch {
+                            await sourceControlManager.showAlertForError(
+                                title: "Failed To Unstage Changes",
+                                error: error
+                            )
+                        }
+                    }
                 }
+                .disabled(true)
+
                 Divider()
+
                 Button("Cherry-Pick...") {
-                    //                scm.cherryPickSheetIsPresented = true
+                    // TODO: Implementation Needed
                 }
+                .disabled(true)
+
                 Button("Stash Changes...") {
-                    //                scm.stashSheetIsPresented = true
+                    sourceControlManager?.stashSheetIsPresented = true
                 }
+
                 Divider()
+
                 Button("Discard All Changes...") {
-                    //                scm.discardAllChangesSheetIsPresented = true
+                    guard sourceControlManager != nil else { return }
+                    let alert = NSAlert()
+                    alert.alertStyle = .warning
+                    alert.messageText = "Do you want to permanently delete all changes?"
+                    alert.informativeText = "This action cannot be undone."
+                    alert.addButton(withTitle: "Discard")
+                    alert.addButton(withTitle: "Cancel")
+                    alert.buttons.first?.hasDestructiveAction = true
+                    guard alert.runModal() == .alertFirstButtonReturn else { return }
+                    sourceControlManager?.discardAllChanges()
                 }
             }
+            .disabled(windowController?.workspace == nil)
+            .observeWindowController($windowController)
         }
     }
 }
