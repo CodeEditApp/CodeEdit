@@ -13,7 +13,7 @@ extension GitClient {
     /// - Returns: Array of branches
     func getBranches(remote: String? = nil) async throws -> [GitBranch] {
         var command = "branch --format \"%(refname:short)|%(refname)|%(upstream:short) %(upstream:track)\""
-        if let remote = remote {
+        if remote != nil {
             command += " -r"
         } else {
             command += " -a"

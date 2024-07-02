@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SourceControlPullView: View {
-    @Environment(\.dismiss) 
+    @Environment(\.dismiss)
     private var dismiss
 
     @EnvironmentObject var scm: SourceControlManager
