@@ -11,11 +11,7 @@ struct RemoteBranchPicker: View {
     @EnvironmentObject var scm: SourceControlManager
 
     @Binding var branch: GitBranch?
-    @Binding var remote: GitRemote? {
-        didSet {
-            updateBranch()
-        }
-    }
+    @Binding var remote: GitRemote?
 
     let onSubmit: () -> Void
     let canCreateBranch: Bool
@@ -36,9 +32,8 @@ struct RemoteBranchPicker: View {
                     .tag(remote as GitRemote?)
                 }
                 Divider()
-                Button("Add Existing Remote...") {
-                     scm.remoteSheetIsPresented = true
-                }
+                Text("Add Existing Remote...")
+                    .tag(GitRemote?(nil))
             } label: {
                 Text("Remote")
             }
@@ -67,6 +62,13 @@ struct RemoteBranchPicker: View {
         }
         .onAppear {
             updateRemote()
+        }
+        .onChange(of: remote) { newValue in
+            if newValue == nil {
+                scm.addExistingRemoteSheetIsPresented = true
+            } else {
+                updateBranch()
+            }
         }
     }
 

@@ -60,7 +60,7 @@ extension SourceControlNavigatorRepositoryView {
         .disabled(item.branch == nil)
         Divider()
         Button("Add Existing Remote...") {
-            addRemoteIsPresented = true
+            sourceControlManager.addExistingRemoteSheetIsPresented = true
         }
         .disabled(item.id != "RemotesGroup")
         Divider()

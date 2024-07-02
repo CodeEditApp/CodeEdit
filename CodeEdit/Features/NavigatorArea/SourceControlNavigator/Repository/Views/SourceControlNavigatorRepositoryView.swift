@@ -19,7 +19,6 @@ struct SourceControlNavigatorRepositoryView: View {
     @State var showRenameBranch: Bool = false
     @State var fromBranch: GitBranch?
     @State var expandedIds = [String: Bool]()
-    @State var addRemoteIsPresented: Bool = false
     @State var applyStashedChangesIsPresented: Bool = false
     @State var isPresentingConfirmDeleteBranch: Bool = false
     @State var branchToDelete: GitBranch?
@@ -78,9 +77,6 @@ struct SourceControlNavigatorRepositoryView: View {
             SourceControlNavigatorRenameBranchView(
                 fromBranch: fromBranch
             )
-        }
-        .sheet(isPresented: $addRemoteIsPresented) {
-            SourceControlAddRemoteView()
         }
         .alert(
             sourceControlManager.changedFiles.isEmpty

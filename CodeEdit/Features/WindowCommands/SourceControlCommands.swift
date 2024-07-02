@@ -49,7 +49,6 @@ struct SourceControlCommands: Commands {
                         }
                     }
                 }
-                .disabled(true)
 
                 Button("Unstage All Changes") {
                     guard let sourceControlManager else { return }
@@ -64,7 +63,6 @@ struct SourceControlCommands: Commands {
                         }
                     }
                 }
-                .disabled(true)
 
                 Divider()
 
@@ -90,6 +88,12 @@ struct SourceControlCommands: Commands {
                     alert.buttons.first?.hasDestructiveAction = true
                     guard alert.runModal() == .alertFirstButtonReturn else { return }
                     sourceControlManager?.discardAllChanges()
+                }
+
+                Divider()
+
+                Button("Add Exisiting Remote...") {
+                    sourceControlManager?.addExistingRemoteSheetIsPresented = true
                 }
             }
             .disabled(windowController?.workspace == nil)

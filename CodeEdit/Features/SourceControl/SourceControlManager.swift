@@ -52,7 +52,7 @@ final class SourceControlManager: ObservableObject {
     @Published var stashSheetIsPresented: Bool = false
 
     /// Is the remote sheet presented
-    @Published var remoteSheetIsPresented: Bool = false
+    @Published var addExistingRemoteSheetIsPresented: Bool = false
 
     var orderedLocalBranches: [GitBranch] {
         var orderedBranches: [GitBranch] = [currentBranch].compactMap { $0 }

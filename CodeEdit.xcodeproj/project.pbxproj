@@ -510,7 +510,7 @@
 		B65B10EC2B073913002852CF /* CEContentUnavailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10EB2B073913002852CF /* CEContentUnavailableView.swift */; };
 		B65B10EF2B07C454002852CF /* GitClient+Remote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10EE2B07C454002852CF /* GitClient+Remote.swift */; };
 		B65B10F22B07D34F002852CF /* GitRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10F12B07D34F002852CF /* GitRemote.swift */; };
-		B65B10F52B081A0C002852CF /* SourceControlAddRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10F42B081A0C002852CF /* SourceControlAddRemoteView.swift */; };
+		B65B10F52B081A0C002852CF /* SourceControlAddExistingRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10F42B081A0C002852CF /* SourceControlAddExistingRemoteView.swift */; };
 		B65B10F82B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10F72B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift */; };
 		B65B10FB2B08B054002852CF /* Divided.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10FA2B08B054002852CF /* Divided.swift */; };
 		B65B10FE2B08B07D002852CF /* SourceControlNavigatorChangesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */; };
@@ -1151,7 +1151,7 @@
 		B65B10EB2B073913002852CF /* CEContentUnavailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEContentUnavailableView.swift; sourceTree = "<group>"; };
 		B65B10EE2B07C454002852CF /* GitClient+Remote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Remote.swift"; sourceTree = "<group>"; };
 		B65B10F12B07D34F002852CF /* GitRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitRemote.swift; sourceTree = "<group>"; };
-		B65B10F42B081A0C002852CF /* SourceControlAddRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlAddRemoteView.swift; sourceTree = "<group>"; };
+		B65B10F42B081A0C002852CF /* SourceControlAddExistingRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlAddExistingRemoteView.swift; sourceTree = "<group>"; };
 		B65B10F72B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorNoRemotesView.swift; sourceTree = "<group>"; };
 		B65B10FA2B08B054002852CF /* Divided.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Divided.swift; sourceTree = "<group>"; };
 		B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorChangesList.swift; sourceTree = "<group>"; };
@@ -3308,7 +3308,7 @@
 				B6966A272C2F683300259C2D /* SourceControlPullView.swift */,
 				B607184B2B17E037009CDAB4 /* SourceControlStashView.swift */,
 				B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */,
-				B65B10F42B081A0C002852CF /* SourceControlAddRemoteView.swift */,
+				B65B10F42B081A0C002852CF /* SourceControlAddExistingRemoteView.swift */,
 				041FC6AC2AE437CE00C1F65A /* SourceControlNavigatorNewBranchView.swift */,
 				B60718362B170638009CDAB4 /* SourceControlNavigatorRenameBranchView.swift */,
 				B6966A2F2C33282200259C2D /* RemoteBranchPicker.swift */,
@@ -4222,7 +4222,7 @@
 				30B0880F2C0D53080063A882 /* LanguageServer+SelectionRange.swift in Sources */,
 				30B0880C2C0D53080063A882 /* LanguageServer+InlayHint.swift in Sources */,
 				587B9E5A29301D8F00AC7927 /* GitCloneView.swift in Sources */,
-				B65B10F52B081A0C002852CF /* SourceControlAddRemoteView.swift in Sources */,
+				B65B10F52B081A0C002852CF /* SourceControlAddExistingRemoteView.swift in Sources */,
 				58D01C99293167DC00C5B6B4 /* String+MD5.swift in Sources */,
 				20EBB505280C329800F3A5DA /* CommitListItemView.swift in Sources */,
 				669A50512C380C1800304CD8 /* String+escapedWhiteSpaces.swift in Sources */,
