@@ -58,6 +58,27 @@ struct WorkspaceView: View {
                     }
                     .edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .task {
+                        themeModel.colorScheme = colorScheme
+
+                        do {
+                            try await sourceControlManager.refreshRemotes()
+                            try await sourceControlManager.refreshStashEntries()
+                        } catch {
+                            await sourceControlManager.showAlertForError(
+                                title: "Error refreshing Git data",
+                                error: error
+                            )
+                        }
+                    }
+                    .onChange(of: colorScheme) { newValue in
+                        themeModel.colorScheme = newValue
+                        if matchAppearance {
+                            themeModel.selectedTheme = newValue == .dark
+                            ? themeModel.selectedDarkTheme
+                            : themeModel.selectedLightTheme
+                        }
+                    }
                     .onChange(of: focusedEditor) { newValue in
                         /// update active tab group only if the new one is not the same with it.
                         if let newValue, editorManager.activeEditor != newValue {
@@ -67,17 +88,6 @@ struct WorkspaceView: View {
                     .onChange(of: editorManager.activeEditor) { newValue in
                         if newValue != focusedEditor {
                             focusedEditor = newValue
-                        }
-                    }
-                    .task {
-                        themeModel.colorScheme = colorScheme
-                    }
-                    .onChange(of: colorScheme) { newValue in
-                        themeModel.colorScheme = newValue
-                        if matchAppearance {
-                            themeModel.selectedTheme = newValue == .dark
-                            ? themeModel.selectedDarkTheme
-                            : themeModel.selectedLightTheme
                         }
                     }
                     .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { output in
