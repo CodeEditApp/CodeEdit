@@ -89,9 +89,6 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         // SwiftUI also ignores this value, so it just manages to set the initial window size. *Hopefully* this
         // is fixed in the future.
         // ----
-        if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
-            window.setContentSize(NSRectFromString(rectString).size)
-        }
         let windowController = CodeEditWindowController(
             window: window,
             workspace: self,
@@ -99,8 +96,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         )
 
         if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
-            window.setFrameOrigin(NSRectFromString(rectString).origin)
+            window.setFrame(NSRectFromString(rectString), display: true, animate: false)
         } else {
+            window.setFrame(NSRect(x: 0, y: 0, width: 1400, height: 900), display: true, animate: false)
             window.center()
         }
         self.addWindowController(windowController)
