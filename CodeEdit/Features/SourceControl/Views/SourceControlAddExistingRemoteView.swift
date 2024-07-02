@@ -1,5 +1,5 @@
 //
-//  SourceControlAddRemoteView.swift
+//  SourceControlAddExistingRemoteView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 11/17/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceControlAddRemoteView: View {
+struct SourceControlAddExistingRemoteView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
     @Environment(\.dismiss)
     private var dismiss
