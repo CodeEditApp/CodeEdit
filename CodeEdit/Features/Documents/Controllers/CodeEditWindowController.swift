@@ -139,7 +139,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 let panel = SearchPanel()
                 self.quickOpenPanel = panel
 
-                let contentView = QuickOpenView(state: state) {
+                let contentView = OpenQuicklyView(state: state) {
                     panel.close()
                 } openFile: { file in
                     workspace.editorManager.openTab(item: file)

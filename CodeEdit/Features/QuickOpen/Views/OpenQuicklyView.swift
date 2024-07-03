@@ -1,5 +1,5 @@
 //
-//  QuickOpenView.swift
+//  OpenQuicklyView.swift
 //  CodeEditModules/QuickOpen
 //
 //  Created by Pavel Kasila on 20.03.22.
@@ -13,7 +13,7 @@ extension URL: Identifiable {
     }
 }
 
-struct QuickOpenView: View {
+struct OpenQuicklyView: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
 
     private let onClose: () -> Void
