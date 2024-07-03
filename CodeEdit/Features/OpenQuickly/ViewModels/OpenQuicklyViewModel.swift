@@ -27,6 +27,18 @@ final class OpenQuicklyViewModel: ObservableObject {
         var id: String { fileURL.id }
         let fileURL: URL
         let matchedCharacters: [NSRange]
+
+        // This custom Hashable implementation prevents the highlighted
+        // selection from flickering when searching in 'Open Quickly'.
+        //
+        // See https://github.com/CodeEditApp/CodeEdit/pull/1790#issuecomment-2206832901
+        // for flickering visuals.
+        //
+        // Before commit 0e28b382f59184b7ebe5a7c3295afa3655b7d4e7, only the fileURL
+        // was retrieved from the search results and it worked as expected.
+        //
+        static func == (lhs: Self, rhs: Self) -> Bool { lhs.fileURL == rhs.fileURL }
+        func hash(into hasher: inout Hasher) { hasher.combine(fileURL) }
     }
 
     func fetchResults() {
