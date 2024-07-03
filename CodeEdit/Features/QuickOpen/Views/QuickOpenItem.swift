@@ -10,13 +10,16 @@ import SwiftUI
 struct QuickOpenItem: View {
     private let baseDirectory: URL
     private let fileURL: URL
+    private let textToMatch: String
 
     init(
         baseDirectory: URL,
-        fileURL: URL
+        fileURL: URL,
+        textToMatch: String
     ) {
         self.baseDirectory = baseDirectory
         self.fileURL = fileURL
+        self.textToMatch = textToMatch
     }
 
     var relativePathComponents: ArraySlice<String> {
@@ -30,8 +33,7 @@ struct QuickOpenItem: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
             VStack(alignment: .leading, spacing: 0) {
-                Text(fileURL.lastPathComponent).font(.system(size: 13))
-                    .lineLimit(1)
+                QuickSearchResultLabel(labelName: fileURL.lastPathComponent, textToMatch: textToMatch)
                 Text(relativePathComponents.joined(separator: " ▸ "))
                     .font(.system(size: 10.5))
                     .foregroundColor(.secondary)
