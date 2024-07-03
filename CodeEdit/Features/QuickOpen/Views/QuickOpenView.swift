@@ -19,7 +19,7 @@ struct QuickOpenView: View {
     private let onClose: () -> Void
     private let openFile: (CEWorkspaceFile) -> Void
 
-    @ObservedObject private var state: QuickOpenViewModel
+    @ObservedObject private var quickOpenViewModel: QuickOpenViewModel
 
     @State private var selectedItem: CEWorkspaceFile?
 
@@ -28,7 +28,7 @@ struct QuickOpenView: View {
         onClose: @escaping () -> Void,
         openFile: @escaping (CEWorkspaceFile) -> Void
     ) {
-        self.state = state
+        self.quickOpenViewModel = state
         self.onClose = onClose
         self.openFile = openFile
     }
@@ -37,12 +37,12 @@ struct QuickOpenView: View {
         SearchPanelView(
             title: "Open Quickly",
             image: Image(systemName: "magnifyingglass"),
-            options: $state.openQuicklySearchResults,
-            text: $state.openQuicklyQuery,
+            options: $quickOpenViewModel.openQuicklySearchResults,
+            text: $quickOpenViewModel.openQuicklyQuery,
             optionRowHeight: 40
         ) { searchResult in
             QuickOpenItem(
-                baseDirectory: state.fileURL,
+                baseDirectory: quickOpenViewModel.fileURL,
                 searchResult: searchResult
             )
         } preview: { searchResult in
@@ -55,13 +55,13 @@ struct QuickOpenView: View {
                 return
             }
             openFile(file)
-            state.openQuicklyQuery = ""
+            quickOpenViewModel.openQuicklyQuery = ""
             onClose()
         } onClose: {
             onClose()
         }
-        .onReceive(state.$openQuicklyQuery.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
-            state.fetchOpenQuickly()
+        .onReceive(quickOpenViewModel.$openQuicklyQuery.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
+            quickOpenViewModel.fetchOpenQuickly()
         }
     }
 }
