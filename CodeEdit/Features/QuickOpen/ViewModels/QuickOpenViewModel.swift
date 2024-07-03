@@ -12,7 +12,6 @@ import CollectionConcurrencyKit
 final class QuickOpenViewModel: ObservableObject {
     @Published var query: String = ""
     @Published var searchResults: [OpenQuicklySearchResult] = []
-    @Published var showingSearchResults: Bool = false
 
     let fileURL: URL
     var runningTask: Task<Void, Never>?
@@ -34,7 +33,6 @@ final class QuickOpenViewModel: ObservableObject {
         let startTime = Date()
         guard query != "" else {
             searchResults = []
-            self.showingSearchResults = !searchResults.isEmpty
             return
         }
 
@@ -73,7 +71,6 @@ final class QuickOpenViewModel: ObservableObject {
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
                     self.searchResults = fuzzySearchResults
-                    self.showingSearchResults = !self.searchResults.isEmpty
                     print("Duration: \(Date().timeIntervalSince(startTime))")
                 }
             }
