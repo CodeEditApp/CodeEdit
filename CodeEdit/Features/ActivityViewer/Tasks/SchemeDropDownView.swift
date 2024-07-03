@@ -17,23 +17,11 @@ struct SchemeDropDownView: View {
     @ObservedObject var workspaceSettingsManager: CEWorkspaceSettingsManager
     var workspaceFileManager: CEWorkspaceFileManager?
 
-    struct ProjectObserver: View {
-        @ObservedObject var projectSettings: ProjectSettings
-        let workspaceFileManager: CEWorkspaceFileManager?
-        var body: some View {
-            Group {
-                if projectSettings.projectName.isEmpty {
-                    Text(workspaceFileManager?.workspaceItem.fileName() ?? "No Project found")
-                } else {
-                    Text(projectSettings.projectName)
-                }
-            }.font(.subheadline)
-        }
-    }
     var body: some View {
         HStack(spacing: 5) {
             Image(systemName: "folder.badge.gearshape")
                 .imageScale(.medium)
+
             Group {
                 if workspaceSettingsManager.settings.project.projectName.isEmpty {
                     Text(workspaceFileManager?.workspaceItem.fileName() ?? "No Project found")

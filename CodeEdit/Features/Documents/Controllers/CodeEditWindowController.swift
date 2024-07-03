@@ -17,7 +17,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     var observers: [NSKeyValueObservation] = []
 
     var workspace: WorkspaceDocument?
-    var workspaceSettingsManager: CEWorkspaceSettingsManager?
     var workspaceSettingsWindow: NSWindow?
     var quickOpenPanel: SearchPanel?
     var commandPalettePanel: SearchPanel?
@@ -41,7 +40,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         super.init(window: window)
         guard let workspace else { return }
         self.workspace = workspace
-        self.workspaceSettingsManager = CEWorkspaceSettingsManager(workspaceDocument: workspace)
         setupSplitView(with: workspace)
 
         // Previous:

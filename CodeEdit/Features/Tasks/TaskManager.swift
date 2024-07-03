@@ -5,7 +5,7 @@
 //  Created by Tommy Ludwig on 24.06.24.
 //
 
-import Foundation
+import SwiftUI
 import Combine
 
 /// This class handles the execution of tasks
@@ -13,7 +13,7 @@ class TaskManager: ObservableObject {
     @Published var activeTasks: [UUID: CEActiveTask] = [:]
     @Published var selectedTaskID: UUID?
 
-    @Published var workspaceSettings: CEWorkspaceSettings
+    @ObservedObject var workspaceSettings: CEWorkspaceSettings
 
     init(workspaceSettings: CEWorkspaceSettings) {
         self.workspaceSettings = workspaceSettings
@@ -67,6 +67,7 @@ class TaskManager: ObservableObject {
             }
         }
     }
+
     private func createRunningTask(taskID: UUID, runningTask: CEActiveTask) async {
         await MainActor.run {
             activeTasks[taskID] = runningTask

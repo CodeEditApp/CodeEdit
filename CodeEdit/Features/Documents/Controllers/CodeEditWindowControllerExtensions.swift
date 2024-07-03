@@ -104,9 +104,10 @@ extension CodeEditWindowController {
     }
 
     @IBAction func openWorkspaceSettings(_ sender: Any) {
-        guard let workspaceSettingsManager, let window = window, let workspace = workspace else {
-            return
-        }
+        guard let window = window,
+              let workspace = workspace,
+              let workspaceSettingsManager = workspace.workspaceSettingsManager
+        else { return }
 
         if let workspaceSettingsWindow, workspaceSettingsWindow.isVisible {
             workspaceSettingsWindow.makeKeyAndOrderFront(self)

@@ -5,7 +5,7 @@
 //  Created by Tommy Ludwig on 24.06.24.
 //
 
-import Foundation
+import SwiftUI
 import Combine
 
 /// Stores the state of a task once it's executed
@@ -17,7 +17,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     @Published private(set) var status: CETaskStatus = .notRunning
 
     /// The name of the associated task.
-    @Published var task: CETask
+    @ObservedObject var task: CETask
 
     var process: Process?
     var outputPipe: Pipe?
@@ -28,12 +28,10 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         self.task = task
         self.process = Process()
         self.outputPipe = Pipe()
-        
-        self.task.objectWillChange
-            .sink { _ in
-                print("task was chnaged")
-            }
-            .store(in: &cancellables)
+
+        self.task.objectWillChange.sink { _ in
+            self.objectWillChange.send()
+        }.store(in: &cancellables)
     }
 
     func run() {
@@ -57,7 +55,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             }
 
             do {
-                try TaskShell.executeCommandWithShell(
+                try await TaskShell.executeCommandWithShell(
                     process: process,
                     command: self.task.fullCommand,
                     shell: TaskShell.zsh, // TODO: Let user decide which shell he uses

@@ -22,7 +22,7 @@ struct TaskDropDownView: View {
                 if let selectedActiveTask = taskManager.activeTasks[selectedTask.id] {
                     TaskView(activeTask: selectedActiveTask, isCompact: true)
                 } else {
-                    defaultTaskView(task: selectedTask)
+                    DefaultTaskView(task: selectedTask)
                 }
             } else {
                 Text("Create Tasks")
@@ -66,20 +66,6 @@ struct TaskDropDownView: View {
         }
     }
 
-    private func defaultTaskView(task: CETask) -> some View {
-        HStack(spacing: 3) {
-            Image(systemName: "gearshape")
-                .imageScale(.medium)
-
-            Text(task.name)
-                .font(.subheadline)
-
-            Circle()
-                .fill(CETaskStatus.notRunning.color)
-                .frame(width: 5, height: 5)
-        }
-    }
-
     private var taskPopoverContent: some View {
         VStack(alignment: .leading, spacing: 0) {
             if !taskManager.availableTasks.isEmpty {
@@ -101,6 +87,23 @@ struct TaskDropDownView: View {
         }
         .padding(5)
         .frame(width: 215)
+    }
+
+    private struct DefaultTaskView: View {
+        @ObservedObject var task: CETask
+        var body: some View {
+            HStack(spacing: 3) {
+                Image(systemName: "gearshape")
+                    .imageScale(.medium)
+
+                Text(task.name)
+                    .font(.subheadline)
+
+                Circle()
+                    .fill(CETaskStatus.notRunning.color)
+                    .frame(width: 5, height: 5)
+            }
+        }
     }
 }
 
