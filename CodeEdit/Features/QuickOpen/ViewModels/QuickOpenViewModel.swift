@@ -11,7 +11,7 @@ import CollectionConcurrencyKit
 
 final class QuickOpenViewModel: ObservableObject {
     @Published var query: String = ""
-    @Published var searchResults: [OpenQuicklySearchResult] = []
+    @Published var searchResults: [SearchResult] = []
 
     let fileURL: URL
     var runningTask: Task<Void, Never>?
@@ -23,7 +23,7 @@ final class QuickOpenViewModel: ObservableObject {
     /// This is used to populate the ``QuickOpenItem`` view which shows the search results to the user.
     ///
     /// ``QuickOpenPreviewView`` also uses this to load the `fileUrl` for preview.
-    struct OpenQuicklySearchResult: Identifiable, Hashable {
+    struct SearchResult: Identifiable, Hashable {
         var id: String { fileURL.absoluteString }
         let fileURL: URL
         let matchedCharacters: [NSRange]
@@ -62,7 +62,7 @@ final class QuickOpenViewModel: ObservableObject {
                 let fuzzySearchResults = await filteredFiles.fuzzySearch(
                     query: self.query.trimmingCharacters(in: .whitespaces)
                 ).concurrentMap {
-                    OpenQuicklySearchResult(
+                    SearchResult(
                         fileURL: $0.item,
                         matchedCharacters: $0.result.matchedParts
                     )

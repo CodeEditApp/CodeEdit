@@ -9,11 +9,11 @@ import SwiftUI
 
 struct QuickOpenItem: View {
     private let baseDirectory: URL
-    private let searchResult: QuickOpenViewModel.OpenQuicklySearchResult
+    private let searchResult: QuickOpenViewModel.SearchResult
 
     init(
         baseDirectory: URL,
-        searchResult: QuickOpenViewModel.OpenQuicklySearchResult
+        searchResult: QuickOpenViewModel.SearchResult
     ) {
         self.baseDirectory = baseDirectory
         self.searchResult = searchResult
