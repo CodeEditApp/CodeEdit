@@ -29,7 +29,7 @@ final class OpenQuicklyViewModel: ObservableObject {
         let matchedCharacters: [NSRange]
     }
 
-    func fetchOpenQuickly() {
+    func fetchResults() {
         let startTime = Date()
         guard query != "" else {
             searchResults = []

@@ -61,7 +61,7 @@ struct OpenQuicklyView: View {
             onClose()
         }
         .onReceive(openQuicklyViewModel.$query.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
-            openQuicklyViewModel.fetchOpenQuickly()
+            openQuicklyViewModel.fetchResults()
         }
     }
 }
