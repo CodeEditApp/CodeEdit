@@ -41,7 +41,7 @@ struct OpenQuicklyView: View {
             text: $openQuicklyViewModel.query,
             optionRowHeight: 40
         ) { searchResult in
-            QuickOpenItem(
+            OpenQuicklyListItemView(
                 baseDirectory: openQuicklyViewModel.fileURL,
                 searchResult: searchResult
             )

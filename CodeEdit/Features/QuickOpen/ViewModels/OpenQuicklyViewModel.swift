@@ -20,7 +20,7 @@ final class OpenQuicklyViewModel: ObservableObject {
         self.fileURL = fileURL
     }
 
-    /// This is used to populate the ``QuickOpenItem`` view which shows the search results to the user.
+    /// This is used to populate the ``OpenQuicklyListItemView`` view which shows the search results to the user.
     ///
     /// ``OpenQuicklyPreviewView`` also uses this to load the `fileUrl` for preview.
     struct SearchResult: Identifiable, Hashable {

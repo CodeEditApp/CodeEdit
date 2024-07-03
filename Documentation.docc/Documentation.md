@@ -70,7 +70,7 @@
 ### QuickOpen
 
 - ``OpenQuicklyView``
-- ``QuickOpenItem``
+- ``OpenQuicklyListItemView``
 - ``OpenQuicklyViewModel``
 - ``OpenQuicklyPreviewView``
 
