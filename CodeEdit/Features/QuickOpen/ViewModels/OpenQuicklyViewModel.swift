@@ -1,5 +1,5 @@
 //
-//  QuickOpenState.swift
+//  OpenQuicklyViewModel.swift
 //  CodeEditModules/QuickOpen
 //
 //  Created by Marco Carnevali on 05/04/22.
@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import CollectionConcurrencyKit
 
-final class QuickOpenViewModel: ObservableObject {
+final class OpenQuicklyViewModel: ObservableObject {
     @Published var query: String = ""
     @Published var searchResults: [SearchResult] = []
 

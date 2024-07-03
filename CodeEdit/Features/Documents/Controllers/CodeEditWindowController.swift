@@ -126,7 +126,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     @IBAction func openQuickly(_ sender: Any) {
-        if let workspace, let state = workspace.quickOpenViewModel {
+        if let workspace, let state = workspace.openQuicklyViewModel {
             if let quickOpenPanel {
                 if quickOpenPanel.isKeyWindow {
                     quickOpenPanel.close()
