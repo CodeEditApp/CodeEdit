@@ -9,31 +9,31 @@ import SwiftUI
 
 struct QuickOpenItem: View {
     private let baseDirectory: URL
-    private let fileURL: URL
-    private let textToMatch: String
+    private let searchResult: QuickOpenViewModel.OpenQuicklySearchResult
 
     init(
         baseDirectory: URL,
-        fileURL: URL,
-        textToMatch: String
+        searchResult: QuickOpenViewModel.OpenQuicklySearchResult
     ) {
         self.baseDirectory = baseDirectory
-        self.fileURL = fileURL
-        self.textToMatch = textToMatch
+        self.searchResult = searchResult
     }
 
     var relativePathComponents: ArraySlice<String> {
-        return fileURL.pathComponents.dropFirst(baseDirectory.pathComponents.count).dropLast()
+        return searchResult.fileURL.pathComponents.dropFirst(baseDirectory.pathComponents.count).dropLast()
     }
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(nsImage: NSWorkspace.shared.icon(forFile: fileURL.path))
+            Image(nsImage: NSWorkspace.shared.icon(forFile: searchResult.fileURL.path))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
             VStack(alignment: .leading, spacing: 0) {
-                QuickSearchResultLabel(labelName: fileURL.lastPathComponent, textToMatch: textToMatch)
+                QuickSearchResultLabel(
+                    labelName: searchResult.fileURL.lastPathComponent,
+                    charactersToHighlight: searchResult.matchedCharacters
+                )
                 Text(relativePathComponents.joined(separator: " ▸ "))
                     .font(.system(size: 10.5))
                     .foregroundColor(.secondary)

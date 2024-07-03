@@ -11,7 +11,7 @@ import CollectionConcurrencyKit
 
 final class QuickOpenViewModel: ObservableObject {
     @Published var openQuicklyQuery: String = ""
-    @Published var openQuicklyFiles: [URL] = []
+    @Published var openQuicklySearchResults: [OpenQuicklySearchResult] = []
     @Published var isShowingOpenQuicklyFiles: Bool = false
 
     let fileURL: URL
@@ -21,11 +21,20 @@ final class QuickOpenViewModel: ObservableObject {
         self.fileURL = fileURL
     }
 
+    /// This is used to populate the ``QuickOpenItem`` view which shows the search results to the user.
+    ///
+    /// ``QuickOpenPreviewView`` also uses this to load the `fileUrl` for preview.
+    struct OpenQuicklySearchResult: Identifiable, Hashable {
+        var id: String { fileURL.absoluteString }
+        let fileURL: URL
+        let matchedCharacters: [NSRange]
+    }
+
     func fetchOpenQuickly() {
         let startTime = Date()
         guard openQuicklyQuery != "" else {
-            openQuicklyFiles = []
-            self.isShowingOpenQuicklyFiles = !openQuicklyFiles.isEmpty
+            openQuicklySearchResults = []
+            self.isShowingOpenQuicklyFiles = !openQuicklySearchResults.isEmpty
             return
         }
 
@@ -52,14 +61,19 @@ final class QuickOpenViewModel: ObservableObject {
                     }
                 }
 
-                let files = await filteredFiles.fuzzySearch(
+                let fuzzySearchResults = await filteredFiles.fuzzySearch(
                     query: self.openQuicklyQuery.trimmingCharacters(in: .whitespaces)
-                ).concurrentMap { $0.item }
+                ).concurrentMap {
+                    OpenQuicklySearchResult(
+                        fileURL: $0.item,
+                        matchedCharacters: $0.result.matchedParts
+                    )
+                }
 
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
-                    self.openQuicklyFiles = files
-                    self.isShowingOpenQuicklyFiles = !self.openQuicklyFiles.isEmpty
+                    self.openQuicklySearchResults = fuzzySearchResults
+                    self.isShowingOpenQuicklyFiles = !self.openQuicklySearchResults.isEmpty
                     print("Duration: \(Date().timeIntervalSince(startTime))")
                 }
             }

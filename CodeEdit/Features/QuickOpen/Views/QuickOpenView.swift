@@ -37,16 +37,19 @@ struct QuickOpenView: View {
         SearchPanelView(
             title: "Open Quickly",
             image: Image(systemName: "magnifyingglass"),
-            options: $state.openQuicklyFiles,
+            options: $state.openQuicklySearchResults,
             text: $state.openQuicklyQuery,
             optionRowHeight: 40
-        ) { file in
-            QuickOpenItem(baseDirectory: state.fileURL, fileURL: file, textToMatch: state.openQuicklyQuery)
-        } preview: { fileURL in
-            QuickOpenPreviewView(item: CEWorkspaceFile(url: fileURL))
-        } onRowClick: { fileURL in
+        ) { searchResult in
+            QuickOpenItem(
+                baseDirectory: state.fileURL,
+                searchResult: searchResult
+            )
+        } preview: { searchResult in
+            QuickOpenPreviewView(item: CEWorkspaceFile(url: searchResult.fileURL))
+        } onRowClick: { searchResult in
             guard let file = workspace.workspaceFileManager?.getFile(
-                fileURL.relativePath,
+                searchResult.fileURL.relativePath,
                 createIfNotFound: true
             ) else {
                 return

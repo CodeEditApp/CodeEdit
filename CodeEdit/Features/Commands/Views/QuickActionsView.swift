@@ -51,7 +51,11 @@ struct QuickActionsView: View {
             alwaysShowOptions: true,
             optionRowHeight: 30
         ) { command in
-            QuickSearchResultLabel(labelName: command.title, textToMatch: state.commandQuery)
+            QuickSearchResultLabel(
+                labelName: command.title,
+                charactersToHighlight: [],
+                nsLabelName: state.highlight(command.title)
+            )
         } onRowClick: { command in
             callHandler(command: command)
         } onClose: {

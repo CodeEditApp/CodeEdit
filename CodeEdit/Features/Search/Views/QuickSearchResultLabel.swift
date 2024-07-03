@@ -11,8 +11,9 @@ import SwiftUI
 /// the only way to fallback to UIKit and have NSViewRepresentable to be a bridge between UIKit and SwiftUI.
 /// Highlights currently entered text query
 struct QuickSearchResultLabel: NSViewRepresentable {
-    var labelName: String
-    var textToMatch: String
+    let labelName: String
+    let charactersToHighlight: [NSRange]
+    var nsLabelName: NSAttributedString?
 
     public func makeNSView(context: Context) -> some NSTextField {
         let label = NSTextField(wrappingLabelWithString: labelName)
@@ -26,24 +27,21 @@ struct QuickSearchResultLabel: NSViewRepresentable {
         label.cell?.truncatesLastVisibleLine = true
         label.cell?.wraps = true
         label.maximumNumberOfLines = 1
-        label.attributedStringValue = highlight()
+        label.attributedStringValue = nsLabelName ?? highlight()
         return label
     }
 
     func highlight() -> NSAttributedString {
         let attribText = NSMutableAttributedString(string: self.labelName)
-        let range: NSRange = attribText.mutableString.range(
-            of: self.textToMatch,
-            options: NSString.CompareOptions.caseInsensitive
-        )
-        attribText.addAttribute(.foregroundColor, value: NSColor(Color(.labelColor)), range: range)
-        attribText.addAttribute(.font, value: NSFont.boldSystemFont(ofSize: NSFont.systemFontSize), range: range)
-
+        for range in charactersToHighlight {
+            attribText.addAttribute(.foregroundColor, value: NSColor(Color(.labelColor)), range: range)
+            attribText.addAttribute(.font, value: NSFont.boldSystemFont(ofSize: NSFont.systemFontSize), range: range)
+        }
         return attribText
     }
 
     func updateNSView(_ nsView: NSViewType, context: Context) {
-        nsView.textColor = textToMatch.isEmpty ? .labelColor : .secondaryLabelColor
-        nsView.attributedStringValue = highlight()
+        nsView.textColor = nsLabelName == nil && charactersToHighlight.isEmpty ? .labelColor : .secondaryLabelColor
+        nsView.attributedStringValue = nsLabelName ?? highlight()
     }
 }
