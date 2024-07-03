@@ -37,8 +37,8 @@ struct QuickOpenView: View {
         SearchPanelView(
             title: "Open Quickly",
             image: Image(systemName: "magnifyingglass"),
-            options: $quickOpenViewModel.openQuicklySearchResults,
-            text: $quickOpenViewModel.openQuicklyQuery,
+            options: $quickOpenViewModel.searchResults,
+            text: $quickOpenViewModel.query,
             optionRowHeight: 40
         ) { searchResult in
             QuickOpenItem(
@@ -55,12 +55,12 @@ struct QuickOpenView: View {
                 return
             }
             openFile(file)
-            quickOpenViewModel.openQuicklyQuery = ""
+            quickOpenViewModel.query = ""
             onClose()
         } onClose: {
             onClose()
         }
-        .onReceive(quickOpenViewModel.$openQuicklyQuery.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
+        .onReceive(quickOpenViewModel.$query.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
             quickOpenViewModel.fetchOpenQuickly()
         }
     }

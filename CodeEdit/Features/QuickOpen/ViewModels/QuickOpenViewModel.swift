@@ -10,9 +10,9 @@ import Foundation
 import CollectionConcurrencyKit
 
 final class QuickOpenViewModel: ObservableObject {
-    @Published var openQuicklyQuery: String = ""
-    @Published var openQuicklySearchResults: [OpenQuicklySearchResult] = []
-    @Published var isShowingOpenQuicklyFiles: Bool = false
+    @Published var query: String = ""
+    @Published var searchResults: [OpenQuicklySearchResult] = []
+    @Published var showingSearchResults: Bool = false
 
     let fileURL: URL
     var runningTask: Task<Void, Never>?
@@ -32,9 +32,9 @@ final class QuickOpenViewModel: ObservableObject {
 
     func fetchOpenQuickly() {
         let startTime = Date()
-        guard openQuicklyQuery != "" else {
-            openQuicklySearchResults = []
-            self.isShowingOpenQuicklyFiles = !openQuicklySearchResults.isEmpty
+        guard query != "" else {
+            searchResults = []
+            self.showingSearchResults = !searchResults.isEmpty
             return
         }
 
@@ -62,7 +62,7 @@ final class QuickOpenViewModel: ObservableObject {
                 }
 
                 let fuzzySearchResults = await filteredFiles.fuzzySearch(
-                    query: self.openQuicklyQuery.trimmingCharacters(in: .whitespaces)
+                    query: self.query.trimmingCharacters(in: .whitespaces)
                 ).concurrentMap {
                     OpenQuicklySearchResult(
                         fileURL: $0.item,
@@ -72,8 +72,8 @@ final class QuickOpenViewModel: ObservableObject {
 
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
-                    self.openQuicklySearchResults = fuzzySearchResults
-                    self.isShowingOpenQuicklyFiles = !self.openQuicklySearchResults.isEmpty
+                    self.searchResults = fuzzySearchResults
+                    self.showingSearchResults = !self.searchResults.isEmpty
                     print("Duration: \(Date().timeIntervalSince(startTime))")
                 }
             }
