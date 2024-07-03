@@ -80,7 +80,7 @@ struct WorkspaceView: View {
                         }
                     }
                     .onChange(of: focusedEditor) { newValue in
-                        /// update active tab group only if the new one is not the same with it.
+                        /// Update active tab group only if the new one is not the same with it.
                         if let newValue, editorManager.activeEditor != newValue {
                             editorManager.activeEditor = newValue
                         }

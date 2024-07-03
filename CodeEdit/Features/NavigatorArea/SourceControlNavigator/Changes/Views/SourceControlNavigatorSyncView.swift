@@ -46,7 +46,6 @@ struct SourceControlNavigatorSyncView: View {
                 } else if sourceControlManager.numberOfUnsyncedCommits.ahead > 0
                     || currentBranch.upstream == nil {
                     Button {
-                        //                    self.push()
                         sourceControlManager.pushSheetIsPresented = true
                     } label: {
                         Text("Push...")
@@ -55,7 +54,6 @@ struct SourceControlNavigatorSyncView: View {
                 }
             }
         }
-
     }
 
     func pull() {
