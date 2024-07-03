@@ -67,7 +67,7 @@
 
 - ``LSPClient``
 
-### QuickOpen
+### OpenQuickly
 
 - ``OpenQuicklyView``
 - ``OpenQuicklyListItemView``
