@@ -132,7 +132,7 @@ struct NSTableViewWrapper<Content: View, Item: Identifiable & Hashable>: NSViewR
 
         func tableViewSelectionDidChange(_ notification: Notification) {
             if let view = notification.object as? NSTableView {
-                let newSelection = parent.data[view.selectedRow]
+                let newSelection = parent.data[safe: view.selectedRow]
                 if newSelection != parent.selection {
                     parent.selection = newSelection
                 }

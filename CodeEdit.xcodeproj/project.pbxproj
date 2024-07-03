@@ -325,6 +325,7 @@
 		61A53A812B4449F00093BF8A /* WorkspaceDocument+Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */; };
 		661EF7B82BEE215300C3E577 /* ImageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7B72BEE215300C3E577 /* ImageFileView.swift */; };
 		661EF7BD2BEE215300C3E577 /* LoadingFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */; };
+		662D48FD2C34E49B0057C7F9 /* Array+subscript_safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 662D48FC2C34E49B0057C7F9 /* Array+subscript_safe.swift */; };
 		669BC4082BED306400D1197C /* AnyFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669BC4072BED306400D1197C /* AnyFileView.swift */; };
 		66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */; };
 		66AF6CE42BF17F6800D83C9D /* StatusBarFileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE32BF17F6800D83C9D /* StatusBarFileInfoView.swift */; };
@@ -943,6 +944,7 @@
 		61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Index.swift"; sourceTree = "<group>"; };
 		661EF7B72BEE215300C3E577 /* ImageFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFileView.swift; sourceTree = "<group>"; };
 		661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingFileView.swift; sourceTree = "<group>"; };
+		662D48FC2C34E49B0057C7F9 /* Array+subscript_safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+subscript_safe.swift"; sourceTree = "<group>"; };
 		669BC4072BED306400D1197C /* AnyFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyFileView.swift; sourceTree = "<group>"; };
 		66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarViewModel.swift; sourceTree = "<group>"; };
 		66AF6CE32BF17F6800D83C9D /* StatusBarFileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarFileInfoView.swift; sourceTree = "<group>"; };
@@ -1760,6 +1762,7 @@
 		5878DAA0291AE76700DD95A3 /* QuickOpen */ = {
 			isa = PBXGroup;
 			children = (
+				662D48FB2C34E46F0057C7F9 /* Extensions */,
 				5878DAAA291D5CAA00DD95A3 /* ViewModels */,
 				5878DAA9291D5CA100DD95A3 /* Views */,
 			);
@@ -2533,6 +2536,14 @@
 				617DB3DE2C25E13800B58BFE /* TaskNotificationHandlerTests.swift */,
 			);
 			path = ActivityViewer;
+			sourceTree = "<group>";
+		};
+		662D48FB2C34E46F0057C7F9 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				662D48FC2C34E49B0057C7F9 /* Array+subscript_safe.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		66AF6CE02BF17CB100D83C9D /* ViewModels */ = {
@@ -3908,6 +3919,7 @@
 				B6EA1FF829DB78DB001BF195 /* ThemeSettingThemeRow.swift in Sources */,
 				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
 				587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */,
+				662D48FD2C34E49B0057C7F9 /* Array+subscript_safe.swift in Sources */,
 				588847692992ABCA00996D95 /* Array+SortURLs.swift in Sources */,
 				58822530292C280D00E83CDE /* UtilityAreaFilterTextField.swift in Sources */,
 				6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */,
