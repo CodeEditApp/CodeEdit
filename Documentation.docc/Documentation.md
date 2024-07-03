@@ -72,7 +72,7 @@
 - ``OpenQuicklyView``
 - ``QuickOpenItem``
 - ``OpenQuicklyViewModel``
-- ``QuickOpenPreviewView``
+- ``OpenQuicklyPreviewView``
 
 ### Search
 

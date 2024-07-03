@@ -46,7 +46,7 @@ struct OpenQuicklyView: View {
                 searchResult: searchResult
             )
         } preview: { searchResult in
-            QuickOpenPreviewView(item: CEWorkspaceFile(url: searchResult.fileURL))
+            OpenQuicklyPreviewView(item: CEWorkspaceFile(url: searchResult.fileURL))
         } onRowClick: { searchResult in
             guard let file = workspace.workspaceFileManager?.getFile(
                 searchResult.fileURL.relativePath,
