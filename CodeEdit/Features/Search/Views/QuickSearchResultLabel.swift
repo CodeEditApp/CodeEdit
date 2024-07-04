@@ -34,14 +34,18 @@ struct QuickSearchResultLabel: NSViewRepresentable {
     func highlight() -> NSAttributedString {
         let attribText = NSMutableAttributedString(string: self.labelName)
         for range in charactersToHighlight {
-            attribText.addAttribute(.foregroundColor, value: NSColor(Color(.labelColor)), range: range)
+            attribText.addAttribute(.foregroundColor, value: NSColor.controlTextColor, range: range)
             attribText.addAttribute(.font, value: NSFont.boldSystemFont(ofSize: NSFont.systemFontSize), range: range)
         }
         return attribText
     }
 
     func updateNSView(_ nsView: NSViewType, context: Context) {
-        nsView.textColor = nsLabelName == nil && charactersToHighlight.isEmpty ? .labelColor : .secondaryLabelColor
+        nsView.textColor = if nsLabelName == nil && charactersToHighlight.isEmpty {
+            .controlTextColor
+        } else {
+            .secondaryLabelColor
+        }
         nsView.attributedStringValue = nsLabelName ?? highlight()
     }
 }
