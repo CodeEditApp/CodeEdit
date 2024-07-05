@@ -83,7 +83,7 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
         if !name.isEmpty {
             try container.encode(name, forKey: .name)
         }
-        if !target.isEmpty || target == "My Mac" {
+        if !target.isEmpty && target != "My Mac" {
             try container.encode(target, forKey: .target)
         }
 
