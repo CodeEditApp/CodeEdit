@@ -84,8 +84,3 @@ internal extension Collection {
     }
 }
 
-internal extension String {
-    func escapedWhiteSpaces() -> String {
-        self.replacingOccurrences(of: " ", with: "\\ ")
-    }
-}
