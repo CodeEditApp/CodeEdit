@@ -23,25 +23,25 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
 
     var isInvalid: Bool {
         name.isEmpty ||
-        command.isEmpty ||
-        target.isEmpty ||
-        workingDirectory.isEmpty
+        command.isEmpty
     }
 
-    /// Ensures that the environment variables are exported, the shell navigates to the correct folder,
-    /// and then executes the specified command.
+    /// Ensures that the shell navigates to the correct folder, and then executes the specified command.
     var fullCommand: String {
-        // Export all necessary environment variables before starting the task
-        let environmentVariables = environmentVariables
-            .map { "export \($0.key)=\"\($0.value)\"" }
-            .joined(separator: " && ")
-            .appending(";")
-
         // Move into the specified folder if needed
         let changeDirectoryCommand = workingDirectory.isEmpty ? "" : "cd \(workingDirectory) && "
 
         // Construct the full command
-        return "\(environmentVariables)\(changeDirectoryCommand)\(command)"
+        return "\(changeDirectoryCommand)\(command)"
+    }
+
+    /// Converts an array of `EnvironmentVariable` to a dictionary.
+    ///
+    /// - Returns: A dictionary with the environment variable keys and values.
+    var environmentVariablesDictionary: [String: String] {
+        return environmentVariables.reduce(into: [String: String]()) { result, environmentVariable in
+            result[environmentVariable.key] = environmentVariable.value
+        }
     }
 
     enum CodingKeys: CodingKey {
@@ -68,8 +68,8 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
-        target = try container.decode(String.self, forKey: .target)
-        workingDirectory = try container.decode(String.self, forKey: .workingDirectory)
+        target = try container.decodeIfPresent(String.self, forKey: .target) ?? ""
+        workingDirectory = try container.decodeIfPresent(String.self, forKey: .workingDirectory) ?? ""
         command = try container.decode(String.self, forKey: .command)
 
         // Decode environment variables from a dictionary-like structure
@@ -80,10 +80,20 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(name, forKey: .name)
-        try container.encode(target, forKey: .target)
-        try container.encode(workingDirectory, forKey: .workingDirectory)
-        try container.encode(command, forKey: .command)
+        if !name.isEmpty {
+            try container.encode(name, forKey: .name)
+        }
+        if !target.isEmpty || target == "My Mac" {
+            try container.encode(target, forKey: .target)
+        }
+
+        // TODO: Only save if it isn't the workspaces default directory
+        if !workingDirectory.isEmpty {
+            try container.encode(workingDirectory, forKey: .workingDirectory)
+        }
+        if !command.isEmpty {
+            try container.encode(command, forKey: .command)
+        }
 
         // Encode environment variables as a dictionary-like structure
         if !environmentVariables.isEmpty {

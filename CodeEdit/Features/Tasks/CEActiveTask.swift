@@ -58,6 +58,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
                 try await TaskShell.executeCommandWithShell(
                     process: process,
                     command: self.task.fullCommand,
+                    environmentVariables: self.task.environmentVariablesDictionary,
                     shell: TaskShell.zsh, // TODO: Let user decide which shell he uses
                     outputPipe: outputPipe
                 )

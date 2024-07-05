@@ -51,7 +51,7 @@ struct SchemeDropDownView: View {
         .onHover(perform: { hovering in
             self.isHoveringScheme = hovering
         })
-        .popover(isPresented: $isSchemePopOverPresented) {
+        .popover(isPresented: $isSchemePopOverPresented, arrowEdge: .bottom) {
             VStack(alignment: .leading, spacing: 0) {
                 WorkspaceMenuItemView(
                     workspaceFileManager: workspaceFileManager,

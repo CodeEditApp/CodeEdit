@@ -311,7 +311,6 @@
 		6139B9152C29B36100CA584B /* CEActiveTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D435CD2C2969C300D032B8 /* CEActiveTask.swift */; };
 		6139B9162C29B36500CA584B /* CETaskStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D435D12C2969D800D032B8 /* CETaskStatus.swift */; };
 		6139B9172C29B36F00CA584B /* TaskShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D435C62C29686100D032B8 /* TaskShell.swift */; };
-		6139B9182C29B36F00CA584B /* Data+ConvertToString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D435C92C29687A00D032B8 /* Data+ConvertToString.swift */; };
 		613DF55E2B08DD5D00E9D902 /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613DF55D2B08DD5D00E9D902 /* FileHelper.swift */; };
 		61538B902B111FE800A88846 /* String+AppearancesOfSubstring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */; };
 		61538B932B11201900A88846 /* String+Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B922B11201900A88846 /* String+Character.swift */; };
@@ -343,7 +342,6 @@
 		61A3E3E72C33383100076BD3 /* EnvironmentVariableListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3E3E62C33383100076BD3 /* EnvironmentVariableListItem.swift */; };
 		61A53A7E2B4449870093BF8A /* WorkspaceDocument+Find.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A53A7D2B4449870093BF8A /* WorkspaceDocument+Find.swift */; };
 		61A53A812B4449F00093BF8A /* WorkspaceDocument+Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */; };
-		61D435CA2C29687A00D032B8 /* Data+ConvertToString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61D435C92C29687A00D032B8 /* Data+ConvertToString.swift */; };
 		661EF7B82BEE215300C3E577 /* ImageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7B72BEE215300C3E577 /* ImageFileView.swift */; };
 		661EF7BD2BEE215300C3E577 /* LoadingFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */; };
 		669BC4082BED306400D1197C /* AnyFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669BC4072BED306400D1197C /* AnyFileView.swift */; };
@@ -963,7 +961,6 @@
 		61A53A7D2B4449870093BF8A /* WorkspaceDocument+Find.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Find.swift"; sourceTree = "<group>"; };
 		61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Index.swift"; sourceTree = "<group>"; };
 		61D435C62C29686100D032B8 /* TaskShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskShell.swift; sourceTree = "<group>"; };
-		61D435C92C29687A00D032B8 /* Data+ConvertToString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+ConvertToString.swift"; sourceTree = "<group>"; };
 		61D435CB2C29699800D032B8 /* TaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
 		61D435CD2C2969C300D032B8 /* CEActiveTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEActiveTask.swift; sourceTree = "<group>"; };
 		61D435D12C2969D800D032B8 /* CETaskStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CETaskStatus.swift; sourceTree = "<group>"; };
@@ -2608,7 +2605,6 @@
 			isa = PBXGroup;
 			children = (
 				61D435C62C29686100D032B8 /* TaskShell.swift */,
-				61D435C92C29687A00D032B8 /* Data+ConvertToString.swift */,
 			);
 			path = Shell;
 			sourceTree = "<group>";
@@ -3991,7 +3987,6 @@
 				58798250292E78D80085B254 /* CodeFileDocument.swift in Sources */,
 				5878DAA5291AE76700DD95A3 /* QuickOpenView.swift in Sources */,
 				6139B9172C29B36F00CA584B /* TaskShell.swift in Sources */,
-				6139B9182C29B36F00CA584B /* Data+ConvertToString.swift in Sources */,
 				201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */,
 				30B088162C0D53080063A882 /* LSPCache.swift in Sources */,
 				B6F0517929D9E3C900D72287 /* SourceControlGitView.swift in Sources */,
@@ -4073,7 +4068,6 @@
 				617DB3DF2C25E13800B58BFE /* TaskNotificationHandlerTests.swift in Sources */,
 				775566502C27FD1B001E7A4D /* CodeFileDocument+UTTypeTests.swift in Sources */,
 				587B60F82934124200D5CD8F /* CEWorkspaceFileManagerTests.swift in Sources */,
-				61D435CA2C29687A00D032B8 /* Data+ConvertToString.swift in Sources */,
 				6130535F2B23A31300D767E3 /* MemorySearchTests.swift in Sources */,
 				587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */,
 				6C1F3DA22C18C55800F6DEF6 /* ShellIntegrationTests.swift in Sources */,
