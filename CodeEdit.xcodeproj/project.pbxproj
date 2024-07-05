@@ -326,6 +326,7 @@
 		661EF7B82BEE215300C3E577 /* ImageFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7B72BEE215300C3E577 /* ImageFileView.swift */; };
 		661EF7BD2BEE215300C3E577 /* LoadingFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */; };
 		669A50512C380C1800304CD8 /* String+escapedWhiteSpaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669A50502C380C1800304CD8 /* String+escapedWhiteSpaces.swift */; };
+		669A50532C380C8E00304CD8 /* Collection+subscript_safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669A50522C380C8E00304CD8 /* Collection+subscript_safe.swift */; };
 		669BC4082BED306400D1197C /* AnyFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669BC4072BED306400D1197C /* AnyFileView.swift */; };
 		66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */; };
 		66AF6CE42BF17F6800D83C9D /* StatusBarFileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE32BF17F6800D83C9D /* StatusBarFileInfoView.swift */; };
@@ -945,6 +946,7 @@
 		661EF7B72BEE215300C3E577 /* ImageFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFileView.swift; sourceTree = "<group>"; };
 		661EF7BC2BEE215300C3E577 /* LoadingFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingFileView.swift; sourceTree = "<group>"; };
 		669A50502C380C1800304CD8 /* String+escapedWhiteSpaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+escapedWhiteSpaces.swift"; sourceTree = "<group>"; };
+		669A50522C380C8E00304CD8 /* Collection+subscript_safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+subscript_safe.swift"; sourceTree = "<group>"; };
 		669BC4072BED306400D1197C /* AnyFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyFileView.swift; sourceTree = "<group>"; };
 		66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarViewModel.swift; sourceTree = "<group>"; };
 		66AF6CE32BF17F6800D83C9D /* StatusBarFileInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarFileInfoView.swift; sourceTree = "<group>"; };
@@ -2542,6 +2544,7 @@
 		669A504F2C380BFD00304CD8 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
+				669A50522C380C8E00304CD8 /* Collection+subscript_safe.swift */,
 			);
 			path = Collection;
 			sourceTree = "<group>";
@@ -3994,6 +3997,7 @@
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
 				611191FE2B08CCD200D4459B /* SearchIndexer+File.swift in Sources */,
 				77A01E302BB4270F00F0EA38 /* ProjectCEWorkspaceSettingsView.swift in Sources */,
+				669A50532C380C8E00304CD8 /* Collection+subscript_safe.swift in Sources */,
 				77A01E2C2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift in Sources */,
 				5B241BF32B6DDBFF0016E616 /* IgnorePatternListItemView.swift in Sources */,
 				6CB52DC92AC8DC3E002E75B3 /* CEWorkspaceFileManager+FileManagement.swift in Sources */,
