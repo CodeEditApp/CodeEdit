@@ -37,6 +37,8 @@ struct SourceControlStashView: View {
                         }
                         try await sourceControlManager.applyStashEntry(stashEntry: lastStashEntry)
                     }
+                    sourceControlManager.operationRemote = nil
+                    sourceControlManager.operationBranch = nil
                     sourceControlManager.pullSheetIsPresented = false
                 }
 
