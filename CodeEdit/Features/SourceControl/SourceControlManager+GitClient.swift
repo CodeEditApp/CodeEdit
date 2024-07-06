@@ -240,6 +240,7 @@ extension SourceControlManager {
     /// Add existing remote to git
     func addRemote(name: String, location: String) async throws {
         try await gitClient.addRemote(name: name, location: location)
+        try await refreshRemotes()
     }
 
     /// Get all remotes

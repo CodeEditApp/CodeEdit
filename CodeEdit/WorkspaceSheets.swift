@@ -21,7 +21,8 @@ struct WorkspaceSheets: View {
             }
             .sheet(isPresented: Binding<Bool>(
                 get: { sourceControlManager.pullSheetIsPresented &&
-                       !sourceControlManager.addExistingRemoteSheetIsPresented },
+                       !sourceControlManager.addExistingRemoteSheetIsPresented &&
+                       !sourceControlManager.stashSheetIsPresented },
                 set: { sourceControlManager.pullSheetIsPresented = $0 }
             )) {
                 if sourceControlManager.addExistingRemoteSheetIsPresented == true {

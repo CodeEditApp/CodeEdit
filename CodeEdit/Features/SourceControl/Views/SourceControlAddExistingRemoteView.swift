@@ -25,6 +25,11 @@ struct SourceControlAddExistingRemoteView: View {
         Task {
             do {
                 try await sourceControlManager.addRemote(name: name, location: location)
+                if sourceControlManager.pullSheetIsPresented || sourceControlManager.pushSheetIsPresented {
+                    sourceControlManager.operationRemote = sourceControlManager.remotes.first(
+                        where: { $0.name == name }
+                    )
+                }
                 name = ""
                 location = ""
                 dismiss()

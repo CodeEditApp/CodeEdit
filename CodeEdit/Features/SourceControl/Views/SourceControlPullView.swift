@@ -11,19 +11,23 @@ struct SourceControlPullView: View {
     @Environment(\.dismiss)
     private var dismiss
 
-    @EnvironmentObject var scm: SourceControlManager
-
-    @State var branch: GitBranch?
-    @State var remote: GitRemote?
-    @State var rebase: Bool = false
+    @EnvironmentObject var sourceControlManager: SourceControlManager
 
     func submit() {
         Task {
             do {
-                try await scm.pull(remote: remote?.name ?? nil, branch: branch?.name ?? nil, rebase: rebase)
-                dismiss()
+                if !sourceControlManager.changedFiles.isEmpty {
+                    sourceControlManager.stashSheetIsPresented = true
+                } else {
+                    try await sourceControlManager.pull(
+                        remote: sourceControlManager.operationRemote?.name ?? nil,
+                        branch: sourceControlManager.operationBranch?.name ?? nil,
+                        rebase: sourceControlManager.operationRebase
+                    )
+                    dismiss()
+                }
             } catch {
-                await scm.showAlertForError(title: "Failed to pull", error: error)
+                await sourceControlManager.showAlertForError(title: "Failed to pull", error: error)
             }
         }
     }
@@ -33,8 +37,8 @@ struct SourceControlPullView: View {
             Form {
                 Section {
                     RemoteBranchPicker(
-                        branch: $branch,
-                        remote: $remote,
+                        branch: $sourceControlManager.operationBranch,
+                        remote: $sourceControlManager.operationRemote,
                         onSubmit: submit,
                         canCreateBranch: false
                     )
@@ -42,7 +46,7 @@ struct SourceControlPullView: View {
                     Text("Pull remote changes from")
                 }
                 Section {
-                    Toggle("Rebase local changes onto upstream changes", isOn: $rebase)
+                    Toggle("Rebase local changes onto upstream changes", isOn: $sourceControlManager.operationRebase)
                 }
             }
             .formStyle(.grouped)

@@ -13,12 +13,33 @@ struct SourceControlStashView: View {
     private var dismiss
 
     @State private var message: String = ""
+    @State private var applyStashAfterOperation: Bool = false
 
     func submit() {
         Task {
             do {
                 try await sourceControlManager.stashChanges(message: message)
                 message = ""
+
+                if sourceControlManager.pullSheetIsPresented {
+                    try await sourceControlManager.pull(
+                        remote: sourceControlManager.operationRemote?.name ?? nil,
+                        branch: sourceControlManager.operationBranch?.name ?? nil,
+                        rebase: sourceControlManager.operationRebase
+                    )
+                    if applyStashAfterOperation {
+                        guard let lastStashEntry = sourceControlManager.stashEntries.first else {
+                            throw NSError(
+                                domain: "SourceControl",
+                                code: 1,
+                                userInfo: [NSLocalizedDescriptionKey: "Could not find last stash"]
+                            )
+                        }
+                        try await sourceControlManager.applyStashEntry(stashEntry: lastStashEntry)
+                    }
+                    sourceControlManager.pullSheetIsPresented = false
+                }
+
                 dismiss()
             } catch {
                 await sourceControlManager.showAlertForError(title: "Failed to stash changes", error: error)
@@ -35,10 +56,20 @@ struct SourceControlStashView: View {
                         .lineLimit(3...3)
                         .contentShape(Rectangle())
                         .frame(height: 48)
+                    if sourceControlManager.pullSheetIsPresented {
+                        Toggle("Apply stash after operation", isOn: $applyStashAfterOperation)
+                    }
                 } header: {
                     Text("Stash Changes")
-                    Text("Enter a description for your stashed changes so you can reference them later. " +
-                         "Stashes will appear in the Source Control navigator for your repository.")
+                    Group {
+                        if sourceControlManager.pullSheetIsPresented {
+                            Text("Your local repository has uncommitted changes that need to be stashed before you can continue. " +
+                                 "Enter a description for your changes.")
+                        } else {
+                            Text("Enter a description for your stashed changes so you can reference them later. " +
+                                 "Stashes will appear in the Source Control navigator for your repository.")
+                        }
+                    }
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
                 }
@@ -53,7 +84,7 @@ struct SourceControlStashView: View {
                     message = ""
                     dismiss()
                 }
-                Button("Stash", action: submit)
+                Button(sourceControlManager.pullSheetIsPresented ? "Stash and Pull" : "Stash", action: submit)
                     .buttonStyle(.borderedProminent)
             }
             .padding(.horizontal, 20)

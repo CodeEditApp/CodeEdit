@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RemoteBranchPicker: View {
-    @EnvironmentObject var scm: SourceControlManager
+    @EnvironmentObject var sourceControlManager: SourceControlManager
 
     @Binding var branch: GitBranch?
     @Binding var remote: GitRemote?
@@ -17,13 +17,15 @@ struct RemoteBranchPicker: View {
     let canCreateBranch: Bool
 
     var shouldCreateBranch: Bool {
-        canCreateBranch && !(remote?.branches?.contains(where: { $0.name == (scm.currentBranch?.name ?? "") }) ?? true)
+        canCreateBranch && !(remote?.branches?.contains(
+            where: { $0.name == (sourceControlManager.currentBranch?.name ?? "") }) ?? true
+        )
     }
 
     var body: some View {
         Group {
             Picker(selection: $remote) {
-                ForEach(scm.remotes, id: \.name) { remote in
+                ForEach(sourceControlManager.remotes, id: \.name) { remote in
                     Label {
                         Text(remote.name)
                     } icon: {
@@ -40,11 +42,11 @@ struct RemoteBranchPicker: View {
             Picker(selection: $branch) {
                 if shouldCreateBranch {
                     Label {
-                        Text("\(scm.currentBranch?.name ?? "") (Create)")
+                        Text("\(sourceControlManager.currentBranch?.name ?? "") (Create)")
                     } icon: {
                         Image(symbol: "branch")
                     }
-                    .tag(scm.currentBranch)
+                    .tag(sourceControlManager.currentBranch)
                 }
                 if let branches = remote?.branches, !branches.isEmpty {
                     ForEach(branches, id: \.longName) { branch in
@@ -61,11 +63,13 @@ struct RemoteBranchPicker: View {
             }
         }
         .onAppear {
-            updateRemote()
+            if remote == nil {
+                updateRemote()
+            }
         }
         .onChange(of: remote) { newValue in
             if newValue == nil {
-                scm.addExistingRemoteSheetIsPresented = true
+                sourceControlManager.addExistingRemoteSheetIsPresented = true
             } else {
                 updateBranch()
             }
@@ -73,17 +77,17 @@ struct RemoteBranchPicker: View {
     }
 
     private func updateRemote() {
-        if let currentBranch = scm.currentBranch, let upstream = currentBranch.upstream {
-            self.remote = scm.remotes.first(where: { upstream.starts(with: $0.name) })
+        if let currentBranch = sourceControlManager.currentBranch, let upstream = currentBranch.upstream {
+            self.remote = sourceControlManager.remotes.first(where: { upstream.starts(with: $0.name) })
         } else {
-            self.remote = scm.remotes.first
+            self.remote = sourceControlManager.remotes.first
         }
     }
 
     private func updateBranch() {
         if shouldCreateBranch {
-            self.branch = scm.currentBranch
-        } else if let currentBranch = scm.currentBranch,
+            self.branch = sourceControlManager.currentBranch
+        } else if let currentBranch = sourceControlManager.currentBranch,
              let upstream = currentBranch.upstream,
              let remote = self.remote,
              let branches = remote.branches,

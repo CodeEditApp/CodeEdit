@@ -54,6 +54,21 @@ final class SourceControlManager: ObservableObject {
     /// Is the remote sheet presented
     @Published var addExistingRemoteSheetIsPresented: Bool = false
 
+    /// Branch selected for source control operations
+    @Published var operationBranch: GitBranch?
+
+    /// Remote selected for source control operations
+    @Published var operationRemote: GitRemote?
+
+    /// Rebase boolean set for source control operations
+    @Published var operationRebase: Bool = false
+
+    /// Force boolean set for source control operations
+    @Published var operationForce: Bool = false
+
+    /// Include tags boolean set for source control operations
+    @Published var operationIncludeTags: Bool = false
+
     var orderedLocalBranches: [GitBranch] {
         var orderedBranches: [GitBranch] = [currentBranch].compactMap { $0 }
         let otherBranches = branches.filter { $0.isLocal && $0 != currentBranch }

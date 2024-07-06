@@ -11,24 +11,19 @@ struct SourceControlPushView: View {
     @Environment(\.dismiss)
     private var dismiss
 
-    @EnvironmentObject var scm: SourceControlManager
-
-    @State var branch: GitBranch?
-    @State var remote: GitRemote?
-    @State var force: Bool = false
-    @State var includeTags: Bool = false
+    @EnvironmentObject var sourceControlManager: SourceControlManager
 
     func submit() {
         Task {
             do {
-                try await scm.push(
-                    remote: remote?.name ?? nil,
-                    branch: branch?.name ?? nil,
-                    setUpstream: scm.currentBranch?.upstream == nil
+                try await sourceControlManager.push(
+                    remote: sourceControlManager.operationRemote?.name ?? nil,
+                    branch: sourceControlManager.operationBranch?.name ?? nil,
+                    setUpstream: sourceControlManager.currentBranch?.upstream == nil
                 )
                 dismiss()
             } catch {
-                await scm.showAlertForError(title: "Failed to push", error: error)
+                await sourceControlManager.showAlertForError(title: "Failed to push", error: error)
             }
         }
     }
@@ -38,8 +33,8 @@ struct SourceControlPushView: View {
             Form {
                 Section {
                     RemoteBranchPicker(
-                        branch: $branch,
-                        remote: $remote,
+                        branch: $sourceControlManager.operationBranch,
+                        remote: $sourceControlManager.operationRemote,
                         onSubmit: submit,
                         canCreateBranch: true
                     )
@@ -47,8 +42,8 @@ struct SourceControlPushView: View {
                     Text("Push local changes to")
                 }
                 Section {
-                    Toggle("Force", isOn: $force)
-                    Toggle("Include Tags", isOn: $includeTags)
+                    Toggle("Force", isOn: $sourceControlManager.operationForce)
+                    Toggle("Include Tags", isOn: $sourceControlManager.operationIncludeTags)
                 }
             }
             .formStyle(.grouped)
