@@ -18,8 +18,8 @@ struct RemoteBranchPicker: View {
 
     var shouldCreateBranch: Bool {
         canCreateBranch && !(remote?.branches?.contains(
-            where: { $0.name == (sourceControlManager.currentBranch?.name ?? "") }) ?? true
-        )
+            where: { $0.name == (sourceControlManager.currentBranch?.name ?? "") }
+        ) ?? true)
     }
 
     var body: some View {

@@ -63,8 +63,8 @@ struct SourceControlStashView: View {
                     Text("Stash Changes")
                     Group {
                         if sourceControlManager.pullSheetIsPresented {
-                            Text("Your local repository has uncommitted changes that need to be stashed before you can continue. " +
-                                 "Enter a description for your changes.")
+                            Text("Your local repository has uncommitted changes that need to be stashed " +
+                                 "before you can continue. Enter a description for your changes.")
                         } else {
                             Text("Enter a description for your stashed changes so you can reference them later. " +
                                  "Stashes will appear in the Source Control navigator for your repository.")
