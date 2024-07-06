@@ -56,9 +56,6 @@ struct SourceControlStashView: View {
                         .lineLimit(3...3)
                         .contentShape(Rectangle())
                         .frame(height: 48)
-                    if sourceControlManager.pullSheetIsPresented {
-                        Toggle("Apply stash after operation", isOn: $applyStashAfterOperation)
-                    }
                 } header: {
                     Text("Stash Changes")
                     Group {
@@ -72,6 +69,11 @@ struct SourceControlStashView: View {
                     }
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
+                }
+                if sourceControlManager.pullSheetIsPresented {
+                    Section {
+                        Toggle("Apply stash after operation", isOn: $applyStashAfterOperation)
+                    }
                 }
             }
             .formStyle(.grouped)
