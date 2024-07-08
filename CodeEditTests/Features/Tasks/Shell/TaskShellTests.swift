@@ -27,7 +27,7 @@ final class TaskShellTests: XCTestCase {
     func testExecuteCommandWithShellInitialization() {
         let command = "echo $STATE"
         let environmentVariables = ["STATE": "Testing"]
-        let shell: TaskShell = .zsh
+        let shell: TaskShell = .bash
 
         XCTAssertNoThrow(try TaskShell.executeCommandWithShell(
             process: process,

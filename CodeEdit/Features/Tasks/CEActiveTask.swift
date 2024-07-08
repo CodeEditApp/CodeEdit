@@ -50,17 +50,17 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
                 Task {
                     await self.updateOutput(String(decoding: data, as: UTF8.self))
                 }
-
-                do {
-                    try await TaskShell.executeCommandWithShell(
-                        process: process,
-                        command: self.task.fullCommand,
-                        environmentVariables: self.task.environmentVariablesDictionary,
-                        shell: TaskShell.zsh, // TODO: Let user decide which shell he uses
-                        outputPipe: outputPipe
-                    )
-                } catch { print(error) }
             }
+
+            do {
+                try await TaskShell.executeCommandWithShell(
+                    process: process,
+                    command: self.task.fullCommand,
+                    environmentVariables: self.task.environmentVariablesDictionary,
+                    shell: TaskShell.zsh, // TODO: Let user decide which shell he uses
+                    outputPipe: outputPipe
+                )
+            } catch { print(error) }
         }
     }
 
