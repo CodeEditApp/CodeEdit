@@ -36,21 +36,21 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     func run() {
         guard let process, let outputPipe else { return }
-        
+
         Task { await updateTaskStatus(to: .running) }
         createStatusTaskNotification()
-        
+
         process.terminationHandler = { [weak self] _ in
             self?.handleProcessFinished()
         }
-        
+
         Task.detached {
             outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
                 let data = fileHandle.availableData
                 Task {
                     await self.updateOutput(String(decoding: data, as: UTF8.self))
                 }
-                
+
                 do {
                     try await TaskShell.executeCommandWithShell(
                         process: process,
