@@ -15,14 +15,13 @@ final class TaskManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        if let jsonData = "{}".data(using: .utf8) {
-            do {
-                let workspaceSettings = try JSONDecoder().decode(CEWorkspaceSettings.self, from: jsonData)
-                mockWorkspaceSettings = workspaceSettings
-            } catch {
-                XCTFail("Error decoding JSON: \(error.localizedDescription)")
-            }
+        do {
+            let workspaceSettings = try JSONDecoder().decode(CEWorkspaceSettings.self, from: Data("{}".utf8))
+            mockWorkspaceSettings = workspaceSettings
+        } catch {
+            XCTFail("Error decoding JSON: \(error.localizedDescription)")
         }
+
         taskManager = TaskManager(workspaceSettings: mockWorkspaceSettings)
     }
 

@@ -47,12 +47,9 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         Task.detached {
             outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
                 let data = fileHandle.availableData
-                if let outputString = String(data: data, encoding: .utf8), !outputString.isEmpty {
-                    Task {
-                        await self.updateOutput(outputString)
-                    }
+                Task {
+                    await self.updateOutput(String(decoding: data, as: UTF8.self))
                 }
-            }
 
             do {
                 try await TaskShell.executeCommandWithShell(

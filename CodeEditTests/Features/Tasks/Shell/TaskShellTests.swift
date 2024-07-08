@@ -45,8 +45,8 @@ final class TaskShellTests: XCTestCase {
 
         // Additional assertion to check output
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let outputString = String(data: outputData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
-        XCTAssertTrue(outputString?.contains("Testing") ?? false)
+        let outputString = String(decoding: outputData, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
+        XCTAssertTrue(outputString.contains("Testing"))
     }
 
     func testExecuteCommandWithShellOutput() {
@@ -63,8 +63,8 @@ final class TaskShellTests: XCTestCase {
         ))
 
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let outputString = String(data: outputData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
-        XCTAssertTrue(outputString?.contains("Testing") ?? false)
+        let outputString = String(decoding: outputData, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
+        XCTAssertTrue(outputString.contains("Testing"))
     }
 
     func testExecuteCommandWithExecutableOverrideAttempt() {
