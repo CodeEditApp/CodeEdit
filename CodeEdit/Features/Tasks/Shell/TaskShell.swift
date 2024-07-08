@@ -7,7 +7,8 @@
 
 import Foundation
 
-// name shell already taken...
+/// `TaskShell` provides a mechanism for executing shell commands using different shell environments.
+/// It supports a variety of shells including bash, zsh, sh, csh, tcsh, and ksh.
 public enum TaskShell: String {
     case bash = "/bin/bash"
     case zsh = "/bin/zsh"

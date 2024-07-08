@@ -16,6 +16,20 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
     @Published var command: String = ""
     @Published var environmentVariables: [EnvironmentVariable]  = []
 
+    init(
+        name: String = "",
+        target: String = "",
+        workingDirectory: String = "",
+        command: String = "",
+        environmentVariables: [CETask.EnvironmentVariable] = []
+    ) {
+        self.name = name
+        self.target = target
+        self.workingDirectory = workingDirectory
+        self.command = command
+        self.environmentVariables = environmentVariables
+    }
+
     init(target: String, workingDirectory: String) {
         self.target = target
         self.workingDirectory = workingDirectory

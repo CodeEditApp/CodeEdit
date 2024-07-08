@@ -68,7 +68,6 @@ extension CodeEditWindowController {
     }
 
     // swiftlint:disable:next function_body_length
-    // swiftlint:disable:next cyclomatic_complexity
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
