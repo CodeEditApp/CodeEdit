@@ -36,33 +36,31 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     func run() {
         guard let process, let outputPipe else { return }
-
+        
         Task { await updateTaskStatus(to: .running) }
         createStatusTaskNotification()
-
+        
         process.terminationHandler = { [weak self] _ in
             self?.handleProcessFinished()
         }
-
+        
         Task.detached {
             outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
                 let data = fileHandle.availableData
-                if let outputString = String(data: data, encoding: .utf8), !outputString.isEmpty {
-                    Task {
-                        await self.updateOutput(outputString)
-                    }
+                Task {
+                    await self.updateOutput(String(decoding: data, as: UTF8.self))
                 }
+                
+                do {
+                    try await TaskShell.executeCommandWithShell(
+                        process: process,
+                        command: self.task.fullCommand,
+                        environmentVariables: self.task.environmentVariablesDictionary,
+                        shell: TaskShell.zsh, // TODO: Let user decide which shell he uses
+                        outputPipe: outputPipe
+                    )
+                } catch { print(error) }
             }
-
-            do {
-                try await TaskShell.executeCommandWithShell(
-                    process: process,
-                    command: self.task.fullCommand,
-                    environmentVariables: self.task.environmentVariablesDictionary,
-                    shell: TaskShell.zsh, // TODO: Let user decide which shell he uses
-                    outputPipe: outputPipe
-                )
-            } catch { print(error) }
         }
     }
 
