@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SettingsColorPicker: View {
+struct SettingsColorPicker<Content>: View where Content: View {
 
     /// Color modified elsewhere in user theme
     @Binding var color: Color
@@ -17,17 +17,28 @@ struct SettingsColorPicker: View {
     @State private var selectedColor: Color
 
     private let label: String
+    private let content: Content?
 
-    init(_ label: String, color: Binding<Color>) {
+    init(_ label: String, color: Binding<Color>, @ViewBuilder content: @escaping () -> Content) {
         self._color = color
         self.label = label
         self._selectedColor = State(initialValue: color.wrappedValue)
+        self.content = content()
+    }
+
+    init(_ label: String, color: Binding<Color>) where Content == EmptyView {
+        self.init(label, color: color) {
+            EmptyView()
+        }
     }
 
     var body: some View {
         LabeledContent(label) {
-            ColorPicker(selection: $selectedColor, supportsOpacity: false) { }
-                .labelsHidden()
+            HStack(spacing: 16) {
+                content
+                ColorPicker(selection: $selectedColor, supportsOpacity: false) { }
+                    .labelsHidden()
+            }
         }
         .onChange(of: selectedColor) { newValue in
             color = newValue

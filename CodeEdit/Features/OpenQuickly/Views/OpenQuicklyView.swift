@@ -1,5 +1,5 @@
 //
-//  QuickOpenView.swift
+//  OpenQuicklyView.swift
 //  CodeEditModules/QuickOpen
 //
 //  Created by Pavel Kasila on 20.03.22.
@@ -13,22 +13,22 @@ extension URL: Identifiable {
     }
 }
 
-struct QuickOpenView: View {
+struct OpenQuicklyView: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
 
     private let onClose: () -> Void
     private let openFile: (CEWorkspaceFile) -> Void
 
-    @ObservedObject private var state: QuickOpenViewModel
+    @ObservedObject private var openQuicklyViewModel: OpenQuicklyViewModel
 
     @State private var selectedItem: CEWorkspaceFile?
 
     init(
-        state: QuickOpenViewModel,
+        state: OpenQuicklyViewModel,
         onClose: @escaping () -> Void,
         openFile: @escaping (CEWorkspaceFile) -> Void
     ) {
-        self.state = state
+        self.openQuicklyViewModel = state
         self.onClose = onClose
         self.openFile = openFile
     }
@@ -37,28 +37,31 @@ struct QuickOpenView: View {
         SearchPanelView(
             title: "Open Quickly",
             image: Image(systemName: "magnifyingglass"),
-            options: $state.openQuicklyFiles,
-            text: $state.openQuicklyQuery,
+            options: $openQuicklyViewModel.searchResults,
+            text: $openQuicklyViewModel.query,
             optionRowHeight: 40
-        ) { file in
-            QuickOpenItem(baseDirectory: state.fileURL, fileURL: file)
-        } preview: { fileURL in
-            QuickOpenPreviewView(item: CEWorkspaceFile(url: fileURL))
-        } onRowClick: { fileURL in
+        ) { searchResult in
+            OpenQuicklyListItemView(
+                baseDirectory: openQuicklyViewModel.fileURL,
+                searchResult: searchResult
+            )
+        } preview: { searchResult in
+            OpenQuicklyPreviewView(item: CEWorkspaceFile(url: searchResult.fileURL))
+        } onRowClick: { searchResult in
             guard let file = workspace.workspaceFileManager?.getFile(
-                fileURL.relativePath,
+                searchResult.fileURL.relativePath,
                 createIfNotFound: true
             ) else {
                 return
             }
             openFile(file)
-            state.openQuicklyQuery = ""
+            openQuicklyViewModel.query = ""
             onClose()
         } onClose: {
             onClose()
         }
-        .onReceive(state.$openQuicklyQuery.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
-            state.fetchOpenQuickly()
+        .onReceive(openQuicklyViewModel.$query.debounce(for: 0.2, scheduler: DispatchQueue.main)) { _ in
+            openQuicklyViewModel.fetchResults()
         }
     }
 }

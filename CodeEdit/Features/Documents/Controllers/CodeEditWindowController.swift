@@ -127,7 +127,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     @IBAction func openQuickly(_ sender: Any) {
-        if let workspace, let state = workspace.quickOpenViewModel {
+        if let workspace, let state = workspace.openQuicklyViewModel {
             if let quickOpenPanel {
                 if quickOpenPanel.isKeyWindow {
                     quickOpenPanel.close()
@@ -140,7 +140,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 let panel = SearchPanel()
                 self.quickOpenPanel = panel
 
-                let contentView = QuickOpenView(state: state) {
+                let contentView = OpenQuicklyView(state: state) {
                     panel.close()
                 } openFile: { file in
                     workspace.editorManager.openTab(item: file)
