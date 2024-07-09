@@ -47,8 +47,8 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         let fileExtension = url.pathExtension
 
         // Verifies if the filename consists solely of the file extension, such as '.env', '.gitignore', etc.
-        if fileName.hasPrefix(".") && fileExtension.isEmpty {
-            return .init(rawValue: String(fileName.dropFirst())) ?? .txt
+        if fileName.hasPrefix(".") {
+            return .init(rawValue: fileName.dropFirst().components(separatedBy: ".").first ?? "") ?? .txt
         } else {
             return .init(rawValue: fileExtension) ?? .txt
         }
