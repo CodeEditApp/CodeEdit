@@ -21,24 +21,6 @@ struct SourceControlAddExistingRemoteView: View {
 
     @FocusState private var focusedField: FocusedField?
 
-    func submit() {
-        Task {
-            do {
-                try await sourceControlManager.addRemote(name: name, location: location)
-                if sourceControlManager.pullSheetIsPresented || sourceControlManager.pushSheetIsPresented {
-                    sourceControlManager.operationRemote = sourceControlManager.remotes.first(
-                        where: { $0.name == name }
-                    )
-                }
-                name = ""
-                location = ""
-                dismiss()
-            } catch {
-                await sourceControlManager.showAlertForError(title: "Failed to add remote", error: error)
-            }
-        }
-    }
-
     var body: some View {
         VStack(spacing: 0) {
             Form {
@@ -73,6 +55,24 @@ struct SourceControlAddExistingRemoteView: View {
             if !originExists {
                 name = "origin"
                 focusedField = .location
+            }
+        }
+    }
+
+    func submit() {
+        Task {
+            do {
+                try await sourceControlManager.addRemote(name: name, location: location)
+                if sourceControlManager.pullSheetIsPresented || sourceControlManager.pushSheetIsPresented {
+                    sourceControlManager.operationRemote = sourceControlManager.remotes.first(
+                        where: { $0.name == name }
+                    )
+                }
+                name = ""
+                location = ""
+                dismiss()
+            } catch {
+                await sourceControlManager.showAlertForError(title: "Failed to add remote", error: error)
             }
         }
     }

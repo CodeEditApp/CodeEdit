@@ -13,25 +13,6 @@ struct SourceControlPullView: View {
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
-    func submit() {
-        Task {
-            do {
-                if !sourceControlManager.changedFiles.isEmpty {
-                    sourceControlManager.stashSheetIsPresented = true
-                } else {
-                    try await sourceControlManager.pull(
-                        remote: sourceControlManager.operationRemote?.name ?? nil,
-                        branch: sourceControlManager.operationBranch?.name ?? nil,
-                        rebase: sourceControlManager.operationRebase
-                    )
-                    dismiss()
-                }
-            } catch {
-                await sourceControlManager.showAlertForError(title: "Failed to pull", error: error)
-            }
-        }
-    }
-
     var body: some View {
         VStack(spacing: 0) {
             Form {
@@ -70,5 +51,24 @@ struct SourceControlPullView: View {
             .padding(.bottom, 20)
         }
         .frame(minWidth: 500)
+    }
+
+    func submit() {
+        Task {
+            do {
+                if !sourceControlManager.changedFiles.isEmpty {
+                    sourceControlManager.stashSheetIsPresented = true
+                } else {
+                    try await sourceControlManager.pull(
+                        remote: sourceControlManager.operationRemote?.name ?? nil,
+                        branch: sourceControlManager.operationBranch?.name ?? nil,
+                        rebase: sourceControlManager.operationRebase
+                    )
+                    dismiss()
+                }
+            } catch {
+                await sourceControlManager.showAlertForError(title: "Failed to pull", error: error)
+            }
+        }
     }
 }

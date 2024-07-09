@@ -13,21 +13,6 @@ struct SourceControlPushView: View {
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
-    func submit() {
-        Task {
-            do {
-                try await sourceControlManager.push(
-                    remote: sourceControlManager.operationRemote?.name ?? nil,
-                    branch: sourceControlManager.operationBranch?.name ?? nil,
-                    setUpstream: sourceControlManager.currentBranch?.upstream == nil
-                )
-                dismiss()
-            } catch {
-                await sourceControlManager.showAlertForError(title: "Failed to push", error: error)
-            }
-        }
-    }
-
     var body: some View {
         VStack(spacing: 0) {
             Form {
@@ -67,5 +52,20 @@ struct SourceControlPushView: View {
             .padding(.bottom, 20)
         }
         .frame(minWidth: 500)
+    }
+
+    func submit() {
+        Task {
+            do {
+                try await sourceControlManager.push(
+                    remote: sourceControlManager.operationRemote?.name ?? nil,
+                    branch: sourceControlManager.operationBranch?.name ?? nil,
+                    setUpstream: sourceControlManager.currentBranch?.upstream == nil
+                )
+                dismiss()
+            } catch {
+                await sourceControlManager.showAlertForError(title: "Failed to push", error: error)
+            }
+        }
     }
 }

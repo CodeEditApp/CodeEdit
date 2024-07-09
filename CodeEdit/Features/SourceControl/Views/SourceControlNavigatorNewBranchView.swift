@@ -16,22 +16,6 @@ struct SourceControlNavigatorNewBranchView: View {
     @State var name: String = ""
     let fromBranch: GitBranch?
 
-    func submit(_ branch: GitBranch) {
-        Task {
-            do {
-                try await sourceControlManager.newBranch(name: name, from: branch)
-                await MainActor.run {
-                    dismiss()
-                }
-            } catch {
-                await sourceControlManager.showAlertForError(
-                    title: "Failed to create branch",
-                    error: error
-                )
-            }
-        }
-    }
-
     var body: some View {
         if let branch = fromBranch ?? sourceControlManager.currentBranch {
             VStack(spacing: 0) {
@@ -67,6 +51,22 @@ struct SourceControlNavigatorNewBranchView: View {
                 .padding(.bottom, 20)
             }
             .frame(width: 500)
+        }
+    }
+
+    func submit(_ branch: GitBranch) {
+        Task {
+            do {
+                try await sourceControlManager.newBranch(name: name, from: branch)
+                await MainActor.run {
+                    dismiss()
+                }
+            } catch {
+                await sourceControlManager.showAlertForError(
+                    title: "Failed to create branch",
+                    error: error
+                )
+            }
         }
     }
 }

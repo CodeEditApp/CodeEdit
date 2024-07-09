@@ -15,40 +15,6 @@ struct SourceControlStashView: View {
     @State private var message: String = ""
     @State private var applyStashAfterOperation: Bool = false
 
-    func submit() {
-        Task {
-            do {
-                try await sourceControlManager.stashChanges(message: message)
-                message = ""
-
-                if sourceControlManager.pullSheetIsPresented {
-                    try await sourceControlManager.pull(
-                        remote: sourceControlManager.operationRemote?.name ?? nil,
-                        branch: sourceControlManager.operationBranch?.name ?? nil,
-                        rebase: sourceControlManager.operationRebase
-                    )
-                    if applyStashAfterOperation {
-                        guard let lastStashEntry = sourceControlManager.stashEntries.first else {
-                            throw NSError(
-                                domain: "SourceControl",
-                                code: 1,
-                                userInfo: [NSLocalizedDescriptionKey: "Could not find last stash"]
-                            )
-                        }
-                        try await sourceControlManager.applyStashEntry(stashEntry: lastStashEntry)
-                    }
-                    sourceControlManager.operationRemote = nil
-                    sourceControlManager.operationBranch = nil
-                    sourceControlManager.pullSheetIsPresented = false
-                }
-
-                dismiss()
-            } catch {
-                await sourceControlManager.showAlertForError(title: "Failed to stash changes", error: error)
-            }
-        }
-    }
-
     var body: some View {
         VStack(spacing: 0) {
             Form {
@@ -95,5 +61,39 @@ struct SourceControlStashView: View {
             .padding(.bottom, 20)
         }
         .frame(width: 500)
+    }
+
+    func submit() {
+        Task {
+            do {
+                try await sourceControlManager.stashChanges(message: message)
+                message = ""
+
+                if sourceControlManager.pullSheetIsPresented {
+                    try await sourceControlManager.pull(
+                        remote: sourceControlManager.operationRemote?.name ?? nil,
+                        branch: sourceControlManager.operationBranch?.name ?? nil,
+                        rebase: sourceControlManager.operationRebase
+                    )
+                    if applyStashAfterOperation {
+                        guard let lastStashEntry = sourceControlManager.stashEntries.first else {
+                            throw NSError(
+                                domain: "SourceControl",
+                                code: 1,
+                                userInfo: [NSLocalizedDescriptionKey: "Could not find last stash"]
+                            )
+                        }
+                        try await sourceControlManager.applyStashEntry(stashEntry: lastStashEntry)
+                    }
+                    sourceControlManager.operationRemote = nil
+                    sourceControlManager.operationBranch = nil
+                    sourceControlManager.pullSheetIsPresented = false
+                }
+
+                dismiss()
+            } catch {
+                await sourceControlManager.showAlertForError(title: "Failed to stash changes", error: error)
+            }
+        }
     }
 }

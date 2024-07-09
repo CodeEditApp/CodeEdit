@@ -17,22 +17,6 @@ struct SourceControlNavigatorRenameBranchView: View {
 
     let fromBranch: GitBranch?
 
-    func submit(_ branch: GitBranch) {
-        Task {
-            do {
-                try await sourceControlManager.renameBranch(oldName: branch.name, newName: name)
-                await MainActor.run {
-                    dismiss()
-                }
-            } catch {
-                await sourceControlManager.showAlertForError(
-                    title: "Failed to create branch",
-                    error: error
-                )
-            }
-        }
-    }
-
     var body: some View {
         if let branch = fromBranch ?? sourceControlManager.currentBranch {
             VStack(spacing: 0) {
@@ -65,6 +49,22 @@ struct SourceControlNavigatorRenameBranchView: View {
                 .padding(.bottom, 20)
             }
             .frame(width: 500)
+        }
+    }
+
+    func submit(_ branch: GitBranch) {
+        Task {
+            do {
+                try await sourceControlManager.renameBranch(oldName: branch.name, newName: name)
+                await MainActor.run {
+                    dismiss()
+                }
+            } catch {
+                await sourceControlManager.showAlertForError(
+                    title: "Failed to create branch",
+                    error: error
+                )
+            }
         }
     }
 }
