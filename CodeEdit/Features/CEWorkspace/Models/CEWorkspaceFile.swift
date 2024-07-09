@@ -42,7 +42,17 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     var name: String { url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines) }
 
     /// Returns the extension of the file or an empty string if no extension is present.
-    var type: FileIcon.FileType { .init(rawValue: url.pathExtension) ?? .txt }
+    var type: FileIcon.FileType {
+        let fileName = url.lastPathComponent
+        let fileExtension = url.pathExtension
+
+        // Verifies if the filename consists solely of the file extension, such as '.env', '.gitignore', etc.
+        if fileName.hasPrefix(".") && fileExtension.isEmpty {
+            return .init(rawValue: String(fileName.dropFirst())) ?? .txt
+        } else {
+            return .init(rawValue: fileExtension) ?? .txt
+        }
+    }
 
     /// Returns the URL of the ``CEWorkspaceFile``
     let url: URL
