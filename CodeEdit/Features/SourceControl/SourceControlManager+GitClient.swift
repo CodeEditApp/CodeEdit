@@ -292,14 +292,10 @@ extension SourceControlManager {
     }
 
     /// Push changes to remote
-    func push(remote: String? = nil, branch: String? = nil, setUpstream: Bool? = nil) async throws {
+    func push(remote: String? = nil, branch: String? = nil, setUpstream: Bool = false) async throws {
         guard currentBranch != nil else { return }
 
-        if let remote, let branch {
-            try await gitClient.pushToRemote(remote: remote, branch: branch, setUpstream: setUpstream)
-        } else {
-            try await gitClient.pushToRemote()
-        }
+        try await gitClient.pushToRemote(remote: remote, branch: branch, setUpstream: setUpstream)
 
         await refreshCurrentBranch()
         await self.refreshNumberOfUnsyncedCommits()
