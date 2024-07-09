@@ -84,6 +84,7 @@ struct CodeFileView: View {
     @State private var font: NSFont = Settings[\.textEditing].font.current
 
     @State private var bracketPairHighlight: BracketPairHighlight? = {
+        // swiftlint:disable:next force_unwrapping
         let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
         let color = Settings[\.textEditing].bracketHighlight.useCustomColor
         ? Settings[\.textEditing].bracketHighlight.color.nsColor

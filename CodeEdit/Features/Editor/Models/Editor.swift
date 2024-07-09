@@ -77,6 +77,7 @@ final class Editor: ObservableObject, Identifiable {
         self.tabs = []
         self.parent = parent
         files.forEach { openTab(file: $0) }
+        // swiftlint:disable:next force_unwrapping
         self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(file: files.first!))
         self.temporaryTab = temporaryTab
     }

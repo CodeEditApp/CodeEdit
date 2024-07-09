@@ -133,6 +133,7 @@ struct ToolbarBranchPicker: View {
                                 if !group.shouldNest {
                                     BranchCell(
                                         sourceControlManager: sourceControlManager,
+                                        // swiftlint:disable:next force_unwrapping
                                         branch: group.branches.first!
                                     )
                                 } else {

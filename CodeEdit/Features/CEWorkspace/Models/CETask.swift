@@ -65,6 +65,7 @@ struct CETask: Identifiable, Hashable, Codable {
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+            // swiftlint:disable:next force_unwrapping
             try container.encode(value, forKey: CodingKeys(stringValue: name)!)
         }
     }

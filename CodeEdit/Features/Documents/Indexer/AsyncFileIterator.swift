@@ -39,6 +39,8 @@ struct AsyncFileIterator: AsyncSequence, AsyncIteratorProtocol {
                 currentIdx += 1
             }
         }
+
+        // swiftlint:disable:next force_unwrapping
         return (foundContent!, currentIdx)
     }
 

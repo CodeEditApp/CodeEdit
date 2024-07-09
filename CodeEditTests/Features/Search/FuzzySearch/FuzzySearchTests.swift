@@ -39,10 +39,11 @@ final class FuzzySearchTests: XCTestCase {
 
     func testFuzzySearch() async {
         let urls = [
-            URL(string: "FuzzySearchable.swift")!,
-            URL(string: "ContentView.swift")!,
-            URL(string: "FuzzyMatch.swift")!
-        ]
+            URL(string: "FuzzySearchable.swift"),
+            URL(string: "ContentView.swift"),
+            URL(string: "FuzzyMatch.swift")
+        ].compactMap { $0 }
+
         let fuzzyMatchResult = await urls.fuzzySearch(query: "mch").map {
             $0.item
         }

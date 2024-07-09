@@ -141,6 +141,7 @@ public class FeedbackModel: ObservableObject {
         let gitAccounts = Settings[\.accounts].sourceControlAccounts.gitAccounts
         let firstGitAccount = gitAccounts.first
 
+        // swiftlint:disable:next force_unwrapping
         let config = GitHubTokenConfiguration(keychain.get(firstGitAccount!.name))
         GitHubAccount(config).postIssue(
             owner: "CodeEditApp",
@@ -158,7 +159,7 @@ public class FeedbackModel: ObservableObject {
             switch response {
             case .success(let issue):
                 if Settings[\.sourceControl].general.openFeedbackInBrowser {
-                    self.openIssueURL(issue.htmlURL ?? URL(string: "https://github.com/CodeEditApp/CodeEdit/issues")!)
+                    self.openIssueURL(issue.htmlURL ?? URL.hardcoded("https://github.com/CodeEditApp/CodeEdit/issues"))
                 }
                 self.isSubmitted.toggle()
                 print(issue)

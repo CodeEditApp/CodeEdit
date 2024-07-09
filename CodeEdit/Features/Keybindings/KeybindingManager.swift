@@ -36,6 +36,7 @@ final class KeybindingManager {
     private func loadKeybindings() {
 
         let bindingsURL = Bundle.main.url(forResource: "default_keybindings.json", withExtension: nil)
+        // swiftlint:disable:next force_unwrapping
         if let json = try? Data(contentsOf: bindingsURL!) {
             do {
                 let prefs = try JSONDecoder().decode([KeyboardShortcutWrapper].self, from: json)
@@ -54,6 +55,7 @@ final class KeybindingManager {
     /// - Returns: KeyboardShortcutWrapper
     func named(with name: String) -> KeyboardShortcutWrapper {
         let foundElement = keyboardShortcuts[name]
+        // swiftlint:disable:next force_unwrapping
         return foundElement != nil ? foundElement! : fallbackShortcut
     }
 

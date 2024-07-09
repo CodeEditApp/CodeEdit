@@ -49,6 +49,7 @@ struct ThemeSettingsView: View {
                         ) { theme in
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeRow(
+                                // swiftlint:disable:next force_unwrapping
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
                                 active: themeModel.getThemeActive(theme)
                             ).id(theme)
@@ -60,6 +61,7 @@ struct ThemeSettingsView: View {
                         ) { theme in
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeRow(
+                                // swiftlint:disable:next force_unwrapping
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
                                 active: themeModel.getThemeActive(theme)
                             ).id(theme)

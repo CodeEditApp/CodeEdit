@@ -56,8 +56,9 @@ enum BitBucketOAuthRouter: GitRouter {
 
     var URLRequest: Foundation.URLRequest? {
         switch self {
+        // swiftlint:disable force_unwrapping
         case .authorize(let config):
-            let url = URL(string: path, relativeTo: URL(string: config.webEndpoint!)!)
+            let url = URL(string: path, relativeTo: URL.hardcoded(config.webEndpoint!))
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)
         case .accessToken(let config, _):
@@ -65,5 +66,6 @@ enum BitBucketOAuthRouter: GitRouter {
             let components = URLComponents(url: url!, resolvingAgainstBaseURL: true)
             return request(components!, parameters: params)
         }
+        // swiftlint:enable force_unwrapping
     }
 }
