@@ -9,14 +9,14 @@ import Foundation
 
 extension GitClient {
     /// Pull changes from remote
-    func pullFromRemote(remote: String? = nil, branch: String? = nil, rebase: Bool? = nil) async throws {
+    func pullFromRemote(remote: String? = nil, branch: String? = nil, rebase: Bool = false) async throws {
         var command = "pull"
 
         if let remote = remote, let branch = branch {
             command += " \(remote) \(branch)"
         }
 
-        if rebase == true {
+        if rebase {
             command += " --rebase"
         }
 

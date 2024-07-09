@@ -285,7 +285,7 @@ extension SourceControlManager {
     }
 
     /// Pull changes from remote
-    func pull(remote: String? = nil, branch: String? = nil, rebase: Bool? = nil) async throws {
+    func pull(remote: String? = nil, branch: String? = nil, rebase: Bool = false) async throws {
         try await gitClient.pullFromRemote(remote: remote, branch: branch, rebase: rebase)
 
         await self.refreshNumberOfUnsyncedCommits()
