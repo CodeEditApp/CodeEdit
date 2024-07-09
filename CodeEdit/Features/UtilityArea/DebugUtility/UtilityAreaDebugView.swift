@@ -18,49 +18,63 @@ struct UtilityAreaDebugView: View {
 
     var body: some View {
         UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { _ in
-            if let tabSelection,
-               let activeTask = taskManager.activeTasks[tabSelection] {
-                ScrollViewReader { proxy in
-                    VStack {
-                        ScrollView {
-                            VStack {
-                                TaskOutputView(activeTask: activeTask)
+            ZStack {
+                HStack {
+                    Spacer()
+                    Text("No Task Selected")
+                        .font(.system(size: 16))
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    Spacer()
+                }
+                .opacity(tabSelection == nil ? 1 : 0)
 
-                                Rectangle()
-                                    .frame(width: 1, height: 1)
-                                    .foregroundStyle(.clear)
-                                    .id(bottomID)
+                if let tabSelection,
+                   let activeTask = taskManager.activeTasks[tabSelection] {
+                    ScrollViewReader { proxy in
+                        VStack {
+                            ScrollView {
+                                VStack {
+                                    TaskOutputView(activeTask: activeTask)
 
-                            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                        }.animation(.default, value: bottomID)
-                        .onAppear {
-                            // assign proxy to scrollProxy in order
-                            // to use the button to scroll down and scroll down on reappear
-                            scrollProxy = proxy
-                            scrollProxy?.scrollTo(bottomID, anchor: .bottom)
+                                    Rectangle()
+                                        .frame(width: 1, height: 1)
+                                        .foregroundStyle(.clear)
+                                        .id(bottomID)
+
+                                }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                            }.animation(.default, value: bottomID)
+                                .onAppear {
+                                    // assign proxy to scrollProxy in order
+                                    // to use the button to scroll down and scroll down on reappear
+                                    scrollProxy = proxy
+                                    scrollProxy?.scrollTo(bottomID, anchor: .bottom)
+                                }
+                            Spacer()
                         }
-                        Spacer()
+                        .onReceive(activeTask.$output, perform: { _ in
+                            proxy.scrollTo(bottomID)
+                        })
                     }
-                    .onReceive(activeTask.$output, perform: { _ in
-                        proxy.scrollTo(bottomID)
-                    })
+                    .paneToolbar {
+                        TaskOutputActionsView(
+                            activeTask: activeTask,
+                            taskManager: taskManager,
+                            scrollProxy: $scrollProxy,
+                            bottomID: _bottomID
+                        )
+                    }
+                    .background(EffectView(.contentBackground))
                 }
-                .paneToolbar {
-                    TaskOutputActionsView(
-                        activeTask: activeTask,
-                        taskManager: taskManager,
-                        scrollProxy: $scrollProxy,
-                        bottomID: _bottomID
-                    )
-                }
-            } else {
-                Text("No Task Selected")
+            }
+        } leadingSidebar: { _ in
+            ZStack {
+                Text("No Tasks are Running")
                     .font(.system(size: 16))
                     .foregroundColor(.secondary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-        } leadingSidebar: { _ in
-            if !taskManager.activeTasks.isEmpty {
+                    .opacity(taskManager.activeTasks.isEmpty ? 1 : 0)
+
                 List(selection: $tabSelection) {
                     ForEach(Array(taskManager.activeTasks.keys), id: \.self) { key in
                         if let activeTask = taskManager.activeTasks[key] {
@@ -75,11 +89,6 @@ struct UtilityAreaDebugView: View {
                 }
                 .listStyle(.automatic)
                 .accentColor(.secondary)
-            } else {
-                Text("No Tasks are Running")
-                    .font(.system(size: 16))
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }.onReceive(taskManager.$activeTasks) { newTasks in
             if tabSelection == nil {
