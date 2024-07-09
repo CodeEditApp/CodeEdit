@@ -46,7 +46,7 @@ struct CodeFileView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
-    @StateObject private var themeModel: ThemeModel = .shared
+    @ObservedObject private var themeModel: ThemeModel = .shared
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -67,7 +67,7 @@ struct CodeFileView: View {
         codeFile
             .contentCoordinator
             .textUpdatePublisher
-            .debounce(for: 0.25, scheduler: DispatchQueue.main)
+            .debounce(for: 1.0, scheduler: DispatchQueue.main)
             .sink { _ in
                 codeFile.updateChangeCount(.changeDone)
                 codeFile.autosave(withImplicitCancellability: false) { _ in }
@@ -77,8 +77,9 @@ struct CodeFileView: View {
         codeFile.undoManager = self.undoManager.manager
     }
 
-    // swiftlint:disable:next force_unwrapping
-    @State private var selectedTheme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
+    private var currentTheme: Theme {
+        themeModel.selectedTheme ?? themeModel.themes.first!
+    }
 
     @State private var font: NSFont = Settings[\.textEditing].font.current
 
@@ -109,7 +110,7 @@ struct CodeFileView: View {
         CodeEditSourceEditor(
             codeFile.content ?? NSTextStorage(),
             language: getLanguage(),
-            theme: selectedTheme.editor.editorTheme,
+            theme: currentTheme.editor.editorTheme,
             font: font,
             tabWidth: codeFile.defaultTabWidth ?? defaultTabWidth,
             indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
@@ -133,17 +134,9 @@ struct CodeFileView: View {
                 EffectView(.contentBackground)
             }
         }
-        .colorScheme(
-            selectedTheme.appearance == .dark
-            ? .dark
-            : .light
-        )
+        .colorScheme(currentTheme.appearance == .dark ? .dark : .light)
         // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
         .frame(minHeight: .zero, maxHeight: .infinity)
-        .onChange(of: themeModel.selectedTheme) { newValue in
-            guard let theme = newValue else { return }
-            self.selectedTheme = theme
-        }
         .onChange(of: settingsFont) { newFontSetting in
             font = newFontSetting.current
         }
@@ -164,11 +157,12 @@ struct CodeFileView: View {
     }
 
     private func getBracketPairHighlight() -> BracketPairHighlight? {
-        // swiftlint:disable:next force_unwrapping
-        let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
-        let color = Settings[\.textEditing].bracketHighlight.useCustomColor
-        ? Settings[\.textEditing].bracketHighlight.color.nsColor
-        : theme.editor.text.nsColor.withAlphaComponent(0.8)
+        let color = if Settings[\.textEditing].bracketHighlight.useCustomColor {
+            Settings[\.textEditing].bracketHighlight.color.nsColor
+        } else {
+            currentTheme.editor.text.nsColor.withAlphaComponent(0.8)
+        }
+
         switch Settings[\.textEditing].bracketHighlight.highlightType {
         case .disabled:
             return nil

@@ -8,7 +8,7 @@ type_name:
     - ID
 
 identifier_name:
-  allowed_symbols: ['$', '_']
+  allowed_symbols: ["$", "_"]
   excluded:
     - id
     - vc
@@ -16,7 +16,7 @@ identifier_name:
 # paths to ignore during linting.
 excluded:
   - CodeEditModules/.build # Where Swift Package Manager checks out dependency sources
-  - DerivedData  
+  - DerivedData
 
 opt_in_rules:
   - attributes

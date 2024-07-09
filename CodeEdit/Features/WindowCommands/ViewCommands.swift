@@ -73,7 +73,11 @@ struct ViewCommands: Commands {
             Divider()
 
             HideCommands(
-                windowController: windowController ?? CodeEditWindowController(window: nil, workspace: nil),
+                windowController: windowController ?? CodeEditWindowController(
+                    window: nil,
+                    workspace: nil,
+                    taskNotificationHandler: TaskNotificationHandler()
+                ),
                 utilityAreaModel: windowController?.workspace?.utilityAreaModel ?? UtilityAreaViewModel()
             )
                 .onReceive(NSApp.publisher(for: \.keyWindow)) { window in

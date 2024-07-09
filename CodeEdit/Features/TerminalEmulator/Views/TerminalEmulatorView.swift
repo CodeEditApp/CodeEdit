@@ -50,7 +50,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns a string of a shell path to use
     private func getShell() -> String {
-        if shellType != ""{
+        if shellType != "" {
             return shellType
         }
         switch terminalSettings.shell {

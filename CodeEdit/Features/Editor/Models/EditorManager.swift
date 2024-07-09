@@ -8,7 +8,6 @@
 import Combine
 import Foundation
 import DequeModule
-import OrderedCollections
 import os
 
 class EditorManager: ObservableObject {
@@ -29,8 +28,6 @@ class EditorManager: ObservableObject {
 
     /// History of last-used editors.
     var activeEditorHistory: Deque<() -> Editor?> = []
-
-    var fileDocuments: [CEWorkspaceFile: CodeFileDocument] = [:]
 
     /// notify listeners whenever tab selection changes on the active editor.
     var tabBarTabIdSubject = PassthroughSubject<String?, Never>()
@@ -96,7 +93,7 @@ class EditorManager: ObservableObject {
     ///   - editor: The editor to add the tab to. If nil, it is added to the active tab group.
     func openTab(item: CEWorkspaceFile, in editor: Editor? = nil) {
         let editor = editor ?? activeEditor
-        editor.openTab(file: item)
+        editor.openTab(file: item, asTemporary: false)
     }
 
     /// bind active tap group to listen to file selection changes.

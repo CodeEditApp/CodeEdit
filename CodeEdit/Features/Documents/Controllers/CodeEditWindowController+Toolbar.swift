@@ -16,15 +16,7 @@ extension CodeEditWindowController {
         toolbar.showsBaselineSeparator = false
         self.window?.titleVisibility = toolbarCollapsed ? .visible : .hidden
         self.window?.toolbarStyle = .unifiedCompact
-        if Settings[\.general].tabBarStyle == .native {
-            // Set titlebar background as transparent by default in order to
-            // style the toolbar background in native tab bar style.
-            self.window?.titlebarSeparatorStyle = .none
-        } else {
-            // In Xcode tab bar style, we use default toolbar background with
-            // line separator.
-            self.window?.titlebarSeparatorStyle = .automatic
-        }
+        self.window?.titlebarSeparatorStyle = .automatic
         self.window?.toolbar = toolbar
     }
 
@@ -33,6 +25,8 @@ extension CodeEditWindowController {
             .toggleFirstSidebarItem,
             .sidebarTrackingSeparator,
             .branchPicker,
+            .flexibleSpace,
+            .activityViewer,
             .flexibleSpace,
             .itemListTrackingSeparator,
             .flexibleSpace,
@@ -47,7 +41,8 @@ extension CodeEditWindowController {
             .flexibleSpace,
             .itemListTrackingSeparator,
             .toggleLastSidebarItem,
-            .branchPicker
+            .branchPicker,
+            .activityViewer
         ]
     }
 
@@ -67,6 +62,7 @@ extension CodeEditWindowController {
         }
     }
 
+    // swiftlint:disable:next function_body_length
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
@@ -119,7 +115,27 @@ extension CodeEditWindowController {
             toolbarItem.view = view
 
             return toolbarItem
+        case .activityViewer:
+            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.activityViewer)
+            toolbarItem.visibilityPriority = .user
+            let view = NSHostingView(
+                rootView: ActivityViewer(
+                    taskNotificationHandler: taskNotificationHandler
+                )
+            )
 
+            let weakWidth = view.widthAnchor.constraint(equalToConstant: 650)
+            weakWidth.priority = .defaultLow
+            let strongWidth = view.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
+            strongWidth.priority = .defaultHigh
+
+            NSLayoutConstraint.activate([
+                weakWidth,
+                strongWidth
+            ])
+
+            toolbarItem.view = view
+            return toolbarItem
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }

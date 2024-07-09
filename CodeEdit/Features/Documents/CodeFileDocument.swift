@@ -54,32 +54,21 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// Document-specific overridden line wrap preference.
     @Published var wrapLines: Bool?
 
-    /// The type of data this document contains.
+    /// The type of data this file document contains.
     ///
-    /// If for example, the file ends with `.py`, its type is a text file.
-    /// Or if it ends with `.png`, then it is an image.
-    /// Same goes for PDF and video formats.
-    ///
-    /// Also, if the text content is not empty, it is a text file.
+    /// If its text content is not nil, a `text` UTType is returned.
     ///
     /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
     /// type or any other form of data representation.
     var utType: UTType? {
-        if content != nil && content?.isEmpty ?? true {
+        if content != nil {
             return .text
         }
+
         guard let fileType, let type = UTType(fileType) else {
             return nil
         }
-        if type.conforms(to: .text) {
-            return .text
-        }
-        if type.conforms(to: .image) {
-            return .image
-        }
-        if type.conforms(to: .pdf) {
-            return .pdf
-        }
+
         return type
     }
 
@@ -96,7 +85,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     // MARK: - NSDocument
 
-    override class var autosavesInPlace: Bool {
+    override static var autosavesInPlace: Bool {
         Settings.shared.preferences.general.isAutoSaveOn
     }
 

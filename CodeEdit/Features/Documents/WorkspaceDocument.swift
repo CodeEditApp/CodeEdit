@@ -5,10 +5,11 @@
 //  Created by Pavel Kasila on 17.03.22.
 //
 
-import Foundation
 import AppKit
 import SwiftUI
 import Combine
+import Foundation
+import LanguageServerProtocol
 
 @objc(WorkspaceDocument)
 final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
@@ -33,10 +34,12 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var statusBarViewModel = StatusBarViewModel()
     var utilityAreaModel = UtilityAreaViewModel()
     var searchState: SearchState?
-    var quickOpenViewModel: QuickOpenViewModel?
+    var openQuicklyViewModel: OpenQuicklyViewModel?
     var commandsPaletteState: QuickActionsViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
     var sourceControlManager: SourceControlManager?
+
+    var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -63,7 +66,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         ".DS_Store"
     ]
 
-    override class var autosavesInPlace: Bool {
+    override static var autosavesInPlace: Bool {
         false
     }
 
@@ -78,23 +81,24 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             backing: .buffered,
             defer: false
         )
+        // Note For anyone hoping to switch back to a Root-SwiftUI window:
+        // See Commit 0200c87 for more details and to see what was previously here.
+        // -----
         // Setting the "min size" like this is hacky, but SwiftUI overrides the contentRect and
         // any of the built-in window size functions & autosave stuff. So we have to set it like this.
         // SwiftUI also ignores this value, so it just manages to set the initial window size. *Hopefully* this
         // is fixed in the future.
-        if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
-            window.minSize = NSRectFromString(rectString).size
-        } else {
-            window.minSize = .init(width: 1400, height: 900)
-        }
+        // ----
         let windowController = CodeEditWindowController(
             window: window,
-            workspace: self
+            workspace: self,
+            taskNotificationHandler: taskNotificationHandler
         )
 
         if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
-            window.setFrameOrigin(NSRectFromString(rectString).origin)
+            window.setFrame(NSRectFromString(rectString), display: true, animate: false)
         } else {
+            window.setFrame(NSRect(x: 0, y: 0, width: 1400, height: 900), display: true, animate: false)
             window.center()
         }
         self.addWindowController(windowController)
@@ -110,6 +114,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             workspaceURL: url,
             editorManager: editorManager
         )
+
         self.workspaceFileManager = .init(
             folderUrl: url,
             ignoredFilesAndFolders: Set(ignoredFilesAndDirectory),
@@ -118,7 +123,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.sourceControlManager = sourceControlManager
         sourceControlManager.fileManager = workspaceFileManager
         self.searchState = .init(self)
-        self.quickOpenViewModel = .init(fileURL: url)
+        self.openQuicklyViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
 
         editorManager.restoreFromState(self)

@@ -94,7 +94,7 @@ struct SourceControlNavigatorRepositoryView: View {
                 Button("Apply") {
                     if let stashEntry = stashEntryToApply {
                         Task {
-                            try await sourceControlManager.applyStashEntry(stashEntry: stashEntryToApply)
+                            try await sourceControlManager.applyStashEntry(stashEntry: stashEntry)
                             applyStashedChangesIsPresented = false
                             stashEntryToApply = nil
                         }

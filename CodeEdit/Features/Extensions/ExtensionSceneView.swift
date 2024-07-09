@@ -57,19 +57,18 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
         var connection: NSXPCConnection?
 
         func publishEnvironment(data: Data) {
-            @Decoded<Callbacks> var data = data
-            guard let $data else { return }
-            switch $data {
+            guard let decodedCallbacks = try? JSONDecoder().decode(Callbacks.self, from: data) else { return }
+            switch decodedCallbacks {
             case .openWindow(let id):
                 openWindow(id)
             }
         }
 
-        func updateEnvironment(@Encoded _ value: _CEEnvironment) {
-            guard let $value else { return }
+        func updateEnvironment(_ value: _CEEnvironment) {
+            guard let newEnvironmentData = try? JSONEncoder().encode(value) else { return }
 
             guard isOnline else {
-                toPublish = $value
+                toPublish = newEnvironmentData
                 return
             }
 
@@ -77,7 +76,7 @@ struct ExtensionSceneView: NSViewControllerRepresentable {
                 do {
                     // swiftlint:disable:next force_unwrapping
                     try await connection!.withService { (service: EnvironmentPublisherObjc) in
-                        service.publishEnvironment(data: $value)
+                        service.publishEnvironment(data: newEnvironmentData)
                     }
                 } catch {
                     print(error)

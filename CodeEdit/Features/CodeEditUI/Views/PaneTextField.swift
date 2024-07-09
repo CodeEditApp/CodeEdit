@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Combine
-import Introspect
 
 struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View {
     @Environment(\.colorScheme)
