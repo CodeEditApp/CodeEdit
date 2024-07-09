@@ -11,7 +11,7 @@ struct SourceControlFetchView: View {
     @Environment(\.dismiss)
     private var dismiss
 
-    @EnvironmentObject var scm: SourceControlManager
+    @EnvironmentObject var sourceControlManager: SourceControlManager
     @EnvironmentObject var workspace: WorkspaceDocument
 
     var projectName: String {
@@ -57,10 +57,10 @@ struct SourceControlFetchView: View {
         .frame(width: 420)
         .task {
             do {
-                try await scm.fetch()
+                try await sourceControlManager.fetch()
                 dismiss()
             } catch {
-                await scm.showAlertForError(title: "Failed to fetch changes", error: error)
+                await sourceControlManager.showAlertForError(title: "Failed to fetch changes", error: error)
             }
         }
     }

@@ -8,7 +8,8 @@
 import Foundation
 import AppKit
 
-/// This model handle the fetching and adding of changes etc... 
+/// This class is used to perform git functions such as fetch, pull, add/remove of changes, commit, push, etc.
+/// It also stores remotes, branches, current changes, stashes, and commits
 final class SourceControlManager: ObservableObject {
     let gitClient: GitClient
 

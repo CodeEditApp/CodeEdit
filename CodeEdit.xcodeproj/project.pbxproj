@@ -2025,10 +2025,11 @@
 		587B9E0129301D8F00AC7927 /* SourceControl */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E0529301D8F00AC7927 /* Clone */,
+				587B9E5229301D8F00AC7927 /* Models */,
+				B6966A262C2F673A00259C2D /* Views */,
 				587B9E0929301D8F00AC7927 /* Accounts */,
 				587B9E5129301D8F00AC7927 /* Client */,
-				B6966A262C2F673A00259C2D /* Views */,
+				587B9E0529301D8F00AC7927 /* Clone */,
 				201169E62837B5CA00F92B46 /* SourceControlManager.swift */,
 				B6966A332C34996B00259C2D /* SourceControlManager+GitClient.swift */,
 			);
@@ -2202,7 +2203,6 @@
 		587B9E5129301D8F00AC7927 /* Client */ = {
 			isa = PBXGroup;
 			children = (
-				587B9E5229301D8F00AC7927 /* Models */,
 				58A5DF7F29325B5A00D1BD5D /* GitClient.swift */,
 				04BA7C182AE2D7C600584E1C /* GitClient+Branches.swift */,
 				04BA7C1D2AE2D8A000584E1C /* GitClient+Clone.swift */,
