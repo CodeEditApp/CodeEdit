@@ -73,8 +73,6 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
             for item in updatedItems {
                 outlineView.reloadItem(item, reloadChildren: true)
             }
-
-            controller?.updateSelection(itemID: workspace.editorManager.activeEditor.selectedTab?.file.id)
         }
 
         deinit {
