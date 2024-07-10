@@ -113,6 +113,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
             )
         )
         .focusable(false)
+        .accessibilityIdentifier("TabAreaTab-\(tab.title)")
         .accessibilityLabel(tab.title)
     }
 

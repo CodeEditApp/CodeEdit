@@ -91,7 +91,8 @@ struct WorkspaceView: View {
                 }
             }
             .background(EffectView(.contentBackground))
-            .accessibilityLabel("workspace")
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("workspace area")
         }
     }
 }

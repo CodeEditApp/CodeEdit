@@ -7,7 +7,7 @@
 
 import Foundation
 
-public func projectPath() -> String {
+func projectPath() -> String {
     return String(
         URL(fileURLWithPath: #filePath)
             .pathComponents
