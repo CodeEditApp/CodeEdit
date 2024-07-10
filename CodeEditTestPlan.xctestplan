@@ -1,0 +1,58 @@
+{
+  "configurations" : [
+    {
+      "id" : "54F3AF04-2CB5-4C73-888F-75ABD9B93999",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:CodeEdit.xcodeproj",
+      "identifier" : "B658FB2B27DA9E0F00EA4DBD",
+      "name" : "CodeEdit"
+    }
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "CodeEditUIUnitTests",
+        "CodeEditUIUnitTests\/testBranchPickerDark()",
+        "CodeEditUIUnitTests\/testBranchPickerLight()",
+        "CodeEditUIUnitTests\/testEffectViewDark()",
+        "CodeEditUIUnitTests\/testEffectViewLight()",
+        "CodeEditUIUnitTests\/testFontPickerViewDark()",
+        "CodeEditUIUnitTests\/testFontPickerViewLight()",
+        "CodeEditUIUnitTests\/testHelpButtonDark()",
+        "CodeEditUIUnitTests\/testHelpButtonLight()",
+        "CodeEditUIUnitTests\/testSegmentedControlDark()",
+        "CodeEditUIUnitTests\/testSegmentedControlLight()",
+        "CodeEditUIUnitTests\/testSegmentedControlProminentDark()",
+        "CodeEditUIUnitTests\/testSegmentedControlProminentLight()",
+        "WelcomeModuleUnitTests",
+        "WelcomeModuleUnitTests\/testRecentJSFileDarkSnapshot()",
+        "WelcomeModuleUnitTests\/testRecentJSFileLightSnapshot()",
+        "WelcomeModuleUnitTests\/testRecentProjectItemDarkSnapshot()",
+        "WelcomeModuleUnitTests\/testRecentProjectItemLightSnapshot()",
+        "WelcomeModuleUnitTests\/testWelcomeActionViewDarkSnapshot()",
+        "WelcomeModuleUnitTests\/testWelcomeActionViewLightSnapshot()"
+      ],
+      "target" : {
+        "containerPath" : "container:CodeEdit.xcodeproj",
+        "identifier" : "B658FB3C27DA9E1000EA4DBD",
+        "name" : "CodeEditTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:CodeEdit.xcodeproj",
+        "identifier" : "B658FB4627DA9E1000EA4DBD",
+        "name" : "CodeEditUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

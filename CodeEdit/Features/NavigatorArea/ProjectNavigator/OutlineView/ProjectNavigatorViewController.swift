@@ -70,6 +70,8 @@ final class ProjectNavigatorViewController: NSViewController {
         self.outlineView.menu?.delegate = self
         self.outlineView.doubleAction = #selector(onItemDoubleClicked)
 
+        self.outlineView.setAccessibilityLabel("Project Navigator")
+
         let column = NSTableColumn(identifier: .init(rawValue: "Cell"))
         column.title = "Cell"
         outlineView.addTableColumn(column)

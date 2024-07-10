@@ -67,6 +67,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
         setupToolbar()
         registerCommands()
+
+        window?.initialFirstResponder = nil
+        window?.makeFirstResponder(nil)
     }
 
     deinit { cancellables.forEach({ $0.cancel() }) }

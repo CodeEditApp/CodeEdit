@@ -139,10 +139,10 @@ struct EditorTabView: View {
                     )
                     .lineLimit(1)
             }
-            .frame(
-                // To max-out the parent (tab bar) area.
-                maxHeight: .infinity
-            )
+            .frame(maxHeight: .infinity) // To max-out the parent (tab bar) area.
+            .accessibilityElement(children: .ignore)
+            .accessibilityAddTraits(.isStaticText)
+            .accessibilityLabel(item.name)
             .padding(.horizontal, 20)
             .overlay {
                 ZStack {
@@ -153,7 +153,8 @@ struct EditorTabView: View {
                         isDragging: draggingTabId != nil || onDragTabId != nil,
                         closeAction: closeAction,
                         closeButtonGestureActive: $closeButtonGestureActive,
-                        item: item
+                        item: item,
+                        isHoveringClose: $isHoveringClose
                     )
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -165,9 +166,7 @@ struct EditorTabView: View {
                 : isActive ? 0.6 : 0.4
             )
             EditorTabDivider()
-                .opacity(
-                    (isActive || inHoldingState) ? 0.0 : 1.0
-                )
+                .opacity((isActive || inHoldingState) ? 0.0 : 1.0)
         }
         .foregroundColor(
             isActive && isActiveEditor
@@ -193,10 +192,8 @@ struct EditorTabView: View {
     }
 
     var body: some View {
-        Button(action: switchAction) {
-            ZStack {
-                content
-            }
+        // We don't use a button here so that accessibility isn't broken.
+        content
             .background {
                 EditorTabBackground(isActive: isActive, isPressing: isPressing, isDragging: isDragging)
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
@@ -207,34 +204,34 @@ struct EditorTabView: View {
             //                onDragTabId = item.tabID
             //                return .init(object: NSString(string: "\(item.tabID)"))
             //            })
-        }
-        .buttonStyle(EditorTabButtonStyle(isPressing: $isPressing))
-        .simultaneousGesture(
-            TapGesture(count: 2)
-                .onEnded { _ in
-                    if isTemporary {
-                        editor.temporaryTab = nil
+            //        }
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 0) // simultaneousGesture means this won't move the view.
+                    .onChanged({ _ in
+                        if !isHoveringClose {
+                            isPressing = true
+                        }
+                    })
+                    .onEnded({ _ in
+                        if isPressing {
+                            switchAction()
+                        }
+                        isPressing = false
+                    })
+            )
+            .simultaneousGesture(
+                TapGesture(count: 2)
+                    .onEnded { _ in
+                        if isTemporary {
+                            editor.temporaryTab = nil
+                        }
                     }
-                }
-        )
-        // This padding is to avoid background color overlapping with top divider.
-        .padding(.top, 1)
-//        .offset(
-//            x: isAppeared ? 0 : -14,
-//            y: 0
-//        )
-//        .opacity(isAppeared && onDragTabId != item.id ? 1.0 : 0.0)
-        .zIndex(
-            isActive
-            ? 2
-            : (isDragging ? 3 : (isPressing ? 1 : 0))
-        )
-        .onAppear {
-            withAnimation(.easeOut(duration: 0.20)) {
-//                isAppeared = true
-            }
-        }
-        .id(item.id)
-        .tabBarContextMenu(item: item, isTemporary: isTemporary)
+            )
+            // This padding is to avoid background color overlapping with top divider.
+            .padding(.top, 1)
+            .zIndex(isActive ? 2 : (isDragging ? 3 : (isPressing ? 1 : 0)))
+            .id(item.id)
+            .tabBarContextMenu(item: item, isTemporary: isTemporary)
+            .accessibilityElement(children: .contain)
     }
 }
