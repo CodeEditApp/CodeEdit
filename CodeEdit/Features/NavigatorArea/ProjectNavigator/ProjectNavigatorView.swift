@@ -20,7 +20,5 @@ struct ProjectNavigatorView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 ProjectNavigatorToolbarBottom()
             }
-            .accessibilityElement(children: .contain)
-            .accessibilityIdentifier("ProjectNavigator")
     }
 }
