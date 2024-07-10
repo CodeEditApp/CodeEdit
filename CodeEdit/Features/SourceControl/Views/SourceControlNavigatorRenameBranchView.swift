@@ -35,11 +35,17 @@ struct SourceControlNavigatorRenameBranchView: View {
                 .onSubmit { submit(branch) }
                 HStack {
                     Spacer()
-                    Button("Cancel") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .frame(minWidth: 56)
                     }
-                    Button("Rename") {
+                    Button {
                         submit(branch)
+                    } label: {
+                        Text("Rename")
+                            .frame(minWidth: 56)
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(name.isEmpty)

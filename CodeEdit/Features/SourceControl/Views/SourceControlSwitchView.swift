@@ -43,13 +43,13 @@ struct SourceControlSwitchView: View {
                     dismiss()
                 } label: {
                     Text("Cancel")
-                        .frame(minWidth: 48)
+                        .frame(minWidth: 56)
                 }
                 Button {
                     submit()
                 } label: {
                     Text("Switch")
-                        .frame(minWidth: 48)
+                        .frame(minWidth: 56)
                 }
                 .buttonStyle(.borderedProminent)
             }

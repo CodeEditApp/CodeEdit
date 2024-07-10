@@ -52,18 +52,25 @@ struct SourceControlStashView: View {
             .onSubmit(submit)
             HStack {
                 Spacer()
-                Button("Cancel") {
+                Button {
                     message = ""
                     dismiss()
+                } label: {
+                    Text("Cancel")
+                        .frame(minWidth: 56)
                 }
-                Button(
-                    sourceControlManager.pullSheetIsPresented
-                       ? "Stash and Pull"
-                       : sourceControlManager.switchToBranch != nil
-                       ? "Stash and Switch"
-                       : "Stash",
-                    action: submit
-                )
+                Button {
+                    submit()
+                } label: {
+                        Text(
+                            sourceControlManager.pullSheetIsPresented
+                            ? "Stash and Pull"
+                            : sourceControlManager.switchToBranch != nil
+                            ? "Stash and Switch"
+                            : "Stash"
+                        )
+                        .frame(minWidth: 56)
+                    }
                 .buttonStyle(.borderedProminent)
             }
             .padding(.horizontal, 20)

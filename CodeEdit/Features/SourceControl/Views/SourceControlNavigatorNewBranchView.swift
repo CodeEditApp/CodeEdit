@@ -37,11 +37,17 @@ struct SourceControlNavigatorNewBranchView: View {
                 .onSubmit { submit(branch) }
                 HStack {
                     Spacer()
-                    Button("Cancel") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .frame(minWidth: 56)
                     }
-                    Button("Create") {
+                    Button {
                         submit(branch)
+                    } label: {
+                        Text("Create")
+                            .frame(minWidth: 56)
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(name.isEmpty)

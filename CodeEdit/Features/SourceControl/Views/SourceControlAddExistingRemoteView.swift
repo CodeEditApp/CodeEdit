@@ -37,13 +37,21 @@ struct SourceControlAddExistingRemoteView: View {
             .onSubmit(submit)
             HStack {
                 Spacer()
-                Button("Cancel") {
+                Button {
                     dismiss()
                     name = ""
                     location = ""
+                } label: {
+                    Text("Cancel")
+                        .frame(minWidth: 56)
                 }
-                Button("Add", action: submit)
-                    .buttonStyle(.borderedProminent)
+                Button {
+                    submit()
+                } label: {
+                    Text("Add")
+                        .frame(minWidth: 56)
+                }
+                .buttonStyle(.borderedProminent)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
