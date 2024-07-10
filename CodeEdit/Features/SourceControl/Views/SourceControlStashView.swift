@@ -27,7 +27,8 @@ struct SourceControlStashView: View {
                 } header: {
                     Text("Stash Changes")
                     Group {
-                        if sourceControlManager.pullSheetIsPresented {
+                        if sourceControlManager.pullSheetIsPresented
+                            || sourceControlManager.switchToBranch != nil {
                             Text("Your local repository has uncommitted changes that need to be stashed " +
                                  "before you can continue. Enter a description for your changes.")
                         } else {
@@ -38,7 +39,8 @@ struct SourceControlStashView: View {
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
                 }
-                if sourceControlManager.pullSheetIsPresented {
+                if sourceControlManager.pullSheetIsPresented
+                    || sourceControlManager.switchToBranch != nil {
                     Section {
                         Toggle("Apply stash after operation", isOn: $applyStashAfterOperation)
                     }
@@ -54,8 +56,15 @@ struct SourceControlStashView: View {
                     message = ""
                     dismiss()
                 }
-                Button(sourceControlManager.pullSheetIsPresented ? "Stash and Pull" : "Stash", action: submit)
-                    .buttonStyle(.borderedProminent)
+                Button(
+                    sourceControlManager.pullSheetIsPresented
+                       ? "Stash and Pull"
+                       : sourceControlManager.switchToBranch != nil
+                       ? "Stash and Switch"
+                       : "Stash",
+                    action: submit
+                )
+                .buttonStyle(.borderedProminent)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
@@ -69,12 +78,20 @@ struct SourceControlStashView: View {
                 try await sourceControlManager.stashChanges(message: message)
                 message = ""
 
-                if sourceControlManager.pullSheetIsPresented {
-                    try await sourceControlManager.pull(
-                        remote: sourceControlManager.operationRemote?.name ?? nil,
-                        branch: sourceControlManager.operationBranch?.name ?? nil,
-                        rebase: sourceControlManager.operationRebase
-                    )
+                if sourceControlManager.pullSheetIsPresented
+                    || sourceControlManager.switchToBranch != nil {
+                    if sourceControlManager.pullSheetIsPresented {
+                        try await sourceControlManager.pull(
+                            remote: sourceControlManager.operationRemote?.name ?? nil,
+                            branch: sourceControlManager.operationBranch?.name ?? nil,
+                            rebase: sourceControlManager.operationRebase
+                        )
+                    }
+
+                    if let branch = sourceControlManager.switchToBranch {
+                        try await sourceControlManager.checkoutBranch(branch: branch)
+                    }
+
                     if applyStashAfterOperation {
                         guard let lastStashEntry = sourceControlManager.stashEntries.first else {
                             throw NSError(
@@ -85,9 +102,11 @@ struct SourceControlStashView: View {
                         }
                         try await sourceControlManager.applyStashEntry(stashEntry: lastStashEntry)
                     }
+
                     sourceControlManager.operationRemote = nil
                     sourceControlManager.operationBranch = nil
                     sourceControlManager.pullSheetIsPresented = false
+                    sourceControlManager.switchToBranch = nil
                 }
 
                 dismiss()

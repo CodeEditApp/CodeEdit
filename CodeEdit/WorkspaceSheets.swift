@@ -40,5 +40,16 @@ struct WorkspaceSheets: View {
             .sheet(isPresented: $sourceControlManager.addExistingRemoteSheetIsPresented) {
                 SourceControlAddExistingRemoteView()
             }
+            .sheet(item: Binding<GitBranch?>(
+                get: {
+                    sourceControlManager.switchToBranch != nil
+                    && sourceControlManager.stashSheetIsPresented
+                    ? nil
+                    : sourceControlManager.switchToBranch
+                },
+                set: { sourceControlManager.switchToBranch = $0 }
+            )) { branch in
+                SourceControlSwitchView(branch: branch)
+            }
     }
 }

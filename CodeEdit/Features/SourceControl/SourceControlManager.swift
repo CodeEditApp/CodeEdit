@@ -70,6 +70,9 @@ final class SourceControlManager: ObservableObject {
     /// Include tags boolean set for source control operations
     @Published var operationIncludeTags: Bool = false
 
+    /// Branch to switch to
+    @Published var switchToBranch: GitBranch?
+
     var orderedLocalBranches: [GitBranch] {
         var orderedBranches: [GitBranch] = [currentBranch].compactMap { $0 }
         let otherBranches = branches.filter { $0.isLocal && $0 != currentBranch }

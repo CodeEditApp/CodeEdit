@@ -524,6 +524,7 @@
 		B66A4E5129C917D5004573B4 /* AboutWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5029C917D5004573B4 /* AboutWindow.swift */; };
 		B66A4E5329C91831004573B4 /* CodeEditCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5229C91831004573B4 /* CodeEditCommands.swift */; };
 		B66A4E5629C918A0004573B4 /* SceneID.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E5529C918A0004573B4 /* SceneID.swift */; };
+		B67431CC2C3E45F30047FCA6 /* SourceControlSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67431CB2C3E45F30047FCA6 /* SourceControlSwitchView.swift */; };
 		B67DB0EF2AF3E381002DC647 /* PaneTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DB0EE2AF3E381002DC647 /* PaneTextField.swift */; };
 		B67DB0F62AFC2A7A002DC647 /* FindNavigatorToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DB0F52AFC2A7A002DC647 /* FindNavigatorToolbarBottom.swift */; };
 		B67DB0F92AFDF638002DC647 /* IconButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DB0F82AFDF638002DC647 /* IconButtonStyle.swift */; };
@@ -1166,6 +1167,7 @@
 		B66A4E5029C917D5004573B4 /* AboutWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutWindow.swift; sourceTree = "<group>"; };
 		B66A4E5229C91831004573B4 /* CodeEditCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditCommands.swift; sourceTree = "<group>"; };
 		B66A4E5529C918A0004573B4 /* SceneID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneID.swift; sourceTree = "<group>"; };
+		B67431CB2C3E45F30047FCA6 /* SourceControlSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlSwitchView.swift; sourceTree = "<group>"; };
 		B67DB0EE2AF3E381002DC647 /* PaneTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaneTextField.swift; sourceTree = "<group>"; };
 		B67DB0F52AFC2A7A002DC647 /* FindNavigatorToolbarBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorToolbarBottom.swift; sourceTree = "<group>"; };
 		B67DB0F82AFDF638002DC647 /* IconButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconButtonStyle.swift; sourceTree = "<group>"; };
@@ -3311,6 +3313,7 @@
 				B6966A272C2F683300259C2D /* SourceControlPullView.swift */,
 				B607184B2B17E037009CDAB4 /* SourceControlStashView.swift */,
 				B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */,
+				B67431CB2C3E45F30047FCA6 /* SourceControlSwitchView.swift */,
 				B65B10F42B081A0C002852CF /* SourceControlAddExistingRemoteView.swift */,
 				041FC6AC2AE437CE00C1F65A /* SourceControlNavigatorNewBranchView.swift */,
 				B60718362B170638009CDAB4 /* SourceControlNavigatorRenameBranchView.swift */,
@@ -4100,6 +4103,7 @@
 				6CFF967829BEBCF600182D6F /* MainCommands.swift in Sources */,
 				587B9E7129301D8F00AC7927 /* GitURLSession.swift in Sources */,
 				610C0FDA2B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift in Sources */,
+				B67431CC2C3E45F30047FCA6 /* SourceControlSwitchView.swift in Sources */,
 				5882252C292C280D00E83CDE /* UtilityAreaView.swift in Sources */,
 				30B088072C0D53080063A882 /* LanguageServer+DocumentUtil.swift in Sources */,
 				2847019E27FDDF7600F87B6B /* ProjectNavigatorOutlineView.swift in Sources */,
