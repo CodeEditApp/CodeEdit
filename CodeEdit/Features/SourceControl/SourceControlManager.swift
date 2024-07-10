@@ -73,6 +73,21 @@ final class SourceControlManager: ObservableObject {
     /// Branch to switch to
     @Published var switchToBranch: GitBranch?
 
+    /// Is discard all alert presented
+    @Published var discardAllAlertIsPresented: Bool = false
+
+    /// Is no changes to stage alert presented
+    @Published var noChangesToStageAlertIsPresented: Bool = false
+
+    /// Is no changes to unstage alert presented
+    @Published var noChangesToUnstageAlertIsPresented: Bool = false
+
+    /// Is no changes to stash alert presented
+    @Published var noChangesToStashAlertIsPresented: Bool = false
+
+    /// Is no changes to discard alert presented
+    @Published var noChangesToDiscardAlertIsPresented: Bool = false
+
     var orderedLocalBranches: [GitBranch] {
         var orderedBranches: [GitBranch] = [currentBranch].compactMap { $0 }
         let otherBranches = branches.filter { $0.isLocal && $0 != currentBranch }

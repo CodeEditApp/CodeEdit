@@ -41,25 +41,36 @@ struct SourceControlCommands: Commands {
 
                 Button("Stage All Changes") {
                     guard let sourceControlManager else { return }
-                    Task {
-                        do {
-                            try await sourceControlManager.add(sourceControlManager.changedFiles)
-                        } catch {
-                            await sourceControlManager.showAlertForError(title: "Failed To Stage Changes", error: error)
+                    if sourceControlManager.changedFiles.isEmpty {
+                        sourceControlManager.noChangesToStageAlertIsPresented = true
+                    } else {
+                        Task {
+                            do {
+                                try await sourceControlManager.add(sourceControlManager.changedFiles)
+                            } catch {
+                                await sourceControlManager.showAlertForError(
+                                    title: "Failed To Stage Changes",
+                                    error: error
+                                )
+                            }
                         }
                     }
                 }
 
                 Button("Unstage All Changes") {
                     guard let sourceControlManager else { return }
-                    Task {
-                        do {
-                            try await sourceControlManager.reset(sourceControlManager.changedFiles)
-                        } catch {
-                            await sourceControlManager.showAlertForError(
-                                title: "Failed To Unstage Changes",
-                                error: error
-                            )
+                    if sourceControlManager.changedFiles.isEmpty {
+                        sourceControlManager.noChangesToUnstageAlertIsPresented = true
+                    } else {
+                        Task {
+                            do {
+                                try await sourceControlManager.reset(sourceControlManager.changedFiles)
+                            } catch {
+                                await sourceControlManager.showAlertForError(
+                                    title: "Failed To Unstage Changes",
+                                    error: error
+                                )
+                            }
                         }
                     }
                 }
@@ -72,22 +83,21 @@ struct SourceControlCommands: Commands {
                 .disabled(true)
 
                 Button("Stash Changes...") {
-                    sourceControlManager?.stashSheetIsPresented = true
+                    if sourceControlManager?.changedFiles.isEmpty ?? false {
+                        sourceControlManager?.noChangesToStashAlertIsPresented = true
+                    } else {
+                        sourceControlManager?.stashSheetIsPresented = true
+                    }
                 }
 
                 Divider()
 
                 Button("Discard All Changes...") {
-                    guard sourceControlManager != nil else { return }
-                    let alert = NSAlert()
-                    alert.alertStyle = .warning
-                    alert.messageText = "Do you want to permanently delete all changes?"
-                    alert.informativeText = "This action cannot be undone."
-                    alert.addButton(withTitle: "Discard")
-                    alert.addButton(withTitle: "Cancel")
-                    alert.buttons.first?.hasDestructiveAction = true
-                    guard alert.runModal() == .alertFirstButtonReturn else { return }
-                    sourceControlManager?.discardAllChanges()
+                    if sourceControlManager?.changedFiles.isEmpty ?? false {
+                        sourceControlManager?.noChangesToDiscardAlertIsPresented = true
+                    } else {
+                        sourceControlManager?.discardAllAlertIsPresented = true
+                    }
                 }
 
                 Divider()

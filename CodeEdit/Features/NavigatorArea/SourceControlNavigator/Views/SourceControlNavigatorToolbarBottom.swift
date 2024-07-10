@@ -12,8 +12,6 @@ struct SourceControlNavigatorToolbarBottom: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
     @State private var text = ""
-    @State private var noChangesToStashIsPresented = false
-    @State private var noDiscardChangesIsPresented = false
 
     var body: some View {
         HStack(spacing: 5) {
@@ -50,18 +48,15 @@ struct SourceControlNavigatorToolbarBottom: View {
     private var sourceControlMenu: some View {
         Menu {
             Button("Discard All Changes...") {
-                guard let sourceControlManager = workspace.sourceControlManager else { return }
                 if sourceControlManager.changedFiles.isEmpty {
-                    noDiscardChangesIsPresented = true
-                    return
-                }
-                if discardChangesDialog() {
-                    workspace.sourceControlManager?.discardAllChanges()
+                    sourceControlManager.noChangesToDiscardAlertIsPresented = true
+                } else {
+                    sourceControlManager.discardAllAlertIsPresented = true
                 }
             }
             Button("Stash Changes...") {
                 if sourceControlManager.changedFiles.isEmpty {
-                    noChangesToStashIsPresented = true
+                    sourceControlManager.noChangesToStashAlertIsPresented = true
                 } else {
                     sourceControlManager.stashSheetIsPresented = true
                 }
@@ -73,28 +68,5 @@ struct SourceControlNavigatorToolbarBottom: View {
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
         .frame(maxWidth: 18, alignment: .center)
-        .alert("Cannot Stash Changes", isPresented: $noChangesToStashIsPresented) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text("There are no uncommitted changes in the local repository for this project.")
-        }
-        .alert("Cannot Discard Changes", isPresented: $noDiscardChangesIsPresented) {
-            Button("OK", role: .cancel) {}
-        } message: {
-            Text("There are no uncommitted changes in the local repository for this project.")
-        }
-    }
-
-    /// Renders a Discard Changes Dialog
-    func discardChangesDialog() -> Bool {
-        let alert = NSAlert()
-
-        alert.messageText = "Do you want to discard all uncommitted, local changes?"
-        alert.informativeText = "This operation cannot be undone."
-        alert.alertStyle = .warning
-        alert.addButton(withTitle: "Discard")
-        alert.addButton(withTitle: "Cancel")
-
-        return alert.runModal() == .alertFirstButtonReturn
     }
 }

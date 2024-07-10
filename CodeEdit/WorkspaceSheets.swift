@@ -51,5 +51,35 @@ struct WorkspaceSheets: View {
             )) { branch in
                 SourceControlSwitchView(branch: branch)
             }
+            .alert(isPresented: $sourceControlManager.discardAllAlertIsPresented) {
+                Alert(
+                    title: Text("Do you want to discard all uncommitted, local changes?"),
+                    message: Text("This action cannot be undone."),
+                    primaryButton: .destructive(Text("Discard")) {
+                        sourceControlManager.discardAllChanges()
+                    },
+                    secondaryButton: .cancel()
+                )
+            }
+            .alert("Cannot Stage Changes", isPresented: $sourceControlManager.noChangesToStageAlertIsPresented) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("There are no uncommitted changes in the local repository for this project.")
+            }
+            .alert("Cannot Unstage Changes", isPresented: $sourceControlManager.noChangesToUnstageAlertIsPresented) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("There are no uncommitted changes in the local repository for this project.")
+            }
+            .alert("Cannot Stash Changes", isPresented: $sourceControlManager.noChangesToStashAlertIsPresented) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("There are no uncommitted changes in the local repository for this project.")
+            }
+            .alert("Cannot Discard Changes", isPresented: $sourceControlManager.noChangesToDiscardAlertIsPresented) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("There are no uncommitted changes in the local repository for this project.")
+            }
     }
 }
