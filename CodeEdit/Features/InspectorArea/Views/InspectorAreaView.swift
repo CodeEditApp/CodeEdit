@@ -71,6 +71,7 @@ struct InspectorAreaView: View {
             }
         }
         .formStyle(.grouped)
+        .accessibilityElement(children: .contain)
         .accessibilityLabel("inspector")
     }
 }
