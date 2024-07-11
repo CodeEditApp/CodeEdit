@@ -121,7 +121,9 @@ final class ProjectNavigatorMenu: NSMenu {
             }
             var primaryItems = [NSMenuItem]()
             if type.conforms(to: .sourceCode) {
-                primaryItems.append(.sourceCode())
+                primaryItems.append(
+                    menuItem("Source Code", action: #selector(openInSourceCode))
+                )
             }
             if type.conforms(to: .propertyList) {
                 primaryItems.append(.propertyList())
@@ -249,11 +251,19 @@ final class ProjectNavigatorMenu: NSMenu {
         workspace?.workspaceFileManager?.delete(file: item)
     }
 
-    /// Action that duplicates the item
+    /// Action that duplicates the item.
     @objc
     private func duplicate() {
         guard let item else { return }
         workspace?.workspaceFileManager?.duplicate(file: item)
+    }
+
+    /// Action that opens the file in Source Code.
+    @objc
+    private func openInSourceCode() {
+        guard let item else { return }
+        item.isOpeningInQuickLook = false
+        workspace?.editorManager.openTab(item: item)
     }
 }
 
@@ -262,10 +272,6 @@ extension NSMenuItem {
         let item = NSMenuItem(title: "<None>", action: nil, keyEquivalent: "")
         item.isEnabled = false
         return item
-    }
-
-    fileprivate static func sourceCode() -> NSMenuItem {
-        NSMenuItem(title: "Source Code", action: nil, keyEquivalent: "")
     }
 
     fileprivate static func propertyList() -> NSMenuItem {
