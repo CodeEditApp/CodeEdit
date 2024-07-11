@@ -131,7 +131,7 @@ struct EditorTabView: View {
                         ? item.iconColor
                         : .secondary
                     )
-                Text(item.name)
+                (Text(item.name + " ") + (item.isOpeningInQuickLook ? Text(Image(systemName: "eye.fill")) : Text("")))
                     .font(
                         isTemporary
                         ? .system(size: 11.0).italic()
