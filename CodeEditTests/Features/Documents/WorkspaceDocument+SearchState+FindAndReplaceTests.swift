@@ -134,7 +134,7 @@ final class FindAndReplaceTests: XCTestCase {
         let searchResults = searchState.searchResult
 
         // Expecting a result count of 0 due to the intentional use of a lowercase 'i'
-        XCTAssertEqual(searchResults.count, 2)
+        XCTAssertEqual(searchResults.count, 0)
     }
 
     func testFindAndReplaceWithOptionContaining() async {

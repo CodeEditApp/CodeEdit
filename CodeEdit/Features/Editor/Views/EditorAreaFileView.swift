@@ -27,7 +27,7 @@ struct EditorAreaFileView: View {
         if let document = file.fileDocument {
 
             if file.isOpeningInQuickLook {
-                QuickLookFileView(file.url)
+                AnyFileView(file.url)
                     .padding(.top, edgeInsets.top - 1.74)
                     .padding(.bottom, StatusBarView.height + 1.26)
             } else if let utType = document.utType, utType.conforms(to: .text) {

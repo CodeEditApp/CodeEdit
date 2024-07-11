@@ -15,7 +15,7 @@ A collection of all the views that make up the main app window.
 - ``EditorAreaFileView``
 - ``CodeFileView``
 - ``NonTextFileView``
-- ``QuickLookFileView``
+- ``AnyFileView``
 - ``LoadingFileView``
 - ``ImageFileView``
 - ``PDFFileView``

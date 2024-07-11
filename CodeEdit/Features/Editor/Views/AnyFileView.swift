@@ -1,5 +1,5 @@
 //
-//  QuickLookFile.swift
+//  AnyFileView.swift
 //  CodeEdit
 //
 //  Created by Leonardo Larrañaga on 7/10/24.
@@ -9,8 +9,8 @@ import SwiftUI
 import QuickLookUI
 
 /// A view to preview any file using Quick Look.
-/// ` QuickLookView(fileURL) `
-struct QuickLookFileView: NSViewRepresentable {
+/// ` AnyFileView(fileURL) `
+struct AnyFileView: NSViewRepresentable {
     private let fileURL: URL
 
     init(_ fileURL: URL) {

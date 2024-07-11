@@ -36,7 +36,7 @@ struct ImageFileView: View {
 
             GeometryReader { proxy in
                 ZStack {
-                    QuickLookFileView(imageURL)
+                    AnyFileView(imageURL)
                         .frame(
                             maxWidth: min(pixelWidth, proxy.size.width, nsImage.size.width),
                             maxHeight: min(pixelHeight, proxy.size.height, nsImage.size.height)

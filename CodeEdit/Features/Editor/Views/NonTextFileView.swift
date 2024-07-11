@@ -32,11 +32,11 @@ struct NonTextFileView: View {
                         PDFFileView(fileURL)
                             .modifier(UpdateStatusBarInfo(withURL: fileURL))
                     } else {
-                        QuickLookFileView(fileURL)
+                        AnyFileView(fileURL)
                             .modifier(UpdateStatusBarInfo(withURL: fileURL))
                     }
                 } else {
-                    QuickLookFileView(fileURL)
+                    AnyFileView(fileURL)
                         .modifier(UpdateStatusBarInfo(withURL: fileURL))
                 }
             } else {
