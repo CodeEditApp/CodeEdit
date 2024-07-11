@@ -43,16 +43,20 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Returns the extension of the file or an empty string if no extension is present.
     var type: FileIcon.FileType {
-        let fileName = url.lastPathComponent
-        let fileExtension = url.pathExtension
+        let filename = url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
 
-        // Verifies if the filename consists solely of file extensions, such as '.env', '.gitignore', etc.
-        if fileName.hasPrefix(".") {
-            return fileName.dropFirst().components(separatedBy: ".")
-                .compactMap { FileIcon.FileType(rawValue: $0) }
-                .first ?? .txt
+        /// First, check if there is a valid file extension.
+        if let type = FileIcon.FileType(rawValue: filename) {
+            return type
         } else {
-            return .init(rawValue: fileExtension) ?? .txt
+            /// If  there's not, verifies every extension for a valid type.
+            let extensions = filename.dropFirst().components(separatedBy: ".").reversed()
+
+            return extensions
+                .compactMap { FileIcon.FileType(rawValue: $0) }
+                .first
+            /// Returns .txt for invalid type.
+            ?? .txt
         }
     }
 
