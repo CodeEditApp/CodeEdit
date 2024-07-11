@@ -25,19 +25,20 @@ struct NonTextFileView: View {
         Group {
             if let fileURL = fileDocument.fileURL {
                 if let utType = fileDocument.utType {
-
                     if utType.conforms(to: .image) {
                         ImageFileView(fileURL)
                             .modifier(UpdateStatusBarInfo(withURL: fileURL))
                     } else if utType.conforms(to: .pdf) {
                         PDFFileView(fileURL)
                             .modifier(UpdateStatusBarInfo(withURL: fileURL))
+                    } else {
+                        QuickLookFileView(fileURL)
+                            .modifier(UpdateStatusBarInfo(withURL: fileURL))
                     }
                 } else {
-                    AnyFileView(fileURL)
+                    QuickLookFileView(fileURL)
                         .modifier(UpdateStatusBarInfo(withURL: fileURL))
                 }
-
             } else {
                 ZStack {
                     Text("Cannot retrieve URL to the file you opened.")
@@ -48,6 +49,5 @@ struct NonTextFileView: View {
             statusBarViewModel.dimensions = nil
             statusBarViewModel.fileSize = nil
         }
-
     }
 }
