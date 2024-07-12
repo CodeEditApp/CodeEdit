@@ -41,7 +41,11 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         createStatusTaskNotification()
 
         process.terminationHandler = { [weak self] _ in
-            self?.handleProcessFinished()
+            if let self {
+                Task {
+                    await self.handleProcessFinished()
+                }
+            }
         }
 
         Task.detached {
@@ -53,11 +57,11 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             }
 
             do {
-                try await TaskShell.executeCommandWithShell(
+                try await Shell.executeCommandWithShell(
                     process: process,
                     command: self.task.fullCommand,
                     environmentVariables: self.task.environmentVariablesDictionary,
-                    shell: TaskShell.zsh, // TODO: Let user decide which shell he uses
+                    shell: Shell.zsh, // TODO: Let user decide which shell he uses
                     outputPipe: outputPipe
                 )
             } catch { print(error) }
