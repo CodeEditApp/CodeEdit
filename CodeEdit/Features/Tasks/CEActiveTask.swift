@@ -112,7 +112,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     func suspend() {
-        if let process {
+        if let process, status == .running {
             process.suspend()
             Task {
                 await updateTaskStatus(to: .stopped)
@@ -121,7 +121,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     func resume() {
-        if let process {
+        if let process, status == .stopped {
             process.resume()
             Task {
                 await updateTaskStatus(to: .running)
