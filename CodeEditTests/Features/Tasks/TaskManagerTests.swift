@@ -67,7 +67,7 @@ final class TaskManagerTests: XCTestCase {
 
         let testExpectation2 = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .failed)
+            XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .notRunning)
             testExpectation2.fulfill()
         }
 

@@ -49,26 +49,24 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
                 }
             }
 
-            Task.detached {
-                outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
-                    let data = String(decoding: fileHandle.availableData, as: UTF8.self)
-                    if !data.isEmpty {
-                        Task {
-                            await self.updateOutput(data)
-                        }
+            outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
+                let data = String(decoding: fileHandle.availableData, as: UTF8.self)
+                if !data.isEmpty {
+                    Task {
+                        await self.updateOutput(data)
                     }
                 }
-
-                do {
-                    try await Shell.executeCommandWithShell(
-                        process: process,
-                        command: self.task.fullCommand,
-                        environmentVariables: self.task.environmentVariablesDictionary,
-                        shell: Shell.zsh, // TODO: Let user decide which shell he uses
-                        outputPipe: outputPipe
-                    )
-                } catch { print(error) }
             }
+
+            do {
+                try Shell.executeCommandWithShell(
+                    process: process,
+                    command: self.task.fullCommand,
+                    environmentVariables: self.task.environmentVariablesDictionary,
+                    shell: Shell.zsh, // TODO: Let user decide which shell he uses
+                    outputPipe: outputPipe
+                )
+            } catch { print(error) }
         }
     }
 
