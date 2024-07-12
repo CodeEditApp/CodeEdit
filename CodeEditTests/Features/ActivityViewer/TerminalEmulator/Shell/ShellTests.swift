@@ -1,5 +1,5 @@
 //
-//  TaskShellTests.swift
+//  ShellTests.swift
 //  CodeEditTests
 //
 //  Created by Tommy Ludwig on 08.07.24.
@@ -8,7 +8,7 @@
 import XCTest
 @testable import CodeEdit
 
-final class TaskShellTests: XCTestCase {
+final class ShellTests: XCTestCase {
     var process: Process!
     var outputPipe: Pipe!
 
@@ -27,9 +27,9 @@ final class TaskShellTests: XCTestCase {
     func testExecuteCommandWithShellInitialization() {
         let command = "echo $STATE"
         let environmentVariables = ["STATE": "Testing"]
-        let shell: TaskShell = .bash
+        let shell: Shell = .bash
 
-        XCTAssertNoThrow(try TaskShell.executeCommandWithShell(
+        XCTAssertNoThrow(try Shell.executeCommandWithShell(
             process: process,
             command: command,
             environmentVariables: environmentVariables,
@@ -52,9 +52,9 @@ final class TaskShellTests: XCTestCase {
     func testExecuteCommandWithShellOutput() {
         let command = "echo $STATE"
         let environmentVariables = ["STATE": "Testing"]
-        let shell: TaskShell = .bash
+        let shell: Shell = .bash
 
-        XCTAssertNoThrow(try TaskShell.executeCommandWithShell(
+        XCTAssertNoThrow(try Shell.executeCommandWithShell(
             process: process,
             command: command,
             environmentVariables: environmentVariables,
@@ -69,12 +69,12 @@ final class TaskShellTests: XCTestCase {
 
     func testExecuteCommandWithExecutableOverrideAttempt() {
         let command = "echo 'Hello, World!'"
-        let shell: TaskShell = .bash
+        let shell: Shell = .bash
 
         // Intentionally providing an invalid shell path to try trigger an error
         process.executableURL = URL(fileURLWithPath: "/invalid/path")
 
-        XCTAssertNoThrow(try TaskShell.executeCommandWithShell(
+        XCTAssertNoThrow(try Shell.executeCommandWithShell(
             process: process,
             command: command,
             shell: shell,
