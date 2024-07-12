@@ -68,37 +68,33 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }
     }
 
-    func handleProcessFinished() async {
-        if let process {
-            handleTerminationStatus(process.terminationStatus)
-            if process.terminationStatus == 0 {
-                await updateOutput("\nFinished running \(task.name).\n\n")
-                await updateTaskStatus(to: .finished)
-                updateTaskNotification(
-                    title: "Finished Running: \(task.name)",
-                    message: "",
-                    isLoading: false
-                )
-            } else {
-
-                await updateOutput("\nFailed to run \(task.name).\n\n")
-                await updateTaskStatus(to: .failed)
-                updateTaskNotification(
-                    title: "Failed Running: \(task.name)",
-                    message: "",
-                    isLoading: false
-                )
-            }
-        } else {
-            await updateOutput("\nFinished running \(task.name) with unkown status code.\n\n")
+    func handleProcessFinished(terminationStatus: Int32) async {
+        handleTerminationStatus(terminationStatus)
+        if terminationStatus == 0 {
+            await updateOutput("\nFinished running \(task.name).\n\n")
             await updateTaskStatus(to: .finished)
             updateTaskNotification(
                 title: "Finished Running: \(task.name)",
                 message: "",
                 isLoading: false
             )
+        } else if terminationStatus == 15 {
+            await updateOutput("\n\(task.name) cancelled.\n\n")
+            await updateTaskStatus(to: .notRunning)
+            updateTaskNotification(
+                title: "\(task.name) cancelled",
+                message: "",
+                isLoading: false
+            )
+        } else {
+            await updateOutput("\nFailed to run \(task.name).\n\n")
+            await updateTaskStatus(to: .failed)
+            updateTaskNotification(
+                title: "Failed Running: \(task.name)",
+                message: "",
+                isLoading: false
+            )
         }
-
         outputPipe?.fileHandleForReading.readabilityHandler = nil
 
         deleteStatusTaskNotification()
