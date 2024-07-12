@@ -35,36 +35,40 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     func run() {
-        guard let process, let outputPipe else { return }
+        Task {
+            guard let process, let outputPipe else { return }
 
-        Task { await updateTaskStatus(to: .running) }
-        createStatusTaskNotification()
+            await updateTaskStatus(to: .running)
+            createStatusTaskNotification()
 
-        process.terminationHandler = { [weak self] _ in
-            if let self {
-                Task {
-                    await self.handleProcessFinished()
-                }
-            }
-        }
-
-        Task.detached {
-            outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
-                let data = fileHandle.availableData
-                Task {
-                    await self.updateOutput(String(decoding: data, as: UTF8.self))
+            process.terminationHandler = { [weak self] capturedProcess in
+                if let self {
+                    Task {
+                        await self.handleProcessFinished(terminationStatus: capturedProcess.terminationStatus)
+                    }
                 }
             }
 
-            do {
-                try await Shell.executeCommandWithShell(
-                    process: process,
-                    command: self.task.fullCommand,
-                    environmentVariables: self.task.environmentVariablesDictionary,
-                    shell: Shell.zsh, // TODO: Let user decide which shell he uses
-                    outputPipe: outputPipe
-                )
-            } catch { print(error) }
+            Task.detached {
+                outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
+                    let data = String(decoding: fileHandle.availableData, as: UTF8.self)
+                    if !data.isEmpty {
+                        Task {
+                            await self.updateOutput(data)
+                        }
+                    }
+                }
+
+                do {
+                    try await Shell.executeCommandWithShell(
+                        process: process,
+                        command: self.task.fullCommand,
+                        environmentVariables: self.task.environmentVariablesDictionary,
+                        shell: Shell.zsh, // TODO: Let user decide which shell he uses
+                        outputPipe: outputPipe
+                    )
+                } catch { print(error) }
+            }
         }
     }
 
