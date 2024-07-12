@@ -73,7 +73,6 @@ struct SchemeDropDownView: View {
                 }
             }
             .padding(5)
-            .frame(width: 215)
         }.onTapGesture {
             self.isSchemePopOverPresented.toggle()
         }
