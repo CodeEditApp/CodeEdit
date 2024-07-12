@@ -39,10 +39,8 @@ class TaskManager: ObservableObject {
         return workspaceSettings.tasks
     }
 
-    var taskStatus: (UUID) -> CETaskStatus {
-        return { taskID in
-            return self.activeTasks[taskID]?.status ?? .notRunning
-        }
+    func taskStatus(taskID: UUID) -> CETaskStatus {
+        return self.activeTasks[taskID]?.status ?? .notRunning
     }
 
     func executeActiveTask() {
@@ -123,7 +121,6 @@ class TaskManager: ObservableObject {
             return
         }
         process.terminate()
-        process.waitUntilExit()
     }
 
     /// Interrupts the task associated with the given task ID.
@@ -142,7 +139,6 @@ class TaskManager: ObservableObject {
             return
         }
         process.interrupt()
-        process.waitUntilExit()
     }
 
     func stopAllTasks() {

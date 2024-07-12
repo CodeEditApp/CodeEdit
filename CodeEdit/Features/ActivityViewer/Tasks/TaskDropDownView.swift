@@ -191,7 +191,7 @@ struct TasksPopoverView: View {
             Text(task.name)
             Spacer()
             Circle()
-                .fill(taskManager.taskStatus(task.id).color)
+                .fill(taskManager.taskStatus(taskID: task.id).color)
                 .frame(width: 5, height: 5)
         }
     }
