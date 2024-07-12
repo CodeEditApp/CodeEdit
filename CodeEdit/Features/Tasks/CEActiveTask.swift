@@ -64,36 +64,30 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }
     }
 
-    func handleProcessFinished() {
+    func handleProcessFinished() async {
         if let process {
-            // optional to use
-            self.handleTerminationStatus(process.terminationStatus)
+            handleTerminationStatus(process.terminationStatus)
             if process.terminationStatus == 0 {
-                Task { [weak self] in
-                    await self?.updateOutput("\nFinished running \(self?.task.name ?? "Task").\n\n")
-                    await self?.updateTaskStatus(to: .finished)
-                }
+                await updateOutput("\nFinished running \(task.name).\n\n")
+                await updateTaskStatus(to: .finished)
                 updateTaskNotification(
                     title: "Finished Running: \(task.name)",
                     message: "",
                     isLoading: false
                 )
             } else {
-                Task { [weak self] in
-                    await self?.updateOutput("\nFailed to run \(self?.task.name ?? "Task").\n\n")
-                    await self?.updateTaskStatus(to: .failed)
-                }
-                self.updateTaskNotification(
-                    title: "Failed Running: \(self.task.name)",
+
+                await updateOutput("\nFailed to run \(task.name).\n\n")
+                await updateTaskStatus(to: .failed)
+                updateTaskNotification(
+                    title: "Failed Running: \(task.name)",
                     message: "",
                     isLoading: false
                 )
             }
         } else {
-            Task { [weak self] in
-                await self?.updateOutput("\nFinished running \(self?.task.name ?? "Task") with unkown status code.\n\n")
-                await self?.updateTaskStatus(to: .finished)
-            }
+            await updateOutput("\nFinished running \(task.name) with unkown status code.\n\n")
+            await updateTaskStatus(to: .finished)
             updateTaskNotification(
                 title: "Finished Running: \(task.name)",
                 message: "",
@@ -101,9 +95,9 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             )
         }
 
-        self.outputPipe?.fileHandleForReading.readabilityHandler = nil
+        outputPipe?.fileHandleForReading.readabilityHandler = nil
 
-        self.deleteStatusTaskNotification()
+        deleteStatusTaskNotification()
     }
 
     func renew() {
