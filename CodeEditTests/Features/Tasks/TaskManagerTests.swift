@@ -58,7 +58,7 @@ final class TaskManagerTests: XCTestCase {
 
         let testExpectation1 = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            XCTAssertEqual(self.taskManager.taskStatus(task.id), .running)
+            XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .running)
             self.taskManager.terminateActiveTask()
             testExpectation1.fulfill()
         }
@@ -67,13 +67,64 @@ final class TaskManagerTests: XCTestCase {
 
         let testExpectation2 = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            XCTAssertEqual(self.taskManager.taskStatus(task.id), .failed)
+            XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .failed)
             testExpectation2.fulfill()
         }
 
         wait(for: [testExpectation2], timeout: 1)
     }
 
-    // Additional tests for suspend, resume, terminate, stopAllTasks, and taskStatus would follow a similar structure
-    // They would require mocking or stubbing the behavior of CEActiveTask and possibly the Process class
+    // This test verifies the functionality of suspending and resuming a task.
+    // It ensures that suspend signals do not stack up,
+    // meaning only one resume signal is required to resume the task,
+    // regardless of the number of times `suspendTask()` is called.
+    func testSuspendAndResumeTask() {
+        let task = CETask(name: "Test Task", command: "sleep 1")
+        mockWorkspaceSettings.tasks.append(task)
+        taskManager.selectedTaskID = task.id
+        taskManager.executeActiveTask()
+
+        let suspendExpectation = XCTestExpectation(description: "Suspend task after execution")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.taskManager.suspendTask(taskID: task.id)
+            suspendExpectation.fulfill()
+        }
+        wait(for: [suspendExpectation], timeout: 1)
+
+        let verifySuspensionExpectation = XCTestExpectation(description: "Verify task is suspended and resume it")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertEqual(self.taskManager.activeTasks[task.id]?.process?.isRunning, true)
+            XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .stopped)
+            self.taskManager.resumeTask(taskID: task.id)
+            verifySuspensionExpectation.fulfill()
+        }
+        wait(for: [verifySuspensionExpectation], timeout: 1)
+
+        let multipleSuspensionsExpectation = XCTestExpectation(description: "Suspend task multiple times")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .running)
+            self.taskManager.suspendTask(taskID: task.id)
+            self.taskManager.suspendTask(taskID: task.id)
+            self.taskManager.suspendTask(taskID: task.id)
+            multipleSuspensionsExpectation.fulfill()
+        }
+        wait(for: [multipleSuspensionsExpectation], timeout: 1)
+
+        let verifySingleResumeExpectation = XCTestExpectation(
+            description: "Verify task is suspended and resume it once"
+        )
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .stopped)
+            self.taskManager.resumeTask(taskID: task.id)
+            verifySingleResumeExpectation.fulfill()
+        }
+        wait(for: [verifySingleResumeExpectation], timeout: 1)
+
+        let finalRunningStateExpectation = XCTestExpectation(description: "Verify task is running after single resume")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .running)
+            finalRunningStateExpectation.fulfill()
+        }
+        wait(for: [finalRunningStateExpectation], timeout: 1)
+    }
 }
