@@ -29,7 +29,7 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         delegate: OutlineTableViewCellDelegate? = nil
     ) {
         super.init(frame: frameRect, item: item, isEditable: isEditable)
-        self.label.setAccessibilityIdentifier("ProjectNavigatorTableViewCell-\(item?.name ?? "")")
+        self.textField?.setAccessibilityIdentifier("ProjectNavigatorTableViewCell-\(item?.name ?? "")")
         self.delegate = delegate
     }
 
