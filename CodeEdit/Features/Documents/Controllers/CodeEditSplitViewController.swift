@@ -47,14 +47,20 @@ final class CodeEditSplitViewController: NSSplitViewController {
             return
         }
 
-        guard let workspace, let navigatorViewModel else { return }
+        guard let workspace,
+              let navigatorViewModel,
+              let editorManager = workspace.editorManager,
+              let statusBarViewModel = workspace.statusBarViewModel,
+              let utilityAreaModel = workspace.utilityAreaModel else {
+            return
+        }
 
         splitView.translatesAutoresizingMaskIntoConstraints = false
 
         let settingsView = SettingsInjector {
             NavigatorAreaView(workspace: workspace, viewModel: navigatorViewModel)
                 .environmentObject(workspace)
-                .environmentObject(workspace.editorManager!)
+                .environmentObject(editorManager)
         }
 
         let navigator = NSSplitViewItem(sidebarWithViewController: NSHostingController(rootView: settingsView))
@@ -69,9 +75,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
             WindowObserver(window: WindowBox(value: windowRef)) {
                 WorkspaceView()
                     .environmentObject(workspace)
-                    .environmentObject(workspace.editorManager!)
-                    .environmentObject(workspace.statusBarViewModel!)
-                    .environmentObject(workspace.utilityAreaModel!)
+                    .environmentObject(editorManager)
+                    .environmentObject(statusBarViewModel)
+                    .environmentObject(utilityAreaModel)
             }
         }
 
@@ -84,7 +90,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         let inspectorView = SettingsInjector {
             InspectorAreaView(viewModel: InspectorAreaViewModel())
                 .environmentObject(workspace)
-                .environmentObject(workspace.editorManager!)
+                .environmentObject(editorManager)
         }
 
         let inspector = NSSplitViewItem(inspectorWithViewController: NSHostingController(rootView: inspectorView))

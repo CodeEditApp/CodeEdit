@@ -11,7 +11,7 @@ struct FileCommands: Commands {
     @Environment(\.openWindow)
     private var openWindow
 
-    @State var windowController: CodeEditWindowController?
+    @UpdatingWindowController var windowController
 
     @FocusedObject var utilityAreaViewModel: UtilityAreaViewModel?
 
@@ -87,9 +87,6 @@ struct FileCommands: Commands {
                 NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
             }
             .disabled(windowController?.workspace == nil)
-            .onReceive(NSApp.publisher(for: \.keyWindow)) { window in
-                windowController = window?.windowController as? CodeEditWindowController
-            }
 
             Divider()
 
