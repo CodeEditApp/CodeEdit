@@ -61,5 +61,7 @@ struct NavigatorAreaView: View {
             }
         }
         .environmentObject(workspace)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("navigator")
     }
 }
