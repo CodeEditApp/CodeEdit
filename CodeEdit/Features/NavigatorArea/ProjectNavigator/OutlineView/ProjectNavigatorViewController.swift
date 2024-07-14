@@ -292,7 +292,9 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
         if !item.isFolder && shouldSendSelectionUpdate {
             DispatchQueue.main.async {
+                self.shouldSendSelectionUpdate = false
                 self.workspace?.editorManager.activeEditor.openTab(file: item, asTemporary: true)
+                self.shouldSendSelectionUpdate = true
             }
         }
     }
@@ -302,12 +304,12 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {
-        guard
-            let id = workspace?.editorManager.activeEditor.selectedTab?.file.id,
-            let item = workspace?.workspaceFileManager?.getFile(id, createIfNotFound: true)
-        else { return }
-        /// update outline selection only if the parent of selected item match with expanded item
-        guard item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else { return }
+        guard let id = workspace?.editorManager.activeEditor.selectedTab?.file.id,
+              let item = workspace?.workspaceFileManager?.getFile(id, createIfNotFound: true),
+              /// update outline selection only if the parent of selected item match with expanded item
+              item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else {
+            return
+        }
         /// select active file under collapsed folder only if its parent is expanding
         if outlineView.isItemExpanded(item.parent) {
             updateSelection(itemID: item.id)
@@ -359,7 +361,9 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             expandParent(item: parent)
         }
         let row = outlineView.row(forItem: fileItem)
+        shouldSendSelectionUpdate = false
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
+        shouldSendSelectionUpdate = true
 
         if row < 0 {
             let alert = NSAlert()
