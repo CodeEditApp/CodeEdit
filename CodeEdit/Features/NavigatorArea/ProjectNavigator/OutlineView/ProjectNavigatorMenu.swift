@@ -194,7 +194,7 @@ final class ProjectNavigatorMenu: NSMenu {
     @objc
     private func openInTab() {
         if let item {
-            workspace?.editorManager.openTab(item: item)
+            workspace?.editorManager?.openTab(item: item)
         }
     }
 

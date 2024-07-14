@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct WorkspaceView: View {
-    @Environment(\.window)
-    private var window: NSWindow
+    @Environment(\.window.value)
+    private var window: NSWindow?
 
     @Environment(\.colorScheme)
     private var colorScheme

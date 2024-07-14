@@ -85,11 +85,11 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// Returns a parent ``CEWorkspaceFile``.
     ///
     /// If the item already is the top-level ``CEWorkspaceFile`` this returns `nil`.
-    var parent: CEWorkspaceFile?
+    weak var parent: CEWorkspaceFile?
 
     private let fileDocumentSubject = PassthroughSubject<CodeFileDocument?, Never>()
 
-    var fileDocument: CodeFileDocument? {
+    weak var fileDocument: CodeFileDocument? {
         didSet {
             fileDocumentSubject.send(fileDocument)
         }

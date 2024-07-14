@@ -9,7 +9,7 @@ import Cocoa
 import SwiftUI
 import Combine
 
-final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, ObservableObject {
+final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, ObservableObject, NSWindowDelegate {
     @Published var navigatorCollapsed = false
     @Published var inspectorCollapsed = false
     @Published var toolbarCollapsed = false
@@ -25,9 +25,11 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     var taskNotificationHandler: TaskNotificationHandler
 
-    var splitViewController: NSSplitViewController!
-
     internal var cancellables = [AnyCancellable]()
+
+    var splitViewController: CodeEditSplitViewController? {
+        contentViewController as? CodeEditSplitViewController
+    }
 
     init(
         window: NSWindow?,
@@ -36,10 +38,13 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     ) {
         self.taskNotificationHandler = taskNotificationHandler
         super.init(window: window)
+        window?.delegate = self
         guard let workspace else { return }
         self.workspace = workspace
         self.workspaceSettings = CEWorkspaceSettings(workspaceDocument: workspace)
-        setupSplitView(with: workspace)
+        guard let splitViewController = setupSplitView(with: workspace) else {
+            fatalError("Failed to set up content view.")
+        }
 
         // Previous:
         // An NSHostingController is used, so the root viewController of the window is a SwiftUI-managed one.
@@ -69,37 +74,40 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         registerCommands()
     }
 
-    deinit { cancellables.forEach({ $0.cancel() }) }
+    deinit {
+        cancellables.forEach({ $0.cancel() })
+        cancellables.removeAll()
+    }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupSplitView(with workspace: WorkspaceDocument) {
+    private func setupSplitView(with workspace: WorkspaceDocument) -> CodeEditSplitViewController? {
         guard let window else {
             assertionFailure("No window found for this controller. Cannot set up content.")
-            return
+            return nil
         }
 
         let navigatorModel = NavigatorSidebarViewModel()
         navigatorSidebarViewModel = navigatorModel
-        self.splitViewController = CodeEditSplitViewController(
+        self.listenToDocumentEdited(workspace: workspace)
+        return CodeEditSplitViewController(
             workspace: workspace,
             navigatorViewModel: navigatorModel,
             windowRef: window
         )
-        self.listenToDocumentEdited(workspace: workspace)
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {
-        workspace?.editorManager.activeEditor.selectedTab?.file.fileDocument
+        workspace?.editorManager?.activeEditor.selectedTab?.file.fileDocument
     }
 
     @IBAction func saveDocument(_ sender: Any) {
         guard let codeFile = getSelectedCodeFile() else { return }
         codeFile.save(sender)
-        workspace?.editorManager.activeEditor.temporaryTab = nil
+        workspace?.editorManager?.activeEditor.temporaryTab = nil
     }
 
     @IBAction func openCommandPalette(_ sender: Any) {
@@ -125,7 +133,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         }
     }
 
-    @IBAction func openQuickly(_ sender: Any) {
+    @IBAction func openQuickly(_ sender: Any?) {
         if let workspace, let state = workspace.openQuicklyViewModel {
             if let quickOpenPanel {
                 if quickOpenPanel.isKeyWindow {
@@ -142,7 +150,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 let contentView = OpenQuicklyView(state: state) {
                     panel.close()
                 } openFile: { file in
-                    workspace.editorManager.openTab(item: file)
+                    workspace.editorManager?.openTab(item: file)
                 }.environmentObject(workspace)
 
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
@@ -153,18 +161,41 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     @IBAction func closeCurrentTab(_ sender: Any) {
-        if (workspace?.editorManager.activeEditor.tabs ?? []).isEmpty {
+        if (workspace?.editorManager?.activeEditor.tabs ?? []).isEmpty {
             self.closeActiveEditor(self)
         } else {
-            workspace?.editorManager.activeEditor.closeSelectedTab()
+            workspace?.editorManager?.activeEditor.closeSelectedTab()
         }
     }
 
     @IBAction func closeActiveEditor(_ sender: Any) {
-        if workspace?.editorManager.editorLayout.findSomeEditor(except: workspace?.editorManager.activeEditor) == nil {
-            NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
+        if workspace?.editorManager?.editorLayout.findSomeEditor(
+            except: workspace?.editorManager?.activeEditor
+        ) == nil {
+            NSApp.sendAction(#selector(NSWindow.performClose(_:)), to: nil, from: nil)
         } else {
-            workspace?.editorManager.activeEditor.close()
+            workspace?.editorManager?.activeEditor.close()
         }
+    }
+
+    func windowShouldClose(_ sender: NSWindow) -> Bool {
+        cancellables.forEach({ $0.cancel() })
+        cancellables.removeAll()
+
+        for _ in 0..<(splitViewController?.children.count ?? 0) {
+            splitViewController?.removeChild(at: 0)
+        }
+        contentViewController?.removeFromParent()
+        contentViewController = nil
+
+        workspaceSettingsWindow?.close()
+        workspaceSettingsWindow = nil
+        workspaceSettings?.cleanUp()
+        workspaceSettings = nil
+        quickOpenPanel = nil
+        commandPalettePanel = nil
+        navigatorSidebarViewModel = nil
+        workspace = nil
+        return true
     }
 }

@@ -16,10 +16,6 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     @Published var sortFoldersOnTop: Bool = true
 
-    var workspaceFileManager: CEWorkspaceFileManager?
-
-    var editorManager = EditorManager()
-
     private var workspaceState: [String: Any] {
         get {
             let key = "workspaceState-\(self.fileURL?.absoluteString ?? "")"
@@ -31,8 +27,11 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
     }
 
-    var statusBarViewModel = StatusBarViewModel()
-    var utilityAreaModel = UtilityAreaViewModel()
+    var workspaceFileManager: CEWorkspaceFileManager?
+
+    var editorManager: EditorManager? = EditorManager()
+    var statusBarViewModel: StatusBarViewModel? = StatusBarViewModel()
+    var utilityAreaModel: UtilityAreaViewModel? = UtilityAreaViewModel()
     var searchState: SearchState?
     var openQuicklyViewModel: OpenQuicklyViewModel?
     var commandsPaletteState: QuickActionsViewModel?
@@ -102,6 +101,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             window.center()
         }
         self.addWindowController(windowController)
+
+        window.makeKeyAndOrderFront(nil)
     }
 
     // MARK: Set Up Workspace
@@ -112,7 +113,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
         let sourceControlManager = SourceControlManager(
             workspaceURL: url,
-            editorManager: editorManager
+            editorManager: editorManager!
         )
 
         self.workspaceFileManager = .init(
@@ -126,8 +127,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.openQuicklyViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
 
-        editorManager.restoreFromState(self)
-        utilityAreaModel.restoreFromState(self)
+        editorManager?.restoreFromState(self)
+        utilityAreaModel?.restoreFromState(self)
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
@@ -139,9 +140,20 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     // MARK: Close Workspace
 
     override func close() {
-        editorManager.saveRestorationState(self)
-        utilityAreaModel.saveRestorationState(self)
         super.close()
+        editorManager?.saveRestorationState(self)
+        utilityAreaModel?.saveRestorationState(self)
+
+        cancellables.forEach({ $0.cancel() })
+        statusBarViewModel = nil
+        utilityAreaModel = nil
+        searchState = nil
+        editorManager = nil
+        openQuicklyViewModel = nil
+        commandsPaletteState = nil
+        sourceControlManager = nil
+        workspaceFileManager?.cleanUp()
+        workspaceFileManager = nil
     }
 
     /// Determines the windows should be closed.
@@ -178,10 +190,10 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             return
         }
         // Save unsaved changes before closing
-        let editedCodeFiles = editorManager.editorLayout
+        let editedCodeFiles = editorManager?.editorLayout
             .gatherOpenFiles()
             .compactMap(\.fileDocument)
-            .filter(\.isDocumentEdited)
+            .filter(\.isDocumentEdited) ?? []
 
         for editedCodeFile in editedCodeFiles {
             let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
@@ -207,9 +219,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             implementation,
             to: (@convention(c)(Any, Selector, Any, Bool, UnsafeMutableRawPointer?) -> Void).self
         )
-        let areAllOpenedCodeFilesClean = editorManager.editorLayout.gatherOpenFiles()
+        let areAllOpenedCodeFilesClean = editorManager?.editorLayout.gatherOpenFiles()
             .compactMap(\.fileDocument)
-            .allSatisfy { !$0.isDocumentEdited }
+            .allSatisfy { !$0.isDocumentEdited } ?? false
         function(object, shouldCloseSelector, self, areAllOpenedCodeFilesClean, contextInfo)
     }
 

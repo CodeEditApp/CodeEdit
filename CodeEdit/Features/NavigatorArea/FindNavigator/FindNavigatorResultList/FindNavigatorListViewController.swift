@@ -181,7 +181,7 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
             )
             // We're using a medium label for file names b/c it makes it easier to
             // distinguish quickly which results are from which files.
-            view.label.font = .systemFont(ofSize: 13, weight: .medium)
+            view.textField?.font = .systemFont(ofSize: 13, weight: .medium)
             return view
         }
     }
@@ -197,13 +197,13 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
             let selectedMatch = self.selectedItem as? SearchResultMatchModel
             if selectedItem == nil || selectedMatch != item {
                 self.selectedItem = item
-                workspace.editorManager.openTab(item: item.file)
+                workspace.editorManager?.openTab(item: item.file)
             }
         } else if let item = outlineView.item(atRow: selectedIndex) as? SearchResultModel {
             let selectedFile = self.selectedItem as? SearchResultModel
             if selectedItem == nil || selectedFile != item {
                 self.selectedItem = item
-                workspace.editorManager.openTab(item: item.file)
+                workspace.editorManager?.openTab(item: item.file)
             }
         }
     }
@@ -231,6 +231,17 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
         outlineView.noteHeightOfRows(withIndexesChanged: indexes)
     }
 
+    // swiftlint:disable:next function_parameter_count
+    func outlineView(
+        _ outlineView: NSOutlineView,
+        toolTipFor cell: NSCell,
+        rect: NSRectPointer,
+        tableColumn: NSTableColumn?,
+        item: Any,
+        mouseLocation: NSPoint
+    ) -> String {
+        return ""
+    }
 }
 
 // MARK: - NSMenuDelegate

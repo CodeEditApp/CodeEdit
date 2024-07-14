@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WindowObserver<Content: View>: View {
 
-    var window: NSWindow
+    var window: WindowBox
 
     @ViewBuilder var content: Content
 

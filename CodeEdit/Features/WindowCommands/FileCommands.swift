@@ -44,7 +44,7 @@ struct FileCommands: Commands {
                 if NSApp.target(forAction: #selector(CodeEditWindowController.closeCurrentTab(_:))) != nil {
                     NSApp.sendAction(#selector(CodeEditWindowController.closeCurrentTab(_:)), to: nil, from: nil)
                 } else {
-                    NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
+                    NSApp.sendAction(#selector(NSWindow.performClose(_:)), to: keyWindow, from: nil)
                 }
             }
             .keyboardShortcut("w")
@@ -57,19 +57,19 @@ struct FileCommands: Commands {
                         from: nil
                     )
                 } else {
-                    NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
+                    NSApp.sendAction(#selector(NSWindow.performClose(_:)), to: keyWindow, from: nil)
                 }
             }
             .keyboardShortcut("w", modifiers: [.control, .shift, .command])
 
             Button("Close Window") {
-                NSApp.sendAction(#selector(NSWindow.close), to: nil, from: nil)
+                NSApp.sendAction(#selector(NSWindow.performClose(_:)), to: keyWindow, from: nil)
             }
             .keyboardShortcut("w", modifiers: [.shift, .command])
 
             Button("Close Workspace") {
                 guard let keyWindow = NSApplication.shared.keyWindow else { return }
-                NSApp.sendAction(#selector(NSWindow.close), to: keyWindow, from: nil)
+                NSApp.sendAction(#selector(NSWindow.performClose(_:)), to: keyWindow, from: nil)
             }
             .keyboardShortcut("w", modifiers: [.control, .option, .command])
             .disabled(!(NSApplication.shared.keyWindow?.windowController is CodeEditWindowController))

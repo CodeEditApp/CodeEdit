@@ -46,25 +46,25 @@ extension LSPService {
     // swiftlint:disable:next cyclomatic_complexity
     private func handleRequest(_ request: ServerRequest) {
         switch request {
-        case let .workspaceConfiguration(params, handler):
+        case let .workspaceConfiguration(params, _):
             print("workspaceConfiguration: \(params)")
         case let .workspaceFolders(handler):
             print("workspaceFolders: \(String(describing: handler))")
-        case let .workspaceApplyEdit(params, handler):
+        case let .workspaceApplyEdit(params, _):
             print("workspaceApplyEdit: \(params)")
-        case let .clientRegisterCapability(params, handler):
+        case let .clientRegisterCapability(params, _):
             print("clientRegisterCapability: \(params)")
-        case let .clientUnregisterCapability(params, handler):
+        case let .clientUnregisterCapability(params, _):
             print("clientUnregisterCapability: \(params)")
         case let .workspaceCodeLensRefresh(handler):
             print("workspaceCodeLensRefresh: \(String(describing: handler))")
         case let .workspaceSemanticTokenRefresh(handler):
             print("workspaceSemanticTokenRefresh: \(String(describing: handler))")
-        case let .windowShowMessageRequest(params, handler):
+        case let .windowShowMessageRequest(params, _):
             print("windowShowMessageRequest: \(params)")
-        case let .windowShowDocument(params, handler):
+        case let .windowShowDocument(params, _):
             print("windowShowDocument: \(params)")
-        case let .windowWorkDoneProgressCreate(params, handler):
+        case let .windowWorkDoneProgressCreate(params, _):
             print("windowWorkDoneProgressCreate: \(params)")
 
         default:
