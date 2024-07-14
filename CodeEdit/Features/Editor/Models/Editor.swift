@@ -35,22 +35,16 @@ final class Editor: ObservableObject, Identifiable {
     }
 
     /// The current offset in the history list.
+    /// When set, updates the ``selectedTab`` to the tab indicated by the offset.
+    /// See the ``historyOffsetDidChange()`` method for more details.
     @Published var historyOffset: Int = 0 {
         didSet {
-            let tab = history[historyOffset]
-
-            if !tabs.contains(tab) {
-                if let temporaryTab, tabs.contains(temporaryTab) {
-                    closeTab(file: temporaryTab.file, fromHistory: true)
-                }
-                temporaryTab = tab
-                openTab(file: tab.file, fromHistory: true)
-            }
-            selectedTab = tab
+            historyOffsetDidChange()
         }
     }
 
-    /// History of tab switching.
+    /// Maintains the list of tabs that have been switched to.
+    /// - Warning: Use the ``addToHistory(_:)`` or ``clearFuture()`` methods to modify this. Do not modify directly.
     @Published var history: Deque<Tab> = []
 
     /// Currently selected tab.
@@ -106,7 +100,11 @@ final class Editor: ObservableObject, Identifiable {
 
     /// Closes a tab in the editor.
     /// This will also write any changes to the file on disk and will add the tab to the tab history.
-    /// - Parameter item: the tab to close.
+    /// - Parameters:
+    ///   - file: The tab to close
+    ///   - fromHistory: If `true`, does not clear tabs ahead of the ``historyOffset``
+    ///                  Used when opening tabs from the history queue where tabs ahead of the ``historyOffset`` should
+    ///                  not be removed.
     func closeTab(file: CEWorkspaceFile, fromHistory: Bool = false) {
         guard canCloseTab(file: file) else { return }
 
@@ -114,14 +112,14 @@ final class Editor: ObservableObject, Identifiable {
             temporaryTab = nil
         }
         if !fromHistory {
-            historyOffset = 0
+            clearFuture()
         }
         if file != selectedTab?.file {
-            history.prepend(EditorInstance(file: file))
+            addToHistory(EditorInstance(file: file))
         }
         removeTab(file)
         if let selectedTab {
-            history.prepend(selectedTab)
+            addToHistory(selectedTab)
         }
         // Reset change count to 0
         file.fileDocument?.updateChangeCount(.changeCleared)
@@ -148,16 +146,15 @@ final class Editor: ObservableObject, Identifiable {
         // Item is already opened in a tab.
         guard !tabs.contains(item) || !asTemporary else {
             selectedTab = item
-            history.prepend(item)
+            addToHistory(item)
             return
         }
 
         switch (temporaryTab, asTemporary) {
         case (.some(let tab), true):
             if let index = tabs.firstIndex(of: tab) {
-                history.removeFirst(historyOffset)
-                history.prepend(item)
-                historyOffset = 0
+                clearFuture()
+                addToHistory(item)
                 tabs.remove(tab)
                 tabs.insert(item, at: index)
                 self.selectedTab = item
@@ -198,9 +195,8 @@ final class Editor: ObservableObject, Identifiable {
 
         selectedTab = item
         if !fromHistory {
-            history.removeFirst(historyOffset)
-            history.prepend(item)
-            historyOffset = 0
+            clearFuture()
+            addToHistory(item)
         }
         do {
             try openFile(item: item)
@@ -225,31 +221,8 @@ final class Editor: ObservableObject, Identifiable {
         CodeEditDocumentController.shared.addDocument(codeFile)
     }
 
-    func goBackInHistory() {
-        if canGoBackInHistory {
-            historyOffset += 1
-        }
-    }
-
-    func goForwardInHistory() {
-        if canGoForwardInHistory {
-            historyOffset -= 1
-        }
-    }
-
-    // TODO: move to @Observable so this works better
-    /// Warning: NOT published!
-    var canGoBackInHistory: Bool {
-        historyOffset != history.count-1 && !history.isEmpty
-    }
-
-    // TODO: move to @Observable so this works better
-    /// Warning: NOT published!
-    var canGoForwardInHistory: Bool {
-        historyOffset != 0
-    }
-
     /// Check if tab can be closed
+    ///
     /// If document edited it will show dialog where user can save document before closing or cancel.
     private func canCloseTab(file: CEWorkspaceFile) -> Bool {
         guard let codeFile = file.fileDocument else { return true }
