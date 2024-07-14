@@ -38,7 +38,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         if !item.isFolder && shouldSendSelectionUpdate {
             DispatchQueue.main.async { [weak self] in
                 self?.shouldSendSelectionUpdate = false
-                self?.workspace?.editorManager.activeEditor.openTab(file: item, asTemporary: true)
+                self?.workspace?.editorManager?.activeEditor.openTab(file: item, asTemporary: true)
                 self?.shouldSendSelectionUpdate = true
             }
         }
@@ -49,7 +49,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {
-        guard let id = workspace?.editorManager.activeEditor.selectedTab?.file.id,
+        guard let id = workspace?.editorManager?.activeEditor.selectedTab?.file.id,
               let item = workspace?.workspaceFileManager?.getFile(id, createIfNotFound: true),
               /// update outline selection only if the parent of selected item match with expanded item
               item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else {
