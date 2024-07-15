@@ -128,7 +128,7 @@ jobs:
           APP_VERSION: ${{ env.APP_VERSION }}
           APP_BUILD: ${{ env.APP_BUILD }}
           RELEASE_NOTES_URL: "https://codeedit.app/whats-new/"
-          RELEASE_NOTES_PREFIX: "https://codeedit.app/whats-new/raw/"
+          RELEASE_NOTES_PREFIX: "https://codeedit.app/sparkle/"
         run: |
           SPARKLE_BIN="$RUNNER_TEMP/DerivedData/SourcePackages/artifacts/sparkle/Sparkle/bin"
           SPARKLE_ARCHIVE="$RUNNER_TEMP/Sparkle_Archive"
