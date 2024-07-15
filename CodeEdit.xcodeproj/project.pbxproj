@@ -332,6 +332,7 @@
 		6653EE552C34817900B82DE2 /* QuickSearchResultLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6653EE542C34817900B82DE2 /* QuickSearchResultLabel.swift */; };
 		669A50512C380C1800304CD8 /* String+escapedWhiteSpaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669A50502C380C1800304CD8 /* String+escapedWhiteSpaces.swift */; };
 		669A50532C380C8E00304CD8 /* Collection+subscript_safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669A50522C380C8E00304CD8 /* Collection+subscript_safe.swift */; };
+		669BC4082BED306400D1197C /* AnyFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 669BC4072BED306400D1197C /* AnyFileView.swift */; };
 		66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE12BF17CC300D83C9D /* StatusBarViewModel.swift */; };
 		66AF6CE42BF17F6800D83C9D /* StatusBarFileInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE32BF17F6800D83C9D /* StatusBarFileInfoView.swift */; };
 		66AF6CE72BF17FFB00D83C9D /* UpdateStatusBarInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AF6CE62BF17FFB00D83C9D /* UpdateStatusBarInfo.swift */; };
@@ -384,6 +385,7 @@
 		6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */; };
 		6C5C891B2A3F736500A94FE1 /* FocusedValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5C891A2A3F736500A94FE1 /* FocusedValues.swift */; };
 		6C5FDF7A29E6160000BC08C0 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5FDF7929E6160000BC08C0 /* AppSettings.swift */; };
+		6C6362D42C3E321A0025570D /* Editor+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6362D32C3E321A0025570D /* Editor+History.swift */; };
 		6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6C66C31229D05CDC00DE9ED2 /* GRDB */; };
 		6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BD6EE29CD12E900235D17 /* ExtensionManagerWindow.swift */; };
 		6C6BD6F129CD13FA00235D17 /* ExtensionDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BD6F029CD13FA00235D17 /* ExtensionDiscovery.swift */; };
@@ -406,7 +408,11 @@
 		6C85BB402C2105ED00EB5DEF /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C85BB3F2C2105ED00EB5DEF /* CodeEditKit */; };
 		6C85BB412C21061A00EB5DEF /* GitHubComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E3C29301D8F00AC7927 /* GitHubComment.swift */; };
 		6C85BB442C210EFD00EB5DEF /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 6C85BB432C210EFD00EB5DEF /* SwiftUIIntrospect */; };
+		6C85F7562C3CA638008E9836 /* EditorHistoryMenus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C85F7552C3CA638008E9836 /* EditorHistoryMenus.swift */; };
 		6C91D57229B176FF0059A90D /* EditorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C91D57129B176FF0059A90D /* EditorManager.swift */; };
+		6C9619202C3F27E3009733CE /* ProjectNavigatorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C96191B2C3F27E3009733CE /* ProjectNavigatorUITests.swift */; };
+		6C9619222C3F27F1009733CE /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9619212C3F27F1009733CE /* Query.swift */; };
+		6C9619242C3F2809009733CE /* ProjectPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9619232C3F2809009733CE /* ProjectPath.swift */; };
 		6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */; };
 		6CA1AE952B46950000378EAB /* EditorInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA1AE942B46950000378EAB /* EditorInstance.swift */; };
 		6CAAF68A29BC9C2300A1F48A /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -1004,6 +1010,7 @@
 		6C5B63DD29C76213005454BA /* WindowCodeFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowCodeFileView.swift; sourceTree = "<group>"; };
 		6C5C891A2A3F736500A94FE1 /* FocusedValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusedValues.swift; sourceTree = "<group>"; };
 		6C5FDF7929E6160000BC08C0 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		6C6362D32C3E321A0025570D /* Editor+History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Editor+History.swift"; sourceTree = "<group>"; };
 		6C6BD6EE29CD12E900235D17 /* ExtensionManagerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionManagerWindow.swift; sourceTree = "<group>"; };
 		6C6BD6F029CD13FA00235D17 /* ExtensionDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDiscovery.swift; sourceTree = "<group>"; };
 		6C6BD6F529CD145F00235D17 /* ExtensionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionInfo.swift; sourceTree = "<group>"; };
@@ -1017,7 +1024,12 @@
 		6C82D6B829BFE34900495C54 /* HelpCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpCommands.swift; sourceTree = "<group>"; };
 		6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstResponderPropertyWrapper.swift; sourceTree = "<group>"; };
 		6C82D6C529C012AD00495C54 /* NSApp+openWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSApp+openWindow.swift"; sourceTree = "<group>"; };
+		6C85F7552C3CA638008E9836 /* EditorHistoryMenus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorHistoryMenus.swift; sourceTree = "<group>"; };
 		6C91D57129B176FF0059A90D /* EditorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorManager.swift; sourceTree = "<group>"; };
+		6C96191B2C3F27E3009733CE /* ProjectNavigatorUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorUITests.swift; sourceTree = "<group>"; };
+		6C9619212C3F27F1009733CE /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
+		6C9619232C3F2809009733CE /* ProjectPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPath.swift; sourceTree = "<group>"; };
+		6C9619262C3F285C009733CE /* CodeEditTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CodeEditTestPlan.xctestplan; sourceTree = "<group>"; };
 		6C97EBCB2978760400302F95 /* AcknowledgementsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementsWindowController.swift; sourceTree = "<group>"; };
 		6CA1AE942B46950000378EAB /* EditorInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorInstance.swift; sourceTree = "<group>"; };
 		6CABB1A029C5593800340467 /* SearchPanelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPanelView.swift; sourceTree = "<group>"; };
@@ -1679,8 +1691,8 @@
 				043C321327E31FF6006AE443 /* CodeEditDocumentController.swift */,
 				04660F6927E51E5C00477777 /* CodeEditWindowController.swift */,
 				B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */,
-				4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */,
 				0FD96BCD2BEF42530025A697 /* CodeEditWindowController+Toolbar.swift */,
+				4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -2315,6 +2327,7 @@
 				DE6F77862813625500D00A76 /* EditorTabBarDivider.swift */,
 				287776E827E34BC700D46668 /* EditorTabBarView.swift */,
 				B6AB09A22AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift */,
+				6C85F7552C3CA638008E9836 /* EditorHistoryMenus.swift */,
 				B6AB09A42AAAC00F0003A3A6 /* EditorTabBarTrailingAccessories.swift */,
 			);
 			path = Views;
@@ -2710,6 +2723,40 @@
 			path = NSApplication;
 			sourceTree = "<group>";
 		};
+		6C96191C2C3F27E3009733CE /* ProjectNavigator */ = {
+			isa = PBXGroup;
+			children = (
+				6C96191B2C3F27E3009733CE /* ProjectNavigatorUITests.swift */,
+			);
+			path = ProjectNavigator;
+			sourceTree = "<group>";
+		};
+		6C96191D2C3F27E3009733CE /* NavigatorArea */ = {
+			isa = PBXGroup;
+			children = (
+				6C96191C2C3F27E3009733CE /* ProjectNavigator */,
+			);
+			path = NavigatorArea;
+			sourceTree = "<group>";
+		};
+		6C96191E2C3F27E3009733CE /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				6C96191D2C3F27E3009733CE /* NavigatorArea */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		6C96191F2C3F27E3009733CE /* CodeEditUITests */ = {
+			isa = PBXGroup;
+			children = (
+				6C9619232C3F2809009733CE /* ProjectPath.swift */,
+				6C9619212C3F27F1009733CE /* Query.swift */,
+				6C96191E2C3F27E3009733CE /* Features */,
+			);
+			path = CodeEditUITests;
+			sourceTree = "<group>";
+		};
 		6CAAF68F29BCC6F900A1F48A /* WindowCommands */ = {
 			isa = PBXGroup;
 			children = (
@@ -2866,10 +2913,12 @@
 			children = (
 				B658FB2E27DA9E0F00EA4DBD /* CodeEdit */,
 				587B60F329340A8000D5CD8F /* CodeEditTests */,
+				6C96191F2C3F27E3009733CE /* CodeEditUITests */,
 				28052E0129730F2F00F4F90A /* Configs */,
 				B6FF04772B6C08AC002C2C78 /* DefaultThemes */,
 				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
 				2BE487ED28245162003F3F64 /* OpenWithCodeEdit */,
+				6C9619262C3F285C009733CE /* CodeEditTestPlan.xctestplan */,
 				284DC8502978BA2600BF2770 /* .all-contributorsrc */,
 				283BDCBC2972EEBD002AFF81 /* Package.resolved */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
@@ -2990,6 +3039,7 @@
 			isa = PBXGroup;
 			children = (
 				6C147C3D29A3281D0089B630 /* Editor.swift */,
+				6C6362D32C3E321A0025570D /* Editor+History.swift */,
 				5994B6D92BD6B408006A4C5F /* Editor+TabSwitch.swift */,
 				6CA1AE942B46950000378EAB /* EditorInstance.swift */,
 				6C147C3E29A3281D0089B630 /* EditorLayout.swift */,
@@ -3959,6 +4009,7 @@
 				30B088162C0D53080063A882 /* LSPCache.swift in Sources */,
 				B6F0517929D9E3C900D72287 /* SourceControlGitView.swift in Sources */,
 				587B9E8329301D8F00AC7927 /* GitHubPullRequest.swift in Sources */,
+				6C85F7562C3CA638008E9836 /* EditorHistoryMenus.swift in Sources */,
 				5878DA82291863F900DD95A3 /* AcknowledgementsView.swift in Sources */,
 				587B9E8529301D8F00AC7927 /* GitHubReview.swift in Sources */,
 				58D01C9A293167DC00C5B6B4 /* CodeEditKeychain.swift in Sources */,
@@ -3995,6 +4046,7 @@
 				30B087FC2C0D53080063A882 /* LanguageServer+CallHierarchy.swift in Sources */,
 				6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */,
 				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
+				6C6362D42C3E321A0025570D /* Editor+History.swift in Sources */,
 				6C85BB412C21061A00EB5DEF /* GitHubComment.swift in Sources */,
 				5878DAB0291D627C00DD95A3 /* EditorPathBarMenu.swift in Sources */,
 				04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift in Sources */,
@@ -4063,6 +4115,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C9619242C3F2809009733CE /* ProjectPath.swift in Sources */,
+				6C9619222C3F27F1009733CE /* Query.swift in Sources */,
+				6C9619202C3F27E3009733CE /* ProjectNavigatorUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4238,6 +4293,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 38;
@@ -4254,7 +4310,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = CodeEdit;
 			};
@@ -4429,6 +4484,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 38;
@@ -4445,7 +4501,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = CodeEdit;
 			};
@@ -4688,6 +4743,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 38;
@@ -4704,7 +4760,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = CodeEdit;
 			};
@@ -5014,6 +5069,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 38;
@@ -5030,7 +5086,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = CodeEdit;
@@ -5043,6 +5098,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 38;
@@ -5059,7 +5115,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_OBJC_BRIDGING_HEADER = "CodeEditUITests/Features/CodeEditUI/CodeEditUITests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TEST_TARGET_NAME = CodeEdit;
 			};
