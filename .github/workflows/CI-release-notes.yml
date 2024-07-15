@@ -1,11 +1,12 @@
+name: Deploy Website on Release Note Changes
+
 on:
   release:
     types: [created, edited, deleted]
 
 jobs:
-    deploy-vercel:
-        name: Trigger A Deploy On Vercel
-        runs-on: [self-hosted, macOS]
-        steps:
-            - name: Make Curl Request
-              run: curl -X POST ${{ secrets.VERCEL_DEPLOY_URL }}
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send deploy request to Vercel
+        run: curl -X POST ${{ secrets.VERCEL_DEPLOY_URL }}
