@@ -1,5 +1,5 @@
 //
-//  QuickOpenItem.swift
+//  OpenQuicklyListItemView.swift
 //  CodeEditModules/QuickOpen
 //
 //  Created by Pavel Kasila on 20.03.22.
@@ -7,31 +7,33 @@
 
 import SwiftUI
 
-struct QuickOpenItem: View {
+struct OpenQuicklyListItemView: View {
     private let baseDirectory: URL
-    private let fileURL: URL
+    private let searchResult: OpenQuicklyViewModel.SearchResult
 
     init(
         baseDirectory: URL,
-        fileURL: URL
+        searchResult: OpenQuicklyViewModel.SearchResult
     ) {
         self.baseDirectory = baseDirectory
-        self.fileURL = fileURL
+        self.searchResult = searchResult
     }
 
     var relativePathComponents: ArraySlice<String> {
-        return fileURL.pathComponents.dropFirst(baseDirectory.pathComponents.count).dropLast()
+        return searchResult.fileURL.pathComponents.dropFirst(baseDirectory.pathComponents.count).dropLast()
     }
 
     var body: some View {
         HStack(spacing: 8) {
-            Image(nsImage: NSWorkspace.shared.icon(forFile: fileURL.path))
+            Image(nsImage: NSWorkspace.shared.icon(forFile: searchResult.fileURL.path))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
             VStack(alignment: .leading, spacing: 0) {
-                Text(fileURL.lastPathComponent).font(.system(size: 13))
-                    .lineLimit(1)
+                QuickSearchResultLabel(
+                    labelName: searchResult.fileURL.lastPathComponent,
+                    charactersToHighlight: searchResult.matchedCharacters
+                )
                 Text(relativePathComponents.joined(separator: " ▸ "))
                     .font(.system(size: 10.5))
                     .foregroundColor(.secondary)

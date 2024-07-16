@@ -67,12 +67,12 @@
 
 - ``LSPClient``
 
-### QuickOpen
+### OpenQuickly
 
-- ``QuickOpenView``
-- ``QuickOpenItem``
-- ``QuickOpenViewModel``
-- ``QuickOpenPreviewView``
+- ``OpenQuicklyView``
+- ``OpenQuicklyListItemView``
+- ``OpenQuicklyViewModel``
+- ``OpenQuicklyPreviewView``
 
 ### Search
 

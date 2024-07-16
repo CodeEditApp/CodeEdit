@@ -51,14 +51,6 @@ struct InspectorAreaView: View {
                 NoSelectionInspectorView()
             }
         }
-        .clipShape(Rectangle())
-        .frame(
-            minWidth: CodeEditWindowController.minSidebarWidth,
-            idealWidth: 300,
-            minHeight: 0,
-            maxHeight: .infinity,
-            alignment: .top
-        )
         .safeAreaInset(edge: .trailing, spacing: 0) {
             if sidebarPosition == .side {
                 HStack(spacing: 0) {
@@ -79,5 +71,7 @@ struct InspectorAreaView: View {
             }
         }
         .formStyle(.grouped)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("inspector")
     }
 }

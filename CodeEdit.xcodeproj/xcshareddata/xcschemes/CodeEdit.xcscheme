@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1540"
-   version = "1.3">
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -27,6 +27,12 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <TestPlans>
+         <TestPlanReference
+            reference = "container:CodeEditTestPlan.xctestplan"
+            default = "YES">
+         </TestPlanReference>
+      </TestPlans>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -78,18 +84,6 @@
                   Identifier = "CodeEditUIUnitTests/testSegmentedControlProminentLight()">
                </Test>
                <Test
-                  Identifier = "DocumentsUnitTests/testSplitViewControllerProducedHapticFeedback()">
-               </Test>
-               <Test
-                  Identifier = "DocumentsUnitTests/testSplitViewControllerProducedHapticFeedbackOnceWhenPlentyChangesOccur()">
-               </Test>
-               <Test
-                  Identifier = "DocumentsUnitTests/testSplitViewControllerSnappedWhenWidthInAppropriateRange()">
-               </Test>
-               <Test
-                  Identifier = "DocumentsUnitTests/testSplitViewControllerStopSnappedWhenWidthIsHigherAppropriateRange()">
-               </Test>
-               <Test
                   Identifier = "WelcomeModuleUnitTests">
                </Test>
                <Test
@@ -111,6 +105,16 @@
                   Identifier = "WelcomeModuleUnitTests/testWelcomeActionViewLightSnapshot()">
                </Test>
             </SkippedTests>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B658FB4627DA9E1000EA4DBD"
+               BuildableName = "CodeEditUITests.xctest"
+               BlueprintName = "CodeEditUITests"
+               ReferencedContainer = "container:CodeEdit.xcodeproj">
+            </BuildableReference>
          </TestableReference>
       </Testables>
    </TestAction>

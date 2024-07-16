@@ -1,0 +1,12 @@
+name: Deploy Website on Release Note Changes
+
+on:
+  release:
+    types: [created, edited, deleted]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send deploy request to Vercel
+        run: curl -X POST ${{ secrets.VERCEL_DEPLOY_URL }}

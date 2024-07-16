@@ -26,11 +26,11 @@ import Combine
 /// loading all intermediate subdirectories (from the nearest cached parent to the file) has not been done yet and doing
 /// so would be unnecessary.
 ///
-/// An example of this is in the ``QuickOpenView``. This view finds a file URL via a search bar, and needs to display a
-/// quick preview of the file. There's a good chance the file is deep in some subdirectory of the workspace, so fetching
-/// it from the ``CEWorkspaceFileManager`` may require loading and caching multiple directories. Instead, it just
-/// makes a disconnected object and uses it for the preview. Then, when opening the file in the workspace it forces the
-/// file to be loaded and cached.
+/// An example of this is in the ``OpenQuicklyView``. This view finds a file URL via a search bar, and needs to display
+/// a quick preview of the file. There's a good chance the file is deep in some subdirectory of the workspace, so
+/// fetching it from the ``CEWorkspaceFileManager`` may require loading and caching multiple directories. Instead, it
+/// just makes a disconnected object and uses it for the preview. Then, when opening the file in the workspace it
+/// forces the file to be loaded and cached.
 final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, EditorTabRepresentable {
 
     /// The id of the ``CEWorkspaceFile``.
@@ -42,7 +42,23 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     var name: String { url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines) }
 
     /// Returns the extension of the file or an empty string if no extension is present.
-    var type: FileIcon.FileType { .init(rawValue: url.pathExtension) ?? .txt }
+    var type: FileIcon.FileType {
+        let filename = url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        /// First, check if there is a valid file extension.
+        if let type = FileIcon.FileType(rawValue: filename) {
+            return type
+        } else {
+            /// If  there's not, verifies every extension for a valid type.
+            let extensions = filename.dropFirst().components(separatedBy: ".").reversed()
+
+            return extensions
+                .compactMap { FileIcon.FileType(rawValue: $0) }
+                .first
+            /// Returns .txt for invalid type.
+            ?? .txt
+        }
+    }
 
     /// Returns the URL of the ``CEWorkspaceFile``
     let url: URL

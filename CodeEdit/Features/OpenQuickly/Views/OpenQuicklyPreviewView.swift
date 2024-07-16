@@ -1,5 +1,5 @@
 //
-//  QuickOpenPreviewView.swift
+//  OpenQuicklyPreviewView.swift
 //  CodeEditModules/QuickOpen
 //
 //  Created by Pavel Kasila on 20.03.22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct QuickOpenPreviewView: View {
+struct OpenQuicklyPreviewView: View {
 
     private let queue = DispatchQueue(label: "app.codeedit.CodeEdit.quickOpen.preview")
     private let item: CEWorkspaceFile
