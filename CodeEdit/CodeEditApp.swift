@@ -29,9 +29,9 @@ struct CodeEditApp: App {
             AboutWindow()
 
             SettingsWindow()
-                .commands {
-                    CodeEditCommands()
-                }
+        }
+        .commands {
+            CodeEditCommands()
         }
         .environment(\.settings, settings.preferences) // Add settings to each window environment
     }

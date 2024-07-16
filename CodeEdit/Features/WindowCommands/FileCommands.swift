@@ -98,31 +98,5 @@ struct FileCommands: Commands {
             }
             .keyboardShortcut("s")
         }
-
-        CommandGroup(replacing: .windowArrangement) {
-            Button("Show Previous Window Tab") {
-                NSApp.sendAction(#selector(NSWindow.selectPreviousTab), to: nil, from: nil)
-            }
-            .keyboardShortcut(.tab, modifiers: [.control, .shift])
-            .disabled(NSApplication.shared.mainWindow?.tabbedWindows == nil)
-
-            Button("Show Next Window Tab") {
-                NSApp.sendAction(#selector(NSWindow.selectNextTab), to: nil, from: nil)
-            }
-            .keyboardShortcut(.tab, modifiers: [.control])
-            .disabled(NSApplication.shared.mainWindow?.tabbedWindows == nil)
-
-            Button("Merge All Windows") {
-                NSApp.sendAction(#selector(NSWindow.mergeAllWindows), to: nil, from: nil)
-            }
-            // Only enable if we have more than one document open and all the windows are not merged
-            .disabled(shouldDisableMergeAll())
-        }
-    }
-
-    private func shouldDisableMergeAll() -> Bool {
-        // TODO: WINDOWS COUNT IS INCORRECT
-//        print(NSApplication.shared.windows.count)
-        return NSApplication.shared.windows.count <= (SceneID.allCases.count + 1)
     }
 }
