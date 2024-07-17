@@ -146,8 +146,8 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         outlineView.expandItem(item)
     }
 
-    // swiftlint:disable:next function_parameter_count
-    func outlineView(
+    /// Adds a tooltip to the file row.
+    func outlineView( // swiftlint:disable:this function_parameter_count
         _ outlineView: NSOutlineView,
         toolTipFor cell: NSCell,
         rect: NSRectPointer,

@@ -30,13 +30,13 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
         return false
     }
 
-    /// write dragged file(s) to pasteboard
+    /// Write dragged file(s) to pasteboard
     func outlineView(_ outlineView: NSOutlineView, pasteboardWriterForItem item: Any) -> NSPasteboardWriting? {
         guard let fileItem = item as? CEWorkspaceFile else { return nil }
         return fileItem.url as NSURL
     }
 
-    /// declare valid drop target
+    /// Declare valid drop target
     func outlineView(
         _ outlineView: NSOutlineView,
         validateDrop info: NSDraggingInfo,
@@ -54,7 +54,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
         return []
     }
 
-    /// handle successful or unsuccessful drop
+    /// Handle successful or unsuccessful drop
     func outlineView(
         _ outlineView: NSOutlineView,
         acceptDrop info: NSDraggingInfo,

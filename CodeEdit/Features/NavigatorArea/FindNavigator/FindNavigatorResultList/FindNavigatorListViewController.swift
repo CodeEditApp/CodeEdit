@@ -230,18 +230,6 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
         let indexes = IndexSet(integersIn: 0..<searchItems.count)
         outlineView.noteHeightOfRows(withIndexesChanged: indexes)
     }
-
-    // swiftlint:disable:next function_parameter_count
-    func outlineView(
-        _ outlineView: NSOutlineView,
-        toolTipFor cell: NSCell,
-        rect: NSRectPointer,
-        tableColumn: NSTableColumn?,
-        item: Any,
-        mouseLocation: NSPoint
-    ) -> String {
-        return ""
-    }
 }
 
 // MARK: - NSMenuDelegate
