@@ -7,12 +7,17 @@
 
 import SwiftUI
 
+struct WindowBox {
+    weak var value: NSWindow?
+}
+
 struct NSWindowEnvironmentKey: EnvironmentKey {
-    static var defaultValue = NSWindow()
+    typealias Value = WindowBox
+    static var defaultValue = WindowBox(value: nil)
 }
 
 extension EnvironmentValues {
-    var window: NSWindowEnvironmentKey.Value {
+    var window: WindowBox {
         get { self[NSWindowEnvironmentKey.self] }
         set { self[NSWindowEnvironmentKey.self] = newValue }
     }

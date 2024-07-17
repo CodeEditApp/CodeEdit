@@ -109,7 +109,7 @@ extension SettingsData {
                 name: "Toggle Type-Over Completion",
                 title: "Toggle Type-Over Completion",
                 id: "prefs.text_editing.type_over_completion",
-                command: CommandClosureWrapper {
+                command: {
                     Settings.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
                 }
             )
@@ -118,7 +118,7 @@ extension SettingsData {
                 name: "Toggle Autocomplete Braces",
                 title: "Toggle Autocomplete Braces",
                 id: "prefs.text_editing.autocomplete_braces",
-                command: CommandClosureWrapper {
+                command: {
                     Settings.shared.preferences.textEditing.autocompleteBraces.toggle()
                 }
             )
@@ -127,7 +127,7 @@ extension SettingsData {
                 name: "Toggle Word Wrap",
                 title: "Toggle Word Wrap",
                 id: "prefs.text_editing.wrap_lines_to_editor_width",
-                command: CommandClosureWrapper {
+                command: {
                     Settings[\.textEditing].wrapLinesToEditorWidth.toggle()
                 }
             )

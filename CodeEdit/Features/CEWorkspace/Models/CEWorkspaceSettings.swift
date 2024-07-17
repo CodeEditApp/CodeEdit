@@ -10,20 +10,12 @@ import Combine
 
 /// The CodeEdit workspace settings model.
 final class CEWorkspaceSettings: ObservableObject {
-    @ObservedObject private var workspace: WorkspaceDocument
     @Published public var preferences: CEWorkspaceSettingsData = .init()
 
-    private var storeTask: AnyCancellable!
+    private var storeTask: AnyCancellable?
     private let fileManager = FileManager.default
 
-    private var folderURL: URL? {
-        guard let workspaceURL = workspace.fileURL else {
-            return nil
-        }
-
-        return workspaceURL
-            .appendingPathComponent(".codeedit", isDirectory: true)
-    }
+    private(set) var folderURL: URL?
 
     private var settingsURL: URL? {
         folderURL?
@@ -32,13 +24,21 @@ final class CEWorkspaceSettings: ObservableObject {
     }
 
     init(workspaceDocument: WorkspaceDocument) {
-        self.workspace = workspaceDocument
-
+        folderURL = workspaceDocument.fileURL?.appendingPathComponent(".codeedit", isDirectory: true)
         loadSettings()
 
         self.storeTask = self.$preferences.throttle(for: 2.0, scheduler: RunLoop.main, latest: true).sink {
             try? self.savePreferences($0)
         }
+    }
+
+    func cleanUp() {
+        storeTask?.cancel()
+        storeTask = nil
+    }
+
+    deinit {
+        cleanUp()
     }
 
     /// Load and construct ``CEWorkspaceSettings`` model from `.codeedit/settings.json`

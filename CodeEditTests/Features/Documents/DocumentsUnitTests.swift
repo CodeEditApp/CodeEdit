@@ -14,6 +14,7 @@ final class DocumentsUnitTests: XCTestCase {
     private var hapticFeedbackPerformerMock: NSHapticFeedbackPerformerMock!
     private var navigatorViewModel: NavigatorSidebarViewModel!
     private var window: NSWindow!
+    private var workspace = WorkspaceDocument()
 
     // MARK: - Lifecycle
 
@@ -23,7 +24,7 @@ final class DocumentsUnitTests: XCTestCase {
         navigatorViewModel = .init()
         window = NSWindow()
         splitViewController = .init(
-            workspace: WorkspaceDocument(),
+            workspace: workspace,
             navigatorViewModel: navigatorViewModel,
             windowRef: window,
             hapticPerformer: hapticFeedbackPerformerMock

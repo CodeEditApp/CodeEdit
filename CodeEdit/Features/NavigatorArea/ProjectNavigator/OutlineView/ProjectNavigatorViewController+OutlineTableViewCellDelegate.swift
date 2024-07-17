@@ -12,11 +12,11 @@ import Foundation
 extension ProjectNavigatorViewController: OutlineTableViewCellDelegate {
     func moveFile(file: CEWorkspaceFile, to destination: URL) {
         if !file.isFolder {
-            workspace?.editorManager.editorLayout.closeAllTabs(of: file)
+            workspace?.editorManager?.editorLayout.closeAllTabs(of: file)
         }
         workspace?.workspaceFileManager?.move(file: file, to: destination)
         if !file.isFolder {
-            workspace?.editorManager.openTab(item: .init(url: destination))
+            workspace?.editorManager?.openTab(item: .init(url: destination))
         }
     }
 

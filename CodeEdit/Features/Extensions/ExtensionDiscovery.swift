@@ -25,30 +25,30 @@ final class ExtensionDiscovery: ObservableObject {
     /// These endpoints can be used to create new extension processes with XPC.
     @Published var extensions: [ExtensionInfo] = []
 
+    private var discoverTask: Task<Void, Never>?
+    private var availabilityTask: Task<Void, Never>?
+
     // Init is private as only 1 instance of this class may (needs to) exist.
     private init() {
         // Two separate tasks need to be used, as the awaits never finish.
-        Task {
-            await discover()
-        }
-
-        Task {
-            await availabilityOverview()
-        }
+        discoverTask = discover()
+        availabilityTask = availabilityOverview()
     }
 
     /// Discover all the extensions approved by the user. Updates `extensions` when an extension gets enabled/disabled.
     /// Warning: This function will continue to run and won't return. Therefore, it should be ran in a separate `Task`.
-    private func discover() async {
-        print("Change in active extensions, reconnecting...")
-        do {
-            let sequence = try AppExtensionIdentity.matching(appExtensionPointIDs: Self.endPointIdentifier)
+    private func discover() -> Task<Void, Never> {
+        Task { [weak self] in
+            do {
+                let sequence = try AppExtensionIdentity.matching(appExtensionPointIDs: Self.endPointIdentifier)
 
-            for await endpoints in sequence {
-                await updateExtensions(endpoints: endpoints, shouldRestartExisting: true)
+                for await endpoints in sequence {
+                    guard !Task.isCancelled && self != nil else { return }
+                    await self?.updateExtensions(endpoints: endpoints, shouldRestartExisting: true)
+                }
+            } catch {
+                print("Error while searching for extensions: \(error.localizedDescription)")
             }
-        } catch {
-            print("Error while searching for extensions: \(error.localizedDescription)")
         }
     }
 
@@ -73,30 +73,33 @@ final class ExtensionDiscovery: ObservableObject {
     /// Observes extensions available on the system, and reports if extensions are disabled.
     /// These extensions must be enabled by the user first, before they can be discovered by `discover`.
     /// Warning: This function will continue to run and won't return. Therefore, it should be ran in a separate `Task`.
-    private func availabilityOverview() async {
-        for await availability in AppExtensionIdentity.availabilityUpdates {
-            print(availability)
-            do {
-                if availability.disabledCount > 0 {
-                    print("Found \(availability.disabledCount) disabled extensions, trying to activate...")
-                    try await activateDisabledExtensions()
+    private func availabilityOverview() -> Task<Void, Never> {
+        Task { [weak self] in
+            for await availability in AppExtensionIdentity.availabilityUpdates {
+                guard !Task.isCancelled && self != nil else { return }
+                print(availability)
+                do {
+                    if availability.disabledCount > 0 {
+                        print("Found \(availability.disabledCount) disabled extensions, trying to activate...")
+                        try await self?.activateDisabledExtensions()
+                    }
+
+                    if availability.unapprovedCount > 0 {
+                        print("Found \(availability.disabledCount) unapproved extensions, trying to activate...")
+
+                        let identifiers = [("com.tweety.TestCodeEdit.AutoActivatedExtension", "2MMGJGVTB4")]
+                        try await self?.activateUnapprovedExtensions(with: identifiers)
+                    }
+
+                    let sequence = try AppExtensionIdentity.matching(appExtensionPointIDs: Self.endPointIdentifier)
+
+                    let extensions = await sequence.first { _ in true }
+
+                    guard let extensions else { return }
+                    await self?.updateExtensions(endpoints: extensions)
+                } catch {
+                    print("Could not auto-activate extensions.")
                 }
-
-                if availability.unapprovedCount > 0 {
-                    print("Found \(availability.disabledCount) unapproved extensions, trying to activate...")
-
-                    let identifiers = [("com.tweety.TestCodeEdit.AutoActivatedExtension", "2MMGJGVTB4")]
-                    try await activateUnapprovedExtensions(with: identifiers)
-                }
-
-                let sequence = try AppExtensionIdentity.matching(appExtensionPointIDs: Self.endPointIdentifier)
-
-                let extensions = await sequence.first { _ in true }
-
-                guard let extensions else { return }
-                await updateExtensions(endpoints: extensions)
-            } catch {
-                print("Could not auto-activate extensions.")
             }
         }
     }

@@ -123,6 +123,9 @@ final class Editor: ObservableObject, Identifiable {
         }
         // Reset change count to 0
         file.fileDocument?.updateChangeCount(.changeCleared)
+        if let codeFile = file.fileDocument {
+            codeFile.close()
+        }
         // remove file from memory
         file.fileDocument = nil
     }

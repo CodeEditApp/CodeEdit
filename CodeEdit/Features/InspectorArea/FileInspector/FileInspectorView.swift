@@ -95,8 +95,8 @@ struct FileInspectorView: View {
                         if !file.isFolder {
                             editorManager.editorLayout.closeAllTabs(of: file)
                         }
-                        DispatchQueue.main.async {
-                            workspace.workspaceFileManager?.move(file: file, to: destinationURL)
+                        DispatchQueue.main.async { [weak workspace] in
+                            workspace?.workspaceFileManager?.move(file: file, to: destinationURL)
                             let newItem = CEWorkspaceFile(url: destinationURL)
                             newItem.parent = file.parent
                             if !newItem.isFolder {
@@ -139,10 +139,10 @@ struct FileInspectorView: View {
                         }
                         // This is ugly but if the tab is opened at the same time as closing the others, it doesn't open
                         // And if the files are re-built at the same time as the tab is opened, it causes a memory error
-                        DispatchQueue.main.async {
-                            workspace.workspaceFileManager?.move(file: file, to: newURL)
+                        DispatchQueue.main.async { [weak workspace] in
+                            workspace?.workspaceFileManager?.move(file: file, to: newURL)
                             // If the parent directory doesn't exist in the workspace, don't open it in a tab.
-                            if let newParent = workspace.workspaceFileManager?.getFile(
+                            if let newParent = workspace?.workspaceFileManager?.getFile(
                                 newURL.deletingLastPathComponent().path
                             ) {
                                 let newItem = CEWorkspaceFile(url: newURL)
@@ -150,8 +150,8 @@ struct FileInspectorView: View {
                                 if !file.isFolder {
                                     editorManager.openTab(item: newItem)
                                 }
-                                DispatchQueue.main.async {
-                                    _ = try? workspace.workspaceFileManager?.rebuildFiles(fromItem: newParent)
+                                DispatchQueue.main.async { [weak workspace] in
+                                    _ = try? workspace?.workspaceFileManager?.rebuildFiles(fromItem: newParent)
                                 }
                             }
                         }

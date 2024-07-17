@@ -14,6 +14,9 @@ final class WorkspaceDocumentIndexTests: XCTestCase {
     private var mockWorkspace: WorkspaceDocument!
     private var searchState: WorkspaceDocument.SearchState!
 
+    private var folder1File: CEWorkspaceFile?
+    private var folder2File: CEWorkspaceFile?
+
     // MARK: - Setup
     /// A mock WorkspaceDocument is created
     /// 3 mock files are added to the index
@@ -35,7 +38,9 @@ final class WorkspaceDocumentIndexTests: XCTestCase {
 
         // Add a few files
         let folder1 = directory.appending(path: "Folder 2")
+        folder1File = CEWorkspaceFile(url: folder1)
         let folder2 = directory.appending(path: "Longer Folder With Some 💯 Special Chars ⁉️")
+        folder2File = CEWorkspaceFile(url: folder2)
         try FileManager.default.createDirectory(at: folder1, withIntermediateDirectories: true)
         try FileManager.default.createDirectory(at: folder2, withIntermediateDirectories: true)
 
@@ -55,8 +60,8 @@ final class WorkspaceDocumentIndexTests: XCTestCase {
 
         files = fileURLs.map { CEWorkspaceFile(url: $0) }
 
-        files[1].parent = CEWorkspaceFile(url: folder1)
-        files[2].parent = CEWorkspaceFile(url: folder2)
+        files[1].parent = folder1File
+        files[2].parent = folder2File
 
         await mockWorkspace.searchState?.addProjectToIndex()
 

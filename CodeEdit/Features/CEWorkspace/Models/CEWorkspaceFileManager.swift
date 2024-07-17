@@ -387,6 +387,7 @@ final class CEWorkspaceFileManager {
     }
 
     deinit {
+        fsEventStream?.cancel()
         observers.removeAllObjects()
     }
 }

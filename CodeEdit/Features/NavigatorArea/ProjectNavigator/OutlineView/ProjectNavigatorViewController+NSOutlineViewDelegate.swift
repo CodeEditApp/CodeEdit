@@ -1,8 +1,8 @@
 //
-//  ProjectNavigatorViewController+Delegate.swift
+//  ProjectNavigatorViewController+NSOutlineViewDelegate.swift
 //  CodeEdit
 //
-//  Created by Khan Winter on 7/14/24.
+//  Created by Khan Winter on 7/13/24.
 //
 
 import AppKit
@@ -36,10 +36,10 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         guard let item = outlineView.item(atRow: selectedIndex) as? CEWorkspaceFile else { return }
 
         if !item.isFolder && shouldSendSelectionUpdate {
-            DispatchQueue.main.async {
-                self.shouldSendSelectionUpdate = false
-                self.workspace?.editorManager.activeEditor.openTab(file: item, asTemporary: true)
-                self.shouldSendSelectionUpdate = true
+            DispatchQueue.main.async { [weak self] in
+                self?.shouldSendSelectionUpdate = false
+                self?.workspace?.editorManager?.activeEditor.openTab(file: item, asTemporary: true)
+                self?.shouldSendSelectionUpdate = true
             }
         }
     }
@@ -49,7 +49,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {
-        guard let id = workspace?.editorManager.activeEditor.selectedTab?.file.id,
+        guard let id = workspace?.editorManager?.activeEditor.selectedTab?.file.id,
               let item = workspace?.workspaceFileManager?.getFile(id, createIfNotFound: true),
               /// update outline selection only if the parent of selected item match with expanded item
               item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else {
@@ -144,5 +144,20 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             expandParent(item: parent)
         }
         outlineView.expandItem(item)
+    }
+
+    /// Adds a tooltip to the file row.
+    func outlineView( // swiftlint:disable:this function_parameter_count
+        _ outlineView: NSOutlineView,
+        toolTipFor cell: NSCell,
+        rect: NSRectPointer,
+        tableColumn: NSTableColumn?,
+        item: Any,
+        mouseLocation: NSPoint
+    ) -> String {
+        if let file = item as? CEWorkspaceFile {
+            return file.name
+        }
+        return ""
     }
 }

@@ -310,7 +310,6 @@
 		613DF55E2B08DD5D00E9D902 /* FileHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613DF55D2B08DD5D00E9D902 /* FileHelper.swift */; };
 		61538B902B111FE800A88846 /* String+AppearancesOfSubstring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */; };
 		61538B932B11201900A88846 /* String+Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B922B11201900A88846 /* String+Character.swift */; };
-		615AA21A2B0CFD480013FCCC /* LazyStringLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615AA2192B0CFD480013FCCC /* LazyStringLoader.swift */; };
 		617DB3D02C25AFAE00B58BFE /* TaskNotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3CF2C25AFAE00B58BFE /* TaskNotificationHandler.swift */; };
 		617DB3D32C25AFEA00B58BFE /* TaskNotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D22C25AFEA00B58BFE /* TaskNotificationModel.swift */; };
 		617DB3D62C25B02D00B58BFE /* TaskNotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D52C25B02D00B58BFE /* TaskNotificationView.swift */; };
@@ -384,8 +383,6 @@
 		6C5FDF7A29E6160000BC08C0 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5FDF7929E6160000BC08C0 /* AppSettings.swift */; };
 		6C6362D42C3E321A0025570D /* Editor+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6362D32C3E321A0025570D /* Editor+History.swift */; };
 		6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6C66C31229D05CDC00DE9ED2 /* GRDB */; };
-		6C67413E2C44A28C00AABDF5 /* ProjectNavigatorViewController+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C67413D2C44A28C00AABDF5 /* ProjectNavigatorViewController+DataSource.swift */; };
-		6C6741402C44A2A200AABDF5 /* ProjectNavigatorViewController+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C67413F2C44A2A200AABDF5 /* ProjectNavigatorViewController+Delegate.swift */; };
 		6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BD6EE29CD12E900235D17 /* ExtensionManagerWindow.swift */; };
 		6C6BD6F129CD13FA00235D17 /* ExtensionDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BD6F029CD13FA00235D17 /* ExtensionDiscovery.swift */; };
 		6C6BD6F429CD142C00235D17 /* CollectionConcurrencyKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6BD6F329CD142C00235D17 /* CollectionConcurrencyKit */; };
@@ -424,7 +421,11 @@
 		6CBA0D512A1BF524002C6FAA /* SegmentedControlImproved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA0D502A1BF524002C6FAA /* SegmentedControlImproved.swift */; };
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
 		6CBE1CFB2B71DAA6003AC32E /* Loopable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBE1CFA2B71DAA6003AC32E /* Loopable.swift */; };
-		6CBE1D002B720565003AC32E /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CBE1CFF2B720565003AC32E /* CodeEditSourceEditor */; };
+		6CC17B4F2C432AE000834E2C /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CC17B4E2C432AE000834E2C /* CodeEditSourceEditor */; };
+		6CC17B512C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC17B502C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift */; };
+		6CC17B532C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC17B522C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift */; };
+		6CC17B592C43F53700834E2C /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CC17B582C43F53700834E2C /* CodeEditSourceEditor */; };
+		6CC17B5B2C44258700834E2C /* WindowControllerPropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC17B5A2C44258700834E2C /* WindowControllerPropertyWrapper.swift */; };
 		6CC9E4B229B5669900C97388 /* Environment+ActiveEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */; };
 		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
 		6CDA84AD284C1BA000C1CC3A /* EditorTabBarContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDA84AC284C1BA000C1CC3A /* EditorTabBarContextMenu.swift */; };
@@ -938,7 +939,6 @@
 		613DF55D2B08DD5D00E9D902 /* FileHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileHelper.swift; sourceTree = "<group>"; };
 		61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AppearancesOfSubstring.swift"; sourceTree = "<group>"; };
 		61538B922B11201900A88846 /* String+Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Character.swift"; sourceTree = "<group>"; };
-		615AA2192B0CFD480013FCCC /* LazyStringLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyStringLoader.swift; sourceTree = "<group>"; };
 		617DB3CF2C25AFAE00B58BFE /* TaskNotificationHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNotificationHandler.swift; sourceTree = "<group>"; };
 		617DB3D22C25AFEA00B58BFE /* TaskNotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNotificationModel.swift; sourceTree = "<group>"; };
 		617DB3D52C25B02D00B58BFE /* TaskNotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNotificationView.swift; sourceTree = "<group>"; };
@@ -1037,6 +1037,9 @@
 		6CBA0D502A1BF524002C6FAA /* SegmentedControlImproved.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlImproved.swift; sourceTree = "<group>"; };
 		6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Caption3.swift"; sourceTree = "<group>"; };
 		6CBE1CFA2B71DAA6003AC32E /* Loopable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loopable.swift; sourceTree = "<group>"; };
+		6CC17B502C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+NSOutlineViewDataSource.swift"; sourceTree = "<group>"; };
+		6CC17B522C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+NSOutlineViewDelegate.swift"; sourceTree = "<group>"; };
+		6CC17B5A2C44258700834E2C /* WindowControllerPropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControllerPropertyWrapper.swift; sourceTree = "<group>"; };
 		6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveEditor.swift"; sourceTree = "<group>"; };
 		6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInjector.swift; sourceTree = "<group>"; };
 		6CDA84AC284C1BA000C1CC3A /* EditorTabBarContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarContextMenu.swift; sourceTree = "<group>"; };
@@ -1206,9 +1209,9 @@
 				6C85BB402C2105ED00EB5DEF /* CodeEditKit in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
-				6CBE1D002B720565003AC32E /* CodeEditSourceEditor in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */,
+				6CC17B4F2C432AE000834E2C /* CodeEditSourceEditor in Frameworks */,
 				30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */,
 				6C6BD6F429CD142C00235D17 /* CollectionConcurrencyKit in Frameworks */,
 				6C85BB442C210EFD00EB5DEF /* SwiftUIIntrospect in Frameworks */,
@@ -1216,6 +1219,7 @@
 				5879828A292ED15F0085B254 /* SwiftTerm in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
 				30CB64942C16CA9100CC8A9E /* LanguageClient in Frameworks */,
+				6CC17B592C43F53700834E2C /* CodeEditSourceEditor in Frameworks */,
 				6C6BD6F829CD14D100235D17 /* CodeEditKit in Frameworks */,
 				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 			);
@@ -1242,20 +1246,10 @@
 		043C321227E31FE8006AE443 /* Documents */ = {
 			isa = PBXGroup;
 			children = (
+				6CC17B552C4344F100834E2C /* CodeFileDocument */,
 				5831E3CE2933F3DE00D5A6D2 /* Controllers */,
 				611191F82B08CC8000D4459B /* Indexer */,
-				58798249292E78D80085B254 /* CodeFileDocument.swift */,
-				6C48B5C42C0A2835001E9955 /* FileEncoding.swift */,
-				043C321527E3201F006AE443 /* WorkspaceDocument.swift */,
-				043BCF02281DA18A000AC47C /* WorkspaceDocument+SearchState.swift */,
-				61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */,
-				61A53A7D2B4449870093BF8A /* WorkspaceDocument+Find.swift */,
-				610C0FD92B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift */,
-				615AA2192B0CFD480013FCCC /* LazyStringLoader.swift */,
-				6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */,
-				6C092EDF2A53BFCF00489202 /* WorkspaceStateKey.swift */,
-				61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */,
-				61538B922B11201900A88846 /* String+Character.swift */,
+				6CC17B542C43448C00834E2C /* WorkspaceDocument */,
 			);
 			path = Documents;
 			sourceTree = "<group>";
@@ -1372,8 +1366,8 @@
 			children = (
 				2847019D27FDDF7600F87B6B /* ProjectNavigatorOutlineView.swift */,
 				285FEC6D27FE4B4A00E57D53 /* ProjectNavigatorViewController.swift */,
-				6C67413D2C44A28C00AABDF5 /* ProjectNavigatorViewController+DataSource.swift */,
-				6C67413F2C44A2A200AABDF5 /* ProjectNavigatorViewController+Delegate.swift */,
+				6CC17B522C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift */,
+				6CC17B502C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift */,
 				285FEC6F27FE4B9800E57D53 /* ProjectNavigatorTableViewCell.swift */,
 				285FEC7127FE4EEF00E57D53 /* ProjectNavigatorMenu.swift */,
 				D7DC4B75298FFBE900D6C83D /* ProjectNavigatorViewController+OutlineTableViewCellDelegate.swift */,
@@ -2361,18 +2355,18 @@
 		58D01C87293167DC00C5B6B4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				669A504F2C380BFD00304CD8 /* Collection */,
-				6C82D6C429C0129E00495C54 /* NSApplication */,
-				77A01E922BCA9C0400F0EA38 /* NSWindow */,
 				588847672992AAB800996D95 /* Array */,
-				6CBD1BC42978DE3E006639D5 /* Text */,
-				5831E3D02934036D00D5A6D2 /* NSTableView */,
-				5831E3CA2933E86F00D5A6D2 /* View */,
 				5831E3C72933E7F700D5A6D2 /* Bundle */,
 				5831E3C62933E7E600D5A6D2 /* Color */,
+				669A504F2C380BFD00304CD8 /* Collection */,
 				5831E3C82933E80500D5A6D2 /* Date */,
+				6C82D6C429C0129E00495C54 /* NSApplication */,
+				5831E3D02934036D00D5A6D2 /* NSTableView */,
+				77A01E922BCA9C0400F0EA38 /* NSWindow */,
 				58D01C8B293167DC00C5B6B4 /* String */,
 				5831E3CB2933E89A00D5A6D2 /* SwiftTerm */,
+				6CBD1BC42978DE3E006639D5 /* Text */,
+				5831E3CA2933E86F00D5A6D2 /* View */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -2380,13 +2374,15 @@
 		58D01C8B293167DC00C5B6B4 /* String */ = {
 			isa = PBXGroup;
 			children = (
+				61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */,
+				61538B922B11201900A88846 /* String+Character.swift */,
+				669A50502C380C1800304CD8 /* String+escapedWhiteSpaces.swift */,
+				85745D622A38F8D900089AAB /* String+HighlightOccurrences.swift */,
+				6CED16E32A3E660D000EC962 /* String+Lines.swift */,
 				58D01C8E293167DC00C5B6B4 /* String+MD5.swift */,
 				D7E201AD27E8B3C000CB86D0 /* String+Ranges.swift */,
-				6CED16E32A3E660D000EC962 /* String+Lines.swift */,
 				58D01C8D293167DC00C5B6B4 /* String+RemoveOccurrences.swift */,
 				58D01C8C293167DC00C5B6B4 /* String+SHA256.swift */,
-				85745D622A38F8D900089AAB /* String+HighlightOccurrences.swift */,
-				669A50502C380C1800304CD8 /* String+escapedWhiteSpaces.swift */,
 			);
 			path = String;
 			sourceTree = "<group>";
@@ -2602,6 +2598,15 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		6C01F25D2C4820B600AA951B /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				6C67413D2C44A28C00AABDF5 /* ProjectNavigatorViewController+DataSource.swift */,
+				6C67413F2C44A2A200AABDF5 /* ProjectNavigatorViewController+Delegate.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		6C092EDC2A53A63E00489202 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -2713,6 +2718,7 @@
 			children = (
 				B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */,
 				6C82D6BB29C00CD900495C54 /* FirstResponderPropertyWrapper.swift */,
+				6CC17B5A2C44258700834E2C /* WindowControllerPropertyWrapper.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2782,6 +2788,29 @@
 				6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */,
 			);
 			path = Text;
+			sourceTree = "<group>";
+		};
+		6CC17B542C43448C00834E2C /* WorkspaceDocument */ = {
+			isa = PBXGroup;
+			children = (
+				043C321527E3201F006AE443 /* WorkspaceDocument.swift */,
+				043BCF02281DA18A000AC47C /* WorkspaceDocument+SearchState.swift */,
+				61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */,
+				61A53A7D2B4449870093BF8A /* WorkspaceDocument+Find.swift */,
+				610C0FD92B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift */,
+				6C05A8AE284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift */,
+				6C092EDF2A53BFCF00489202 /* WorkspaceStateKey.swift */,
+			);
+			path = WorkspaceDocument;
+			sourceTree = "<group>";
+		};
+		6CC17B552C4344F100834E2C /* CodeFileDocument */ = {
+			isa = PBXGroup;
+			children = (
+				58798249292E78D80085B254 /* CodeFileDocument.swift */,
+				6C48B5C42C0A2835001E9955 /* FileEncoding.swift */,
+			);
+			path = CodeFileDocument;
 			sourceTree = "<group>";
 		};
 		77A01E1A2BB33F1E00F0EA38 /* Views */ = {
@@ -2925,6 +2954,7 @@
 				283BDCBC2972EEBD002AFF81 /* Package.resolved */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
+				6C01F25D2C4820B600AA951B /* Recovered References */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -3365,10 +3395,11 @@
 				6C6BD6F729CD14D100235D17 /* CodeEditKit */,
 				6C66C31229D05CDC00DE9ED2 /* GRDB */,
 				6CB4463F2B6DFF3A00539ED0 /* CodeEditSourceEditor */,
-				6CBE1CFF2B720565003AC32E /* CodeEditSourceEditor */,
 				6C0617D52BDB4432008C9C42 /* LogStream */,
 				6C85BB3F2C2105ED00EB5DEF /* CodeEditKit */,
 				6C85BB432C210EFD00EB5DEF /* SwiftUIIntrospect */,
+				6CC17B4E2C432AE000834E2C /* CodeEditSourceEditor */,
+				6CC17B582C43F53700834E2C /* CodeEditSourceEditor */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -3460,12 +3491,12 @@
 				6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */,
 				6C6BD6F229CD142C00235D17 /* XCRemoteSwiftPackageReference "collectionconcurrencykit" */,
 				6C66C31129D05CC800DE9ED2 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
-				6CBE1CFE2B720565003AC32E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 				6C0617D42BDB4432008C9C42 /* XCRemoteSwiftPackageReference "LogStream" */,
 				6C85BB3E2C2105ED00EB5DEF /* XCRemoteSwiftPackageReference "CodeEditKit" */,
 				6C85BB422C210EFD00EB5DEF /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				303E88452C276FD100EEA8D9 /* XCRemoteSwiftPackageReference "LanguageClient" */,
 				303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
+				6CC17B572C43F53700834E2C /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -3689,6 +3720,7 @@
 				6CED16E42A3E660D000EC962 /* String+Lines.swift in Sources */,
 				587B9E6B29301D8F00AC7927 /* GitLabAvatarURL.swift in Sources */,
 				58798233292E30B90085B254 /* FeedbackToolbar.swift in Sources */,
+				6CC17B5B2C44258700834E2C /* WindowControllerPropertyWrapper.swift in Sources */,
 				587B9E6829301D8F00AC7927 /* GitLabAccountModel.swift in Sources */,
 				5878DAA7291AE76700DD95A3 /* OpenQuicklyViewModel.swift in Sources */,
 				6CFF967429BEBCC300182D6F /* FindCommands.swift in Sources */,
@@ -3715,7 +3747,6 @@
 				58798237292E30B90085B254 /* FeedbackView.swift in Sources */,
 				587B9E9829301D8F00AC7927 /* GitCommit.swift in Sources */,
 				6C5228B529A868BD00AC48F6 /* Environment+ContentInsets.swift in Sources */,
-				6C67413E2C44A28C00AABDF5 /* ProjectNavigatorViewController+DataSource.swift in Sources */,
 				587B9E9429301D8F00AC7927 /* BitBucketTokenConfiguration.swift in Sources */,
 				04BA7C222AE2D95E00584E1C /* GitClient+CommitHistory.swift in Sources */,
 				581BFB672926431000D251EC /* WelcomeWindowView.swift in Sources */,
@@ -3743,6 +3774,7 @@
 				B60718372B170638009CDAB4 /* SourceControlNavigatorRenameBranchView.swift in Sources */,
 				6C578D8129CD294800DC73B2 /* ExtensionActivatorView.swift in Sources */,
 				B6F0517D29D9E4B100D72287 /* TerminalSettingsView.swift in Sources */,
+				6CC17B532C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift in Sources */,
 				587B9E8C29301D8F00AC7927 /* GitHubOpenness.swift in Sources */,
 				5894E59729FEF7740077E59C /* CEWorkspaceFile+Recursion.swift in Sources */,
 				9D36E1BF2B5E7D7500443C41 /* GitBranchesGroup.swift in Sources */,
@@ -3811,6 +3843,7 @@
 				613DF55E2B08DD5D00E9D902 /* FileHelper.swift in Sources */,
 				58798235292E30B90085B254 /* FeedbackModel.swift in Sources */,
 				04C3255C2801F86900C8DA2D /* ProjectNavigatorMenu.swift in Sources */,
+				6CC17B512C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift in Sources */,
 				587B9E6429301D8F00AC7927 /* GitLabCommit.swift in Sources */,
 				B6E55C3B2A95368E003ECC7D /* EditorTabsOverflowShadow.swift in Sources */,
 				58A5DFA229339F6400D1BD5D /* KeybindingManager.swift in Sources */,
@@ -3919,7 +3952,6 @@
 				6C049A372A49E2DB00D42923 /* DirectoryEventStream.swift in Sources */,
 				30B088062C0D53080063A882 /* LanguageServer+DocumentSymbol.swift in Sources */,
 				04BA7C0E2AE2A76E00584E1C /* SourceControlNavigatorChangesCommitView.swift in Sources */,
-				615AA21A2B0CFD480013FCCC /* LazyStringLoader.swift in Sources */,
 				6CAAF68A29BC9C2300A1F48A /* (null) in Sources */,
 				30AB4EBD2BF71CA800ED4431 /* DeveloperSettingsView.swift in Sources */,
 				6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */,
@@ -4069,7 +4101,6 @@
 				77A01E302BB4270F00F0EA38 /* ProjectCEWorkspaceSettingsView.swift in Sources */,
 				669A50532C380C8E00304CD8 /* Collection+subscript_safe.swift in Sources */,
 				77A01E2C2BB425B200F0EA38 /* CEWorkspaceSettingsData+TasksSettings.swift in Sources */,
-				6C6741402C44A2A200AABDF5 /* ProjectNavigatorViewController+Delegate.swift in Sources */,
 				5B241BF32B6DDBFF0016E616 /* IgnorePatternListItemView.swift in Sources */,
 				6CB52DC92AC8DC3E002E75B3 /* CEWorkspaceFileManager+FileManagement.swift in Sources */,
 				58F2EB0B292FB2B0004A9BDE /* AccountsSettings.swift in Sources */,
@@ -5309,12 +5340,12 @@
 				minimumVersion = 1.2.0;
 			};
 		};
-		6CBE1CFE2B720565003AC32E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */ = {
+		6CC17B572C43F53700834E2C /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.7.3;
+				minimumVersion = 0.7.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -5398,9 +5429,13 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditSourceEditor;
 		};
-		6CBE1CFF2B720565003AC32E /* CodeEditSourceEditor */ = {
+		6CC17B4E2C432AE000834E2C /* CodeEditSourceEditor */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6CBE1CFE2B720565003AC32E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */;
+			productName = CodeEditSourceEditor;
+		};
+		6CC17B582C43F53700834E2C /* CodeEditSourceEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6CC17B572C43F53700834E2C /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */;
 			productName = CodeEditSourceEditor;
 		};
 /* End XCSwiftPackageProductDependency section */
