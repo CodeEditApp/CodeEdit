@@ -15,8 +15,17 @@ class TaskManager: ObservableObject {
 
     @ObservedObject var workspaceSettings: CEWorkspaceSettings
 
+    private var cancellables = Set<AnyCancellable>()
+
     init(workspaceSettings: CEWorkspaceSettings) {
         self.workspaceSettings = workspaceSettings
+
+        workspaceSettings.$tasks
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.updateSelectedTaskID()
+            }
+            .store(in: &cancellables)
     }
 
     var selectedTask: CETask? {
@@ -41,6 +50,11 @@ class TaskManager: ObservableObject {
 
     func taskStatus(taskID: UUID) -> CETaskStatus {
         return self.activeTasks[taskID]?.status ?? .notRunning
+    }
+
+    func updateSelectedTaskID() {
+        guard selectedTask == nil else { return }
+        selectedTaskID = availableTasks.first?.id
     }
 
     func executeActiveTask() {
@@ -145,5 +159,10 @@ class TaskManager: ObservableObject {
         for (id, _) in activeTasks {
             interruptTask(taskID: id)
         }
+    }
+
+    func deleteTask(taskID: UUID) {
+        terminateTask(taskID: taskID)
+        activeTasks.removeValue(forKey: taskID)
     }
 }

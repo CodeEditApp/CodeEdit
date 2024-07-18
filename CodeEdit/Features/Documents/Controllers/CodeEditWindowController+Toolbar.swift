@@ -151,12 +151,17 @@ extension CodeEditWindowController {
         case .activityViewer:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.activityViewer)
             toolbarItem.visibilityPriority = .user
+            guard let workspaceSettingsManager = workspace?.workspaceSettingsManager,
+                  let taskNotificationHandler = workspace?.taskNotificationHandler,
+                  let taskManager = workspace?.taskManager
+            else { return nil }
+
             let view = NSHostingView(
                 rootView: ActivityViewer(
                     workspaceFileManager: workspace?.workspaceFileManager,
-                    workspaceSettingsManager: workspace!.workspaceSettingsManager!, // TODO: Don't force unwrap
+                    workspaceSettingsManager: workspaceSettingsManager, // TODO: Don't force unwrap
                     taskNotificationHandler: taskNotificationHandler,
-                    taskManager: taskManager!
+                    taskManager: taskManager
                 )
             )
 
@@ -179,13 +184,13 @@ extension CodeEditWindowController {
 
     @objc
     private func runActiveTask() {
-        guard let taskManager else { return }
+        guard let taskManager = workspace?.taskManager else { return }
         taskManager.executeActiveTask()
     }
 
     @objc
     private func terminateActiveTask() {
-        guard let taskManager else { return }
+        guard let taskManager = workspace?.taskManager else { return }
         taskManager.terminateActiveTask()
     }
 }

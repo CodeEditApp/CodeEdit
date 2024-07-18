@@ -76,19 +76,29 @@ struct UtilityAreaDebugView: View {
                     .opacity(taskManager.activeTasks.isEmpty ? 1 : 0)
 
                 List(selection: $tabSelection) {
-                    ForEach(Array(taskManager.activeTasks.keys), id: \.self) { key in
-                        if let activeTask = taskManager.activeTasks[key] {
+                    ForEach(Array(taskManager.activeTasks.keys), id: \.self) { taskID in
+                        if let activeTask = taskManager.activeTasks[taskID] {
                             TaskSidebarTileView(activeTask: activeTask)
                                 .onTapGesture {
                                     withAnimation {
-                                        self.tabSelection = key
+                                        self.tabSelection = taskID
                                     }
                                 }
+                                .contextMenu(
+                                    ContextMenu {
+                                        Button {
+                                            taskManager.deleteTask(taskID: taskID)
+                                        } label: {
+                                            Text("Delete")
+                                        }
+                                    }
+                                )
                         }
                     }
                 }
                 .listStyle(.automatic)
                 .accentColor(.secondary)
+                .paneToolbar { Spacer() } // Background
             }
         }.onReceive(taskManager.$activeTasks) { newTasks in
             if tabSelection == nil {

@@ -93,9 +93,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         // ----
         let windowController = CodeEditWindowController(
             window: window,
-            workspace: self,
-            taskManager: taskManager,
-            taskNotificationHandler: taskNotificationHandler
+            workspace: self
         )
 
         if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {

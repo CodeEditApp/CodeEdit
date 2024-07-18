@@ -9,6 +9,8 @@ import SwiftUI
 
 struct CEWorkspaceSettingsTaskListView: View {
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettingsManager
+    @EnvironmentObject var taskManager: TaskManager
+
     @ObservedObject var settings: CEWorkspaceSettings
 
     @Binding var selectedTaskID: UUID?
@@ -36,6 +38,7 @@ struct CEWorkspaceSettingsTaskListView: View {
                         Button {
                             settings.tasks.removeAll { $0.id == task.id }
                             try? workspaceSettingsManager.savePreferences()
+                            taskManager.deleteTask(taskID: task.id)
                         } label: {
                             Text("Delete")
                         }

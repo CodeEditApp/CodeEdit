@@ -106,7 +106,8 @@ extension CodeEditWindowController {
     @IBAction func openWorkspaceSettings(_ sender: Any) {
         guard let window = window,
               let workspace = workspace,
-              let workspaceSettingsManager = workspace.workspaceSettingsManager
+              let workspaceSettingsManager = workspace.workspaceSettingsManager,
+              let taskManager = workspace.taskManager
         else { return }
 
         if let workspaceSettingsWindow, workspaceSettingsWindow.isVisible {
@@ -117,6 +118,7 @@ extension CodeEditWindowController {
             let contentView = CEWorkspaceSettingsView(window: settingsWindow)
                 .environmentObject(workspaceSettingsManager)
                 .environmentObject(workspace)
+                .environmentObject(taskManager)
 
                 settingsWindow.contentView = NSHostingView(rootView: contentView)
                 settingsWindow.titlebarAppearsTransparent = true

@@ -12,7 +12,7 @@ struct EditCETaskView: View {
     var dismiss
 
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettingsManager
-
+    @EnvironmentObject var taskManger: TaskManager
     @ObservedObject var task: CETask
 
     let selectedTaskIndex: Int
@@ -26,11 +26,12 @@ struct EditCETaskView: View {
             Spacer()
             Divider()
             HStack {
-                Button("Remove...") {
-                    self.workspaceSettingsManager.settings.tasks.removeAll(where: {
-                        $0.id == self.task.id
+                Button("Delete") {
+                    workspaceSettingsManager.settings.tasks.removeAll(where: {
+                        $0.id == task.id
                     })
                     try? workspaceSettingsManager.savePreferences()
+                    taskManger.deleteTask(taskID: task.id)
                     self.dismiss()
                 }
 

@@ -75,9 +75,7 @@ struct ViewCommands: Commands {
             HideCommands(
                 windowController: windowController ?? CodeEditWindowController(
                     window: nil,
-                    workspace: nil,
-                    taskManager: nil,
-                    taskNotificationHandler: TaskNotificationHandler()
+                    workspace: nil
                 ),
                 utilityAreaModel: windowController?.workspace?.utilityAreaModel ?? UtilityAreaViewModel()
             )
