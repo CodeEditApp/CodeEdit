@@ -18,6 +18,7 @@ struct TextEditingSettingsView: View {
                 indentOption
                 defaultTabWidth
                 wrapLinesToEditorWidth
+                useSystemCursor
             }
             Section {
                 fontSelector
@@ -69,6 +70,14 @@ private extension TextEditingSettingsView {
 
     @ViewBuilder private var wrapLinesToEditorWidth: some View {
         Toggle("Wrap lines to editor width", isOn: $textEditing.wrapLinesToEditorWidth)
+    }
+
+    @ViewBuilder private var useSystemCursor: some View {
+        if #available(macOS 14, *) {
+            Toggle("Use System Cursor", isOn: $textEditing.useSystemCursor)
+        } else {
+            EmptyView()
+        }
     }
 
     @ViewBuilder private var lineHeight: some View {
