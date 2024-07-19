@@ -59,6 +59,9 @@ extension SettingsData {
         /// The behavior of bracket pair highlights.
         var bracketHighlight: BracketPairHighlight = BracketPairHighlight()
 
+        /// Use the system cursor for the source editor.
+        var useSystemCursor: Bool = true
+
         /// Default initializer
         init() {
             self.populateCommands()
@@ -97,6 +100,7 @@ extension SettingsData {
                 BracketPairHighlight.self,
                 forKey: .bracketHighlight
             ) ?? BracketPairHighlight()
+            self.useSystemCursor = try container.decodeIfPresent(Bool.self, forKey: .useSystemCursor) ?? true
 
             self.populateCommands()
         }
