@@ -100,7 +100,11 @@ extension SettingsData {
                 BracketPairHighlight.self,
                 forKey: .bracketHighlight
             ) ?? BracketPairHighlight()
-            self.useSystemCursor = try container.decodeIfPresent(Bool.self, forKey: .useSystemCursor) ?? true
+            if #available(macOS 14, *) {
+                self.useSystemCursor = try container.decodeIfPresent(Bool.self, forKey: .useSystemCursor) ?? true
+            } else {
+                self.useSystemCursor = false
+            }
 
             self.populateCommands()
         }
