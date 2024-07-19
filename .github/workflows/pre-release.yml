@@ -137,7 +137,7 @@ jobs:
           mkdir "$SPARKLE_ARCHIVE"
           cp "$RUNNER_TEMP/CodeEdit.dmg" "$SPARKLE_ARCHIVE"
           SPARKLE_SIG=$("$SPARKLE_BIN/sign_update" --ed-key-file "$RUNNER_TEMP/sparkle_key" "$SPARKLE_ARCHIVE/CodeEdit.dmg" | cut -d\" -f2)
-          echo "<\!DOCTYPE>" > "$SPARKLE_ARCHIVE/CodeEdit.html" # Need a blank html doc with the DOCTYPE tag to trick sparkle into loading our remote release notes.
+          echo "<!DOCTYPE>" > "$SPARKLE_ARCHIVE/CodeEdit.html" # Need a blank html doc with the DOCTYPE tag to trick sparkle into loading our remote release notes.
           "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "${{ env.SPARKLE_DL_PREFIX }}/v${{ env.APP_VERSION }}/" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE" --release-notes-url-prefix "${{ env.RELEASE_NOTES_PREFIX }}v${{ env.APP_VERSION }}/" --full-release-notes-url "$RELEASE_NOTES_URL"
 
       ############################
