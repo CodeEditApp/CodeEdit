@@ -60,7 +60,7 @@ jobs:
           REV=$(git rev-parse --short HEAD)
           echo "REV=$REV" >> $GITHUB_ENV
           codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/Frameworks/CodeEditKit.framework"
-          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/Frameworks/CodeEditLanguages_Container.framework"
+          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/Frameworks/CodeLanguages_Container.framework"
           codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --deep --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/Frameworks/Sparkle.framework"
           codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp --entitlements "$RUNNER_TEMP/../CodeEdit/CodeEdit/OpenWithCodeEdit/OpenWithCodeEdit.entitlements" "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/PlugIns/OpenWithCodeEdit.appex"
           codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app"
