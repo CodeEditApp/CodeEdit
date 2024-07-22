@@ -12,18 +12,18 @@ final class ProjectNavigatorUITests: XCTestCase {
     var application: XCUIApplication!
 
     override func setUp() {
-        application = XCUIApplication()
-        application.launchArguments = ["--open", projectPath()]
-        application.launch()
+        application = App.launchWithCodeEditWorkspace()
     }
 
     func testNavigatorOpenFilesAndFolder() {
         let window = Query.getWindow(application)
+        XCTAssertTrue(window.exists, "Window not found")
         // Focus the window
         window.toolbars.firstMatch.click()
 
         // Get the navigator
-        let navigator = Query.Window.getNavigator(window)
+        let navigator = Query.Window.getProjectNavigator(window)
+        XCTAssertTrue(navigator.exists, "Navigator not found")
 
         // Open the README.md
         let readmeRow = Query.Navigator.getProjectNavigatorRow(fileTitle: "README.md", navigator)
@@ -31,6 +31,7 @@ final class ProjectNavigatorUITests: XCTestCase {
         readmeRow.click()
 
         let tabBar = Query.Window.getTabBar(window)
+        XCTAssertTrue(tabBar.exists)
         let readmeTab = Query.TabBar.getTab(labeled: "README.md", tabBar)
         XCTAssertTrue(readmeTab.exists)
 
@@ -38,6 +39,7 @@ final class ProjectNavigatorUITests: XCTestCase {
 
         // Open a folder
         let codeEditFolderRow = Query.Navigator.getProjectNavigatorRow(fileTitle: "CodeEdit", index: 1, navigator)
+        XCTAssertTrue(codeEditFolderRow.exists)
         XCTAssertTrue(
             Query.Navigator.rowContainsDisclosureIndicator(codeEditFolderRow),
             "Folder doesn't have disclosure indicator"

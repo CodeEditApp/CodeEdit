@@ -100,6 +100,10 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             window.setFrame(NSRect(x: 0, y: 0, width: 1400, height: 900), display: true, animate: false)
             window.center()
         }
+
+        window.setAccessibilityIdentifier("workspace")
+        window.setAccessibilityDocument(self.fileURL?.absoluteString)
+
         self.addWindowController(windowController)
 
         window.makeKeyAndOrderFront(nil)
