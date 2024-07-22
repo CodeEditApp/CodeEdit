@@ -172,7 +172,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         if workspace?.editorManager?.editorLayout.findSomeEditor(
             except: workspace?.editorManager?.activeEditor
         ) == nil {
-            NSApp.sendAction(#selector(NSWindow.performClose(_:)), to: nil, from: nil)
+            NSApp.sendAction(#selector(NSWindow.performClose(_:)), to: NSApp.keyWindow, from: nil)
         } else {
             workspace?.editorManager?.activeEditor.close()
         }
