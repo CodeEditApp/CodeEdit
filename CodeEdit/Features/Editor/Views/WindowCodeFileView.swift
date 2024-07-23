@@ -13,20 +13,15 @@ import SwiftUI
 struct WindowCodeFileView: View {
     var codeFile: CodeFileDocument
 
-    @State var hasAppeared = false
-    @FocusState var focused: Bool
-
     var body: some View {
-        Group {
-            if !hasAppeared {
-                Color.clear.onAppear {
-                    hasAppeared = true
-                    focused = true
-                }
-            } else {
-                CodeFileView(codeFile: codeFile)
-                    .focused($focused)
-            }
+        if let utType = codeFile.utType, utType.conforms(to: .text) {
+            CodeFileView(codeFile: codeFile)
+        } else {
+            NonTextFileView(fileDocument: codeFile)
+            // These are not used in single file mode, but since environment objects
+            // cannot be optional, they have to be injected in the environment.
+                .environmentObject(EditorManager())
+                .environmentObject(StatusBarViewModel())
         }
     }
 }

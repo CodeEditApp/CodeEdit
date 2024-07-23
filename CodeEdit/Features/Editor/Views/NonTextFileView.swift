@@ -17,7 +17,6 @@ struct NonTextFileView: View {
     /// The file document you wish to open.
     let fileDocument: CodeFileDocument
 
-    @EnvironmentObject private var editorManager: EditorManager
     @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
 
     var body: some View {
