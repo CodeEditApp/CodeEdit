@@ -15,7 +15,11 @@ import SwiftUI
 struct UpdateStatusBarInfo: ViewModifier {
 
     /// The URL of the file to compute information from.
-    let withURL: URL
+    let fileURL: URL
+
+    init(with url: URL) {
+        self.fileURL = url
+    }
 
     @EnvironmentObject private var editorManager: EditorManager
     @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
@@ -48,7 +52,7 @@ struct UpdateStatusBarInfo: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onAppear {
-                let statusBarInfo = computeStatusBarInfo(url: withURL)
+                let statusBarInfo = computeStatusBarInfo(url: fileURL)
                 statusBarViewModel.fileSize = statusBarInfo?.fileSize
                 statusBarViewModel.dimensions = statusBarInfo?.dimensions
             }
@@ -60,4 +64,10 @@ struct UpdateStatusBarInfo: ViewModifier {
             }
     }
 
+}
+
+extension View {
+    func updateStatusBarInfo(with url: URL) -> some View {
+        modifier(UpdateStatusBarInfo(with: url))
+    }
 }
