@@ -32,6 +32,9 @@ struct NonTextFileView: View {
                     } else if utType.conforms(to: .pdf) {
                         PDFFileView(fileURL)
                             .modifier(UpdateStatusBarInfo(withURL: fileURL))
+                    } else {
+                        AnyFileView(fileURL)
+                            .modifier(UpdateStatusBarInfo(withURL: fileURL))
                     }
                 } else {
                     AnyFileView(fileURL)
