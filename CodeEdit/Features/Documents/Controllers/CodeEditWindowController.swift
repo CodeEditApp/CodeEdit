@@ -151,7 +151,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     panel.close()
                 } openFile: { file in
                     workspace.editorManager?.openTab(item: file)
-                }.environmentObject(workspace)
+                }
+                    .environmentObject(workspace)
+                    .environmentObject(workspace.editorManager!) // Should be available when using Open Quickly
+                    .environmentObject(workspace.statusBarViewModel!) // Should be available when using Open Quickly
 
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
