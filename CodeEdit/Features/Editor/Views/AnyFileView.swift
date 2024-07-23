@@ -17,20 +17,20 @@ import QuickLookUI
 struct AnyFileView: NSViewRepresentable {
 
     /// URL of the file to preview. You can pass in any file type.
-    private let fileURL: URL
+    private let fileURL: NSURL
 
     init(_ fileURL: URL) {
-        self.fileURL = fileURL
+        self.fileURL = fileURL as NSURL
     }
 
     func makeNSView(context: Context) -> QLPreviewView {
         let qlPreviewView = QLPreviewView()
-        qlPreviewView.previewItem = fileURL as any QLPreviewItem
+        qlPreviewView.previewItem = fileURL
         return qlPreviewView
     }
 
     func updateNSView(_ qlPreviewView: QLPreviewView, context: Context) {
-        qlPreviewView.previewItem = fileURL as any QLPreviewItem
+        qlPreviewView.previewItem = fileURL
     }
 
 }
