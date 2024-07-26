@@ -21,15 +21,21 @@ struct NonTextFileView: View {
     @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
 
     var body: some View {
-
         Group {
             if let fileURL = fileDocument.fileURL {
-                if fileDocument.utType != nil && fileDocument.utType!.conforms(to: .image) {
-                    ImageFileView(fileURL)
-                        .modifier(UpdateStatusBarInfo(withURL: fileURL))
-                } else if fileDocument.utType != nil && fileDocument.utType!.conforms(to: .pdf) {
-                    PDFFileView(fileURL)
-                        .modifier(UpdateStatusBarInfo(withURL: fileURL))
+                if let utType = fileDocument.utType {
+
+                    if utType.conforms(to: .image) {
+                        ImageFileView(fileURL)
+                            .modifier(UpdateStatusBarInfo(withURL: fileURL))
+                    } else if utType.conforms(to: .pdf) {
+                        PDFFileView(fileURL)
+                            .modifier(UpdateStatusBarInfo(withURL: fileURL))
+                    } else {
+                        AnyFileView(fileURL)
+                            .modifier(UpdateStatusBarInfo(withURL: fileURL))
+                    }
+
                 } else {
                     AnyFileView(fileURL)
                         .modifier(UpdateStatusBarInfo(withURL: fileURL))
@@ -44,6 +50,5 @@ struct NonTextFileView: View {
             statusBarViewModel.dimensions = nil
             statusBarViewModel.fileSize = nil
         }
-
     }
 }
