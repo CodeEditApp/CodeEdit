@@ -69,9 +69,3 @@ struct UpdateStatusBarInfo: ViewModifier {
     }
 
 }
-
-extension View {
-    func updateStatusBarInfo(with url: URL?) -> some View {
-        modifier(UpdateStatusBarInfo(with: url))
-    }
-}

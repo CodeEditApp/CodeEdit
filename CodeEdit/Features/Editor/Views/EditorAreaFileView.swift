@@ -33,7 +33,7 @@ struct EditorAreaFileView: View {
                 NonTextFileView(fileDocument: document)
                     .padding(.top, edgeInsets.top - 1.74) // Use the magic number to fine-tune its appearance.
                     .padding(.bottom, StatusBarView.height + 1.26) // Use the magic number to fine-tune its appearance.
-                    .updateStatusBarInfo(with: document.fileURL)
+                    .modifier(UpdateStatusBarInfo(with: document.fileURL))
                     .onDisappear {
                         statusBarViewModel.dimensions = nil
                         statusBarViewModel.fileSize = nil
