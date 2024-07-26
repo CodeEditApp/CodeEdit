@@ -46,8 +46,6 @@ struct CodeFileView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject private var editorManager: EditorManager
-
     @ObservedObject private var themeModel: ThemeModel = .shared
 
     private var cancellables = Set<AnyCancellable>()
@@ -104,8 +102,6 @@ struct CodeFileView: View {
 
     @Environment(\.edgeInsets)
     private var edgeInsets
-
-    @EnvironmentObject private var editor: Editor
 
     var body: some View {
         CodeEditSourceEditor(

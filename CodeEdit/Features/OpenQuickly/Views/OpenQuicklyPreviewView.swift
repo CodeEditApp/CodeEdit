@@ -19,7 +19,7 @@ struct OpenQuicklyPreviewView: View {
         let doc = try? CodeFileDocument(
             for: item.url,
             withContentsOf: item.url,
-            ofType: "public.source-code"
+            ofType: item.contentType?.identifier ?? "public.source-code"
         )
         self._document = .init(wrappedValue: doc ?? .init())
     }
