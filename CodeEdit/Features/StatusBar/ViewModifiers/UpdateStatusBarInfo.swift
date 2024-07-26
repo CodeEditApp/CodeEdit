@@ -15,9 +15,9 @@ import SwiftUI
 struct UpdateStatusBarInfo: ViewModifier {
 
     /// The URL of the file to compute information from.
-    let fileURL: URL
+    let fileURL: URL?
 
-    init(with url: URL) {
+    init(with url: URL?) {
         self.fileURL = url
     }
 
@@ -50,24 +50,28 @@ struct UpdateStatusBarInfo: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        content
-            .onAppear {
-                let statusBarInfo = computeStatusBarInfo(url: fileURL)
-                statusBarViewModel.fileSize = statusBarInfo?.fileSize
-                statusBarViewModel.dimensions = statusBarInfo?.dimensions
-            }
-            .onChange(of: editorManager.activeEditor.selectedTab) { newTab in
-                guard let newTab else { return }
-                let statusBarInfo = computeStatusBarInfo(url: newTab.file.url)
-                statusBarViewModel.fileSize = statusBarInfo?.fileSize
-                statusBarViewModel.dimensions = statusBarInfo?.dimensions
-            }
+        if let fileURL {
+            content
+                .onAppear {
+                    let statusBarInfo = computeStatusBarInfo(url: fileURL)
+                    statusBarViewModel.fileSize = statusBarInfo?.fileSize
+                    statusBarViewModel.dimensions = statusBarInfo?.dimensions
+                }
+                .onChange(of: editorManager.activeEditor.selectedTab) { newTab in
+                    guard let newTab else { return }
+                    let statusBarInfo = computeStatusBarInfo(url: newTab.file.url)
+                    statusBarViewModel.fileSize = statusBarInfo?.fileSize
+                    statusBarViewModel.dimensions = statusBarInfo?.dimensions
+                }
+        } else {
+            content
+        }
     }
 
 }
 
 extension View {
-    func updateStatusBarInfo(with url: URL) -> some View {
+    func updateStatusBarInfo(with url: URL?) -> some View {
         modifier(UpdateStatusBarInfo(with: url))
     }
 }
