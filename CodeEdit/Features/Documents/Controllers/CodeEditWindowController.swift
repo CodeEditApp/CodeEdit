@@ -144,13 +144,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     quickOpenPanel.makeKeyAndOrderFront(self)
                 }
             } else {
-                guard let editorManager = workspace.editorManager,
-                      let statusBarViewModel = workspace.statusBarViewModel else {
-                    // swiftlint:disable:next line_length
-                    assertionFailure("An EditorManager and/or StatusBarViewModel is not set up in this workspace. Cannot use Open Quickly.")
-                    return
-                }
-
                 let panel = SearchPanel()
                 self.quickOpenPanel = panel
 
@@ -158,10 +151,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     panel.close()
                 } openFile: { file in
                     workspace.editorManager?.openTab(item: file)
-                }
-                    .environmentObject(workspace)
-                    .environmentObject(editorManager)
-                    .environmentObject(statusBarViewModel)
+                }.environmentObject(workspace)
 
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
