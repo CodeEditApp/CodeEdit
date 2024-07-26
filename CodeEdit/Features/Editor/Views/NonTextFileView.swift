@@ -17,8 +17,6 @@ struct NonTextFileView: View {
     /// The file document you wish to open.
     let fileDocument: CodeFileDocument
 
-    @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
-
     var body: some View {
         Group {
             if let fileURL = fileDocument.fileURL {
@@ -33,16 +31,11 @@ struct NonTextFileView: View {
                         AnyFileView(fileURL)
                     }
                 }
-                .updateStatusBarInfo(with: fileURL)
             } else {
                 ZStack {
                     Text("Cannot retrieve URL to the file you opened.")
                 }
             }
-        }
-        .onDisappear {
-            statusBarViewModel.dimensions = nil
-            statusBarViewModel.fileSize = nil
         }
     }
 }

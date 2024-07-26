@@ -18,10 +18,6 @@ struct WindowCodeFileView: View {
             CodeFileView(codeFile: codeFile)
         } else {
             NonTextFileView(fileDocument: codeFile)
-            // These are not used in single file mode, but since environment objects
-            // cannot be optional, they have to be injected in the environment.
-                .environmentObject(EditorManager())
-                .environmentObject(StatusBarViewModel())
         }
     }
 }
