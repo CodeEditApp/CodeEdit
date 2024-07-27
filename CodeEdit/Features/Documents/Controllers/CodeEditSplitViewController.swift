@@ -14,8 +14,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
     static let snapWidth: CGFloat = 272
     static let minSnapWidth: CGFloat = snapWidth - 10
 
-    private var workspace: WorkspaceDocument
-    private var navigatorViewModel: NavigatorSidebarViewModel
+    private weak var workspace: WorkspaceDocument?
+    private weak var navigatorViewModel: NavigatorSidebarViewModel?
     private weak var windowRef: NSWindow?
     private unowned var hapticPerformer: NSHapticFeedbackPerformer
 
@@ -47,12 +47,21 @@ final class CodeEditSplitViewController: NSSplitViewController {
             return
         }
 
+        guard let workspace,
+              let navigatorViewModel,
+              let editorManager = workspace.editorManager,
+              let statusBarViewModel = workspace.statusBarViewModel,
+              let utilityAreaModel = workspace.utilityAreaModel,
+              let taskmanager = workspace.taskManager else {
+            return
+        }
+
         splitView.translatesAutoresizingMaskIntoConstraints = false
 
         let settingsView = SettingsInjector {
             NavigatorAreaView(workspace: workspace, viewModel: navigatorViewModel)
                 .environmentObject(workspace)
-                .environmentObject(workspace.editorManager)
+                .environmentObject(editorManager)
         }
 
         let navigator = NSSplitViewItem(sidebarWithViewController: NSHostingController(rootView: settingsView))
@@ -64,19 +73,13 @@ final class CodeEditSplitViewController: NSSplitViewController {
         addSplitViewItem(navigator)
 
         let workspaceView = SettingsInjector {
-            WindowObserver(window: windowRef) {
+            WindowObserver(window: WindowBox(value: windowRef)) {
                 WorkspaceView()
                     .environmentObject(workspace)
-                    .environmentObject(workspace.editorManager)
-                    .environmentObject(workspace.statusBarViewModel)
-                    .environmentObject(workspace.utilityAreaModel)
-                    .environmentObject(
-                        workspace.taskManager ??
-                        TaskManager(
-                            workspaceSettings: workspace.workspaceSettingsManager?.settings ??
-                            CEWorkspaceSettingsManager(workspaceDocument: workspace).settings
-                        )
-                    )
+                    .environmentObject(editorManager)
+                    .environmentObject(statusBarViewModel)
+                    .environmentObject(utilityAreaModel)
+                    .environmentObject(taskManager)
             }
         }
 
@@ -89,7 +92,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         let inspectorView = SettingsInjector {
             InspectorAreaView(viewModel: InspectorAreaViewModel())
                 .environmentObject(workspace)
-                .environmentObject(workspace.editorManager)
+                .environmentObject(editorManager)
         }
 
         let inspector = NSSplitViewItem(inspectorWithViewController: NSHostingController(rootView: inspectorView))
@@ -104,6 +107,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     override func viewWillAppear() {
         super.viewWillAppear()
+
+        guard let workspace else { return }
 
         let navigatorWidth = workspace.getFromWorkspaceState(.splitViewWidth) as? CGFloat
         splitView.setPosition(navigatorWidth ?? Self.minSidebarWidth, ofDividerAt: 0)
@@ -185,16 +190,16 @@ final class CodeEditSplitViewController: NSSplitViewController {
             let panel = splitView.subviews[0]
             let width = panel.frame.size.width
             if width > 0 {
-                workspace.addToWorkspaceState(key: .splitViewWidth, value: width)
+                workspace?.addToWorkspaceState(key: .splitViewWidth, value: width)
             }
         }
     }
 
     func saveNavigatorCollapsedState(isCollapsed: Bool) {
-        workspace.addToWorkspaceState(key: .navigatorCollapsed, value: isCollapsed)
+        workspace?.addToWorkspaceState(key: .navigatorCollapsed, value: isCollapsed)
     }
 
     func saveInspectorCollapsedState(isCollapsed: Bool) {
-        workspace.addToWorkspaceState(key: .inspectorCollapsed, value: isCollapsed)
+        workspace?.addToWorkspaceState(key: .inspectorCollapsed, value: isCollapsed)
     }
 }

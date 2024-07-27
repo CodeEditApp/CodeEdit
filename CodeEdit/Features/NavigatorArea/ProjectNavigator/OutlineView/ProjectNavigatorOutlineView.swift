@@ -35,7 +35,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
         nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
         /// if the window becomes active from background, it will restore the selection to outline view.
-        nsViewController.updateSelection(itemID: workspace.editorManager.activeEditor.selectedTab?.file.id)
+        nsViewController.updateSelection(itemID: workspace.editorManager?.activeEditor.selectedTab?.file.id)
         return
     }
 
@@ -56,7 +56,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
                     self?.controller?.reveal(fileItem)
                 })
                 .store(in: &cancellables)
-            workspace.editorManager.tabBarTabIdSubject
+            workspace.editorManager?.tabBarTabIdSubject
                 .sink { [weak self] itemID in
                     self?.controller?.updateSelection(itemID: itemID)
                 }
@@ -64,8 +64,8 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         }
 
         var cancellables: Set<AnyCancellable> = []
-        var workspace: WorkspaceDocument
-        var controller: ProjectNavigatorViewController?
+        weak var workspace: WorkspaceDocument?
+        weak var controller: ProjectNavigatorViewController?
 
         func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>) {
             guard let outlineView = controller?.outlineView else { return }
@@ -73,12 +73,10 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
             for item in updatedItems {
                 outlineView.reloadItem(item, reloadChildren: true)
             }
-
-            controller?.updateSelection(itemID: workspace.editorManager.activeEditor.selectedTab?.file.id)
         }
 
         deinit {
-            workspace.workspaceFileManager?.removeObserver(self)
+            workspace?.workspaceFileManager?.removeObserver(self)
         }
     }
 }

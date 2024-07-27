@@ -40,6 +40,8 @@ struct CodeFileView: View {
     var letterSpacing
     @AppSettings(\.textEditing.bracketHighlight)
     var bracketHighlight
+    @AppSettings(\.textEditing.useSystemCursor)
+    var useSystemCursor
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -121,6 +123,7 @@ struct CodeFileView: View {
             isEditable: isEditable,
             letterSpacing: letterSpacing,
             bracketPairHighlight: bracketPairHighlight,
+            useSystemCursor: useSystemCursor,
             undoManager: undoManager,
             coordinators: textViewCoordinators
         )

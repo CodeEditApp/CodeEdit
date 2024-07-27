@@ -13,7 +13,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private let updater = SoftwareUpdater()
 
     @Environment(\.openWindow)
-    private var openWindow
+    var openWindow
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         setupServiceContainer()
@@ -209,8 +209,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             defaults.removeObject(forKey: "openInCEFiles")
         }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.checkForFilesToOpen()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.checkForFilesToOpen()
         }
     }
 

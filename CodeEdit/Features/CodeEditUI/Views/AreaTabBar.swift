@@ -13,9 +13,6 @@ protocol AreaTab: View, Identifiable, Hashable {
 }
 
 struct AreaTabBar<Tab: AreaTab>: View {
-    @Environment(\.controlActiveState)
-    private var activeState
-
     @Binding var items: [Tab]
     @Binding var selection: Tab?
 
@@ -78,14 +75,14 @@ struct AreaTabBar<Tab: AreaTab>: View {
             ? AnyLayout(HStackLayout(spacing: 0))
             : AnyLayout(VStackLayout(spacing: 0))
         layout {
-            ForEach(items) { icon in
-                makeIcon(tab: icon, size: size)
+            ForEach(items) { tab in
+                makeIcon(tab: tab, size: size)
                     .offset(
-                        x: (position == .top) ? (tabOffsets[icon] ?? 0) : 0,
-                        y: (position == .side) ? (tabOffsets[icon] ?? 0) : 0
+                        x: (position == .top) ? (tabOffsets[tab] ?? 0) : 0,
+                        y: (position == .side) ? (tabOffsets[tab] ?? 0) : 0
                     )
-                    .background(makeTabItemGeometryReader(tab: icon))
-                    .simultaneousGesture(makeAreaTabDragGesture(tab: icon))
+                    .background(makeTabItemGeometryReader(tab: tab))
+                    .simultaneousGesture(makeAreaTabDragGesture(tab: tab))
             }
             if position == .side {
                 Spacer()
@@ -115,6 +112,9 @@ struct AreaTabBar<Tab: AreaTab>: View {
                 )
             )
         )
+        .focusable(false)
+        .accessibilityIdentifier("TabAreaTab-\(tab.title)")
+        .accessibilityLabel(tab.title)
     }
 
     private func makeAreaTabDragGesture(tab: Tab) -> some Gesture {

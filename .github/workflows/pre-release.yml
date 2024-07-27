@@ -60,6 +60,7 @@ jobs:
           REV=$(git rev-parse --short HEAD)
           echo "REV=$REV" >> $GITHUB_ENV
           codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/Frameworks/CodeEditKit.framework"
+          codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/Frameworks/CodeLanguages_Container.framework"
           codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --deep --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/Frameworks/Sparkle.framework"
           codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp --entitlements "$RUNNER_TEMP/../CodeEdit/CodeEdit/OpenWithCodeEdit/OpenWithCodeEdit.entitlements" "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app/Contents/PlugIns/OpenWithCodeEdit.appex"
           codesign --sign "$CODESIGN_SIGN" -vvv --verbose --strict --options=runtime --prefix app.codeedit.CodeEdit. --force --timestamp "$RUNNER_TEMP/CodeEdit.xcarchive/Products/Applications/CodeEdit.app"
@@ -117,13 +118,18 @@ jobs:
           # SPARKLE_CHANNEL: Seperate dev builds from default channel, to be specified in [SPUUpdaterDelegate allowedChannelsForUpdater:]
           # SPARKLE_DL_PREFIX: Prefix for the URL from where updates will be downloaded
           # SPARKLE_LINK: CodeEdit Website
-          # https://github.com/CodeEditApp/CodeEdit/releases/download/0.0.1-alpha.11/CodeEdit-9113dc5.dmg
+          #   https://github.com/CodeEditApp/CodeEdit/releases/download/0.0.1-alpha.11/CodeEdit-9113dc5.dmg
+          # RELEASE_NOTES_PREFIX: The URL to prefix before an update link:
+          #   https://codeedit.app/whats-new/raw/{v0.1.0} -- data in {} is inserted by sparkle
+          # RELEASE_NOTES_URL: The URL of the entire release notes page: https://codeedit.app/whats-new
           SPARKLE_KEY: ${{ secrets.SPARKLE_KEY }}
           SPARKLE_CHANNEL: dev
           SPARKLE_DL_PREFIX: "https://github.com/CodeEditApp/CodeEdit/releases/download"
           SPARKLE_LINK: "https://github.com/CodeEditApp/CodeEdit"
           APP_VERSION: ${{ env.APP_VERSION }}
           APP_BUILD: ${{ env.APP_BUILD }}
+          RELEASE_NOTES_URL: "https://codeedit.app/whats-new/"
+          RELEASE_NOTES_PREFIX: "https://codeedit.app/sparkle/"
         run: |
           SPARKLE_BIN="$RUNNER_TEMP/DerivedData/SourcePackages/artifacts/sparkle/Sparkle/bin"
           SPARKLE_ARCHIVE="$RUNNER_TEMP/Sparkle_Archive"
@@ -131,7 +137,8 @@ jobs:
           mkdir "$SPARKLE_ARCHIVE"
           cp "$RUNNER_TEMP/CodeEdit.dmg" "$SPARKLE_ARCHIVE"
           SPARKLE_SIG=$("$SPARKLE_BIN/sign_update" --ed-key-file "$RUNNER_TEMP/sparkle_key" "$SPARKLE_ARCHIVE/CodeEdit.dmg" | cut -d\" -f2)
-          "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "${{ env.SPARKLE_DL_PREFIX }}/v${{ env.APP_VERSION }}/" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE"
+          echo "<!DOCTYPE>" > "$SPARKLE_ARCHIVE/CodeEdit.html" # Need a blank html doc with the DOCTYPE tag to trick sparkle into loading our remote release notes.
+          "$SPARKLE_BIN/generate_appcast" --ed-key-file "$RUNNER_TEMP/sparkle_key" --download-url-prefix "${{ env.SPARKLE_DL_PREFIX }}/v${{ env.APP_VERSION }}/" --link "$SPARKLE_LINK" --channel "$SPARKLE_CHANNEL" --maximum-deltas 0 "$SPARKLE_ARCHIVE" --release-notes-url-prefix "${{ env.RELEASE_NOTES_PREFIX }}v${{ env.APP_VERSION }}/" --full-release-notes-url "$RELEASE_NOTES_URL"
 
       ############################
       # Publish Pre Release

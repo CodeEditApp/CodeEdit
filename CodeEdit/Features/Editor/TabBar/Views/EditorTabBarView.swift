@@ -16,6 +16,9 @@ struct EditorTabBarView: View {
         HStack(alignment: .center, spacing: 0) {
             EditorTabBarLeadingAccessories()
             EditorTabs()
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel("Tab Bar")
+                .accessibilityIdentifier("TabBar")
             EditorTabBarTrailingAccessories()
         }
         .frame(height: EditorTabBarView.height)

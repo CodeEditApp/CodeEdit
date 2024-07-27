@@ -9,21 +9,13 @@ import SwiftUI
 import Combine
 
 /// The CodeEdit workspace settings model.
-final class CEWorkspaceSettingsManager: ObservableObject {
-    @ObservedObject private var workspace: WorkspaceDocument
-    @Published public var settings: CEWorkspaceSettings = .init()
+final class CEWorkspaceSettings: ObservableObject {
+    @Published public var preferences: CEWorkspaceSettingsData = .init()
 
-    private var storeTask = Set<AnyCancellable>()
+    private var storeTask: AnyCancellable?
     private let fileManager = FileManager.default
 
-    var workspaceSettingsFolderURL: URL? {
-        guard let workspaceURL = workspace.fileURL else {
-            return nil
-        }
-
-        return workspaceURL
-            .appendingPathComponent(".codeedit", isDirectory: true)
-    }
+    private(set) var folderURL: URL?
 
     private var settingsURL: URL? {
         workspaceSettingsFolderURL?
@@ -32,8 +24,7 @@ final class CEWorkspaceSettingsManager: ObservableObject {
     }
 
     init(workspaceDocument: WorkspaceDocument) {
-        self.workspace = workspaceDocument
-
+        folderURL = workspaceDocument.fileURL?.appendingPathComponent(".codeedit", isDirectory: true)
         loadSettings()
 
         self.$settings
@@ -45,7 +36,16 @@ final class CEWorkspaceSettingsManager: ObservableObject {
             .store(in: &storeTask)
     }
 
-    /// Load and construct ``CEWorkspaceSettingsManager`` model from `.codeedit/settings.json`
+    func cleanUp() {
+        storeTask?.cancel()
+        storeTask = nil
+    }
+
+    deinit {
+        cleanUp()
+    }
+
+    /// Load and construct ``CEWorkspaceSettings`` model from `.codeedit/settings.json`
     private func loadSettings() {
         if let settingsURL = settingsURL {
             if fileManager.fileExists(atPath: settingsURL.path) {

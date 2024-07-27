@@ -86,29 +86,6 @@ struct UtilityAreaTerminalView: View {
         return utilityAreaViewModel.terminals.first(where: { $0.id == id }) ?? nil
     }
 
-    private func updateTerminal(_ id: UUID, title: String? = nil) {
-        let terminalIndex = utilityAreaViewModel.terminals.firstIndex(where: { $0.id == id })
-        if terminalIndex != nil {
-            updateTerminalByReference(of: &utilityAreaViewModel.terminals[terminalIndex!], title: title)
-        }
-    }
-
-    func updateTerminalByReference(
-        of terminal: inout UtilityAreaTerminal,
-        title: String? = nil
-    ) {
-        if let newTitle = title {
-            if !terminal.customTitle {
-                terminal.title = newTitle
-            }
-            terminal.terminalTitle = newTitle
-        }
-    }
-
-    func handleTitleChange(id: UUID, title: String) {
-        updateTerminal(id, title: title)
-    }
-
     /// Returns the `background` color of the selected theme
     private var backgroundColor: NSColor {
         if let selectedTheme = matchAppearance && darkAppearance
@@ -134,10 +111,11 @@ struct UtilityAreaTerminalView: View {
                     TerminalEmulatorView(
                         url: terminal.url!,
                         shellType: terminal.shell,
-                        onTitleChange: { newTitle in
+                        onTitleChange: { [weak terminal] newTitle in
+                            guard let id = terminal?.id else { return }
                             // This can be called whenever, even in a view update so it needs to be dispatched.
-                            DispatchQueue.main.async {
-                                handleTitleChange(id: terminal.id, title: newTitle)
+                            DispatchQueue.main.async { [weak utilityAreaViewModel] in
+                                utilityAreaViewModel?.updateTerminal(id, title: newTitle)
                             }
                         }
                     )

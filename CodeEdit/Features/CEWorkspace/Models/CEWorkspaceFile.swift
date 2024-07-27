@@ -42,7 +42,23 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     var name: String { url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines) }
 
     /// Returns the extension of the file or an empty string if no extension is present.
-    var type: FileIcon.FileType { .init(rawValue: url.pathExtension) ?? .txt }
+    var type: FileIcon.FileType {
+        let filename = url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        /// First, check if there is a valid file extension.
+        if let type = FileIcon.FileType(rawValue: filename) {
+            return type
+        } else {
+            /// If  there's not, verifies every extension for a valid type.
+            let extensions = filename.dropFirst().components(separatedBy: ".").reversed()
+
+            return extensions
+                .compactMap { FileIcon.FileType(rawValue: $0) }
+                .first
+            /// Returns .txt for invalid type.
+            ?? .txt
+        }
+    }
 
     /// Returns the URL of the ``CEWorkspaceFile``
     let url: URL
@@ -69,11 +85,11 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// Returns a parent ``CEWorkspaceFile``.
     ///
     /// If the item already is the top-level ``CEWorkspaceFile`` this returns `nil`.
-    var parent: CEWorkspaceFile?
+    weak var parent: CEWorkspaceFile?
 
     private let fileDocumentSubject = PassthroughSubject<CodeFileDocument?, Never>()
 
-    var fileDocument: CodeFileDocument? {
+    weak var fileDocument: CodeFileDocument? {
         didSet {
             fileDocumentSubject.send(fileDocument)
         }

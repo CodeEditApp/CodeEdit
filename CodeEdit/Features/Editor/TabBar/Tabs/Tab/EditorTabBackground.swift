@@ -27,36 +27,42 @@ struct EditorTabBackground: View {
 
     var body: some View {
         ZStack {
-            // Content background (visible if active)
-            EffectView(.contentBackground)
-                .opacity(isActive ? 1 : 0)
+            if isActive {
+                // Content background (visible if active)
+                EffectView(.contentBackground)
+                    .opacity(isActive ? 1 : 0)
 
-            // Accent color (visible if active)
-            Color(.controlAccentColor)
-                .hueRotation(.degrees(-5))
-                .opacity(
-                    isActive
-                        ? colorScheme == .dark
-                             ? activeState == .inactive ? 0.22 : inHoldingState ? 0.33 : 0.26
-                             : activeState == .inactive ? 0.1 : inHoldingState ? 0.27 : 0.2
-                        : 0
-                )
-                .saturation(isActiveEditor ? 1.0 : 0.0)
+                // Accent color (visible if active)
+                Color(.controlAccentColor)
+                    .hueRotation(.degrees(-5))
+                    .opacity(
+                        colorScheme == .dark
+                        ? activeState == .inactive ? 0.22 : inHoldingState ? 0.33 : 0.26
+                        : activeState == .inactive ? 0.1 : inHoldingState ? 0.27 : 0.2
+                    )
+                    .saturation(isActiveEditor ? 1.0 : 0.0)
+            }
 
-            // Highlight (if in dark mode)
-            Color(.white)
-                .blendMode(.plusLighter)
-                .opacity(
-                    colorScheme == .dark
-                        ? isActive
-                             ? activeState == .inactive ? 0.04 : inHoldingState ? 0.14 : 0.09
-                             : isPressing ? 0.05 : 0
-                        : 0
-                )
+            if colorScheme == .dark {
+                // Highlight (if in dark mode)
+                Color(.white)
+                    .blendMode(.plusLighter)
+                    .opacity(
+                        isActive
+                        ? activeState == .inactive ? 0.04 : inHoldingState ? 0.14 : 0.09
+                        : isPressing ? 0.05 : 0
+                    )
+            }
 
-            // Dragging color (if not active)
-            Color(.unemphasizedSelectedTextBackgroundColor)
-                .opacity(isDragging && !isActive ? 0.85 : 0)
+            if isDragging && !isActive {
+                // Dragging color (if not active)
+                Color(.unemphasizedSelectedTextBackgroundColor)
+                    .opacity(0.85)
+            }
+
+            if !isActive && isPressing {
+                Color(.unemphasizedSelectedTextBackgroundColor)
+            }
         }
     }
 }

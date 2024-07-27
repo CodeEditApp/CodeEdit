@@ -31,7 +31,7 @@ final class CommandManager: ObservableObject {
 
     static let shared: CommandManager = .init()
 
-    func addCommand(name: String, title: String, id: String, command: CommandClosureWrapper) {
+    func addCommand(name: String, title: String, id: String, command: @escaping () -> Void) {
         let command = Command.init(id: name, title: title, closureWrapper: command)
         commandsList[id] = command
     }
@@ -41,7 +41,7 @@ final class CommandManager: ObservableObject {
     }
 
     func executeCommand(_ id: String) {
-        commandsList[id]?.closureWrapper.call()
+        commandsList[id]?.closureWrapper()
     }
 }
 
@@ -62,24 +62,5 @@ struct Command: Identifiable, Hashable {
 
     let id: String
     let title: String
-    let closureWrapper: CommandClosureWrapper
-}
-
-/// A simple wrapper for command closure
-struct CommandClosureWrapper {
-
-    /// A typealias of interface used for command closure declaration
-    typealias WorkspaceClientClosure = () -> Void
-
-    let workspaceClientClosure: WorkspaceClientClosure?
-
-    /// Initializer for closure wrapper
-    /// - Parameter closure: Function that contains all logic to run command.
-    init(closure: @escaping WorkspaceClientClosure) {
-       self.workspaceClientClosure = closure
-    }
-
-    func call() {
-        workspaceClientClosure?()
-    }
+    let closureWrapper: () -> Void
 }

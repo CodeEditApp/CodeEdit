@@ -16,6 +16,7 @@ struct EditorFileTabCloseButton: View {
     var closeAction: () -> Void
     @Binding var closeButtonGestureActive: Bool
     var item: CEWorkspaceFile
+    @Binding var isHoveringClose: Bool
 
     @State private var isDocumentEdited: Bool = false
     @State private var id: Int = 0
@@ -27,7 +28,8 @@ struct EditorFileTabCloseButton: View {
             isDragging: isDragging,
             closeAction: closeAction,
             closeButtonGestureActive: $closeButtonGestureActive,
-            isDocumentEdited: isDocumentEdited
+            isDocumentEdited: isDocumentEdited,
+            isHoveringClose: $isHoveringClose
         )
         .id(id)
         // Detects if file document changed, when this view created item.fileDocument is nil

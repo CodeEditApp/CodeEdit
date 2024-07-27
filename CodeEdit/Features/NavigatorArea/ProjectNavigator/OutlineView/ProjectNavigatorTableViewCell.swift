@@ -14,7 +14,7 @@ protocol OutlineTableViewCellDelegate: AnyObject {
 
 /// A `NSTableCellView` showing an ``icon`` and a ``label``
 final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
-    private var delegate: OutlineTableViewCellDelegate?
+    private weak var delegate: OutlineTableViewCellDelegate?
 
     /// Initializes the `OutlineTableViewCell` with an `icon` and `label`
     /// Both the icon and label will be colored, and sized based on the user's preferences.
@@ -29,7 +29,7 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         delegate: OutlineTableViewCellDelegate? = nil
     ) {
         super.init(frame: frameRect, item: item, isEditable: isEditable)
-
+        self.textField?.setAccessibilityIdentifier("ProjectNavigatorTableViewCell-\(item?.name ?? "")")
         self.delegate = delegate
     }
 
@@ -51,14 +51,15 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
     }
 
     override func controlTextDidEndEditing(_ obj: Notification) {
-        label.backgroundColor = fileItem.validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
-        if fileItem.validateFileName(for: label?.stringValue ?? "") {
+        guard let fileItem else { return }
+        textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
+        if fileItem.validateFileName(for: textField?.stringValue ?? "") {
             let destinationURL = fileItem.url
                 .deletingLastPathComponent()
-                .appendingPathComponent(label?.stringValue ?? "")
+                .appendingPathComponent(textField?.stringValue ?? "")
             delegate?.moveFile(file: fileItem, to: destinationURL)
         } else {
-            label?.stringValue = fileItem.labelFileName()
+            textField?.stringValue = fileItem.labelFileName()
         }
     }
 }
