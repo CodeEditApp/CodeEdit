@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>0.1.0</string>
 	<key>CFBundleVersion</key>
-	<string>39</string>
+	<string>40</string>
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSExtension</key>
