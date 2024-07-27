@@ -39,7 +39,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var sourceControlManager: SourceControlManager?
 
     var taskManager: TaskManager?
-    var workspaceSettingsManager: CEWorkspaceSettingsManager?
+    var workspaceSettingsManager: CEWorkspaceSettings?
     var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
 
     private var cancellables = Set<AnyCancellable>()
@@ -131,7 +131,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.searchState = .init(self)
         self.openQuicklyViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
-        self.workspaceSettingsManager = CEWorkspaceSettingsManager(workspaceDocument: self)
+        self.workspaceSettingsManager = CEWorkspaceSettings(workspaceURL: url)
         if let workspaceSettingsManager {
             self.taskManager = TaskManager(workspaceSettings: workspaceSettingsManager.settings)
         }

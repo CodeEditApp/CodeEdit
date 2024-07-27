@@ -14,7 +14,7 @@ struct SchemeDropDownView: View {
     @State var isSchemePopOverPresented: Bool = false
     @State private var isHoveringScheme: Bool = false
 
-    @ObservedObject var workspaceSettingsManager: CEWorkspaceSettingsManager
+    @ObservedObject var workspaceSettingsManager: CEWorkspaceSettings
     var workspaceFileManager: CEWorkspaceFileManager?
 
     var body: some View {

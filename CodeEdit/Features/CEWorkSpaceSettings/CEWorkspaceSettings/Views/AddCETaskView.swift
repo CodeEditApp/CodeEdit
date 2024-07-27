@@ -11,7 +11,7 @@ struct AddCETaskView: View {
     @Environment(\.dismiss)
     var dismiss
 
-    @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettingsManager
+    @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @StateObject var newTask: CETask
 
     init(workingDirectory: String) {

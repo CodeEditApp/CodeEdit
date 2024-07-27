@@ -11,7 +11,7 @@ struct EditCETaskView: View {
     @Environment(\.dismiss)
     var dismiss
 
-    @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettingsManager
+    @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @EnvironmentObject var taskManger: TaskManager
     @ObservedObject var task: CETask
 

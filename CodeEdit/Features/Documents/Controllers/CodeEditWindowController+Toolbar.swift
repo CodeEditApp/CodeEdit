@@ -159,7 +159,7 @@ extension CodeEditWindowController {
             let view = NSHostingView(
                 rootView: ActivityViewer(
                     workspaceFileManager: workspace?.workspaceFileManager,
-                    workspaceSettingsManager: workspaceSettingsManager, // TODO: Don't force unwrap
+                    workspaceSettingsManager: workspaceSettingsManager,
                     taskNotificationHandler: taskNotificationHandler,
                     taskManager: taskManager
                 )

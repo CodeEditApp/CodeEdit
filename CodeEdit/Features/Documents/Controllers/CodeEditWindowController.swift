@@ -22,8 +22,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     var commandPalettePanel: SearchPanel?
     var navigatorSidebarViewModel: NavigatorSidebarViewModel?
 
-    var taskNotificationHandler: TaskNotificationHandler
-
     internal var cancellables = [AnyCancellable]()
 
     var splitViewController: CodeEditSplitViewController? {
@@ -38,7 +36,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         window?.delegate = self
         guard let workspace else { return }
         self.workspace = workspace
-        self.workspaceSettings = CEWorkspaceSettings(workspaceDocument: workspace)
         guard let splitViewController = setupSplitView(with: workspace) else {
             fatalError("Failed to set up content view.")
         }
@@ -187,8 +184,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
         workspaceSettingsWindow?.close()
         workspaceSettingsWindow = nil
-        workspaceSettings?.cleanUp()
-        workspaceSettings = nil
         quickOpenPanel = nil
         commandPalettePanel = nil
         navigatorSidebarViewModel = nil

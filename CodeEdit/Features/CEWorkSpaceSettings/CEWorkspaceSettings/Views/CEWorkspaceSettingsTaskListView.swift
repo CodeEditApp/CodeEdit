@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct CEWorkspaceSettingsTaskListView: View {
-    @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettingsManager
+    @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @EnvironmentObject var taskManager: TaskManager
 
-    @ObservedObject var settings: CEWorkspaceSettings
+    @ObservedObject var settings: CEWorkspaceSettingsData
 
     @Binding var selectedTaskID: UUID?
     @Binding var showAddTaskSheet: Bool

@@ -13,19 +13,18 @@ class TaskManager: ObservableObject {
     @Published var activeTasks: [UUID: CEActiveTask] = [:]
     @Published var selectedTaskID: UUID?
 
-    @ObservedObject var workspaceSettings: CEWorkspaceSettings
+    @ObservedObject var workspaceSettings: CEWorkspaceSettingsData
 
-    private var cancellables = Set<AnyCancellable>()
+    private var settingsListener: AnyCancellable?
 
-    init(workspaceSettings: CEWorkspaceSettings) {
+    init(workspaceSettings: CEWorkspaceSettingsData) {
         self.workspaceSettings = workspaceSettings
 
-        workspaceSettings.$tasks
+        settingsListener = workspaceSettings.$tasks
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.updateSelectedTaskID()
             }
-            .store(in: &cancellables)
     }
 
     var selectedTask: CETask? {

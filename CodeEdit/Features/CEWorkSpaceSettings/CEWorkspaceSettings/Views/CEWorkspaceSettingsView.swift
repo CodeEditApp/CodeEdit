@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CEWorkspaceSettingsView: View {
-    @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettingsManager
+    @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @EnvironmentObject var workspace: WorkspaceDocument
 
     @StateObject var settingsViewModel = SettingsViewModel()

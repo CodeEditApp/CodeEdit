@@ -15,14 +15,14 @@ struct ActivityViewer: View {
     var workspaceFileManager: CEWorkspaceFileManager?
 
     @ObservedObject var taskNotificationHandler: TaskNotificationHandler
-    @ObservedObject var workspaceSettingsManager: CEWorkspaceSettingsManager
+    @ObservedObject var workspaceSettingsManager: CEWorkspaceSettings
 
     // TODO: try to get this from the envrionment
     @ObservedObject var taskManager: TaskManager
 
     init(
         workspaceFileManager: CEWorkspaceFileManager?,
-        workspaceSettingsManager: CEWorkspaceSettingsManager,
+        workspaceSettingsManager: CEWorkspaceSettings,
         taskNotificationHandler: TaskNotificationHandler,
         taskManager: TaskManager
     ) {

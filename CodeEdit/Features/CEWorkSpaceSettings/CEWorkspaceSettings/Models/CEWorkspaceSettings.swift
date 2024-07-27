@@ -1,44 +1,68 @@
 //
-//  CEWorkspaceSettingsData.swift
+//  CEWorkspaceSettingsManager.swift
 //  CodeEdit
 //
-//  Created by Tommy Ludwig on 01.07.24.
+//  Created by Axel Martinez on 27/3/24.
 //
 
-import Foundation
+import SwiftUI
+import Combine
 
-/// The model of the workspace settings for `CodeEdit` that control the behavior of some functionality at the workspace
-/// level like the workspace name or defining tasks.  A `JSON` representation is persisted in the workspace's
-/// `./codeedit/settings.json`. file
-class CEWorkspaceSettings: ObservableObject, Codable {
-    @Published var project: ProjectSettings = .init()
-    @Published var tasks: [CETask] = []
+/// The CodeEdit workspace settings model.
+final class CEWorkspaceSettings: ObservableObject {
+    @Published public var settings: CEWorkspaceSettingsData = .init()
 
-    init() { }
+    private var storeTask: AnyCancellable?
+    private let fileManager = FileManager.default
 
-    enum CodingKeys: CodingKey {
-        case project, tasks
+    private(set) var folderURL: URL
+
+    private var settingsURL: URL {
+        folderURL.appendingPathComponent("settings").appendingPathExtension("json")
     }
 
-    /// Explicit decoder init for setting default values when key is not present in `JSON`
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.project = try container.decodeIfPresent(ProjectSettings.self, forKey: .project) ?? .init()
-        self.tasks = try container.decodeIfPresent([CETask].self, forKey: .tasks) ?? []
+    init(workspaceURL: URL) {
+        folderURL = workspaceURL.appendingPathComponent(".codeedit", isDirectory: true)
+        loadSettings()
+
+        storeTask = $settings
+            .receive(on: DispatchQueue.main)
+            .throttle(for: 2.0, scheduler: RunLoop.main, latest: true)
+            .sink { _ in
+                try? self.savePreferences()
+            }
     }
 
-    /// Encode the instance into the encoder
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        if !project.isEmpty() {
-            try container.encode(project, forKey: .project)
+    func cleanUp() {
+        storeTask?.cancel()
+        storeTask = nil
+    }
+
+    deinit {
+        cleanUp()
+    }
+
+    /// Load and construct ``CEWorkspaceSettings`` model from `.codeedit/settings.json`
+    private func loadSettings() {
+        guard fileManager.fileExists(atPath: settingsURL.path),
+              let json = try? Data(contentsOf: settingsURL),
+              let prefs = try? JSONDecoder().decode(CEWorkspaceSettingsData.self, from: json)
+        else { return }
+        self.settings = prefs
+    }
+
+    /// Save``CEWorkspaceSettingsManager`` model to `.codeedit/settings.json`
+    func savePreferences() throws {
+        // If the user doesn't have any settings to save, don't save them.
+        guard !settings.isEmpty() else { return }
+
+        if !fileManager.fileExists(atPath: folderURL.path()) {
+            try fileManager.createDirectory(at: folderURL, withIntermediateDirectories: true)
         }
-        if !tasks.isEmpty {
-            try container.encode(tasks, forKey: .tasks)
-        }
-    }
 
-    func isEmpty() -> Bool {
-        project.isEmpty() && tasks.isEmpty
+        let data = try JSONEncoder().encode(settings)
+        let json = try JSONSerialization.jsonObject(with: data)
+        let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
+        try prettyJSON.write(to: settingsURL, options: .atomic)
     }
 }
