@@ -52,9 +52,7 @@ class UtilityAreaViewModel: ObservableObject {
     }
 
     func togglePanel() {
-        withAnimation {
-            self.isCollapsed.toggle()
-        }
+        self.isCollapsed.toggle()
     }
 
     /// Update a terminal's title.
