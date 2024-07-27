@@ -10,13 +10,13 @@ import XCTest
 
 final class TaskManagerTests: XCTestCase {
     var taskManager: TaskManager!
-    var mockWorkspaceSettings: CEWorkspaceSettings!
+    var mockWorkspaceSettings: CEWorkspaceSettingsData!
 
     override func setUp() {
         super.setUp()
 
         do {
-            let workspaceSettings = try JSONDecoder().decode(CEWorkspaceSettings.self, from: Data("{}".utf8))
+            let workspaceSettings = try JSONDecoder().decode(CEWorkspaceSettingsData.self, from: Data("{}".utf8))
             mockWorkspaceSettings = workspaceSettings
         } catch {
             XCTFail("Error decoding JSON: \(error.localizedDescription)")
