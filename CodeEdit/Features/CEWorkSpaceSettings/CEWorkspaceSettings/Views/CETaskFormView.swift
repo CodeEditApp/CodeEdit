@@ -2,18 +2,19 @@
 //  CETaskFormView.swift
 //  CodeEdit
 //
-//  Created by Axel Martinez on 12/4/24.
+//  Created by Tommy Ludwig on 01.07.24.
 //
 
 import SwiftUI
 
 struct CETaskFormView: View {
-    @Binding var task: CETask
+    @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
+    @ObservedObject var task: CETask
+    @State private var selectedEnvID: UUID?
 
-    @State private var selectedItemId: UUID?
-
+    @StateObject var settingsViewModel = SettingsViewModel()
     var body: some View {
-        Form {
+        SettingsForm {
             Section {
                 TextField(text: $task.name) {
                     Text("Name")
@@ -21,8 +22,18 @@ struct CETaskFormView: View {
                 Picker("Target", selection: $task.target) {
                     Text("My Mac")
                         .tag("My Mac")
+
+                    Text("SSH")
+                        .tag("SSH")
+
+                    Text("Docker")
+                        .tag("Docker")
+
+                    Text("Docker Compose")
+                        .tag("Docker Compose")
                 }
             }
+
             Section {
                 TextField(text: $task.command) {
                     Text("Task")
@@ -31,12 +42,13 @@ struct CETaskFormView: View {
                     Text("Working Directory")
                 }
             }
-            Section(content: {
-                List(selection: $selectedItemId) {
-                    ForEach($task.environmentVariables) { env in
+
+            Section {
+                List(selection: $selectedEnvID) {
+                    ForEach($task.environmentVariables, id: \.id) { env in
                         EnvironmentVariableListItem(
-                            item: env,
-                            selectedItemId: $selectedItemId,
+                            environmentVariable: env,
+                            selectedEnvID: $selectedEnvID,
                             deleteHandler: removeEnv
                         )
                     }
@@ -50,7 +62,7 @@ struct CETaskFormView: View {
                 }
                 .actionBar {
                     Button {
-                        self.task.environmentVariables.append(CETask.EnvironmentVariable())
+                          self.task.environmentVariables.append(CETask.EnvironmentVariable())
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -60,20 +72,19 @@ struct CETaskFormView: View {
                     } label: {
                         Image(systemName: "minus")
                     }
-                    .disabled(selectedItemId == nil)
+                    .disabled(selectedEnvID == nil)
                 }
                 .onDeleteCommand {
                     removeSelectedEnv()
                 }
-            }, header: {
+            } header: {
                 Text("Environment Variables")
-            })
-        }
-        .formStyle(.grouped)
+            }
+        }.environmentObject(settingsViewModel)
     }
 
     func removeSelectedEnv() {
-        if let selectedItemId = selectedItemId {
+        if let selectedItemId = selectedEnvID {
             removeEnv(id: selectedItemId)
         }
     }
@@ -84,3 +95,7 @@ struct CETaskFormView: View {
         })
     }
 }
+
+// #Preview {
+//    CETaskFormView()
+// }

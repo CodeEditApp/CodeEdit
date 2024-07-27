@@ -51,23 +51,20 @@ final class CodeEditSplitViewController: NSSplitViewController {
               let navigatorViewModel,
               let editorManager = workspace.editorManager,
               let statusBarViewModel = workspace.statusBarViewModel,
-              let utilityAreaModel = workspace.utilityAreaModel else {
+              let utilityAreaModel = workspace.utilityAreaModel,
+              let taskManager = workspace.taskManager else {
+            // swiftlint:disable:next line_length
+            assertionFailure("Missing a workspace model: workspace=\(workspace == nil), navigator=\(navigatorViewModel == nil), editorManager=\(workspace?.editorManager == nil), statusBarModel=\(workspace?.statusBarViewModel == nil), utilityAreaModel=\(workspace?.utilityAreaModel == nil), taskManager=\(workspace?.taskManager == nil)")
             return
         }
 
         splitView.translatesAutoresizingMaskIntoConstraints = false
 
-        let settingsView = SettingsInjector {
+        let navigator = makeNavigator(view: SettingsInjector {
             NavigatorAreaView(workspace: workspace, viewModel: navigatorViewModel)
                 .environmentObject(workspace)
                 .environmentObject(editorManager)
-        }
-
-        let navigator = NSSplitViewItem(sidebarWithViewController: NSHostingController(rootView: settingsView))
-        navigator.titlebarSeparatorStyle = .none
-        navigator.isSpringLoaded = true
-        navigator.minimumThickness = Self.minSidebarWidth
-        navigator.collapseBehavior = .useConstraints
+        })
 
         addSplitViewItem(navigator)
 
@@ -78,6 +75,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environmentObject(editorManager)
                     .environmentObject(statusBarViewModel)
                     .environmentObject(utilityAreaModel)
+                    .environmentObject(taskManager)
             }
         }
 
@@ -87,20 +85,32 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
         addSplitViewItem(mainContent)
 
-        let inspectorView = SettingsInjector {
+        let inspector = makeInspector(view: SettingsInjector {
             InspectorAreaView(viewModel: InspectorAreaViewModel())
                 .environmentObject(workspace)
                 .environmentObject(editorManager)
-        }
+        })
 
-        let inspector = NSSplitViewItem(inspectorWithViewController: NSHostingController(rootView: inspectorView))
+        addSplitViewItem(inspector)
+    }
+
+    private func makeNavigator(view: some View) -> NSSplitViewItem {
+        let navigator = NSSplitViewItem(sidebarWithViewController: NSHostingController(rootView: view))
+        navigator.titlebarSeparatorStyle = .none
+        navigator.isSpringLoaded = true
+        navigator.minimumThickness = Self.minSidebarWidth
+        navigator.collapseBehavior = .useConstraints
+        return navigator
+    }
+
+    private func makeInspector(view: some View) -> NSSplitViewItem {
+        let inspector = NSSplitViewItem(inspectorWithViewController: NSHostingController(rootView: view))
         inspector.titlebarSeparatorStyle = .none
         inspector.minimumThickness = Self.minSidebarWidth
         inspector.maximumThickness = .greatestFiniteMagnitude
         inspector.collapseBehavior = .useConstraints
         inspector.isSpringLoaded = true
-
-        addSplitViewItem(inspector)
+        return inspector
     }
 
     override func viewWillAppear() {
