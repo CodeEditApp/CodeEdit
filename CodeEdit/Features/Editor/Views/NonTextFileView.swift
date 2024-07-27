@@ -35,7 +35,6 @@ struct NonTextFileView: View {
                         AnyFileView(fileURL)
                             .modifier(UpdateStatusBarInfo(withURL: fileURL))
                     }
-
                 } else {
                     AnyFileView(fileURL)
                         .modifier(UpdateStatusBarInfo(withURL: fileURL))
