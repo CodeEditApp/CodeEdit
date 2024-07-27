@@ -53,6 +53,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
               let statusBarViewModel = workspace.statusBarViewModel,
               let utilityAreaModel = workspace.utilityAreaModel,
               let taskManager = workspace.taskManager else {
+            // swiftlint:disable:next line_length
+            assertionFailure("Missing a workspace model: workspace=\(workspace == nil), navigator=\(navigatorViewModel == nil), editorManager=\(workspace?.editorManager == nil), statusBarModel=\(workspace?.statusBarViewModel == nil), utilityAreaModel=\(workspace?.utilityAreaModel == nil), taskManager=\(workspace?.taskManager == nil)")
             return
         }
 

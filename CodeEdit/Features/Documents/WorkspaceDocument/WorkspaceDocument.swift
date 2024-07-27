@@ -163,6 +163,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         sourceControlManager = nil
         workspaceFileManager?.cleanUp()
         workspaceFileManager = nil
+        workspaceSettingsManager?.cleanUp()
+        workspaceSettingsManager = nil
+        taskManager = nil
     }
 
     /// Determines the windows should be closed.
