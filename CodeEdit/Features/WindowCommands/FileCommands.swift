@@ -86,7 +86,6 @@ struct FileCommands: Commands {
                 NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
             }
             .disabled(windowController?.workspace == nil)
-            .observeWindowController($windowController)
 
             Divider()
 
