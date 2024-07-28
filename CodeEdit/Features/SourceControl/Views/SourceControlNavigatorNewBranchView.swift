@@ -22,7 +22,7 @@ struct SourceControlNavigatorNewBranchView: View {
                 Form {
                     Section {
                         LabeledContent("From", value: branch.name)
-                        TextField("To", text: $name)
+                        TextField("To", value: $name, formatter: RegexFormatter(pattern: "[^a-zA-Z0-9_-]"))
                     } header: {
                         Text("Create a new branch")
                         Text(

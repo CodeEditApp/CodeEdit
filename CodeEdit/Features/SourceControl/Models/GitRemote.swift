@@ -11,5 +11,5 @@ struct GitRemote: Hashable {
     let name: String
     let pushLocation: String
     let fetchLocation: String
-    var branches: [GitBranch]?
+    var branches: [GitBranch] = []
 }

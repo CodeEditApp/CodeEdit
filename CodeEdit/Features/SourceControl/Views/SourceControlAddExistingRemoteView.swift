@@ -25,9 +25,9 @@ struct SourceControlAddExistingRemoteView: View {
         VStack(spacing: 0) {
             Form {
                 Section("Add Remote") {
-                    TextField("Remote Name", text: $name)
+                    TextField("Remote Name", value: $name, formatter: RegexFormatter(pattern: "[^a-zA-Z0-9_-]"))
                         .focused($focusedField, equals: .name)
-                    TextField("Location", text: $location)
+                    TextField("Location", value: $location, formatter: TrimWhitespaceFormatter())
                         .focused($focusedField, equals: .location)
                 }
             }

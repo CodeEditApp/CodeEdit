@@ -17,7 +17,7 @@ struct RemoteBranchPicker: View {
     let canCreateBranch: Bool
 
     var shouldCreateBranch: Bool {
-        canCreateBranch && !(remote?.branches?.contains(
+        canCreateBranch && !(remote?.branches.contains(
             where: { $0.name == (sourceControlManager.currentBranch?.name ?? "") }
         ) ?? true)
     }
@@ -88,13 +88,12 @@ struct RemoteBranchPicker: View {
         if shouldCreateBranch {
             self.branch = sourceControlManager.currentBranch
         } else if let currentBranch = sourceControlManager.currentBranch,
-             let upstream = currentBranch.upstream,
-             let remote = self.remote,
-             let branches = remote.branches,
-             let branchIndex = branches.firstIndex(where: { upstream.contains($0.name) }) {
-              self.branch = branches[branchIndex]
-          } else {
-            self.branch = remote?.branches?.first
+            let upstream = currentBranch.upstream,
+            let remote = self.remote,
+            let branchIndex = remote.branches.firstIndex(where: { upstream.contains($0.name) }) {
+            self.branch = remote.branches[branchIndex]
+        } else {
+            self.branch = remote?.branches.first
         }
     }
 }
