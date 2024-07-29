@@ -30,16 +30,20 @@ class RegexFormatter: Formatter {
         return formatString(string)
     }
 
-    override func getObjectValue(_ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?,
-                                 for string: String,
-                                 errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
+    override func getObjectValue(
+        _ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?,
+        for string: String,
+        errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?
+    ) -> Bool {
         obj?.pointee = formatString(string) as NSString
         return true
     }
 
-    override func isPartialStringValid(_ partialString: String,
-                                       newEditingString: AutoreleasingUnsafeMutablePointer<NSString?>?,
-                                       errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
+    override func isPartialStringValid(
+        _ partialString: String,
+       newEditingString: AutoreleasingUnsafeMutablePointer<NSString?>?,
+       errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?
+    ) -> Bool {
         let formatted = formatString(partialString)
         newEditingString?.pointee = formatted as NSString
         return formatted == partialString
