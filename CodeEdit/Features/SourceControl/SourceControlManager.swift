@@ -41,10 +41,24 @@ final class SourceControlManager: ObservableObject {
     @Published var isGitRepository: Bool = false
 
     /// Is the push sheet presented
-    @Published var pushSheetIsPresented: Bool = false
+    @Published var pushSheetIsPresented: Bool = false {
+        didSet {
+            self.operationBranch = nil
+            self.operationRebase = false
+            self.operationForce = false
+            self.operationIncludeTags = false
+        }
+    }
 
     /// Is the pull sheet presented
-    @Published var pullSheetIsPresented: Bool = false
+    @Published var pullSheetIsPresented: Bool = false {
+        didSet {
+            self.operationBranch = nil
+            self.operationRebase = false
+            self.operationForce = false
+            self.operationIncludeTags = false
+        }
+    }
 
     /// Is the fetch sheet presented
     @Published var fetchSheetIsPresented: Bool = false
