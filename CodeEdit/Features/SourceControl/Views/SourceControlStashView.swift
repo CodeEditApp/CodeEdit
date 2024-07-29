@@ -89,8 +89,8 @@ struct SourceControlStashView: View {
                     || sourceControlManager.switchToBranch != nil {
                     if sourceControlManager.pullSheetIsPresented {
                         try await sourceControlManager.pull(
-                            remote: sourceControlManager.operationRemote?.name ?? nil,
-                            branch: sourceControlManager.operationBranch?.name ?? nil,
+                            remote: sourceControlManager.operationRemote?.name,
+                            branch: sourceControlManager.operationBranch?.name,
                             rebase: sourceControlManager.operationRebase
                         )
                     }
