@@ -130,7 +130,7 @@ struct EditorTabView: View {
                         ? item.iconColor
                         : .secondary
                     )
-                Text(item.name + " ")
+                Text(item.name)
                     .font(
                         isTemporary
                         ? .system(size: 11.0).italic()
