@@ -28,16 +28,6 @@ class QuickLookPreviewController: NSObject, QLPreviewPanelDataSource, QLPreviewP
         return QuickLookPreviewController.previewItemURL as QLPreviewItem
     }
 
-    /// Opens the Quick Look panel to preview the current item.
-    @objc
-    func openQuickLookModal() {
-        if let previewPanel = QLPreviewPanel.shared() {
-            previewPanel.dataSource = self
-            previewPanel.delegate = self
-            previewPanel.makeKeyAndOrderFront(nil)
-        }
-    }
-
     /// Opens the item in a Quick Look tab.
     @objc
     func openQuickLookTab(_ sender: NSMenuItem) {
@@ -56,29 +46,14 @@ class QuickLookPreviewController: NSObject, QLPreviewPanelDataSource, QLPreviewP
     static func quickLookMenu(item: CEWorkspaceFile, workspace: WorkspaceDocument?) -> NSMenuItem {
         QuickLookPreviewController.previewItemURL = item.url
 
-        let openInModalMenuItem = NSMenuItem(
-            title: "Open in Modal",
-            action: #selector(QuickLookPreviewController.shared.openQuickLookModal),
-            keyEquivalent: ""
-        )
-        openInModalMenuItem.target = QuickLookPreviewController.shared
-
-        let openInTabMenuItem = NSMenuItem(
-            title: "Open in Tab",
+        let quickLookMenuItem = NSMenuItem(
+            title: "Quick Look",
             action: #selector(QuickLookPreviewController.shared.openQuickLookTab(_:)),
             keyEquivalent: ""
         )
-        openInTabMenuItem.target = QuickLookPreviewController.shared
-        openInTabMenuItem.representedObject = (item, workspace)
+        quickLookMenuItem.target = QuickLookPreviewController.shared
+        quickLookMenuItem.representedObject = (item, workspace)
 
-        /// Creating an `NSMenu` then an  `NSMenuItem` so it can be used in `secondaryItems` at  `ProjectNavigatorMenu`.
-        let submenu = NSMenu(title: "Quick Look")
-        submenu.addItem(openInModalMenuItem)
-        submenu.addItem(openInTabMenuItem)
-
-        let menuItem = NSMenuItem(title: "Quick Look", action: nil, keyEquivalent: "")
-        menuItem.submenu = submenu
-
-        return menuItem
+        return quickLookMenuItem
     }
 }
