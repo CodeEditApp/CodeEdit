@@ -13,6 +13,8 @@ struct SourceControlPullView: View {
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
+    @State var loading: Bool = false
+
     var body: some View {
         VStack(spacing: 0) {
             Form {
@@ -34,6 +36,15 @@ struct SourceControlPullView: View {
             .scrollDisabled(true)
             .scrollContentBackground(.hidden)
             HStack {
+                if loading {
+                    HStack(spacing: 7.5) {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .controlSize(.small)
+                        Text("Pulling changes...")
+                            .font(.subheadline)
+                    }
+                }
                 Spacer()
                 Button {
                     dismiss()
@@ -41,11 +52,13 @@ struct SourceControlPullView: View {
                     Text("Cancel")
                         .frame(minWidth: 56)
                 }
+                .disabled(loading)
                 Button(action: submit) {
                     Text("Pull")
                         .frame(minWidth: 56)
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(loading)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
@@ -59,14 +72,17 @@ struct SourceControlPullView: View {
                 if !sourceControlManager.changedFiles.isEmpty {
                     sourceControlManager.stashSheetIsPresented = true
                 } else {
+                    self.loading = true
                     try await sourceControlManager.pull(
                         remote: sourceControlManager.operationRemote?.name ?? nil,
                         branch: sourceControlManager.operationBranch?.name ?? nil,
                         rebase: sourceControlManager.operationRebase
                     )
+                    self.loading = false
                     dismiss()
                 }
             } catch {
+                self.loading = false
                 await sourceControlManager.showAlertForError(title: "Failed to pull", error: error)
             }
         }

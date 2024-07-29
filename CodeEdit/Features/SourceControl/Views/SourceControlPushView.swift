@@ -13,6 +13,8 @@ struct SourceControlPushView: View {
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
+    @State var loading: Bool = false
+
     var body: some View {
         VStack(spacing: 0) {
             Form {
@@ -35,6 +37,15 @@ struct SourceControlPushView: View {
             .scrollDisabled(true)
             .scrollContentBackground(.hidden)
             HStack {
+                if loading {
+                    HStack(spacing: 7.5) {
+                        ProgressView()
+                            .progressViewStyle(.circular)
+                            .controlSize(.small)
+                        Text("Pushing changes...")
+                            .font(.subheadline)
+                    }
+                }
                 Spacer()
                 Button {
                     dismiss()
@@ -42,11 +53,13 @@ struct SourceControlPushView: View {
                     Text("Cancel")
                         .frame(minWidth: 56)
                 }
+                .disabled(loading)
                 Button(action: submit) {
                     Text("Push")
                         .frame(minWidth: 56)
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(loading)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
@@ -57,13 +70,16 @@ struct SourceControlPushView: View {
     func submit() {
         Task {
             do {
+                self.loading = true
                 try await sourceControlManager.push(
                     remote: sourceControlManager.operationRemote?.name ?? nil,
                     branch: sourceControlManager.operationBranch?.name ?? nil,
                     setUpstream: sourceControlManager.currentBranch?.upstream == nil
                 )
+                self.loading = false
                 dismiss()
             } catch {
+                self.loading = false
                 await sourceControlManager.showAlertForError(title: "Failed to push", error: error)
             }
         }
