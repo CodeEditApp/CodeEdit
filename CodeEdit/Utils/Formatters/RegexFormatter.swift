@@ -41,8 +41,8 @@ class RegexFormatter: Formatter {
 
     override func isPartialStringValid(
         _ partialString: String,
-       newEditingString: AutoreleasingUnsafeMutablePointer<NSString?>?,
-       errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?
+        newEditingString: AutoreleasingUnsafeMutablePointer<NSString?>?,
+        errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?
     ) -> Bool {
         let formatted = formatString(partialString)
         newEditingString?.pointee = formatted as NSString
