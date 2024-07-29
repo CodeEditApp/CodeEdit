@@ -15,7 +15,7 @@ struct SourceControlNavigatorRenameBranchView: View {
 
     @State var name: String = ""
 
-    let fromBranch: GitBranch?
+    @Binding var fromBranch: GitBranch?
 
     var body: some View {
         if let branch = fromBranch ?? sourceControlManager.currentBranch {

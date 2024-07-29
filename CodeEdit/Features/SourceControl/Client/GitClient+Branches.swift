@@ -78,15 +78,6 @@ extension GitClient {
         _ = try await run("branch -d \(branch.name)")
     }
 
-    /// Create new branch
-    func newBranch(name: String, from: GitBranch) async throws {
-        if !from.isLocal {
-            return
-        }
-
-        _ = try await run("checkout -b \(name) \(from.name)")
-    }
-
     /// Rename branch
     /// - Parameter from: Name of the branch to rename
     /// - Parameter to: New name for branch
@@ -96,15 +87,18 @@ extension GitClient {
 
     /// Checkout branch
     /// - Parameter branch: Branch to checkout
-    func checkoutBranch(_ branch: GitBranch, forceLocal: Bool = false) async throws {
+    func checkoutBranch(_ branch: GitBranch, forceLocal: Bool = false, newName: String? = nil) async throws {
         var command = "checkout "
 
-        // If branch is remote, try to create local branch
-        if branch.isRemote {
-            let localName = branch.name.replacingOccurrences(of: "origin/", with: "")
-            command += forceLocal ? localName : "-b " + localName + " " + branch.name
+        let targetName = newName ?? branch.name
+
+        if (branch.isRemote && !forceLocal) || newName != nil {
+            let sourceBranch = branch.isRemote
+                ? branch.longName.replacingOccurrences(of: "refs/remotes/", with: "")
+                : branch.name
+            command += "-b \(targetName) \(sourceBranch)"
         } else {
-            command += branch.name
+            command += targetName
         }
 
         do {
@@ -117,8 +111,10 @@ extension GitClient {
             // try to switch to local branch
             if let error = error as? GitClientError,
                branch.isRemote,
-               error.localizedDescription.contains("already exists") {
+               error.description.contains("already exists") {
                 try await checkoutBranch(branch, forceLocal: true)
+            } else {
+                print(error)
             }
         }
     }

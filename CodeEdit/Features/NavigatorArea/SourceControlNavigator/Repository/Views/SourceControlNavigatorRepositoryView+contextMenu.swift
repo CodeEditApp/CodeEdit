@@ -47,7 +47,7 @@ extension SourceControlNavigatorRepositoryView {
             showRenameBranch = true
             fromBranch = item.branch
         }
-        .disabled(item.branch == nil)
+        .disabled(item.branch == nil || item.branch?.isRemote == true)
         Divider()
         Button("Add Existing Remote...") {
             sourceControlManager.addExistingRemoteSheetIsPresented = true

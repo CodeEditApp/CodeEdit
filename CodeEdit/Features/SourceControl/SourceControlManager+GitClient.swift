@@ -47,11 +47,7 @@ extension SourceControlManager {
 
     /// Create new branch, can be created only from local branch
     func newBranch(name: String, from: GitBranch) async throws {
-        if !from.isLocal {
-            return
-        }
-
-        try await gitClient.newBranch(name: name, from: from)
+        try await gitClient.checkoutBranch(from, newName: name)
         await refreshBranches()
         await refreshCurrentBranch()
     }

@@ -14,14 +14,19 @@ struct SourceControlNavigatorNewBranchView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
     @State var name: String = ""
-    let fromBranch: GitBranch?
+    @Binding var fromBranch: GitBranch?
 
     var body: some View {
         if let branch = fromBranch ?? sourceControlManager.currentBranch {
             VStack(spacing: 0) {
                 Form {
                     Section {
-                        LabeledContent("From", value: branch.name)
+                        LabeledContent(
+                            "From",
+                            value: branch.isRemote
+                                ? branch.longName.replacingOccurrences(of: "refs/remotes/", with: "")
+                                : branch.name
+                        )
                         TextField("To", value: $name, formatter: RegexFormatter(pattern: "[^a-zA-Z0-9_-]"))
                     } header: {
                         Text("Create a new branch")
