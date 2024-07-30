@@ -18,7 +18,7 @@ struct SchemeDropDownView: View {
     var workspaceFileManager: CEWorkspaceFileManager?
 
     var body: some View {
-        HStack(spacing: 5) {
+        HStack(spacing: 6) {
             Image(systemName: "folder.badge.gearshape")
                 .imageScale(.medium)
 
@@ -31,8 +31,9 @@ struct SchemeDropDownView: View {
             }.font(.subheadline)
         }
         .font(.caption)
-        .padding(.trailing, 9)
-        .padding(5)
+        .padding(.trailing, 11.5)
+        .padding(.horizontal, 2.5)
+        .padding(.vertical, 2.5)
         .background {
             Color(nsColor: colorScheme == .dark ? .white : .black)
                 .opacity(isHoveringScheme || isSchemePopOverPresented ? 0.05 : 0)
@@ -41,10 +42,10 @@ struct SchemeDropDownView: View {
                 Spacer()
                 if isHoveringScheme || isSchemePopOverPresented {
                     chevronDown
-                        .padding(.trailing, 3)
+                        .padding(.trailing, 2)
                 } else {
                     chevron
-                        .padding(.trailing, 3)
+                        .padding(.trailing, 4)
                 }
             }
         }
@@ -90,7 +91,7 @@ struct SchemeDropDownView: View {
         VStack(spacing: 1) {
             Image(systemName: "chevron.down")
         }
-        .font(.system(size: 8, weight: .bold, design: .default))
+        .font(.system(size: 8, weight: .semibold, design: .default))
         .padding(.top, 0.5)
     }
 }

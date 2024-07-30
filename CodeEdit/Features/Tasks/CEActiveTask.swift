@@ -76,7 +76,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             await updateOutput("\nFinished running \(task.name).\n\n")
             await updateTaskStatus(to: .finished)
             updateTaskNotification(
-                title: "Finished Running: \(task.name)",
+                title: "Finished Running \(task.name)",
                 message: "",
                 isLoading: false
             )
@@ -92,7 +92,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             await updateOutput("\nFailed to run \(task.name).\n\n")
             await updateTaskStatus(to: .failed)
             updateTaskNotification(
-                title: "Failed Running: \(task.name)",
+                title: "Failed Running \(task.name)",
                 message: "",
                 isLoading: false
             )
@@ -141,7 +141,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         let userInfo: [String: Any] = [
             "id": self.task.id.uuidString,
             "action": "createWithPriority",
-            "title": "Running: \(self.task.name)",
+            "title": "Running \(self.task.name)",
             "message": "Running your task: \(self.task.name).",
             "isLoading": true
         ]

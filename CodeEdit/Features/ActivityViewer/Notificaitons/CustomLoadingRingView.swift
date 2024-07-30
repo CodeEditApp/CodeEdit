@@ -22,12 +22,12 @@ struct CustomLoadingRingView: View {
                 if let progress = progress {
                     Circle()
                         .trim(from: 0, to: progress)
-                        .stroke(Color.blue.gradient, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+                        .stroke(Color.accentColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                         .animation(.easeInOut, value: progress)
                 } else {
                     Circle()
                         .trim(from: 0, to: 0.5)
-                        .stroke(Color.blue.gradient, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+                        .stroke(Color.accentColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                         .rotationEffect(
                             previousValue ?
                                 .degrees(isAnimating ?  0 : -360)

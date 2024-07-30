@@ -121,7 +121,7 @@ extension CodeEditWindowController {
             toolbarItem.image = NSImage(
                 systemSymbolName: "stop.fill",
                 accessibilityDescription: nil
-            )?.withSymbolConfiguration(.init(scale: .large))
+            )?.withSymbolConfiguration(.init(pointSize: 15, weight: .regular))
 
             return toolbarItem
         case .startTaskSidebarItem:

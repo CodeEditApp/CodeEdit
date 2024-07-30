@@ -29,8 +29,9 @@ struct TaskDropDownView: View {
                     .font(.subheadline)
             }
         }
-        .padding(.trailing, 9)
-        .padding(5)
+        .padding(.trailing, 11.5)
+        .padding(.horizontal, 2.5)
+        .padding(.vertical, 2.5)
         .background(backgroundColor)
         .onHover { hovering in
             self.isHoveringTasks = hovering
@@ -62,7 +63,7 @@ struct TaskDropDownView: View {
             Image(systemName: "chevron.down")
                 .font(.system(size: 8, weight: .bold, design: .default))
                 .padding(.top, 0.5)
-                .padding(.trailing, 3)
+                .padding(.trailing, 2)
         }
     }
 
