@@ -41,6 +41,7 @@ final class CEWorkspaceFileManager {
     private(set) var fileManager: FileManager
     private(set) var ignoredFilesAndFolders: Set<String>
     private(set) var flattenedFileItems: [String: CEWorkspaceFile]
+
     /// Maps all directories to it's children's paths.
     private var childrenMap: [String: [String]] = [:]
     private var fsEventStream: DirectoryEventStream?
@@ -137,6 +138,7 @@ final class CEWorkspaceFileManager {
 
             return childrenMap[file.id]?.compactMap { flattenedFileItems[$0] }
         }
+
         return nil
     }
 
@@ -147,15 +149,19 @@ final class CEWorkspaceFileManager {
     ///
     /// - Parameter file: The file item to load children for.
     private func loadChildrenForFile(_ file: CEWorkspaceFile) {
-        guard let children = urlsForDirectory(file) else {
+        let url = file.isSymlink ? file.url.resolvingSymlinksInPath() : file.url
+        guard let children = urlsForDirectory(url) else {
             return
         }
+        var addedChildrenUrls: [String] = []
         for child in children {
-            let newFileItem = CEWorkspaceFile(url: child)
+            let childUrl = URL(filePath: file.id).appendingPathComponent(child.lastPathComponent)
+            let newFileItem = CEWorkspaceFile(id: childUrl.relativePath, url: child)
             newFileItem.parent = file
             flattenedFileItems[newFileItem.id] = newFileItem
+            addedChildrenUrls.append(childUrl.relativePath)
         }
-        childrenMap[file.id] = children.map { $0.relativePath }
+        childrenMap[file.id] = addedChildrenUrls
         Task {
             await sourceControlManager?.refreshAllChangedFiles()
         }
@@ -164,9 +170,9 @@ final class CEWorkspaceFileManager {
     /// Creates an ordered array of all files and directories at the given file object.
     /// - Parameter file: The file to use.
     /// - Returns: An ordered array of URLs sorted alphabetically with directories first.
-    private func urlsForDirectory(_ file: CEWorkspaceFile) -> [URL]? {
+    private func urlsForDirectory(_ url: URL) -> [URL]? {
         try? fileManager.contentsOfDirectory(
-            at: file.url,
+            at: url,
             includingPropertiesForKeys: [.isDirectoryKey],
             options: [.includesDirectoriesPostOrder, .skipsSubdirectoryDescendants]
         )
@@ -207,9 +213,13 @@ final class CEWorkspaceFileManager {
             var files: Set<CEWorkspaceFile> = []
             for event in events {
                 // Event returns file/folder that was changed, but in tree we need to update it's parent
-                let parent = "/" + event.path.split(separator: "/").dropLast().joined(separator: "/")
-                guard let parentItem = self.getFile(parent) else {
-                    continue
+                let parentUrl = "/" + event.path.split(separator: "/").dropLast().joined(separator: "/")
+                var parents = [parentUrl]
+
+                // Fetch registered symlinks so they also get updated
+                let symlinks = self.flattenedFileItems.filter({ $0.value.url.path == parentUrl })
+                if !symlinks.isEmpty {
+                    parents.append(contentsOf: symlinks.keys)
                 }
 
                 switch event.eventType {
@@ -220,8 +230,13 @@ final class CEWorkspaceFileManager {
                     // TODO: Handle workspace root changing.
                     continue
                 case .itemCreated, .itemCloned, .itemRemoved, .itemRenamed:
-                    try? self.rebuildFiles(fromItem: parentItem)
-                    files.insert(parentItem)
+                    for parent in parents {
+                        guard let parentItem = self.getFile(parent) else {
+                            continue
+                        }
+                        try? self.rebuildFiles(fromItem: parentItem)
+                        files.insert(parentItem)
+                    }
                 }
             }
             if !files.isEmpty {
@@ -323,7 +338,7 @@ final class CEWorkspaceFileManager {
 
         // get the actual directory children
         let directoryContentsUrls = try fileManager.contentsOfDirectory(
-            at: fileItem.url.resolvingSymlinksInPath(),
+            at: fileItem.isSymlink ? fileItem.url.resolvingSymlinksInPath() : fileItem.url,
             includingPropertiesForKeys: nil
         )
 
@@ -343,7 +358,8 @@ final class CEWorkspaceFileManager {
                   !(childrenMap[fileItem.id]?.contains(newContent.relativePath) ?? true) else { continue }
 
             if fileManager.fileExists(atPath: newContent.path) {
-                let newFileItem = CEWorkspaceFile(url: newContent)
+                let fileUrl = URL(filePath: fileItem.id).appendingPathComponent(newContent.lastPathComponent)
+                let newFileItem = CEWorkspaceFile(id: fileUrl.relativePath, url: newContent)
 
                 newFileItem.parent = fileItem
                 flattenedFileItems[newFileItem.id] = newFileItem

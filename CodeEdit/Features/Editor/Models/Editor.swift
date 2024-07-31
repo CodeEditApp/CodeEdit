@@ -213,7 +213,7 @@ final class Editor: ObservableObject, Identifiable {
             return
         }
 
-        let contentType = try item.file.url.resourceValues(forKeys: [.contentTypeKey]).contentType
+        let contentType = item.file.url.contentType
         let codeFile = try CodeFileDocument(
             for: item.file.url,
             // TODO: FILE CONTENTS ARE READ MULTIPLE TIMES

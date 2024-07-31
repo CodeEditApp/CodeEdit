@@ -35,11 +35,12 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// The id of the ``CEWorkspaceFile``.
     ///
-    /// This is equal to `url.relativePath`
-    var id: String { url.relativePath }
+    var id: String
 
     /// Returns the file name (e.g.: `Package.swift`)
-    var name: String { url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines) }
+    var name: String {
+        url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
 
     /// Returns the extension of the file or an empty string if no extension is present.
     var type: FileIcon.FileType {
@@ -113,7 +114,12 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Returns a boolean that is true if the resource represented by this object is a directory.
     lazy var isFolder: Bool = {
-        (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+        url.isSymbolicLink ? url.resolvingSymlinksInPath().isFolder : url.isFolder
+    }()
+
+    /// Returns a boolean that is true if the resource represented by this object is a symbolic link.
+    lazy var isSymlink: Bool = {
+        url.isSymbolicLink
     }()
 
     /// Returns a boolean that is true if the contents of the directory at this path are
@@ -121,7 +127,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// Does not indicate if this is a folder, see ``isFolder`` to first check if this object is also a directory.
     var isEmptyFolder: Bool {
         (try? CEWorkspaceFile.fileManager.contentsOfDirectory(
-            at: url,
+            at: isSymlink ? url.resolvingSymlinksInPath() : url,
             includingPropertiesForKeys: nil,
             options: .skipsSubdirectoryDescendants
         ).isEmpty) ?? true
@@ -151,7 +157,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Return the file's UTType
     var contentType: UTType? {
-        try? url.resourceValues(forKeys: [.contentTypeKey]).contentType
+        url.contentType
     }
 
     /// Returns a `Color` for a specific `fileType`
@@ -162,16 +168,32 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     }
 
     init(
+        id: String,
         url: URL,
         changeType: GitType? = nil,
         staged: Bool? = false
     ) {
+        self.id = id
         self.url = url
         self.gitStatus = changeType
         self.staged = staged
     }
 
+    convenience init(
+        url: URL,
+        changeType: GitType? = nil,
+        staged: Bool? = false
+    ) {
+        self.init(
+            id: url.relativePath,
+            url: url,
+            changeType: changeType,
+            staged: staged
+        )
+    }
+
     enum CodingKeys: String, CodingKey {
+        case id
         case url
         case changeType
         case staged
@@ -179,6 +201,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(String.self, forKey: .id)
         url = try values.decode(URL.self, forKey: .url)
         gitStatus = try values.decode(GitType.self, forKey: .changeType)
         staged = try values.decode(Bool.self, forKey: .staged)
