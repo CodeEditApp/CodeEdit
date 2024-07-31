@@ -15,7 +15,7 @@ struct OptionMenuItemView: View {
             Text(label)
             Spacer()
         }
-        .padding(.vertical, 5)
+        .padding(.vertical, 4)
         .padding(.horizontal, 28)
         .modifier(DropdownMenuItemStyleModifier())
         .clipShape(RoundedRectangle(cornerRadius: 5))
@@ -26,7 +26,7 @@ struct OptionMenuItemView: View {
 }
 
 #Preview {
-    OptionMenuItemView(label: "Tst") {
+    OptionMenuItemView(label: "Test") {
         print("test")
     }
 }

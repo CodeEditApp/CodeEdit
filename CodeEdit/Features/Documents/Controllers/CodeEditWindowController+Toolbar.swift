@@ -123,6 +123,20 @@ extension CodeEditWindowController {
                 accessibilityDescription: nil
             )?.withSymbolConfiguration(.init(pointSize: 15, weight: .regular))
 
+            let view = NSHostingView(
+                rootView: Button {
+                    self.terminateActiveTask()
+                } label: {
+                    Label("Stop", systemImage: "stop.fill")
+                        .labelStyle(.iconOnly)
+                        .font(.system(size: 15, weight: .regular))
+                        .help("Stop selected task")
+                        .frame(width: 28)
+                        .offset(CGSize(width: 0, height: 1.5))
+                }
+            )
+            toolbarItem.view = view
+
             return toolbarItem
         case .startTaskSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.startTaskSidebarItem)
@@ -136,6 +150,20 @@ extension CodeEditWindowController {
                 systemSymbolName: "play.fill",
                 accessibilityDescription: nil
             )?.withSymbolConfiguration(.init(scale: .large))
+
+            let view = NSHostingView(
+                rootView: Button {
+                    self.runActiveTask()
+                } label: {
+                    Label("Start", systemImage: "play.fill")
+                        .labelStyle(.iconOnly)
+                        .font(.system(size: 18, weight: .regular))
+                        .help("Start selected task")
+                        .frame(width: 28)
+                        .offset(CGSize(width: 0, height: 2.5))
+                }
+            )
+            toolbarItem.view = view
 
             return toolbarItem
         case .branchPicker:

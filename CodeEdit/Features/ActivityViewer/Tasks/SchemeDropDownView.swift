@@ -28,9 +28,9 @@ struct SchemeDropDownView: View {
                 } else {
                     Text(workspaceSettingsManager.settings.project.projectName)
                 }
-            }.font(.subheadline)
+            }
         }
-        .font(.caption)
+        .font(.subheadline)
         .padding(.trailing, 11.5)
         .padding(.horizontal, 2.5)
         .padding(.vertical, 2.5)
@@ -62,9 +62,9 @@ struct SchemeDropDownView: View {
                 Divider()
                     .padding(.vertical, 5)
                 Group {
-                    OptionMenuItemView(label: "Add Folder..") {
+                    OptionMenuItemView(label: "Add Folder...") {
                         // TODO: Implment Add Folder
-                        print("NOT IMPLMENTED")
+                        print("NOT IMPLEMENTED")
                     }
                     OptionMenuItemView(label: "Workspace Settings...") {
                         NSApp.sendAction(
@@ -74,7 +74,9 @@ struct SchemeDropDownView: View {
                 }
             }
             .padding(5)
-        }.onTapGesture {
+            .font(.subheadline)
+        }
+        .onTapGesture {
             self.isSchemePopOverPresented.toggle()
         }
     }

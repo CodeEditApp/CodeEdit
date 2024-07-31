@@ -23,12 +23,13 @@ struct TaskDropDownView: View {
                     TaskView(activeTask: selectedActiveTask, isCompact: true)
                 } else {
                     DefaultTaskView(task: selectedTask)
+                        .fixedSize()
                 }
             } else {
                 Text("Create Tasks")
-                    .font(.subheadline)
             }
         }
+        .font(.subheadline)
         .padding(.trailing, 11.5)
         .padding(.horizontal, 2.5)
         .padding(.vertical, 2.5)
@@ -59,12 +60,10 @@ struct TaskDropDownView: View {
     }
 
     private var chevronIcon: some View {
-        VStack(spacing: 1) {
-            Image(systemName: "chevron.down")
-                .font(.system(size: 8, weight: .bold, design: .default))
-                .padding(.top, 0.5)
-                .padding(.trailing, 2)
-        }
+        Image(systemName: "chevron.down")
+            .font(.system(size: 8, weight: .bold, design: .default))
+            .padding(.top, 0.5)
+            .padding(.trailing, 2)
     }
 
     private var taskPopoverContent: some View {
@@ -72,13 +71,14 @@ struct TaskDropDownView: View {
             if !taskManager.availableTasks.isEmpty {
                 ForEach(taskManager.availableTasks, id: \.id) { task in
                     TasksPopoverView(taskManager: taskManager, task: task)
+                        .frame(maxWidth: .infinity)
                 }
                 Divider()
                     .padding(.vertical, 5)
             }
 
             Group {
-                OptionMenuItemView(label: "Add Task..") {
+                OptionMenuItemView(label: "Add Task...") {
                     NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
                 }
                 OptionMenuItemView(label: "Manage Tasks...") {
@@ -86,6 +86,7 @@ struct TaskDropDownView: View {
                 }
             }
         }
+        .font(.subheadline)
         .padding(5)
         .frame(width: 215)
     }
@@ -93,17 +94,20 @@ struct TaskDropDownView: View {
     private struct DefaultTaskView: View {
         @ObservedObject var task: CETask
         var body: some View {
-            HStack(spacing: 3) {
+            HStack(spacing: 5) {
                 Image(systemName: "gearshape")
                     .imageScale(.medium)
-
                 Text(task.name)
-                    .font(.subheadline)
-
+                Spacer(minLength: 0)
+            }
+            .padding(.trailing, 7.5)
+            .overlay(alignment: .trailing) {
                 Circle()
                     .fill(CETaskStatus.notRunning.color)
                     .frame(width: 5, height: 5)
+                    .padding(.trailing, 2.5)
             }
+            .font(.subheadline)
         }
     }
 }
@@ -122,21 +126,20 @@ struct TaskView: View {
     var isCompact: Bool
 
     var body: some View {
-        HStack(spacing: isCompact ? 3 : 8) {
+        HStack(spacing: 5) {
             Image(systemName: "gearshape")
                 .imageScale(.medium)
-
             Text(activeTask.task.name)
-                .font(isCompact ? .subheadline : .body)
-
-            if !isCompact {
-                Spacer()
-            }
-
+            Spacer()
+        }
+        .padding(.trailing, 7.5)
+        .overlay(alignment: .trailing) {
             Circle()
                 .fill(activeTask.status.color)
                 .frame(width: 5, height: 5)
+                .padding(.trailing, 2.5)
         }
+        .font(.subheadline)
     }
 }
 
@@ -148,12 +151,12 @@ struct TasksPopoverView: View {
     var task: CETask
 
     var body: some View {
-        HStack {
+        HStack(spacing: 5) {
             selectionIndicator
             popoverContent
         }
-        .padding(.vertical, 5)
-        .padding(.horizontal, 10)
+        .padding(.vertical, 4)
+        .padding(.horizontal, 8)
         .modifier(DropdownMenuItemStyleModifier())
         .onTapGesture {
             taskManager.selectedTaskID = task.id
@@ -166,11 +169,12 @@ struct TasksPopoverView: View {
         Group {
             if taskManager.selectedTaskID == task.id {
                 Image(systemName: "checkmark")
+                    .fontWeight(.bold)
                     .imageScale(.small)
                     .frame(width: 10)
             } else {
                 Spacer()
-                    .frame(width: 18)
+                    .frame(width: 10)
             }
         }
     }
@@ -178,7 +182,7 @@ struct TasksPopoverView: View {
     private var popoverContent: some View {
         Group {
             if let activeTask = taskManager.activeTasks[task.id] {
-                TaskView(activeTask: activeTask, isCompact: false)
+                TaskView(activeTask: activeTask, isCompact: true)
             } else {
                 defaultTaskView
             }
@@ -186,14 +190,19 @@ struct TasksPopoverView: View {
     }
 
     private var defaultTaskView: some View {
-        HStack {
+        HStack(spacing: 5) {
             Image(systemName: "gearshape")
                 .imageScale(.medium)
             Text(task.name)
             Spacer()
+        }
+        .padding(.trailing, 7.5)
+        .overlay(alignment: .trailing) {
             Circle()
                 .fill(taskManager.taskStatus(taskID: task.id).color)
                 .frame(width: 5, height: 5)
+                .padding(.trailing, 2.5)
         }
+        .font(.subheadline)
     }
 }
