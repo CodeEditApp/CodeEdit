@@ -18,29 +18,22 @@ struct AddCETaskView: View {
         self._newTask = StateObject(wrappedValue: CETask(target: "My Mac", workingDirectory: workingDirectory))
     }
     var body: some View {
-        // TODO: Discuss if this is needed
-        NavigationStack {
-            VStack {
-                CETaskFormView(
-                    task: newTask
-                ).padding(.top)
-
-                Spacer()
-                Divider()
-                HStack {
-                    Button("Cancel") {
-                        dismiss()
-                    }
-                    Spacer()
-                    Button("Save") {
-                        workspaceSettingsManager.settings.tasks.append(newTask)
-                        try? workspaceSettingsManager.savePreferences()
-                        dismiss()
-                    }
-                    .disabled(newTask.isInvalid)
+        VStack(spacing: 0) {
+            CETaskFormView(task: newTask)
+            Divider()
+            HStack {
+                Button("Cancel") {
+                    dismiss()
                 }
-                .padding()
-            }.navigationTitle("Add Task")
+                Spacer()
+                Button("Save") {
+                    workspaceSettingsManager.settings.tasks.append(newTask)
+                    try? workspaceSettingsManager.savePreferences()
+                    dismiss()
+                }
+                .disabled(newTask.isInvalid)
+            }
+            .padding()
         }
     }
 

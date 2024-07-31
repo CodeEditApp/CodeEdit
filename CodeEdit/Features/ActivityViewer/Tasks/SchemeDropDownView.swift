@@ -17,18 +17,19 @@ struct SchemeDropDownView: View {
     @ObservedObject var workspaceSettingsManager: CEWorkspaceSettings
     var workspaceFileManager: CEWorkspaceFileManager?
 
+    var workspaceName: String {
+        workspaceSettingsManager.settings.project.projectName
+    }
+
     var body: some View {
         HStack(spacing: 6) {
             Image(systemName: "folder.badge.gearshape")
                 .imageScale(.medium)
-
-            Group {
-                if workspaceSettingsManager.settings.project.projectName.isEmpty {
-                    Text(workspaceFileManager?.workspaceItem.fileName() ?? "No Project found")
-                } else {
-                    Text(workspaceSettingsManager.settings.project.projectName)
-                }
-            }
+            Text(
+                workspaceName.isEmpty
+                ? (workspaceFileManager?.workspaceItem.fileName() ?? "No Project found")
+                : workspaceName
+            )
         }
         .font(.subheadline)
         .padding(.trailing, 11.5)
@@ -58,7 +59,6 @@ struct SchemeDropDownView: View {
                     workspaceFileManager: workspaceFileManager,
                     item: workspaceFileManager?.workspaceItem
                 )
-
                 Divider()
                     .padding(.vertical, 5)
                 Group {
@@ -73,8 +73,9 @@ struct SchemeDropDownView: View {
                     }
                 }
             }
-            .padding(5)
             .font(.subheadline)
+            .padding(5)
+            .frame(minWidth: 215)
         }
         .onTapGesture {
             self.isSchemePopOverPresented.toggle()

@@ -18,12 +18,8 @@ struct EditCETaskView: View {
     let selectedTaskIndex: Int
 
     var body: some View {
-        VStack {
-            Text("Edit Task")
+        VStack(spacing: 0) {
             CETaskFormView(task: task)
-                .padding(.top)
-
-            Spacer()
             Divider()
             HStack {
                 Button("Delete") {

@@ -20,10 +20,10 @@ struct TaskDropDownView: View {
         Group {
             if let selectedTask = taskManager.selectedTask {
                 if let selectedActiveTask = taskManager.activeTasks[selectedTask.id] {
-                    TaskView(activeTask: selectedActiveTask)
+                    ActiveTaskView(activeTask: selectedActiveTask)
                         .fixedSize()
                 } else {
-                    DefaultTaskView(task: selectedTask)
+                    TaskView(task: selectedTask, status: CETaskStatus.notRunning)
                         .fixedSize()
                 }
             } else {
@@ -71,45 +71,21 @@ struct TaskDropDownView: View {
         VStack(alignment: .leading, spacing: 0) {
             if !taskManager.availableTasks.isEmpty {
                 ForEach(taskManager.availableTasks, id: \.id) { task in
-                    TasksPopoverView(taskManager: taskManager, task: task)
-                        .frame(maxWidth: .infinity)
+                    TasksPopoverMenuItem(taskManager: taskManager, task: task)
                 }
                 Divider()
                     .padding(.vertical, 5)
             }
-
-            Group {
-                OptionMenuItemView(label: "Add Task...") {
-                    NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
-                }
-                OptionMenuItemView(label: "Manage Tasks...") {
-                    NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
-                }
+            OptionMenuItemView(label: "Add Task...") {
+                NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
+            }
+            OptionMenuItemView(label: "Manage Tasks...") {
+                NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
             }
         }
         .font(.subheadline)
         .padding(5)
-        .frame(width: 215)
-    }
-
-    private struct DefaultTaskView: View {
-        @ObservedObject var task: CETask
-        var body: some View {
-            HStack(spacing: 5) {
-                Image(systemName: "gearshape")
-                    .imageScale(.medium)
-                Text(task.name)
-                Spacer(minLength: 0)
-            }
-            .padding(.trailing, 7.5)
-            .overlay(alignment: .trailing) {
-                Circle()
-                    .fill(CETaskStatus.notRunning.color)
-                    .frame(width: 5, height: 5)
-                    .padding(.trailing, 2.5)
-            }
-            .font(.subheadline)
-        }
+        .frame(minWidth: 215)
     }
 }
 
@@ -117,31 +93,44 @@ struct TaskDropDownView: View {
 // 1. Active tasks are nested inside TaskManager.
 // 2. Reference types (like objects) do not notify observers when their internal state changes.
 /// `TaskView` represents a single active task and observes its state.
-/// - Parameter activeTask: The active task to be displayed and observed.
-///   Set to `true` for a compact display, used for the current task in the activity viewer.
-///   Set to `false`, used in the popover.
+/// - Parameter task: The task to be displayed and observed.
+/// - Parameter status: The status of the task to be displayed.
 struct TaskView: View {
-    @ObservedObject var activeTask: CEActiveTask
+    @ObservedObject var task: CETask
+    var status: CETaskStatus
 
     var body: some View {
         HStack(spacing: 5) {
+//            Label(task.name, systemImage: "gearshape")
+//                .labelStyle(.titleAndIcon)
             Image(systemName: "gearshape")
-                .imageScale(.medium)
-            Text(activeTask.task.name)
+            Text(task.name)
             Spacer(minLength: 0)
         }
         .padding(.trailing, 7.5)
         .overlay(alignment: .trailing) {
             Circle()
-                .fill(activeTask.status.color)
+                .fill(status.color)
                 .frame(width: 5, height: 5)
                 .padding(.trailing, 2.5)
         }
-        .font(.subheadline)
     }
 }
 
-struct TasksPopoverView: View {
+// We need to observe each active task individually because:
+// 1. Active tasks are nested inside TaskManager.
+// 2. Reference types (like objects) do not notify observers when their internal state changes.
+/// `ActiveTaskView` represents a single active task and observes its state.
+/// - Parameter activeTask: The active task to be displayed and observed.
+struct ActiveTaskView: View {
+    @ObservedObject var activeTask: CEActiveTask
+
+    var body: some View {
+        TaskView(task: activeTask.task, status: activeTask.status)
+    }
+}
+
+struct TasksPopoverMenuItem: View {
     @Environment(\.dismiss)
     private var dismiss
 
@@ -180,27 +169,10 @@ struct TasksPopoverView: View {
     private var popoverContent: some View {
         Group {
             if let activeTask = taskManager.activeTasks[task.id] {
-                TaskView(activeTask: activeTask)
+                ActiveTaskView(activeTask: activeTask)
             } else {
-                defaultTaskView
+                TaskView(task: task, status: taskManager.taskStatus(taskID: task.id))
             }
         }
-    }
-
-    private var defaultTaskView: some View {
-        HStack(spacing: 5) {
-            Image(systemName: "gearshape")
-                .imageScale(.medium)
-            Text(task.name)
-            Spacer(minLength: 0)
-        }
-        .padding(.trailing, 7.5)
-        .overlay(alignment: .trailing) {
-            Circle()
-                .fill(taskManager.taskStatus(taskID: task.id).color)
-                .frame(width: 5, height: 5)
-                .padding(.trailing, 2.5)
-        }
-        .font(.subheadline)
     }
 }

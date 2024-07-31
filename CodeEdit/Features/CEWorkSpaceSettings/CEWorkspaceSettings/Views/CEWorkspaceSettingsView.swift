@@ -19,7 +19,7 @@ struct CEWorkspaceSettingsView: View {
     let window: NSWindow?
     var body: some View {
         VStack(spacing: 0) {
-            SettingsForm {
+            Form {
                 Section {
                     TextField(
                         "Name",
@@ -49,9 +49,7 @@ struct CEWorkspaceSettingsView: View {
                     }
                 }
             }
-            .scrollDisabled(true)
-
-            Spacer()
+            .formStyle(.grouped)
             Divider()
             HStack {
                 Spacer()
