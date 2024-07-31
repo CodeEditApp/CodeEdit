@@ -20,7 +20,8 @@ struct TaskDropDownView: View {
         Group {
             if let selectedTask = taskManager.selectedTask {
                 if let selectedActiveTask = taskManager.activeTasks[selectedTask.id] {
-                    TaskView(activeTask: selectedActiveTask, isCompact: true)
+                    TaskView(activeTask: selectedActiveTask)
+                        .fixedSize()
                 } else {
                     DefaultTaskView(task: selectedTask)
                         .fixedSize()
@@ -117,20 +118,17 @@ struct TaskDropDownView: View {
 // 2. Reference types (like objects) do not notify observers when their internal state changes.
 /// `TaskView` represents a single active task and observes its state.
 /// - Parameter activeTask: The active task to be displayed and observed.
-/// - Parameter isCompact: Determines the layout style of the view.
 ///   Set to `true` for a compact display, used for the current task in the activity viewer.
 ///   Set to `false`, used in the popover.
 struct TaskView: View {
     @ObservedObject var activeTask: CEActiveTask
-    // This property allows for compact layout adjustment
-    var isCompact: Bool
 
     var body: some View {
         HStack(spacing: 5) {
             Image(systemName: "gearshape")
                 .imageScale(.medium)
             Text(activeTask.task.name)
-            Spacer()
+            Spacer(minLength: 0)
         }
         .padding(.trailing, 7.5)
         .overlay(alignment: .trailing) {
@@ -182,7 +180,7 @@ struct TasksPopoverView: View {
     private var popoverContent: some View {
         Group {
             if let activeTask = taskManager.activeTasks[task.id] {
-                TaskView(activeTask: activeTask, isCompact: true)
+                TaskView(activeTask: activeTask)
             } else {
                 defaultTaskView
             }
@@ -194,7 +192,7 @@ struct TasksPopoverView: View {
             Image(systemName: "gearshape")
                 .imageScale(.medium)
             Text(task.name)
-            Spacer()
+            Spacer(minLength: 0)
         }
         .padding(.trailing, 7.5)
         .overlay(alignment: .trailing) {
