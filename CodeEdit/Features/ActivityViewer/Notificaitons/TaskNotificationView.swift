@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TaskNotificationView: View {
     @ObservedObject var taskNotificationHandler: TaskNotificationHandler
-    @State private var hovered: Bool = false
     @State private var isPresented: Bool = false
 
     var body: some View {
@@ -19,12 +18,12 @@ struct TaskNotificationView: View {
                     .font(.subheadline)
 
                 if notification.isLoading {
-                    CustomLoadingRingView(
+                    CECircularProgressView(
                         progress: notification.percentage,
                         currentTaskCount: taskNotificationHandler.notifications.count
                     )
                     .padding(.horizontal, -1)
-                    .frame(height: 14)
+                    .frame(height: 16)
                 } else {
                     if taskNotificationHandler.notifications.count > 1 {
                         Text("\(taskNotificationHandler.notifications.count)")
@@ -41,19 +40,9 @@ struct TaskNotificationView: View {
             }
             .animation(.easeInOut, value: notification)
             .padding(3)
-            .background {
-                if hovered {
-                    RoundedRectangle(cornerRadius: 5)
-                        .tint(.gray)
-                        .foregroundStyle(.ultraThickMaterial)
-                }
-            }
-            .onHover { isHovered in
-                self.hovered = isHovered
-            }
             .padding(-3)
             .padding(.trailing, 3)
-            .popover(isPresented: $isPresented) {
+            .popover(isPresented: $isPresented, arrowEdge: .bottom) {
                 TaskNotificationsDetailView(taskNotificationHandler: taskNotificationHandler)
             }.onTapGesture {
                 self.isPresented.toggle()
