@@ -22,15 +22,22 @@ struct AddCETaskView: View {
             CETaskFormView(task: newTask)
             Divider()
             HStack {
-                Button("Cancel") {
+                Button {
                     dismiss()
+                } label: {
+                    Text("Cancel")
+                        .frame(minWidth: 56)
                 }
                 Spacer()
-                Button("Save") {
+                Button {
                     workspaceSettingsManager.settings.tasks.append(newTask)
                     try? workspaceSettingsManager.savePreferences()
                     dismiss()
+                } label: {
+                    Text("Save")
+                        .frame(minWidth: 56)
                 }
+                .buttonStyle(.borderedProminent)
                 .disabled(newTask.isInvalid)
             }
             .padding()

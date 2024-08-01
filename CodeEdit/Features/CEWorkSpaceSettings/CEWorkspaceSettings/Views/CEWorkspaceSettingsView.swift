@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CEWorkspaceSettingsView: View {
+    var dismiss: () -> Void
+
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @EnvironmentObject var workspace: WorkspaceDocument
 
@@ -16,7 +18,6 @@ struct CEWorkspaceSettingsView: View {
     @State var selectedTaskID: UUID?
     @State var showAddTaskSheet: Bool = false
 
-    let window: NSWindow?
     var body: some View {
         VStack(spacing: 0) {
             Form {
@@ -50,13 +51,20 @@ struct CEWorkspaceSettingsView: View {
                 }
             }
             .formStyle(.grouped)
+            .scrollContentBackground(.hidden)
+
             Divider()
             HStack {
                 Spacer()
-                Button("Done") {
-                    window?.close()
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Done")
+                        .frame(minWidth: 56)
                 }
-            }.padding()
+                .buttonStyle(.borderedProminent)
+            }
+            .padding()
         }
         .environmentObject(settingsViewModel)
         .sheet(isPresented: $showAddTaskSheet) {
@@ -75,5 +83,5 @@ struct CEWorkspaceSettingsView: View {
 }
 
 #Preview {
-    CEWorkspaceSettingsView(window: nil)
+    CEWorkspaceSettingsView(dismiss: { print("Dismiss") })
 }
