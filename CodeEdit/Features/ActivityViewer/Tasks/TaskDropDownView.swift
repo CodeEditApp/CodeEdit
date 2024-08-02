@@ -89,9 +89,6 @@ struct TaskDropDownView: View {
     }
 }
 
-// We need to observe each active task individually because:
-// 1. Active tasks are nested inside TaskManager.
-// 2. Reference types (like objects) do not notify observers when their internal state changes.
 /// `TaskView` represents a single active task and observes its state.
 /// - Parameter task: The task to be displayed and observed.
 /// - Parameter status: The status of the task to be displayed.

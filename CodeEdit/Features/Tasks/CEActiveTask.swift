@@ -34,8 +34,8 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     init(task: CETask) {
         self.task = task
-        self.process = nil
-        self.outputPipe = nil
+        self.process = Process()
+        self.outputPipe = Pipe()
 
         self.task.objectWillChange.sink { _ in
             self.objectWillChange.send()
@@ -43,8 +43,6 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     func run() {
-        resetProcess()
-
         Task {
             guard let process, let outputPipe else { return }
 
@@ -113,8 +111,14 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     func renew() {
-        terminateIfRunning()
-        resetProcess()
+        if let process {
+            if process.isRunning {
+                process.terminate()
+                process.waitUntilExit()
+            }
+            self.process = Process()
+            outputPipe = Pipe()
+        }
     }
 
     func suspend() {
@@ -139,18 +143,6 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         await MainActor.run {
             output = ""
         }
-    }
-
-    private func terminateIfRunning() {
-        if let process, process.isRunning {
-            process.terminate()
-            process.waitUntilExit()
-        }
-    }
-
-    private func resetProcess() {
-        self.process = Process()
-        self.outputPipe = Pipe()
     }
 
     private func createStatusTaskNotification() {

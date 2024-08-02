@@ -49,6 +49,7 @@ struct ActivityViewer: View {
         .padding(.horizontal, 5)
         .padding(.vertical, 1.5)
         .frame(height: 22)
+        .clipped()
         .background {
             if colorScheme == .dark {
                 RoundedRectangle(cornerRadius: 5)

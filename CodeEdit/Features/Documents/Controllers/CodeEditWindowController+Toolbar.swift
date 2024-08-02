@@ -239,5 +239,8 @@ struct StopToolbarButton: View {
             .easeInOut(duration: 0.3),
             value: taskManager.activeTasks[taskManager.selectedTask?.id ?? UUID()]?.status
         )
+        .onChange(of: taskManager.activeTasks[taskManager.selectedTask?.id ?? UUID()]?.status) { newValue in
+            print(newValue)
+        }
     }
 }

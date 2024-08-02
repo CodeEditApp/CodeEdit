@@ -26,22 +26,6 @@ class TaskManager: ObservableObject {
             .sink { [weak self] _ in
                 self?.updateSelectedTaskID()
             }
-
-        taskStatusListener = $selectedTaskID
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] selectedTaskID in
-                guard let self = self, let taskID = selectedTaskID else { return }
-                if let activeTask = self.activeTasks[taskID] {
-                    activeTask.statusPublisher
-                        .receive(on: DispatchQueue.main)
-                        .sink { status in
-                            if status == .notRunning {
-                                self.selectedTaskID = nil
-                            }
-                        }
-                        .store(in: &self.cancellables)
-                }
-            }
     }
 
     var selectedTask: CETask? {
@@ -56,13 +40,6 @@ class TaskManager: ObservableObject {
                 }
                 return newSelectedTask
             }
-        }
-        return nil
-    }
-
-    var selectedActiveTask: CEActiveTask? {
-        if let selectedTaskID {
-            return activeTasks[selectedTaskID]
         }
         return nil
     }
@@ -158,7 +135,6 @@ class TaskManager: ObservableObject {
             return
         }
         process.terminate()
-        selectedTaskID = nil
     }
 
     /// Interrupts the task associated with the given task ID.
