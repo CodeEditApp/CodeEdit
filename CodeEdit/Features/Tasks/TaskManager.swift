@@ -16,6 +16,7 @@ class TaskManager: ObservableObject {
     @ObservedObject var workspaceSettings: CEWorkspaceSettingsData
 
     private var settingsListener: AnyCancellable?
+    private var taskStatusListener: AnyCancellable?
 
     init(workspaceSettings: CEWorkspaceSettingsData) {
         self.workspaceSettings = workspaceSettings
@@ -24,6 +25,22 @@ class TaskManager: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.updateSelectedTaskID()
+            }
+
+        taskStatusListener = $selectedTaskID
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] selectedTaskID in
+                guard let self = self, let taskID = selectedTaskID else { return }
+                if let activeTask = self.activeTasks[taskID] {
+                    activeTask.statusPublisher
+                        .receive(on: DispatchQueue.main)
+                        .sink { status in
+                            if status == .notRunning {
+                                self.selectedTaskID = nil
+                            }
+                        }
+                        .store(in: &self.cancellables)
+                }
             }
     }
 
@@ -39,6 +56,13 @@ class TaskManager: ObservableObject {
                 }
                 return newSelectedTask
             }
+        }
+        return nil
+    }
+
+    var selectedActiveTask: CEActiveTask? {
+        if let selectedTaskID {
+            return activeTasks[selectedTaskID]
         }
         return nil
     }
@@ -134,6 +158,7 @@ class TaskManager: ObservableObject {
             return
         }
         process.terminate()
+        selectedTaskID = nil
     }
 
     /// Interrupts the task associated with the given task ID.
@@ -164,4 +189,6 @@ class TaskManager: ObservableObject {
         terminateTask(taskID: taskID)
         activeTasks.removeValue(forKey: taskID)
     }
+
+    private var cancellables = Set<AnyCancellable>()
 }

@@ -14,7 +14,11 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     @Published private(set) var output: String  = ""
 
     /// The status of the task.
-    @Published private(set) var status: CETaskStatus = .notRunning
+    @Published private(set) var status: CETaskStatus = .notRunning {
+        didSet {
+            statusSubject.send(status)
+        }
+    }
 
     /// The name of the associated task.
     @ObservedObject var task: CETask
@@ -23,11 +27,15 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     var outputPipe: Pipe?
 
     private var cancellables = Set<AnyCancellable>()
+    private let statusSubject = PassthroughSubject<CETaskStatus, Never>()
+    var statusPublisher: AnyPublisher<CETaskStatus, Never> {
+        statusSubject.eraseToAnyPublisher()
+    }
 
     init(task: CETask) {
         self.task = task
-        self.process = Process()
-        self.outputPipe = Pipe()
+        self.process = nil
+        self.outputPipe = nil
 
         self.task.objectWillChange.sink { _ in
             self.objectWillChange.send()
@@ -35,6 +43,8 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     func run() {
+        resetProcess()
+
         Task {
             guard let process, let outputPipe else { return }
 
@@ -63,7 +73,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
                     process: process,
                     command: self.task.fullCommand,
                     environmentVariables: self.task.environmentVariablesDictionary,
-                    shell: Shell.zsh, // TODO: Let user decide which shell he uses
+                    shell: Shell.zsh, // TODO: Let user decide which shell to use
                     outputPipe: outputPipe
                 )
             } catch { print(error) }
@@ -103,14 +113,8 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     func renew() {
-        if let process {
-            if process.isRunning {
-                process.terminate()
-                process.waitUntilExit()
-            }
-            self.process = Process()
-            outputPipe = Pipe()
-        }
+        terminateIfRunning()
+        resetProcess()
     }
 
     func suspend() {
@@ -135,6 +139,18 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         await MainActor.run {
             output = ""
         }
+    }
+
+    private func terminateIfRunning() {
+        if let process, process.isRunning {
+            process.terminate()
+            process.waitUntilExit()
+        }
+    }
+
+    private func resetProcess() {
+        self.process = Process()
+        self.outputPipe = Pipe()
     }
 
     private func createStatusTaskNotification() {

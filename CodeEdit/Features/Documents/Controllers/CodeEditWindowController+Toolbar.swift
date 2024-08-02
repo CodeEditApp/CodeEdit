@@ -112,28 +112,22 @@ extension CodeEditWindowController {
             return toolbarItem
         case .stopTaskSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.stopTaskSidebarItem)
+
+            guard let taskManager = workspace?.taskManager
+            else { return nil }
+
             toolbarItem.label = "Stop"
             toolbarItem.paletteLabel = "Stop"
             toolbarItem.toolTip = "Stop selected task"
             toolbarItem.isBordered = true
             toolbarItem.target = self
-            toolbarItem.action = #selector(self.terminateActiveTask)
             toolbarItem.image = NSImage(
                 systemSymbolName: "stop.fill",
                 accessibilityDescription: nil
             )?.withSymbolConfiguration(.init(pointSize: 15, weight: .regular))
 
             let view = NSHostingView(
-                rootView: Button {
-                    self.terminateActiveTask()
-                } label: {
-                    Label("Stop", systemImage: "stop.fill")
-                        .labelStyle(.iconOnly)
-                        .font(.system(size: 15, weight: .regular))
-                        .help("Stop selected task")
-                        .frame(width: 28)
-                        .offset(CGSize(width: 0, height: 1.5))
-                }
+                rootView: StopToolbarButton(taskManager: taskManager)
             )
             toolbarItem.view = view
 
@@ -215,10 +209,35 @@ extension CodeEditWindowController {
         guard let taskManager = workspace?.taskManager else { return }
         taskManager.executeActiveTask()
     }
+}
 
-    @objc
-    private func terminateActiveTask() {
-        guard let taskManager = workspace?.taskManager else { return }
-        taskManager.terminateActiveTask()
+struct StopToolbarButton: View {
+    // TODO: try to get this from the environment
+    @ObservedObject var taskManager: TaskManager
+
+    var body: some View {
+        HStack {
+            if let selectedTaskID = taskManager.selectedTask?.id,
+               let activeTask = taskManager.activeTasks[selectedTaskID],
+               activeTask.status == .running {
+                    Button {
+                        taskManager.terminateActiveTask()
+                    } label: {
+                        Label("Stop", systemImage: "stop.fill")
+                            .labelStyle(.iconOnly)
+                            .font(.system(size: 15, weight: .regular))
+                            .help("Stop selected task")
+                            .frame(width: 28)
+                            .offset(y: 1.5)
+                    }
+                    .frame(height: 22)
+                    .transition(.opacity.combined(with: .move(edge: .trailing)))
+            }
+        }
+        .frame(width: 38, height: 22)
+        .animation(
+            .easeInOut(duration: 0.3),
+            value: taskManager.activeTasks[taskManager.selectedTask?.id ?? UUID()]?.status
+        )
     }
 }
