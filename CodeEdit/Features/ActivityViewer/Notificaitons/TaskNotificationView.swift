@@ -18,7 +18,10 @@ struct TaskNotificationView: View {
                 HStack {
                     Text(notification.title)
                         .font(.subheadline)
-                        .transition(.asymmetric(insertion: .move(edge: .top), removal: .move(edge: .bottom)).combined(with: .opacity))
+                        .transition(
+                            .asymmetric(insertion: .move(edge: .top), removal: .move(edge: .bottom))
+                            .combined(with: .opacity)
+                        )
                         .id("NotificationTitle" + notification.title)
 
                     if notification.isLoading {
