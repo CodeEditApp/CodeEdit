@@ -531,6 +531,7 @@
 		B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */; };
 		B697937A29FF5668002027EC /* AccountsSettingsAccountLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */; };
 		B69BFDC72B0686910050D9A6 /* GitClient+Initiate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */; };
+		B69D3EDE2C5E85A2005CF43A /* StopToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D3EDD2C5E85A2005CF43A /* StopToolbarButton.swift */; };
 		B6A43C5D29FC4AF00027E0E0 /* CreateSSHKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A43C5C29FC4AF00027E0E0 /* CreateSSHKeyView.swift */; };
 		B6AB09A12AAABAAE0003A3A6 /* EditorTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB09A02AAABAAE0003A3A6 /* EditorTabs.swift */; };
 		B6AB09A32AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AB09A22AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift */; };
@@ -1161,6 +1162,7 @@
 		B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarIcon.swift; sourceTree = "<group>"; };
 		B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSettingsAccountLink.swift; sourceTree = "<group>"; };
 		B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Initiate.swift"; sourceTree = "<group>"; };
+		B69D3EDD2C5E85A2005CF43A /* StopToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopToolbarButton.swift; sourceTree = "<group>"; };
 		B6A43C5C29FC4AF00027E0E0 /* CreateSSHKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSSHKeyView.swift; sourceTree = "<group>"; };
 		B6AB09A02AAABAAE0003A3A6 /* EditorTabs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabs.swift; sourceTree = "<group>"; };
 		B6AB09A22AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarLeadingAccessories.swift; sourceTree = "<group>"; };
@@ -2640,9 +2642,9 @@
 		61D435C52C29684100D032B8 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
+				B69D3EDF2C5E85B8005CF43A /* Models */,
+				B69D3EDC2C5E856F005CF43A /* Views */,
 				61D435CB2C29699800D032B8 /* TaskManager.swift */,
-				61D435CD2C2969C300D032B8 /* CEActiveTask.swift */,
-				61D435D12C2969D800D032B8 /* CETaskStatus.swift */,
 			);
 			path = Tasks;
 			sourceTree = "<group>";
@@ -3257,6 +3259,23 @@
 				58F2EAE1292FB2B0004A9BDE /* SoftwareUpdater.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		B69D3EDC2C5E856F005CF43A /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B69D3EDD2C5E85A2005CF43A /* StopToolbarButton.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B69D3EDF2C5E85B8005CF43A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				61D435CD2C2969C300D032B8 /* CEActiveTask.swift */,
+				61D435D12C2969D800D032B8 /* CETaskStatus.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		B6AB09AB2AAACBF70003A3A6 /* Tabs */ = {
@@ -4044,6 +4063,7 @@
 				587B9E9929301D8F00AC7927 /* GitChangedFile.swift in Sources */,
 				6C147C4B29A32A7B0089B630 /* Environment+SplitEditor.swift in Sources */,
 				2897E1C72979A29200741E32 /* TrackableScrollView.swift in Sources */,
+				B69D3EDE2C5E85A2005CF43A /* StopToolbarButton.swift in Sources */,
 				58F2EB0E292FB2B0004A9BDE /* SoftwareUpdater.swift in Sources */,
 				587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */,
 				587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */,
