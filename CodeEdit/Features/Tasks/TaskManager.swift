@@ -12,11 +12,11 @@ import Combine
 class TaskManager: ObservableObject {
     @Published var activeTasks: [UUID: CEActiveTask] = [:]
     @Published var selectedTaskID: UUID?
+    @Published var taskShowingOutput: UUID?
 
     @ObservedObject var workspaceSettings: CEWorkspaceSettingsData
 
     private var settingsListener: AnyCancellable?
-    private var taskStatusListener: AnyCancellable?
 
     init(workspaceSettings: CEWorkspaceSettingsData) {
         self.workspaceSettings = workspaceSettings
@@ -170,6 +170,4 @@ class TaskManager: ObservableObject {
         terminateTask(taskID: taskID)
         activeTasks.removeValue(forKey: taskID)
     }
-
-    private var cancellables = Set<AnyCancellable>()
 }

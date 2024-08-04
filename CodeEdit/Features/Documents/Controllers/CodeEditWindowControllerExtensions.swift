@@ -113,7 +113,10 @@ extension CodeEditWindowController {
             let settingsWindow = NSWindow()
             self.workspaceSettingsWindow = settingsWindow
             let contentView = CEWorkspaceSettingsView(
-                dismiss: { self.window?.endSheet(settingsWindow) }
+                dismiss: { [weak self, weak settingsWindow] in
+                    guard let settingsWindow else { return }
+                    self?.window?.endSheet(settingsWindow)
+                 }
             )
             .environmentObject(workspaceSettingsManager)
             .environmentObject(workspace)

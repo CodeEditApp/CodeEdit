@@ -117,16 +117,6 @@ extension CodeEditWindowController {
             guard let taskManager = workspace?.taskManager
             else { return nil }
 
-            toolbarItem.label = "Stop"
-            toolbarItem.paletteLabel = "Stop"
-            toolbarItem.toolTip = "Stop selected task"
-            toolbarItem.isBordered = true
-            toolbarItem.target = self
-            toolbarItem.image = NSImage(
-                systemSymbolName: "stop.fill",
-                accessibilityDescription: nil
-            )?.withSymbolConfiguration(.init(pointSize: 15, weight: .regular))
-
             let view = NSHostingView(
                 rootView: StopToolbarButton(taskManager: taskManager)
             )
@@ -140,23 +130,19 @@ extension CodeEditWindowController {
             toolbarItem.toolTip = "Start selected task"
             toolbarItem.isBordered = true
             toolbarItem.target = self
-            toolbarItem.action = #selector(self.runActiveTask)
             toolbarItem.image = NSImage(
                 systemSymbolName: "play.fill",
                 accessibilityDescription: nil
             )?.withSymbolConfiguration(.init(scale: .large))
 
+            guard let taskManager = workspace?.taskManager
+            else { return nil }
+            guard let workspace = workspace
+            else { return nil }
+
             let view = NSHostingView(
-                rootView: Button {
-                    self.runActiveTask()
-                } label: {
-                    Label("Start", systemImage: "play.fill")
-                        .labelStyle(.iconOnly)
-                        .font(.system(size: 18, weight: .regular))
-                        .help("Start selected task")
-                        .frame(width: 28)
-                        .offset(CGSize(width: 0, height: 2.5))
-                }
+                rootView: StartTaskToolbarButton(taskManager: taskManager)
+                    .environmentObject(workspace)
             )
             toolbarItem.view = view
 
@@ -203,11 +189,5 @@ extension CodeEditWindowController {
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }
-    }
-
-    @objc
-    private func runActiveTask() {
-        guard let taskManager = workspace?.taskManager else { return }
-        taskManager.executeActiveTask()
     }
 }

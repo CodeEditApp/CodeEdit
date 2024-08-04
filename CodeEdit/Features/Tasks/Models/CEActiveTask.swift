@@ -80,7 +80,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     func handleProcessFinished(terminationStatus: Int32) async {
         handleTerminationStatus(terminationStatus)
-        print(terminationStatus)
+
         if terminationStatus == 0 {
             await updateOutput("\nFinished running \(task.name).\n\n")
             await updateTaskStatus(to: .finished)
