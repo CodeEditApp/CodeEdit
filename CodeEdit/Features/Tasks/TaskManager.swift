@@ -72,7 +72,7 @@ class TaskManager: ObservableObject {
             activeTask.renew()
             // Wait until the task is no longer running.
             // The termination handler is asynchronous, so we avoid a race condition using this.
-            while activeTask.status != .notRunning {
+            while activeTask.status == .running {
                 await Task.yield()
             }
             activeTask.run()
