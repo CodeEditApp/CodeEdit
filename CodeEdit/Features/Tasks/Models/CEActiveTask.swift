@@ -14,11 +14,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     @Published private(set) var output: String  = ""
 
     /// The status of the task.
-    @Published private(set) var status: CETaskStatus = .notRunning {
-        didSet {
-            statusSubject.send(status)
-        }
-    }
+    @Published private(set) var status: CETaskStatus = .notRunning
 
     /// The name of the associated task.
     @ObservedObject var task: CETask
@@ -27,10 +23,6 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     var outputPipe: Pipe?
 
     private var cancellables = Set<AnyCancellable>()
-    private let statusSubject = PassthroughSubject<CETaskStatus, Never>()
-    var statusPublisher: AnyPublisher<CETaskStatus, Never> {
-        statusSubject.eraseToAnyPublisher()
-    }
 
     init(task: CETask) {
         self.task = task
