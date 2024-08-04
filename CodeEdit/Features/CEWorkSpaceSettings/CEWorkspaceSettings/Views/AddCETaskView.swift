@@ -14,8 +14,8 @@ struct AddCETaskView: View {
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @StateObject var newTask: CETask
 
-    init(workingDirectory: String) {
-        self._newTask = StateObject(wrappedValue: CETask(target: "My Mac", workingDirectory: workingDirectory))
+    init() {
+        self._newTask = StateObject(wrappedValue: CETask(target: "My Mac"))
     }
     var body: some View {
         // TODO: Discuss if this is needed
@@ -47,5 +47,5 @@ struct AddCETaskView: View {
 }
 
 #Preview {
-    AddCETaskView(workingDirectory: "/User/")
+    AddCETaskView()
 }

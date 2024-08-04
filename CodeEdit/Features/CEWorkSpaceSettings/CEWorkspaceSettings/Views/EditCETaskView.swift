@@ -12,7 +12,7 @@ struct EditCETaskView: View {
     var dismiss
 
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
-    @EnvironmentObject var taskManger: TaskManager
+    @EnvironmentObject var taskManager: TaskManager
     @ObservedObject var task: CETask
 
     let selectedTaskIndex: Int
@@ -31,7 +31,7 @@ struct EditCETaskView: View {
                         $0.id == task.id
                     })
                     try? workspaceSettingsManager.savePreferences()
-                    taskManger.deleteTask(taskID: task.id)
+                    taskManager.deleteTask(taskID: task.id)
                     self.dismiss()
                 }
 

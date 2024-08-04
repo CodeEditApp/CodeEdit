@@ -70,7 +70,7 @@ struct CEWorkspaceSettingsView: View {
                     selectedTaskIndex: selectedTaskIndex
                 )
             } else {
-                AddCETaskView(workingDirectory: workspace.fileURL?.relativePath ?? "")
+                AddCETaskView()
             }
         }
     }

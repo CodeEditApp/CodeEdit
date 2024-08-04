@@ -34,8 +34,9 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }.store(in: &cancellables)
     }
 
-    func run() {
+    func run(workspaceURL: URL) {
         Task {
+            let fullCommand = "cd \(workspaceURL.relativePath) && \(task.fullCommand)"
             guard let process, let outputPipe else { return }
 
             await updateTaskStatus(to: .running)
@@ -61,7 +62,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             do {
                 try Shell.executeCommandWithShell(
                     process: process,
-                    command: self.task.fullCommand,
+                    command: fullCommand,
                     environmentVariables: self.task.environmentVariablesDictionary,
                     shell: Shell.zsh, // TODO: Let user decide which shell he uses
                     outputPipe: outputPipe

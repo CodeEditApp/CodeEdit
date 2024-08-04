@@ -15,9 +15,11 @@ class TaskManager: ObservableObject {
 
     @ObservedObject var workspaceSettings: CEWorkspaceSettingsData
 
+    private var workspaceURL: URL
     private var settingsListener: AnyCancellable?
 
-    init(workspaceSettings: CEWorkspaceSettingsData) {
+    init(workspaceSettings: CEWorkspaceSettingsData, workspaceURL: URL) {
+        self.workspaceURL = workspaceURL
         self.workspaceSettings = workspaceSettings
 
         settingsListener = workspaceSettings.$tasks
@@ -67,10 +69,10 @@ class TaskManager: ObservableObject {
         // but don't initialise a new object.
         if let activeTask = activeTasks[task.id] {
             activeTask.renew()
-            activeTask.run()
+            activeTask.run(workspaceURL: workspaceURL)
         } else {
             let runningTask = CEActiveTask(task: task)
-            runningTask.run()
+            runningTask.run(workspaceURL: workspaceURL)
             Task {
                 await MainActor.run {
                     activeTasks[task.id] = runningTask
