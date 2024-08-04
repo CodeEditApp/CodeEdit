@@ -527,10 +527,11 @@
 		B67DB0F62AFC2A7A002DC647 /* FindNavigatorToolbarBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DB0F52AFC2A7A002DC647 /* FindNavigatorToolbarBottom.swift */; };
 		B67DB0F92AFDF638002DC647 /* IconButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DB0F82AFDF638002DC647 /* IconButtonStyle.swift */; };
 		B67DB0FC2AFDF71F002DC647 /* IconToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DB0FB2AFDF71F002DC647 /* IconToggleStyle.swift */; };
+		B68108042C60287F008B27C1 /* StartTaskToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68108032C60287F008B27C1 /* StartTaskToolbarButton.swift */; };
 		B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */; };
 		B697937A29FF5668002027EC /* AccountsSettingsAccountLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */; };
 		B69BFDC72B0686910050D9A6 /* GitClient+Initiate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */; };
-		B69D3EDE2C5E85A2005CF43A /* StopToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D3EDD2C5E85A2005CF43A /* StopToolbarButton.swift */; };
+		B69D3EDE2C5E85A2005CF43A /* StopTaskToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D3EDD2C5E85A2005CF43A /* StopTaskToolbarButton.swift */; };
 		B69D3EE12C5F5357005CF43A /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D3EE02C5F5357005CF43A /* TaskView.swift */; };
 		B69D3EE32C5F536B005CF43A /* ActiveTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D3EE22C5F536B005CF43A /* ActiveTaskView.swift */; };
 		B69D3EE52C5F54B3005CF43A /* TasksPopoverMenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D3EE42C5F54B3005CF43A /* TasksPopoverMenuItem.swift */; };
@@ -1160,10 +1161,11 @@
 		B67DB0F52AFC2A7A002DC647 /* FindNavigatorToolbarBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorToolbarBottom.swift; sourceTree = "<group>"; };
 		B67DB0F82AFDF638002DC647 /* IconButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconButtonStyle.swift; sourceTree = "<group>"; };
 		B67DB0FB2AFDF71F002DC647 /* IconToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconToggleStyle.swift; sourceTree = "<group>"; };
+		B68108032C60287F008B27C1 /* StartTaskToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTaskToolbarButton.swift; sourceTree = "<group>"; };
 		B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarIcon.swift; sourceTree = "<group>"; };
 		B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSettingsAccountLink.swift; sourceTree = "<group>"; };
 		B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Initiate.swift"; sourceTree = "<group>"; };
-		B69D3EDD2C5E85A2005CF43A /* StopToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopToolbarButton.swift; sourceTree = "<group>"; };
+		B69D3EDD2C5E85A2005CF43A /* StopTaskToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopTaskToolbarButton.swift; sourceTree = "<group>"; };
 		B69D3EE02C5F5357005CF43A /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
 		B69D3EE22C5F536B005CF43A /* ActiveTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveTaskView.swift; sourceTree = "<group>"; };
 		B69D3EE42C5F54B3005CF43A /* TasksPopoverMenuItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksPopoverMenuItem.swift; sourceTree = "<group>"; };
@@ -3270,7 +3272,8 @@
 		B69D3EDC2C5E856F005CF43A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B69D3EDD2C5E85A2005CF43A /* StopToolbarButton.swift */,
+				B69D3EDD2C5E85A2005CF43A /* StopTaskToolbarButton.swift */,
+				B68108032C60287F008B27C1 /* StartTaskToolbarButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3958,6 +3961,7 @@
 				6C147C4D29A32AA30089B630 /* EditorAreaView.swift in Sources */,
 				B6152B802ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift in Sources */,
 				587B9E7B29301D8F00AC7927 /* GitHubRouter.swift in Sources */,
+				B68108042C60287F008B27C1 /* StartTaskToolbarButton.swift in Sources */,
 				201169E22837B3D800F92B46 /* SourceControlNavigatorChangesView.swift in Sources */,
 				850C631029D6B01D00E1444C /* SettingsView.swift in Sources */,
 				77A01E6D2BC3EA2A00F0EA38 /* NSWindow+Child.swift in Sources */,
@@ -4071,7 +4075,7 @@
 				587B9E9929301D8F00AC7927 /* GitChangedFile.swift in Sources */,
 				6C147C4B29A32A7B0089B630 /* Environment+SplitEditor.swift in Sources */,
 				2897E1C72979A29200741E32 /* TrackableScrollView.swift in Sources */,
-				B69D3EDE2C5E85A2005CF43A /* StopToolbarButton.swift in Sources */,
+				B69D3EDE2C5E85A2005CF43A /* StopTaskToolbarButton.swift in Sources */,
 				58F2EB0E292FB2B0004A9BDE /* SoftwareUpdater.swift in Sources */,
 				587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */,
 				587B9E7C29301D8F00AC7927 /* GitHubRepositoryRouter.swift in Sources */,

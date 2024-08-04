@@ -1,5 +1,5 @@
 //
-//  StopToolbarButton.swift
+//  StopTaskToolbarButton.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 8/3/24.
@@ -8,8 +8,7 @@
 import SwiftUI
 import Combine
 
-struct StopToolbarButton: View {
-    // TODO: try to get this from the environment
+struct StopTaskToolbarButton: View {
     @ObservedObject var taskManager: TaskManager
 
     /// Tracks the current selected task's status. Updated by `updateStatusListener`
@@ -56,39 +55,5 @@ struct StopToolbarButton: View {
         statusListener = taskManager.activeTasks[id]?.$status.sink { newValue in
             currentSelectedStatus = newValue
         }
-    }
-}
-
-struct StartTaskToolbarButton: View {
-    @UpdatingWindowController var windowController: CodeEditWindowController?
-
-    // TODO: try to get this from the environment
-    @ObservedObject var taskManager: TaskManager
-    @EnvironmentObject var workspace: WorkspaceDocument
-
-    var utilityAreaCollapsed: Bool {
-        windowController?.workspace?.utilityAreaModel?.isCollapsed ?? true
-    }
-
-    var body: some View {
-        Button {
-            self.runActiveTask()
-            if utilityAreaCollapsed {
-                CommandManager.shared.executeCommand("open.drawer")
-            }
-            workspace.utilityAreaModel?.selectedTab = .debugConsole
-            taskManager.taskShowingOutput = taskManager.selectedTaskID
-        } label: {
-            Label("Start", systemImage: "play.fill")
-                .labelStyle(.iconOnly)
-                .font(.system(size: 18, weight: .regular))
-                .help("Start selected task")
-                .frame(width: 28)
-                .offset(CGSize(width: 0, height: 2.5))
-        }
-    }
-
-    private func runActiveTask() {
-        taskManager.executeActiveTask()
     }
 }

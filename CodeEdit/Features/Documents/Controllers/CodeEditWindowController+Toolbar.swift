@@ -118,27 +118,16 @@ extension CodeEditWindowController {
             else { return nil }
 
             let view = NSHostingView(
-                rootView: StopToolbarButton(taskManager: taskManager)
+                rootView: StopTaskToolbarButton(taskManager: taskManager)
             )
             toolbarItem.view = view
 
             return toolbarItem
         case .startTaskSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.startTaskSidebarItem)
-            toolbarItem.label = "Start"
-            toolbarItem.paletteLabel = "Start"
-            toolbarItem.toolTip = "Start selected task"
-            toolbarItem.isBordered = true
-            toolbarItem.target = self
-            toolbarItem.image = NSImage(
-                systemSymbolName: "play.fill",
-                accessibilityDescription: nil
-            )?.withSymbolConfiguration(.init(scale: .large))
 
-            guard let taskManager = workspace?.taskManager
-            else { return nil }
-            guard let workspace = workspace
-            else { return nil }
+            guard let taskManager = workspace?.taskManager else { return nil }
+            guard let workspace = workspace else { return nil }
 
             let view = NSHostingView(
                 rootView: StartTaskToolbarButton(taskManager: taskManager)
