@@ -17,14 +17,14 @@ struct UtilityAreaDebugView: View {
 
     @Environment(\.colorScheme)
     private var colorScheme
-    
+
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
     @EnvironmentObject private var taskManager: TaskManager
 
     @State private var scrollProxy: ScrollViewProxy?
 
     @StateObject private var themeModel: ThemeModel = .shared
-    
+
     @Namespace var bottomID
 
     var body: some View {
