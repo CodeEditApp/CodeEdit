@@ -1,5 +1,5 @@
 //
-//  SourceControlNavigatorNewBranchView.swift
+//  SourceControlNewBranchView.swift
 //  CodeEdit
 //
 //  Created by Albert Vinizhanau on 10/21/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceControlNavigatorNewBranchView: View {
+struct SourceControlNewBranchView: View {
     @Environment(\.dismiss)
     var dismiss
 
@@ -65,6 +65,7 @@ struct SourceControlNavigatorNewBranchView: View {
         }
     }
 
+    /// Creates a new branch from the specifiied source branch
     func submit(_ branch: GitBranch) {
         Task {
             do {

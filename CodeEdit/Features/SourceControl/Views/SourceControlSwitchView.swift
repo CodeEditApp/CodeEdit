@@ -59,6 +59,7 @@ struct SourceControlSwitchView: View {
         .frame(width: 420)
     }
 
+    /// Checks out the specifiied branch and if local changes exist prompts the user to shash changes
     func submit() {
         Task {
             do {

@@ -69,12 +69,12 @@ struct SourceControlNavigatorRepositoryView: View {
             }
         )
         .sheet(isPresented: $showNewBranch) {
-            SourceControlNavigatorNewBranchView(
+            SourceControlNewBranchView(
                 fromBranch: $fromBranch
             )
         }
         .sheet(isPresented: $showRenameBranch) {
-            SourceControlNavigatorRenameBranchView(
+            SourceControlRenameBranchView(
                 fromBranch: $fromBranch
             )
         }

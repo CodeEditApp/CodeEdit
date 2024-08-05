@@ -1,5 +1,5 @@
 //
-//  SourceControlNavigatorRenameBranchView.swift
+//  SourceControlRenameBranchView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 11/28/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SourceControlNavigatorRenameBranchView: View {
+struct SourceControlRenameBranchView: View {
     @Environment(\.dismiss)
     var dismiss
 
