@@ -67,6 +67,7 @@ struct SourceControlPushView: View {
         .frame(minWidth: 500)
     }
 
+    /// Pushes commited changes to specified remote and branch
     func submit() {
         Task {
             do {

@@ -66,6 +66,7 @@ struct SourceControlPullView: View {
         .frame(minWidth: 500)
     }
 
+    /// Pulls changes from the specified remote and branch. If local changes exist, prompts user to stash them first
     func submit() {
         Task {
             do {
