@@ -7,6 +7,7 @@
 
 import AppKit
 import SwiftUI
+import Combine
 
 extension CodeEditWindowController {
     internal func setupToolbar() {
@@ -67,7 +68,7 @@ extension CodeEditWindowController {
         }
     }
 
-    // swiftlint:disable:next function_body_length
+    // swiftlint:disable:next function_body_length cyclomatic_complexity
     func toolbar(
         _ toolbar: NSToolbar,
         itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
@@ -112,30 +113,27 @@ extension CodeEditWindowController {
             return toolbarItem
         case .stopTaskSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.stopTaskSidebarItem)
-            toolbarItem.label = "Stop"
-            toolbarItem.paletteLabel = "Stop"
-            toolbarItem.toolTip = "Stop selected task"
-            toolbarItem.isBordered = true
-            toolbarItem.target = self
-            toolbarItem.action = #selector(self.terminateActiveTask)
-            toolbarItem.image = NSImage(
-                systemSymbolName: "stop.fill",
-                accessibilityDescription: nil
-            )?.withSymbolConfiguration(.init(scale: .large))
+
+            guard let taskManager = workspace?.taskManager
+            else { return nil }
+
+            let view = NSHostingView(
+                rootView: StopTaskToolbarButton(taskManager: taskManager)
+            )
+            toolbarItem.view = view
 
             return toolbarItem
         case .startTaskSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.startTaskSidebarItem)
-            toolbarItem.label = "Start"
-            toolbarItem.paletteLabel = "Start"
-            toolbarItem.toolTip = "Start selected task"
-            toolbarItem.isBordered = true
-            toolbarItem.target = self
-            toolbarItem.action = #selector(self.runActiveTask)
-            toolbarItem.image = NSImage(
-                systemSymbolName: "play.fill",
-                accessibilityDescription: nil
-            )?.withSymbolConfiguration(.init(scale: .large))
+
+            guard let taskManager = workspace?.taskManager else { return nil }
+            guard let workspace = workspace else { return nil }
+
+            let view = NSHostingView(
+                rootView: StartTaskToolbarButton(taskManager: taskManager)
+                    .environmentObject(workspace)
+            )
+            toolbarItem.view = view
 
             return toolbarItem
         case .branchPicker:
@@ -180,17 +178,5 @@ extension CodeEditWindowController {
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
         }
-    }
-
-    @objc
-    private func runActiveTask() {
-        guard let taskManager = workspace?.taskManager else { return }
-        taskManager.executeActiveTask()
-    }
-
-    @objc
-    private func terminateActiveTask() {
-        guard let taskManager = workspace?.taskManager else { return }
-        taskManager.terminateActiveTask()
     }
 }

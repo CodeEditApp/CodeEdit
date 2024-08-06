@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct UtilityAreaDebugView: View {
+    @AppSettings(\.theme.matchAppearance)
+    private var matchAppearance
+    @AppSettings(\.terminal.darkAppearance)
+    private var darkAppearance
+    @AppSettings(\.theme.useThemeBackground)
+    private var useThemeBackground
+
+    @Environment(\.colorScheme)
+    private var colorScheme
+
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
     @EnvironmentObject private var taskManager: TaskManager
 
-    @State var tabSelection: UUID?
     @State private var scrollProxy: ScrollViewProxy?
+
+    @StateObject private var themeModel: ThemeModel = .shared
 
     @Namespace var bottomID
 
@@ -27,10 +38,10 @@ struct UtilityAreaDebugView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     Spacer()
                 }
-                .opacity(tabSelection == nil ? 1 : 0)
+                .opacity(taskManager.taskShowingOutput == nil ? 1 : 0)
 
-                if let tabSelection,
-                   let activeTask = taskManager.activeTasks[tabSelection] {
+                if let taskShowingOutput = taskManager.taskShowingOutput,
+                   let activeTask = taskManager.activeTasks[taskShowingOutput] {
                     ScrollViewReader { proxy in
                         VStack {
                             ScrollView {
@@ -64,7 +75,26 @@ struct UtilityAreaDebugView: View {
                             bottomID: _bottomID
                         )
                     }
-                    .background(EffectView(.contentBackground))
+                    .background {
+                        if utilityAreaViewModel.selectedTerminals.isEmpty {
+                            EffectView(.contentBackground)
+                        } else if useThemeBackground {
+                            Color(nsColor: backgroundColor)
+                        } else {
+                            if colorScheme == .dark {
+                                EffectView(.underPageBackground)
+                            } else {
+                                EffectView(.contentBackground)
+                            }
+                        }
+                    }
+                    .colorScheme(
+                        utilityAreaViewModel.selectedTerminals.isEmpty
+                            ? colorScheme
+                            : matchAppearance && darkAppearance
+                            ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
+                            : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
+                    )
                 }
             }
         } leadingSidebar: { _ in
@@ -75,14 +105,12 @@ struct UtilityAreaDebugView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .opacity(taskManager.activeTasks.isEmpty ? 1 : 0)
 
-                List(selection: $tabSelection) {
+                List(selection: $taskManager.taskShowingOutput) {
                     ForEach(Array(taskManager.activeTasks.keys), id: \.self) { taskID in
                         if let activeTask = taskManager.activeTasks[taskID] {
-                            TaskSidebarTileView(activeTask: activeTask)
+                            ActiveTaskView(activeTask: activeTask)
                                 .onTapGesture {
-                                    withAnimation {
-                                        self.tabSelection = taskID
-                                    }
+                                    taskManager.taskShowingOutput = taskID
                                 }
                                 .contextMenu(
                                     ContextMenu {
@@ -101,9 +129,20 @@ struct UtilityAreaDebugView: View {
                 .paneToolbar { Spacer() } // Background
             }
         }.onReceive(taskManager.$activeTasks) { newTasks in
-            if tabSelection == nil {
-                self.tabSelection = newTasks.first?.key
+            if taskManager.taskShowingOutput == nil {
+                taskManager.taskShowingOutput = newTasks.first?.key
             }
         }
+    }
+
+    /// Returns the `background` color of the selected theme
+    private var backgroundColor: NSColor {
+        if let selectedTheme = matchAppearance && darkAppearance
+            ? themeModel.selectedDarkTheme
+            : themeModel.selectedTheme,
+           let index = themeModel.themes.firstIndex(of: selectedTheme) {
+            return NSColor(themeModel.themes[index].terminal.background.swiftColor)
+        }
+        return .windowBackgroundColor
     }
 }

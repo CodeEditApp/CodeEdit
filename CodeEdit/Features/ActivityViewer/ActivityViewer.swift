@@ -46,11 +46,14 @@ struct ActivityViewer: View {
                 .fixedSize()
         }
         .fixedSize(horizontal: false, vertical: false)
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 5)
+        .padding(.vertical, 1.5)
+        .frame(height: 22)
+        .clipped()
         .background {
             if colorScheme == .dark {
                 RoundedRectangle(cornerRadius: 5)
-                    .opacity(0.10)
+                    .opacity(0.1)
             } else {
                 RoundedRectangle(cornerRadius: 5)
                     .opacity(0.1)

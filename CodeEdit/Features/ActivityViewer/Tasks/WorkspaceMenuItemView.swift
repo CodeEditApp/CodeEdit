@@ -12,22 +12,23 @@ struct WorkspaceMenuItemView: View {
     var item: CEWorkspaceFile?
 
     var body: some View {
-        HStack {
+        HStack(spacing: 5) {
             if workspaceFileManager?.workspaceItem.fileName() == item?.name {
                 Image(systemName: "checkmark")
+                    .fontWeight(.bold)
                     .imageScale(.small)
                     .frame(width: 10)
             } else {
                 Spacer()
-                    .frame(width: 18)
+                    .frame(width: 10)
             }
             Image(systemName: "folder.badge.gearshape")
                 .imageScale(.medium)
             Text(item?.name ?? "")
             Spacer()
         }
-        .padding(.vertical, 5)
-        .padding(.horizontal, 10)
+        .padding(.vertical, 4)
+        .padding(.horizontal, 8)
         .modifier(DropdownMenuItemStyleModifier())
         .onTapGesture { }
         .clipShape(RoundedRectangle(cornerRadius: 5))

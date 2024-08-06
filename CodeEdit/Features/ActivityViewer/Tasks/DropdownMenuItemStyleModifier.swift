@@ -12,7 +12,11 @@ struct DropdownMenuItemStyleModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .background(isHovering ? Color(NSColor.systemBlue) : .clear)
+            .background(
+                isHovering
+                ? AnyView(EffectView(.selection, blendingMode: .withinWindow, emphasized: true))
+                    : AnyView(Color.clear)
+            )
             .foregroundColor(isHovering ? Color(NSColor.white) : .primary)
             .onHover(perform: { hovering in
                 self.isHovering = hovering

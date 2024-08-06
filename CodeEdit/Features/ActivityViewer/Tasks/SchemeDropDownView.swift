@@ -17,22 +17,24 @@ struct SchemeDropDownView: View {
     @ObservedObject var workspaceSettingsManager: CEWorkspaceSettings
     var workspaceFileManager: CEWorkspaceFileManager?
 
+    var workspaceName: String {
+        workspaceSettingsManager.settings.project.projectName
+    }
+
     var body: some View {
-        HStack(spacing: 5) {
+        HStack(spacing: 6) {
             Image(systemName: "folder.badge.gearshape")
                 .imageScale(.medium)
-
-            Group {
-                if workspaceSettingsManager.settings.project.projectName.isEmpty {
-                    Text(workspaceFileManager?.workspaceItem.fileName() ?? "No Project found")
-                } else {
-                    Text(workspaceSettingsManager.settings.project.projectName)
-                }
-            }.font(.subheadline)
+            Text(
+                workspaceName.isEmpty
+                ? (workspaceFileManager?.workspaceItem.fileName() ?? "No Project found")
+                : workspaceName
+            )
         }
-        .font(.caption)
-        .padding(.trailing, 9)
-        .padding(5)
+        .font(.subheadline)
+        .padding(.trailing, 11.5)
+        .padding(.horizontal, 2.5)
+        .padding(.vertical, 2.5)
         .background {
             Color(nsColor: colorScheme == .dark ? .white : .black)
                 .opacity(isHoveringScheme || isSchemePopOverPresented ? 0.05 : 0)
@@ -41,10 +43,10 @@ struct SchemeDropDownView: View {
                 Spacer()
                 if isHoveringScheme || isSchemePopOverPresented {
                     chevronDown
-                        .padding(.trailing, 3)
+                        .padding(.trailing, 2)
                 } else {
                     chevron
-                        .padding(.trailing, 3)
+                        .padding(.trailing, 4)
                 }
             }
         }
@@ -57,13 +59,12 @@ struct SchemeDropDownView: View {
                     workspaceFileManager: workspaceFileManager,
                     item: workspaceFileManager?.workspaceItem
                 )
-
                 Divider()
                     .padding(.vertical, 5)
                 Group {
-                    OptionMenuItemView(label: "Add Folder..") {
+                    OptionMenuItemView(label: "Add Folder...") {
                         // TODO: Implment Add Folder
-                        print("NOT IMPLMENTED")
+                        print("NOT IMPLEMENTED")
                     }
                     OptionMenuItemView(label: "Workspace Settings...") {
                         NSApp.sendAction(
@@ -72,8 +73,11 @@ struct SchemeDropDownView: View {
                     }
                 }
             }
+            .font(.subheadline)
             .padding(5)
-        }.onTapGesture {
+            .frame(minWidth: 215)
+        }
+        .onTapGesture {
             self.isSchemePopOverPresented.toggle()
         }
     }
@@ -90,7 +94,7 @@ struct SchemeDropDownView: View {
         VStack(spacing: 1) {
             Image(systemName: "chevron.down")
         }
-        .font(.system(size: 8, weight: .bold, design: .default))
+        .font(.system(size: 8, weight: .semibold, design: .default))
         .padding(.top, 0.5)
     }
 }
