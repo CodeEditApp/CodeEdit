@@ -63,7 +63,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
                     process: process,
                     command: self.task.fullCommand,
                     environmentVariables: self.task.environmentVariablesDictionary,
-                    shell: Shell.zsh, // TODO: Let user decide which shell he uses
+                    shell: Shell.zsh, // TODO: Let user decide which shell to use
                     outputPipe: outputPipe
                 )
             } catch { print(error) }
@@ -72,11 +72,12 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     func handleProcessFinished(terminationStatus: Int32) async {
         handleTerminationStatus(terminationStatus)
+
         if terminationStatus == 0 {
             await updateOutput("\nFinished running \(task.name).\n\n")
             await updateTaskStatus(to: .finished)
             updateTaskNotification(
-                title: "Finished Running: \(task.name)",
+                title: "Finished Running \(task.name)",
                 message: "",
                 isLoading: false
             )
@@ -92,7 +93,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             await updateOutput("\nFailed to run \(task.name).\n\n")
             await updateTaskStatus(to: .failed)
             updateTaskNotification(
-                title: "Failed Running: \(task.name)",
+                title: "Failed Running \(task.name)",
                 message: "",
                 isLoading: false
             )
@@ -141,7 +142,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         let userInfo: [String: Any] = [
             "id": self.task.id.uuidString,
             "action": "createWithPriority",
-            "title": "Running: \(self.task.name)",
+            "title": "Running \(self.task.name)",
             "message": "Running your task: \(self.task.name).",
             "isLoading": true
         ]

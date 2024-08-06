@@ -1,5 +1,5 @@
 //
-//  CustomLoadingRingView.swift
+//  CECircularProgressView.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 21.06.24.
@@ -7,13 +7,15 @@
 
 import SwiftUI
 
-struct CustomLoadingRingView: View {
+struct CECircularProgressView: View {
     @State private var isAnimating = false
     @State private var previousValue: Bool = false
+
     var progress: Double?
-    var currentTaskCount: Int
+    var currentTaskCount: Int = 1
 
     let lineWidth: CGFloat = 2
+
     var body: some View {
         Circle()
             .stroke(style: StrokeStyle(lineWidth: lineWidth))
@@ -22,12 +24,12 @@ struct CustomLoadingRingView: View {
                 if let progress = progress {
                     Circle()
                         .trim(from: 0, to: progress)
-                        .stroke(Color.blue.gradient, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+                        .stroke(Color.accentColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                         .animation(.easeInOut, value: progress)
                 } else {
                     Circle()
                         .trim(from: 0, to: 0.5)
-                        .stroke(Color.blue.gradient, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
+                        .stroke(Color.accentColor, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round))
                         .rotationEffect(
                             previousValue ?
                                 .degrees(isAnimating ?  0 : -360)
@@ -41,6 +43,7 @@ struct CustomLoadingRingView: View {
                 }
             }
             .rotationEffect(.degrees(-90))
+            .padding(lineWidth/2)
             .overlay {
                 if currentTaskCount > 1 {
                     Text("\(currentTaskCount)")
@@ -52,10 +55,10 @@ struct CustomLoadingRingView: View {
 
 #Preview {
     Group {
-        CustomLoadingRingView(currentTaskCount: 1)
+        CECircularProgressView(currentTaskCount: 1)
             .frame(width: 22, height: 22)
 
-        CustomLoadingRingView(progress: 0.65, currentTaskCount: 1)
+        CECircularProgressView(progress: 0.65, currentTaskCount: 1)
             .frame(width: 22, height: 22)
     }
     .padding()

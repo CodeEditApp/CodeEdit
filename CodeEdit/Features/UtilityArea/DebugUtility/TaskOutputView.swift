@@ -16,6 +16,6 @@ struct TaskOutputView: View {
                 .textSelection(.enabled)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding()
+        .padding(10)
     }
 }

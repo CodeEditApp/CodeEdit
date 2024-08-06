@@ -18,29 +18,33 @@ struct EditCETaskView: View {
     let selectedTaskIndex: Int
 
     var body: some View {
-        VStack {
-            Text("Edit Task")
+        VStack(spacing: 0) {
             CETaskFormView(task: task)
-                .padding(.top)
-
-            Spacer()
             Divider()
             HStack {
-                Button("Delete") {
+                Button(role: .destructive) {
                     workspaceSettingsManager.settings.tasks.removeAll(where: {
                         $0.id == task.id
                     })
                     try? workspaceSettingsManager.savePreferences()
                     taskManger.deleteTask(taskID: task.id)
                     self.dismiss()
+                } label: {
+                    Text("Delete")
+                        .foregroundStyle(.red)
+                        .frame(minWidth: 56)
                 }
 
                 Spacer()
 
-                Button("Done") {
+                Button {
                     try? workspaceSettingsManager.savePreferences()
                     self.dismiss()
+                } label: {
+                    Text("Done")
+                        .frame(minWidth: 56)
                 }
+                .buttonStyle(.borderedProminent)
                 .disabled(task.isInvalid)
             }
             .padding()
