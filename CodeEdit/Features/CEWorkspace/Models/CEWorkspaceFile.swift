@@ -34,17 +34,14 @@ import Combine
 final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, EditorTabRepresentable {
 
     /// The id of the ``CEWorkspaceFile``.
-    ///
     var id: String
 
     /// Returns the file name (e.g.: `Package.swift`)
-    var name: String {
-        url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
+    var name: String
 
     /// Returns the extension of the file or an empty string if no extension is present.
     var type: FileIcon.FileType {
-        let filename = url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
+        let filename = url.fileName
 
         /// First, check if there is a valid file extension.
         if let type = FileIcon.FileType(rawValue: filename) {
@@ -63,6 +60,11 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Returns the URL of the ``CEWorkspaceFile``
     let url: URL
+
+    /// Returns the resolved symlink url of this object.
+    lazy var linkedUrl: URL = {
+        url.isSymbolicLink ? url.resolvingSymlinksInPath() : url
+    }()
 
     /// Return the icon of the file as `Image`
     var icon: Image {
@@ -114,12 +116,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Returns a boolean that is true if the resource represented by this object is a directory.
     lazy var isFolder: Bool = {
-        url.isSymbolicLink ? url.resolvingSymlinksInPath().isFolder : url.isFolder
-    }()
-
-    /// Returns a boolean that is true if the resource represented by this object is a symbolic link.
-    lazy var isSymlink: Bool = {
-        url.isSymbolicLink
+        linkedUrl.isFolder
     }()
 
     /// Returns a boolean that is true if the contents of the directory at this path are
@@ -127,7 +124,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// Does not indicate if this is a folder, see ``isFolder`` to first check if this object is also a directory.
     var isEmptyFolder: Bool {
         (try? CEWorkspaceFile.fileManager.contentsOfDirectory(
-            at: isSymlink ? url.resolvingSymlinksInPath() : url,
+            at: linkedUrl,
             includingPropertiesForKeys: nil,
             options: .skipsSubdirectoryDescendants
         ).isEmpty) ?? true
@@ -169,11 +166,13 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     init(
         id: String,
+        name: String,
         url: URL,
         changeType: GitType? = nil,
         staged: Bool? = false
     ) {
         self.id = id
+        self.name = name
         self.url = url
         self.gitStatus = changeType
         self.staged = staged
@@ -186,6 +185,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     ) {
         self.init(
             id: url.relativePath,
+            name: url.fileName,
             url: url,
             changeType: changeType,
             staged: staged
@@ -194,6 +194,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     enum CodingKeys: String, CodingKey {
         case id
+        case name
         case url
         case changeType
         case staged
@@ -202,6 +203,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(String.self, forKey: .id)
+        name = try values.decode(String.self, forKey: .name)
         url = try values.decode(URL.self, forKey: .url)
         gitStatus = try values.decode(GitType.self, forKey: .changeType)
         staged = try values.decode(Bool.self, forKey: .staged)
@@ -209,6 +211,8 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
         try container.encode(url, forKey: .url)
         try container.encode(gitStatus, forKey: .changeType)
         try container.encode(staged, forKey: .staged)

@@ -215,7 +215,7 @@ final class Editor: ObservableObject, Identifiable {
 
         let contentType = item.file.url.contentType
         let codeFile = try CodeFileDocument(
-            for: item.file.url,
+            for: item.file.linkedUrl,
             // TODO: FILE CONTENTS ARE READ MULTIPLE TIMES
             withContentsOf: item.file.url,
             ofType: contentType?.identifier ?? ""
