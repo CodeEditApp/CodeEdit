@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1222,6 +1222,20 @@
 		EC0870F62A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+NSMenuDelegate.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AE9C9CE52C62C71A001E9C74 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				UtilityAreaPortsView.swift,
+			);
+			target = B658FB2B27DA9E0F00EA4DBD /* CodeEdit */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		AE9C9CE42C62C70C001E9C74 /* PortsUtility */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (AE9C9CE52C62C71A001E9C74 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = PortsUtility; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		2BE487E928245162003F3F64 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -2262,6 +2276,7 @@
 				B676606A2AA973A500CD56B0 /* TerminalUtility */,
 				B676606B2AA973B200CD56B0 /* DebugUtility */,
 				B676606C2AA973C000CD56B0 /* OutputUtility */,
+				AE9C9CE42C62C70C001E9C74 /* PortsUtility */,
 				58822514292C280D00E83CDE /* Toolbar */,
 				B676606D2AA9741900CD56B0 /* Models */,
 				58822539292C333600E83CDE /* ViewModels */,
