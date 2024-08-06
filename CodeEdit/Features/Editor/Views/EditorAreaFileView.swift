@@ -43,10 +43,10 @@ struct EditorAreaFileView: View {
             Spacer()
                 .onAppear {
                     Task.detached {
-                        let contentType = try await file.url.resourceValues(forKeys: [.contentTypeKey]).contentType
+                        let contentType = await file.linkedUrl.contentType
                         let codeFile = try await CodeFileDocument(
                             for: file.url,
-                            withContentsOf: file.url,
+                            withContentsOf: file.linkedUrl,
                             ofType: contentType?.identifier ?? ""
                         )
                         await MainActor.run {
