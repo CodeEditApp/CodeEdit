@@ -112,17 +112,21 @@ extension CodeEditWindowController {
         } else {
             let settingsWindow = NSWindow()
             self.workspaceSettingsWindow = settingsWindow
-            let contentView = CEWorkspaceSettingsView(window: settingsWindow)
-                .environmentObject(workspaceSettingsManager)
-                .environmentObject(workspace)
-                .environmentObject(taskManager)
+            let contentView = CEWorkspaceSettingsView(
+                dismiss: { [weak self, weak settingsWindow] in
+                    guard let settingsWindow else { return }
+                    self?.window?.endSheet(settingsWindow)
+                 }
+            )
+            .environmentObject(workspaceSettingsManager)
+            .environmentObject(workspace)
+            .environmentObject(taskManager)
 
-                settingsWindow.contentView = NSHostingView(rootView: contentView)
-                settingsWindow.titlebarAppearsTransparent = true
-                settingsWindow.setContentSize(NSSize(width: 515, height: 515))
-                settingsWindow.makeKeyAndOrderFront(self)
+            settingsWindow.contentView = NSHostingView(rootView: contentView)
+            settingsWindow.titlebarAppearsTransparent = true
+            settingsWindow.setContentSize(NSSize(width: 515, height: 515))
 
-            window.addCenteredChildWindow(settingsWindow, over: window)
+            window.beginSheet(settingsWindow, completionHandler: nil)
         }
     }
 }

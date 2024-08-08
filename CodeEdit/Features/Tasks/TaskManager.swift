@@ -12,6 +12,7 @@ import Combine
 class TaskManager: ObservableObject {
     @Published var activeTasks: [UUID: CEActiveTask] = [:]
     @Published var selectedTaskID: UUID?
+    @Published var taskShowingOutput: UUID?
 
     @ObservedObject var workspaceSettings: CEWorkspaceSettingsData
 
@@ -61,22 +62,27 @@ class TaskManager: ObservableObject {
     func executeActiveTask() {
         let task = workspaceSettings.tasks.first { $0.id == selectedTaskID }
         guard let task else { return }
-        runTask(task: task)
+        Task {
+            await runTask(task: task)
+        }
     }
 
-    func runTask(task: CETask) {
+    func runTask(task: CETask) async {
         // A process can only be started once, that means we have to renew the Process and Pipe
-        // but don't initialise a new object.
+        // but don't initialize a new object.
         if let activeTask = activeTasks[task.id] {
             activeTask.renew()
+            // Wait until the task is no longer running.
+            // The termination handler is asynchronous, so we avoid a race condition using this.
+            while activeTask.status == .running {
+                await Task.yield()
+            }
             activeTask.run(workspaceURL: workspaceURL)
         } else {
             let runningTask = CEActiveTask(task: task)
             runningTask.run(workspaceURL: workspaceURL)
-            Task {
-                await MainActor.run {
-                    activeTasks[task.id] = runningTask
-                }
+            await MainActor.run {
+                activeTasks[task.id] = runningTask
             }
         }
     }

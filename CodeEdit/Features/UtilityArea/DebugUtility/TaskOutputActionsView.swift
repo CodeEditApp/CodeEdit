@@ -18,7 +18,9 @@ struct TaskOutputActionsView: View {
             Spacer()
 
             Button {
-                taskManager.runTask(task: activeTask.task)
+                Task {
+                    await taskManager.runTask(task: activeTask.task)
+                }
             } label: {
                 Image(systemName: "memories")
                     .foregroundStyle(.green)

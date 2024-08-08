@@ -21,12 +21,10 @@ struct UtilityAreaView: View {
 
     @StateObject private var themeModel: ThemeModel = .shared
 
-    @State var selection: UtilityAreaTab? = .terminal
-
     var body: some View {
         VStack(spacing: 0) {
-            if let selection {
-                selection
+            if let selectedTab = utilityAreaViewModel.selectedTab {
+                selectedTab
             } else {
                 Text("Tab not found")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -34,7 +32,11 @@ struct UtilityAreaView: View {
         }
         .safeAreaInset(edge: .leading, spacing: 0) {
             HStack(spacing: 0) {
-                AreaTabBar(items: $utilityAreaViewModel.tabItems, selection: $selection, position: .side)
+                AreaTabBar(
+                    items: $utilityAreaViewModel.tabItems,
+                    selection: $utilityAreaViewModel.selectedTab,
+                    position: .side
+                )
                 Divider()
                     .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
             }

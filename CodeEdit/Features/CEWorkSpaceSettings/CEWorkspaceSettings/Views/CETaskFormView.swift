@@ -14,7 +14,7 @@ struct CETaskFormView: View {
 
     @StateObject var settingsViewModel = SettingsViewModel()
     var body: some View {
-        SettingsForm {
+        Form {
             Section {
                 TextField(text: $task.name) {
                     Text("Name")
@@ -80,7 +80,9 @@ struct CETaskFormView: View {
             } header: {
                 Text("Environment Variables")
             }
-        }.environmentObject(settingsViewModel)
+        }
+        .formStyle(.grouped)
+        .environmentObject(settingsViewModel)
     }
 
     func removeSelectedEnv() {
