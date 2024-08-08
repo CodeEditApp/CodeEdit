@@ -36,6 +36,8 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     func run(workspaceURL: URL) {
         Task {
+            // Reconstruct the full command to ensure it executes in the correct directory.
+            // Because: CETask only contains information about the relative path.
             let fullCommand = "cd \(workspaceURL.relativePath) && \(task.fullCommand)"
             guard let process, let outputPipe else { return }
 
