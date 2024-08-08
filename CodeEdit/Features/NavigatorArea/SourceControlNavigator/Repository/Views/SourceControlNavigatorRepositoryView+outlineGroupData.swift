@@ -60,6 +60,15 @@ extension SourceControlNavigatorRepositoryView {
                             label: remote.name,
                             symbolImage: "vault",
                             imageColor: .teal,
+                            children: remote.branches.map { branch in
+                                .init(
+                                    id: "Remote\(remote.name)-Branch\(branch.name)",
+                                    label: branch.name,
+                                    symbolImage: "branch",
+                                    imageColor: .blue,
+                                    branch: branch
+                                )
+                            },
                             remote: remote
                         )
                 }

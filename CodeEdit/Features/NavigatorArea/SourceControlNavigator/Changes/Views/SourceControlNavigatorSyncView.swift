@@ -12,41 +12,46 @@ struct SourceControlNavigatorSyncView: View {
     @State private var isLoading: Bool = false
 
     var body: some View {
-        HStack {
-            Label(title: {
-                Text(
-                    formatUnsyncedlabel(
-                        ahead: sourceControlManager.numberOfUnsyncedCommits.ahead,
-                        behind: sourceControlManager.numberOfUnsyncedCommits.behind
-                    )
-                )
-            }, icon: {
-                Image(systemName: "arrow.up.arrow.down")
-                    .foregroundStyle(.secondary)
-            })
-            Spacer()
-            if sourceControlManager.numberOfUnsyncedCommits.behind > 0 {
-                Button {
-                    self.pull()
-                } label: {
-                    if isLoading {
-                        Text("Pulling...")
-                    } else {
-                        Text("Pull")
-                    }
+        if let currentBranch = sourceControlManager.currentBranch {
+            HStack {
+                if currentBranch.upstream == nil {
+                    Label(title: {
+                        Text("No tracked branch for '\(sourceControlManager.currentBranch?.name ?? "")'")
+                    }, icon: {
+                        Image(symbol: "branch")
+                            .foregroundStyle(.secondary)
+                    })
+                } else {
+                    Label(title: {
+                        Text(
+                            formatUnsyncedlabel(
+                                ahead: sourceControlManager.numberOfUnsyncedCommits.ahead,
+                                behind: sourceControlManager.numberOfUnsyncedCommits.behind
+                            )
+                        )
+                    }, icon: {
+                        Image(systemName: "arrow.up.arrow.down")
+                            .foregroundStyle(.secondary)
+                    })
                 }
-                .disabled(isLoading)
-            } else if sourceControlManager.numberOfUnsyncedCommits.ahead > 0 {
-                Button {
-                    self.push()
-                } label: {
-                    if isLoading {
-                        Text("Pushing...")
-                    } else {
-                        Text("Push")
+
+                Spacer()
+                if sourceControlManager.numberOfUnsyncedCommits.behind > 0 {
+                    Button {
+                        sourceControlManager.pullSheetIsPresented = true
+                    } label: {
+                        Text("Pull...")
                     }
+                    .disabled(isLoading)
+                } else if sourceControlManager.numberOfUnsyncedCommits.ahead > 0
+                    || currentBranch.upstream == nil {
+                    Button {
+                        sourceControlManager.pushSheetIsPresented = true
+                    } label: {
+                        Text("Push...")
+                    }
+                    .disabled(isLoading)
                 }
-                .disabled(isLoading)
             }
         }
     }
