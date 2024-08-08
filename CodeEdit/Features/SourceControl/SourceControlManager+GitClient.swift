@@ -297,7 +297,13 @@ extension SourceControlManager {
     ) async throws {
         guard currentBranch != nil else { return }
 
-        try await gitClient.pushToRemote(remote: remote, branch: branch, setUpstream: setUpstream, force: force, tags: tags)
+        try await gitClient.pushToRemote(
+            remote: remote,
+            branch: branch,
+            setUpstream: setUpstream,
+            force: force,
+            tags: tags
+        )
 
         await refreshCurrentBranch()
         await self.refreshNumberOfUnsyncedCommits()
