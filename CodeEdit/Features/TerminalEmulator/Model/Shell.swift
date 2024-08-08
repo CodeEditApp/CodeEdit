@@ -77,4 +77,23 @@ enum Shell: String, CaseIterable {
         // Run the process
         try process.run()
     }
+
+    var defaultPath: String {
+        switch self {
+        case .bash:
+            "/bin/bash"
+        case .zsh:
+            "/bin/zsh"
+        }
+    }
+
+    /// Gets the default shell from the current user and returns the string of the shell path.
+    ///
+    /// If getting the user's shell does not work, defaults to `zsh`,
+    static func autoDetectDefaultShell() -> String {
+        guard let currentUser = CurrentUser.getCurrentUser() else {
+            return Self.zsh.rawValue // macOS defaults to zsh
+        }
+        return currentUser.shell
+    }
 }

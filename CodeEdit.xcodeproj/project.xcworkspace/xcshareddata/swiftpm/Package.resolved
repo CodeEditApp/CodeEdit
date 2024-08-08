@@ -1,5 +1,5 @@
 {
-  "originHash" : "a33fcca819dee4c816b1474e19017510b1d62b170c921187042e0675d3f4b0b3",
+  "originHash" : "b6e0c892d567c4fb43e4135487752085a69cf403b95ee27c28e9d213dd3bbf5c",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -13,7 +13,7 @@
     {
       "identity" : "codeeditkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditKit",
+      "location" : "https://github.com/CodeEditApp/CodeEditKit.git",
       "state" : {
         "revision" : "ad28213a968586abb0cb21a8a56a3587227895f1",
         "version" : "0.1.2"
@@ -220,10 +220,9 @@
     {
       "identity" : "swiftterm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/migueldeicaza/SwiftTerm.git",
+      "location" : "https://github.com/migueldeicaza/SwiftTerm",
       "state" : {
-        "revision" : "55e7cdbeb3f41c80cce7b8a29ce9d17e214b2e77",
-        "version" : "1.2.0"
+        "revision" : "e9cfa440cc4f788fd732e948885c0e9154551024"
       }
     },
     {

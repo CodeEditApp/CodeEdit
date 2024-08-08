@@ -7,28 +7,6 @@
 
 import SwiftUI
 
-final class UtilityAreaTerminal: ObservableObject, Identifiable, Equatable {
-    let id: UUID
-    @Published var url: URL?
-    @Published var title: String
-    @Published var terminalTitle: String
-    @Published var shell: String
-    @Published var customTitle: Bool
-
-    init(id: UUID, url: URL, title: String, shell: String) {
-        self.id = id
-        self.title = title
-        self.terminalTitle = title
-        self.url = url
-        self.shell = shell
-        self.customTitle = false
-    }
-
-    static func == (lhs: UtilityAreaTerminal, rhs: UtilityAreaTerminal) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
 struct UtilityAreaTerminalView: View {
     @AppSettings(\.theme.matchAppearance)
     private var matchAppearance
@@ -52,36 +30,6 @@ struct UtilityAreaTerminalView: View {
 
     @State private var popoverSource: CGRect = .zero
 
-    private func initializeTerminals() {
-        let id = UUID()
-
-        utilityAreaViewModel.terminals = [
-            UtilityAreaTerminal(
-                id: id,
-                url: workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
-                title: "terminal",
-                shell: ""
-            )
-        ]
-
-        utilityAreaViewModel.selectedTerminals = [id]
-    }
-
-    private func addTerminal(shell: String? = nil) {
-        let id = UUID()
-
-        utilityAreaViewModel.terminals.append(
-            UtilityAreaTerminal(
-                id: id,
-                url: URL(filePath: "\(id)"),
-                title: "terminal",
-                shell: shell ?? ""
-            )
-        )
-
-        utilityAreaViewModel.selectedTerminals = [id]
-    }
-
     private func getTerminal(_ id: UUID) -> UtilityAreaTerminal? {
         return utilityAreaViewModel.terminals.first(where: { $0.id == id }) ?? nil
     }
@@ -97,36 +45,48 @@ struct UtilityAreaTerminalView: View {
         return .windowBackgroundColor
     }
 
-    func moveItems(from source: IndexSet, to destination: Int) {
+    /// Reorders terminals in the ``utilityAreaViewModel``.
+    /// - Parameters:
+    ///   - source: The source indices.
+    ///   - destination: The destination indices.
+    private func moveItems(from source: IndexSet, to destination: Int) {
         utilityAreaViewModel.terminals.move(fromOffsets: source, toOffset: destination)
+    }
+
+    /// Finds the selected terminal.
+    /// - Returns: The selected terminal.
+    private func getSelectedTerminal() -> UtilityAreaTerminal? {
+        guard let selectedTerminalID = utilityAreaViewModel.selectedTerminals.first else {
+            return nil
+        }
+        return utilityAreaViewModel.terminals.first(where: { $0.id == selectedTerminalID })
     }
 
     var body: some View {
         UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { tabState in
-            ZStack {
-                if utilityAreaViewModel.selectedTerminals.isEmpty {
-                    CEContentUnavailableView("No Selection")
-                }
-                ForEach(utilityAreaViewModel.terminals) { terminal in
+            Group {
+                if let selectedTerminal = getSelectedTerminal() {
                     TerminalEmulatorView(
-                        url: terminal.url!,
-                        shellType: terminal.shell,
-                        onTitleChange: { [weak terminal] newTitle in
-                            guard let id = terminal?.id else { return }
+                        url: selectedTerminal.url,
+                        terminalID: selectedTerminal.id,
+                        shellType: selectedTerminal.shell,
+                        onTitleChange: { [weak selectedTerminal] newTitle in
+                            guard let id = selectedTerminal?.id else { return }
                             // This can be called whenever, even in a view update so it needs to be dispatched.
                             DispatchQueue.main.async { [weak utilityAreaViewModel] in
                                 utilityAreaViewModel?.updateTerminal(id, title: newTitle)
                             }
                         }
                     )
+                    .id(selectedTerminal.id)
                     .padding(.top, 10)
                     .padding(.horizontal, 10)
                     .contentShape(Rectangle())
-                    .disabled(terminal.id != utilityAreaViewModel.selectedTerminals.first)
-                    .opacity(terminal.id == utilityAreaViewModel.selectedTerminals.first ? 1 : 0)
+                } else {
+                    CEContentUnavailableView("No Selection")
                 }
             }
-            .paneToolbar {
+            .paneToolbar(showDivider: true) {
                 PaneToolbarSection {
                     UtilityAreaTerminalPicker(
                         selectedIDs: $utilityAreaViewModel.selectedTerminals,
@@ -137,15 +97,20 @@ struct UtilityAreaTerminalView: View {
                 Spacer()
                 PaneToolbarSection {
                     Button {
-                        // clear logs
+                        guard let id = getSelectedTerminal()?.id else { return }
+                        TerminalCache.shared.getTerminalView(id)?.getTerminal().resetToInitialState()
                     } label: {
                         Image(systemName: "trash")
                     }
+                    .help("Reset the terminal")
+                    .disabled(getSelectedTerminal() == nil)
                     Button {
                         // split terminal
                     } label: {
                         Image(systemName: "square.split.2x1")
                     }
+                    .help("Implementation Needed")
+                    .disabled(true)
                 }
             }
             .background {
@@ -187,30 +152,29 @@ struct UtilityAreaTerminalView: View {
             .accentColor(.secondary)
             .contextMenu {
                 Button("New Terminal") {
-                    addTerminal()
+                    utilityAreaViewModel.addTerminal(workspace: workspace)
                 }
                 Menu("New Terminal With Profile") {
                     Button("Default") {
-                        addTerminal()
+                        utilityAreaViewModel.addTerminal(workspace: workspace)
                     }
                     Divider()
-                    Button("Bash") {
-                        addTerminal(shell: "/bin/bash")
-                    }
-                    Button("ZSH") {
-                        addTerminal(shell: "/bin/zsh")
+                    ForEach(Shell.allCases, id: \.self) { shell in
+                        Button(shell.rawValue) {
+                            utilityAreaViewModel.addTerminal(shell: shell, workspace: workspace)
+                        }
                     }
                 }
             }
             .onChange(of: utilityAreaViewModel.terminals) { newValue in
                 if newValue.isEmpty {
-                    addTerminal()
+                    utilityAreaViewModel.addTerminal(workspace: workspace)
                 }
             }
             .paneToolbar {
                 PaneToolbarSection {
                     Button {
-                        addTerminal()
+                        utilityAreaViewModel.addTerminal(workspace: workspace)
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -225,7 +189,9 @@ struct UtilityAreaTerminalView: View {
                 Spacer()
             }
         }
-        .onAppear(perform: initializeTerminals)
+        .onAppear {
+            utilityAreaViewModel.initializeTerminals(workspace)
+        }
     }
 }
 
