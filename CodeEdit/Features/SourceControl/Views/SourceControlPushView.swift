@@ -75,7 +75,9 @@ struct SourceControlPushView: View {
                 try await sourceControlManager.push(
                     remote: sourceControlManager.operationRemote?.name ?? nil,
                     branch: sourceControlManager.operationBranch?.name ?? nil,
-                    setUpstream: sourceControlManager.currentBranch?.upstream == nil
+                    setUpstream: sourceControlManager.currentBranch?.upstream == nil,
+                    force: sourceControlManager.operationForce,
+                    tags: sourceControlManager.operationIncludeTags
                 )
                 self.loading = false
                 dismiss()
