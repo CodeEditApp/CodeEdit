@@ -23,20 +23,10 @@ extension SourceControlNavigatorRepositoryView {
         }
     }
 
-    func handleCheckout(_ branch: GitBranch) {
-        Task {
-            do {
-                try await sourceControlManager.checkoutBranch(branch: branch)
-            } catch {
-                await sourceControlManager.showAlertForError(title: "Failed to checkout", error: error)
-            }
-        }
-    }
-
     @ViewBuilder
     func contextMenu(for item: RepoOutlineGroupItem, branch: GitBranch) -> some View {
-        Button("Checkout") {
-            handleCheckout(branch)
+        Button("Switch...") {
+            sourceControlManager.switchToBranch = branch
         }
         .disabled(item.branch == nil || sourceControlManager.currentBranch == item.branch)
         Divider()
@@ -57,10 +47,10 @@ extension SourceControlNavigatorRepositoryView {
             showRenameBranch = true
             fromBranch = item.branch
         }
-        .disabled(item.branch == nil)
+        .disabled(item.branch == nil || item.branch?.isRemote == true)
         Divider()
         Button("Add Existing Remote...") {
-            addRemoteIsPresented = true
+            sourceControlManager.addExistingRemoteSheetIsPresented = true
         }
         .disabled(item.id != "RemotesGroup")
         Divider()

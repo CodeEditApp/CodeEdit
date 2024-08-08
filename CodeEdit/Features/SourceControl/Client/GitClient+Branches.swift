@@ -9,13 +9,19 @@ import Foundation
 
 extension GitClient {
     /// Get branches
+    /// - Parameter remote: If passed, fetches branches for the specified remote
     /// - Returns: Array of branches
-    func getBranches() async throws -> [GitBranch] {
-        let command = "branch --format \"%(refname:short)|%(refname)|%(upstream:short) %(upstream:track)\" -a"
+    func getBranches(remote: String? = nil) async throws -> [GitBranch] {
+        var command = "branch --format \"%(refname:short)|%(refname)|%(upstream:short) %(upstream:track)\""
+        if remote != nil {
+            command += " -r"
+        } else {
+            command += " -a"
+        }
 
         return try await run(command)
             .components(separatedBy: "\n")
-            .filter { $0 != "" && !$0.contains("HEAD") }
+            .filter { $0 != "" && !$0.contains("HEAD") && (remote == nil || $0.starts(with: "\(remote ?? "")/")) }
             .compactMap { line in
                 guard let branchPart = line.components(separatedBy: " ").first else { return nil }
                 let branchComponents = branchPart.components(separatedBy: "|")
@@ -27,8 +33,8 @@ extension GitClient {
                     .trimmingCharacters(in: .whitespacesWithoutNewlines)
                 let trackInfo = parseBranchTrackInfo(from: trackInfoString)
 
-                return .init(
-                    name: name,
+                return GitBranch(
+                    name: remote != nil ? extractBranchName(from: name, with: remote ?? "") : name,
                     longName: branchComponents[safe: 1] ?? name,
                     upstream: upstream?.isEmpty == true ? nil : upstream,
                     ahead: trackInfo.ahead,
@@ -72,15 +78,6 @@ extension GitClient {
         _ = try await run("branch -d \(branch.name)")
     }
 
-    /// Create new branch
-    func newBranch(name: String, from: GitBranch) async throws {
-        if !from.isLocal {
-            return
-        }
-
-        _ = try await run("checkout -b \(name) \(from.name)")
-    }
-
     /// Rename branch
     /// - Parameter from: Name of the branch to rename
     /// - Parameter to: New name for branch
@@ -90,15 +87,18 @@ extension GitClient {
 
     /// Checkout branch
     /// - Parameter branch: Branch to checkout
-    func checkoutBranch(_ branch: GitBranch, forceLocal: Bool = false) async throws {
+    func checkoutBranch(_ branch: GitBranch, forceLocal: Bool = false, newName: String? = nil) async throws {
         var command = "checkout "
 
-        // If branch is remote, try to create local branch
-        if branch.isRemote {
-            let localName = branch.name.replacingOccurrences(of: "origin/", with: "")
-            command += forceLocal ? localName : "-b " + localName + " " + branch.name
+        let targetName = newName ?? branch.name
+
+        if (branch.isRemote && !forceLocal) || newName != nil {
+            let sourceBranch = branch.isRemote
+                ? branch.longName.replacingOccurrences(of: "refs/remotes/", with: "")
+                : branch.name
+            command += "-b \(targetName) \(sourceBranch)"
         } else {
-            command += branch.name
+            command += targetName
         }
 
         do {
@@ -111,8 +111,10 @@ extension GitClient {
             // try to switch to local branch
             if let error = error as? GitClientError,
                branch.isRemote,
-               error.localizedDescription.contains("already exists") {
+               error.description.contains("already exists") {
                 try await checkoutBranch(branch, forceLocal: true)
+            } else {
+                print(error)
             }
         }
     }
@@ -147,4 +149,17 @@ extension GitClient {
         }
         return (ahead, behind)
     }
+
+    private func extractBranchName(from fullBranchName: String, with remoteName: String) -> String {
+        // Ensure the fullBranchName starts with the remoteName followed by a slash
+        let prefix = "\(remoteName)/"
+        if fullBranchName.hasPrefix(prefix) {
+            // Remove the remoteName and the slash to get the branch name
+            return String(fullBranchName.dropFirst(prefix.count))
+        } else {
+            // If the fullBranchName does not start with the expected remoteName, return it unchanged
+            return fullBranchName
+        }
+    }
+
 }
