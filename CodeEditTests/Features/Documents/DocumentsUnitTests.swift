@@ -22,7 +22,7 @@ final class DocumentsUnitTests: XCTestCase {
         super.setUp()
         hapticFeedbackPerformerMock = NSHapticFeedbackPerformerMock()
         navigatorViewModel = .init()
-        workspace.taskManager = TaskManager(workspaceSettings: .init())
+        workspace.taskManager = TaskManager(workspaceSettings: CEWorkspaceSettingsData())
         window = NSWindow()
         splitViewController = .init(
             workspace: workspace,
