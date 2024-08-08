@@ -44,8 +44,19 @@ class FileSystemTableViewCell: StandardTableViewCell {
     }
 
     func addModel() {
-        secondaryLabel?.stringValue = fileItem?.gitStatus?.description ?? ""
-        if secondaryLabel?.stringValue == "?" { secondaryLabel?.stringValue = "A" }
+        guard let fileItem = fileItem, let secondaryLabel = secondaryLabel else {
+            return
+        }
+
+        if fileItem.url.isSymbolicLink { secondaryLabel.stringValue = "􀰞" }
+
+        guard let gitStatus = fileItem.gitStatus?.description else {
+            return
+        }
+
+        if gitStatus == "?" { secondaryLabel.stringValue += "A" } else {
+            secondaryLabel.stringValue += gitStatus
+        }
     }
 
     /// *Not Implemented*

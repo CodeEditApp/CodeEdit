@@ -23,6 +23,8 @@ struct EditorAreaView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
+    @State var codeFile: CodeFileDocument?
+
     var body: some View {
         var shouldShowTabBar: Bool {
             return navigationStyle == .openInTabs
@@ -40,15 +42,36 @@ struct EditorAreaView: View {
 
         VStack {
             if let selected = editor.selectedTab {
-                EditorAreaFileView(
-                    file: selected.file,
-                    textViewCoordinators: [selected.rangeTranslator].compactMap({ $0 })
-                )
-                .focusedObject(editor)
-                .transformEnvironment(\.edgeInsets) { insets in
-                    insets.top += editorInsetAmount
+                if let codeFile = codeFile {
+                    EditorAreaFileView(
+                        codeFile: codeFile,
+                        textViewCoordinators: [selected.rangeTranslator].compactMap({ $0 })
+                    )
+                    .focusedObject(editor)
+                    .transformEnvironment(\.edgeInsets) { insets in
+                        insets.top += editorInsetAmount
+                    }
+                    .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
+                } else {
+                    LoadingFileView(selected.file.name)
+                        .task {
+                            do {
+                                let contentType = selected.file.linkedUrl.contentType
+                                let newCodeFile = try CodeFileDocument(
+                                    for: selected.file.url,
+                                    withContentsOf: selected.file.linkedUrl,
+                                    ofType: contentType?.identifier ?? ""
+                                )
+
+                                selected.file.fileDocument = newCodeFile
+                                CodeEditDocumentController.shared.addDocument(newCodeFile)
+                                self.codeFile = newCodeFile
+                            } catch {
+                                print(error.localizedDescription)
+                            }
+                        }
                 }
-                .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
+
             } else {
                 CEContentUnavailableView("No Editor")
                     .padding(.top, editorInsetAmount)
@@ -94,6 +117,9 @@ struct EditorAreaView: View {
             if newValue == .openInPlace && editor.tabs.count == 1 {
                 editor.temporaryTab = editor.tabs[0]
             }
+        }
+        .onChange(of: editor.selectedTab) { newValue in
+            codeFile = newValue?.file.fileDocument
         }
     }
 }
