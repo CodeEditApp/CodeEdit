@@ -100,6 +100,7 @@
 		30E6D0012A6E505200A58B20 /* NavigatorSidebarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */; };
 		3E0196732A3921AC002648D8 /* codeedit_shell_integration_rc.zsh in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196722A3921AC002648D8 /* codeedit_shell_integration_rc.zsh */; };
 		3E01967A2A392B45002648D8 /* codeedit_shell_integration.bash in Resources */ = {isa = PBXBuildFile; fileRef = 3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */; };
+		4A292E5C2C4D9B1800A81ADC /* QuickLookPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A292E5B2C4D9B0600A81ADC /* QuickLookPreviewController.swift */; };
 		4E7F066629602E7B00BB3C12 /* CodeEditSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */; };
 		4EE96ECB2960565E00FFBEA8 /* DocumentsUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */; };
 		4EE96ECE296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EE96ECD296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift */; };
@@ -754,6 +755,7 @@
 		30E6D0002A6E505200A58B20 /* NavigatorSidebarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorSidebarViewModel.swift; sourceTree = "<group>"; };
 		3E0196722A3921AC002648D8 /* codeedit_shell_integration_rc.zsh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = codeedit_shell_integration_rc.zsh; sourceTree = "<group>"; };
 		3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = codeedit_shell_integration.bash; sourceTree = "<group>"; };
+		4A292E5B2C4D9B0600A81ADC /* QuickLookPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookPreviewController.swift; sourceTree = "<group>"; };
 		4E7F066529602E7B00BB3C12 /* CodeEditSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditSplitViewController.swift; sourceTree = "<group>"; };
 		4EE96ECA2960565E00FFBEA8 /* DocumentsUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentsUnitTests.swift; sourceTree = "<group>"; };
 		4EE96ECD296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSHapticFeedbackPerformerMock.swift; sourceTree = "<group>"; };
@@ -1410,6 +1412,7 @@
 		285FEC6C27FE4AC700E57D53 /* OutlineView */ = {
 			isa = PBXGroup;
 			children = (
+				4A292E5B2C4D9B0600A81ADC /* QuickLookPreviewController.swift */,
 				2847019D27FDDF7600F87B6B /* ProjectNavigatorOutlineView.swift */,
 				285FEC6D27FE4B4A00E57D53 /* ProjectNavigatorViewController.swift */,
 				6CC17B522C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift */,
@@ -4071,6 +4074,7 @@
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
 				581550D029FBD30400684881 /* FileSystemTableViewCell.swift in Sources */,
 				B607183F2B17DB07009CDAB4 /* SourceControlNavigatorRepositoryView+contextMenu.swift in Sources */,
+				4A292E5C2C4D9B1800A81ADC /* QuickLookPreviewController.swift in Sources */,
 				B62AEDD42A27B29F009A9F52 /* PaneToolbar.swift in Sources */,
 				617DB3D32C25AFEA00B58BFE /* TaskNotificationModel.swift in Sources */,
 				D7E201B227E8D50000CB86D0 /* FindNavigatorForm.swift in Sources */,

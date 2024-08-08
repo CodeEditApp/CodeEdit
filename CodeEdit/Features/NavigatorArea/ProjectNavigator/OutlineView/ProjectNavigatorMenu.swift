@@ -62,7 +62,7 @@ final class ProjectNavigatorMenu: NSMenu {
 
         let trash = menuItem("Move to Trash", action:
                                 item.url != workspace?.workspaceFileManager?.folderUrl
-                              ? #selector(trash) : nil)
+                             ? #selector(trash) : nil)
 
         // trash has to be the previous menu item for delete.isAlternate to work correctly
         let delete = menuItem("Delete Immediately...", action:
@@ -121,7 +121,9 @@ final class ProjectNavigatorMenu: NSMenu {
             }
             var primaryItems = [NSMenuItem]()
             if type.conforms(to: .sourceCode) {
-                primaryItems.append(.sourceCode())
+                primaryItems.append(
+                    menuItem("Source Code", action: #selector(openInSourceCode))
+                )
             }
             if type.conforms(to: .propertyList) {
                 primaryItems.append(.propertyList())
@@ -141,10 +143,7 @@ final class ProjectNavigatorMenu: NSMenu {
                 secondaryItems.append(.hex())
             }
 
-            // FIXME: Update the quickLook condition
-            if type.conforms(to: .data) {
-                secondaryItems.append(.quickLook())
-            }
+            secondaryItems.append(QuickLookPreviewController.quickLookMenu(item: item, workspace: workspace))
 
             return (primaryItems, secondaryItems)
         }
@@ -252,11 +251,21 @@ final class ProjectNavigatorMenu: NSMenu {
         workspace?.workspaceFileManager?.delete(file: item)
     }
 
-    /// Action that duplicates the item
+    /// Action that duplicates the item.
     @objc
     private func duplicate() {
         guard let item else { return }
         workspace?.workspaceFileManager?.duplicate(file: item)
+    }
+
+    /// Action that opens the file in Source Code.
+    @objc
+    private func openInSourceCode() {
+        guard let item else { return }
+        item.isOpeningInQuickLook = false
+        guard let workspace,
+                let editorManager = workspace.editorManager else { return }
+        editorManager.openTab(item: item)
     }
 }
 
@@ -265,10 +274,6 @@ extension NSMenuItem {
         let item = NSMenuItem(title: "<None>", action: nil, keyEquivalent: "")
         item.isEnabled = false
         return item
-    }
-
-    fileprivate static func sourceCode() -> NSMenuItem {
-        NSMenuItem(title: "Source Code", action: nil, keyEquivalent: "")
     }
 
     fileprivate static func propertyList() -> NSMenuItem {
@@ -281,9 +286,5 @@ extension NSMenuItem {
 
     fileprivate static func hex() -> NSMenuItem {
         NSMenuItem(title: "Hex", action: nil, keyEquivalent: "")
-    }
-
-    fileprivate static func quickLook() -> NSMenuItem {
-        NSMenuItem(title: "Quick Look", action: nil, keyEquivalent: "")
     }
 }

@@ -2,21 +2,16 @@
 //  AnyFileView.swift
 //  CodeEdit
 //
-//  Created by Paul Ebose on 2024/5/9.
+//  Created by Leonardo Larrañaga on 7/10/24.
 //
 
 import SwiftUI
 import QuickLookUI
 
-/// A view for previewing any kind of file.
-///
-/// ```swift
-/// AnyFileView(fileURL)
-/// ```
-/// If the file cannot be previewed, a file icon thumbnail is shown instead.
+/// A view to preview any file using Quick Look.
+/// ` AnyFileView(fileURL) `
 struct AnyFileView: NSViewRepresentable {
 
-    /// URL of the file to preview. You can pass in any file type.
     private let fileURL: URL
 
     init(_ fileURL: URL) {
@@ -24,13 +19,12 @@ struct AnyFileView: NSViewRepresentable {
     }
 
     func makeNSView(context: Context) -> QLPreviewView {
-        let qlPreviewView = QLPreviewView()
-        qlPreviewView.previewItem = fileURL as any QLPreviewItem
-        return qlPreviewView
+        let previewView = QLPreviewView(frame: .zero, style: .normal)!
+        previewView.previewItem = fileURL as QLPreviewItem
+        return previewView
     }
 
-    func updateNSView(_ qlPreviewView: QLPreviewView, context: Context) {
-        qlPreviewView.previewItem = fileURL as any QLPreviewItem
+    func updateNSView(_ nsView: QLPreviewView, context: Context) {
+        nsView.previewItem = fileURL as QLPreviewItem
     }
-
 }
