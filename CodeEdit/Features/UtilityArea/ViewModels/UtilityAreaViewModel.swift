@@ -34,9 +34,11 @@ class UtilityAreaViewModel: ObservableObject {
     @Published var tabViewModel = UtilityAreaTabViewModel()
 
     func removeTerminals(_ ids: Set<UUID>) {
-        terminals.removeAll(where: { terminal in
-            ids.contains(terminal.id)
-        })
+        for (idx, terminal) in terminals.lazy.reversed().enumerated()
+        where ids.contains(terminal.id) {
+            TerminalCache.shared.removeCachedView(terminal.id)
+            terminals.remove(at: idx)
+        }
 
         selectedTerminals = [terminals.last?.id ?? UUID()]
     }
@@ -74,5 +76,32 @@ class UtilityAreaViewModel: ObservableObject {
         } else {
             terminal.customTitle = false
         }
+    }
+
+    /// Create a new terminal if there are no existing terminals.
+    /// Will not perform any action if terminals exist in the ``terminals`` array.
+    /// - Parameter workspace: The workspace to use to find the default path.
+    func initializeTerminals(_ workspace: WorkspaceDocument) {
+        guard terminals.isEmpty else { return }
+        addTerminal(shell: nil, workspace: workspace)
+    }
+
+    /// Add a new terminal to the workspace and selects it.
+    /// - Parameters:
+    ///   - shell: The shell to use, `nil` if auto-detect the default shell.
+    ///   - workspace: The workspace to use to find the default path.
+    func addTerminal(shell: Shell? = nil, workspace: WorkspaceDocument) {
+        let id = UUID()
+
+        terminals.append(
+            UtilityAreaTerminal(
+                id: id,
+                url: workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
+                title: "terminal",
+                shell: shell
+            )
+        )
+
+        selectedTerminals = [id]
     }
 }
