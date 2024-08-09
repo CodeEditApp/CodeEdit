@@ -12,7 +12,7 @@ struct ThemeSettingsColorPreview: View {
 
     @StateObject private var themeModel: ThemeModel = .shared
 
-    @State private var displayName: String
+    @State private var displayName: String = .Empty
 
     init(_ theme: Theme) {
         self.theme = theme
