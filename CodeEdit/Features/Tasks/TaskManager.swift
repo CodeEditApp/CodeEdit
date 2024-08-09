@@ -79,15 +79,15 @@ class TaskManager: ObservableObject {
         } else {
             let runningTask = CEActiveTask(task: task)
             runningTask.run()
-            await MainActor.run {
-                activeTasks[task.id] = runningTask
+            await MainActor.run { [weak self] in
+                self?.activeTasks[task.id] = runningTask
             }
         }
     }
 
     private func createRunningTask(taskID: UUID, runningTask: CEActiveTask) async {
-        await MainActor.run {
-            activeTasks[taskID] = runningTask
+        await MainActor.run { [weak self] in
+            self?.activeTasks[taskID] = runningTask
         }
     }
 
