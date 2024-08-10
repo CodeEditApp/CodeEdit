@@ -54,9 +54,8 @@ class UtilityAreaViewModel: ObservableObject {
     }
 
     func togglePanel() {
-        withAnimation {
-            self.isCollapsed.toggle()
-        }
+        self.isMaximized = false
+        self.isCollapsed.toggle()
     }
 
     /// Update a terminal's title.
