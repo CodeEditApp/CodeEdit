@@ -92,7 +92,9 @@ struct WorkspaceView: View {
                                 .offset(y: utilityAreaViewModel.isMaximized ? 0 : editorsHeight + 1)
                             VStack(spacing: 0) {
                                 StatusBarView(proxy: proxy)
+                                if utilityAreaViewModel.isMaximized {
                                     PanelDivider()
+                                }
                             }
                             .offset(y: utilityAreaViewModel.isMaximized ? 0 : editorsHeight - statusbarHeight)
                         }
