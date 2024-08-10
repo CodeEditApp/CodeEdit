@@ -48,14 +48,6 @@ struct SourceControlNavigatorTabs: View {
             .frame(maxWidth: .infinity)
             .frame(height: 27)
             .padding(.horizontal, 8)
-            .task {
-                do {
-                    try await sourceControlManager.refreshRemotes()
-                    try await sourceControlManager.refreshStashEntries()
-                } catch {
-                    await sourceControlManager.showAlertForError(title: "Error refreshing Git data", error: error)
-                }
-            }
             Divider()
             if selectedSection == 0 {
                 SourceControlNavigatorChangesView()
