@@ -36,7 +36,7 @@ struct WorkspaceView: View {
     private var keybindings: KeybindingManager =  .shared
 
     var body: some View {
-        if workspace.workspaceFileManager != nil {
+        if workspace.workspaceFileManager != nil, let sourceControlManager = workspace.sourceControlManager {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
@@ -110,6 +110,16 @@ struct WorkspaceView: View {
                     }
                     .task {
                         themeModel.colorScheme = colorScheme
+
+                        do {
+                            try await sourceControlManager.refreshRemotes()
+                            try await sourceControlManager.refreshStashEntries()
+                        } catch {
+                            await sourceControlManager.showAlertForError(
+                                title: "Error refreshing Git data",
+                                error: error
+                            )
+                        }
                     }
                     .onChange(of: colorScheme) { newValue in
                         themeModel.colorScheme = newValue
@@ -117,6 +127,17 @@ struct WorkspaceView: View {
                             themeModel.selectedTheme = newValue == .dark
                             ? themeModel.selectedDarkTheme
                             : themeModel.selectedLightTheme
+                        }
+                    }
+                    .onChange(of: focusedEditor) { newValue in
+                        /// Update active tab group only if the new one is not the same with it.
+                        if let newValue, editorManager.activeEditor != newValue {
+                            editorManager.activeEditor = newValue
+                        }
+                    }
+                    .onChange(of: editorManager.activeEditor) { newValue in
+                        if newValue != focusedEditor {
+                            focusedEditor = newValue
                         }
                     }
                     .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { output in
@@ -130,6 +151,7 @@ struct WorkspaceView: View {
                 }
             }
             .background(EffectView(.contentBackground))
+            .background(WorkspaceSheets().environmentObject(sourceControlManager))
             .accessibilityElement(children: .contain)
             .accessibilityLabel("workspace area")
         }

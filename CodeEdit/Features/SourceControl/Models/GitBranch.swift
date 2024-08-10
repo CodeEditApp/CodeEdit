@@ -7,12 +7,16 @@
 
 import Foundation
 
-struct GitBranch: Hashable {
+struct GitBranch: Hashable, Identifiable {
     let name: String
     let longName: String
     let upstream: String?
     let ahead: Int
     let behind: Int
+
+    var id: String {
+        longName
+    }
 
     /// Is local branch
     var isLocal: Bool {

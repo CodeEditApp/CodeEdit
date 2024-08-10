@@ -10,8 +10,6 @@ import SwiftUI
 struct SourceControlNavigatorNoRemotesView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
-    @State private var addRemoteIsPresented: Bool = false
-
     var body: some View {
         VStack(spacing: 0) {
             HStack {
@@ -25,10 +23,7 @@ struct SourceControlNavigatorNoRemotesView: View {
                 )
                 Spacer()
                 Button("Add") {
-                    addRemoteIsPresented = true
-                }
-                .sheet(isPresented: $addRemoteIsPresented) {
-                    SourceControlAddRemoteView()
+                    sourceControlManager.addExistingRemoteSheetIsPresented = true
                 }
             }
         }

@@ -9,10 +9,13 @@ import Foundation
 
 extension GitClient {
     /// Push changes to remote
-    func pushToRemote(upstream: String? = nil) async throws {
+    func pushToRemote(remote: String? = nil, branch: String? = nil, setUpstream: Bool? = false ) async throws {
         var command = "push"
-        if let upstream {
-            command += " --set-upstream origin \(upstream)"
+        if let remote, let branch {
+            if setUpstream == true {
+                command += " --set-upstream"
+            }
+            command += " \(remote) \(branch)"
         }
 
         let output = try await self.run(command)
