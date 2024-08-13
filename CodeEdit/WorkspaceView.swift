@@ -48,7 +48,6 @@ struct WorkspaceView: View {
                                     : editorManager.editorLayout,
                                     focus: $focusedEditor
                                 )
-
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .onChange(of: geo.size.height) { newHeight in
                                     editorsHeight = newHeight
