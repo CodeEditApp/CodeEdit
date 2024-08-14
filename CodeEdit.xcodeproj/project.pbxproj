@@ -339,6 +339,7 @@
 		61A3E3E72C33383100076BD3 /* EnvironmentVariableListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3E3E62C33383100076BD3 /* EnvironmentVariableListItem.swift */; };
 		61A53A7E2B4449870093BF8A /* WorkspaceDocument+Find.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A53A7D2B4449870093BF8A /* WorkspaceDocument+Find.swift */; };
 		61A53A812B4449F00093BF8A /* WorkspaceDocument+Index.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */; };
+		61C7E82F2C6CDBA500845336 /* Theme+FuzzySearchable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C7E82E2C6CDBA500845336 /* Theme+FuzzySearchable.swift */; };
 		61FB03AC2C3C1FDF001B3671 /* ShellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FB03AB2C3C1FDF001B3671 /* ShellTests.swift */; };
 		61FB03AE2C3C2493001B3671 /* CEActiveTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FB03AD2C3C2493001B3671 /* CEActiveTaskTests.swift */; };
 		61FB03B02C3C76AF001B3671 /* TaskManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61FB03AF2C3C76AF001B3671 /* TaskManagerTests.swift */; };
@@ -990,6 +991,7 @@
 		61A3E3E62C33383100076BD3 /* EnvironmentVariableListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentVariableListItem.swift; sourceTree = "<group>"; };
 		61A53A7D2B4449870093BF8A /* WorkspaceDocument+Find.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Find.swift"; sourceTree = "<group>"; };
 		61A53A802B4449F00093BF8A /* WorkspaceDocument+Index.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+Index.swift"; sourceTree = "<group>"; };
+		61C7E82E2C6CDBA500845336 /* Theme+FuzzySearchable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Theme+FuzzySearchable.swift"; sourceTree = "<group>"; };
 		61D435CB2C29699800D032B8 /* TaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
 		61D435CD2C2969C300D032B8 /* CEActiveTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEActiveTask.swift; sourceTree = "<group>"; };
 		61D435D12C2969D800D032B8 /* CETaskStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CETaskStatus.swift; sourceTree = "<group>"; };
@@ -3302,6 +3304,22 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		B6966A262C2F673A00259C2D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B6BF41412C2C672A003AB4B3 /* SourceControlPushView.swift */,
+				B6966A272C2F683300259C2D /* SourceControlPullView.swift */,
+				B607184B2B17E037009CDAB4 /* SourceControlStashView.swift */,
+				B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */,
+				B67431CB2C3E45F30047FCA6 /* SourceControlSwitchView.swift */,
+				B65B10F42B081A0C002852CF /* SourceControlAddExistingRemoteView.swift */,
+				041FC6AC2AE437CE00C1F65A /* SourceControlNewBranchView.swift */,
+				B60718362B170638009CDAB4 /* SourceControlRenameBranchView.swift */,
+				B6966A2F2C33282200259C2D /* RemoteBranchPicker.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		B69D3EDC2C5E856F005CF43A /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -3318,22 +3336,6 @@
 				61D435D12C2969D800D032B8 /* CETaskStatus.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		B6966A262C2F673A00259C2D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B6BF41412C2C672A003AB4B3 /* SourceControlPushView.swift */,
-				B6966A272C2F683300259C2D /* SourceControlPullView.swift */,
-				B607184B2B17E037009CDAB4 /* SourceControlStashView.swift */,
-				B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */,
-				B67431CB2C3E45F30047FCA6 /* SourceControlSwitchView.swift */,
-				B65B10F42B081A0C002852CF /* SourceControlAddExistingRemoteView.swift */,
-				041FC6AC2AE437CE00C1F65A /* SourceControlNewBranchView.swift */,
-				B60718362B170638009CDAB4 /* SourceControlRenameBranchView.swift */,
-				B6966A2F2C33282200259C2D /* RemoteBranchPicker.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		B6AB09AB2AAACBF70003A3A6 /* Tabs */ = {
@@ -3492,6 +3494,7 @@
 				B6EA1FE429DA33DB001BF195 /* ThemeModel.swift */,
 				B624232F2C21EE280096668B /* ThemeModel+CRUD.swift */,
 				B6EA1FE629DA341D001BF195 /* Theme.swift */,
+				61C7E82E2C6CDBA500845336 /* Theme+FuzzySearchable.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4146,6 +4149,7 @@
 				30AB4EBD2BF71CA800ED4431 /* DeveloperSettingsView.swift in Sources */,
 				6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */,
 				30B087FF2C0D53080063A882 /* LanguageServer+Completion.swift in Sources */,
+				61C7E82F2C6CDBA500845336 /* Theme+FuzzySearchable.swift in Sources */,
 				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
 				B60718462B17DC15009CDAB4 /* RepoOutlineGroupItem.swift in Sources */,
 				613899B32B6E6FEE00A5CAF6 /* FuzzySearchable.swift in Sources */,

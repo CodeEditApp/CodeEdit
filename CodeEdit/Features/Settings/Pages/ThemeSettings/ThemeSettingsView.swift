@@ -18,6 +18,8 @@ struct ThemeSettingsView: View {
     var useDarkTerminalAppearance
 
     @State private var listView: Bool = false
+    @State private var themeSearchQuery: String = ""
+    @State private var filteredThemes: [Theme] = []
 
     var body: some View {
         SettingsForm {
@@ -41,23 +43,14 @@ struct ThemeSettingsView: View {
                         .labelsHidden()
                         .padding(10)
                     }
+
+                    TextField("Search Themes", text: $themeSearchQuery)
+                        .textFieldStyle(.roundedBorder)
+                        .padding(.bottom, 10)
+                        .padding(.horizontal, 10)
+
                     VStack(spacing: 0) {
-                        ForEach(
-                            themeModel.selectedAppearance == .dark
-                                ? themeModel.darkThemes
-                                : themeModel.lightThemes
-                        ) { theme in
-                            Divider().padding(.horizontal, 10)
-                            ThemeSettingsThemeRow(
-                                theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                active: themeModel.getThemeActive(theme)
-                            ).id(theme)
-                        }
-                        ForEach(
-                            themeModel.selectedAppearance == .dark
-                                ? themeModel.lightThemes
-                                : themeModel.darkThemes
-                        ) { theme in
+                        ForEach(filteredThemes) { theme in
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeRow(
                                 theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
@@ -94,8 +87,32 @@ struct ThemeSettingsView: View {
                     }
                 ))
             }
-
         }
+        .onAppear {
+            updateFilteredThemes()
+        }
+        .onChange(of: themeSearchQuery) { _ in
+            updateFilteredThemes()
+        }
+        .onChange(of: themeModel.selectedAppearance) { _ in
+            updateFilteredThemes()
+        }
+    }
+
+    private func updateFilteredThemes() {
+        var themes: [Theme] = if themeModel.selectedAppearance == .dark {
+            themeModel.darkThemes + themeModel.lightThemes
+        } else {
+            themeModel.lightThemes + themeModel.darkThemes
+        }
+
+        Task {
+            filteredThemes = themeSearchQuery.isEmpty ? themes : await filterAndSortThemes(themes)
+        }
+    }
+
+    private func filterAndSortThemes(_ themes: [Theme]) async -> [Theme] {
+        return await themes.fuzzySearch(query: themeSearchQuery).map { $1 }
     }
 }
 
