@@ -168,8 +168,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/Semaphore",
       "state" : {
-        "revision" : "f1c4a0acabeb591068dea6cffdd39660b86dec28",
-        "version" : "0.0.8"
+        "revision" : "2543679282aa6f6c8ecf2138acd613ed20790bc2",
+        "version" : "0.1.0"
       }
     },
     {
@@ -240,8 +240,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
       "state" : {
-        "revision" : "668a65735751432b640260c56dfa621cec568368",
-        "version" : "1.2.0"
+        "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
+        "version" : "1.3.0"
       }
     },
     {
