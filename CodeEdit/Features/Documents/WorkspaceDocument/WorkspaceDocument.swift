@@ -133,7 +133,10 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.commandsPaletteState = .init()
         self.workspaceSettingsManager = CEWorkspaceSettings(workspaceURL: url)
         if let workspaceSettingsManager {
-            self.taskManager = TaskManager(workspaceSettings: workspaceSettingsManager.settings)
+            self.taskManager = TaskManager(
+                workspaceSettings: workspaceSettingsManager.settings,
+                workspaceURL: url
+            )
         }
 
         editorManager?.restoreFromState(self)

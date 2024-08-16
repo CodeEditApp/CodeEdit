@@ -30,9 +30,8 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
         self.environmentVariables = environmentVariables
     }
 
-    init(target: String, workingDirectory: String) {
+    init(target: String) {
         self.target = target
-        self.workingDirectory = workingDirectory
     }
 
     var isInvalid: Bool {
