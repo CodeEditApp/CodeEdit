@@ -1262,7 +1262,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.2.1</string>
+	<string>0.3.0</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -1282,11 +1282,11 @@
 	<string>${CE_COPYRIGHT}</string>
 	<key>SUEnableInstallerLauncherService</key>
 	<true/>
+	<key>SUEnableJavaScript</key>
+	<true/>
 	<key>SUFeedURL</key>
 	<string>https://github.com/CodeEditApp/CodeEdit/releases/latest/download/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>/vAnxnK9wj4IqnUt6wS9EN3Ug69zHb+S/Pb9CyZuwa0=</string>
-	<key>SUEnableJavaScript</key>
-	<true/>
 </dict>
 </plist>
