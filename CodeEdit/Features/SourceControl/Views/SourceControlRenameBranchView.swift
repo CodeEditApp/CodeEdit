@@ -1,5 +1,5 @@
 //
-//  SourceControlNavigatorRenameBranchView.swift
+//  SourceControlRenameBranchView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 11/28/23.
@@ -7,29 +7,15 @@
 
 import SwiftUI
 
-struct SourceControlNavigatorRenameBranchView: View {
+struct SourceControlRenameBranchView: View {
     @Environment(\.dismiss)
     var dismiss
 
-    @State var name: String = ""
-    let sourceControlManager: SourceControlManager
-    let fromBranch: GitBranch?
+    @EnvironmentObject var sourceControlManager: SourceControlManager
 
-    func submit(_ branch: GitBranch) {
-        Task {
-            do {
-                try await sourceControlManager.renameBranch(oldName: branch.name, newName: name)
-                await MainActor.run {
-                    dismiss()
-                }
-            } catch {
-                await sourceControlManager.showAlertForError(
-                    title: "Failed to create branch",
-                    error: error
-                )
-            }
-        }
-    }
+    @State var name: String = ""
+
+    @Binding var fromBranch: GitBranch?
 
     var body: some View {
         if let branch = fromBranch ?? sourceControlManager.currentBranch {
@@ -49,11 +35,17 @@ struct SourceControlNavigatorRenameBranchView: View {
                 .onSubmit { submit(branch) }
                 HStack {
                     Spacer()
-                    Button("Cancel") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Text("Cancel")
+                            .frame(minWidth: 56)
                     }
-                    Button("Rename") {
+                    Button {
                         submit(branch)
+                    } label: {
+                        Text("Rename")
+                            .frame(minWidth: 56)
                     }
                     .buttonStyle(.borderedProminent)
                     .disabled(name.isEmpty)
@@ -62,7 +54,23 @@ struct SourceControlNavigatorRenameBranchView: View {
                 .padding(.top, 12)
                 .padding(.bottom, 20)
             }
-            .frame(maxWidth: 480)
+            .frame(width: 500)
+        }
+    }
+
+    func submit(_ branch: GitBranch) {
+        Task {
+            do {
+                try await sourceControlManager.renameBranch(oldName: branch.name, newName: name)
+                await MainActor.run {
+                    dismiss()
+                }
+            } catch {
+                await sourceControlManager.showAlertForError(
+                    title: "Failed to create branch",
+                    error: error
+                )
+            }
         }
     }
 }

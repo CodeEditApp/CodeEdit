@@ -39,6 +39,7 @@ struct CEContentUnavailableView<Actions: View>: View {
                 if description != nil {
                     Text(description ?? "")
                         .font(.system(size: 10))
+                        .multilineTextAlignment(.center)
                 }
             }
             if let actionsView = actions {

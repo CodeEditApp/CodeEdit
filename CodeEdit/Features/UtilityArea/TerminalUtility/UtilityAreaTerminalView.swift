@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Cocoa
 
 struct UtilityAreaTerminalView: View {
     @AppSettings(\.theme.matchAppearance)
@@ -14,6 +15,12 @@ struct UtilityAreaTerminalView: View {
     private var darkAppearance
     @AppSettings(\.theme.useThemeBackground)
     private var useThemeBackground
+    @AppSettings(\.textEditing.font)
+    private var textEditingFont
+    @AppSettings(\.terminal.font)
+    private var terminalFont
+    @AppSettings(\.terminal.useTextEditorFont)
+    private var useTextEditorFont
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -29,6 +36,10 @@ struct UtilityAreaTerminalView: View {
     @State private var isMenuVisible = false
 
     @State private var popoverSource: CGRect = .zero
+
+    var font: NSFont {
+        useTextEditorFont == true ? textEditingFont.current : terminalFont.current
+    }
 
     private func getTerminal(_ id: UUID) -> UtilityAreaTerminal? {
         return utilityAreaViewModel.terminals.first(where: { $0.id == id }) ?? nil
@@ -62,31 +73,53 @@ struct UtilityAreaTerminalView: View {
         return utilityAreaViewModel.terminals.first(where: { $0.id == selectedTerminalID })
     }
 
+    func fontTotalHeight(nsFont: NSFont) -> CGFloat {
+        let ctFont = nsFont as CTFont
+        let ascent = CTFontGetAscent(ctFont)
+        let descent = CTFontGetDescent(ctFont)
+        let leading = CTFontGetLeading(ctFont)
+
+        return ascent + descent + leading
+    }
+
     var body: some View {
         UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { tabState in
-            Group {
-                if let selectedTerminal = getSelectedTerminal() {
-                    TerminalEmulatorView(
-                        url: selectedTerminal.url,
-                        terminalID: selectedTerminal.id,
-                        shellType: selectedTerminal.shell,
-                        onTitleChange: { [weak selectedTerminal] newTitle in
-                            guard let id = selectedTerminal?.id else { return }
-                            // This can be called whenever, even in a view update so it needs to be dispatched.
-                            DispatchQueue.main.async { [weak utilityAreaViewModel] in
-                                utilityAreaViewModel?.updateTerminal(id, title: newTitle)
-                            }
-                        }
-                    )
-                    .id(selectedTerminal.id)
-                    .padding(.top, 10)
-                    .padding(.horizontal, 10)
-                    .contentShape(Rectangle())
-                } else {
+            ZStack {
+                if utilityAreaViewModel.selectedTerminals.isEmpty {
                     CEContentUnavailableView("No Selection")
+                } else {
+                    GeometryReader { geometry in
+                        let containerHeight = geometry.size.height
+                        let totalFontHeight = fontTotalHeight(nsFont: font).rounded(.up)
+                        let constrainedHeight = containerHeight - containerHeight.truncatingRemainder(
+                            dividingBy: totalFontHeight
+                        )
+                        ForEach(utilityAreaViewModel.terminals) { terminal in
+                            VStack(spacing: 0) {
+                                Spacer(minLength: 0)
+                                    .frame(minHeight: 0)
+                                TerminalEmulatorView(
+                                    url: terminal.url!,
+                                    shellType: terminal.shell,
+                                    onTitleChange: { [weak terminal] newTitle in
+                                        guard let id = terminal?.id else { return }
+                                        // This can be called whenever, even in a view update 
+                                        // so it needs to be dispatched.
+                                        DispatchQueue.main.async { [weak utilityAreaViewModel] in
+                                            utilityAreaViewModel?.updateTerminal(id, title: newTitle)
+                                        }
+                                    }
+                                )
+                                .frame(height: constrainedHeight - totalFontHeight + 1)
+                            }
+                            .disabled(terminal.id != utilityAreaViewModel.selectedTerminals.first)
+                            .opacity(terminal.id == utilityAreaViewModel.selectedTerminals.first ? 1 : 0)
+                        }
+                    }
                 }
             }
-            .paneToolbar(showDivider: true) {
+            .padding(.horizontal, 10)
+            .paneToolbar {
                 PaneToolbarSection {
                     UtilityAreaTerminalPicker(
                         selectedIDs: $utilityAreaViewModel.selectedTerminals,
