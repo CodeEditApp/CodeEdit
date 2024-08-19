@@ -20,17 +20,19 @@ struct NonTextFileView: View {
     var body: some View {
         Group {
             if let fileURL = fileDocument.fileURL {
-                Group {
-                    if let utType = fileDocument.utType {
-                        if utType.conforms(to: .image) {
-                            ImageFileView(fileURL)
-                        } else if utType.conforms(to: .pdf) {
-                            PDFFileView(fileURL)
-                        }
+
+                if let utType = fileDocument.utType {
+                    if utType.conforms(to: .image) {
+                        ImageFileView(fileURL)
+                    } else if utType.conforms(to: .pdf) {
+                        PDFFileView(fileURL)
                     } else {
                         AnyFileView(fileURL)
                     }
+                } else {
+                    AnyFileView(fileURL)
                 }
+
             } else {
                 ZStack {
                     Text("Cannot retrieve URL to the file you opened.")
