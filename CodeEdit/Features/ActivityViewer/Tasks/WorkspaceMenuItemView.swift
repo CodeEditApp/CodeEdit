@@ -1,0 +1,40 @@
+//
+//  WorkspaceMenuItemView.swift
+//  CodeEdit
+//
+//  Created by Tommy Ludwig on 24.06.24.
+//
+
+import SwiftUI
+
+struct WorkspaceMenuItemView: View {
+    var workspaceFileManager: CEWorkspaceFileManager?
+    var item: CEWorkspaceFile?
+
+    var body: some View {
+        HStack(spacing: 5) {
+            if workspaceFileManager?.workspaceItem.fileName() == item?.name {
+                Image(systemName: "checkmark")
+                    .fontWeight(.bold)
+                    .imageScale(.small)
+                    .frame(width: 10)
+            } else {
+                Spacer()
+                    .frame(width: 10)
+            }
+            Image(systemName: "folder.badge.gearshape")
+                .imageScale(.medium)
+            Text(item?.name ?? "")
+            Spacer()
+        }
+        .padding(.vertical, 4)
+        .padding(.horizontal, 8)
+        .modifier(DropdownMenuItemStyleModifier())
+        .onTapGesture { }
+        .clipShape(RoundedRectangle(cornerRadius: 5))
+    }
+}
+
+#Preview {
+    WorkspaceMenuItemView()
+}

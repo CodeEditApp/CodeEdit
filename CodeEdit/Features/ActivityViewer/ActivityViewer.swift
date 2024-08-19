@@ -12,15 +12,33 @@ struct ActivityViewer: View {
     @Environment(\.colorScheme)
     var colorScheme
 
-    @ObservedObject var taskNotificationHandler: TaskNotificationHandler
+    var workspaceFileManager: CEWorkspaceFileManager?
 
+    @ObservedObject var taskNotificationHandler: TaskNotificationHandler
+    @ObservedObject var workspaceSettingsManager: CEWorkspaceSettings
+
+    // TODO: try to get this from the envrionment
+    @ObservedObject var taskManager: TaskManager
+
+    init(
+        workspaceFileManager: CEWorkspaceFileManager?,
+        workspaceSettingsManager: CEWorkspaceSettings,
+        taskNotificationHandler: TaskNotificationHandler,
+        taskManager: TaskManager
+    ) {
+        self.workspaceFileManager = workspaceFileManager
+        self.workspaceSettingsManager = workspaceSettingsManager
+        self.taskNotificationHandler = taskNotificationHandler
+        self.taskManager = taskManager
+    }
     var body: some View {
         HStack(spacing: 0) {
-            // This is only a placeholder for the task popover(coming in the next pr)
-            Rectangle()
-                .frame(height: 22)
-                .hidden()
-                .fixedSize()
+            SchemeDropDownView(
+                workspaceSettingsManager: workspaceSettingsManager,
+                workspaceFileManager: workspaceFileManager
+            )
+
+            TaskDropDownView(taskManager: taskManager)
 
             Spacer(minLength: 0)
 
@@ -28,10 +46,18 @@ struct ActivityViewer: View {
                 .fixedSize()
         }
         .fixedSize(horizontal: false, vertical: false)
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 5)
+        .padding(.vertical, 1.5)
+        .frame(height: 22)
+        .clipped()
         .background {
-            RoundedRectangle(cornerRadius: 5)
-                .opacity(0.1)
+            if colorScheme == .dark {
+                RoundedRectangle(cornerRadius: 5)
+                    .opacity(0.1)
+            } else {
+                RoundedRectangle(cornerRadius: 5)
+                    .opacity(0.1)
+            }
         }
     }
 }

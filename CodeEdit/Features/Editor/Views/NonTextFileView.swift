@@ -32,7 +32,6 @@ struct NonTextFileView: View {
                 } else {
                     AnyFileView(fileURL)
                 }
-
             } else {
                 ZStack {
                     Text("Cannot retrieve URL to the file you opened.")

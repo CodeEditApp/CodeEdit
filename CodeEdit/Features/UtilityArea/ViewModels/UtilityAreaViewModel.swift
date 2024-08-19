@@ -12,6 +12,8 @@ import SwiftUI
 /// A model class to host and manage data for the Utility area.
 class UtilityAreaViewModel: ObservableObject {
 
+    @Published var selectedTab: UtilityAreaTab? = .terminal
+
     @Published var terminals: [UtilityAreaTerminal] = []
 
     @Published var selectedTerminals: Set<UtilityAreaTerminal.ID> = []
@@ -52,9 +54,8 @@ class UtilityAreaViewModel: ObservableObject {
     }
 
     func togglePanel() {
-        withAnimation {
-            self.isCollapsed.toggle()
-        }
+        self.isMaximized = false
+        self.isCollapsed.toggle()
     }
 
     /// Update a terminal's title.

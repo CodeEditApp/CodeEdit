@@ -22,6 +22,7 @@ final class DocumentsUnitTests: XCTestCase {
         super.setUp()
         hapticFeedbackPerformerMock = NSHapticFeedbackPerformerMock()
         navigatorViewModel = .init()
+        workspace.taskManager = TaskManager(workspaceSettings: CEWorkspaceSettingsData())
         window = NSWindow()
         splitViewController = .init(
             workspace: workspace,
@@ -38,6 +39,10 @@ final class DocumentsUnitTests: XCTestCase {
     }
 
     // MARK: - Tests
+
+    func testSplitViewHasItems() {
+        XCTAssertGreaterThan(splitViewController.splitViewItems.count, 0, "Split controller did not set up correctly.")
+    }
 
     func testSplitViewControllerSnappedWhenWidthInAppropriateRange() {
         for _ in 0..<10 {

@@ -38,6 +38,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var listenerModel: WorkspaceNotificationModel = .init()
     var sourceControlManager: SourceControlManager?
 
+    var taskManager: TaskManager?
+    var workspaceSettingsManager: CEWorkspaceSettings?
     var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
 
     private var cancellables = Set<AnyCancellable>()
@@ -90,8 +92,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         // ----
         let windowController = CodeEditWindowController(
             window: window,
-            workspace: self,
-            taskNotificationHandler: taskNotificationHandler
+            workspace: self
         )
 
         if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
@@ -130,6 +131,13 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.searchState = .init(self)
         self.openQuicklyViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
+        self.workspaceSettingsManager = CEWorkspaceSettings(workspaceURL: url)
+        if let workspaceSettingsManager {
+            self.taskManager = TaskManager(
+                workspaceSettings: workspaceSettingsManager.settings,
+                workspaceURL: url
+            )
+        }
 
         editorManager?.restoreFromState(self)
         utilityAreaModel?.restoreFromState(self)
@@ -158,6 +166,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         sourceControlManager = nil
         workspaceFileManager?.cleanUp()
         workspaceFileManager = nil
+        workspaceSettingsManager?.cleanUp()
+        workspaceSettingsManager = nil
+        taskManager = nil
     }
 
     /// Determines the windows should be closed.

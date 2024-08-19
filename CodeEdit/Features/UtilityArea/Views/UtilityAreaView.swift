@@ -21,12 +21,10 @@ struct UtilityAreaView: View {
 
     @StateObject private var themeModel: ThemeModel = .shared
 
-    @State var selection: UtilityAreaTab? = .terminal
-
     var body: some View {
         VStack(spacing: 0) {
-            if let selection {
-                selection
+            if let selectedTab = utilityAreaViewModel.selectedTab {
+                selectedTab
             } else {
                 Text("Tab not found")
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -34,33 +32,14 @@ struct UtilityAreaView: View {
         }
         .safeAreaInset(edge: .leading, spacing: 0) {
             HStack(spacing: 0) {
-                AreaTabBar(items: $utilityAreaViewModel.tabItems, selection: $selection, position: .side)
+                AreaTabBar(
+                    items: $utilityAreaViewModel.tabItems,
+                    selection: $utilityAreaViewModel.selectedTab,
+                    position: .side
+                )
                 Divider()
                     .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
             }
-        }
-        .overlay(alignment: .bottomTrailing) {
-            HStack(spacing: 5) {
-                Divider()
-                HStack(spacing: 0) {
-                    Button {
-                        utilityAreaViewModel.isMaximized.toggle()
-                    } label: {
-                        Image(systemName: "arrowtriangle.up.square")
-                    }
-                    .buttonStyle(.icon(isActive: utilityAreaViewModel.isMaximized, size: 24))
-                }
-            }
-            .colorScheme(
-                utilityAreaViewModel.selectedTerminals.isEmpty
-                ? colorScheme
-                : matchAppearance && darkAppearance
-                ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
-                : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
-            )
-            .padding(.horizontal, 5)
-            .padding(.vertical, 8)
-            .frame(maxHeight: 27)
         }
     }
 }
