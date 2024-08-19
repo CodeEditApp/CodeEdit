@@ -60,6 +60,8 @@ class UtilityAreaViewModel: ObservableObject {
         self.isCollapsed.toggle()
     }
 
+    // MARK: - Terminal Management
+
     /// Update a terminal's title.
     /// - Parameters:
     ///   - id: The id of the terminal to update.
@@ -85,22 +87,50 @@ class UtilityAreaViewModel: ObservableObject {
         addTerminal(shell: nil, workspace: workspace)
     }
 
-    /// Add a new terminal to the workspace and selects it.
+    /// Add a new terminal to the workspace and selects it. Optionally replaces an existing terminal
+    ///
+    /// Terminals being replaced will have the `SIGKILL` signal sent to the running shell. The new terminal will
+    /// inherit the same `url` and `shell` parameters from the old one, in case they were specified.
+    ///
     /// - Parameters:
     ///   - shell: The shell to use, `nil` if auto-detect the default shell.
     ///   - workspace: The workspace to use to find the default path.
-    func addTerminal(shell: Shell? = nil, workspace: WorkspaceDocument) {
+    ///   - replacing: The ID of a terminal to replace with a new terminal. If left `nil`, will ignore.
+    func addTerminal(shell: Shell? = nil, workspace: WorkspaceDocument, replacing: UUID? = nil) {
         let id = UUID()
 
-        terminals.append(
-            UtilityAreaTerminal(
+        if let replacing, let index = terminals.firstIndex(where: { $0.id == replacing }) {
+            let url = terminals[index].url
+            let shell = terminals[index].shell
+            if let shellPid = TerminalCache.shared.getTerminalView(replacing)?.process.shellPid {
+                kill(shellPid, SIGKILL)
+            }
+            terminals[index] = UtilityAreaTerminal(
                 id: id,
-                url: workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
+                url: url,
                 title: "terminal",
                 shell: shell
             )
-        )
+            TerminalCache.shared.removeCachedView(replacing)
+        } else {
+            terminals.append(
+                UtilityAreaTerminal(
+                    id: id,
+                    url: workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
+                    title: "terminal",
+                    shell: shell
+                )
+            )
+        }
 
         selectedTerminals = [id]
+    }
+
+    /// Reorders terminals in the ``utilityAreaViewModel``.
+    /// - Parameters:
+    ///   - source: The source indices.
+    ///   - destination: The destination indices.
+    func moveItems(from source: IndexSet, to destination: Int) {
+        terminals.move(fromOffsets: source, toOffset: destination)
     }
 }

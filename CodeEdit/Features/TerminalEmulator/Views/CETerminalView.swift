@@ -38,12 +38,12 @@ protocol CELocalProcessTerminalViewDelegate: AnyObject {
     /// - Parameter source: the sending instance
     /// - Parameter newCols: the new number of columns that should be shown
     /// - Parameter newRow: the new number of rows that should be shown
-    func sizeChanged(source: CELocalProcessTerminalView, newCols: Int, newRows: Int)
+    func sizeChanged(source: CETerminalView, newCols: Int, newRows: Int)
 
     /// This method is invoked when the title of the terminal window should be updated to the provided title
     /// - Parameter source: the sending instance
     /// - Parameter title: the desired title
-    func setTerminalTitle(source: CELocalProcessTerminalView, title: String)
+    func setTerminalTitle(source: CETerminalView, title: String)
 
     /// Invoked when the OSC command 7 for "current directory has changed" command is sent
     /// - Parameter source: the sending instance
@@ -75,7 +75,7 @@ class CELocalProcessTerminalView: CETerminalView, TerminalViewDelegate, LocalPro
         process = LocalProcess(delegate: self)
     }
 
-    /// The `processDelegate` is used to deliver messages and information relevant t
+    /// The `processDelegate` is used to deliver messages and information relevant to the execution of the terminal.
     public weak var processDelegate: CELocalProcessTerminalViewDelegate?
 
     /// This method is invoked to notify the client of the new columsn and rows that have been set by the UI
@@ -148,7 +148,7 @@ class CELocalProcessTerminalView: CETerminalView, TerminalViewDelegate, LocalPro
     }
 
     /// Implements the LocalProcessDelegate.getWindowSize method
-    public func getWindowSize () -> winsize {
+    public func getWindowSize() -> winsize {
         let frame: CGRect = self.frame
         return winsize(
             ws_row: UInt16(getTerminal().rows),

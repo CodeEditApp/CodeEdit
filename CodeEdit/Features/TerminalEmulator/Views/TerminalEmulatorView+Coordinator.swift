@@ -21,9 +21,9 @@ extension TerminalEmulatorView {
 
         func hostCurrentDirectoryUpdate(source: TerminalView, directory: String?) {}
 
-        func sizeChanged(source: CELocalProcessTerminalView, newCols: Int, newRows: Int) {}
+        func sizeChanged(source: CETerminalView, newCols: Int, newRows: Int) {}
 
-        func setTerminalTitle(source: CELocalProcessTerminalView, title: String) {
+        func setTerminalTitle(source: CETerminalView, title: String) {
             onTitleChange(title)
         }
 
