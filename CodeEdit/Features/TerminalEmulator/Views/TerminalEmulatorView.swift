@@ -204,8 +204,8 @@ struct TerminalEmulatorView: NSViewRepresentable {
         terminal.font = font
         terminal.configureNativeColors()
         terminal.installColors(self.colors)
-        terminal.caretColor = cursorColor
-        terminal.caretViewTracksFocus = false
+        terminal.caretColor = cursorColor.withAlphaComponent(0.5)
+        terminal.caretTextColor = cursorColor.withAlphaComponent(0.5)
         terminal.selectedTextBackgroundColor = selectionColor
         terminal.nativeForegroundColor = textColor
         terminal.nativeBackgroundColor = terminalSettings.useThemeBackground ? backgroundColor : .clear
@@ -232,7 +232,8 @@ struct TerminalEmulatorView: NSViewRepresentable {
     func updateNSView(_ view: CELocalProcessTerminalView, context: Context) {
         view.configureNativeColors()
         view.installColors(self.colors)
-        view.caretColor = cursorColor
+        view.caretColor = cursorColor.withAlphaComponent(0.5)
+        view.caretTextColor = cursorColor.withAlphaComponent(0.5)
         view.selectedTextBackgroundColor = selectionColor
         view.nativeForegroundColor = textColor
         view.nativeBackgroundColor = terminalSettings.useThemeBackground ? backgroundColor : .clear
