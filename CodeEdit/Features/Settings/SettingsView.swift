@@ -152,6 +152,7 @@ struct SettingsView: View {
                 }
             }
             .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
+            .scrollDisabled(true)
             .navigationSplitViewColumnWidth(215)
         } detail: {
             Group {
