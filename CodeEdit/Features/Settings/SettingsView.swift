@@ -147,7 +147,7 @@ struct SettingsView: View {
             List { }
                 .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
                 .scrollDisabled(true)
-                .frame(maxHeight: 30)
+                .frame(height: 30)
             List(selection: $selectedPage) {
                 Section {
                     ForEach(Self.pages) { pageAndSettings in
