@@ -144,6 +144,10 @@ struct SettingsView: View {
 
     var body: some View {
         NavigationSplitView {
+            List { }
+                .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
+                .scrollDisabled(true)
+                .frame(height: 30)
             List(selection: $selectedPage) {
                 Section {
                     ForEach(Self.pages) { pageAndSettings in
@@ -151,7 +155,6 @@ struct SettingsView: View {
                     }
                 }
             }
-            .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
             .navigationSplitViewColumnWidth(215)
         } detail: {
             Group {
