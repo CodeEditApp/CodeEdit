@@ -10,6 +10,7 @@ import SwiftUI
 struct GitChangedFileLabel: View {
     @AppSettings(\.general.fileIconStyle)
     private var fileIconStyle
+    @EnvironmentObject private var workspace: WorkspaceDocument
     @EnvironmentObject private var sourceControlManager: SourceControlManager
 
     let file: GitChangedFile
@@ -19,7 +20,7 @@ struct GitChangedFileLabel: View {
             Label {
                 EmptyView()
             } icon: {
-                if let ceFile = sourceControlManager.fileManager?.getFile(
+                if let ceFile = workspace.workspaceFileManager?.getFile(
                     file.fileURL.absoluteURL.path(percentEncoded: false),
                     createIfNotFound: true
                 ) {
@@ -60,6 +61,7 @@ struct GitChangedFileLabel: View {
         originalFilename: nil
     ))
     .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), editorManager: .init()))
+    .environmentObject(WorkspaceDocument())
 }
 
 #Preview {
@@ -70,4 +72,5 @@ struct GitChangedFileLabel: View {
         originalFilename: "app2.jsx"
     ))
     .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), editorManager: .init()))
+    .environmentObject(WorkspaceDocument())
 }

@@ -13,7 +13,7 @@
     {
       "identity" : "codeeditkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditKit",
+      "location" : "https://github.com/CodeEditApp/CodeEditKit.git",
       "state" : {
         "revision" : "ad28213a968586abb0cb21a8a56a3587227895f1",
         "version" : "0.1.2"
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
       "state" : {
-        "revision" : "4e014f71d7be053ea8d05f6c0e45be268f9a0d64",
-        "version" : "0.7.4"
+        "revision" : "fbabc5933b501adb3940baa26e5a9868342fd6bd",
+        "version" : "0.7.5"
       }
     },
     {
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "eb1d38247a45bc678b5a23a65d6f6df6c56519e4",
-        "version" : "0.7.5"
+        "revision" : "2619cb945b4d6c2fc13f22ba873ba891f552b0f3",
+        "version" : "0.7.6"
       }
     },
     {

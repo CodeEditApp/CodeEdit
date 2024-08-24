@@ -35,7 +35,6 @@ extension GitClient {
     /// - Parameter file: File to add
     func reset(_ files: [URL]) async throws {
         _ = try await run("reset \(files.map { "\"\($0.relativePath)\"" }.joined(separator: " "))")
-        _ = try await run("add \()")
     }
 
     /// Returns tuple of unsynced commits both ahead and behind

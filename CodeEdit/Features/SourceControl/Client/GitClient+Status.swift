@@ -28,7 +28,7 @@ extension GitClient {
     struct Status {
         var changedFiles: [GitChangedFile]
         var unmergedChanges: [GitChangedFile]
-        var untrackedFiles: [URL]
+        var untrackedFiles: [GitChangedFile]
     }
 
     /// Fetches and parses the git repository's status.
@@ -203,8 +203,13 @@ extension GitClient {
     /// ```
     /// ? <path>
     /// ```
-    fileprivate func parseUntracked(index: inout String.Index, output: borrowing String) throws -> URL {
+    fileprivate func parseUntracked(index: inout String.Index, output: borrowing String) throws -> GitChangedFile {
         let filename = String(try substringToNextNull(from: &index, output: output))
-        return URL(filePath: filename, relativeTo: directoryURL)
+        return GitChangedFile(
+            status: .untracked,
+            stagedStatus: .none,
+            fileURL: URL(filePath: filename, relativeTo: directoryURL),
+            originalFilename: nil
+        )
     }
 }

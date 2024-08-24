@@ -167,7 +167,7 @@ extension SourceControlManager {
             // TODO: Unmerged changes
             // status.unmergedChanges
 
-            await setChangedFiles(status.changedFiles)
+            await setChangedFiles(status.changedFiles + status.untrackedFiles)
             await refreshStatusInFileManager()
         } catch {
             logger.error("Error fetching git status: \(error)")
