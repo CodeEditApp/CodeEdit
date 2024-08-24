@@ -8,10 +8,35 @@
 import Foundation
 import SwiftUI
 
-struct GitChangedFile {
-    /// Change type is to tell us whether the type is a new file, modified or deleted
-    let changeType: GitType?
+/// Represents a single changed file in the working tree.
+struct GitChangedFile: Identifiable, Hashable {
+    var id: String { fileURL.relativePath }
 
-    /// Link of the file
-    let fileLink: URL
+    /// The status of the file.
+    let status: GitStatus
+    /// The staged status of the file. A non-`none` value here and in ``status`` may indicate a file that was added
+    /// but has since been changed and needs to be re-added before committing.
+    let stagedStatus: GitStatus
+
+    /// URL of the file
+    let fileURL: URL
+
+    /// The original file name if ``status`` or ``stagedStatus`` is `renamed` or `copied`
+    let originalFilename: String?
+
+    /// Returns the user-facing status, if ``status`` is `none`, returns ``stagedStatus``.
+    func anyStatus() -> GitStatus {
+        if case .none = status {
+            return stagedStatus
+        }
+        return status
+    }
+
+    var isStaged: Bool {
+        stagedStatus != .none
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(fileURL)
+    }
 }

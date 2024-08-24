@@ -27,14 +27,15 @@ extension GitClient {
 
     /// Add file to git
     /// - Parameter file: File to add
-    func add(_ files: [CEWorkspaceFile]) async throws {
-        _ = try await run("add \(files.map { $0.url.relativePath }.joined(separator: " "))")
+    func add(_ files: [URL]) async throws {
+        _ = try await run("add \(files.map { "\"\($0.relativePath)\"" }.joined(separator: " "))")
     }
 
     /// Add file to git
     /// - Parameter file: File to add
-    func reset(_ files: [CEWorkspaceFile]) async throws {
-        _ = try await run("reset \(files.map { $0.url.relativePath }.joined(separator: " "))")
+    func reset(_ files: [URL]) async throws {
+        _ = try await run("reset \(files.map { "\"\($0.relativePath)\"" }.joined(separator: " "))")
+        _ = try await run("add \()")
     }
 
     /// Returns tuple of unsynced commits both ahead and behind
@@ -49,7 +50,7 @@ extension GitClient {
             let data = output
                 .trimmingCharacters(in: .newlines)
                 .components(separatedBy: "\n")
-            return try data.compactMap { line in
+            return try data.compactMap { line -> GitChangedFile? in
                 let components = line.split(separator: "\t")
                 guard components.count == 2 else { return nil }
                 let changeType = String(components[0])
@@ -59,12 +60,14 @@ extension GitClient {
                     throw GitClientError.failedToDecodeURL
                 }
 
-                let gitType: GitType? = .init(rawValue: changeType)
+                let gitType: GitStatus? = .init(rawValue: changeType)
                 let fullLink = self.directoryURL.appending(path: url.relativePath)
 
                 return GitChangedFile(
-                    changeType: gitType,
-                    fileLink: fullLink
+                    status: gitType ?? .none,
+                    stagedStatus: .none,
+                    fileURL: fullLink,
+                    originalFilename: nil
                 )
             }
         } catch {

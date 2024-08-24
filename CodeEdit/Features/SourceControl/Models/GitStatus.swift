@@ -7,15 +7,16 @@
 
 import Foundation
 
-enum GitType: String, Codable {
+enum GitStatus: String, Codable {
+    case none = "."
     case modified = "M"
-    case untracked = "??"
+    case untracked = "?"
     case fileTypeChange = "T"
     case added = "A"
     case deleted = "D"
     case renamed = "R"
     case copied = "C"
-    case updatedUnmerged = "U"
+    case unmerged = "U"
 
     var description: String {
         switch self {
@@ -26,7 +27,8 @@ enum GitType: String, Codable {
         case .deleted: return "D"
         case .renamed: return "R"
         case .copied: return "C"
-        case .updatedUnmerged: return "U"
+        case .unmerged: return "U"
+        case .none: return ""
         }
     }
 }

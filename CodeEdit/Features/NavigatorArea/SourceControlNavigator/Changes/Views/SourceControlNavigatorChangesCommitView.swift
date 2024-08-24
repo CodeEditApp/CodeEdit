@@ -16,11 +16,11 @@ struct SourceControlNavigatorChangesCommitView: View {
     @State private var isCommiting: Bool = false
 
     var allFilesStaged: Bool {
-        sourceControlManager.changedFiles.allSatisfy { $0.staged ?? false }
+        sourceControlManager.changedFiles.allSatisfy { $0.isStaged }
     }
 
     var anyFilesStaged: Bool {
-        sourceControlManager.changedFiles.contains { $0.staged ?? false }
+        sourceControlManager.changedFiles.contains { $0.isStaged }
     }
 
     var body: some View {
@@ -73,9 +73,11 @@ struct SourceControlNavigatorChangesCommitView: View {
                     Button {
                         Task {
                             if allFilesStaged {
-                                try await sourceControlManager.reset(sourceControlManager.changedFiles)
+                                try await sourceControlManager.reset(
+                                    sourceControlManager.changedFiles.map { $0.fileURL }
+                                )
                             } else {
-                                try await sourceControlManager.add(sourceControlManager.changedFiles)
+                                try await sourceControlManager.add(sourceControlManager.changedFiles.map { $0.fileURL })
                             }
                         }
                     } label: {

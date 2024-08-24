@@ -133,6 +133,7 @@ struct UtilityAreaTerminalView: View {
                         let constrainedHeight = containerHeight - containerHeight.truncatingRemainder(
                             dividingBy: totalFontHeight
                         )
+                        let terminalHeight = constrainedHeight - totalFontHeight + 1
                         ForEach(utilityAreaViewModel.terminals) { terminal in
                             VStack(spacing: 0) {
                                 Spacer(minLength: 0)
@@ -149,7 +150,7 @@ struct UtilityAreaTerminalView: View {
                                         }
                                     }
                                 )
-                                .frame(height: constrainedHeight - totalFontHeight + 1)
+                                .frame(height: terminalHeight.isNormal ? terminalHeight : 0.0)
                             }
                             .disabled(terminal.id != utilityAreaViewModel.selectedTerminals.first)
                             .opacity(terminal.id == utilityAreaViewModel.selectedTerminals.first ? 1 : 0)

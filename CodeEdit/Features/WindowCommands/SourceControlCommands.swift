@@ -46,7 +46,7 @@ struct SourceControlCommands: Commands {
                     } else {
                         Task {
                             do {
-                                try await sourceControlManager.add(sourceControlManager.changedFiles)
+                                try await sourceControlManager.add(sourceControlManager.changedFiles.map { $0.fileURL })
                             } catch {
                                 await sourceControlManager.showAlertForError(
                                     title: "Failed To Stage Changes",
@@ -64,7 +64,9 @@ struct SourceControlCommands: Commands {
                     } else {
                         Task {
                             do {
-                                try await sourceControlManager.reset(sourceControlManager.changedFiles)
+                                try await sourceControlManager.reset(
+                                    sourceControlManager.changedFiles.map { $0.fileURL }
+                                )
                             } catch {
                                 await sourceControlManager.showAlertForError(
                                     title: "Failed To Unstage Changes",

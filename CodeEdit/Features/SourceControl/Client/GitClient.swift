@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import OSLog
 
 class GitClient {
     enum GitClientError: Error {
@@ -14,6 +15,10 @@ class GitClient {
         case notGitRepository
         case failedToDecodeURL
         case noRemoteConfigured
+        // Status parsing
+        case statusParseEarlyEnd
+        case invalidStatus(_ char: Character)
+        case statusInvalidChangeType(_ type: Character)
 
         var description: String {
             switch self {
@@ -21,9 +26,14 @@ class GitClient {
             case .notGitRepository: "Not a git repository"
             case .failedToDecodeURL: "Failed to decode URL"
             case .noRemoteConfigured: "No remote configured"
+            case .statusParseEarlyEnd: "Invalid status, found end of string too early"
+            case let .invalidStatus(char): "Invalid status received: \(char)"
+            case let .statusInvalidChangeType(char): "Status invalid change type: \(char)"
             }
         }
     }
+
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "GitClient")
 
     internal let directoryURL: URL
     internal let shellClient: ShellClient
