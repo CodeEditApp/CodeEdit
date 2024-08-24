@@ -70,7 +70,7 @@ extension GitClient {
 
     /// Discard changes for file
     func discardChanges(for file: URL) async throws {
-        _ = try await run("restore \(file.relativePath)")
+        _ = try await run("restore '\(file.path(percentEncoded: false))'")
     }
 
     /// Discard unstaged changes
