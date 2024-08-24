@@ -150,7 +150,7 @@ struct UtilityAreaTerminalView: View {
                                         }
                                     }
                                 )
-                                .frame(height: terminalHeight.isNormal ? terminalHeight : 0.0)
+                                .frame(height: (terminalHeight.isNormal && terminalHeight > 0) ? terminalHeight : 0.0)
                             }
                             .disabled(terminal.id != utilityAreaViewModel.selectedTerminals.first)
                             .opacity(terminal.id == utilityAreaViewModel.selectedTerminals.first ? 1 : 0)
