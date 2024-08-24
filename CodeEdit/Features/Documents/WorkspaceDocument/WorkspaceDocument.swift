@@ -113,6 +113,13 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     // MARK: Set Up Workspace
 
     private func initWorkspaceState(_ url: URL) throws {
+        // If our URL does not end with a "/" some URL(filePath:relativeTo) initializers will place the file
+        // one directory above our workspace. So we fix this real quick.
+        var url = url
+        if !url.absoluteString.hasSuffix("/") {
+            url = URL(filePath: url.absoluteURL.path(percentEncoded: false) + "/")
+        }
+
         self.fileURL = url
         self.displayName = url.lastPathComponent
 

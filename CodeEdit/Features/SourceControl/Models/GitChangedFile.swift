@@ -36,6 +36,11 @@ struct GitChangedFile: Identifiable, Hashable {
         stagedStatus != .none
     }
 
+    /// Use this string to find matching `CEWorkspaceFile`s in the workspace file manager.
+    var ceFileKey: String {
+        fileURL.absoluteURL.path(percentEncoded: false)
+    }
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(fileURL)
     }

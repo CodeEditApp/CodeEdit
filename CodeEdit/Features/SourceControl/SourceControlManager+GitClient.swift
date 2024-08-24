@@ -138,7 +138,7 @@ extension SourceControlManager {
         var updatedStatusFor: Set<CEWorkspaceFile> = []
         // Refresh status of file manager files
         for changedFile in changedFiles {
-            guard let file = fileManager.getFile(changedFile.fileURL.relativePath) else {
+            guard let file = fileManager.getFile(changedFile.ceFileKey) else {
                 continue
             }
             if file.gitStatus != changedFile.anyStatus() {

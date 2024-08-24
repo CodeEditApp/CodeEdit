@@ -8,47 +8,24 @@
 import SwiftUI
 
 struct GitChangedFileLabel: View {
-    @AppSettings(\.general.fileIconStyle)
-    private var fileIconStyle
     @EnvironmentObject private var workspace: WorkspaceDocument
     @EnvironmentObject private var sourceControlManager: SourceControlManager
 
     let file: GitChangedFile
 
     var body: some View {
-        HStack(spacing: 6) {
-            Label {
-                EmptyView()
-            } icon: {
-                if let ceFile = workspace.workspaceFileManager?.getFile(
-                    file.fileURL.absoluteURL.path(percentEncoded: false),
-                    createIfNotFound: true
-                ) {
-                    Image(nsImage: ceFile.nsIcon)
-                        .listItemTint(iconForegroundColor(ceFile))
-                } else {
-                    Image(systemName: FileIcon.fileIcon(fileType: nil))
-                        .listItemTint(iconForegroundColor(nil))
-                }
+        Label {
+            Text(file.fileURL.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines))
+                .lineLimit(1)
+                .truncationMode(.middle)
+        } icon: {
+            if let ceFile = workspace.workspaceFileManager?.getFile(file.ceFileKey, createIfNotFound: true) {
+                Image(nsImage: ceFile.nsIcon)
+                    .renderingMode(.template)
+            } else {
+                Image(systemName: FileIcon.fileIcon(fileType: nil))
+                    .renderingMode(.template)
             }
-
-            Label {
-                Text(file.fileURL.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines))
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-            } icon: {
-                EmptyView()
-            }
-        }
-    }
-
-    private func iconForegroundColor(_ file: CEWorkspaceFile?) -> Color {
-        if fileIconStyle != .color {
-            return Color("CoolGray")
-        } else if let file {
-            return file.iconColor
-        } else {
-            return FileIcon.iconColor(fileType: nil)
         }
     }
 }

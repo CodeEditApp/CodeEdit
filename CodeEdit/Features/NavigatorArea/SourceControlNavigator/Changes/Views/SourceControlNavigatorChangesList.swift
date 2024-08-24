@@ -42,7 +42,7 @@ struct SourceControlNavigatorChangesList: View {
                         Button("Open in New Window") {}
                             .disabled(true) // TODO: Implementation Needed
                     }
-                    if file.anyStatus() == .modified {
+                    if file.anyStatus() != .none {
                         Group {
                             Divider()
                             Button("Discard Changes in \(file.fileURL.lastPathComponent)...") {
@@ -72,13 +72,11 @@ struct SourceControlNavigatorChangesList: View {
     }
 
     private func openGitFile(_ file: GitChangedFile) {
-        guard let ceFile = workspace
-            .workspaceFileManager?
-            .getFile(file.fileURL.absoluteURL.path(percentEncoded: false), createIfNotFound: true) else {
+        guard let ceFile = workspace.workspaceFileManager?.getFile(file.ceFileKey, createIfNotFound: true) else {
             return
         }
         DispatchQueue.main.async {
-            workspace.editorManager?.openTab(item: ceFile)
+            workspace.editorManager?.openTab(item: ceFile, asTemporary: true)
         }
     }
 }

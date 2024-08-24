@@ -72,13 +72,7 @@ struct SourceControlNavigatorChangesCommitView: View {
                 HStack(spacing: 8) {
                     Button {
                         Task {
-                            if allFilesStaged {
-                                try await sourceControlManager.reset(
-                                    sourceControlManager.changedFiles.map { $0.fileURL }
-                                )
-                            } else {
-                                try await sourceControlManager.add(sourceControlManager.changedFiles.map { $0.fileURL })
-                            }
+                            await stageAll()
                         }
                     } label: {
                         Text(allFilesStaged ? "Unstage All" : "Stage All")
@@ -132,6 +126,27 @@ struct SourceControlNavigatorChangesCommitView: View {
                 withAnimation(.easeInOut(duration: 0.25)) {
                     showDetails = !message.isEmpty
                 }
+            }
+        }
+    }
+
+    /// Stages all changed files
+    private func stageAll() async {
+        if allFilesStaged {
+            do {
+                try await sourceControlManager.reset(
+                    sourceControlManager.changedFiles.map { $0.fileURL }
+                )
+            } catch {
+                sourceControlManager.gitClient.logger.error("Failed to reset all files: \(error)")
+            }
+        } else {
+            do {
+                try await sourceControlManager.add(sourceControlManager.changedFiles.compactMap {
+                    $0.stagedStatus == .none ? $0.fileURL : nil
+                })
+            } catch {
+                sourceControlManager.gitClient.logger.error("Failed to stage all files: \(error)")
             }
         }
     }

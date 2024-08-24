@@ -28,13 +28,14 @@ extension GitClient {
     /// Add file to git
     /// - Parameter file: File to add
     func add(_ files: [URL]) async throws {
-        _ = try await run("add \(files.map { "\"\($0.relativePath)\"" }.joined(separator: " "))")
+        let output = try await run("add \(files.map { "'\($0.path(percentEncoded: false))'" }.joined(separator: " "))")
+        print(output)
     }
 
     /// Add file to git
     /// - Parameter file: File to add
     func reset(_ files: [URL]) async throws {
-        _ = try await run("reset \(files.map { "\"\($0.relativePath)\"" }.joined(separator: " "))")
+        _ = try await run("reset \(files.map { "'\($0.path(percentEncoded: false))'" }.joined(separator: " "))")
     }
 
     /// Returns tuple of unsynced commits both ahead and behind

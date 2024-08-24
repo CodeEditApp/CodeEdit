@@ -9,6 +9,9 @@ import SwiftUI
 
 /// A view to display a changed file's information in a list view. Optionally displays the staged status.
 struct GitChangedFileListView: View {
+    @AppSettings(\.general.fileIconStyle)
+    private var fileIconStyle
+    @EnvironmentObject private var workspace: WorkspaceDocument
     @EnvironmentObject private var sourceControlManager: SourceControlManager
     @Binding private var changedFile: GitChangedFile
 
@@ -46,9 +49,31 @@ struct GitChangedFileListView: View {
                 .foregroundColor(.secondary)
                 .frame(minWidth: 10, alignment: .center)
         }
+        .listItemTint(listItemTint)
         .help(changedFile.fileURL.relativePath)
         .onChange(of: changedFile.isStaged) { newStaged in
             staged = newStaged
+        }
+    }
+
+    private var listItemTint: Color {
+        if let ceFile = workspace.workspaceFileManager?.getFile(changedFile.ceFileKey, createIfNotFound: true) {
+            iconForegroundColor(ceFile)
+        } else {
+            iconForegroundColor(nil)
+        }
+    }
+
+    private func iconForegroundColor(_ file: CEWorkspaceFile?) -> Color {
+        switch fileIconStyle {
+        case .color:
+            if let file {
+                return file.iconColor
+            } else {
+                return FileIcon.iconColor(fileType: nil)
+            }
+        case .monochrome:
+            return Color("CoolGray")
         }
     }
 }
