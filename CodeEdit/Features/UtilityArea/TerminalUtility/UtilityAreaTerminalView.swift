@@ -91,7 +91,7 @@ struct UtilityAreaTerminalView: View {
     var body: some View {
         UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { tabState in
             ZStack {
-                // Keeps the sidebar from changing sizes b/c TerminalEmulatorView takes a µs to load in
+                // Keeps the sidebar from changing sizes because TerminalEmulatorView takes a µs to load in
                 HStack { Spacer() }
 
                 if let selectedTerminal = getSelectedTerminal() {
