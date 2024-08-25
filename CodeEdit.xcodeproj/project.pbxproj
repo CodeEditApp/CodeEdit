@@ -3302,6 +3302,22 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		B6966A262C2F673A00259C2D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B6BF41412C2C672A003AB4B3 /* SourceControlPushView.swift */,
+				B6966A272C2F683300259C2D /* SourceControlPullView.swift */,
+				B607184B2B17E037009CDAB4 /* SourceControlStashView.swift */,
+				B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */,
+				B67431CB2C3E45F30047FCA6 /* SourceControlSwitchView.swift */,
+				B65B10F42B081A0C002852CF /* SourceControlAddExistingRemoteView.swift */,
+				041FC6AC2AE437CE00C1F65A /* SourceControlNewBranchView.swift */,
+				B60718362B170638009CDAB4 /* SourceControlRenameBranchView.swift */,
+				B6966A2F2C33282200259C2D /* RemoteBranchPicker.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		B69D3EDC2C5E856F005CF43A /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -3318,22 +3334,6 @@
 				61D435D12C2969D800D032B8 /* CETaskStatus.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		B6966A262C2F673A00259C2D /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B6BF41412C2C672A003AB4B3 /* SourceControlPushView.swift */,
-				B6966A272C2F683300259C2D /* SourceControlPullView.swift */,
-				B607184B2B17E037009CDAB4 /* SourceControlStashView.swift */,
-				B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */,
-				B67431CB2C3E45F30047FCA6 /* SourceControlSwitchView.swift */,
-				B65B10F42B081A0C002852CF /* SourceControlAddExistingRemoteView.swift */,
-				041FC6AC2AE437CE00C1F65A /* SourceControlNewBranchView.swift */,
-				B60718362B170638009CDAB4 /* SourceControlRenameBranchView.swift */,
-				B6966A2F2C33282200259C2D /* RemoteBranchPicker.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		B6AB09AB2AAACBF70003A3A6 /* Tabs */ = {
@@ -5543,7 +5543,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.7.4;
+				minimumVersion = 0.7.5;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
