@@ -1,5 +1,5 @@
 {
-  "originHash" : "a33fcca819dee4c816b1474e19017510b1d62b170c921187042e0675d3f4b0b3",
+  "originHash" : "b6e0c892d567c4fb43e4135487752085a69cf403b95ee27c28e9d213dd3bbf5c",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -13,7 +13,7 @@
     {
       "identity" : "codeeditkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditKit",
+      "location" : "https://github.com/CodeEditApp/CodeEditKit.git",
       "state" : {
         "revision" : "ad28213a968586abb0cb21a8a56a3587227895f1",
         "version" : "0.1.2"
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
       "state" : {
-        "revision" : "4e014f71d7be053ea8d05f6c0e45be268f9a0d64",
-        "version" : "0.7.4"
+        "revision" : "fbabc5933b501adb3940baa26e5a9868342fd6bd",
+        "version" : "0.7.5"
       }
     },
     {
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "eb1d38247a45bc678b5a23a65d6f6df6c56519e4",
-        "version" : "0.7.5"
+        "revision" : "2619cb945b4d6c2fc13f22ba873ba891f552b0f3",
+        "version" : "0.7.6"
       }
     },
     {
@@ -168,8 +168,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/Semaphore",
       "state" : {
-        "revision" : "f1c4a0acabeb591068dea6cffdd39660b86dec28",
-        "version" : "0.0.8"
+        "revision" : "2543679282aa6f6c8ecf2138acd613ed20790bc2",
+        "version" : "0.1.0"
       }
     },
     {
@@ -220,10 +220,9 @@
     {
       "identity" : "swiftterm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/migueldeicaza/SwiftTerm.git",
+      "location" : "https://github.com/migueldeicaza/SwiftTerm",
       "state" : {
-        "revision" : "55e7cdbeb3f41c80cce7b8a29ce9d17e214b2e77",
-        "version" : "1.2.0"
+        "revision" : "384776a4e24d08833ac7c6b8c6f6c7490323c845"
       }
     },
     {
@@ -240,8 +239,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
       "state" : {
-        "revision" : "668a65735751432b640260c56dfa621cec568368",
-        "version" : "1.2.0"
+        "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
+        "version" : "1.3.0"
       }
     },
     {

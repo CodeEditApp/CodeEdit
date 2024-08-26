@@ -165,7 +165,7 @@ final class ProjectNavigatorMenu: NSMenu {
     private func sourceControlMenu(item: CEWorkspaceFile) -> NSMenu {
         let sourceControlMenu = NSMenu(title: "Source Control")
         sourceControlMenu.addItem(
-            withTitle: "Commit \"\(String(describing: item.fileName))\"...",
+            withTitle: "Commit \"\(String(describing: item.fileName()))\"...",
             action: nil,
             keyEquivalent: ""
         )

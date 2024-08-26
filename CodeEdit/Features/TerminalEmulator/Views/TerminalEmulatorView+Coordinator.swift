@@ -9,23 +9,21 @@ import SwiftUI
 import SwiftTerm
 
 extension TerminalEmulatorView {
-    final class Coordinator: NSObject, LocalProcessTerminalViewDelegate {
-
-        @State private var url: URL
-
+    final class Coordinator: NSObject, CELocalProcessTerminalViewDelegate {
+        private let terminalID: UUID
         public var onTitleChange: (_ title: String) -> Void
 
-        init(url: URL, onTitleChange: @escaping (_ title: String) -> Void) {
-            self._url = .init(wrappedValue: url)
+        init(terminalID: UUID, onTitleChange: @escaping (_ title: String) -> Void) {
+            self.terminalID = terminalID
             self.onTitleChange = onTitleChange
             super.init()
         }
 
         func hostCurrentDirectoryUpdate(source: TerminalView, directory: String?) {}
 
-        func sizeChanged(source: LocalProcessTerminalView, newCols: Int, newRows: Int) {}
+        func sizeChanged(source: CETerminalView, newCols: Int, newRows: Int) {}
 
-        func setTerminalTitle(source: LocalProcessTerminalView, title: String) {
+        func setTerminalTitle(source: CETerminalView, title: String) {
             onTitleChange(title)
         }
 
@@ -35,7 +33,7 @@ extension TerminalEmulatorView {
             }
             source.feed(text: "Exit code: \(exitCode)\n\r\n")
             source.feed(text: "To open a new session, create a new terminal tab.")
-            TerminalEmulatorView.lastTerminal[url.path] = nil
+            TerminalCache.shared.removeCachedView(terminalID)
         }
     }
 }
