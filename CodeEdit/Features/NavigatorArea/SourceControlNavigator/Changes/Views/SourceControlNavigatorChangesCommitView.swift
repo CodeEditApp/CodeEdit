@@ -72,7 +72,11 @@ struct SourceControlNavigatorChangesCommitView: View {
                 HStack(spacing: 8) {
                     Button {
                         Task {
-                            await stageAll()
+                            if allFilesStaged {
+                                await resetAll()
+                            } else {
+                                await stageAll()
+                            }
                         }
                     } label: {
                         Text(allFilesStaged ? "Unstage All" : "Stage All")
@@ -130,24 +134,25 @@ struct SourceControlNavigatorChangesCommitView: View {
         }
     }
 
-    /// Stages all changed files
+    /// Stages all changed files.
     private func stageAll() async {
-        if allFilesStaged {
-            do {
-                try await sourceControlManager.reset(
-                    sourceControlManager.changedFiles.map { $0.fileURL }
-                )
-            } catch {
-                sourceControlManager.gitClient.logger.error("Failed to reset all files: \(error)")
-            }
-        } else {
-            do {
-                try await sourceControlManager.add(sourceControlManager.changedFiles.compactMap {
-                    $0.stagedStatus == .none ? $0.fileURL : nil
-                })
-            } catch {
-                sourceControlManager.gitClient.logger.error("Failed to stage all files: \(error)")
-            }
+        do {
+            try await sourceControlManager.add(sourceControlManager.changedFiles.compactMap {
+                $0.stagedStatus == .none ? $0.fileURL : nil
+            })
+        } catch {
+            sourceControlManager.logger.error("Failed to stage all files: \(error)")
+        }
+    }
+
+    /// Resets all changed files.
+    private func resetAll() async {
+        do {
+            try await sourceControlManager.reset(
+                sourceControlManager.changedFiles.map { $0.fileURL }
+            )
+        } catch {
+            sourceControlManager.logger.error("Failed to reset all files: \(error)")
         }
     }
 }

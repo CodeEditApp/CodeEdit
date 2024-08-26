@@ -102,7 +102,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     var fileIdentifier = UUID().uuidString
 
-    /// Returns the Git status of a file as ``GitType``
+    /// Returns the Git status of a file as ``GitStatus``
     var gitStatus: GitStatus?
 
     /// Returns a boolean that is true if the file is staged for commit
