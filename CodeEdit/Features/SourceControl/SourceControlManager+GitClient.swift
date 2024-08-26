@@ -143,9 +143,10 @@ extension SourceControlManager {
             }
             if file.gitStatus != changedFile.anyStatus() {
                 file.gitStatus = changedFile.anyStatus()
-                updatedStatusFor.insert(file)
             }
+            updatedStatusFor.insert(file)
         }
+
         for (_, file) in fileManager.flattenedFileItems
         where !updatedStatusFor.contains(file) && file.gitStatus != nil {
             file.gitStatus = nil
