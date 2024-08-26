@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 import AppKit
+import OSLog
 
 protocol CEWorkspaceFileManagerObserver: AnyObject {
     func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>)
@@ -38,6 +39,7 @@ protocol CEWorkspaceFileManagerObserver: AnyObject {
 /// ``CEWorkspaceFileManagerObserver`` protocol. Use the ``CEWorkspaceFileManager/addObserver(_:)``
 /// and ``CEWorkspaceFileManager/removeObserver(_:)`` to add or remove observers. Observers are kept as weak references.
 final class CEWorkspaceFileManager {
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CEWorkspaceFileManager")
     private(set) var fileManager: FileManager
     private(set) var ignoredFilesAndFolders: Set<String>
     private(set) var flattenedFileItems: [String: CEWorkspaceFile]
@@ -220,7 +222,12 @@ final class CEWorkspaceFileManager {
                     // TODO: Handle workspace root changing.
                     continue
                 case .itemCreated, .itemCloned, .itemRemoved, .itemRenamed:
-                    try? self.rebuildFiles(fromItem: parentItem)
+                    do {
+                        try self.rebuildFiles(fromItem: parentItem)
+                    } catch {
+                        // swiftlint:disable:next line_length
+                        self.logger.error("Failed to rebuild files for event: \(event.eventType.rawValue), path: \(event.path, privacy: .sensitive)")
+                    }
                     files.insert(parentItem)
                 }
             }

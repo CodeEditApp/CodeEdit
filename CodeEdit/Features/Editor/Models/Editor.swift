@@ -271,8 +271,9 @@ final class Editor: ObservableObject, Identifiable {
     /// Remove the given file from tabs.
     /// - Parameter file: The file to remove.
     func removeTab(_ file: CEWorkspaceFile) {
-        tabs.removeAll { tab in
-            tab.file == file
+        tabs.removeAll(where: { tab in tab.file == file })
+        if temporaryTab?.file == file {
+            temporaryTab = nil
         }
     }
 }
