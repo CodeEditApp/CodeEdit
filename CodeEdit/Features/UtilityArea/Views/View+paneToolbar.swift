@@ -8,6 +8,8 @@
 import SwiftUI
 
 extension View {
+    /// Clips and adds a bottom toolbar to the view.
+    /// - Parameter content: The content of the toolbar.
     func paneToolbar<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         self
             .clipped()
