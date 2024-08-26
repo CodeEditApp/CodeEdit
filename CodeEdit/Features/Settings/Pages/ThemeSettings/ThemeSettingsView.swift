@@ -5,6 +5,47 @@
 //  Created by Lukas Pistrol on 30.03.22.
 //
 
+// Move this into a seperate file:
+struct QueryTextField: View {
+    
+    @Binding var text: String
+    
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 6)
+                .foregroundStyle(.quinary)
+                .frame(height: 27)
+            RoundedRectangle(cornerRadius: 6)
+                .padding(0.5)
+                .foregroundStyle(Color(.textBackgroundColor))
+                .overlay {
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundStyle(.secondary)
+                        TextField("Search Themes", text: $text)
+                            .textFieldStyle(.plain)
+                    } .padding(.leading, 7)
+                        .overlay {
+                            if !text.isEmpty {
+                                HStack {
+                                    Spacer()
+                                    Button {
+                                        text = ""
+                                    } label: {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundStyle(.secondary)
+                                    } .buttonStyle(.plain)
+                                        .padding(.trailing, 7)
+                                }
+                            }
+                        }
+                }
+        }
+        .frame(height: 27)
+    }
+}
+
+
 import SwiftUI
 
 /// A view that implements the `Theme` preference section
@@ -44,8 +85,7 @@ struct ThemeSettingsView: View {
                         .padding(10)
                     }
 
-                    TextField("Search Themes", text: $themeSearchQuery)
-                        .textFieldStyle(.roundedBorder)
+                    QueryTextField(text: $themeSearchQuery)
                         .padding(.bottom, 10)
                         .padding(.horizontal, 10)
 
