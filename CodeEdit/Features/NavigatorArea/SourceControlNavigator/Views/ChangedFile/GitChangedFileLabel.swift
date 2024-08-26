@@ -31,23 +31,23 @@ struct GitChangedFileLabel: View {
 }
 
 #Preview {
-    GitChangedFileLabel(file: GitChangedFile(
-        status: .modified,
-        stagedStatus: .none,
-        fileURL: URL(filePath: "/Users/CodeEdit/app.jsx"),
-        originalFilename: nil
-    ))
-    .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), editorManager: .init()))
-    .environmentObject(WorkspaceDocument())
-}
+    Group {
+        GitChangedFileLabel(file: GitChangedFile(
+            status: .modified,
+            stagedStatus: .none,
+            fileURL: URL(filePath: "/Users/CodeEdit/app.jsx"),
+            originalFilename: nil
+        ))
+        .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), editorManager: .init()))
+        .environmentObject(WorkspaceDocument())
 
-#Preview {
-    GitChangedFileLabel(file: GitChangedFile(
-        status: .none,
-        stagedStatus: .renamed,
-        fileURL: URL(filePath: "/Users/CodeEdit/app.jsx"),
-        originalFilename: "app2.jsx"
-    ))
-    .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), editorManager: .init()))
-    .environmentObject(WorkspaceDocument())
+        GitChangedFileLabel(file: GitChangedFile(
+            status: .none,
+            stagedStatus: .renamed,
+            fileURL: URL(filePath: "/Users/CodeEdit/app.jsx"),
+            originalFilename: "app2.jsx"
+        ))
+        .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), editorManager: .init()))
+        .environmentObject(WorkspaceDocument())
+    }.padding()
 }
