@@ -14,6 +14,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     @Published var inspectorCollapsed = false
     @Published var toolbarCollapsed = false
 
+    private var modalOpen = false
+
     var observers: [NSKeyValueObservation] = []
 
     var workspace: WorkspaceDocument?
@@ -109,20 +111,26 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             if let commandPalettePanel {
                 if commandPalettePanel.isKeyWindow {
                     commandPalettePanel.close()
+                    self.modalOpen = false
                     state.reset()
                     return
                 } else {
                     state.reset()
                     window?.addChildWindow(commandPalettePanel, ordered: .above)
                     commandPalettePanel.makeKeyAndOrderFront(self)
+                    self.modalOpen = true
                 }
             } else {
                 let panel = SearchPanel()
                 self.commandPalettePanel = panel
-                let contentView = QuickActionsView(state: state, closePalette: panel.close)
+                let contentView = QuickActionsView(state: state) {
+                    panel.close()
+                    self.modalOpen = false
+                }
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
+                self.modalOpen = true
             }
         }
     }
@@ -132,10 +140,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             if let quickOpenPanel {
                 if quickOpenPanel.isKeyWindow {
                     quickOpenPanel.close()
+                    self.modalOpen = false
                     return
                 } else {
                     window?.addChildWindow(quickOpenPanel, ordered: .above)
                     quickOpenPanel.makeKeyAndOrderFront(self)
+                    self.modalOpen = true
                 }
             } else {
                 let panel = SearchPanel()
@@ -143,6 +153,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
                 let contentView = OpenQuicklyView(state: state) {
                     panel.close()
+                    self.modalOpen = false
                 } openFile: { file in
                     workspace.editorManager?.openTab(item: file)
                 }.environmentObject(workspace)
@@ -150,11 +161,13 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
+                self.modalOpen = true
             }
         }
     }
 
     @IBAction func closeCurrentTab(_ sender: Any) {
+        if self.modalOpen { return }
         if (workspace?.editorManager?.activeEditor.tabs ?? []).isEmpty {
             self.closeActiveEditor(self)
         } else {
