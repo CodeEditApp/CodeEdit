@@ -7,10 +7,13 @@
 
 import Foundation
 import AppKit
+import OSLog
 
 /// This class is used to perform git functions such as fetch, pull, add/remove of changes, commit, push, etc.
 /// It also stores remotes, branches, current changes, stashes, and commits
 final class SourceControlManager: ObservableObject {
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "SourceControlManager")
+
     let gitClient: GitClient
 
     /// The base URL of the workspace
@@ -20,7 +23,7 @@ final class SourceControlManager: ObservableObject {
     weak var fileManager: CEWorkspaceFileManager?
 
     /// A list of changed files
-    @Published var changedFiles: [CEWorkspaceFile] = []
+    @Published var changedFiles: [GitChangedFile] = []
 
     /// Current branch
     @Published var currentBranch: GitBranch?

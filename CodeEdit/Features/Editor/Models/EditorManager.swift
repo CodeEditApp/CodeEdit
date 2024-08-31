@@ -91,9 +91,10 @@ class EditorManager: ObservableObject {
     /// - Parameters:
     ///   - item: The tab to open.
     ///   - editor: The editor to add the tab to. If nil, it is added to the active tab group.
-    func openTab(item: CEWorkspaceFile, in editor: Editor? = nil) {
+    ///   - asTemporary: Indicates whether the tab should be opened as a temporary tab or a permanent tab.
+    func openTab(item: CEWorkspaceFile, in editor: Editor? = nil, asTemporary: Bool = false) {
         let editor = editor ?? activeEditor
-        editor.openTab(file: item, asTemporary: false)
+        editor.openTab(file: item, asTemporary: asTemporary)
     }
 
     /// bind active tap group to listen to file selection changes.

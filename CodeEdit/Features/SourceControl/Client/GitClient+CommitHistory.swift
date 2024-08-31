@@ -19,11 +19,10 @@ extension GitClient {
         maxCount: Int? = nil,
         fileLocalPath: String? = nil
     ) async throws -> [GitCommit] {
-        var branchNameString = ""
-        var maxCountString = ""
-        let fileLocalPath = fileLocalPath?.escapedWhiteSpaces() ?? ""
-        if let branchName { branchNameString = "--first-parent \(branchName)" }
-        if let maxCount { maxCountString = "-n \(maxCount)" }
+        let branchString = branchName != nil ? "\"\(branchName ?? "")\"" : ""
+        let fileString = fileLocalPath != nil ? "\"\(fileLocalPath ?? "")\"" : ""
+        let countString = maxCount != nil ? "-n \(maxCount ?? 0)" : ""
+
         let dateFormatter = DateFormatter()
 
         // Can't use `Locale.current`, since it'd give a nil date outside the US
@@ -31,7 +30,7 @@ extension GitClient {
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
 
         let output = try await run(
-            "log -z --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \(maxCountString) \(branchNameString) \(fileLocalPath)"
+            "log -z --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \(countString) \(branchString) -- \(fileString)"
                 .trimmingCharacters(in: .whitespacesAndNewlines)
         )
         let remoteURL = try await getRemoteURL()
