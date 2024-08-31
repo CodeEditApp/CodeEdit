@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum FSEvent {
+enum FSEvent: String {
     case changeInDirectory
     case rootChanged
     case itemChangedOwner
