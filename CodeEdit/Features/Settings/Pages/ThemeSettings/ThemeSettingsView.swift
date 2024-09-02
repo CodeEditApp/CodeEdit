@@ -22,85 +22,113 @@ struct ThemeSettingsView: View {
     @State private var filteredThemes: [Theme] = []
 
     var body: some View {
-        SettingsForm {
-            Section {
-                changeThemeOnSystemAppearance
-                if settings.matchAppearance {
-                    alwaysUseDarkTerminalAppearance
-                }
-                useThemeBackground
-            }
-            Section {
-                VStack(spacing: 0) {
-                    HStack {
-                        TextField("Search Themes", text: $themeSearchQuery)
-                            .textFieldStyle(.roundedBorder)
+        VStack {
+            Form {
+                Form {
+                    Section {
+                        HStack {
+                            ThemeSearchField(themeSearchQuery: $themeSearchQuery)
 
-                        Button {
-                            withAnimation {
-                                themeModel.selectedAppearance = themeModel.selectedAppearance == .dark ? .light : .dark
+                            Button {
+
+                            } label: {
+                                Image(systemName: "plus")
                             }
-                        } label: {
-//                            Image(systemName: "arrow.up.arrow.down")
-//                                .rotationEffect(.degrees(themeModel.selectedAppearance == .dark ? 0 : 180))
-//                                .animation(.easeInOut, value: themeModel.selectedAppearance)
-                            Image(
-                                systemName: themeModel.selectedAppearance == .dark ?
-                                  "moon.circle.fill" : "sun.max.circle"
-                            ).font(.title2)
-                        }
-                        .buttonStyle(.icon)
-                    }
-                    .padding(10)
-                    .padding(.leading, 10)
 
+                            Button {
+
+                            } label: {
+                                Image(systemName: "ellipsis")
+                            }
+                        }
+                    }
+                }
+                .formStyle(.columns)
+
+                if themeSearchQuery.isEmpty {
+                    Section {
+                        changeThemeOnSystemAppearance
+                        if settings.matchAppearance {
+                            alwaysUseDarkTerminalAppearance
+                        }
+                        useThemeBackground
+                    }
+                }
+
+                Section {
                     VStack(spacing: 0) {
-                        ForEach(filteredThemes) { theme in
-                            Divider().padding(.horizontal, 10)
-                            ThemeSettingsThemeRow(
-                                theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                active: themeModel.getThemeActive(theme)
-                            ).id(theme)
+                        //                    HStack {
+                        //                        TextField("Search Themes", text: $themeSearchQuery)
+                        //                            .textFieldStyle(.roundedBorder)
+                        //
+                        //                        Button {
+                        //                            withAnimation {
+                        //                                themeModel.selectedAppearance = themeModel.selectedAppearance == .dark ? .light : .dark
+                        //                            }
+                        //                        } label: {
+                        ////                            Image(systemName: "arrow.up.arrow.down")
+                        ////                                .rotationEffect(.degrees(themeModel.selectedAppearance == .dark ? 0 : 180))
+                        ////                                .animation(.easeInOut, value: themeModel.selectedAppearance)
+                        //                            Image(
+                        //                                systemName: themeModel.selectedAppearance == .dark ?
+                        //                                  "moon.circle.fill" : "sun.max.circle"
+                        //                            ).font(.title2)
+                        //                        }
+                        //                        .buttonStyle(.icon)
+                        //                    }
+                        //                    .padding(10)
+                        //                    .padding(.leading, 10)
+
+                        VStack(spacing: 0) {
+                            ForEach(filteredThemes) { theme in
+                                Divider().padding(.horizontal, 10)
+                                ThemeSettingsThemeRow(
+                                    theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
+                                    active: themeModel.getThemeActive(theme)
+                                ).id(theme)
+                            }
                         }
                     }
-                }
-                .padding(-10)
-            } footer: {
-                HStack {
-                    Spacer()
-                    Button("Import...") {
-                        themeModel.importTheme()
-                    }
-                }
-                .padding(.top, 10)
-            }
-        }
-        .sheet(item: $themeModel.detailsTheme) {
-            themeModel.isAdding = false
-        } content: { theme in
-            if let index = themeModel.themes.firstIndex(where: {
-                $0.fileURL?.absoluteString == theme.fileURL?.absoluteString
-            }) {
-                ThemeSettingsThemeDetails(theme: Binding(
-                    get: { themeModel.themes[index] },
-                    set: { newValue in
-                        themeModel.themes[index] = newValue
-                        themeModel.save(newValue)
-                        if settings.selectedTheme == theme.name {
-                            themeModel.activateTheme(newValue)
+                    .padding(-10)
+                } footer: {
+                    HStack {
+                        Spacer()
+                        Button("Import...") {
+                            themeModel.importTheme()
                         }
                     }
-                ))
+                    .padding(.top, 10)
+                }
+                .sheet(item: $themeModel.detailsTheme) {
+                    themeModel.isAdding = false
+                } content: { theme in
+                    if let index = themeModel.themes.firstIndex(where: {
+                        $0.fileURL?.absoluteString == theme.fileURL?.absoluteString
+                    }) {
+                        ThemeSettingsThemeDetails(theme: Binding(
+                            get: { themeModel.themes[index] },
+                            set: { newValue in
+                                themeModel.themes[index] = newValue
+                                themeModel.save(newValue)
+                                if settings.selectedTheme == theme.name {
+                                    themeModel.activateTheme(newValue)
+                                }
+                            }
+                        ))
+                    }
+                }
+                .onAppear {
+                    updateFilteredThemes()
+                }
+                .onChange(of: themeSearchQuery) { _ in
+                    updateFilteredThemes()
+                }
+                .onChange(of: themeModel.selectedAppearance) { _ in
+                    updateFilteredThemes()
+                }
+
             }
-        }
-        .onAppear {
-            updateFilteredThemes()
-        }
-        .onChange(of: themeSearchQuery) { _ in
-            updateFilteredThemes()
-        }
-        .onChange(of: themeModel.selectedAppearance) { _ in
-            updateFilteredThemes()
+            .formStyle(.grouped)
         }
     }
 
