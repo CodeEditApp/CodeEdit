@@ -319,7 +319,7 @@
 		617DB3DA2C25B07F00B58BFE /* TaskNotificationsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D92C25B07F00B58BFE /* TaskNotificationsDetailView.swift */; };
 		617DB3DC2C25B14A00B58BFE /* ActivityViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3DB2C25B14A00B58BFE /* ActivityViewer.swift */; };
 		617DB3DF2C25E13800B58BFE /* TaskNotificationHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3DE2C25E13800B58BFE /* TaskNotificationHandlerTests.swift */; };
-		61816B832C81DC2C00C71BF7 /* ThemeSearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61816B822C81DC2C00C71BF7 /* ThemeSearchField.swift */; };
+		61816B832C81DC2C00C71BF7 /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61816B822C81DC2C00C71BF7 /* SearchField.swift */; };
 		618725A12C29EFCC00987354 /* SchemeDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725A02C29EFCC00987354 /* SchemeDropDownView.swift */; };
 		618725A42C29F00400987354 /* WorkspaceMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725A32C29F00400987354 /* WorkspaceMenuItemView.swift */; };
 		618725A62C29F02500987354 /* DropdownMenuItemStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725A52C29F02500987354 /* DropdownMenuItemStyleModifier.swift */; };
@@ -979,7 +979,7 @@
 		617DB3D92C25B07F00B58BFE /* TaskNotificationsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNotificationsDetailView.swift; sourceTree = "<group>"; };
 		617DB3DB2C25B14A00B58BFE /* ActivityViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewer.swift; sourceTree = "<group>"; };
 		617DB3DE2C25E13800B58BFE /* TaskNotificationHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNotificationHandlerTests.swift; sourceTree = "<group>"; };
-		61816B822C81DC2C00C71BF7 /* ThemeSearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSearchField.swift; sourceTree = "<group>"; };
+		61816B822C81DC2C00C71BF7 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
 		618725A02C29EFCC00987354 /* SchemeDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemeDropDownView.swift; sourceTree = "<group>"; };
 		618725A32C29F00400987354 /* WorkspaceMenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceMenuItemView.swift; sourceTree = "<group>"; };
 		618725A52C29F02500987354 /* DropdownMenuItemStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropdownMenuItemStyleModifier.swift; sourceTree = "<group>"; };
@@ -2031,6 +2031,7 @@
 				B67DB0FB2AFDF71F002DC647 /* IconToggleStyle.swift */,
 				587B9D8D29300ABD00AC7927 /* SearchPanel.swift */,
 				6CABB1A029C5593800340467 /* SearchPanelView.swift */,
+				61816B822C81DC2C00C71BF7 /* SearchField.swift */,
 				587B9D8929300ABD00AC7927 /* PanelDivider.swift */,
 				B67DB0EE2AF3E381002DC647 /* PaneTextField.swift */,
 				587B9D8E29300ABD00AC7927 /* PressActionsModifier.swift */,
@@ -2471,7 +2472,6 @@
 			children = (
 				B6F0518D29DA29F900D72287 /* Models */,
 				58F2EAAF292FB2B0004A9BDE /* ThemeSettingsView.swift */,
-				61816B822C81DC2C00C71BF7 /* ThemeSearchField.swift */,
 				B6EA1FF729DB78DB001BF195 /* ThemeSettingThemeRow.swift */,
 				B6EA1FFA29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift */,
 				B6EA1FFC29DB792C001BF195 /* ThemeSettingsColorPreview.swift */,
@@ -4255,7 +4255,7 @@
 				6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */,
 				284DC84F2978B7B400BF2770 /* ContributorsView.swift in Sources */,
 				B62AEDC92A2704F3009A9F52 /* UtilityAreaTabView.swift in Sources */,
-				61816B832C81DC2C00C71BF7 /* ThemeSearchField.swift in Sources */,
+				61816B832C81DC2C00C71BF7 /* SearchField.swift in Sources */,
 				30B088052C0D53080063A882 /* LanguageServer+DocumentLink.swift in Sources */,
 				58798250292E78D80085B254 /* CodeFileDocument.swift in Sources */,
 				5878DAA5291AE76700DD95A3 /* OpenQuicklyView.swift in Sources */,
