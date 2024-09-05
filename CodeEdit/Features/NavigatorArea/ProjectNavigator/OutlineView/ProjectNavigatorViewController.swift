@@ -36,7 +36,7 @@ final class ProjectNavigatorViewController: NSViewController {
     var iconColor: SettingsData.FileIconStyle = .color {
         willSet {
             if newValue != iconColor {
-                outlineView.reloadData()
+                outlineView?.reloadData()
             }
         }
     }
