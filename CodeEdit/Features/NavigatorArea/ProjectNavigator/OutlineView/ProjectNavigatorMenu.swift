@@ -120,8 +120,9 @@ final class ProjectNavigatorMenu: NSMenu {
                 return ([.none()], [])
             }
             var primaryItems = [NSMenuItem]()
-            if type.conforms(to: .sourceCode) {
-                primaryItems.append(.sourceCode())
+            if type.conforms(to: .text) || checkFileIsText(for: item) {
+                primaryItems.append(menuItem("Source Code", action: #selector(openInSourceCode)))
+                primaryItems.append(.separator())
             }
             if type.conforms(to: .propertyList) {
                 primaryItems.append(.propertyList())
@@ -141,10 +142,7 @@ final class ProjectNavigatorMenu: NSMenu {
                 secondaryItems.append(.hex())
             }
 
-            // FIXME: Update the quickLook condition
-            if type.conforms(to: .data) {
-                secondaryItems.append(.quickLook())
-            }
+            secondaryItems.append(QuickLookPreviewController.quickLookMenu(item: item, workspace: workspace))
 
             return (primaryItems, secondaryItems)
         }
@@ -176,6 +174,31 @@ final class ProjectNavigatorMenu: NSMenu {
         sourceControlMenu.addItem(withTitle: "Mark Selected Files as Resolved", action: nil, keyEquivalent: "")
 
         return sourceControlMenu
+    }
+
+    /// Checks if the given `CEWorkspaceFile` is a text file.
+    /// This function verifies if the content of the file can be decoded as text.
+    /// It is used as a fallback when the type identifier does not conform to the expected text type.
+    func checkFileIsText(for item: CEWorkspaceFile) -> Bool {
+        do {
+            // Read the first 512 bytes of the file.
+            let fileHandle = try FileHandle(forReadingFrom: item.url)
+            let fileData = fileHandle.readData(ofLength: 512)
+            defer { fileHandle.closeFile() }
+
+            // Extreme use case: Returns true for empty files.
+            // E.g. The user hasn't typed anything on it, yet.
+            // This used for files like .env, .gitignore or files that lack an extension.
+            if fileData.isEmpty {
+                return true
+            }
+
+            // swiftlint:disable:next non_optional_string_data_conversion
+            return String(data: fileData, encoding: .utf8) != nil
+        } catch {
+            print("Error reading file: \(error)")
+            return false
+        }
     }
 
     /// Updates the menu for the selected item and hides it if no item is provided.
@@ -257,6 +280,16 @@ final class ProjectNavigatorMenu: NSMenu {
     private func duplicate() {
         guard let item else { return }
         workspace?.workspaceFileManager?.duplicate(file: item)
+    }
+
+    /// Action that opens the file in Source Code.
+    @objc
+    private func openInSourceCode() {
+        guard let item else { return }
+        item.isOpeningInQuickLook = false
+        guard let workspace,
+              let editorManager = workspace.editorManager else { return }
+        editorManager.openTab(item: item)
     }
 }
 

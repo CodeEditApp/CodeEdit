@@ -161,6 +161,9 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         FileIcon.iconColor(fileType: type)
     }
 
+    /// Returns whether the item is being opened in Quick Look.
+    var isOpeningInQuickLook = false
+
     init(
         url: URL,
         changeType: GitStatus? = nil,

@@ -26,8 +26,11 @@ struct EditorAreaFileView: View {
 
     @ViewBuilder var editorAreaFileView: some View {
         if let document = file.fileDocument {
-
-            if let utType = document.utType, utType.conforms(to: .text) {
+            if file.isOpeningInQuickLook {
+                AnyFileView(file.url)
+                    .padding(.top, edgeInsets.top - 1.74)
+                    .padding(.bottom, StatusBarView.height + 1.26)
+            } else if let utType = document.utType, utType.conforms(to: .text) {
                 CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
             } else {
                 NonTextFileView(fileDocument: document)
