@@ -188,7 +188,7 @@ final class ProjectNavigatorMenu: NSMenu {
 
             // Extreme use case: Returns true for empty files.
             // E.g. The user hasn't typed anything on it, yet.
-            // This used for files like .env, .gitignore or files that lack an extension.
+            // This is used for files like .env, .gitignore or files that lack an extension.
             if fileData.isEmpty {
                 return true
             }
