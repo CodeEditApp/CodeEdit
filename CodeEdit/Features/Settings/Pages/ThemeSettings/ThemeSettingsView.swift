@@ -29,16 +29,32 @@ struct ThemeSettingsView: View {
                         SearchField("Search", text: $themeSearchQuery)
 
                         Button {
-
+                            // As disscussed the expected behaivour would be to duplicate the selected theme
+                            if let selectedTheme = themeModel.selectedTheme {
+                                if let fileURL = selectedTheme.fileURL {
+                                    themeModel.duplicate(fileURL)
+                                }
+                            }
                         } label: {
                             Image(systemName: "plus")
-                        }
+                        }.disabled(themeModel.selectedTheme == nil)
 
-                        Button {
-
+                        Menu {
+                            Button {
+                                themeModel.importTheme()
+                            } label: {
+                                Text("Import Theme...")
+                            }
+                            Button {
+                               // TODO
+                            } label: {
+                                Text("Export All Custom Themes...")
+                            }
                         } label: {
                             Image(systemName: "ellipsis")
                         }
+                        .menuStyle(.borderedButton)
+                        .frame(width: 50)
                     }
                 }
                 if themeSearchQuery.isEmpty {
@@ -50,7 +66,6 @@ struct ThemeSettingsView: View {
                         useThemeBackground
                     }
                 }
-
                 Section {
                     VStack(spacing: 0) {
                         ForEach(filteredThemes) { theme in
