@@ -95,13 +95,14 @@ extension SourceControlManager {
     }
 
     /// Discard changes for file
-    func discardChanges(for file: CEWorkspaceFile) {
+    func discardChanges(for file: URL) {
         Task {
             do {
-                try await gitClient.discardChanges(for: file.url)
+                try await gitClient.discardChanges(for: file)
                 // TODO: Refresh content of active and unmodified document,
                 // requires CodeEditSourceEditor changes
             } catch {
+                logger.error("Failed to discard changes for file (\(file.lastPathComponent): \(error)")
                 await showAlertForError(title: "Failed to discard changes", error: error)
             }
         }
@@ -115,6 +116,7 @@ extension SourceControlManager {
                 // TODO: Refresh content of active and unmodified document,
                 // requires CodeEditSourceEditor changes
             } catch {
+                logger.error("Failed to discard changes: \(error)")
                 await showAlertForError(title: "Failed to discard changes", error: error)
             }
         }
@@ -122,7 +124,7 @@ extension SourceControlManager {
 
     /// Set changed files on main actor
     @MainActor
-    private func setChangedFiles(_ files: [CEWorkspaceFile]) {
+    private func setChangedFiles(_ files: [GitChangedFile]) {
         self.changedFiles = files
     }
 
@@ -136,14 +138,15 @@ extension SourceControlManager {
         var updatedStatusFor: Set<CEWorkspaceFile> = []
         // Refresh status of file manager files
         for changedFile in changedFiles {
-            guard let file = fileManager.flattenedFileItems[changedFile.id] else {
+            guard let file = fileManager.getFile(changedFile.ceFileKey) else {
                 continue
             }
-            if file.gitStatus != changedFile.gitStatus {
-                file.gitStatus = changedFile.gitStatus
-                updatedStatusFor.insert(file)
+            if file.gitStatus != changedFile.anyStatus() {
+                file.gitStatus = changedFile.anyStatus()
             }
+            updatedStatusFor.insert(file)
         }
+
         for (_, file) in fileManager.flattenedFileItems
         where !updatedStatusFor.contains(file) && file.gitStatus != nil {
             file.gitStatus = nil
@@ -160,50 +163,25 @@ extension SourceControlManager {
     /// Refresh all changed files and refresh status in file manager
     func refreshAllChangedFiles() async {
         do {
-            var fileDictionary = [URL: CEWorkspaceFile]()
+            let status = try await gitClient.getStatus()
 
-            // Process changed files
-            for item in try await gitClient.getChangedFiles() {
-                fileDictionary[item.fileLink] = CEWorkspaceFile(
-                    url: item.fileLink,
-                    changeType: item.changeType,
-                    staged: false
-                )
-            }
+            // TODO: Unmerged changes
+            // status.unmergedChanges
 
-            // Update staged status
-            for item in try await gitClient.getStagedFiles() {
-                fileDictionary[item.fileLink]?.staged = true
-            }
-
-            // TODO:  Profile
-            let changedFiles = Array(fileDictionary.values.sorted())
-
-            await setChangedFiles(changedFiles)
+            await setChangedFiles(status.changedFiles + status.untrackedFiles)
             await refreshStatusInFileManager()
         } catch {
+            logger.error("Error fetching git status: \(error)")
             await setChangedFiles([])
         }
     }
 
     /// Get all changed files for a commit
-    func getCommitChangedFiles(commitSHA: String) async -> [CEWorkspaceFile] {
+    func getCommitChangedFiles(commitSHA: String) async -> [GitChangedFile] {
         do {
-            var fileDictionary = [URL: CEWorkspaceFile]()
-
-            // Process changed files
-            for item in try await gitClient.getCommitChangedFiles(commitSHA: commitSHA) {
-                fileDictionary[item.fileLink] = CEWorkspaceFile(
-                    url: item.fileLink,
-                    changeType: item.changeType
-                )
-            }
-
-            // TODO:  Profile
-            let changedFiles = Array(fileDictionary.values.sorted())
-
-            return changedFiles
+            return try await gitClient.getCommitChangedFiles(commitSHA: commitSHA)
         } catch {
+            logger.error("Error committing changed files: \(error)")
             return []
         }
     }
@@ -216,11 +194,15 @@ extension SourceControlManager {
         await self.refreshNumberOfUnsyncedCommits()
     }
 
-    func add(_ files: [CEWorkspaceFile]) async throws {
+    /// Adds the given URLs to the staged changes.
+    /// - Parameter files: The files to stage.
+    func add(_ files: [URL]) async throws {
         try await gitClient.add(files)
     }
 
-    func reset(_ files: [CEWorkspaceFile]) async throws {
+    /// Removes the given URLs from the staged changes.
+    /// - Parameter files: The URLs to un-stage.
+    func reset(_ files: [URL]) async throws {
         try await gitClient.reset(files)
     }
 
@@ -288,10 +270,22 @@ extension SourceControlManager {
     }
 
     /// Push changes to remote
-    func push(remote: String? = nil, branch: String? = nil, setUpstream: Bool = false) async throws {
+    func push(
+        remote: String? = nil,
+        branch: String? = nil,
+        setUpstream: Bool = false,
+        force: Bool = false,
+        tags: Bool = false
+    ) async throws {
         guard currentBranch != nil else { return }
 
-        try await gitClient.pushToRemote(remote: remote, branch: branch, setUpstream: setUpstream)
+        try await gitClient.pushToRemote(
+            remote: remote,
+            branch: branch,
+            setUpstream: setUpstream,
+            force: force,
+            tags: tags
+        )
 
         await refreshCurrentBranch()
         await self.refreshNumberOfUnsyncedCommits()

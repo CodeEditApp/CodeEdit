@@ -12,7 +12,7 @@ struct CommitDetailsView: View {
 
     @Binding var commit: GitCommit?
 
-    @State var commitChanges: [CEWorkspaceFile] = []
+    @State var commitChanges: [GitChangedFile] = []
 
     @State var selection: CEWorkspaceFile?
 
@@ -46,12 +46,12 @@ struct CommitDetailsView: View {
 
                 if !commitChanges.isEmpty {
                     List(selection: $selection) {
-                                ForEach($commitChanges, id: \.self) { $file in
-                                    CommitChangedFileListItemView(changedFile: $file)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                        .listRowSeparator(.hidden)
-                                        .padding(.vertical, -1)
-                                }
+                        ForEach($commitChanges, id: \.self) { $file in
+                            GitChangedFileListView(changedFile: $file, showStaged: false)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .listRowSeparator(.hidden)
+                                .padding(.vertical, -1)
+                        }
 
                     }
                     .environment(\.defaultMinListRowHeight, 22)

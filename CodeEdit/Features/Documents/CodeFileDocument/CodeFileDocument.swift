@@ -13,6 +13,7 @@ import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages
 import Combine
+import OSLog
 
 enum CodeFileError: Error {
     case failedToDecode
@@ -25,6 +26,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     struct OpenOptions {
         let cursorPositions: [CursorPosition]
     }
+
+    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CodeFileDocument")
 
     /// The text content of the document, stored as a text storage
     ///
@@ -121,6 +124,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     override func data(ofType _: String) throws -> Data {
         guard let sourceEncoding, let data = (content?.string as NSString?)?.data(using: sourceEncoding.nsValue) else {
+            Self.logger.error("Failed to encode contents to \(self.sourceEncoding.debugDescription)")
             throw CodeFileError.failedToEncode
         }
         return data
@@ -143,6 +147,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         if let validEncoding = FileEncoding(rawEncoding), let nsString {
             self.sourceEncoding = validEncoding
             self.content = NSTextStorage(string: nsString as String)
+        } else {
+            Self.logger.error("Failed to read file from data using encoding: \(rawEncoding)")
         }
     }
 

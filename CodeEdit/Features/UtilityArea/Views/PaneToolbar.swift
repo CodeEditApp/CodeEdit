@@ -26,7 +26,6 @@ struct PaneToolbar<Content: View>: View {
                         .frame(width: 24)
                 }
                 .opacity(0)
-                Divider().opacity(0)
             }
             content
             if model.hasTrailingSidebar
@@ -35,16 +34,13 @@ struct PaneToolbar<Content: View>: View {
                         && model.trailingSidebarIsCollapsed)
                     || paneArea == .trailing
                 ) || !model.hasTrailingSidebar {
-                Divider().opacity(0)
-                PaneToolbarSection {
-                    if model.hasTrailingSidebar {
+                if model.hasTrailingSidebar {
+                    PaneToolbarSection {
                         Spacer()
                             .frame(width: 24)
                     }
-                    Spacer()
-                        .frame(width: 24)
+                    .opacity(0)
                 }
-                .opacity(0)
             }
         }
         .buttonStyle(.icon(size: 24))

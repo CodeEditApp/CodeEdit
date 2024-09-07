@@ -46,8 +46,6 @@ struct CodeFileView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject private var editorManager: EditorManager
-
     @ObservedObject private var themeModel: ThemeModel = .shared
 
     private var cancellables = Set<AnyCancellable>()
@@ -69,10 +67,23 @@ struct CodeFileView: View {
         codeFile
             .contentCoordinator
             .textUpdatePublisher
-            .debounce(for: 1.0, scheduler: DispatchQueue.main)
             .sink { _ in
                 codeFile.updateChangeCount(.changeDone)
-                codeFile.autosave(withImplicitCancellability: false) { _ in }
+            }
+            .store(in: &cancellables)
+
+        codeFile
+            .contentCoordinator
+            .textUpdatePublisher
+            .debounce(for: 1.0, scheduler: DispatchQueue.main)
+            .sink { _ in
+                codeFile.autosave(withImplicitCancellability: false) { error in
+                    if let error {
+                        CodeFileDocument.logger.error("Failed to autosave document, error: \(error)")
+                    } else {
+                        codeFile.updateChangeCount(.changeCleared)
+                    }
+                }
             }
             .store(in: &cancellables)
 
@@ -104,8 +115,6 @@ struct CodeFileView: View {
 
     @Environment(\.edgeInsets)
     private var edgeInsets
-
-    @EnvironmentObject private var editor: Editor
 
     var body: some View {
         CodeEditSourceEditor(

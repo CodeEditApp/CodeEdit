@@ -16,13 +16,13 @@ extension String {
     ///   - offsetBy: The number (of characters) to offset from the first index.
     ///   - limitedBy: An index to limit the offset by.
     /// - Returns: A `String.Index`
-    func safeOffset(_ idx: String.Index, offsetBy offset: Int, limitedBy: String.Index) -> String.Index {
+    func safeOffset(_ idx: String.Index, offsetBy offset: Int, limitedBy: String.Index) -> String.Index? {
         // This is the odd case this method solves. Swift's
         // ``String.index(_:offsetBy:limitedBy:)``
         // will crash if the given index is equal to the offset, and
         // we try to go outside of the string's limits anyways.
         if idx == limitedBy {
-            return limitedBy
+            return nil
         } else if offset < 0 {
             // If the offset is going backwards, but the limit index
             // is ahead in the string we return the original index.
@@ -32,7 +32,7 @@ extension String {
 
             // Return the index offset by the given offset.
             // If this index is nil we return the limit index.
-            return index(idx, offsetBy: offset, limitedBy: limitedBy) ?? limitedBy
+            return index(idx, offsetBy: offset, limitedBy: limitedBy)
         } else if offset > 0 {
             // If the offset is going forwards, but the limit index
             // is behind in the string we return the original index.
@@ -42,7 +42,7 @@ extension String {
 
             // Return the index offset by the given offset.
             // If this index is nil we return the limit index.
-            return index(idx, offsetBy: offset, limitedBy: limitedBy) ?? limitedBy
+            return index(idx, offsetBy: offset, limitedBy: limitedBy)
         } else {
             // The offset is 0, so we return the limit index.
             return limitedBy
@@ -56,7 +56,7 @@ extension String {
     ///   - idx: The index to start at.
     ///   - offsetBy: The number (of characters) to offset from the first index.
     /// - Returns: A `String.Index`
-    func safeOffset(_ idx: String.Index, offsetBy offset: Int) -> String.Index {
+    func safeOffset(_ idx: String.Index, offsetBy offset: Int) -> String.Index? {
         if offset < 0 {
             return safeOffset(idx, offsetBy: offset, limitedBy: self.startIndex)
         } else if offset > 0 {

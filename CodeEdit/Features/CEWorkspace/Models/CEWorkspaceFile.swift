@@ -105,8 +105,8 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     var fileIdentifier = UUID().uuidString
 
-    /// Returns the Git status of a file as ``GitType``
-    var gitStatus: GitType?
+    /// Returns the Git status of a file as ``GitStatus``
+    var gitStatus: GitStatus?
 
     /// Returns a boolean that is true if the file is staged for commit
     var staged: Bool?
@@ -167,7 +167,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     init(
         id: String,
         url: URL,
-        changeType: GitType? = nil,
+        changeType: GitStatus? = nil,
         staged: Bool? = false
     ) {
         self.id = id
@@ -201,7 +201,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(String.self, forKey: .id)
         url = try values.decode(URL.self, forKey: .url)
-        gitStatus = try values.decode(GitType.self, forKey: .changeType)
+        gitStatus = try values.decode(GitStatus.self, forKey: .changeType)
         staged = try values.decode(Bool.self, forKey: .staged)
     }
 

@@ -7,12 +7,17 @@
 
 import AppKit
 import SwiftUI
+import OSLog
 
 /// A `NSViewController` that handles the **ProjectNavigatorView** in the **NavigatorArea**.
 ///
 /// Adds a ``outlineView`` inside a ``scrollView`` which shows the folder structure of the
 /// currently open project.
 final class ProjectNavigatorViewController: NSViewController {
+    static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "",
+        category: "ProjectNavigatorViewController"
+    )
 
     var scrollView: NSScrollView!
     var outlineView: NSOutlineView!
@@ -31,7 +36,7 @@ final class ProjectNavigatorViewController: NSViewController {
     var iconColor: SettingsData.FileIconStyle = .color {
         willSet {
             if newValue != iconColor {
-                outlineView.reloadData()
+                outlineView?.reloadData()
             }
         }
     }

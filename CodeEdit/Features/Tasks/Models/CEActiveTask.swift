@@ -34,8 +34,16 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }.store(in: &cancellables)
     }
 
-    func run() {
+    func run(workspaceURL: URL? = nil) {
         Task {
+            // Reconstruct the full command to ensure it executes in the correct directory.
+            // Because: CETask only contains information about the relative path.
+            let fullCommand: String
+            if let workspaceURL = workspaceURL {
+                fullCommand = "cd \(workspaceURL.relativePath) && \(task.fullCommand)"
+            } else {
+                fullCommand = task.fullCommand
+            }
             guard let process, let outputPipe else { return }
 
             await updateTaskStatus(to: .running)
@@ -61,7 +69,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             do {
                 try Shell.executeCommandWithShell(
                     process: process,
-                    command: self.task.fullCommand,
+                    command: fullCommand,
                     environmentVariables: self.task.environmentVariablesDictionary,
                     shell: Shell.zsh, // TODO: Let user decide which shell to use
                     outputPipe: outputPipe
