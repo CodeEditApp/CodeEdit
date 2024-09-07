@@ -149,7 +149,7 @@ final class CEWorkspaceFileManager {
     ///
     /// - Parameter file: The file item to load children for.
     private func loadChildrenForFile(_ file: CEWorkspaceFile) {
-        guard let children = urlsForDirectory(file.linkedUrl) else {
+        guard let children = urlsForDirectory(file.resolvedURL) else {
             return
         }
         var addedChildrenUrls: [String] = []

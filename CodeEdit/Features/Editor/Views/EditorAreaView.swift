@@ -56,10 +56,10 @@ struct EditorAreaView: View {
                     LoadingFileView(selected.file.name)
                         .task {
                             do {
-                                let contentType = selected.file.linkedUrl.contentType
+                                let contentType = selected.file.resolvedURL.contentType
                                 let newCodeFile = try CodeFileDocument(
                                     for: selected.file.url,
-                                    withContentsOf: selected.file.linkedUrl,
+                                    withContentsOf: selected.file.resolvedURL,
                                     ofType: contentType?.identifier ?? ""
                                 )
 

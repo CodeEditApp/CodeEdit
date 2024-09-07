@@ -20,9 +20,9 @@ extension CEWorkspaceFileManager {
             for event in events {
                 // Event returns file/folder that was changed, but in tree we need to update it's parent
                 let parentUrl = "/" + event.path.split(separator: "/").dropLast().joined(separator: "/")
-                // Find all folders poiting to the parent's file url.
+                // Find all folders pointing to the parent's file url.
                 let fileItems = self.flattenedFileItems.filter({
-                    $0.value.linkedUrl.path == parentUrl
+                    $0.value.resolvedURL.path == parentUrl
                 }).map { $0.value }
 
                 switch event.eventType {
@@ -138,7 +138,7 @@ extension CEWorkspaceFileManager {
 
         // get the actual directory children
         let directoryContentsUrls = try fileManager.contentsOfDirectory(
-            at: fileItem.linkedUrl,
+            at: fileItem.resolvedURL,
             includingPropertiesForKeys: nil
         )
 

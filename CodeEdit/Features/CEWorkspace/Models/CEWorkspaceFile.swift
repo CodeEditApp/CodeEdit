@@ -62,7 +62,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     let url: URL
 
     /// Returns the resolved symlink url of this object.
-    lazy var linkedUrl: URL = {
+    lazy var resolvedURL: URL = {
         url.isSymbolicLink ? url.resolvingSymlinksInPath() : url
     }()
 
@@ -116,7 +116,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Returns a boolean that is true if the resource represented by this object is a directory.
     lazy var isFolder: Bool = {
-        linkedUrl.isFolder
+        resolvedURL.isFolder
     }()
 
     /// Returns a boolean that is true if the contents of the directory at this path are
@@ -124,7 +124,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// Does not indicate if this is a folder, see ``isFolder`` to first check if this object is also a directory.
     var isEmptyFolder: Bool {
         (try? CEWorkspaceFile.fileManager.contentsOfDirectory(
-            at: linkedUrl,
+            at: resolvedURL,
             includingPropertiesForKeys: nil,
             options: .skipsSubdirectoryDescendants
         ).isEmpty) ?? true

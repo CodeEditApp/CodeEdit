@@ -18,7 +18,7 @@ extension URL {
     }
 
     var isSymbolicLink: Bool {
-        resourceValues?.isSymbolicLink ?? false
+        resourceValues?.isSymbolicLink ?? false || (resourceValues?.contentType ?? .item) == .aliasFile
     }
 
     var contentType: UTType? {
