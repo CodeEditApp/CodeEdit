@@ -178,7 +178,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     convenience init(
         url: URL,
-        changeType: GitType? = nil,
+        changeType: GitStatus? = nil,
         staged: Bool? = false
     ) {
         self.init(

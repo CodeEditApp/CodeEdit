@@ -34,7 +34,12 @@ extension CEWorkspaceFileManager {
                     continue
                 case .itemCreated, .itemCloned, .itemRemoved, .itemRenamed:
                     for fileItem in fileItems {
-                        try? self.rebuildFiles(fromItem: fileItem)
+                        do {
+                            try self.rebuildFiles(fromItem: fileItem)
+                        } catch {
+                            // swiftlint:disable:next line_length
+                            self.logger.error("Failed to rebuild files for event: \(event.eventType.rawValue), path: \(event.path, privacy: .sensitive)")
+                        }
                         files.insert(fileItem)
                     }
                 }
