@@ -188,7 +188,7 @@ final class CEWorkspaceFileManager {
     /// - Returns: A child element with an associated parent.
     func createChild(_ url: URL, forParent file: CEWorkspaceFile) -> CEWorkspaceFile {
         let childId = URL(filePath: file.id).appendingPathComponent(url.lastPathComponent).relativePath
-        let newFileItem = CEWorkspaceFile(id: childId, name: url.fileName, url: url)
+        let newFileItem = CEWorkspaceFile(id: childId, url: url)
         newFileItem.parent = file
         return newFileItem
     }

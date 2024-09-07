@@ -37,7 +37,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     var id: String
 
     /// Returns the file name (e.g.: `Package.swift`)
-    var name: String
+    var name: String { url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines) }
 
     /// Returns the extension of the file or an empty string if no extension is present.
     var type: FileIcon.FileType {
@@ -166,13 +166,11 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     init(
         id: String,
-        name: String,
         url: URL,
         changeType: GitType? = nil,
         staged: Bool? = false
     ) {
         self.id = id
-        self.name = name
         self.url = url
         self.gitStatus = changeType
         self.staged = staged
@@ -185,7 +183,6 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     ) {
         self.init(
             id: url.relativePath,
-            name: url.fileName,
             url: url,
             changeType: changeType,
             staged: staged
@@ -203,7 +200,6 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(String.self, forKey: .id)
-        name = try values.decode(String.self, forKey: .name)
         url = try values.decode(URL.self, forKey: .url)
         gitStatus = try values.decode(GitType.self, forKey: .changeType)
         staged = try values.decode(Bool.self, forKey: .staged)
