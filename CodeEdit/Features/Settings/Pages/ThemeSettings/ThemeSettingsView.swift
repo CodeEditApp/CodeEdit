@@ -49,7 +49,7 @@ struct ThemeSettingsView: View {
                                     Text("Import Theme...")
                                 }
                                 Button {
-                                    // TODO: #1873
+                                    // TODO: #1874
                                 } label: {
                                     Text("Export All Custom Themes...")
                                 }.disabled(true)
