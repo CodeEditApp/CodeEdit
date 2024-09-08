@@ -112,20 +112,24 @@ struct ThemeSettingsView: View {
                 .onChange(of: themeSearchQuery) { _ in
                     updateFilteredThemes()
                 }
-                .onChange(of: themeModel.selectedAppearance) { _ in
-                    updateFilteredThemes()
+                .onChange(of: colorScheme) { newColorScheme in
+                    updateFilteredThemes(overrideColorScheme: newColorScheme)
                 }
-
             }
         }
     }
 
-    private func updateFilteredThemes() {
-        var themes: [Theme] = if themeModel.selectedAppearance == .dark {
-            themeModel.darkThemes + themeModel.lightThemes
-        } else {
-            themeModel.lightThemes + themeModel.darkThemes
-        }
+    /// Sorts themes by `colorScheme` and `themeSearchQuery`.
+    /// Dark mode themes appear before light themes if in dark mode, and vice versa.
+    private func updateFilteredThemes(overrideColorScheme: ColorScheme? = nil) {
+        // This check is necessary because, when calling `updateFilteredThemes` from within the
+        // `onChange` handler that monitors the `colorScheme`, there are cases where the function
+        // is invoked with outdated values of `colorScheme`.
+        let isDarkScheme = overrideColorScheme ?? colorScheme == .dark
+
+        let themes: [Theme] = isDarkScheme
+        ? (themeModel.darkThemes + themeModel.lightThemes)
+        : (themeModel.lightThemes + themeModel.darkThemes)
 
         Task {
             filteredThemes = themeSearchQuery.isEmpty ? themes : await filterAndSortThemes(themes)
