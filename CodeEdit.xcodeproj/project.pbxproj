@@ -286,6 +286,7 @@
 		5B698A162B263BCE00DE9392 /* SearchSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B698A152B263BCE00DE9392 /* SearchSettingsModel.swift */; };
 		5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4BB1E028212B1E00A92FB2 /* World.swift */; };
 		610C0FDA2B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610C0FD92B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift */; };
+		611028C82C8DC7F200DFD845 /* MenuWithButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611028C72C8DC7F100DFD845 /* MenuWithButtonStyle.swift */; };
 		611191FA2B08CC9000D4459B /* SearchIndexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611191F92B08CC9000D4459B /* SearchIndexer.swift */; };
 		611191FC2B08CCB800D4459B /* SearchIndexer+AsyncController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611191FB2B08CCB800D4459B /* SearchIndexer+AsyncController.swift */; };
 		611191FE2B08CCD200D4459B /* SearchIndexer+File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611191FD2B08CCD200D4459B /* SearchIndexer+File.swift */; };
@@ -949,6 +950,7 @@
 		5B698A152B263BCE00DE9392 /* SearchSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSettingsModel.swift; sourceTree = "<group>"; };
 		5C4BB1E028212B1E00A92FB2 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		610C0FD92B44438F00A01CA7 /* WorkspaceDocument+FindAndReplace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkspaceDocument+FindAndReplace.swift"; sourceTree = "<group>"; };
+		611028C72C8DC7F100DFD845 /* MenuWithButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuWithButtonStyle.swift; sourceTree = "<group>"; };
 		611191F92B08CC9000D4459B /* SearchIndexer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchIndexer.swift; sourceTree = "<group>"; };
 		611191FB2B08CCB800D4459B /* SearchIndexer+AsyncController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+AsyncController.swift"; sourceTree = "<group>"; };
 		611191FD2B08CCD200D4459B /* SearchIndexer+File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchIndexer+File.swift"; sourceTree = "<group>"; };
@@ -2032,6 +2034,7 @@
 				587B9D8D29300ABD00AC7927 /* SearchPanel.swift */,
 				6CABB1A029C5593800340467 /* SearchPanelView.swift */,
 				61816B822C81DC2C00C71BF7 /* SearchField.swift */,
+				611028C72C8DC7F100DFD845 /* MenuWithButtonStyle.swift */,
 				587B9D8929300ABD00AC7927 /* PanelDivider.swift */,
 				B67DB0EE2AF3E381002DC647 /* PaneTextField.swift */,
 				587B9D8E29300ABD00AC7927 /* PressActionsModifier.swift */,
@@ -4198,6 +4201,7 @@
 				30AB4EBB2BF718A100ED4431 /* DeveloperSettings.swift in Sources */,
 				B6C4F2A92B3CB00100B2B140 /* CommitDetailsHeaderView.swift in Sources */,
 				30B088012C0D53080063A882 /* LanguageServer+Definition.swift in Sources */,
+				611028C82C8DC7F200DFD845 /* MenuWithButtonStyle.swift in Sources */,
 				B6EA1FFB29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift in Sources */,
 				618725A62C29F02500987354 /* DropdownMenuItemStyleModifier.swift in Sources */,
 				587B9E7029301D8F00AC7927 /* GitLabUser.swift in Sources */,

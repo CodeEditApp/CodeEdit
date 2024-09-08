@@ -25,11 +25,11 @@ struct ThemeSettingsView: View {
         VStack {
             SettingsForm {
                 Section {
-                    HStack {
+                    HStack(spacing: 10) {
                         SearchField("Search", text: $themeSearchQuery)
 
                         Button {
-                            // As disscussed the expected behaivour would be to duplicate the selected theme
+                            // As discussed, the expected behavior is to duplicate the selected theme.
                             if let selectedTheme = themeModel.selectedTheme {
                                 if let fileURL = selectedTheme.fileURL {
                                     themeModel.duplicate(fileURL)
@@ -37,24 +37,26 @@ struct ThemeSettingsView: View {
                             }
                         } label: {
                             Image(systemName: "plus")
-                        }.disabled(themeModel.selectedTheme == nil)
-
-                        Menu {
-                            Button {
-                                themeModel.importTheme()
-                            } label: {
-                                Text("Import Theme...")
-                            }
-                            Button {
-                               // TODO
-                            } label: {
-                                Text("Export All Custom Themes...")
-                            }
-                        } label: {
-                            Image(systemName: "ellipsis")
                         }
-                        .menuStyle(.borderedButton)
-                        .frame(width: 50)
+                        .disabled(themeModel.selectedTheme == nil)
+                        .help("Create a new Theme")
+
+                        MenuWithButtonStyle(systemImage: "ellipsis", menu: {
+                            Group {
+                                Button {
+                                    themeModel.importTheme()
+                                } label: {
+                                    Text("Import Theme...")
+                                }
+                                Button {
+                                    // TODO: #1873
+                                } label: {
+                                    Text("Export All Custom Themes...")
+                                }.disabled(true)
+                            }
+                        })
+                        .padding(.horizontal, 5)
+                        .help("Import or Export Custom Themes")
                     }
                 }
                 if themeSearchQuery.isEmpty {
