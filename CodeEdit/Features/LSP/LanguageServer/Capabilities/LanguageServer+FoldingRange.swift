@@ -9,14 +9,13 @@ import Foundation
 import LanguageServerProtocol
 
 extension LanguageServer {
-    func requestFoldingRange(document documentURI: String) async -> FoldingRangeResponse {
+    func requestFoldingRange(for documentURI: String) async throws -> FoldingRangeResponse {
         do {
             let params = FoldingRangeParams(textDocument: TextDocumentIdentifier(uri: documentURI))
             return try await lspInstance.foldingRange(params)
         } catch {
-            // TODO: LOGGING
-            print("requestFoldingRange Error: \(error)")
+            logger.warning("requestFoldingRange: Error \(error)")
+            throw error
         }
-        return nil
     }
 }

@@ -8,13 +8,11 @@
 import Foundation
 import LanguageServerProtocol
 
-// TODO: LOGGING
-
 extension LanguageServer {
     func requestFormatting(
-        document documentURI: String,
+        for documentURI: String,
         withFormat formattingOptions: FormattingOptions
-    ) async -> FormattingResult {
+    ) async throws -> FormattingResult {
         do {
             let params = DocumentFormattingParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
@@ -22,16 +20,16 @@ extension LanguageServer {
             )
             return try await lspInstance.formatting(params)
         } catch {
-            print("requestFormatting Error \(error)")
+            logger.warning("requestFormatting: Error \(error)")
+            throw error
         }
-        return []
     }
 
     func requestRangeFormatting(
-        document documentURI: String,
+        for documentURI: String,
         _ range: LSPRange,
         withFormat formattingOptions: FormattingOptions
-    ) async -> FormattingResult {
+    ) async throws -> FormattingResult {
         do {
             let params = DocumentRangeFormattingParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
@@ -40,17 +38,17 @@ extension LanguageServer {
             )
             return try await lspInstance.rangeFormatting(params)
         } catch {
-            print("requestRangeFormatting Error \(error)")
+            logger.warning("requestRangeFormatting: Error \(error)")
+            throw error
         }
-        return []
     }
 
     func requestOnTypeFormatting(
-        document documentURI: String,
+        for documentURI: String,
         _ position: Position,
         character char: String,
         withFormat formattingOptions: FormattingOptions
-    ) async -> FormattingResult {
+    ) async throws -> FormattingResult {
         do {
             let params = DocumentOnTypeFormattingParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
@@ -60,8 +58,8 @@ extension LanguageServer {
             )
             return try await lspInstance.onTypeFormatting(params)
         } catch {
-            print("requestOnTypeFormatting Error \(error)")
+            logger.warning("requestOnTypeFormatting: Error \(error)")
+            throw error
         }
-        return []
     }
 }

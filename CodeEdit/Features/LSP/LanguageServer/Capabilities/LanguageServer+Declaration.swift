@@ -1,5 +1,5 @@
 //
-//  LanguageServer+SignatureHelp.swift
+//  LanguageServer+Declaration.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/7/24.
@@ -9,17 +9,16 @@ import Foundation
 import LanguageServerProtocol
 
 extension LanguageServer {
-    /// Request signature information at a given cursor position
-    func requestSignatureHelp(document documentURI: String, _ position: Position) async -> SignatureHelpResponse {
+    func requestGoToDeclaration(for documentURI: String, position: Position) async throws -> DeclarationResponse {
         do {
             let params = TextDocumentPositionParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
                 position: position
             )
-            return try await lspInstance.signatureHelp(params)
+            return try await lspInstance.declaration(params)
         } catch {
-            print("requestInlayHint Error \(error)")
+            logger.warning("requestGoToDeclaration: Error \(error)")
+            throw error
         }
-        return nil
     }
 }

@@ -10,7 +10,7 @@ import LanguageServerProtocol
 
 extension LanguageServer {
     /// Resolve the type definition location of a symbol at a given text document position
-    func requestTypeDefinition(document documentURI: String, _ position: Position) async -> TypeDefinitionResponse {
+    func requestTypeDefinition(for documentURI: String, _ position: Position) async throws -> TypeDefinitionResponse {
         do {
             let params = TextDocumentPositionParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
@@ -18,8 +18,8 @@ extension LanguageServer {
             )
             return try await lspInstance.typeDefinition(params)
         } catch {
-            print("requestInlayHint Error \(error)")
+            logger.warning("requestTypeDefinition: Error \(error)")
+            throw error
         }
-        return nil
     }
 }

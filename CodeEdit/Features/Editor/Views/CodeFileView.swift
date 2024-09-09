@@ -119,7 +119,7 @@ struct CodeFileView: View {
     var body: some View {
         CodeEditSourceEditor(
             codeFile.content ?? NSTextStorage(),
-            language: getLanguage(),
+            language: codeFile.getLanguage(),
             theme: currentTheme.editor.editorTheme,
             font: font,
             tabWidth: codeFile.defaultTabWidth ?? defaultTabWidth,
@@ -154,17 +154,6 @@ struct CodeFileView: View {
         .onChange(of: bracketHighlight) { _ in
             bracketPairHighlight = getBracketPairHighlight()
         }
-    }
-
-    private func getLanguage() -> CodeLanguage {
-        guard let url = codeFile.fileURL else {
-            return .default
-        }
-        return codeFile.language ?? CodeLanguage.detectLanguageFrom(
-            url: url,
-            prefixBuffer: codeFile.content?.string.getFirstLines(5),
-            suffixBuffer: codeFile.content?.string.getLastLines(5)
-        )
     }
 
     private func getBracketPairHighlight() -> BracketPairHighlight? {

@@ -1,5 +1,5 @@
 //
-//  LSPEventHandler.swift
+//  LSPService+Events.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 6/1/24.
@@ -9,37 +9,37 @@ import LanguageClient
 import LanguageServerProtocol
 
 extension LSPService {
-    func startListeningToEvents(for languageId: LanguageIdentifier) {
-        guard let languageClient = languageClients[languageId] else {
-            logger.error("Language client not found for \(languageId.rawValue)")
+    func startListeningToEvents(for key: ClientKey) {
+        guard let languageClient = languageClients[key] else {
+            logger.error("Language client not found for \(key.languageId.rawValue)")
             return
         }
 
         // Create a new Task to listen to the events
-        let task = Task {
+        let task = Task.detached { [weak self] in
             for await event in languageClient.lspInstance.eventSequence {
-                handleEvent(event, for: languageId)
+                await self?.handleEvent(event, for: key)
             }
         }
-        eventListeningTasks[languageId] = task
+        eventListeningTasks[key] = task
     }
 
-    func stopListeningToEvents(for languageId: LanguageIdentifier) {
-        if let task = eventListeningTasks[languageId] {
+    func stopListeningToEvents(for key: ClientKey) {
+        if let task = eventListeningTasks[key] {
             task.cancel()
-            eventListeningTasks.removeValue(forKey: languageId)
+            eventListeningTasks.removeValue(forKey: key)
         }
     }
 
-    private func handleEvent(_ event: ServerEvent, for languageId: LanguageIdentifier) {
+    private func handleEvent(_ event: ServerEvent, for key: ClientKey) {
         switch event {
         case let .request(id, request):
-            print("Request ID: \(id) for \(languageId.rawValue)")
+            print("Request ID: \(id) for \(key.languageId.rawValue)")
             handleRequest(request)
         case let .notification(notification):
             handleNotification(notification)
         case let .error(error):
-            print("Error from EventStream for \(languageId.rawValue): \(error)")
+            print("Error from EventStream for \(key.languageId.rawValue): \(error)")
         }
     }
 

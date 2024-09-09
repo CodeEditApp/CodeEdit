@@ -10,7 +10,7 @@ import LanguageServerProtocol
 
 extension LanguageServer {
     /// Setup and test the validity of a rename operation at a given location
-    func requestSelectionRange(document documentURI: String, _ positions: [Position]) async -> SelectionRangeResponse {
+    func requestSelectionRange(for documentURI: String, positions: [Position]) async throws -> SelectionRangeResponse {
         do {
             let params = SelectionRangeParams(
                 workDoneToken: nil,
@@ -19,8 +19,8 @@ extension LanguageServer {
             )
             return try await lspInstance.selectionRange(params)
         } catch {
-            print("requestInlayHint Error \(error)")
+            logger.warning("requestSelectionRange: Error \(error)")
+            throw error
         }
-        return nil
     }
 }

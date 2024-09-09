@@ -11,7 +11,7 @@ import LanguageServerProtocol
 extension LanguageServer {
     /// The hover request is sent from the client to the server to request hover
     /// information at a given text document position.
-    func requestHover(document documentURI: String, _ position: Position) async -> HoverResponse {
+    func requestHover(for documentURI: String, _ position: Position) async throws -> HoverResponse {
         do {
             let params = TextDocumentPositionParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
@@ -19,8 +19,8 @@ extension LanguageServer {
             )
             return try await lspInstance.hover(params)
         } catch {
-            print("requestHover Error \(error)")
+            logger.warning("requestHover: Error \(error)")
+            throw error
         }
-        return nil
     }
 }

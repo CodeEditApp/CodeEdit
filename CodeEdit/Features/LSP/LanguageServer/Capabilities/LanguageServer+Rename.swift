@@ -9,7 +9,7 @@ import LanguageServerProtocol
 
 extension LanguageServer {
     /// Setup and test the validity of a rename operation at a given location
-    func requestPrepareRename(document documentURI: String, _ position: Position) async -> PrepareRenameResponse {
+    func requestPrepareRename(for documentURI: String, _ position: Position) async throws -> PrepareRenameResponse {
         do {
             let params = TextDocumentPositionParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
@@ -17,17 +17,17 @@ extension LanguageServer {
             )
             return try await lspInstance.prepareRename(params)
         } catch {
-            print("requestInlayHint Error \(error)")
+            logger.warning("requestPrepareRename: Error \(error)")
+            throw error
         }
-        return nil
     }
 
     /// Ask the server to compute a workspace change so that the client can perform a workspace-wide rename of a symbol
     func requestRename(
-        document documentURI: String,
-        _ position: Position,
+        for documentURI: String,
+        position: Position,
         newName name: String
-    ) async -> RenameResponse {
+    ) async throws -> RenameResponse {
         do {
             let params = RenameParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
@@ -36,8 +36,8 @@ extension LanguageServer {
             )
             return try await lspInstance.rename(params)
         } catch {
-            print("requestInlayHint Error \(error)")
+            logger.warning("requestRename: Error \(error)")
+            throw error
         }
-        return nil
     }
 }

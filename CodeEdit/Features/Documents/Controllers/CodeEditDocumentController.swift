@@ -12,6 +12,8 @@ final class CodeEditDocumentController: NSDocumentController {
     @Environment(\.openWindow)
     private var openWindow
 
+    @LazyService var lspService: LSPService
+
     private let fileManager = FileManager.default
 
     override func newDocument(_ sender: Any?) {
@@ -95,6 +97,13 @@ final class CodeEditDocumentController: NSDocumentController {
     override func clearRecentDocuments(_ sender: Any?) {
         super.clearRecentDocuments(sender)
         UserDefaults.standard.set([Any](), forKey: "recentProjectPaths")
+    }
+
+    override func addDocument(_ document: NSDocument) {
+        super.addDocument(document)
+        if let document = document as? CodeFileDocument {
+            lspService.openDocument(document)
+        }
     }
 }
 

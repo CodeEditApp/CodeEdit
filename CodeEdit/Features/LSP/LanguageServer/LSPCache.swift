@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class LSPCache {
+class LSPCache {
     private var cache = NSCache<NSString, CacheEntry>()
 
     func get<T: Codable & Sendable>(key: CacheKey, as type: T.Type) -> T? {

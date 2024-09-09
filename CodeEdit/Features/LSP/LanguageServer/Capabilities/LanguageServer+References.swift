@@ -11,10 +11,10 @@ import LanguageServerProtocol
 extension LanguageServer {
     /// Resolve project-wide references for the symbol denoted by the given text document position
     func requestFindReferences(
-        document documentURI: String,
+        for documentURI: String,
         _ position: Position,
         _ includeDeclaration: Bool = false
-    ) async -> ReferenceResponse {
+    ) async throws -> ReferenceResponse {
         do {
             let params = ReferenceParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
@@ -23,8 +23,8 @@ extension LanguageServer {
             )
             return try await lspInstance.references(params)
         } catch {
-            print("requestInlayHint Error \(error)")
+            logger.warning("requestFindReferences: Error \(error)")
+            throw error
         }
-        return nil
     }
 }

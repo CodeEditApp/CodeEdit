@@ -11,12 +11,13 @@ import LanguageServerProtocol
 // TODO: DocumentLinkParams IS MISSING `textDocument: TextDocumentIdentifier;` FIELD IN LSP LIBRARY
 
 extension LanguageServer {
-    func requestDocumentLinkResolve(_ documentLink: DocumentLink) async -> DocumentLink? {
+    @available(*, deprecated, message: "Not functional, see comment.")
+    func requestLinkResolve(_ documentLink: DocumentLink) async throws -> DocumentLink? {
         do {
             return try await lspInstance.documentLinkResolve(documentLink)
         } catch {
-            print("requestDocumentLinkResolve Error: \(error)")
+            logger.warning("requestDocumentLinkResolve: Error \(error)")
+            throw error
         }
-        return nil
     }
 }

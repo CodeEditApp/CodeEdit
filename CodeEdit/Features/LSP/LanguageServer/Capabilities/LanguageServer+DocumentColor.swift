@@ -14,17 +14,18 @@ extension LanguageServer {
     /// Clients can use the result to decorate color references in an editor. For example:
     ///     1. Color boxes showing the actual color next to the reference
     ///     2. Show a color picker when a color reference is edited
-    func requestDocumentColor(document documentURI: String) async -> DocumentColorResponse {
+    func requestColor(for documentURI: String) async throws -> DocumentColorResponse {
+        let params = DocumentColorParams(
+            textDocument: TextDocumentIdentifier(uri: documentURI),
+            workDoneToken: nil,
+            partialResultToken: nil
+        )
         do {
-            let params = DocumentColorParams(
-                textDocument: TextDocumentIdentifier(uri: documentURI),
-                workDoneToken: nil,
-                partialResultToken: nil
-            )
             return try await lspInstance.documentColor(params)
         } catch {
-            print("requestDocumentColor Error \(error)")
+            logger.warning("requestDocumentColor: Error \(error)")
+            throw error
         }
-        return []
     }
 }
+

@@ -9,8 +9,12 @@ import JSONRPC
 import Foundation
 import LanguageClient
 import LanguageServerProtocol
+import OSLog
 
-struct LanguageServer {
+class LanguageServer {
+    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LanguageServer")
+    let logger: Logger
+
     /// Identifies which language the server belongs to
     let languageId: LanguageIdentifier
     /// Holds information about the language server binary
@@ -18,55 +22,91 @@ struct LanguageServer {
     /// A cache to hold responses from the server, to minimize duplicate server requests
     let lspCache = LSPCache()
 
-    // TODO: REMOVE WHEN NEW DOCUMENT TRACKER IS IMPLEMENTED. IS PART OF NEW FILE SOLUTION.
-    var trackedDocuments: [String: TextDocumentItem] = [:]
+    let openFiles: LanguageServerFileMap
+
+    /// The configuration options this server supports.
+    var serverCapabilities: ServerCapabilities
 
     /// An instance of a language server, that may or may not be initialized
     private(set) var lspInstance: InitializingServer
     /// The path to the root of the project
     private(set) var rootPath: URL
 
+    init(
+        languageId: LanguageIdentifier,
+        binary: LanguageServerBinary,
+        lspInstance: InitializingServer,
+        serverCapabilities: ServerCapabilities,
+        rootPath: URL
+    ) {
+        self.languageId = languageId
+        self.binary = binary
+        self.lspInstance = lspInstance
+        self.serverCapabilities = serverCapabilities
+        self.rootPath = rootPath
+        self.openFiles = LanguageServerFileMap()
+        self.logger = Logger(
+            subsystem: Bundle.main.bundleIdentifier ?? "",
+            category: "LanguageServer.\(languageId.rawValue)"
+        )
+    }
+
+    /// Creates and initializes a language server.
+    /// - Parameters:
+    ///   - languageId: The id of the language to create.
+    ///   - binary: The binary where the language server is stored.
+    ///   - workspacePath: The path of the workspace being opened.
+    /// - Returns: An initialized language server.
     static func createServer(
         for languageId: LanguageIdentifier,
         with binary: LanguageServerBinary,
-        rootPath: URL,
-        workspaceFolders: [WorkspaceFolder]?
-    ) throws -> Self {
+        workspacePath: String
+    ) async throws -> LanguageServer {
         let executionParams = Process.ExecutionParameters(
             path: binary.execPath,
             arguments: binary.args,
             environment: binary.env
         )
 
-        var channel: DataChannel?
+        let server = InitializingServer(
+            server: try makeLocalServerConnection(languageId: languageId, executionParams: executionParams),
+            initializeParamsProvider: getInitParams(workspacePath: workspacePath)
+        )
+        let capabilities = try await server.initializeIfNeeded()
+        return LanguageServer(
+            languageId: languageId,
+            binary: binary,
+            lspInstance: server,
+            serverCapabilities: capabilities,
+            rootPath: URL(filePath: workspacePath)
+        )
+    }
+
+    /// Creates a data channel for sending and receiving data with an LSP.
+    /// - Parameters:
+    ///   - languageId: The ID of the language to create the channel for.
+    ///   - executionParams: The parameters for executing the local process.
+    /// - Returns: A new connection to the language server.
+    private static func makeLocalServerConnection(
+        languageId: LanguageIdentifier,
+        executionParams: Process.ExecutionParameters
+    ) throws -> JSONRPCServerConnection {
         do {
-            channel = try DataChannel.localProcessChannel(
+            let channel = try DataChannel.localProcessChannel(
                 parameters: executionParams,
                 terminationHandler: {
-                    print("Terminated \(languageId)")
+                    logger.debug("Terminated data channel for \(languageId.rawValue)")
                 }
             )
+            return JSONRPCServerConnection(dataChannel: channel)
         } catch {
+            logger.warning("Failed to initialize data channel for \(languageId.rawValue)")
             throw error
         }
-        guard let channel = channel else {
-            throw NSError(
-                domain: "LanguageClient",
-                code: 1,
-                userInfo: [NSLocalizedDescriptionKey: "Failed to start server for language \(languageId.rawValue)"]
-            )
-        }
-
-        let localServer = LanguageServerProtocol.JSONRPCServerConnection(dataChannel: channel)
-        let server = InitializingServer(
-            server: localServer,
-            initializeParamsProvider: getInitParams(projectURL: rootPath)
-        )
-        return LanguageServer(languageId: languageId, binary: binary, lspInstance: server, rootPath: rootPath)
     }
 
     // swiftlint:disable function_body_length
-    private static func getInitParams(projectURL: URL) -> InitializingServer.InitializeParamsProvider {
+    private static func getInitParams(workspacePath: String) -> InitializingServer.InitializeParamsProvider {
         let provider: InitializingServer.InitializeParamsProvider = {
             // Text Document Capabilities
             let textDocumentCapabilities = TextDocumentClientCapabilities(
@@ -92,6 +132,19 @@ struct LanguageServer {
                     completionList: CompletionClientCapabilities.CompletionList(
                         itemDefaults: ["default1", "default2"]
                     )
+                ),
+                // swiftlint:disable:next line_length
+                // https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#semanticTokensClientCapabilities
+                semanticTokens: SemanticTokensClientCapabilities(
+                    dynamicRegistration: true,
+                    requests: .init(range: true, delta: false),
+                    tokenTypes: [],
+                    tokenModifiers: [],
+                    formats: [.relative],
+                    overlappingTokenSupport: true,
+                    multilineTokenSupport: true,
+                    serverCancelSupport: true,
+                    augmentsSyntaxTokens: false
                 )
             )
 
@@ -150,7 +203,7 @@ struct LanguageServer {
                 processId: nil,
                 locale: nil,
                 rootPath: nil,
-                rootUri: projectURL.absoluteString,
+                rootUri: workspacePath,
                 initializationOptions: [],
                 capabilities: capabilities,
                 trace: nil,
@@ -161,19 +214,9 @@ struct LanguageServer {
         // swiftlint:enable function_body_length
     }
 
-    /// Initializes the language server if it hasn't been initialized already.
-    public func initialize() async throws {
-        do {
-            _ = try await lspInstance.initializeIfNeeded()
-            print("Language server for \(languageId.rawValue) initialized successfully")
-        } catch {
-            print("Failed to initialize \(languageId.rawValue) LSP instance: \(error.localizedDescription)")
-            throw error
-        }
-    }
-
     /// Shuts down the language server and exits it.
     public func shutdown() async throws {
+        self.logger.info("Shutting down language server")
         try await lspInstance.shutdownAndExit()
     }
 }

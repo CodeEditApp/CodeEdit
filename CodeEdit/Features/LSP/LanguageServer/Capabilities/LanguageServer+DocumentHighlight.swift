@@ -11,10 +11,10 @@ extension LanguageServer {
     /// The document highlight request is sent from the client to the server to resolve document
     /// highlights for a given text document position. For programming languages this usually
     /// highlights all references to the symbol scoped to this file.
-    func requestDocumentHighlight(
-        document documentURI: String,
-        _ position: Position
-    ) async -> DocumentHighlightResponse {
+    func requestHighlight(
+        for documentURI: String,
+        position: Position
+    ) async throws -> DocumentHighlightResponse {
         do {
             let params = DocumentHighlightParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
@@ -24,9 +24,8 @@ extension LanguageServer {
             )
             return try await lspInstance.documentHighlight(params)
         } catch {
-            print("requestDocumentHighlight Error: \(error)")
+            logger.warning("requestDocumentHighlight Error: \(error)")
+            throw error
         }
-
-        return nil
     }
 }
