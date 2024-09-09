@@ -140,10 +140,8 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }
     }
 
-    func clearOutput() async {
-        await MainActor.run {
-            output = ""
-        }
+    func clearOutput() {
+        output = ""
     }
 
     private func createStatusTaskNotification() {

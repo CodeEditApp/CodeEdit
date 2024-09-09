@@ -71,9 +71,7 @@ struct TaskOutputActionsView: View {
             .help("Scroll down to the bottom")
 
             Button {
-                Task {
-                    await activeTask.clearOutput()
-                }
+                activeTask.clearOutput()
             } label: {
                 Image(systemName: "trash")
             }
