@@ -176,7 +176,9 @@ final class LSPService: ObservableObject {
         return server
     }
 
-    /// Notify the proper language server that we opened a document.
+    /// Notify all relevant language clients that a document was opened.
+    /// - Note: Must be invoked after the contents of the file are available.
+    /// - Parameter document: The code document that was opened.
     func openDocument(_ document: CodeFileDocument) {
         Task.detached {
             guard let workspace = await document.findWorkspace(),
@@ -190,10 +192,18 @@ final class LSPService: ObservableObject {
             } else {
                 languageServer = try await self.startServer(for: lspLanguage, workspacePath: workspacePath)
             }
-            try await languageServer.openDocument(document)
+            do {
+                try await languageServer.openDocument(document)
+            } catch {
+                let uri = await document.languageServerURI
+                // swiftlint:disable:next line_length
+                self.logger.error("Failed to close document: \(uri ?? "<NO URI>", privacy: .private), language: \(lspLanguage.rawValue). Error \(error)")
+            }
         }
     }
-
+    
+    /// Notify all relevant language clients that a document was closed.
+    /// - Parameter document: The code document that was closed.
     func closeDocument(_ document: CodeFileDocument) {
         guard let workspace = document.findWorkspace(),
               let workspacePath = workspace.fileURL?.absoluteURL.path(),
@@ -203,7 +213,35 @@ final class LSPService: ObservableObject {
             return
         }
         Task {
-            try await languageClient.closeDocument(uri)
+            do {
+                try await languageClient.closeDocument(uri)
+            } catch {
+                // swiftlint:disable:next line_length
+                logger.error("Failed to close document: \(uri, privacy: .private), language: \(lspLanguage.rawValue). Error \(error)")
+            }
+        }
+    }
+    
+    /// Close all language clients for a workspace.
+    ///
+    /// This is intentionally synchronous so we can exit from the workspace document's ``WorkspaceDocument/close()``
+    /// method ASAP.
+    ///
+    /// Errors thrown in this method are logged and otherwise not handled.
+    /// - Parameter workspacePath: The path of the workspace.
+    func closeWorkspace(_ workspacePath: String) {
+        Task {
+            let clientKeys = self.languageClients.filter({ $0.key.workspacePath == workspacePath })
+            for (key, languageClient) in clientKeys {
+                do {
+                    try await languageClient.shutdown()
+                } catch {
+                    logger.error("Failed to shutdown \(key.languageId.rawValue) Language Server: Error \(error)")
+                }
+            }
+            for (key, _) in clientKeys {
+                self.languageClients.removeValue(forKey: key)
+            }
         }
     }
 

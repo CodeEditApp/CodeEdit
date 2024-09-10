@@ -13,6 +13,7 @@ import LanguageServerProtocol
 
 @objc(WorkspaceDocument)
 final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
+    @Service var lspService: LSPService
 
     @Published var sortFoldersOnTop: Bool = true
 
@@ -176,6 +177,10 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         workspaceSettingsManager?.cleanUp()
         workspaceSettingsManager = nil
         taskManager = nil
+
+        if let path = self.fileURL?.absoluteURL.path() {
+            lspService.closeWorkspace(path)
+        }
     }
 
     /// Determines the windows should be closed.
