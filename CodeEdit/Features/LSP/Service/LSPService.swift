@@ -187,10 +187,16 @@ final class LSPService: ObservableObject {
                 return
             }
             let languageServer: LanguageServer
-            if let server = await self.languageClients[ClientKey(lspLanguage, workspacePath)] {
-                languageServer = server
-            } else {
-                languageServer = try await self.startServer(for: lspLanguage, workspacePath: workspacePath)
+            do {
+                if let server = await self.languageClients[ClientKey(lspLanguage, workspacePath)] {
+                    languageServer = server
+                } else {
+                    languageServer = try await self.startServer(for: lspLanguage, workspacePath: workspacePath)
+                }
+            } catch {
+                // swiftlint:disable:next line_length
+                self.logger.error("Failed to find/start server for language: \(lspLanguage.rawValue), workspace: \(workspacePath, privacy: .private)")
+                return
             }
             do {
                 try await languageServer.openDocument(document)
@@ -201,7 +207,7 @@ final class LSPService: ObservableObject {
             }
         }
     }
-    
+
     /// Notify all relevant language clients that a document was closed.
     /// - Parameter document: The code document that was closed.
     func closeDocument(_ document: CodeFileDocument) {

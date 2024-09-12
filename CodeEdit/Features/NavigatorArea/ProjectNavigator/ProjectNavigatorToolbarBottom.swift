@@ -102,7 +102,13 @@ struct ProjectNavigatorToolbarBottom: View {
             Button("Add File") {
                 let filePathURL = activeTabURL()
                 guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
-                workspace.workspaceFileManager?.addFile(fileName: "untitled", toFile: rootFile)
+                do {
+                    try workspace.workspaceFileManager?.addFile(fileName: "untitled", toFile: rootFile)
+                } catch {
+                    let alert = NSAlert(error: error)
+                    alert.addButton(withTitle: "Dismiss")
+                    alert.runModal()
+                }
             }
             Button("Add Folder") {
                 let filePathURL = activeTabURL()

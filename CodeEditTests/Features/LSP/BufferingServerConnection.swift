@@ -18,7 +18,7 @@ class BufferingServerConnection: ServerConnection {
     public var clientNotifications: [ClientNotification] = []
 
     init() {
-        let (sequence, continuation) = EventSequence.makeStream()
+        let (sequence, _) = EventSequence.makeStream()
         self.eventSequence = sequence
     }
 
@@ -29,15 +29,18 @@ class BufferingServerConnection: ServerConnection {
     func sendRequest<Response: Decodable & Sendable>(_ request: ClientRequest) async throws -> Response {
         clientRequests.append(request)
         id += 1
+        let response: Codable
         switch request {
         case .initialize:
             var capabilities = ServerCapabilities()
             capabilities.textDocumentSync = .optionA(.init(
                 openClose: true, change: .incremental, willSave: true, willSaveWaitUntil: false, save: .optionA(true)
             ))
-            return InitializationResponse(capabilities: .init(), serverInfo: nil) as! Response
+            response = InitializationResponse(capabilities: .init(), serverInfo: nil)
         default:
-            return JSONRPCResponse(id: .numericId(id), result: "buh") as! Response
+            response = JSONRPCResponse(id: .numericId(0), result: JSONRPCErrors.internalError)
         }
+        let data = try JSONEncoder().encode(response)
+        return try JSONDecoder().decode(Response.self, from: data)
     }
 }

@@ -81,6 +81,10 @@ final class CodeEditDocumentController: NSDocumentController {
     override func removeDocument(_ document: NSDocument) {
         super.removeDocument(document)
 
+        if let workspace = document as? WorkspaceDocument, let path = workspace.fileURL?.absoluteURL.path() {
+            lspService.closeWorkspace(path)
+        }
+
         if CodeEditDocumentController.shared.documents.isEmpty {
             switch Settings[\.general].reopenWindowAfterClose {
             case .showWelcomeWindow:

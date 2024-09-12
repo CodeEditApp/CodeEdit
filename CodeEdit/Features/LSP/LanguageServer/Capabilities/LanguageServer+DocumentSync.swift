@@ -32,36 +32,46 @@ extension LanguageServer {
             return true
         }
     }
-    
+
+    fileprivate struct DocumentContent {
+        let uri: String
+        let language: LanguageIdentifier
+        let content: String
+    }
+
     /// Tells the language server we've opened a document and would like to begin working with it.
     /// - Parameter document: The code document to open.
     func openDocument(_ document: CodeFileDocument) async throws {
         do {
-            guard serverSupportsOpenClose(),
-                  let uri = await document.languageServerURI,
-                  let language = await document.getLanguage().lspLanguage else {
+            guard serverSupportsOpenClose(), let content = await getDocumentContent(document) else {
                 return
             }
-            let content = await MainActor.run {
-                let storage = document.content
-                return storage?.string
-            }
-            guard let content else { return }
-            logger.debug("Opening Document \(uri, privacy: .private)")
+            logger.debug("Opening Document \(content.uri, privacy: .private)")
 
             self.openFiles.addDocument(document)
 
             let textDocument = TextDocumentItem(
-                uri: uri,
-                languageId: language,
+                uri: content.uri,
+                languageId: content.language,
                 version: 0,
-                text: content
+                text: content.content
             )
             try await lspInstance.textDocumentDidOpen(DidOpenTextDocumentParams(textDocument: textDocument))
         } catch {
             logger.warning("addDocument: Error \(error)")
             throw error
         }
+    }
+
+    /// Small helper function for grabbing a document's content from the main actor.
+    @MainActor
+    private func getDocumentContent(_ document: CodeFileDocument) -> DocumentContent? {
+        guard let uri = document.languageServerURI,
+              let language = document.getLanguage().lspLanguage,
+              let content = document.content?.string else {
+            return nil
+        }
+        return DocumentContent(uri: uri, language: language, content: content)
     }
 
     /// Stops tracking a file and notifies the language server

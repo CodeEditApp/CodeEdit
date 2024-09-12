@@ -87,7 +87,7 @@ class LanguageServer {
     ///   - languageId: The ID of the language to create the channel for.
     ///   - executionParams: The parameters for executing the local process.
     /// - Returns: A new connection to the language server.
-    private static func makeLocalServerConnection(
+    static func makeLocalServerConnection(
         languageId: LanguageIdentifier,
         executionParams: Process.ExecutionParameters
     ) throws -> JSONRPCServerConnection {
@@ -106,7 +106,7 @@ class LanguageServer {
     }
 
     // swiftlint:disable function_body_length
-    private static func getInitParams(workspacePath: String) -> InitializingServer.InitializeParamsProvider {
+    static func getInitParams(workspacePath: String) -> InitializingServer.InitializeParamsProvider {
         let provider: InitializingServer.InitializeParamsProvider = {
             // Text Document Capabilities
             let textDocumentCapabilities = TextDocumentClientCapabilities(
