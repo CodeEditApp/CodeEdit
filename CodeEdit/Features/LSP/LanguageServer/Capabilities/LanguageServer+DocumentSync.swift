@@ -9,7 +9,11 @@ import Foundation
 import LanguageServerProtocol
 
 extension LanguageServer {
+    // swiftlint:disable line_length
+    /// Determines the type of document sync the server supports.
+    /// https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_synchronization_sc
     fileprivate func serverDocumentSyncSupport() -> TextDocumentSyncKind {
+        // swiftlint:enable line_length
         var syncKind: TextDocumentSyncKind = .none
         switch serverCapabilities.textDocumentSync {
         case .optionA(let options):
@@ -33,6 +37,7 @@ extension LanguageServer {
         }
     }
 
+    // Avoids a lint error
     fileprivate struct DocumentContent {
         let uri: String
         let language: LanguageIdentifier
@@ -43,7 +48,7 @@ extension LanguageServer {
     /// - Parameter document: The code document to open.
     func openDocument(_ document: CodeFileDocument) async throws {
         do {
-            guard serverSupportsOpenClose(), let content = await getDocumentContent(document) else {
+            guard serverSupportsOpenClose(), let content = await getIsolatedDocumentContent(document) else {
                 return
             }
             logger.debug("Opening Document \(content.uri, privacy: .private)")
@@ -63,9 +68,9 @@ extension LanguageServer {
         }
     }
 
-    /// Small helper function for grabbing a document's content from the main actor.
+    /// Helper function for grabbing a document's content from the main actor.
     @MainActor
-    private func getDocumentContent(_ document: CodeFileDocument) -> DocumentContent? {
+    private func getIsolatedDocumentContent(_ document: CodeFileDocument) -> DocumentContent? {
         guard let uri = document.languageServerURI,
               let language = document.getLanguage().lspLanguage,
               let content = document.content?.string else {
@@ -74,11 +79,11 @@ extension LanguageServer {
         return DocumentContent(uri: uri, language: language, content: content)
     }
 
-    /// Stops tracking a file and notifies the language server
+    /// Stops tracking a file and notifies the language server.
     /// - Parameter uri: The URI of the document to close.
     func closeDocument(_ uri: String) async throws {
         do {
-            guard serverSupportsOpenClose() else { return }
+            guard serverSupportsOpenClose() && openFiles.document(for: uri) != nil else { return }
             logger.debug("Closing document \(uri, privacy: .private)")
             openFiles.removeDocument(for: uri)
             let params = DidCloseTextDocumentParams(textDocument: TextDocumentIdentifier(uri: uri))

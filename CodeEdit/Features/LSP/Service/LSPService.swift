@@ -153,7 +153,11 @@ final class LSPService: ObservableObject {
         return languageClients[ClientKey(languageId, workspacePath)]
     }
 
-    /// Given a language, will attempt to start the language server
+    /// Given a language and workspace path, will attempt to start the language server
+    /// - Parameters:
+    ///   - languageId: The ID of the language server to start.
+    ///   - workspacePath: The workspace this language server is being used in.
+    /// - Returns: The new language server.
     func startServer(
         for languageId: LanguageIdentifier,
         workspacePath: String
@@ -227,7 +231,7 @@ final class LSPService: ObservableObject {
             }
         }
     }
-    
+
     /// Close all language clients for a workspace.
     ///
     /// This is intentionally synchronous so we can exit from the workspace document's ``WorkspaceDocument/close()``
