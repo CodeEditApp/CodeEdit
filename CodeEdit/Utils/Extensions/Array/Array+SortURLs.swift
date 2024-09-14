@@ -7,12 +7,6 @@
 
 import Foundation
 
-fileprivate extension URL {
-    var isFolder: Bool {
-        (try? resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
-    }
-}
-
 extension Array where Element == URL {
 
     /// Sorts the elements in alphabetical order.
