@@ -71,11 +71,13 @@ struct ThemeSettingsView: View {
                 Section {
                     VStack(spacing: 0) {
                         ForEach(filteredThemes) { theme in
-                            Divider().padding(.horizontal, 10)
-                            ThemeSettingsThemeRow(
-                                theme: $themeModel.themes[themeModel.themes.firstIndex(of: theme)!],
-                                active: themeModel.getThemeActive(theme)
-                            ).id(theme)
+                            if let themeIndex = themeModel.themes.firstIndex(of: theme) {
+                                Divider().padding(.horizontal, 10)
+                                ThemeSettingsThemeRow(
+                                    theme: $themeModel.themes[themeIndex],
+                                    active: themeModel.getThemeActive(theme)
+                                ).id(theme)
+                            }
                         }
                     }
                     .padding(-10)
