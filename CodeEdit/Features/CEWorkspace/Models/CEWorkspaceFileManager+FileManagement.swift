@@ -46,7 +46,8 @@ extension CEWorkspaceFileManager {
     ///   - file: The file to add the new file to.
     ///   - useExtension: The file extension to use. Leave `nil` to guess using relevant nearby files.
     /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja. *Moved from 7c27b1e*
-    /// - Returns: Boolean indicating whether or not the file was created
+    /// - Throws: Throws a `CocoaError.fileWriteUnknown` with the file url if creating the file fails, and calls
+    ///           ``rebuildFiles(fromItem:deep:)`` which throws other `FileManager` errors.
     func addFile(fileName: String, toFile file: CEWorkspaceFile, useExtension: String? = nil) throws {
         // check the folder for other files, and see what the most common file extension is
         var fileExtension: String

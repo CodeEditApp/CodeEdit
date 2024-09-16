@@ -9,13 +9,15 @@ import Foundation
 import LanguageServerProtocol
 
 extension LanguageServer {
+
     // MARK: - API
 
     /// Tells the language server we've opened a document and would like to begin working with it.
     /// - Parameter document: The code document to open.
+    /// - Throws: Throws errors produced by the language server connection.
     func openDocument(_ document: CodeFileDocument) async throws {
         do {
-            guard serverSupportsOpenClose(), let content = await getIsolatedDocumentContent(document) else {
+            guard resolveOpenCloseSupport(), let content = await getIsolatedDocumentContent(document) else {
                 return
             }
             logger.debug("Opening Document \(content.uri, privacy: .private)")
@@ -38,9 +40,10 @@ extension LanguageServer {
 
     /// Stops tracking a file and notifies the language server.
     /// - Parameter uri: The URI of the document to close.
+    /// - Throws: Throws errors produced by the language server connection.
     func closeDocument(_ uri: String) async throws {
         do {
-            guard serverSupportsOpenClose() && openFiles.document(for: uri) != nil else { return }
+            guard resolveOpenCloseSupport() && openFiles.document(for: uri) != nil else { return }
             logger.debug("Closing document \(uri, privacy: .private)")
             openFiles.removeDocument(for: uri)
             let params = DidCloseTextDocumentParams(textDocument: TextDocumentIdentifier(uri: uri))
@@ -56,7 +59,7 @@ extension LanguageServer {
     ///   - uri: The URI of the document to update.
     ///   - range: The range being replaced.
     ///   - string: The string being inserted into the replacement range.
-    /// - Returns: `true` if the document was successfully updated, `false`
+    /// - Throws: Throws errors produced by the language server connection.
     func documentChanged(
         uri: String,
         replacedContentIn range: LSPRange,
@@ -64,7 +67,7 @@ extension LanguageServer {
     ) async throws {
         do {
             logger.debug("Document updated, \(uri, privacy: .private)")
-            switch serverDocumentSyncSupport() {
+            switch resolveDocumentSyncKind() {
             case .full:
                 guard let document = openFiles.document(for: uri),
                       let content = await getIsolatedDocumentContent(document) else {
@@ -95,7 +98,7 @@ extension LanguageServer {
     // swiftlint:disable line_length
     /// Determines the type of document sync the server supports.
     /// https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_synchronization_sc
-    fileprivate func serverDocumentSyncSupport() -> TextDocumentSyncKind {
+    fileprivate func resolveDocumentSyncKind() -> TextDocumentSyncKind {
         // swiftlint:enable line_length
         var syncKind: TextDocumentSyncKind = .none
         switch serverCapabilities.textDocumentSync {
@@ -109,7 +112,8 @@ extension LanguageServer {
         return syncKind
     }
 
-    fileprivate func serverSupportsOpenClose() -> Bool {
+    /// Determines whether or not the server supports document tracking.
+    fileprivate func resolveOpenCloseSupport() -> Bool {
         switch serverCapabilities.textDocumentSync {
         case .optionA(let options):
             return options.openClose ?? false
@@ -120,7 +124,7 @@ extension LanguageServer {
         }
     }
 
-    // Avoids a lint error
+    // Used to avoid a lint error (`large_tuple`) for the return type of `getIsolatedDocumentContent`
     fileprivate struct DocumentContent {
         let uri: String
         let language: LanguageIdentifier
