@@ -115,7 +115,7 @@ struct UtilityAreaTerminalView: View {
                                     }
                                 }
                             )
-                            .frame(height: constrainedHeight - 1)
+                            .frame(height: max(0, constrainedHeight - 1))
                             .id(selectedTerminal.id)
                         }
                     }

@@ -38,7 +38,9 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         if !item.isFolder && shouldSendSelectionUpdate {
             DispatchQueue.main.async { [weak self] in
                 self?.shouldSendSelectionUpdate = false
-                self?.workspace?.editorManager?.activeEditor.openTab(file: item, asTemporary: true)
+                if self?.workspace?.editorManager?.activeEditor.selectedTab?.file != item {
+                    self?.workspace?.editorManager?.activeEditor.openTab(file: item, asTemporary: true)
+                }
                 self?.shouldSendSelectionUpdate = true
             }
         }

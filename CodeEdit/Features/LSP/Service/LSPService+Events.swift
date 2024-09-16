@@ -44,7 +44,6 @@ extension LSPService {
         }
     }
 
-    // swiftlint:disable:next cyclomatic_complexity
     private func handleRequest(_ request: ServerRequest) {
         // TODO: Handle Requests
 //        switch request {
