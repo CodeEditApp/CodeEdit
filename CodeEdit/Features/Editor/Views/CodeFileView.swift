@@ -56,7 +56,7 @@ struct CodeFileView: View {
 
     init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
         self._codeFile = .init(wrappedValue: codeFile)
-        self.textViewCoordinators = textViewCoordinators + [codeFile.contentCoordinator]
+        self.textViewCoordinators = textViewCoordinators + [codeFile.contentCoordinator, codeFile.lspCoordinator]
         self.isEditable = isEditable
 
         if let openOptions = codeFile.openOptions {

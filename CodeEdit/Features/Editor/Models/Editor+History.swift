@@ -64,7 +64,7 @@ extension Editor {
                 closeTab(file: temporaryTab.file, fromHistory: true)
             }
             temporaryTab = tab
-            openTab(file: tab.file, fromHistory: true)
+            openTab(tab: tab, fromHistory: true)
         }
         selectedTab = tab
     }

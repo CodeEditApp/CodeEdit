@@ -70,7 +70,7 @@ final class Editor: ObservableObject, Identifiable {
     ) {
         self.tabs = []
         self.parent = parent
-        files.forEach { openTab(file: $0) }
+        files.forEach { openTab(tab: Tab(file: $0)) }
         self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(file: files.first!))
         self.temporaryTab = temporaryTab
     }
@@ -83,7 +83,7 @@ final class Editor: ObservableObject, Identifiable {
     ) {
         self.tabs = []
         self.parent = parent
-        files.forEach { openTab(file: $0.file) }
+        files.forEach { openTab(tab: $0) }
         self.selectedTab = selectedTab ?? tabs.first
         self.temporaryTab = temporaryTab
     }
@@ -145,7 +145,7 @@ final class Editor: ObservableObject, Identifiable {
     ///   - file: the file to open.
     ///   - asTemporary: indicates whether the tab should be opened as a temporary tab or a permanent tab.
     func openTab(file: CEWorkspaceFile, asTemporary: Bool) {
-        let item = EditorInstance(file: file)
+        let item = Tab(file: file)
         // Item is already opened in a tab.
         guard !tabs.contains(item) || !asTemporary else {
             selectedTab = item
@@ -168,11 +168,11 @@ final class Editor: ObservableObject, Identifiable {
             temporaryTab = nil
 
         case (.none, true):
-            openTab(file: item.file)
+            openTab(tab: item)
             temporaryTab = item
 
         case (.none, false):
-            openTab(file: item.file)
+            openTab(tab: item)
 
         default:
             break
@@ -184,25 +184,24 @@ final class Editor: ObservableObject, Identifiable {
     ///   - file: The tab to open.
     ///   - index: Index where the tab needs to be added. If nil, it is added to the back.
     ///   - fromHistory: Indicates whether the tab has been opened from going back in history.
-    func openTab(file: CEWorkspaceFile, at index: Int? = nil, fromHistory: Bool = false) {
-        let item = Tab(file: file)
+    func openTab(tab: Tab, at index: Int? = nil, fromHistory: Bool = false) {
         if let index {
-            tabs.insert(item, at: index)
+            tabs.insert(tab, at: index)
         } else {
             if let selectedTab, let currentIndex = tabs.firstIndex(of: selectedTab) {
-                tabs.insert(item, at: tabs.index(after: currentIndex))
+                tabs.insert(tab, at: tabs.index(after: currentIndex))
             } else {
-                tabs.append(item)
+                tabs.append(tab)
             }
         }
 
-        selectedTab = item
+        selectedTab = tab
         if !fromHistory {
             clearFuture()
-            addToHistory(item)
+            addToHistory(tab)
         }
         do {
-            try openFile(item: item)
+            try openFile(item: tab)
         } catch {
             print(error)
         }

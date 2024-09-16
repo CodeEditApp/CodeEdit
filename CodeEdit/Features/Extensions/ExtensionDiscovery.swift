@@ -77,7 +77,6 @@ final class ExtensionDiscovery: ObservableObject {
         Task { [weak self] in
             for await availability in AppExtensionIdentity.availabilityUpdates {
                 guard !Task.isCancelled && self != nil else { return }
-                print(availability)
                 do {
                     if availability.disabledCount > 0 {
                         print("Found \(availability.disabledCount) disabled extensions, trying to activate...")
