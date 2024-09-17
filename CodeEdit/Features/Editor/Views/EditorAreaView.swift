@@ -61,8 +61,10 @@ struct EditorAreaView: View {
                     .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
                 } else {
                     LoadingFileView(selected.file.name)
+                        .onChange(of: selected.file.fileDocument) { _ in
+                            self.codeFile = selected.file.fileDocument
+                        }
                 }
-
             } else {
                 CEContentUnavailableView("No Editor")
                     .padding(.top, editorInsetAmount)

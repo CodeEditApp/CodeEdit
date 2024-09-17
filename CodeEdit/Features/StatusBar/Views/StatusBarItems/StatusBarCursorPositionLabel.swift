@@ -25,8 +25,7 @@ struct StatusBarCursorPositionLabel: View {
             if let currentTab = tab {
                 LineLabel(editorInstance: currentTab)
             } else {
-                Text("")
-                    .accessibilityLabel("No Cursor")
+                Text("").accessibilityLabel("No Selection")
             }
         }
         .fixedSize()
@@ -36,10 +35,7 @@ struct StatusBarCursorPositionLabel: View {
         .onAppear {
             updateSource()
         }
-        .onChange(of: editorManager.activeEditor) { _ in
-            updateSource()
-        }
-        .onChange(of: editorManager.activeEditor.selectedTab) { _ in
+        .onReceive(editorManager.tabBarTabIdSubject) { _ in
             updateSource()
         }
     }
