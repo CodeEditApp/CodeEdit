@@ -33,15 +33,15 @@ extension LSPService {
 
     private func handleEvent(_ event: ServerEvent, for key: ClientKey) {
         // TODO: Handle Events
-        switch event {
-        case let .request(id, request):
+//        switch event {
+//        case let .request(id, request):
 //            print("Request ID: \(id) for \(key.languageId.rawValue)")
-            handleRequest(request)
-        case let .notification(notification):
-            handleNotification(notification)
-        case let .error(error):
-            print("Error from EventStream for \(key.languageId.rawValue): \(error)")
-        }
+//            handleRequest(request)
+//        case let .notification(notification):
+//            handleNotification(notification)
+//        case let .error(error):
+//            print("Error from EventStream for \(key.languageId.rawValue): \(error)")
+//        }
     }
 
     private func handleRequest(_ request: ServerRequest) {
@@ -74,7 +74,7 @@ extension LSPService {
     }
 
     private func handleNotification(_ notification: ServerNotification) {
-        // TODO: Handle Notification
+        // TODO: Handle Notifications
 //        switch notification {
 //        case let .windowLogMessage(params):
 //            print("windowLogMessage \(params.type)\n```\n\(params.message)\n```\n")
