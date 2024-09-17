@@ -99,11 +99,12 @@ struct EditorAreaView: View {
             .background(EffectView(.headerView))
         }
         .focused($focus, equals: editor)
-        .onReceive(NotificationCenter.default.publisher(for: TextView.textDidChangeNotification)) { _ in
-            if navigationStyle == .openInTabs {
-                editor.temporaryTab = nil
-            }
-        }
+        // Fixing this is causing a malloc exception when a file is edited & closed. See #1886
+//        .onReceive(NotificationCenter.default.publisher(for: TextView.textDidChangeNotification)) { _ in
+//            if navigationStyle == .openInTabs {
+//                editor.temporaryTab = nil
+//            }
+//        }
         .onChange(of: navigationStyle) { newValue in
             if newValue == .openInPlace && editor.tabs.count == 1 {
                 editor.temporaryTab = editor.tabs[0]
