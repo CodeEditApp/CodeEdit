@@ -2980,7 +2980,6 @@
 			isa = PBXGroup;
 			children = (
 				58798249292E78D80085B254 /* CodeFileDocument.swift */,
-				6C278CC62C93971F0066F6D9 /* LSPContentCoordinator.swift */,
 				6C48B5C42C0A2835001E9955 /* FileEncoding.swift */,
 			);
 			path = CodeFileDocument;
@@ -2993,6 +2992,7 @@
 				6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileMap.swift */,
 				6CD26C782C8EA8A500ADBA38 /* LSPCache.swift */,
 				6CD26C792C8EA8A500ADBA38 /* LSPCache+Data.swift */,
+				6C278CC62C93971F0066F6D9 /* LSPContentCoordinator.swift */,
 				30B0881E2C12626B0063A882 /* Capabilities */,
 			);
 			path = LanguageServer;
