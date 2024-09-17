@@ -480,6 +480,9 @@
 		77A01E2E2BB4261200F0EA38 /* CEWorkspaceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E2D2BB4261200F0EA38 /* CEWorkspaceSettings.swift */; };
 		77A01E432BBC3A2800F0EA38 /* CETask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E422BBC3A2800F0EA38 /* CETask.swift */; };
 		77A01E6D2BC3EA2A00F0EA38 /* NSWindow+Child.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A01E6C2BC3EA2A00F0EA38 /* NSWindow+Child.swift */; };
+		77EF6C052C57DE4B00984B69 /* URL+ResouceValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF6C032C57DE4B00984B69 /* URL+ResouceValues.swift */; };
+		77EF6C0B2C60C80800984B69 /* URL+Filename.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF6C0A2C60C80800984B69 /* URL+Filename.swift */; };
+		77EF6C0D2C60E23400984B69 /* CEWorkspaceFileManager+DirectoryEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EF6C0C2C60E23400984B69 /* CEWorkspaceFileManager+DirectoryEvents.swift */; };
 		850C631029D6B01D00E1444C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C630F29D6B01D00E1444C /* SettingsView.swift */; };
 		850C631229D6B03400E1444C /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 850C631129D6B03400E1444C /* SettingsPage.swift */; };
 		852C7E332A587279006BA599 /* SearchableSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 852C7E322A587279006BA599 /* SearchableSettingsPage.swift */; };
@@ -1129,6 +1132,9 @@
 		77A01E2D2BB4261200F0EA38 /* CEWorkspaceSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEWorkspaceSettings.swift; sourceTree = "<group>"; };
 		77A01E422BBC3A2800F0EA38 /* CETask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CETask.swift; sourceTree = "<group>"; };
 		77A01E6C2BC3EA2A00F0EA38 /* NSWindow+Child.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSWindow+Child.swift"; sourceTree = "<group>"; };
+		77EF6C032C57DE4B00984B69 /* URL+ResouceValues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+ResouceValues.swift"; sourceTree = "<group>"; };
+		77EF6C0A2C60C80800984B69 /* URL+Filename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Filename.swift"; sourceTree = "<group>"; };
+		77EF6C0C2C60E23400984B69 /* CEWorkspaceFileManager+DirectoryEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CEWorkspaceFileManager+DirectoryEvents.swift"; sourceTree = "<group>"; };
 		850C630F29D6B01D00E1444C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		850C631129D6B03400E1444C /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		852C7E322A587279006BA599 /* SearchableSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchableSettingsPage.swift; sourceTree = "<group>"; };
@@ -2348,6 +2354,7 @@
 				5894E59629FEF7740077E59C /* CEWorkspaceFile+Recursion.swift */,
 				58A2E40629C3975D005CB615 /* CEWorkspaceFileIcon.swift */,
 				58710158298EB80000951BA4 /* CEWorkspaceFileManager.swift */,
+				77EF6C0C2C60E23400984B69 /* CEWorkspaceFileManager+DirectoryEvents.swift */,
 				6CB52DC82AC8DC3E002E75B3 /* CEWorkspaceFileManager+FileManagement.swift */,
 				6C049A362A49E2DB00D42923 /* DirectoryEventStream.swift */,
 			);
@@ -2430,6 +2437,7 @@
 				6C82D6C429C0129E00495C54 /* NSApplication */,
 				5831E3D02934036D00D5A6D2 /* NSTableView */,
 				77A01E922BCA9C0400F0EA38 /* NSWindow */,
+				77EF6C042C57DE4B00984B69 /* URL */,
 				58D01C8B293167DC00C5B6B4 /* String */,
 				5831E3CB2933E89A00D5A6D2 /* SwiftTerm */,
 				6CBD1BC42978DE3E006639D5 /* Text */,
@@ -3045,6 +3053,15 @@
 				77A01E6C2BC3EA2A00F0EA38 /* NSWindow+Child.swift */,
 			);
 			path = NSWindow;
+			sourceTree = "<group>";
+		};
+		77EF6C042C57DE4B00984B69 /* URL */ = {
+			isa = PBXGroup;
+			children = (
+				77EF6C032C57DE4B00984B69 /* URL+ResouceValues.swift */,
+				77EF6C0A2C60C80800984B69 /* URL+Filename.swift */,
+			);
+			path = URL;
 			sourceTree = "<group>";
 		};
 		85E412282A46C8B900183F2B /* Models */ = {
@@ -3931,6 +3948,7 @@
 				04BA7C192AE2D7C600584E1C /* GitClient+Branches.swift in Sources */,
 				587B9E8829301D8F00AC7927 /* GitHubFiles.swift in Sources */,
 				587B9DA729300ABD00AC7927 /* HelpButton.swift in Sources */,
+				77EF6C0B2C60C80800984B69 /* URL+Filename.swift in Sources */,
 				30B088172C0D53080063A882 /* LSPUtil.swift in Sources */,
 				6C5B63DE29C76213005454BA /* WindowCodeFileView.swift in Sources */,
 				58F2EB08292FB2B0004A9BDE /* TextEditingSettings.swift in Sources */,
@@ -4099,6 +4117,7 @@
 				201169E22837B3D800F92B46 /* SourceControlNavigatorChangesView.swift in Sources */,
 				850C631029D6B01D00E1444C /* SettingsView.swift in Sources */,
 				77A01E6D2BC3EA2A00F0EA38 /* NSWindow+Child.swift in Sources */,
+				77EF6C0D2C60E23400984B69 /* CEWorkspaceFileManager+DirectoryEvents.swift in Sources */,
 				581550CF29FBD30400684881 /* StandardTableViewCell.swift in Sources */,
 				B62AEDB82A1FE2DC009A9F52 /* UtilityAreaOutputView.swift in Sources */,
 				B67DB0FC2AFDF71F002DC647 /* IconToggleStyle.swift in Sources */,
@@ -4187,6 +4206,7 @@
 				58D01C94293167DC00C5B6B4 /* Color+HEX.swift in Sources */,
 				6C578D8729CD345900DC73B2 /* ExtensionSceneView.swift in Sources */,
 				617DB3D02C25AFAE00B58BFE /* TaskNotificationHandler.swift in Sources */,
+				77EF6C052C57DE4B00984B69 /* URL+ResouceValues.swift in Sources */,
 				B640A9A129E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift in Sources */,
 				587B9E7929301D8F00AC7927 /* GitHubIssueRouter.swift in Sources */,
 				587B9E8029301D8F00AC7927 /* GitHubConfiguration.swift in Sources */,
@@ -4514,7 +4534,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -4589,7 +4609,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4617,7 +4637,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4645,7 +4665,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -4705,7 +4725,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -4780,7 +4800,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4808,7 +4828,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -4836,7 +4856,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -4869,7 +4889,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -4902,7 +4922,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -4963,7 +4983,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -5039,7 +5059,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -5067,7 +5087,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -5095,7 +5115,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -5155,7 +5175,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -5225,7 +5245,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -5338,7 +5358,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -5365,7 +5385,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -5393,7 +5413,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -5422,7 +5442,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 42;
+				CURRENT_PROJECT_VERSION = 43;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -5520,7 +5540,7 @@
 			repositoryURL = "https://github.com/lukepistrol/SwiftLintPlugin";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.2.2;
+				minimumVersion = 0.56.2;
 			};
 		};
 		303E88452C276FD100EEA8D9 /* XCRemoteSwiftPackageReference "LanguageClient" */ = {
@@ -5632,7 +5652,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.7.5;
+				minimumVersion = 0.8.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
