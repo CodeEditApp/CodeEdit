@@ -34,16 +34,14 @@ import Combine
 final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, EditorTabRepresentable {
 
     /// The id of the ``CEWorkspaceFile``.
-    ///
-    /// This is equal to `url.relativePath`
-    var id: String { url.relativePath }
+    var id: String
 
     /// Returns the file name (e.g.: `Package.swift`)
     var name: String { url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines) }
 
     /// Returns the extension of the file or an empty string if no extension is present.
     var type: FileIcon.FileType {
-        let filename = url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
+        let filename = url.fileName
 
         /// First, check if there is a valid file extension.
         if let type = FileIcon.FileType(rawValue: filename) {
@@ -62,6 +60,11 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Returns the URL of the ``CEWorkspaceFile``
     let url: URL
+
+    /// Returns the resolved symlink url of this object.
+    lazy var resolvedURL: URL = {
+        url.isSymbolicLink ? url.resolvingSymlinksInPath() : url
+    }()
 
     /// Return the icon of the file as `Image`
     var icon: Image {
@@ -113,7 +116,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Returns a boolean that is true if the resource represented by this object is a directory.
     lazy var isFolder: Bool = {
-        (try? url.resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
+        resolvedURL.isFolder
     }()
 
     /// Returns a boolean that is true if the contents of the directory at this path are
@@ -121,7 +124,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     /// Does not indicate if this is a folder, see ``isFolder`` to first check if this object is also a directory.
     var isEmptyFolder: Bool {
         (try? CEWorkspaceFile.fileManager.contentsOfDirectory(
-            at: url,
+            at: resolvedURL,
             includingPropertiesForKeys: nil,
             options: .skipsSubdirectoryDescendants
         ).isEmpty) ?? true
@@ -151,7 +154,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Return the file's UTType
     var contentType: UTType? {
-        try? url.resourceValues(forKeys: [.contentTypeKey]).contentType
+        url.contentType
     }
 
     /// Returns a `Color` for a specific `fileType`
@@ -165,16 +168,33 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     var isOpeningInQuickLook = false
 
     init(
+        id: String,
         url: URL,
         changeType: GitStatus? = nil,
         staged: Bool? = false
     ) {
+        self.id = id
         self.url = url
         self.gitStatus = changeType
         self.staged = staged
     }
 
+    convenience init(
+        url: URL,
+        changeType: GitStatus? = nil,
+        staged: Bool? = false
+    ) {
+        self.init(
+            id: url.relativePath,
+            url: url,
+            changeType: changeType,
+            staged: staged
+        )
+    }
+
     enum CodingKeys: String, CodingKey {
+        case id
+        case name
         case url
         case changeType
         case staged
@@ -182,6 +202,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     required init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(String.self, forKey: .id)
         url = try values.decode(URL.self, forKey: .url)
         gitStatus = try values.decode(GitStatus.self, forKey: .changeType)
         staged = try values.decode(Bool.self, forKey: .staged)
@@ -189,6 +210,8 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
         try container.encode(url, forKey: .url)
         try container.encode(gitStatus, forKey: .changeType)
         try container.encode(staged, forKey: .staged)

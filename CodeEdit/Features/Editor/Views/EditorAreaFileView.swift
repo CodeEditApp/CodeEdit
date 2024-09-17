@@ -19,10 +19,8 @@ struct EditorAreaFileView: View {
     @Environment(\.edgeInsets)
     private var edgeInsets
 
-    var file: CEWorkspaceFile
+    var codeFile: CodeFileDocument
     var textViewCoordinators: [TextViewCoordinator] = []
-
-    @State private var update: Bool = false
 
     @ViewBuilder var editorAreaFileView: some View {
         if let document = file.fileDocument {
@@ -34,38 +32,14 @@ struct EditorAreaFileView: View {
                 CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
             } else {
                 NonTextFileView(fileDocument: document)
-                    .padding(.top, edgeInsets.top - 1.74) // Use the magic number to fine-tune its appearance.
-                    .padding(.bottom, StatusBarView.height + 1.26) // Use the magic number to fine-tune its appearance.
+                    .padding(.top, edgeInsets.top - 1.74)
+                    .padding(.bottom, StatusBarView.height + 1.26)
                     .modifier(UpdateStatusBarInfo(with: document.fileURL))
                     .onDisappear {
                         statusBarViewModel.dimensions = nil
                         statusBarViewModel.fileSize = nil
                     }
             }
-
-        } else {
-            if update {
-                Spacer()
-            }
-            Spacer()
-            LoadingFileView(file.name)
-            Spacer()
-                .onAppear {
-                    Task.detached {
-                        let contentType = try await file.url.resourceValues(forKeys: [.contentTypeKey]).contentType
-                        let codeFile = try await CodeFileDocument(
-                            for: file.url,
-                            withContentsOf: file.url,
-                            ofType: contentType?.identifier ?? ""
-                        )
-                        await MainActor.run {
-                            file.fileDocument = codeFile
-                            CodeEditDocumentController.shared.addDocument(codeFile)
-                            update.toggle()
-                        }
-                    }
-                }
-        }
     }
 
     var body: some View {
