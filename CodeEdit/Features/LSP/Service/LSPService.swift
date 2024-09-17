@@ -12,15 +12,6 @@ import LanguageClient
 import LanguageServerProtocol
 import CodeEditLanguages
 
-extension CodeFileDocument {
-    func findWorkspace() -> WorkspaceDocument? {
-        CodeEditDocumentController.shared.documents.first(where: { doc in
-            guard let workspace = doc as? WorkspaceDocument, let path = self.languageServerURI else { return false }
-            return workspace.workspaceFileManager?.getFile(path)?.fileDocument?.isEqual(self) ?? false
-        }) as? WorkspaceDocument
-    }
-}
-
 /// `LSPService` is a service class responsible for managing the lifecycle and event handling
 /// of Language Server Protocol (LSP) clients within the CodeEdit application. It handles the initialization,
 /// communication, and termination of language servers, ensuring that code assistance features
@@ -184,12 +175,12 @@ final class LSPService: ObservableObject {
     /// - Note: Must be invoked after the contents of the file are available.
     /// - Parameter document: The code document that was opened.
     func openDocument(_ document: CodeFileDocument) {
+        guard let workspace = document.findWorkspace(),
+              let workspacePath = workspace.fileURL?.absoluteURL.path(),
+              let lspLanguage = document.getLanguage().lspLanguage else {
+            return
+        }
         Task.detached {
-            guard let workspace = await document.findWorkspace(),
-                  let workspacePath = workspace.fileURL?.absoluteURL.path(),
-                  let lspLanguage = await document.getLanguage().lspLanguage else {
-                return
-            }
             let languageServer: LanguageServer
             do {
                 if let server = await self.languageClients[ClientKey(lspLanguage, workspacePath)] {

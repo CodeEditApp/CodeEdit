@@ -71,7 +71,6 @@ extension CEWorkspaceFileManager {
                 }
             }
 
-            var largestValue = 0
             fileExtension = fileExtensions.sorted(by: { $0.value > $1.value }).first?.key ?? "txt"
         }
 

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditTextView
 
 struct EditorAreaView: View {
     @AppSettings(\.general.showEditorPathBar)
@@ -24,6 +25,12 @@ struct EditorAreaView: View {
     @EnvironmentObject private var editorManager: EditorManager
 
     @State var codeFile: CodeFileDocument?
+
+    init(editor: Editor, focus: FocusState<Editor?>.Binding) {
+        self.editor = editor
+        self._focus = focus
+        self.codeFile = editor.selectedTab?.file.fileDocument
+    }
 
     var body: some View {
         var shouldShowTabBar: Bool {
@@ -54,22 +61,6 @@ struct EditorAreaView: View {
                     .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
                 } else {
                     LoadingFileView(selected.file.name)
-                        .task {
-                            do {
-                                let contentType = selected.file.resolvedURL.contentType
-                                let newCodeFile = try CodeFileDocument(
-                                    for: selected.file.url,
-                                    withContentsOf: selected.file.resolvedURL,
-                                    ofType: contentType?.identifier ?? ""
-                                )
-
-                                selected.file.fileDocument = newCodeFile
-                                CodeEditDocumentController.shared.addDocument(newCodeFile)
-                                self.codeFile = newCodeFile
-                            } catch {
-                                print(error.localizedDescription)
-                            }
-                        }
                 }
 
             } else {
@@ -108,7 +99,7 @@ struct EditorAreaView: View {
             .background(EffectView(.headerView))
         }
         .focused($focus, equals: editor)
-        .onReceive(NotificationCenter.default.publisher(for: NSNotification.Name("CodeEditor.didBeginEditing"))) { _ in
+        .onReceive(NotificationCenter.default.publisher(for: TextView.textDidChangeNotification)) { _ in
             if navigationStyle == .openInTabs {
                 editor.temporaryTab = nil
             }

@@ -194,4 +194,17 @@ final class CodeFileDocument: NSDocument, ObservableObject {
             suffixBuffer: content?.string.getLastLines(5)
         )
     }
+
+    func findWorkspace() -> WorkspaceDocument? {
+        CodeEditDocumentController.shared.documents.first(where: { doc in
+            guard let workspace = doc as? WorkspaceDocument, let path = self.languageServerURI else { return false }
+            // createIfNotFound is safe here because it will still exit if the file and the workspace
+            // do not share a path prefix
+            return workspace
+                .workspaceFileManager?
+                .getFile(path, createIfNotFound: true)?
+                .fileDocument?
+                .isEqual(self) ?? false
+        }) as? WorkspaceDocument
+    }
 }

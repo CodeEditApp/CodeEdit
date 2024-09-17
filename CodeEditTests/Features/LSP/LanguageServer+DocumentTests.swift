@@ -93,11 +93,10 @@ final class LanguageServerDocumentTests: XCTestCase {
         }
 
         // Create a CodeFileDocument to test with, attach it to the workspace and file
-        let contentType = try file.url.resourceValues(forKeys: [.contentTypeKey]).contentType
         let codeFile = try CodeFileDocument(
             for: file.url,
             withContentsOf: file.url,
-            ofType: contentType?.identifier ?? ""
+            ofType: "public.swift-source"
         )
         file.fileDocument = codeFile
 
@@ -113,7 +112,7 @@ final class LanguageServerDocumentTests: XCTestCase {
             eventCountExpectation.fulfill()
         }
 
-        await fulfillment(of: [eventCountExpectation], timeout: 5)
+        await fulfillment(of: [eventCountExpectation], timeout: 2)
 
         // This should then trigger a documentDidClose event
         codeFile.close()
@@ -125,7 +124,7 @@ final class LanguageServerDocumentTests: XCTestCase {
             }
             eventCloseExpectation.fulfill()
         }
-        await fulfillment(of: [eventCloseExpectation], timeout: 5.0)
+        await fulfillment(of: [eventCloseExpectation], timeout: 2)
 
         XCTAssertEqual(
             connection.clientRequests.map { $0.method },
