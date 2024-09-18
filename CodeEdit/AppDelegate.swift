@@ -226,13 +226,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     func documentController(_ docController: NSDocumentController, didCloseAll: Bool, contextInfo: Any) {
         NSApplication.shared.reply(toApplicationShouldTerminate: didCloseAll)
     }
-}
 
-/// Setup all the services into a ServiceContainer for the application to use.
-private func setupServiceContainer() {
-    ServiceContainer.register(
-        LSPService()
-    )
+    /// Setup all the services into a ServiceContainer for the application to use.
+    @MainActor
+    private func setupServiceContainer() {
+        ServiceContainer.register(
+            LSPService()
+        )
+    }
 }
 
 extension AppDelegate {

@@ -13,7 +13,6 @@ import LanguageServerProtocol
 
 @objc(WorkspaceDocument)
 final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
-
     @Published var sortFoldersOnTop: Bool = true
 
     private var workspaceState: [String: Any] {

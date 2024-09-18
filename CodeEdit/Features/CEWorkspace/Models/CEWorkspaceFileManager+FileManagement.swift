@@ -44,48 +44,59 @@ extension CEWorkspaceFileManager {
     /// - Parameters:
     ///   - fileName: The name of the new file
     ///   - file: The file to add the new file to.
+    ///   - useExtension: The file extension to use. Leave `nil` to guess using relevant nearby files.
     /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja. *Moved from 7c27b1e*
-    func addFile(fileName: String, toFile file: CEWorkspaceFile) {
+    /// - Throws: Throws a `CocoaError.fileWriteUnknown` with the file url if creating the file fails, and calls
+    ///           ``rebuildFiles(fromItem:deep:)`` which throws other `FileManager` errors.
+    func addFile(fileName: String, toFile file: CEWorkspaceFile, useExtension: String? = nil) throws {
         // check the folder for other files, and see what the most common file extension is
-        var fileExtensions: [String: Int] = ["": 0]
+        var fileExtension: String
+        if let useExtension {
+            fileExtension = useExtension
+        } else {
+            var fileExtensions: [String: Int] = ["": 0]
 
-        for child in (
-            file.isFolder ? file.flattenedSiblings(withHeight: 2, ignoringFolders: true, using: self)
-            : file.parent?.flattenedSiblings(withHeight: 2, ignoringFolders: true, using: self)
-        ) ?? []
-        where !child.isFolder {
-            // if the file extension was present before, add it now
-            let childFileName = child.fileName(typeHidden: false)
-            if let index = childFileName.lastIndex(of: ".") {
-                let childFileExtension = ".\(childFileName.suffix(from: index).dropFirst())"
-                fileExtensions[childFileExtension] = (fileExtensions[childFileExtension] ?? 0) + 1
-            } else {
-                fileExtensions[""] = (fileExtensions[""] ?? 0) + 1
+            for child in (
+                file.isFolder ? file.flattenedSiblings(withHeight: 2, ignoringFolders: true, using: self)
+                : file.parent?.flattenedSiblings(withHeight: 2, ignoringFolders: true, using: self)
+            ) ?? []
+            where !child.isFolder {
+                // if the file extension was present before, add it now
+                let childFileName = child.fileName(typeHidden: false)
+                if let index = childFileName.lastIndex(of: ".") {
+                    let childFileExtension = ".\(childFileName.suffix(from: index).dropFirst())"
+                    fileExtensions[childFileExtension] = (fileExtensions[childFileExtension] ?? 0) + 1
+                } else {
+                    fileExtensions[""] = (fileExtensions[""] ?? 0) + 1
+                }
             }
+
+            fileExtension = fileExtensions.sorted(by: { $0.value > $1.value }).first?.key ?? "txt"
         }
 
-        var largestValue = 0
-        var idealExtension = ""
-        for (extName, count) in fileExtensions where count > largestValue {
-            idealExtension = extName
-            largestValue = count
+        if !fileExtension.starts(with: ".") {
+            fileExtension = "." + fileExtension
         }
 
-        var fileUrl = file.nearestFolder.appendingPathComponent("\(fileName)\(idealExtension)")
+        var fileUrl = file.nearestFolder.appendingPathComponent("\(fileName)\(fileExtension)")
         // If a file/folder with the same name exists, add a number to the end.
         var fileNumber = 0
         while fileManager.fileExists(atPath: fileUrl.path) {
             fileNumber += 1
             fileUrl = fileUrl.deletingLastPathComponent()
-                .appendingPathComponent("\(fileName)\(fileNumber)\(idealExtension)")
+                .appendingPathComponent("\(fileName)\(fileNumber)\(fileExtension)")
         }
 
         // Create the file
-        fileManager.createFile(
+        guard fileManager.createFile(
             atPath: fileUrl.path,
             contents: nil,
             attributes: [FileAttributeKey.creationDate: Date()]
-        )
+        ) else {
+            throw CocoaError.error(.fileWriteUnknown, url: fileUrl)
+        }
+
+        try rebuildFiles(fromItem: file)
     }
 
     /// This function deletes the item or folder from the current project by moving to Trash
