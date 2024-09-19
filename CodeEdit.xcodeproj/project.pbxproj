@@ -459,6 +459,7 @@
 		6CD26C7B2C8EA8A500ADBA38 /* LSPCache+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C792C8EA8A500ADBA38 /* LSPCache+Data.swift */; };
 		6CD26C7D2C8EA8F400ADBA38 /* LanguageServer+DocumentSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C7C2C8EA8F400ADBA38 /* LanguageServer+DocumentSync.swift */; };
 		6CD26C812C8F8A4400ADBA38 /* LanguageIdentifier+CodeLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C802C8F8A4400ADBA38 /* LanguageIdentifier+CodeLanguage.swift */; };
+		6CD26C852C8F907800ADBA38 /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CD26C842C8F907800ADBA38 /* CodeEditSourceEditor */; };
 		6CD26C872C8F90FD00ADBA38 /* LazyServiceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C862C8F90FD00ADBA38 /* LazyServiceWrapper.swift */; };
 		6CD26C8A2C8F91ED00ADBA38 /* LanguageServer+DocumentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C892C8F91ED00ADBA38 /* LanguageServer+DocumentTests.swift */; };
 		6CD3CA552C8B508200D83DCD /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CD3CA542C8B508200D83DCD /* CodeEditSourceEditor */; };
@@ -1301,7 +1302,7 @@
 				6C85BB442C210EFD00EB5DEF /* SwiftUIIntrospect in Frameworks */,
 				6CB446402B6DFF3A00539ED0 /* CodeEditSourceEditor in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
-				6C278CCA2C949D4A0066F6D9 /* CodeEditSourceEditor in Frameworks */,
+				6CD26C852C8F907800ADBA38 /* CodeEditSourceEditor in Frameworks */,
 				30CB64942C16CA9100CC8A9E /* LanguageClient in Frameworks */,
 				6C6BD6F829CD14D100235D17 /* CodeEditKit in Frameworks */,
 				6C0824A12C5C0C9700A0751E /* SwiftTerm in Frameworks */,
@@ -3671,7 +3672,7 @@
 				6CE21E862C650D2C0031B056 /* SwiftTerm */,
 				6C4E37FB2C73E00700AEE7B5 /* SwiftTerm */,
 				6CD3CA542C8B508200D83DCD /* CodeEditSourceEditor */,
-				6C278CC92C949D4A0066F6D9 /* CodeEditSourceEditor */,
+				6CD26C842C8F907800ADBA38 /* CodeEditSourceEditor */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -3768,7 +3769,7 @@
 				303E88452C276FD100EEA8D9 /* XCRemoteSwiftPackageReference "LanguageClient" */,
 				303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 				6C4E37FA2C73E00700AEE7B5 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
-				6C278CC82C949D4A0066F6D9 /* XCLocalSwiftPackageReference "../CodeEditSourceEditor" */,
+				6CD26C832C8F907800ADBA38 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -5631,7 +5632,7 @@
 			repositoryURL = "https://github.com/groue/GRDB.swift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
+				minimumVersion = 6.0.0;
 			};
 		};
 		6C6BD6F229CD142C00235D17 /* XCRemoteSwiftPackageReference "collectionconcurrencykit" */ = {
@@ -5656,6 +5657,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.2.0;
+			};
+		};
+		6CD26C832C8F907800ADBA38 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -5749,6 +5758,11 @@
 		};
 		6CC17B4E2C432AE000834E2C /* CodeEditSourceEditor */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditSourceEditor;
+		};
+		6CD26C842C8F907800ADBA38 /* CodeEditSourceEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6CD26C832C8F907800ADBA38 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */;
 			productName = CodeEditSourceEditor;
 		};
 		6CD3CA542C8B508200D83DCD /* CodeEditSourceEditor */ = {
