@@ -275,7 +275,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private func terminateTasks() {
         let documents = CodeEditDocumentController.shared.documents.compactMap({ $0 as? WorkspaceDocument })
         documents.forEach { workspace in
-            workspace.taskManager?.terminateActiveTask()
+            workspace.taskManager?.stopAllTasks()
         }
     }
 
