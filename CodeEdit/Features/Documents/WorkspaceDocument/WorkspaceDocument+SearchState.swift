@@ -27,9 +27,7 @@ extension WorkspaceDocument {
         @Published var searchResult: [SearchResultModel] = []
         @Published var searchResultsFileCount: Int = 0
         @Published var searchResultsCount: Int = 0
-        /// searchQuery stands for the last search query that corresponds to the search results
-        /// At the time it's only purpose is to show the query if no files could be found
-        /// searchQuery persists the search text in the search navigator as users switch between navigation items
+        /// Stores the user's input, shown when no files are found, and persists across navigation items.
         @Published var searchQuery: String = ""
 
         @Published var indexStatus: IndexStatus = .none
