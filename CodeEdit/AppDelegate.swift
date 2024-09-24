@@ -254,17 +254,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     /// Terminates running language servers. Used during app termination to ensure resources are freed.
     private func terminateLanguageServers() {
         Task {
-            await withTaskGroup(of: Void.self) { group in
-                await lspService.languageClients.forEach { (key, value) in
-                    group.addTask {
-                        do {
-                            try await value.shutdown()
-                        } catch {
-                            self.logger.error("Shutting down \(key.languageId.rawValue): Error \(error)")
-                        }
-                    }
-                }
-            }
+            await lspService.stopAllServers()
             await MainActor.run {
                 NSApplication.shared.reply(toApplicationShouldTerminate: true)
             }
