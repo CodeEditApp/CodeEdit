@@ -47,7 +47,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// See ``CodeEditSourceEditor/CombineCoordinator``.
     @Published var contentCoordinator: CombineCoordinator = CombineCoordinator()
 
-    lazy var lspCoordinator: LSPContentCoordinator = {
+    lazy var languageServerCoordinator: LSPContentCoordinator = {
         let coordinator = LSPContentCoordinator()
         coordinator.uri = self.languageServerURI
         return coordinator

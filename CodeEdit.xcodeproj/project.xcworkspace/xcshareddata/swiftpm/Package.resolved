@@ -1,5 +1,5 @@
 {
-  "originHash" : "fed6d2ac4770e7fa9354a624690858c88d25add66264ffe858710496c8ca5e48",
+  "originHash" : "5c4a5d433333474763817b9804d7f1856ab3b416ed87b190a2bd6e86c0c9834c",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -13,7 +13,7 @@
     {
       "identity" : "codeeditkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditKit",
+      "location" : "https://github.com/CodeEditApp/CodeEditKit.git",
       "state" : {
         "revision" : "ad28213a968586abb0cb21a8a56a3587227895f1",
         "version" : "0.1.2"
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "5b27f139269e1ea49ceae5e56dca44a3ccad50a1",
         "version" : "0.1.19"
+      }
+    },
+    {
+      "identity" : "codeeditsourceeditor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
+      "state" : {
+        "revision" : "033b68d3e3e845984fbc3d405720d5cc6ce61f71",
+        "version" : "0.8.1"
       }
     },
     {
@@ -170,6 +179,15 @@
       "state" : {
         "revision" : "2a98381dfe72e24bf593c5c06d2c4fc1763c3f19",
         "version" : "2.3.0"
+      }
+    },
+    {
+      "identity" : "swift-async-algorithms",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-async-algorithms.git",
+      "state" : {
+        "revision" : "6ae9a051f76b81cc668305ceed5b0e0a7fd93d20",
+        "version" : "1.0.1"
       }
     },
     {

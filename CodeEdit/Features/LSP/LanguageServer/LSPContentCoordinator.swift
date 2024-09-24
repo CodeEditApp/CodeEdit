@@ -6,32 +6,51 @@
 //
 
 import AppKit
+import AsyncAlgorithms
 import CodeEditSourceEditor
 import CodeEditTextView
 import LanguageServerProtocol
-
-extension TextView {
-    func lspRangeFrom(nsRange: NSRange) -> LSPRange? {
-        guard let startLine = layoutManager.textLineForOffset(nsRange.location),
-              let endLine = layoutManager.textLineForOffset(nsRange.max) else {
-            return nil
-        }
-        return LSPRange(
-            start: Position(line: startLine.index, character: nsRange.location - startLine.range.location),
-            end: Position(line: endLine.index, character: nsRange.max - endLine.range.location)
-        )
-    }
-}
 
 /// This content coordinator forwards content notifications from the editor's text storage to a language service.
 ///
 /// This is a text view coordinator so that it can be installed on an open editor. It is kept as a property on
 /// ``CodeFileDocument`` since the language server does all it's document management using instances of that type.
 class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
+    // Required to avoid a large_tuple lint error
+    private struct SequenceElement: Sendable {
+        let uri: String
+        let range: LSPRange
+        let string: String
+    }
+
     private var editedRange: LSPRange?
+    private var sequenceContinuation: AsyncStream<SequenceElement>.Continuation?
 
     weak var languageServer: LanguageServer?
     var uri: String?
+
+    init() {
+        let stream = AsyncStream { continuation in
+            self.sequenceContinuation = continuation
+        }
+        Task {
+            for await events in stream._throttle(
+                for: .milliseconds(100),
+                reducing: { (accumulation: Array<SequenceElement>?, event: SequenceElement) in
+                    return (accumulation ?? []) + [event]
+                }
+            ) {
+                print(events)
+//                Task.detached {
+//                    try await self.languageServer?.documentChanged(
+//                        uri: event.uri,
+//                        replacedContentIn: event.range,
+//                        with: event.string
+//                    )
+//                }
+            }
+        }
+    }
 
     func prepareCoordinator(controller: TextViewController) { }
 
@@ -48,8 +67,15 @@ class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
             return
         }
         self.editedRange = nil
-        Task.detached { // Detached to get off the main actor ASAP
-            try await languageServer.documentChanged(uri: uri, replacedContentIn: lspRange, with: string)
-        }
+        self.sequenceContinuation?.yield(SequenceElement(uri: uri, range: lspRange, string: string))
+    }
+
+    func destroy() {
+        sequenceContinuation?.finish()
+        sequenceContinuation = nil
+    }
+
+    deinit {
+        destroy()
     }
 }
