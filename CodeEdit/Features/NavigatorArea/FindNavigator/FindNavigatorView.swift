@@ -89,10 +89,12 @@ struct FindNavigatorView: View {
         .safeAreaInset(edge: .bottom, spacing: 0) {
             FindNavigatorToolbarBottom()
         }
-        .onReceive(state.objectWillChange) { _ in
-            self.searchResultCount = state.searchResultsCount
-            self.foundFilesCount = state.searchResult.count
-        }
+        .onReceive(state.$searchResult, perform: { value in
+            self.foundFilesCount = value.count
+        })
+        .onReceive(state.$searchResultsCount, perform: { value in
+            self.searchResultCount = value
+        })
         .onReceive(state.$findNavigatorStatus, perform: { value in
             self.findNavigatorStatus = value
         })
