@@ -232,7 +232,13 @@ final class ProjectNavigatorMenu: NSMenu {
     @objc
     private func newFile() {
         guard let item else { return }
-        workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item)
+        do {
+            try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item)
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
+        }
         outlineView.expandItem(item.isFolder ? item : item.parent)
     }
 

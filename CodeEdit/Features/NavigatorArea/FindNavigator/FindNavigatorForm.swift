@@ -18,7 +18,6 @@ struct FindNavigatorForm: View {
         }
     }
 
-    @State private var searchText: String = ""
     @State private var replaceText: String = ""
     @State private var includesText: String = ""
     @State private var excludesText: String = ""
@@ -125,7 +124,7 @@ struct FindNavigatorForm: View {
             .padding(.bottom, -8)
             PaneTextField(
                 state.selectedMode[1].title,
-                text: $searchText,
+                text: $state.searchQuery,
                 axis: .vertical,
                 leadingAccessories: {
                     Image(systemName: "magnifyingglass")
@@ -155,9 +154,9 @@ struct FindNavigatorForm: View {
                 hasValue: caseSensitive
             )
             .onSubmit {
-                if !searchText.isEmpty {
+                if !state.searchQuery.isEmpty {
                     Task {
-                        await state.search(searchText)
+                        await state.search(state.searchQuery)
                     }
                 } else {
                     // If a user performs a search with an empty string, the search results will be cleared.
@@ -255,7 +254,7 @@ struct FindNavigatorForm: View {
                 Button {
                     Task {
                         let startTime = Date()
-                        try? await state.findAndReplace(query: searchText, replacingTerm: replaceText)
+                        try? await state.findAndReplace(query: state.searchQuery, replacingTerm: replaceText)
                         print(Date().timeIntervalSince(startTime))
                     }
                 } label: {

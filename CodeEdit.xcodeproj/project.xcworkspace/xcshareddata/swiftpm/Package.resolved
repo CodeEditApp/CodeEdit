@@ -13,7 +13,7 @@
     {
       "identity" : "codeeditkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditKit.git",
+      "location" : "https://github.com/CodeEditApp/CodeEditKit",
       "state" : {
         "revision" : "ad28213a968586abb0cb21a8a56a3587227895f1",
         "version" : "0.1.2"
@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/GRDB.swift.git",
       "state" : {
-        "revision" : "57a4587b5b09ac706bc985288a62432ddbf20b09",
-        "version" : "6.29.2"
+        "revision" : "2cf6c756e1e5ef6901ebae16576a7e4e4b834622",
+        "version" : "6.29.3"
       }
     },
     {
@@ -186,8 +186,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
-        "revision" : "3d2dc41a01f9e49d84f0a3925fb858bed64f702d",
-        "version" : "1.1.2"
+        "revision" : "9bf03ff58ce34478e66aaee630e491823326fd06",
+        "version" : "1.1.3"
       }
     },
     {
