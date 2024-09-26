@@ -63,9 +63,10 @@ extension Editor {
             if let temporaryTab, tabs.contains(temporaryTab) {
                 closeTab(file: temporaryTab.file, fromHistory: true)
             }
-            let newTab = Tab(file: file)
-            temporaryTab = newTab
-            openTab(tab: newTab, fromHistory: true)
+            openTab(file: file, fromHistory: true)
+            if let tab = tabs.first(where: { $0.file.id == file.id }) {
+                temporaryTab = tab
+            }
         }
         setSelectedTab(file)
     }
