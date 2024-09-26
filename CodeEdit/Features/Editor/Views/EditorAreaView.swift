@@ -61,6 +61,14 @@ struct EditorAreaView: View {
                     .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
                 } else {
                     LoadingFileView(selected.file.name)
+                        .onAppear {
+                            if let file = selected.file.fileDocument {
+                                self.codeFile = file
+                            }
+                        }
+                        .onReceive(selected.file.fileDocumentPublisher) { latestValue in
+                            self.codeFile = latestValue
+                        }
                 }
 
             } else {

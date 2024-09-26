@@ -96,9 +96,9 @@ extension EditorManager {
         editor.tabs = OrderedSet(resolvedTabs)
         if let selectedTab = editor.selectedTab {
             if let resolvedFile = fileManager.getFile(selectedTab.file.url.path(), createIfNotFound: true) {
-                editor.selectedTab = EditorInstance(file: resolvedFile)
+                editor.setSelectedTab(resolvedFile)
             } else {
-                editor.selectedTab = nil
+                editor.setSelectedTab(nil)
             }
         }
     }

@@ -17,14 +17,14 @@ struct EditorHistoryMenus: View {
                 ForEach(
                     Array(editor.history.dropFirst(editor.historyOffset+1).enumerated()),
                     id: \.offset
-                ) { index, tab in
+                ) { index, file in
                     Button {
                         editorManager.activeEditor = editor
                         editor.historyOffset += index + 1
                     } label: {
                         HStack {
-                            tab.file.icon
-                            Text(tab.file.name)
+                            file.icon
+                            Text(file.name)
                         }
                     }
                 }
@@ -44,14 +44,14 @@ struct EditorHistoryMenus: View {
                 ForEach(
                     Array(editor.history.prefix(editor.historyOffset).reversed().enumerated()),
                     id: \.offset
-                ) { index, tab in
+                ) { index, file in
                     Button {
                         editorManager.activeEditor = editor
                         editor.historyOffset -= index + 1
                     } label: {
                         HStack {
-                            tab.file.icon
-                            Text(tab.file.name)
+                            file.icon
+                            Text(file.name)
                         }
                     }
                 }
