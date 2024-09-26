@@ -24,35 +24,42 @@ class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
     }
 
     private var editedRange: LSPRange?
+    private var stream: AsyncStream<SequenceElement>?
     private var sequenceContinuation: AsyncStream<SequenceElement>.Continuation?
+    private var task: Task<Void, Never>?
 
     weak var languageServer: LanguageServer?
     var uri: String?
 
     init() {
-        let stream = AsyncStream { continuation in
+        self.stream = AsyncStream { continuation in
             self.sequenceContinuation = continuation
         }
-        Task {
-            for await events in stream._throttle(
-                for: .milliseconds(100),
-                reducing: { (accumulation: Array<SequenceElement>?, event: SequenceElement) in
-                    return (accumulation ?? []) + [event]
+    }
+
+    func setUpUpdatesTask() {
+        task?.cancel()
+        guard let stream else { return }
+        task = Task { [weak self] in
+            // Check for editing events every 250 ms
+            for await events in stream.chunked(by: .repeating(every: .milliseconds(250), clock: .continuous)) {
+                guard !Task.isCancelled, self != nil else { return }
+                guard !events.isEmpty, let uri = events.first?.uri else { continue }
+                Task.detached { [weak self] in
+                    try await self?.languageServer?.documentChanged(
+                        uri: uri,
+                        changes: events.map {
+                            LanguageServer.DocumentChange(replacingContentsIn: $0.range, with: $0.string)
+                        }
+                    )
                 }
-            ) {
-                print(events)
-//                Task.detached {
-//                    try await self.languageServer?.documentChanged(
-//                        uri: event.uri,
-//                        replacedContentIn: event.range,
-//                        with: event.string
-//                    )
-//                }
             }
         }
     }
 
-    func prepareCoordinator(controller: TextViewController) { }
+    func prepareCoordinator(controller: TextViewController) {
+        setUpUpdatesTask()
+    }
 
     /// We grab the lsp range before the content (and layout) is changed so we get correct line/col info for the
     /// language server range.
@@ -62,7 +69,6 @@ class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
 
     func textView(_ textView: TextView, didReplaceContentsIn range: NSRange, with string: String) {
         guard let uri,
-              let languageServer = languageServer,
               let lspRange = editedRange else {
             return
         }
@@ -71,6 +77,8 @@ class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
     }
 
     func destroy() {
+        task?.cancel()
+        task = nil
         sequenceContinuation?.finish()
         sequenceContinuation = nil
     }

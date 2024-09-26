@@ -7,6 +7,7 @@
 
 import XCTest
 import CodeEditTextView
+import CodeEditSourceEditor
 import LanguageClient
 import LanguageServerProtocol
 
@@ -19,6 +20,7 @@ final class LanguageServerDocumentTests: XCTestCase {
     var tempTestDir: URL!
 
     override func setUp() {
+        continueAfterFailure = false
         do {
             let tempDir = FileManager.default.temporaryDirectory.appending(
                 path: "codeedit-lsp-tests"
@@ -143,10 +145,28 @@ final class LanguageServerDocumentTests: XCTestCase {
         )
     }
 
+    /// Assert the changed contents received by the buffered connection
+    func assertExpectedContentChanges(connection: BufferingServerConnection, changes: [String]) {
+        var foundChangeContents: [String] = []
+
+        for notification in connection.clientNotifications {
+            switch notification {
+            case let .textDocumentDidChange(params):
+                foundChangeContents.append(contentsOf: params.contentChanges.map { event in
+                    event.text
+                })
+            default:
+                continue
+            }
+        }
+
+        XCTAssertEqual(changes, foundChangeContents)
+    }
+
     @MainActor
     func testDocumentEditNotificationsFullChanges() async throws {
         // Set up a workspace in the temp directory
-        let (workspace, fileManager) = try makeTestWorkspace()
+        let (_, fileManager) = try makeTestWorkspace()
 
         // Make our example file
         try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
@@ -177,6 +197,7 @@ final class LanguageServerDocumentTests: XCTestCase {
             server.serverCapabilities.textDocumentSync = option
             server.openFiles.addDocument(codeFile)
             codeFile.languageServerCoordinator.languageServer = server
+            codeFile.languageServerCoordinator.setUpUpdatesTask()
             codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
 
             let textView = TextView(string: "")
@@ -191,35 +212,18 @@ final class LanguageServerDocumentTests: XCTestCase {
             // Make sure our text view is intact
             XCTAssertEqual(textView.string, #"func testFunction() -> String { "Hello World" }"#)
             XCTAssertEqual(
-                connection.clientNotifications.map { $0.method },
                 [
                     ClientNotification.Method.initialized,
-                    ClientNotification.Method.textDocumentDidChange,
-                    ClientNotification.Method.textDocumentDidChange,
                     ClientNotification.Method.textDocumentDidChange
-                ]
+                ],
+                connection.clientNotifications.map { $0.method }
             )
 
-            let expectedContentChanges: [String] = [
-                #"func testFunction() -> String { "Hello Worlld" }"#,
-                #"func testFunction() -> String { "Hello " }"#,
-                #"func testFunction() -> String { "Hello World" }"#
-            ]
-
-            var foundChangeContents: [String] = []
-
-            for notification in connection.clientNotifications {
-                switch notification {
-                case let .textDocumentDidChange(params):
-                    foundChangeContents.append(contentsOf: params.contentChanges.map { event in
-                        event.text
-                    })
-                default:
-                    continue
-                }
-            }
-
-            XCTAssertEqual(expectedContentChanges, foundChangeContents)
+            // Expect only one change due to throttling.
+            assertExpectedContentChanges(
+                connection: connection,
+                changes: [#"func testFunction() -> String { "Hello World" }"#]
+            )
         }
     }
 
@@ -229,7 +233,7 @@ final class LanguageServerDocumentTests: XCTestCase {
         let (connection, server) = try await makeTestServer()
 
         // Set up a workspace in the temp directory
-        let (workspace, fileManager) = try makeTestWorkspace()
+        let (_, fileManager) = try makeTestWorkspace()
 
         // Make our example file
         try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
@@ -238,29 +242,55 @@ final class LanguageServerDocumentTests: XCTestCase {
             return
         }
 
-        // Create a CodeFileDocument to test with, attach it to the workspace and file
-        let codeFile = try CodeFileDocument(
-            for: file.url,
-            withContentsOf: file.url,
-            ofType: "public.swift-source"
-        )
+        let syncOptions: [TwoTypeOption<TextDocumentSyncOptions, TextDocumentSyncKind>] = [
+            .optionA(.init(change: .incremental)),
+            .optionB(.incremental)
+        ]
 
-        server.openFiles.addDocument(codeFile)
-        codeFile.languageServerCoordinator.languageServer = server
+        for option in syncOptions {
+            // Set up test server
+            let (connection, server) = try await makeTestServer()
 
-        let textView = TextView(string: #"func testFunction() -> String { "Hello " }"#)
-        textView.delegate = codeFile.languageServerCoordinator
-        textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "Worlld")
-        textView.replaceCharacters(in: NSRange(location: 39, length: 6), with: "0")
-        textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "World")
+            // Create a CodeFileDocument to test with, attach it to the workspace and file
+            let codeFile = try CodeFileDocument(
+                for: file.url,
+                withContentsOf: file.url,
+                ofType: "public.swift-source"
+            )
 
-        // Make sure our text view is intact
-        XCTAssertEqual(textView.string, #"func testFunction() -> String { "Hello World" }"#)
-        XCTAssertEqual(
-            connection.clientNotifications,
-            [
+            // Set up full content changes
+            server.serverCapabilities = ServerCapabilities()
+            server.serverCapabilities.textDocumentSync = option
+            server.openFiles.addDocument(codeFile)
+            codeFile.languageServerCoordinator.languageServer = server
+            codeFile.languageServerCoordinator.setUpUpdatesTask()
+            codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
 
-            ]
-        )
+            let textView = TextView(string: "")
+            textView.setTextStorage(codeFile.content!)
+            textView.delegate = codeFile.languageServerCoordinator
+            textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "Worlld")
+            textView.replaceCharacters(in: NSRange(location: 39, length: 6), with: "")
+            textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "World")
+
+            // Throttling means we should receive one edited notification + init notification + init request
+            await waitForClientEventCount(3, connection: connection, description: "Edited notification count")
+
+            // Make sure our text view is intact
+            XCTAssertEqual(textView.string, #"func testFunction() -> String { "Hello World" }"#)
+            XCTAssertEqual(
+                [
+                    ClientNotification.Method.initialized,
+                    ClientNotification.Method.textDocumentDidChange
+                ],
+                connection.clientNotifications.map { $0.method }
+            )
+
+            // Expect three content changes.
+            assertExpectedContentChanges(
+                connection: connection,
+                changes: ["Worlld", "", "World"]
+            )
+        }
     }
 }

@@ -51,17 +51,30 @@ extension LanguageServer {
         }
     }
 
+    /// Represents a single document edit event.
+    public struct DocumentChange: Sendable {
+        let range: LSPRange
+        let string: String
+
+        init(replacingContentsIn range: LSPRange, with string: String) {
+            self.range = range
+            self.string = string
+        }
+    }
+
     /// Updates the document with the specified URI with new text and increments its version.
+    ///
+    /// This API accepts an array of changes to allow for grouping change notifications.
+    /// This is advantageous for full document changes as we reduce the number of times we send the entire document.
+    /// It also lowers some communication overhead when sending lots of changes very quickly due to sending them all in
+    /// one request.
+    ///
     /// - Parameters:
     ///   - uri: The URI of the document to update.
-    ///   - range: The range being replaced.
-    ///   - string: The string being inserted into the replacement range.
+    ///   - changes: An array of accumulated changes. It's suggested to throttle change notifications and send them
+    ///              in groups.
     /// - Throws: Throws errors produced by the language server connection.
-    func documentChanged(
-        uri: String,
-        replacedContentIn range: LSPRange,
-        with string: String
-    ) async throws {
+    func documentChanged(uri: String, changes: [DocumentChange]) async throws {
         do {
             logger.debug("Document updated, \(uri, privacy: .private)")
             switch resolveDocumentSyncKind() {
@@ -76,10 +89,12 @@ extension LanguageServer {
                 )
             case .incremental:
                 let fileVersion = openFiles.incrementVersion(for: uri)
-                // rangeLength is depreciated in the LSP spec.
-                let changeEvent = TextDocumentContentChangeEvent(range: range, rangeLength: nil, text: string)
+                let changeEvents = changes.map {
+                    // rangeLength is depreciated in the LSP spec.
+                    TextDocumentContentChangeEvent(range: $0.range, rangeLength: nil, text: $0.string)
+                }
                 try await lspInstance.textDocumentDidChange(
-                    DidChangeTextDocumentParams(uri: uri, version: fileVersion, contentChange: changeEvent)
+                    DidChangeTextDocumentParams(uri: uri, version: fileVersion, contentChanges: changeEvents)
                 )
             case .none:
                 return
