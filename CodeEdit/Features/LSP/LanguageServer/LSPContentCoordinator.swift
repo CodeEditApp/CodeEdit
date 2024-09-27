@@ -15,6 +15,10 @@ import LanguageServerProtocol
 ///
 /// This is a text view coordinator so that it can be installed on an open editor. It is kept as a property on
 /// ``CodeFileDocument`` since the language server does all it's document management using instances of that type.
+///
+/// Language servers expect edits to be sent in chunks (and it helps reduce processing overhead). To do this, this class
+/// keeps an async stream around for the duration of its lifetime. The stream is sent edit notifications, which are then
+/// chunked into 250ms timed groups before being sent to the ``LanguageServer``.
 class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
     // Required to avoid a large_tuple lint error
     private struct SequenceElement: Sendable {
@@ -40,19 +44,18 @@ class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
     func setUpUpdatesTask() {
         task?.cancel()
         guard let stream else { return }
-        task = Task { [weak self] in
-            // Check for editing events every 250 ms
+        task = Task.detached { [weak self] in
+            // Send edit events every 250ms
             for await events in stream.chunked(by: .repeating(every: .milliseconds(250), clock: .continuous)) {
                 guard !Task.isCancelled, self != nil else { return }
                 guard !events.isEmpty, let uri = events.first?.uri else { continue }
-                Task.detached { [weak self] in
-                    try await self?.languageServer?.documentChanged(
-                        uri: uri,
-                        changes: events.map {
-                            LanguageServer.DocumentChange(replacingContentsIn: $0.range, with: $0.string)
-                        }
-                    )
-                }
+                // Errors thrown here are already logged, not much else to do right now.
+                try? await self?.languageServer?.documentChanged(
+                    uri: uri,
+                    changes: events.map {
+                        LanguageServer.DocumentChange(replacingContentsIn: $0.range, with: $0.string)
+                    }
+                )
             }
         }
     }
