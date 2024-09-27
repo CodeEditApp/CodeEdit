@@ -1,6 +1,6 @@
 {
-  "id": "basic",
-  "name": "Basic",
+  "name": "basic",
+  "displayName": "Basic",
   "description": "CodeEdit bundled theme.",
   "author": "CodeEdit",
   "version": "0.0.1",
