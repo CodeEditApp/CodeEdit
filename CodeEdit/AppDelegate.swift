@@ -9,7 +9,6 @@ import SwiftUI
 import CodeEditSymbols
 import CodeEditSourceEditor
 
-
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private let updater = SoftwareUpdater()
 
