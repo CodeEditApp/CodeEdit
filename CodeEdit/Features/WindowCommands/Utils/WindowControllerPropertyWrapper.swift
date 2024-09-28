@@ -39,6 +39,7 @@ struct UpdatingWindowController: DynamicProperty {
         private var objectWillChangeCancellable: AnyCancellable?
         private var utilityAreaCancellable: AnyCancellable? // ``ViewCommands`` needs this.
         private var windowCancellable: AnyCancellable?
+        private var activeEditorCancellable: AnyCancellable?
 
         init() {
             windowCancellable = NSApp.publisher(for: \.keyWindow).sink { [weak self] window in
@@ -51,6 +52,8 @@ struct UpdatingWindowController: DynamicProperty {
             objectWillChangeCancellable = nil
             utilityAreaCancellable?.cancel()
             utilityAreaCancellable = nil
+            activeEditorCancellable?.cancel()
+            activeEditorCancellable = nil
 
             self.controller = controller
 
@@ -58,6 +61,10 @@ struct UpdatingWindowController: DynamicProperty {
                 self?.objectWillChange.send()
             }
             utilityAreaCancellable = controller?.workspace?.utilityAreaModel?.objectWillChange.sink { [weak self] in
+                self?.objectWillChange.send()
+            }
+            let activeEditor = controller?.workspace?.editorManager?.activeEditor
+            activeEditorCancellable = activeEditor?.objectWillChange.sink { [weak self] in
                 self?.objectWillChange.send()
             }
             self.objectWillChange.send()
