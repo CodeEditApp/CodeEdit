@@ -39,7 +39,8 @@
       "color": "#D9C668"
     },
     "keywords": {
-      "color": "#FF85B8"
+      "color": "#FF85B8",
+      "bold": true
     },
     "attributes": {
       "color": "#E8B68B"

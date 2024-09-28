@@ -158,7 +158,7 @@ extension SettingsData {
             var highlightType: HighlightType = .flash
             var useCustomColor: Bool = false
             /// The color to use for the highlight.
-            var color: Theme.Attributes = Theme.Attributes(color: "FFFFFF")
+            var color: Theme.Attributes = Theme.Attributes(color: "FFFFFF", bold: false, italic: false)
 
             enum HighlightType: String, Codable {
                 case disabled

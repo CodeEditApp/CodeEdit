@@ -1,6 +1,6 @@
 {
-  "id": "basic",
-  "name": "Basic",
+  "name": "basic",
+  "displayName": "Basic",
   "description": "CodeEdit bundled theme.",
   "author": "CodeEdit",
   "version": "0.0.1",
@@ -39,7 +39,8 @@
       "color": "#000000"
     },
     "keywords": {
-      "color": "#0433FF"
+      "color": "#0433FF",
+      "bold": true
     },
     "attributes": {
       "color": "#000000"

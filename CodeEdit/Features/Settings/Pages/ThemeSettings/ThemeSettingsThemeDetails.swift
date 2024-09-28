@@ -71,52 +71,72 @@ struct ThemeSettingsThemeDetails: View {
                         VStack(spacing: 0) {
                             ThemeSettingsThemeToken(
                                 "Keywords",
-                                color: $theme.editor.keywords.swiftColor
+                                color: $theme.editor.keywords.swiftColor,
+                                bold: $theme.editor.keywords.bold,
+                                italic: $theme.editor.keywords.italic
                             )
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeToken(
                                 "Commands",
-                                color: $theme.editor.commands.swiftColor
+                                color: $theme.editor.commands.swiftColor,
+                                bold: $theme.editor.commands.bold,
+                                italic: $theme.editor.commands.italic
                             )
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeToken(
                                 "Types",
-                                color: $theme.editor.types.swiftColor
+                                color: $theme.editor.types.swiftColor,
+                                bold: $theme.editor.types.bold,
+                                italic: $theme.editor.types.italic
                             )
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeToken(
                                 "Attributes",
-                                color: $theme.editor.attributes.swiftColor
+                                color: $theme.editor.attributes.swiftColor,
+                                bold: $theme.editor.attributes.bold,
+                                italic: $theme.editor.attributes.italic
                             )
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeToken(
                                 "Variables",
-                                color: $theme.editor.variables.swiftColor
+                                color: $theme.editor.variables.swiftColor,
+                                bold: $theme.editor.variables.bold,
+                                italic: $theme.editor.variables.italic
                             )
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeToken(
                                 "Values",
-                                color: $theme.editor.values.swiftColor
+                                color: $theme.editor.values.swiftColor,
+                                bold: $theme.editor.values.bold,
+                                italic: $theme.editor.values.italic
                             )
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeToken(
                                 "Numbers",
-                                color: $theme.editor.numbers.swiftColor
+                                color: $theme.editor.numbers.swiftColor,
+                                bold: $theme.editor.numbers.bold,
+                                italic: $theme.editor.numbers.italic
                             )
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeToken(
                                 "Strings",
-                                color: $theme.editor.strings.swiftColor
+                                color: $theme.editor.strings.swiftColor,
+                                bold: $theme.editor.strings.bold,
+                                italic: $theme.editor.strings.italic
                             )
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeToken(
                                 "Characters",
-                                color: $theme.editor.characters.swiftColor
+                                color: $theme.editor.characters.swiftColor,
+                                bold: $theme.editor.characters.bold,
+                                italic: $theme.editor.characters.italic
                             )
                             Divider().padding(.horizontal, 10)
                             ThemeSettingsThemeToken(
                                 "Comments",
-                                color: $theme.editor.comments.swiftColor
+                                color: $theme.editor.comments.swiftColor,
+                                bold: $theme.editor.comments.bold,
+                                italic: $theme.editor.comments.italic
                             )
                         }
                         .background(theme.editor.background.swiftColor)
