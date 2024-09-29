@@ -9,7 +9,10 @@ import SwiftUI
 
 struct NavigateCommands: Commands {
 
-    @FocusedObject var editor: Editor?
+    @UpdatingWindowController var windowController: CodeEditWindowController?
+    private var editor: Editor? {
+        windowController?.workspace?.editorManager?.activeEditor
+    }
 
     var body: some Commands {
         CommandMenu("Navigate") {
