@@ -110,7 +110,7 @@ final class Editor: ObservableObject, Identifiable {
         }
         self.selectedTab = tab
         if tab.file.fileDocument == nil {
-            do { // eat this error for ease of API use.
+            do { // Ignore this error for simpler API usage.
                 try openFile(item: tab)
             } catch {
                 print(error)
