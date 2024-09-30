@@ -13,34 +13,39 @@ import CodeEditSourceEditor
 
 /// A single instance of an editor in a group with a published ``EditorInstance/cursorPositions`` variable to publish
 /// the user's current location in a file.
-///
-/// Use this object instead of a `CEWorkspaceFile` or `CodeFileDocument` when something related to *one* editor needs
-/// to happen. For instance, storing the current cursor positions for a single editor.
-class EditorInstance: Hashable, ObservableObject {
+class EditorInstance: Hashable {
+    // Public
 
-    /// The file presented in this editor instance. This is not unique.
+    /// The file presented in this editor instance.
     let file: CEWorkspaceFile
 
-    @Published var cursorPositions: [CursorPosition]
+    /// A publisher for the user's current location in a file.
+    var cursorPositions: AnyPublisher<[CursorPosition], Never> {
+        cursorSubject.eraseToAnyPublisher()
+    }
 
-    lazy var rangeTranslator: RangeTranslator = {
-        RangeTranslator(parent: self)
-    }()
+    // Public TextViewCoordinator APIs
+
+    var rangeTranslator: RangeTranslator?
+
+    // Internal Combine subjects
+
+    private let cursorSubject = CurrentValueSubject<[CursorPosition], Never>([])
 
     // MARK: - Init, Hashable, Equatable
 
     init(file: CEWorkspaceFile, cursorPositions: [CursorPosition] = []) {
         self.file = file
-        self.cursorPositions = cursorPositions
+        self.cursorSubject.send(cursorPositions)
+        self.rangeTranslator = RangeTranslator(cursorSubject: cursorSubject)
     }
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(file)
-        hasher.combine(cursorPositions)
     }
 
     static func == (lhs: EditorInstance, rhs: EditorInstance) -> Bool {
-        lhs.file == rhs.file && lhs.cursorPositions == rhs.cursorPositions
+        lhs.file == rhs.file
     }
 
     // MARK: - RangeTranslator
@@ -48,19 +53,19 @@ class EditorInstance: Hashable, ObservableObject {
     /// Translates ranges (eg: from a cursor position) to other information like the number of lines in a range.
     class RangeTranslator: TextViewCoordinator {
         private weak var textViewController: TextViewController?
-        private weak var editorInstance: EditorInstance?
+        private var cursorSubject: CurrentValueSubject<[CursorPosition], Never>
 
-        fileprivate init(parent: EditorInstance) {
-            self.editorInstance = parent
+        init(cursorSubject: CurrentValueSubject<[CursorPosition], Never>) {
+            self.cursorSubject = cursorSubject
+        }
+
+        func textViewDidChangeSelection(controller: TextViewController, newPositions: [CursorPosition]) {
+            self.cursorSubject.send(controller.cursorPositions)
         }
 
         func prepareCoordinator(controller: TextViewController) {
             self.textViewController = controller
-            self.editorInstance?.cursorPositions = controller.cursorPositions
-        }
-
-        func textViewDidChangeSelection(controller: TextViewController, newPositions: [CursorPosition]) {
-            self.editorInstance?.cursorPositions = newPositions
+            self.cursorSubject.send(controller.cursorPositions)
         }
 
         func destroy() {

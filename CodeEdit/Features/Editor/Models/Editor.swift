@@ -70,7 +70,7 @@ final class Editor: ObservableObject, Identifiable {
     ) {
         self.tabs = []
         self.parent = parent
-        files.forEach { openTab(tab: Tab(file: $0)) }
+        files.forEach { openTab(file: $0) }
         self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(file: files.first!))
         self.temporaryTab = temporaryTab
     }
@@ -83,7 +83,7 @@ final class Editor: ObservableObject, Identifiable {
     ) {
         self.tabs = []
         self.parent = parent
-        files.forEach { openTab(tab: $0) }
+        files.forEach { openTab(file: $0.file) }
         self.selectedTab = selectedTab ?? tabs.first
         self.temporaryTab = temporaryTab
     }
@@ -145,11 +145,11 @@ final class Editor: ObservableObject, Identifiable {
     ///   - file: the file to open.
     ///   - asTemporary: indicates whether the tab should be opened as a temporary tab or a permanent tab.
     func openTab(file: CEWorkspaceFile, asTemporary: Bool) {
-        let newTabItem = Tab(file: file)
+        let item = EditorInstance(file: file)
         // Item is already opened in a tab.
-        guard !tabs.contains(newTabItem) || !asTemporary else {
-            selectedTab = newTabItem
-            addToHistory(newTabItem)
+        guard !tabs.contains(item) || !asTemporary else {
+            selectedTab = item
+            addToHistory(item)
             return
         }
 
@@ -157,27 +157,22 @@ final class Editor: ObservableObject, Identifiable {
         case (.some(let tab), true):
             if let index = tabs.firstIndex(of: tab) {
                 clearFuture()
-                addToHistory(newTabItem)
+                addToHistory(item)
                 tabs.remove(tab)
-                tabs.insert(newTabItem, at: index)
-                self.selectedTab = newTabItem
-                temporaryTab = newTabItem
-                do {
-                    try openFile(item: newTabItem)
-                } catch {
-                    print(error)
-                }
+                tabs.insert(item, at: index)
+                self.selectedTab = item
+                temporaryTab = item
             }
 
-        case (.some(let tab), false) where tab.file == newTabItem.file:
+        case (.some(let tab), false) where tab == item:
             temporaryTab = nil
 
         case (.none, true):
-            openTab(tab: newTabItem)
-            temporaryTab = newTabItem
+            openTab(file: item.file)
+            temporaryTab = item
 
         case (.none, false):
-            openTab(tab: newTabItem)
+            openTab(file: item.file)
 
         default:
             break
@@ -189,24 +184,25 @@ final class Editor: ObservableObject, Identifiable {
     ///   - file: The tab to open.
     ///   - index: Index where the tab needs to be added. If nil, it is added to the back.
     ///   - fromHistory: Indicates whether the tab has been opened from going back in history.
-    func openTab(tab: Tab, at index: Int? = nil, fromHistory: Bool = false) {
+    func openTab(file: CEWorkspaceFile, at index: Int? = nil, fromHistory: Bool = false) {
+        let item = Tab(file: file)
         if let index {
-            tabs.insert(tab, at: index)
+            tabs.insert(item, at: index)
         } else {
             if let selectedTab, let currentIndex = tabs.firstIndex(of: selectedTab) {
-                tabs.insert(tab, at: tabs.index(after: currentIndex))
+                tabs.insert(item, at: tabs.index(after: currentIndex))
             } else {
-                tabs.append(tab)
+                tabs.append(item)
             }
         }
 
-        selectedTab = tab
+        selectedTab = item
         if !fromHistory {
             clearFuture()
-            addToHistory(tab)
+            addToHistory(item)
         }
         do {
-            try openFile(item: tab)
+            try openFile(item: item)
         } catch {
             print(error)
         }

@@ -62,6 +62,7 @@ struct EditorAreaView: View {
                 } else {
                     LoadingFileView(selected.file.name)
                 }
+
             } else {
                 CEContentUnavailableView("No Editor")
                     .padding(.top, editorInsetAmount)
@@ -86,7 +87,7 @@ struct EditorAreaView: View {
                         shouldShowTabBar: shouldShowTabBar
                     ) { [weak editor] newFile in
                         if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
-                            editor?.openTab(tab: EditorInstance(file: newFile), at: index)
+                            editor?.openTab(file: newFile, at: index)
                         }
                     }
                     .environmentObject(editor)
