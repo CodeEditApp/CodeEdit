@@ -20,14 +20,14 @@ final class Editor: ObservableObject, Identifiable {
 
             if tabs.count > oldValue.count {
                 // Amount of tabs grew, so set the first new as selected.
-                selectedTab = change.first
+                setSelectedTab(change.first?.file)
             } else {
                 // Selected file was removed
                 if let selectedTab, change.contains(selectedTab) {
                     if let oldIndex = oldValue.firstIndex(of: selectedTab), oldIndex - 1 < tabs.count, !tabs.isEmpty {
-                        self.selectedTab = tabs[max(0, oldIndex-1)]
+                        setSelectedTab(tabs[max(0, oldIndex-1)].file)
                     } else {
-                        self.selectedTab = nil
+                        setSelectedTab(nil)
                     }
                 }
             }
@@ -45,10 +45,10 @@ final class Editor: ObservableObject, Identifiable {
 
     /// Maintains the list of tabs that have been switched to.
     /// - Warning: Use the ``addToHistory(_:)`` or ``clearFuture()`` methods to modify this. Do not modify directly.
-    @Published var history: Deque<Tab> = []
+    @Published var history: Deque<CEWorkspaceFile> = []
 
     /// Currently selected tab.
-    @Published var selectedTab: Tab?
+    @Published private(set) var selectedTab: Tab?
 
     @Published var temporaryTab: Tab?
 
@@ -96,6 +96,26 @@ final class Editor: ObservableObject, Identifiable {
     /// Gets the editor layout.
     func getEditorLayout() -> EditorLayout? {
         return parent?.getEditorLayout(with: id)
+    }
+
+    /// Set the selected tab. Loads the file's contents if it hasn't already been opened.
+    /// - Parameter file: The file to set as the selected tab.
+    func setSelectedTab(_ file: CEWorkspaceFile?) {
+        guard let file else {
+            selectedTab = nil
+            return
+        }
+        guard let tab = self.tabs.first(where: { $0.file == file }) else {
+            return
+        }
+        self.selectedTab = tab
+        if tab.file.fileDocument == nil {
+            do { // Ignore this error for simpler API usage.
+                try openFile(item: tab)
+            } catch {
+                print(error)
+            }
+        }
     }
 
     /// Closes a tab in the editor.
