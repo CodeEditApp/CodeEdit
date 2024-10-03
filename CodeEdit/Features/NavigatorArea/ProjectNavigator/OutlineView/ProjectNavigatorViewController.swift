@@ -198,7 +198,9 @@ final class ProjectNavigatorViewController: NSViewController {
             outlineView.expandItem(outlineView.item(atRow: 0), expandChildren: true)
         }
 
-        noResultsLabel.isHidden = !(filteredContentChildren[content[0]]?.isEmpty ?? false)
+        if let root = content.first(where: { $0.isRoot }), let children = filteredContentChildren[root] {
+            noResultsLabel.isHidden = !children.isEmpty
+        }
     }
 
     /// Checks if the given filter matches the name of the item or any of its children.
