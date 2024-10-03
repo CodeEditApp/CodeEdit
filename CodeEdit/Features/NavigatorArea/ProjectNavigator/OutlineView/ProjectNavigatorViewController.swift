@@ -21,6 +21,7 @@ final class ProjectNavigatorViewController: NSViewController {
 
     var scrollView: NSScrollView!
     var outlineView: NSOutlineView!
+    var noResultsLabel: NSTextField!
 
     /// Gets the folder structure
     ///
@@ -29,6 +30,14 @@ final class ProjectNavigatorViewController: NSViewController {
         guard let folderURL = workspace?.workspaceFileManager?.folderUrl else { return [] }
         guard let root = workspace?.workspaceFileManager?.getFile(folderURL.path) else { return [] }
         return [root]
+    }
+
+    var filteredContentChildren: [CEWorkspaceFile: [CEWorkspaceFile]] = [:]
+    var expandedItems: Set<CEWorkspaceFile> = []
+    var filter: String = "" {
+        didSet {
+            handleFilterChange()
+        }
     }
 
     weak var workspace: WorkspaceDocument?
@@ -94,6 +103,27 @@ final class ProjectNavigatorViewController: NSViewController {
         scrollView.autohidesScrollers = true
 
         outlineView.expandItem(outlineView.item(atRow: 0))
+
+        /// Get autosave expanded items.
+        for row in 0..<outlineView.numberOfRows {
+            if let item = outlineView.item(atRow: row) as? CEWorkspaceFile {
+                if outlineView.isItemExpanded(item) {
+                    expandedItems.insert(item)
+                }
+            }
+        }
+
+        /// "No Filter Results" label.
+        noResultsLabel = NSTextField(labelWithString: "No Filter Results")
+        noResultsLabel.isHidden = true
+        noResultsLabel.font = NSFont.systemFont(ofSize: 16)
+        noResultsLabel.textColor = NSColor.secondaryLabelColor
+        outlineView.addSubview(noResultsLabel)
+        noResultsLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            noResultsLabel.centerXAnchor.constraint(equalTo: outlineView.centerXAnchor),
+            noResultsLabel.centerYAnchor.constraint(equalTo: outlineView.centerYAnchor)
+        ])
     }
 
     init() {
@@ -103,6 +133,7 @@ final class ProjectNavigatorViewController: NSViewController {
     deinit {
         outlineView?.removeFromSuperview()
         scrollView?.removeFromSuperview()
+        noResultsLabel?.removeFromSuperview()
     }
 
     required init?(coder: NSCoder) {
@@ -155,5 +186,70 @@ final class ProjectNavigatorViewController: NSViewController {
         }
     }
 
-    // TODO: File filtering
+    private func handleFilterChange() {
+        filteredContentChildren.removeAll()
+        outlineView.reloadData()
+
+        /// If the filter is empty, show all items and restore the expanded state.
+        if filter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            restoreExpandedState()
+        } else {
+            /// Expand all items for search.
+            outlineView.expandItem(outlineView.item(atRow: 0), expandChildren: true)
+        }
+
+        noResultsLabel.isHidden = !(filteredContentChildren[content[0]]?.isEmpty ?? false)
+    }
+
+    /// Checks if the given filter matches the name of the item or any of its children.
+    func fileSearchMatches(_ filter: String, for item: CEWorkspaceFile) -> Bool {
+        guard !filter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return true }
+
+        if item.name.localizedLowercase.contains(filter.localizedLowercase) {
+            saveAllContentChildren(for: item)
+            return true
+        }
+
+        if let children = workspace?.workspaceFileManager?.childrenOfFile(item) {
+            return children.contains { fileSearchMatches(filter, for: $0) }
+        }
+
+        return false
+    }
+
+    /// Saves all children of a given folder item to the filtered content cache, this is specially useful when the name of a folder matches the search.
+    /// Just like in Xcode, this shows all the content of the folder.
+    private func saveAllContentChildren(for item: CEWorkspaceFile) {
+        guard item.isFolder, filteredContentChildren[item] == nil else { return }
+
+        if let children = workspace?.workspaceFileManager?.childrenOfFile(item) {
+            filteredContentChildren[item] = children
+            for child in children.filter({ $0.isFolder }) {
+                saveAllContentChildren(for: child)
+            }
+        }
+    }
+
+    /// Restores the expanded state of items in the outline view based on previously expanded items when finish searching.
+    private func restoreExpandedState() {
+        let copy = expandedItems
+        outlineView.collapseItem(outlineView.item(atRow: 0), collapseChildren: true)
+
+        for item in copy {
+            expandParentsRecursively(of: item)
+            outlineView.expandItem(item)
+        }
+
+        expandedItems = copy
+    }
+
+    /// Recursively expands all parent items of a given item in the outline view.
+    /// The order of the items may get lost in the `expandedItems` set.
+    /// This means that a children item might be expanded before its parent, causing it not to really expand.
+    private func expandParentsRecursively(of item: CEWorkspaceFile) {
+        if let parent = item.parent {
+            expandParentsRecursively(of: parent)
+            outlineView.expandItem(parent)
+        }
+    }
 }

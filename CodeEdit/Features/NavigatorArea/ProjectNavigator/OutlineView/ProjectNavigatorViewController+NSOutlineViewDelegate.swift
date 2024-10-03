@@ -49,8 +49,14 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     }
 
     func outlineViewItemDidExpand(_ notification: Notification) {
-        guard let id = workspace?.editorManager?.activeEditor.selectedTab?.file.id,
-              let item = workspace?.workspaceFileManager?.getFile(id, createIfNotFound: true),
+        /// Save expanded items' state to restore when finish filtering.
+        guard let workspace else { return }
+        if workspace.filter.isEmpty, let item = notification.userInfo?["NSObject"] as? CEWorkspaceFile {
+            expandedItems.insert(item)
+        }
+
+        guard let id = workspace.editorManager?.activeEditor.selectedTab?.file.id,
+              let item = workspace.workspaceFileManager?.getFile(id, createIfNotFound: true),
               /// update outline selection only if the parent of selected item match with expanded item
               item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else {
             return
@@ -61,7 +67,13 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         }
     }
 
-    func outlineViewItemDidCollapse(_ notification: Notification) {}
+    func outlineViewItemDidCollapse(_ notification: Notification) {
+        /// Save expanded items' state to restore when finish filtering.
+        guard let workspace else { return }
+        if workspace.filter.isEmpty, let item = notification.userInfo?["NSObject"] as? CEWorkspaceFile {
+            expandedItems.remove(item)
+        }
+    }
 
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
         guard let id = object as? CEWorkspaceFile.ID,

@@ -8,17 +8,31 @@
 import AppKit
 
 extension ProjectNavigatorViewController: NSOutlineViewDataSource {
+    /// Retrieves the children of a given item for the outline view, applying the current filter if necessary.
+    private func getOutlineViewItems(for item: CEWorkspaceFile) -> [CEWorkspaceFile] {
+        if let cachedChildren = filteredContentChildren[item] {
+            return cachedChildren
+        }
+
+        if let children = workspace?.workspaceFileManager?.childrenOfFile(item) {
+            let filteredChildren = children.filter { fileSearchMatches(filter, for: $0) }
+            filteredContentChildren[item] = filteredChildren
+            return filteredChildren
+        }
+
+        return []
+    }
+
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if let item = item as? CEWorkspaceFile {
-            return item.isFolder ? workspace?.workspaceFileManager?.childrenOfFile(item)?.count ?? 0 : 0
+            return getOutlineViewItems(for: item).count
         }
         return content.count
     }
 
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-        if let item = item as? CEWorkspaceFile,
-           let children = workspace?.workspaceFileManager?.childrenOfFile(item) {
-            return children[index]
+        if let item = item as? CEWorkspaceFile {
+            return getOutlineViewItems(for: item)[index]
         }
         return content[index]
     }
