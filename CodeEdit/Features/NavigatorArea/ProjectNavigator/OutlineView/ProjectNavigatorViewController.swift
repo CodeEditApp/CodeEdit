@@ -217,7 +217,8 @@ final class ProjectNavigatorViewController: NSViewController {
         return false
     }
 
-    /// Saves all children of a given folder item to the filtered content cache, this is specially useful when the name of a folder matches the search.
+    /// Saves all children of a given folder item to the filtered content cache.
+    /// This is specially useful when the name of a folder matches the search.
     /// Just like in Xcode, this shows all the content of the folder.
     private func saveAllContentChildren(for item: CEWorkspaceFile) {
         guard item.isFolder, filteredContentChildren[item] == nil else { return }
@@ -230,7 +231,7 @@ final class ProjectNavigatorViewController: NSViewController {
         }
     }
 
-    /// Restores the expanded state of items in the outline view based on previously expanded items when finish searching.
+    /// Restores the expanded state of items when finish searching.
     private func restoreExpandedState() {
         let copy = expandedItems
         outlineView.collapseItem(outlineView.item(atRow: 0), collapseChildren: true)
