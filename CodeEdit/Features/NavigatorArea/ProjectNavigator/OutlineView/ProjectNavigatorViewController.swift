@@ -199,7 +199,12 @@ final class ProjectNavigatorViewController: NSViewController {
         }
 
         if let root = content.first(where: { $0.isRoot }), let children = filteredContentChildren[root] {
-            noResultsLabel.isHidden = !children.isEmpty
+            if children.isEmpty {
+                noResultsLabel.isHidden = false
+                outlineView.hideRows(at: IndexSet(integer: 0))
+            } else {
+                noResultsLabel.isHidden = true
+            }
         }
     }
 
