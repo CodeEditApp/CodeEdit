@@ -177,7 +177,8 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
             let view = ProjectNavigatorTableViewCell(
                 frame: frameRect,
                 item: (item as? SearchResultModel)?.file,
-                isEditable: false
+                isEditable: false,
+                workspace: workspace
             )
             // We're using a medium label for file names b/c it makes it easier to
             // distinguish quickly which results are from which files.

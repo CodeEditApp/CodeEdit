@@ -24,8 +24,13 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         guard let tableColumn else { return nil }
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
-
-        return ProjectNavigatorTableViewCell(frame: frameRect, item: item as? CEWorkspaceFile, delegate: self)
+        let cell = ProjectNavigatorTableViewCell(
+            frame: frameRect,
+            item: item as? CEWorkspaceFile,
+            delegate: self,
+            workspace: workspace
+        )
+        return cell
     }
 
     func outlineViewSelectionDidChange(_ notification: Notification) {

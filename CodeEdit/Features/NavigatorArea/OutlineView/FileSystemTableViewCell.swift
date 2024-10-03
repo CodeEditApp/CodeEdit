@@ -22,8 +22,8 @@ class FileSystemTableViewCell: StandardTableViewCell {
     ///   - frameRect: The frame of the cell.
     ///   - item: The file item the cell represents.
     ///   - isEditable: Set to true if the user should be able to edit the file name.
-    init(frame frameRect: NSRect, item: CEWorkspaceFile?, isEditable: Bool = true) {
-        super.init(frame: frameRect, isEditable: isEditable)
+    init(frame frameRect: NSRect, item: CEWorkspaceFile?, isEditable: Bool = true, workspace: WorkspaceDocument?) {
+        super.init(frame: frameRect, isEditable: isEditable, workspace: workspace)
 
         if let item = item {
             addIcon(item: item)
@@ -40,7 +40,24 @@ class FileSystemTableViewCell: StandardTableViewCell {
         fileItem = item
         imageView?.image = item.nsIcon
         imageView?.contentTintColor = color(for: item)
-        textField?.stringValue = item.labelFileName()
+
+        let fileName = item.labelFileName()
+        textField?.stringValue = fileName
+
+        // Apply bold style if the filename matches the workspace filter
+        if let filter = workspace?.filter, fileName.localizedLowercase.contains(filter.localizedLowercase) {
+            let attributedString = NSMutableAttributedString(string: fileName)
+            let range = NSString(string: fileName).range(of: filter, options: .caseInsensitive)
+            attributedString.addAttribute(
+                .font,
+                value: NSFont.boldSystemFont(ofSize: textField?.font?.pointSize ?? 12),
+                range: range
+            )
+            textField?.attributedStringValue = attributedString
+        } else {
+            // Reset to normal font if no match
+            textField?.attributedStringValue = NSAttributedString(string: fileName)
+        }
     }
 
     func addModel() {

@@ -10,7 +10,7 @@ import SwiftUI
 class StandardTableViewCell: NSTableCellView {
 
     weak var secondaryLabel: NSTextField?
-    weak var workspace: WorkspaceDocument?
+    var workspace: WorkspaceDocument?
 
     var secondaryLabelRightAligned: Bool = true {
         didSet {
@@ -24,9 +24,10 @@ class StandardTableViewCell: NSTableCellView {
     ///   - frameRect: The frame of the cell.
     ///   - item: The file item the cell represents.
     ///   - isEditable: Set to true if the user should be able to edit the file name.
-    init(frame frameRect: NSRect, isEditable: Bool = true) {
+    init(frame frameRect: NSRect, isEditable: Bool = true, workspace: WorkspaceDocument?) {
         super.init(frame: frameRect)
         setupViews(frame: frameRect, isEditable: isEditable)
+        self.workspace = workspace
     }
 
     // Default init, assumes isEditable to be false

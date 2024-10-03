@@ -26,9 +26,10 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         frame frameRect: NSRect,
         item: CEWorkspaceFile?,
         isEditable: Bool = true,
-        delegate: OutlineTableViewCellDelegate? = nil
+        delegate: OutlineTableViewCellDelegate? = nil,
+        workspace: WorkspaceDocument?
     ) {
-        super.init(frame: frameRect, item: item, isEditable: isEditable)
+        super.init(frame: frameRect, item: item, isEditable: isEditable, workspace: workspace)
         self.textField?.setAccessibilityIdentifier("ProjectNavigatorTableViewCell-\(item?.name ?? "")")
         self.delegate = delegate
     }
