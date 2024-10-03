@@ -42,21 +42,49 @@ class FileSystemTableViewCell: StandardTableViewCell {
         imageView?.contentTintColor = color(for: item)
 
         let fileName = item.labelFileName()
-        textField?.stringValue = fileName
 
         // Apply bold style if the filename matches the workspace filter
-        if let filter = workspace?.filter, fileName.localizedLowercase.contains(filter.localizedLowercase) {
+        if let filter = workspace?.filter, !filter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             let attributedString = NSMutableAttributedString(string: fileName)
+
+            // Check if the filename contains the filter text
             let range = NSString(string: fileName).range(of: filter, options: .caseInsensitive)
-            attributedString.addAttribute(
-                .font,
-                value: NSFont.boldSystemFont(ofSize: textField?.font?.pointSize ?? 12),
-                range: range
-            )
+            if range.location != NSNotFound {
+                // Set the label color to secondary
+                attributedString.addAttribute(
+                    .foregroundColor,
+                    value: NSColor.secondaryLabelColor,
+                    range: NSRange(location: 0, length: attributedString.length)
+                )
+
+                // If the filter text matches, bold the matching text and set primary label color
+                attributedString.addAttributes(
+                    [
+                        .font: NSFont.boldSystemFont(ofSize: textField?.font?.pointSize ?? 12),
+                        .foregroundColor: NSColor.textColor
+                    ],
+                    range: range
+                )
+            } else {
+                // If no match, apply primary label color for parent folder,
+                // or secondary label color for a non-matching file
+                attributedString.addAttribute(
+                    .foregroundColor,
+                    value: item.isFolder ? NSColor.labelColor : NSColor.secondaryLabelColor,
+                    range: NSRange(location: 0, length: attributedString.length)
+                )
+            }
+
             textField?.attributedStringValue = attributedString
         } else {
-            // Reset to normal font if no match
-            textField?.attributedStringValue = NSAttributedString(string: fileName)
+            // If no filter is applied, reset to normal font and primary label color
+            textField?.attributedStringValue = NSAttributedString(
+                string: fileName,
+                attributes: [
+                    .font: NSFont.systemFont(ofSize: textField?.font?.pointSize ?? 12),
+                    .foregroundColor: NSColor.labelColor
+                ]
+            )
         }
     }
 
