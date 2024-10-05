@@ -12,14 +12,14 @@ struct EditorLayoutView: View {
 
     @FocusState.Binding var focus: Editor?
 
-    @Environment(\.window)
+    @Environment(\.window.value)
     private var window
 
     @Environment(\.isAtEdge)
     private var isAtEdge
 
     var toolbarHeight: CGFloat {
-        window.contentView?.safeAreaInsets.top ?? .zero
+        window?.contentView?.safeAreaInsets.top ?? .zero
     }
 
     var body: some View {

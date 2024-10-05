@@ -9,19 +9,14 @@ import SwiftUI
 
 class StandardTableViewCell: NSTableCellView {
 
-    var label: NSTextField!
-    var secondaryLabel: NSTextField!
-    var icon: NSImageView!
+    weak var secondaryLabel: NSTextField?
+    weak var workspace: WorkspaceDocument?
 
-    var workspace: WorkspaceDocument?
-
-    var secondaryLabelRightAlignmed: Bool = true {
+    var secondaryLabelRightAligned: Bool = true {
         didSet {
             resizeSubviews(withOldSize: .zero)
         }
     }
-
-    private let prefs = Settings.shared.preferences.general
 
     /// Initializes the `TableViewCell` with an `icon` and `label`
     /// Both the icon and label will be colored, and sized based on the user's preferences.
@@ -42,16 +37,17 @@ class StandardTableViewCell: NSTableCellView {
 
     private func setupViews(frame frameRect: NSRect, isEditable: Bool) {
         // Create the label
-        label = createLabel()
-        configLabel(label: self.label, isEditable: isEditable)
+        let label = createLabel()
+        configLabel(label: label, isEditable: isEditable)
         self.textField = label
 
         // Create the secondary label
-        secondaryLabel = createSecondaryLabel()
+        let secondaryLabel = createSecondaryLabel()
         configSecondaryLabel(secondaryLabel: secondaryLabel)
+        self.secondaryLabel = secondaryLabel
 
         // Create the icon
-        icon = createIcon()
+        let icon = createIcon()
         configIcon(icon: icon)
         addSubview(icon)
         imageView = icon
@@ -92,7 +88,7 @@ class StandardTableViewCell: NSTableCellView {
         secondaryLabel.layer?.cornerRadius = 10.0
         secondaryLabel.font = .systemFont(ofSize: fontSize-2, weight: .bold)
         secondaryLabel.alignment = .center
-        secondaryLabel.textColor = NSColor(Color.secondary)
+        secondaryLabel.textColor = .secondaryLabelColor
     }
 
     func createIcon() -> NSImageView {
@@ -111,16 +107,25 @@ class StandardTableViewCell: NSTableCellView {
     let iconWidth: CGFloat = 22
     override func resizeSubviews(withOldSize oldSize: NSSize) {
         super.resizeSubviews(withOldSize: oldSize)
+        guard let imageView, textField != nil, secondaryLabel != nil else {
+            assertionFailure(
+                "Missing child view:"
+                + " imageView \(imageView == nil)"
+                + ", textField: \(textField == nil)"
+                + ", label: \(secondaryLabel == nil)"
+            )
+            return
+        }
 
-        icon.frame = NSRect(
+        imageView.frame = NSRect(
             x: 2,
             y: 4,
             width: iconWidth,
             height: frame.height
         )
         // center align the image
-        if let alignmentRect = icon.image?.alignmentRect {
-            icon.frame = NSRect(
+        if let alignmentRect = imageView.image?.alignmentRect {
+            imageView.frame = NSRect(
                 x: (iconWidth - alignmentRect.width) / 2,
                 y: 4,
                 width: alignmentRect.width,
@@ -129,43 +134,52 @@ class StandardTableViewCell: NSTableCellView {
         }
 
         // right align the secondary label
-        if secondaryLabelRightAlignmed {
-            let secondLabelWidth = secondaryLabel.frame.size.width
-            let newSize = secondaryLabel.sizeThatFits(
-                CGSize(width: secondLabelWidth, height: CGFloat.greatestFiniteMagnitude)
-            )
-            // somehow, a width of 0 makes it resize properly.
-            secondaryLabel.frame = NSRect(
-                x: frame.width - newSize.width,
-                y: 3.5,
-                width: 0,
-                height: newSize.height
-            )
-
-            label.frame = NSRect(
-                x: iconWidth + 2,
-                y: 3.5,
-                width: secondaryLabel.frame.minX - icon.frame.maxX - 5,
-                height: 25
-            )
-
-        // put the secondary label right after the primary label
+        if secondaryLabelRightAligned {
+            rightAlignSecondary()
         } else {
-            let mainLabelWidth = label.frame.size.width
-            let newSize = label.sizeThatFits(CGSize(width: mainLabelWidth, height: CGFloat.greatestFiniteMagnitude))
-            label.frame = NSRect(
-                x: iconWidth + 2,
-                y: 2.5,
-                width: newSize.width,
-                height: 25
-            )
-            secondaryLabel.frame = NSRect(
-                x: label.frame.maxX + 2,
-                y: 2.5,
-                width: frame.width - label.frame.maxX - 2,
-                height: 25
-            )
+            // put the secondary label right after the primary label
+            leftAlignSecondary()
         }
+    }
+
+    private func rightAlignSecondary() {
+        guard let secondaryLabel, let textField, let imageView else { return }
+        let secondLabelWidth = secondaryLabel.frame.size.width
+        let newSize = secondaryLabel.sizeThatFits(
+            CGSize(width: secondLabelWidth, height: CGFloat.greatestFiniteMagnitude)
+        )
+        // somehow, a width of 0 makes it resize properly.
+        secondaryLabel.frame = NSRect(
+            x: frame.width - newSize.width,
+            y: 3.5,
+            width: 0,
+            height: newSize.height
+        )
+
+        textField.frame = NSRect(
+            x: iconWidth + 2,
+            y: 3.5,
+            width: secondaryLabel.frame.minX - imageView.frame.maxX - 5,
+            height: 25
+        )
+    }
+
+    private func leftAlignSecondary() {
+        guard let secondaryLabel, let textField else { return }
+        let mainLabelWidth = textField.frame.size.width
+        let newSize = textField.sizeThatFits(CGSize(width: mainLabelWidth, height: CGFloat.greatestFiniteMagnitude))
+        textField.frame = NSRect(
+            x: iconWidth + 2,
+            y: 2.5,
+            width: newSize.width,
+            height: 25
+        )
+        secondaryLabel.frame = NSRect(
+            x: textField.frame.maxX + 2,
+            y: 2.5,
+            width: frame.width - textField.frame.maxX - 2,
+            height: 25
+        )
     }
 
     /// *Not Implemented*

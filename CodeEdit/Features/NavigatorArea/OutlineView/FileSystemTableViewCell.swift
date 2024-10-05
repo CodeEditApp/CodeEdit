@@ -9,7 +9,7 @@ import SwiftUI
 
 class FileSystemTableViewCell: StandardTableViewCell {
 
-    var fileItem: CEWorkspaceFile!
+    weak var fileItem: CEWorkspaceFile?
 
     var changeLabelLargeWidth: NSLayoutConstraint!
     var changeLabelSmallWidth: NSLayoutConstraint!
@@ -38,15 +38,25 @@ class FileSystemTableViewCell: StandardTableViewCell {
 
     func addIcon(item: CEWorkspaceFile) {
         fileItem = item
-        icon.image = item.nsIcon
-        icon.contentTintColor = color(for: item)
-        toolTip = item.labelFileName()
-        label.stringValue = item.labelFileName()
+        imageView?.image = item.nsIcon
+        imageView?.contentTintColor = color(for: item)
+        textField?.stringValue = item.labelFileName()
     }
 
     func addModel() {
-        secondaryLabel.stringValue = fileItem.gitStatus?.description ?? ""
-        if secondaryLabel.stringValue == "?" { secondaryLabel.stringValue = "A" }
+        guard let fileItem = fileItem, let secondaryLabel = secondaryLabel else {
+            return
+        }
+
+        if fileItem.url.isSymbolicLink { secondaryLabel.stringValue = "􀰞" }
+
+        guard let gitStatus = fileItem.gitStatus?.description else {
+            return
+        }
+
+        if gitStatus == "?" { secondaryLabel.stringValue += "A" } else {
+            secondaryLabel.stringValue += gitStatus
+        }
     }
 
     /// *Not Implemented*
@@ -90,20 +100,27 @@ class FileSystemTableViewCell: StandardTableViewCell {
             return NSColor(named: "CoolGray") ?? NSColor(.gray)
         }
     }
+
+    deinit {
+        toolTip = nil
+    }
 }
 
 let errorRed = NSColor(red: 1, green: 0, blue: 0, alpha: 0.2)
 extension FileSystemTableViewCell: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
-        label.backgroundColor = fileItem.validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
+        guard let fileItem else { return }
+        textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
     }
+
     func controlTextDidEndEditing(_ obj: Notification) {
-        label.backgroundColor = fileItem.validateFileName(for: label?.stringValue ?? "") ? .none : errorRed
-        if fileItem.validateFileName(for: label?.stringValue ?? "") {
-            let newURL = fileItem.url.deletingLastPathComponent().appendingPathComponent(label?.stringValue ?? "")
+        guard let fileItem else { return }
+        textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
+        if fileItem.validateFileName(for: textField?.stringValue ?? "") {
+            let newURL = fileItem.url.deletingLastPathComponent().appendingPathComponent(textField?.stringValue ?? "")
             workspace?.workspaceFileManager?.move(file: fileItem, to: newURL)
         } else {
-            label?.stringValue = fileItem.labelFileName()
+            textField?.stringValue = fileItem.labelFileName()
         }
     }
 }

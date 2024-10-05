@@ -16,11 +16,11 @@ struct SourceControlNavigatorChangesCommitView: View {
     @State private var isCommiting: Bool = false
 
     var allFilesStaged: Bool {
-        sourceControlManager.changedFiles.allSatisfy { $0.staged ?? false }
+        sourceControlManager.changedFiles.allSatisfy { $0.isStaged }
     }
 
     var anyFilesStaged: Bool {
-        sourceControlManager.changedFiles.contains { $0.staged ?? false }
+        sourceControlManager.changedFiles.contains { $0.isStaged }
     }
 
     var body: some View {
@@ -73,9 +73,9 @@ struct SourceControlNavigatorChangesCommitView: View {
                     Button {
                         Task {
                             if allFilesStaged {
-                                try await sourceControlManager.reset(sourceControlManager.changedFiles)
+                                await resetAll()
                             } else {
-                                try await sourceControlManager.add(sourceControlManager.changedFiles)
+                                await stageAll()
                             }
                         }
                     } label: {
@@ -131,6 +131,28 @@ struct SourceControlNavigatorChangesCommitView: View {
                     showDetails = !message.isEmpty
                 }
             }
+        }
+    }
+
+    /// Stages all changed files.
+    private func stageAll() async {
+        do {
+            try await sourceControlManager.add(sourceControlManager.changedFiles.compactMap {
+                $0.stagedStatus == .none ? $0.fileURL : nil
+            })
+        } catch {
+            sourceControlManager.logger.error("Failed to stage all files: \(error)")
+        }
+    }
+
+    /// Resets all changed files.
+    private func resetAll() async {
+        do {
+            try await sourceControlManager.reset(
+                sourceControlManager.changedFiles.map { $0.fileURL }
+            )
+        } catch {
+            sourceControlManager.logger.error("Failed to reset all files: \(error)")
         }
     }
 }

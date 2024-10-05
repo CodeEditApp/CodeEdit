@@ -7,12 +7,17 @@
 
 import AppKit
 import SwiftUI
+import OSLog
 
 /// A `NSViewController` that handles the **ProjectNavigatorView** in the **NavigatorArea**.
 ///
 /// Adds a ``outlineView`` inside a ``scrollView`` which shows the folder structure of the
 /// currently open project.
 final class ProjectNavigatorViewController: NSViewController {
+    static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "",
+        category: "ProjectNavigatorViewController"
+    )
 
     var scrollView: NSScrollView!
     var outlineView: NSOutlineView!
@@ -26,12 +31,12 @@ final class ProjectNavigatorViewController: NSViewController {
         return [root]
     }
 
-    var workspace: WorkspaceDocument?
+    weak var workspace: WorkspaceDocument?
 
     var iconColor: SettingsData.FileIconStyle = .color {
         willSet {
             if newValue != iconColor {
-                outlineView.reloadData()
+                outlineView?.reloadData()
             }
         }
     }
@@ -95,6 +100,11 @@ final class ProjectNavigatorViewController: NSViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
+    deinit {
+        outlineView?.removeFromSuperview()
+        scrollView?.removeFromSuperview()
+    }
+
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -102,7 +112,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Forces to reveal the selected file through the command regardless of the auto reveal setting
     @objc
     func revealFile(_ sender: Any) {
-        updateSelection(itemID: workspace?.editorManager.activeEditor.selectedTab?.file.id, forcesReveal: true)
+        updateSelection(itemID: workspace?.editorManager?.activeEditor.selectedTab?.file.id, forcesReveal: true)
     }
 
     /// Updates the selection of the ``outlineView`` whenever it changes.
@@ -130,7 +140,7 @@ final class ProjectNavigatorViewController: NSViewController {
                 outlineView.expandItem(item)
             }
         } else if Settings[\.navigation].navigationStyle == .openInTabs {
-            workspace?.editorManager.activeEditor.openTab(file: item, asTemporary: false)
+            workspace?.editorManager?.activeEditor.openTab(file: item, asTemporary: false)
         }
     }
 

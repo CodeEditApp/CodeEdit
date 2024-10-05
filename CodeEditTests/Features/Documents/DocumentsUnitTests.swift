@@ -14,6 +14,7 @@ final class DocumentsUnitTests: XCTestCase {
     private var hapticFeedbackPerformerMock: NSHapticFeedbackPerformerMock!
     private var navigatorViewModel: NavigatorSidebarViewModel!
     private var window: NSWindow!
+    private var workspace = WorkspaceDocument()
 
     // MARK: - Lifecycle
 
@@ -21,9 +22,10 @@ final class DocumentsUnitTests: XCTestCase {
         super.setUp()
         hapticFeedbackPerformerMock = NSHapticFeedbackPerformerMock()
         navigatorViewModel = .init()
+        workspace.taskManager = TaskManager(workspaceSettings: CEWorkspaceSettingsData())
         window = NSWindow()
         splitViewController = .init(
-            workspace: WorkspaceDocument(),
+            workspace: workspace,
             navigatorViewModel: navigatorViewModel,
             windowRef: window,
             hapticPerformer: hapticFeedbackPerformerMock
@@ -37,6 +39,10 @@ final class DocumentsUnitTests: XCTestCase {
     }
 
     // MARK: - Tests
+
+    func testSplitViewHasItems() {
+        XCTAssertGreaterThan(splitViewController.splitViewItems.count, 0, "Split controller did not set up correctly.")
+    }
 
     func testSplitViewControllerSnappedWhenWidthInAppropriateRange() {
         for _ in 0..<10 {

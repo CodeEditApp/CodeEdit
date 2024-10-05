@@ -28,16 +28,6 @@ extension SettingsData {
                 forKey: .keybindings
             ) ?? .init()
             appendNew()
-
-            let mgr = CommandManager.shared
-            let wrap = CommandClosureWrapper.init(closure: {
-                print("testing closure")
-            })
-            mgr.addCommand(
-                name: "Send test to console",
-                title: "Send test to console", id: "codeedit.test", command: wrap
-            )
-            mgr.executeCommand("test")
         }
 
         /// Adds new keybindings if they were added to default_keybindings.json.

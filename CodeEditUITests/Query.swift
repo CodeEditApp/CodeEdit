@@ -7,35 +7,46 @@
 
 import XCTest
 
+/// Query helpers for querying for specific UI elements. Organized by category in the app.
+/// Queries should not evaluate if an element exists. This allows for tests to expect an element to exist,
+/// perform an action, and then wait for that element to exist.
 enum Query {
-    static func getWindow(_ application: XCUIApplication) -> XCUIElement {
-        let window = application.windows["CodeEdit"]
-        XCTAssertTrue(window.exists, "Window not found")
-        return window
+    static func getWindow(_ application: XCUIApplication, named: String? = nil) -> XCUIElement {
+        if let named {
+            return application.windows[named]
+        } else {
+            return application.windows.element(matching: .window, identifier: "workspace")
+        }
+    }
+
+    static func getSettingsWindow(_ application: XCUIApplication) -> XCUIElement {
+        return application.windows.element(matching: .window, identifier: "settings")
+    }
+
+    static func getWelcomeWindow(_ application: XCUIApplication) -> XCUIElement {
+        return application.windows.element(matching: .window, identifier: "welcome")
+    }
+
+    static func getAboutWindow(_ application: XCUIApplication) -> XCUIElement {
+        return application.windows.element(matching: .window, identifier: "about")
     }
 
     enum Window {
-        static func getNavigator(_ window: XCUIElement) -> XCUIElement {
-            let navigator = window.descendants(matching: .any).matching(identifier: "ProjectNavigator").element
-            XCTAssertTrue(navigator.exists, "Navigator not found")
-            return navigator
+        static func getProjectNavigator(_ window: XCUIElement) -> XCUIElement {
+            return window.descendants(matching: .any).matching(identifier: "ProjectNavigator").element
         }
 
         static func getTabBar(_ window: XCUIElement) -> XCUIElement {
-            let scrollArea = window.descendants(matching: .any).matching(identifier: "TabBar").element
-            XCTAssertTrue(scrollArea.exists)
-            return scrollArea
+            return window.descendants(matching: .any).matching(identifier: "TabBar").element
         }
     }
 
     enum Navigator {
         static func getProjectNavigatorRow(fileTitle: String, index: Int = 0, _ navigator: XCUIElement) -> XCUIElement {
-            let row = navigator
+            return navigator
                 .descendants(matching: .outlineRow)
                 .containing(.textField, identifier: "ProjectNavigatorTableViewCell-\(fileTitle)")
                 .element(boundBy: index)
-            XCTAssertTrue(row.exists)
-            return row
         }
 
         static func disclosureIndicatorForRow(_ row: XCUIElement) -> XCUIElement {

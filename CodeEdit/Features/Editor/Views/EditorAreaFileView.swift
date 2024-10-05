@@ -14,47 +14,25 @@ struct EditorAreaFileView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
     @EnvironmentObject private var editor: Editor
+    @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
 
     @Environment(\.edgeInsets)
     private var edgeInsets
 
-    var file: CEWorkspaceFile
+    var codeFile: CodeFileDocument
     var textViewCoordinators: [TextViewCoordinator] = []
 
-    @State private var update: Bool = false
-
     @ViewBuilder var editorAreaFileView: some View {
-        if let document = file.fileDocument {
-
-            if let utType = document.utType, utType.conforms(to: .text) {
-                CodeFileView(codeFile: document, textViewCoordinators: textViewCoordinators)
-            } else {
-                NonTextFileView(fileDocument: document)
-                    .padding(.top, edgeInsets.top - 1.74) // Use the magic number to fine-tune its appearance.
-                    .padding(.bottom, StatusBarView.height + 1.26) // Use the magic number to fine-tune its appearance.
-            }
-
+        if let utType = codeFile.utType, utType.conforms(to: .text) {
+            CodeFileView(codeFile: codeFile, textViewCoordinators: textViewCoordinators)
         } else {
-            if update {
-                Spacer()
-            }
-            Spacer()
-            LoadingFileView(file.name)
-            Spacer()
-                .onAppear {
-                    Task.detached {
-                        let contentType = try await file.url.resourceValues(forKeys: [.contentTypeKey]).contentType
-                        let codeFile = try await CodeFileDocument(
-                            for: file.url,
-                            withContentsOf: file.url,
-                            ofType: contentType?.identifier ?? ""
-                        )
-                        await MainActor.run {
-                            file.fileDocument = codeFile
-                            CodeEditDocumentController.shared.addDocument(codeFile)
-                            update.toggle()
-                        }
-                    }
+            NonTextFileView(fileDocument: codeFile)
+                .padding(.top, edgeInsets.top - 1.74)
+                .padding(.bottom, StatusBarView.height + 1.26)
+                .modifier(UpdateStatusBarInfo(with: codeFile.fileURL))
+                .onDisappear {
+                    statusBarViewModel.dimensions = nil
+                    statusBarViewModel.fileSize = nil
                 }
         }
     }

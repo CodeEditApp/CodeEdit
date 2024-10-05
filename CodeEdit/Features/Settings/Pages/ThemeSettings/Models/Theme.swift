@@ -112,9 +112,39 @@ extension Theme {
 
         /// The 24-bit hex string of the color (e.g. #123456)
         var color: String
+        var bold: Bool
+        var italic: Bool
 
-        init(color: String) {
+        init(color: String, bold: Bool = false, italic: Bool = false) {
             self.color = color
+            self.bold = bold
+            self.italic = italic
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.color = try container.decode(String.self, forKey: .color)
+            self.bold = try container.decodeIfPresent(Bool.self, forKey: .bold) ?? false
+            self.italic = try container.decodeIfPresent(Bool.self, forKey: .italic) ?? false
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(color, forKey: .color)
+
+            if bold {
+                try container.encode(bold, forKey: .bold)
+            }
+
+            if italic {
+                try container.encode(italic, forKey: .italic)
+            }
+        }
+
+        enum CodingKeys: String, CodingKey {
+            case color
+            case bold
+            case italic
         }
 
         /// The `SwiftUI` of ``color``

@@ -39,7 +39,8 @@
       "color": "#0550AE"
     },
     "keywords": {
-      "color": "#CF222E"
+      "color": "#CF222E",
+      "bold": true
     },
     "attributes": {
       "color": "#0550AE"

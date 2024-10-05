@@ -88,7 +88,7 @@ struct EditorTabView: View {
         editorManager.activeEditor = editor
         if editor.selectedTab?.file != item {
             let tabItem = EditorInstance(file: item)
-            editor.selectedTab = tabItem
+            editor.setSelectedTab(item)
             editor.clearFuture()
             editor.addToHistory(tabItem)
         }

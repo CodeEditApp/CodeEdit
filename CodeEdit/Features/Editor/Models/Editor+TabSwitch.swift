@@ -12,10 +12,10 @@ extension Editor {
         guard let currentTab = selectedTab, let currentIndex = tabs.firstIndex(of: currentTab) else { return }
         let nextIndex = tabs.index(after: currentIndex)
         if nextIndex < tabs.endIndex {
-            selectedTab = tabs[nextIndex]
+            setSelectedTab(tabs[nextIndex].file)
         } else {
             // Wrap around to the first tab if it's the last one
-            selectedTab = tabs.first
+            setSelectedTab(tabs.first?.file)
         }
     }
 
@@ -23,10 +23,10 @@ extension Editor {
         guard let currentTab = selectedTab, let currentIndex = tabs.firstIndex(of: currentTab) else { return }
         let previousIndex = tabs.index(before: currentIndex)
         if previousIndex >= tabs.startIndex {
-            selectedTab = tabs[previousIndex]
+            setSelectedTab(tabs[previousIndex].file)
         } else {
             // Wrap around to the last tab if it's the first one
-            selectedTab = tabs.last
+            setSelectedTab(tabs.last?.file)
         }
     }
 }

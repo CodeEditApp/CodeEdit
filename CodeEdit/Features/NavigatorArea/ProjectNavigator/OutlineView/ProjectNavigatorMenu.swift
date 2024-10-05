@@ -165,7 +165,7 @@ final class ProjectNavigatorMenu: NSMenu {
     private func sourceControlMenu(item: CEWorkspaceFile) -> NSMenu {
         let sourceControlMenu = NSMenu(title: "Source Control")
         sourceControlMenu.addItem(
-            withTitle: "Commit \"\(String(describing: item.fileName))\"...",
+            withTitle: "Commit \"\(String(describing: item.fileName()))\"...",
             action: nil,
             keyEquivalent: ""
         )
@@ -194,7 +194,7 @@ final class ProjectNavigatorMenu: NSMenu {
     @objc
     private func openInTab() {
         if let item {
-            workspace?.editorManager.openTab(item: item)
+            workspace?.editorManager?.openTab(item: item)
         }
     }
 
@@ -209,7 +209,13 @@ final class ProjectNavigatorMenu: NSMenu {
     @objc
     private func newFile() {
         guard let item else { return }
-        workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item)
+        do {
+            try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item)
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
+        }
         outlineView.expandItem(item.isFolder ? item : item.parent)
     }
 

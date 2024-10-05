@@ -1,5 +1,5 @@
 {
-  "originHash" : "a33fcca819dee4c816b1474e19017510b1d62b170c921187042e0675d3f4b0b3",
+  "originHash" : "b6e0c892d567c4fb43e4135487752085a69cf403b95ee27c28e9d213dd3bbf5c",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
       "state" : {
-        "revision" : "cf85789d527d569e94edfd674c5ac8071b244dd9",
-        "version" : "0.7.3"
+        "revision" : "7d08e741c412b6fd30d5eea8bb6c0580e89553cf",
+        "version" : "0.8.0"
       }
     },
     {
@@ -51,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "eb1d38247a45bc678b5a23a65d6f6df6c56519e4",
-        "version" : "0.7.5"
+        "revision" : "2619cb945b4d6c2fc13f22ba873ba891f552b0f3",
+        "version" : "0.7.6"
       }
     },
     {
@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/GRDB.swift.git",
       "state" : {
-        "revision" : "dd7e7f39e8e4d7a22d258d9809a882f914690b01",
-        "version" : "5.26.1"
+        "revision" : "2cf6c756e1e5ef6901ebae16576a7e4e4b834622",
+        "version" : "6.29.3"
       }
     },
     {
@@ -137,15 +137,6 @@
       }
     },
     {
-      "identity" : "mainoffender",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/mattmassicotte/MainOffender",
-      "state" : {
-        "revision" : "8de872d9256ff7f9913cbc5dd560568ab164be45",
-        "version" : "0.2.1"
-      }
-    },
-    {
       "identity" : "processenv",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/ProcessEnv",
@@ -177,8 +168,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/groue/Semaphore",
       "state" : {
-        "revision" : "f1c4a0acabeb591068dea6cffdd39660b86dec28",
-        "version" : "0.0.8"
+        "revision" : "2543679282aa6f6c8ecf2138acd613ed20790bc2",
+        "version" : "0.1.0"
       }
     },
     {
@@ -195,8 +186,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
-        "revision" : "ee97538f5b81ae89698fd95938896dec5217b148",
-        "version" : "1.1.1"
+        "revision" : "9bf03ff58ce34478e66aaee630e491823326fd06",
+        "version" : "1.1.3"
       }
     },
     {
@@ -222,17 +213,16 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
       "state" : {
-        "revision" : "a0f7b12c7be228592d924f29f654ebbd924ac9c5",
-        "version" : "0.55.1"
+        "revision" : "5a65f4074975f811da666dfe31a19850950b1ea4",
+        "version" : "0.56.2"
       }
     },
     {
       "identity" : "swiftterm",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/migueldeicaza/SwiftTerm.git",
+      "location" : "https://github.com/migueldeicaza/SwiftTerm",
       "state" : {
-        "revision" : "55e7cdbeb3f41c80cce7b8a29ce9d17e214b2e77",
-        "version" : "1.2.0"
+        "revision" : "384776a4e24d08833ac7c6b8c6f6c7490323c845"
       }
     },
     {
@@ -249,8 +239,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
       "state" : {
-        "revision" : "668a65735751432b640260c56dfa621cec568368",
-        "version" : "1.2.0"
+        "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
+        "version" : "1.3.0"
       }
     },
     {
@@ -258,8 +248,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/TextFormation",
       "state" : {
-        "revision" : "f6faed6abd768ae95b70d10113d4008a7cac57a7",
-        "version" : "0.8.2"
+        "revision" : "b1ce9a14bd86042bba4de62236028dc4ce9db6a1",
+        "version" : "0.9.0"
       }
     },
     {
@@ -267,8 +257,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/TextStory",
       "state" : {
-        "revision" : "8883fa739aa213e70e6cb109bfbf0a0b551e4cb5",
-        "version" : "0.8.0"
+        "revision" : "8dc9148b46fcf93b08ea9d4ef9bdb5e4f700e008",
+        "version" : "0.9.0"
       }
     }
   ],

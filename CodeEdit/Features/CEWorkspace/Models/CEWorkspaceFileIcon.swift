@@ -93,7 +93,7 @@ enum FileIcon {
 
     /// Returns a string describing a SFSymbol for files
     /// If not specified otherwise this will return `"doc"`
-    static func fileIcon(fileType: FileType) -> String { // swiftlint:disable:this cyclomatic_complexity function_body_length line_length
+    static func fileIcon(fileType: FileType?) -> String { // swiftlint:disable:this cyclomatic_complexity function_body_length line_length
         switch fileType {
         case .json, .yml, .resolved:
             return "doc.json"
@@ -171,7 +171,7 @@ enum FileIcon {
 
     /// Returns a `Color` for a specific `fileType`
     /// If not specified otherwise this will return `Color.accentColor`
-    static func iconColor(fileType: FileType) -> Color { // swiftlint:disable:this cyclomatic_complexity
+    static func iconColor(fileType: FileType?) -> Color { // swiftlint:disable:this cyclomatic_complexity
         switch fileType {
         case .swift, .html:
             return .orange

@@ -59,6 +59,9 @@ extension SettingsData {
         /// The behavior of bracket pair highlights.
         var bracketHighlight: BracketPairHighlight = BracketPairHighlight()
 
+        /// Use the system cursor for the source editor.
+        var useSystemCursor: Bool = true
+
         /// Default initializer
         init() {
             self.populateCommands()
@@ -97,6 +100,11 @@ extension SettingsData {
                 BracketPairHighlight.self,
                 forKey: .bracketHighlight
             ) ?? BracketPairHighlight()
+            if #available(macOS 14, *) {
+                self.useSystemCursor = try container.decodeIfPresent(Bool.self, forKey: .useSystemCursor) ?? true
+            } else {
+                self.useSystemCursor = false
+            }
 
             self.populateCommands()
         }
@@ -109,7 +117,7 @@ extension SettingsData {
                 name: "Toggle Type-Over Completion",
                 title: "Toggle Type-Over Completion",
                 id: "prefs.text_editing.type_over_completion",
-                command: CommandClosureWrapper {
+                command: {
                     Settings.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
                 }
             )
@@ -118,7 +126,7 @@ extension SettingsData {
                 name: "Toggle Autocomplete Braces",
                 title: "Toggle Autocomplete Braces",
                 id: "prefs.text_editing.autocomplete_braces",
-                command: CommandClosureWrapper {
+                command: {
                     Settings.shared.preferences.textEditing.autocompleteBraces.toggle()
                 }
             )
@@ -127,7 +135,7 @@ extension SettingsData {
                 name: "Toggle Word Wrap",
                 title: "Toggle Word Wrap",
                 id: "prefs.text_editing.wrap_lines_to_editor_width",
-                command: CommandClosureWrapper {
+                command: {
                     Settings[\.textEditing].wrapLinesToEditorWidth.toggle()
                 }
             )
@@ -150,7 +158,7 @@ extension SettingsData {
             var highlightType: HighlightType = .flash
             var useCustomColor: Bool = false
             /// The color to use for the highlight.
-            var color: Theme.Attributes = Theme.Attributes(color: "FFFFFF")
+            var color: Theme.Attributes = Theme.Attributes(color: "FFFFFF", bold: false, italic: false)
 
             enum HighlightType: String, Codable {
                 case disabled

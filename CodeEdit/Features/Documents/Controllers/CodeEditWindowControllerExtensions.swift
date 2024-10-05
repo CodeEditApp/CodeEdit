@@ -11,17 +11,14 @@ import Combine
 extension CodeEditWindowController {
     @objc
     func toggleFirstPanel() {
-        guard let firstSplitView = splitViewController.splitViewItems.first else { return }
+        guard let firstSplitView = splitViewController?.splitViewItems.first else { return }
         firstSplitView.animator().isCollapsed.toggle()
-        if let codeEditSplitVC = splitViewController as? CodeEditSplitViewController {
-            codeEditSplitVC.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
-        }
+        splitViewController?.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
     }
 
     @objc
     func toggleLastPanel() {
-        guard let lastSplitView = splitViewController.splitViewItems.last,
-              let codeEditSplitVC = splitViewController as? CodeEditSplitViewController else {
+        guard let lastSplitView = splitViewController?.splitViewItems.last else {
             return
         }
 
@@ -29,7 +26,7 @@ extension CodeEditWindowController {
             lastSplitView.animator().isCollapsed.toggle()
         }
 
-        codeEditSplitVC.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
+        splitViewController?.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
     }
 
     /// These are example items that added as commands to command palette
@@ -38,27 +35,27 @@ extension CodeEditWindowController {
             name: "Quick Open",
             title: "Quick Open",
             id: "quick_open",
-            command: CommandClosureWrapper(closure: { self.openQuickly(self) })
+            command: { [weak self] in self?.openQuickly(nil) }
         )
 
         CommandManager.shared.addCommand(
             name: "Toggle Navigator",
             title: "Toggle Navigator",
             id: "toggle_left_sidebar",
-            command: CommandClosureWrapper(closure: { self.toggleFirstPanel() })
+            command: { [weak self] in self?.toggleFirstPanel() }
         )
 
         CommandManager.shared.addCommand(
             name: "Toggle Inspector",
             title: "Toggle Inspector",
             id: "toggle_right_sidebar",
-            command: CommandClosureWrapper(closure: { self.toggleLastPanel() })
+            command: { [weak self] in self?.toggleLastPanel() }
         )
     }
 
     // Listen to changes in all tabs/files
     internal func listenToDocumentEdited(workspace: WorkspaceDocument) {
-        workspace.editorManager.$activeEditor
+        workspace.editorManager?.$activeEditor
             .flatMap({ editor in
                 editor.$tabs
             })
@@ -82,7 +79,7 @@ extension CodeEditWindowController {
 
         // Listen to change of tabs, if closed tab without saving content,
         // we also need to recalculate isDocumentEdited
-        workspace.editorManager.$activeEditor
+        workspace.editorManager?.$activeEditor
             .flatMap({ editor in
                 editor.$tabs
             })
@@ -94,19 +91,21 @@ extension CodeEditWindowController {
 
     // Recalculate documentEdited by checking if any tab/file is edited
     private func updateDocumentEdited(workspace: WorkspaceDocument) {
-        let hasEditedDocuments = !workspace
-            .editorManager
+        let hasEditedDocuments = !(workspace
+            .editorManager?
             .editorLayout
             .gatherOpenFiles()
             .filter({ $0.fileDocument?.isDocumentEdited == true })
-            .isEmpty
+            .isEmpty ?? true)
         self.setDocumentEdited(hasEditedDocuments)
     }
 
     @IBAction func openWorkspaceSettings(_ sender: Any) {
-        guard let workspaceSettings, let window = window, let workspace = workspace else {
-            return
-        }
+        guard let window = window,
+              let workspace = workspace,
+              let workspaceSettingsManager = workspace.workspaceSettingsManager,
+              let taskManager = workspace.taskManager
+        else { return }
 
         if let workspaceSettingsWindow, workspaceSettingsWindow.isVisible {
             workspaceSettingsWindow.makeKeyAndOrderFront(self)
@@ -114,17 +113,20 @@ extension CodeEditWindowController {
             let settingsWindow = NSWindow()
             self.workspaceSettingsWindow = settingsWindow
             let contentView = CEWorkspaceSettingsView(
-                settings: workspaceSettings,
-                window: settingsWindow,
-                workspace: workspace
+                dismiss: { [weak self, weak settingsWindow] in
+                    guard let settingsWindow else { return }
+                    self?.window?.endSheet(settingsWindow)
+                 }
             )
+            .environmentObject(workspaceSettingsManager)
+            .environmentObject(workspace)
+            .environmentObject(taskManager)
 
             settingsWindow.contentView = NSHostingView(rootView: contentView)
             settingsWindow.titlebarAppearsTransparent = true
             settingsWindow.setContentSize(NSSize(width: 515, height: 515))
-            settingsWindow.makeKeyAndOrderFront(self)
 
-            window.addCenteredChildWindow(settingsWindow, over: window)
+            window.beginSheet(settingsWindow, completionHandler: nil)
         }
     }
 }
@@ -132,6 +134,8 @@ extension CodeEditWindowController {
 extension NSToolbarItem.Identifier {
     static let toggleFirstSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleFirstSidebarItem")
     static let toggleLastSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ToggleLastSidebarItem")
+    static let stopTaskSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("StopTaskSidebarItem")
+    static let startTaskSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("StartTaskSidebarItem")
     static let itemListTrackingSeparator = NSToolbarItem.Identifier("ItemListTrackingSeparator")
     static let branchPicker: NSToolbarItem.Identifier = NSToolbarItem.Identifier("BranchPicker")
     static let activityViewer: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ActivityViewer")

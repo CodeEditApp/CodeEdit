@@ -139,7 +139,7 @@ struct EditorTabBarContextMenu: ViewModifier {
         let newEditor = Editor(files: [item])
         splitEditor(edge, newEditor)
         tabs.closeTab(file: item)
-        workspace.editorManager.activeEditor = newEditor
+        workspace.editorManager?.activeEditor = newEditor
     }
 
     /// Copies the relative path from the workspace folder to the given file item to the pasteboard.

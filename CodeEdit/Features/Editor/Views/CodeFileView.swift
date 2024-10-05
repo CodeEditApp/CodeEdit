@@ -40,11 +40,11 @@ struct CodeFileView: View {
     var letterSpacing
     @AppSettings(\.textEditing.bracketHighlight)
     var bracketHighlight
+    @AppSettings(\.textEditing.useSystemCursor)
+    var useSystemCursor
 
     @Environment(\.colorScheme)
     private var colorScheme
-
-    @EnvironmentObject private var editorManager: EditorManager
 
     @ObservedObject private var themeModel: ThemeModel = .shared
 
@@ -67,10 +67,23 @@ struct CodeFileView: View {
         codeFile
             .contentCoordinator
             .textUpdatePublisher
-            .debounce(for: 1.0, scheduler: DispatchQueue.main)
             .sink { _ in
                 codeFile.updateChangeCount(.changeDone)
-                codeFile.autosave(withImplicitCancellability: false) { _ in }
+            }
+            .store(in: &cancellables)
+
+        codeFile
+            .contentCoordinator
+            .textUpdatePublisher
+            .debounce(for: 1.0, scheduler: DispatchQueue.main)
+            .sink { _ in
+                codeFile.autosave(withImplicitCancellability: false) { error in
+                    if let error {
+                        CodeFileDocument.logger.error("Failed to autosave document, error: \(error)")
+                    } else {
+                        codeFile.updateChangeCount(.changeCleared)
+                    }
+                }
             }
             .store(in: &cancellables)
 
@@ -103,12 +116,10 @@ struct CodeFileView: View {
     @Environment(\.edgeInsets)
     private var edgeInsets
 
-    @EnvironmentObject private var editor: Editor
-
     var body: some View {
         CodeEditSourceEditor(
             codeFile.content ?? NSTextStorage(),
-            language: getLanguage(),
+            language: codeFile.getLanguage(),
             theme: currentTheme.editor.editorTheme,
             font: font,
             tabWidth: codeFile.defaultTabWidth ?? defaultTabWidth,
@@ -121,6 +132,7 @@ struct CodeFileView: View {
             isEditable: isEditable,
             letterSpacing: letterSpacing,
             bracketPairHighlight: bracketPairHighlight,
+            useSystemCursor: useSystemCursor,
             undoManager: undoManager,
             coordinators: textViewCoordinators
         )
@@ -142,17 +154,6 @@ struct CodeFileView: View {
         .onChange(of: bracketHighlight) { _ in
             bracketPairHighlight = getBracketPairHighlight()
         }
-    }
-
-    private func getLanguage() -> CodeLanguage {
-        guard let url = codeFile.fileURL else {
-            return .default
-        }
-        return codeFile.language ?? CodeLanguage.detectLanguageFrom(
-            url: url,
-            prefixBuffer: codeFile.content?.string.getFirstLines(5),
-            suffixBuffer: codeFile.content?.string.getLastLines(5)
-        )
     }
 
     private func getBracketPairHighlight() -> BracketPairHighlight? {

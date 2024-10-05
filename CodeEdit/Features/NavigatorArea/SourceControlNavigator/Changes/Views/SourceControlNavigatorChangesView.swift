@@ -32,14 +32,14 @@ struct SourceControlNavigatorChangesView: View {
             if hasChanges || !hasRemotes || (!hasChanges && (hasUnsyncedCommits || hasCurrentBranch)) {
                 VStack(spacing: 8) {
                     Divided {
+                        if hasRemotes && (hasUnsyncedCommits || hasCurrentBranch) {
+                            SourceControlNavigatorSyncView(sourceControlManager: sourceControlManager)
+                        }
                         if hasChanges {
                             SourceControlNavigatorChangesCommitView()
                         }
                         if !hasRemotes {
                             SourceControlNavigatorNoRemotesView()
-                        }
-                        if !hasChanges && (hasUnsyncedCommits || hasCurrentBranch) {
-                            SourceControlNavigatorSyncView(sourceControlManager: sourceControlManager)
                         }
                     }
                 }

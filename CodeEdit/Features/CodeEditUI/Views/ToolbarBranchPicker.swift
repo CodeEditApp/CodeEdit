@@ -11,8 +11,8 @@ import Combine
 
 /// A view that pops up a branch picker.
 struct ToolbarBranchPicker: View {
-    private var workspaceFileManager: CEWorkspaceFileManager?
-    private var sourceControlManager: SourceControlManager?
+    private weak var workspaceFileManager: CEWorkspaceFileManager?
+    private weak var sourceControlManager: SourceControlManager?
 
     @Environment(\.controlActiveState)
     private var controlActive

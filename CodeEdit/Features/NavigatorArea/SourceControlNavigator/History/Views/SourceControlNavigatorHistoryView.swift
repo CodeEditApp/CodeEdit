@@ -34,6 +34,7 @@ struct SourceControlNavigatorHistoryView: View {
                 commitHistoryStatus = .ready
             }
         } catch {
+            sourceControlManager.logger.log("Failed to load commit history: \(error)")
             await MainActor.run {
                 commitHistory = []
                 commitHistoryStatus = .error(error: error)

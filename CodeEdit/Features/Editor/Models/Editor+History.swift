@@ -12,8 +12,8 @@ extension Editor {
     /// Add the tab to the history list.
     /// - Parameter tab: The tab to add to the history.
     func addToHistory(_ tab: Tab) {
-        if history.first != tab {
-            history.prepend(tab)
+        if history.first != tab.file {
+            history.prepend(tab.file)
         }
     }
 
@@ -57,15 +57,17 @@ extension Editor {
     /// If the tab is not opened, it is opened without modifying the history list.
     /// - Warning: Do not use except in the ``historyOffset``'s `didSet`.
     func historyOffsetDidChange() {
-        let tab = history[historyOffset]
+        let file = history[historyOffset]
 
-        if !tabs.contains(tab) {
+        if !tabs.contains(where: { $0.file == file }) {
             if let temporaryTab, tabs.contains(temporaryTab) {
                 closeTab(file: temporaryTab.file, fromHistory: true)
             }
-            temporaryTab = tab
-            openTab(file: tab.file, fromHistory: true)
+            openTab(file: file, fromHistory: true)
+            if let tab = tabs.first(where: { $0.file.id == file.id }) {
+                temporaryTab = tab
+            }
         }
-        selectedTab = tab
+        setSelectedTab(file)
     }
 }
