@@ -44,7 +44,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
         let fileName = item.labelFileName()
 
         // Apply bold style if the filename matches the workspace filter
-        if let filter = workspace?.filter, !filter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        if let filter = workspace?.navigatorFilter, !filter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             let attributedString = NSMutableAttributedString(string: fileName)
 
             // Check if the filename contains the filter text

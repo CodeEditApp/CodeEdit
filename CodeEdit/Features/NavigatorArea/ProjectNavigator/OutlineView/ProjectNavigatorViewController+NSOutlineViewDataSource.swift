@@ -15,7 +15,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
         }
 
         if let children = workspace?.workspaceFileManager?.childrenOfFile(item) {
-            let filteredChildren = children.filter { fileSearchMatches(filter, for: $0) }
+            let filteredChildren = children.filter { fileSearchMatches(workspace?.navigatorFilter ?? "", for: $0) }
             filteredContentChildren[item] = filteredChildren
             return filteredChildren
         }

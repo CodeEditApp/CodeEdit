@@ -14,7 +14,8 @@ import LanguageServerProtocol
 @objc(WorkspaceDocument)
 final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     @Published var sortFoldersOnTop: Bool = true
-    @Published var filter: String = ""
+    /// A string used to filter the displayed files and folders in the project navigator area based on user input.
+    @Published var navigatorFilter: String = ""
 
     private var workspaceState: [String: Any] {
         get {

@@ -36,7 +36,6 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
         /// if the window becomes active from background, it will restore the selection to outline view.
         nsViewController.updateSelection(itemID: workspace.editorManager?.activeEditor.selectedTab?.file.id)
-        nsViewController.filter = workspace.filter
         return
     }
 
@@ -61,6 +60,10 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
                 .sink { [weak self] itemID in
                     self?.controller?.updateSelection(itemID: itemID)
                 }
+                .store(in: &cancellables)
+            workspace.$navigatorFilter
+                .throttle(for: 0.1, scheduler: RunLoop.main, latest: true)
+                .sink { [weak self] _ in self?.controller?.handleFilterChange() }
                 .store(in: &cancellables)
         }
 

@@ -25,7 +25,7 @@ struct ProjectNavigatorToolbarBottom: View {
             addNewFileButton
             PaneTextField(
                 "Filter",
-                text: $workspace.filter,
+                text: $workspace.navigatorFilter,
                 leadingAccessories: {
                     FilterDropDownIconButton(menu: {
                         Button {
@@ -33,10 +33,10 @@ struct ProjectNavigatorToolbarBottom: View {
                         } label: {
                             Text(workspace.sortFoldersOnTop ? "Alphabetically" : "Folders on top")
                         }
-                    }, isOn: !workspace.filter.isEmpty)
+                    }, isOn: !workspace.navigatorFilter.isEmpty)
                     .padding(.leading, 4)
                     .foregroundStyle(
-                        workspace.filter.isEmpty
+                        workspace.navigatorFilter.isEmpty
                         ? Color(nsColor: .secondaryLabelColor)
                         : Color(nsColor: .controlAccentColor)
                     )
@@ -57,7 +57,7 @@ struct ProjectNavigatorToolbarBottom: View {
                     .padding(.trailing, 2.5)
                 },
                 clearable: true,
-                hasValue: !workspace.filter.isEmpty || recentsFilter || sourceControlFilter
+                hasValue: !workspace.navigatorFilter.isEmpty || recentsFilter || sourceControlFilter
             )
         }
         .padding(.horizontal, 5)
@@ -124,7 +124,7 @@ struct ProjectNavigatorToolbarBottom: View {
     /// when the user clears the filter.
     private var clearFilterButton: some View {
         Button {
-            workspace.filter = ""
+            workspace.navigatorFilter = ""
             NSApp.keyWindow?.makeFirstResponder(nil)
         } label: {
             Image(systemName: "xmark.circle.fill")

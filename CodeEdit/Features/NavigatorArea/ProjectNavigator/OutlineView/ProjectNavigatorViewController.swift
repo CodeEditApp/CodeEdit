@@ -34,11 +34,6 @@ final class ProjectNavigatorViewController: NSViewController {
 
     var filteredContentChildren: [CEWorkspaceFile: [CEWorkspaceFile]] = [:]
     var expandedItems: Set<CEWorkspaceFile> = []
-    var filter: String = "" {
-        didSet {
-            handleFilterChange()
-        }
-    }
 
     weak var workspace: WorkspaceDocument?
 
@@ -186,14 +181,18 @@ final class ProjectNavigatorViewController: NSViewController {
         }
     }
 
-    private func handleFilterChange() {
+    func handleFilterChange() {
         filteredContentChildren.removeAll()
         outlineView.reloadData()
 
+        guard let workspace else { return }
+
         /// If the filter is empty, show all items and restore the expanded state.
-        if filter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        if workspace.navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             restoreExpandedState()
+            outlineView.autosaveExpandedItems = true
         } else {
+            outlineView.autosaveExpandedItems = false
             /// Expand all items for search.
             outlineView.expandItem(outlineView.item(atRow: 0), expandChildren: true)
         }
