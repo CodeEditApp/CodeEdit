@@ -61,7 +61,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
                 attributedString.addAttributes(
                     [
                         .font: NSFont.boldSystemFont(ofSize: textField?.font?.pointSize ?? 12),
-                        .foregroundColor: NSColor.textColor
+.foregroundColor: NSColor.labelColor
                     ],
                     range: range
                 )
