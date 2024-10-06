@@ -28,7 +28,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             frame: frameRect,
             item: item as? CEWorkspaceFile,
             delegate: self,
-            workspace: workspace
+            navigatorFilter: workspace?.navigatorFilter
         )
         return cell
     }

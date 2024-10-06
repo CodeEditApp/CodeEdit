@@ -15,6 +15,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
     var changeLabelSmallWidth: NSLayoutConstraint!
 
     private let prefs = Settings.shared.preferences.general
+    private var navigatorFilter: String?
 
     /// Initializes the `OutlineTableViewCell` with an `icon` and `label`
     /// Both the icon and label will be colored, and sized based on the user's preferences.
@@ -22,8 +23,11 @@ class FileSystemTableViewCell: StandardTableViewCell {
     ///   - frameRect: The frame of the cell.
     ///   - item: The file item the cell represents.
     ///   - isEditable: Set to true if the user should be able to edit the file name.
-    init(frame frameRect: NSRect, item: CEWorkspaceFile?, isEditable: Bool = true, workspace: WorkspaceDocument?) {
-        super.init(frame: frameRect, isEditable: isEditable, workspace: workspace)
+    ///   - navigatorFilter: An optional string use to filter the navigator area.
+    ///                      (Used for bolding and changing primary/secondary color).
+    init(frame frameRect: NSRect, item: CEWorkspaceFile?, isEditable: Bool = true, navigatorFilter: String? = nil) {
+        super.init(frame: frameRect, isEditable: isEditable)
+        self.navigatorFilter = navigatorFilter
 
         if let item = item {
             addIcon(item: item)
@@ -43,12 +47,17 @@ class FileSystemTableViewCell: StandardTableViewCell {
 
         let fileName = item.labelFileName()
 
+        guard let navigatorFilter else {
+            textField?.stringValue = fileName
+            return
+        }
+
         // Apply bold style if the filename matches the workspace filter
-        if let filter = workspace?.navigatorFilter, !filter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        if !navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             let attributedString = NSMutableAttributedString(string: fileName)
 
             // Check if the filename contains the filter text
-            let range = NSString(string: fileName).range(of: filter, options: .caseInsensitive)
+            let range = NSString(string: fileName).range(of: navigatorFilter, options: .caseInsensitive)
             if range.location != NSNotFound {
                 // Set the label color to secondary
                 attributedString.addAttribute(
