@@ -61,6 +61,10 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
                     self?.controller?.updateSelection(itemID: itemID)
                 }
                 .store(in: &cancellables)
+            workspace.$navigatorFilter
+                .throttle(for: 0.1, scheduler: RunLoop.main, latest: true)
+                .sink { [weak self] _ in self?.controller?.handleFilterChange() }
+                .store(in: &cancellables)
         }
 
         var cancellables: Set<AnyCancellable> = []

@@ -15,6 +15,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
     var changeLabelSmallWidth: NSLayoutConstraint!
 
     private let prefs = Settings.shared.preferences.general
+    private var navigatorFilter: String?
 
     /// Initializes the `OutlineTableViewCell` with an `icon` and `label`
     /// Both the icon and label will be colored, and sized based on the user's preferences.
@@ -22,8 +23,11 @@ class FileSystemTableViewCell: StandardTableViewCell {
     ///   - frameRect: The frame of the cell.
     ///   - item: The file item the cell represents.
     ///   - isEditable: Set to true if the user should be able to edit the file name.
-    init(frame frameRect: NSRect, item: CEWorkspaceFile?, isEditable: Bool = true) {
+    ///   - navigatorFilter: An optional string use to filter the navigator area.
+    ///                      (Used for bolding and changing primary/secondary color).
+    init(frame frameRect: NSRect, item: CEWorkspaceFile?, isEditable: Bool = true, navigatorFilter: String? = nil) {
         super.init(frame: frameRect, isEditable: isEditable)
+        self.navigatorFilter = navigatorFilter
 
         if let item = item {
             addIcon(item: item)
@@ -40,7 +44,57 @@ class FileSystemTableViewCell: StandardTableViewCell {
         fileItem = item
         imageView?.image = item.nsIcon
         imageView?.contentTintColor = color(for: item)
-        textField?.stringValue = item.labelFileName()
+
+        let fileName = item.labelFileName()
+
+        guard let navigatorFilter else {
+            textField?.stringValue = fileName
+            return
+        }
+
+        // Apply bold style if the filename matches the workspace filter
+        if !navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            let attributedString = NSMutableAttributedString(string: fileName)
+
+            // Check if the filename contains the filter text
+            let range = NSString(string: fileName).range(of: navigatorFilter, options: .caseInsensitive)
+            if range.location != NSNotFound {
+                // Set the label color to secondary
+                attributedString.addAttribute(
+                    .foregroundColor,
+                    value: NSColor.secondaryLabelColor,
+                    range: NSRange(location: 0, length: attributedString.length)
+                )
+
+                // If the filter text matches, bold the matching text and set primary label color
+                attributedString.addAttributes(
+                    [
+                        .font: NSFont.boldSystemFont(ofSize: textField?.font?.pointSize ?? 12),
+.foregroundColor: NSColor.labelColor
+                    ],
+                    range: range
+                )
+            } else {
+                // If no match, apply primary label color for parent folder,
+                // or secondary label color for a non-matching file
+                attributedString.addAttribute(
+                    .foregroundColor,
+                    value: item.isFolder ? NSColor.labelColor : NSColor.secondaryLabelColor,
+                    range: NSRange(location: 0, length: attributedString.length)
+                )
+            }
+
+            textField?.attributedStringValue = attributedString
+        } else {
+            // If no filter is applied, reset to normal font and primary label color
+            textField?.attributedStringValue = NSAttributedString(
+                string: fileName,
+                attributes: [
+                    .font: NSFont.systemFont(ofSize: textField?.font?.pointSize ?? 12),
+                    .foregroundColor: NSColor.labelColor
+                ]
+            )
+        }
     }
 
     func addModel() {

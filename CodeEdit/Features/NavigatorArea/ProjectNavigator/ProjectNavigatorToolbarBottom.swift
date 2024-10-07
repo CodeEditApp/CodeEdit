@@ -17,7 +17,6 @@ struct ProjectNavigatorToolbarBottom: View {
     @EnvironmentObject var workspace: WorkspaceDocument
     @EnvironmentObject var editorManager: EditorManager
 
-    @State var filter: String = ""
     @State var recentsFilter: Bool = false
     @State var sourceControlFilter: Bool = false
 
@@ -26,7 +25,7 @@ struct ProjectNavigatorToolbarBottom: View {
             addNewFileButton
             PaneTextField(
                 "Filter",
-                text: $filter,
+                text: $workspace.navigatorFilter,
                 leadingAccessories: {
                     FilterDropDownIconButton(menu: {
                         Button {
@@ -34,10 +33,10 @@ struct ProjectNavigatorToolbarBottom: View {
                         } label: {
                             Text(workspace.sortFoldersOnTop ? "Alphabetically" : "Folders on top")
                         }
-                    }, isOn: !filter.isEmpty)
+                    }, isOn: !workspace.navigatorFilter.isEmpty)
                     .padding(.leading, 4)
                     .foregroundStyle(
-                        filter.isEmpty
+                        workspace.navigatorFilter.isEmpty
                         ? Color(nsColor: .secondaryLabelColor)
                         : Color(nsColor: .controlAccentColor)
                     )
@@ -58,12 +57,8 @@ struct ProjectNavigatorToolbarBottom: View {
                     .padding(.trailing, 2.5)
                 },
                 clearable: true,
-                hasValue: !filter.isEmpty || recentsFilter || sourceControlFilter
+                hasValue: !workspace.navigatorFilter.isEmpty || recentsFilter || sourceControlFilter
             )
-            //            .onChange(of: filter, perform: {
-            // TODO: Filter Workspace Files
-            //                workspace.filter = $0
-            //            })
         }
         .padding(.horizontal, 5)
         .frame(height: 28, alignment: .center)
@@ -129,7 +124,7 @@ struct ProjectNavigatorToolbarBottom: View {
     /// when the user clears the filter.
     private var clearFilterButton: some View {
         Button {
-            filter = ""
+            workspace.navigatorFilter = ""
             NSApp.keyWindow?.makeFirstResponder(nil)
         } label: {
             Image(systemName: "xmark.circle.fill")

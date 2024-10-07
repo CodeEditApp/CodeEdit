@@ -22,13 +22,16 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
     ///   - frameRect: The frame of the cell.
     ///   - item: The file item the cell represents.
     ///   - isEditable: Set to true if the user should be able to edit the file name.
+    ///   - navigatorFilter: An optional string use to filter the navigator area.
+    ///                      (Used for bolding and changing primary/secondary color).
     init(
         frame frameRect: NSRect,
         item: CEWorkspaceFile?,
         isEditable: Bool = true,
-        delegate: OutlineTableViewCellDelegate? = nil
+        delegate: OutlineTableViewCellDelegate? = nil,
+        navigatorFilter: String? = nil
     ) {
-        super.init(frame: frameRect, item: item, isEditable: isEditable)
+        super.init(frame: frameRect, item: item, isEditable: isEditable, navigatorFilter: navigatorFilter)
         self.textField?.setAccessibilityIdentifier("ProjectNavigatorTableViewCell-\(item?.name ?? "")")
         self.delegate = delegate
     }
