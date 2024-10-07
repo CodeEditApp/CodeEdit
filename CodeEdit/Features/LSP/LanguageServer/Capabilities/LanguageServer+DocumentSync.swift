@@ -9,42 +9,6 @@ import Foundation
 import LanguageServerProtocol
 
 extension LanguageServer {
-    // swiftlint:disable line_length
-    /// Determines the type of document sync the server supports.
-    /// https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_synchronization_sc
-    fileprivate func resolveDocumentSyncKind() -> TextDocumentSyncKind {
-        // swiftlint:enable line_length
-        var syncKind: TextDocumentSyncKind = .none
-        switch serverCapabilities.textDocumentSync {
-        case .optionA(let options):
-            syncKind = options.change ?? .none
-        case .optionB(let kind):
-            syncKind = kind
-        default:
-            syncKind = .none
-        }
-        return syncKind
-    }
-
-    /// Determines whether or not the server supports document tracking.
-    fileprivate func resolveOpenCloseSupport() -> Bool {
-        switch serverCapabilities.textDocumentSync {
-        case .optionA(let options):
-            return options.openClose ?? false
-        case .optionB:
-            return true
-        default:
-            return true
-        }
-    }
-
-    // Used to avoid a lint error (`large_tuple`) for the return type of `getIsolatedDocumentContent`
-    fileprivate struct DocumentContent {
-        let uri: String
-        let language: LanguageIdentifier
-        let content: String
-    }
-
     /// Tells the language server we've opened a document and would like to begin working with it.
     /// - Parameter document: The code document to open.
     /// - Throws: Throws errors produced by the language server connection.
@@ -61,24 +25,14 @@ extension LanguageServer {
                 uri: content.uri,
                 languageId: content.language,
                 version: 0,
-                text: content.content
+                text: content.string
             )
             try await lspInstance.textDocumentDidOpen(DidOpenTextDocumentParams(textDocument: textDocument))
+            await updateIsolatedTextCoordinator(for: document)
         } catch {
             logger.warning("addDocument: Error \(error)")
             throw error
         }
-    }
-
-    /// Helper function for grabbing a document's content from the main actor.
-    @MainActor
-    private func getIsolatedDocumentContent(_ document: CodeFileDocument) -> DocumentContent? {
-        guard let uri = document.languageServerURI,
-              let language = document.getLanguage().lspLanguage,
-              let content = document.content?.string else {
-            return nil
-        }
-        return DocumentContent(uri: uri, language: language, content: content)
     }
 
     /// Stops tracking a file and notifies the language server.
@@ -97,37 +51,50 @@ extension LanguageServer {
         }
     }
 
+    /// Represents a single document edit event.
+    public struct DocumentChange: Sendable {
+        let range: LSPRange
+        let string: String
+
+        init(replacingContentsIn range: LSPRange, with string: String) {
+            self.range = range
+            self.string = string
+        }
+    }
+
     /// Updates the document with the specified URI with new text and increments its version.
+    ///
+    /// This API accepts an array of changes to allow for grouping change notifications.
+    /// This is advantageous for full document changes as we reduce the number of times we send the entire document.
+    /// It also lowers some communication overhead when sending lots of changes very quickly due to sending them all in
+    /// one request.
+    ///
     /// - Parameters:
     ///   - uri: The URI of the document to update.
-    ///   - range: The range being replaced.
-    ///   - string: The string being inserted into the replacement range.
+    ///   - changes: An array of accumulated changes. It's suggested to throttle change notifications and send them
+    ///              in groups.
     /// - Throws: Throws errors produced by the language server connection.
-    func documentChanged(
-        uri: String,
-        replacedContentIn range: LSPRange,
-        with string: String
-    ) async throws {
+    func documentChanged(uri: String, changes: [DocumentChange]) async throws {
         do {
             logger.debug("Document updated, \(uri, privacy: .private)")
             switch resolveDocumentSyncKind() {
             case .full:
-                guard let file = openFiles.document(for: uri) else { return }
-                let content = await MainActor.run {
-                    let storage = file.content
-                    return storage?.string
+                guard let document = openFiles.document(for: uri),
+                      let content = await getIsolatedDocumentContent(document) else {
+                    return
                 }
-                guard let content else { return }
-                let changeEvent = TextDocumentContentChangeEvent(range: nil, rangeLength: nil, text: content)
+                let changeEvent = TextDocumentContentChangeEvent(range: nil, rangeLength: nil, text: content.string)
                 try await lspInstance.textDocumentDidChange(
                     DidChangeTextDocumentParams(uri: uri, version: 0, contentChange: changeEvent)
                 )
             case .incremental:
                 let fileVersion = openFiles.incrementVersion(for: uri)
-                // rangeLength is depreciated in the LSP spec.
-                let changeEvent = TextDocumentContentChangeEvent(range: range, rangeLength: nil, text: string)
+                let changeEvents = changes.map {
+                    // rangeLength is depreciated in the LSP spec.
+                    TextDocumentContentChangeEvent(range: $0.range, rangeLength: nil, text: $0.string)
+                }
                 try await lspInstance.textDocumentDidChange(
-                    DidChangeTextDocumentParams(uri: uri, version: fileVersion, contentChange: changeEvent)
+                    DidChangeTextDocumentParams(uri: uri, version: fileVersion, contentChanges: changeEvents)
                 )
             case .none:
                 return
@@ -136,5 +103,60 @@ extension LanguageServer {
             logger.warning("closeDocument: Error \(error)")
             throw error
         }
+    }
+
+    // MARK: File Private Helpers
+
+    /// Helper function for grabbing a document's content from the main actor.
+    @MainActor
+    private func getIsolatedDocumentContent(_ document: CodeFileDocument) -> DocumentContent? {
+        guard let uri = document.languageServerURI,
+              let language = document.getLanguage().lspLanguage,
+              let content = document.content?.string else {
+            return nil
+        }
+        return DocumentContent(uri: uri, language: language, string: content)
+    }
+
+    /// Updates the actor-isolated document's text coordinator to map to this server.
+    @MainActor
+    fileprivate func updateIsolatedTextCoordinator(for document: CodeFileDocument) {
+        document.languageServerCoordinator.languageServer = self
+    }
+
+    // swiftlint:disable line_length
+    /// Determines the type of document sync the server supports.
+    /// https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_synchronization_sc
+    fileprivate func resolveDocumentSyncKind() -> TextDocumentSyncKind {
+        // swiftlint:enable line_length
+        var syncKind: TextDocumentSyncKind = .none
+        switch serverCapabilities.textDocumentSync {
+        case .optionA(let options): // interface TextDocumentSyncOptions
+            syncKind = options.change ?? .none
+        case .optionB(let kind): // interface TextDocumentSyncKind
+            syncKind = kind
+        default:
+            syncKind = .none
+        }
+        return syncKind
+    }
+
+    /// Determines whether or not the server supports document tracking.
+    fileprivate func resolveOpenCloseSupport() -> Bool {
+        switch serverCapabilities.textDocumentSync {
+        case .optionA(let options): // interface TextDocumentSyncOptions
+            return options.openClose ?? false
+        case .optionB: // interface TextDocumentSyncKind
+            return true
+        default:
+            return true
+        }
+    }
+
+    // Used to avoid a lint error (`large_tuple`) for the return type of `getIsolatedDocumentContent`
+    fileprivate struct DocumentContent {
+        let uri: String
+        let language: LanguageIdentifier
+        let string: String
     }
 }
