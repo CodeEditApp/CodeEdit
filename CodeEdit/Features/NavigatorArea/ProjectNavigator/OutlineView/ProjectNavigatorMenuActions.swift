@@ -26,8 +26,8 @@ extension ProjectNavigatorMenu {
         return selectedItems
     }
 
-    /// Verify if a folder can be mode from selection by getting the amount of parents found in the selected items.
-    /// Used to know if we can create a new folder from selection.
+    /// Verify if a folder can be made from selection by getting the amount of parents found in the selected items.
+    /// If the amount of parents is equal to one, a folder can be made.
     func canCreateFolderFromSelection() -> Bool {
         var uniqueParents: Set<CEWorkspaceFile> = []
         for file in selectedItems() {
