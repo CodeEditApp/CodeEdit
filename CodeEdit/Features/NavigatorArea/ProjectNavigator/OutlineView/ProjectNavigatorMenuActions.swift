@@ -11,12 +11,12 @@ extension ProjectNavigatorMenu {
     /// - Returns: the currently selected `CEWorkspaceFile` items in the outline view.
     func selectedItems() -> Set<CEWorkspaceFile> {
         /// Selected items...
-        let selectedItems = Set(outlineView.selectedRowIndexes.compactMap {
-            outlineView.item(atRow: $0) as? CEWorkspaceFile
+        let selectedItems = Set(sender.outlineView.selectedRowIndexes.compactMap {
+            sender.outlineView.item(atRow: $0) as? CEWorkspaceFile
         })
 
         /// Item that the user brought up the menu with...
-        if let menuItem = outlineView.item(atRow: outlineView.clickedRow) as? CEWorkspaceFile {
+        if let menuItem = sender.outlineView.item(atRow: sender.outlineView.clickedRow) as? CEWorkspaceFile {
             /// If the item is not in the set, just like in Xcode, only modify that item.
             if !selectedItems.contains(menuItem) {
                 return Set([menuItem])
@@ -51,13 +51,13 @@ extension ProjectNavigatorMenu {
         /// Sort the selected items first by their parent and then by name.
         let sortedItems = selectedItems().sorted { (item1, item2) -> Bool in
             /// Get the parents of both items.
-            let parent1 = outlineView.parent(forItem: item1) as? CEWorkspaceFile
-            let parent2 = outlineView.parent(forItem: item2) as? CEWorkspaceFile
+            let parent1 = sender.outlineView.parent(forItem: item1) as? CEWorkspaceFile
+            let parent2 = sender.outlineView.parent(forItem: item2) as? CEWorkspaceFile
 
             /// Compare by parent.
             if parent1 != parent2 {
                 /// If the parents are different, use their row position in the outline view.
-                return outlineView.row(forItem: parent1) < outlineView.row(forItem: parent2)
+                return sender.outlineView.row(forItem: parent1) < sender.outlineView.row(forItem: parent2)
             } else {
                 /// If both items have the same parent, sort them by name.
                 return item1.name < item2.name
@@ -92,8 +92,8 @@ extension ProjectNavigatorMenu {
             alert.addButton(withTitle: "Dismiss")
             alert.runModal()
         }
-        outlineView.reloadData()
-        outlineView.expandItem(item.isFolder ? item : item.parent)
+        reloadData()
+        sender.outlineView.expandItem(item.isFolder ? item : item.parent)
     }
 
     // TODO: allow custom folder names
@@ -102,8 +102,9 @@ extension ProjectNavigatorMenu {
     func newFolder() {
         guard let item else { return }
         workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item)
-        outlineView.expandItem(item)
-        outlineView.expandItem(item.isFolder ? item : item.parent)
+        reloadData()
+        sender.outlineView.expandItem(item)
+        sender.outlineView.expandItem(item.isFolder ? item : item.parent)
     }
 
     /// Creates a new folder with the items selected.
@@ -126,23 +127,22 @@ extension ProjectNavigatorMenu {
             workspaceFileManager.move(file: selectedItem, to: newFolderURL.appending(path: selectedItem.name))
         }
 
-        outlineView.reloadData()
-        outlineView.expandItem(parent.isFolder ? parent : parent.parent)
+        reloadData()
     }
 
     /// Opens the rename file dialogue on the cell this was presented from.
     @objc
     func renameFile() {
-        let row = outlineView.row(forItem: item)
+        let row = sender.outlineView.row(forItem: item)
         guard row > 0,
-              let cell = outlineView.view(
+              let cell = sender.outlineView.view(
                 atColumn: 0,
                 row: row,
                 makeIfNecessary: false
               ) as? ProjectNavigatorTableViewCell else {
             return
         }
-        outlineView.window?.makeFirstResponder(cell.textField)
+        sender.outlineView.window?.makeFirstResponder(cell.textField)
     }
 
     /// Action that moves the item to trash.
@@ -151,6 +151,7 @@ extension ProjectNavigatorMenu {
         selectedItems().forEach { item in
             workspace?.workspaceFileManager?.trash(file: item)
         }
+        reloadData()
     }
 
     /// Action that deletes the item immediately.
@@ -159,6 +160,7 @@ extension ProjectNavigatorMenu {
         selectedItems().forEach { item in
             workspace?.workspaceFileManager?.delete(file: item)
         }
+        reloadData()
     }
 
     /// Action that duplicates the item
@@ -167,5 +169,11 @@ extension ProjectNavigatorMenu {
         selectedItems().forEach { item in
             workspace?.workspaceFileManager?.duplicate(file: item)
         }
+        reloadData()
+    }
+
+    private func reloadData() {
+        sender.outlineView.reloadData()
+        sender.filteredContentChildren.removeAll()
     }
 }
