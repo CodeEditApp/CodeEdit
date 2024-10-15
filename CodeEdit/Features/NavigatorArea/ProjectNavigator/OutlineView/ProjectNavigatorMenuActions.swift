@@ -157,8 +157,13 @@ extension ProjectNavigatorMenu {
     /// Action that deletes the item immediately.
     @objc
     func delete() {
-        selectedItems().forEach { item in
-            workspace?.workspaceFileManager?.delete(file: item)
+        let selectedItems = selectedItems()
+        if selectedItems.count == 1 {
+            selectedItems.forEach { item in
+                workspace?.workspaceFileManager?.delete(file: item)
+            }
+        } else {
+            workspace?.workspaceFileManager?.batchDelete(files: selectedItems)
         }
         reloadData()
     }

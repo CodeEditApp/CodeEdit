@@ -141,6 +141,29 @@ extension CEWorkspaceFileManager {
         }
     }
 
+    /// This function deletes multiple files or folders from the current project by erasing immediately.
+    /// - Parameters:
+    ///   - file: The file to delete
+    ///   - confirmDelete: True to present an alert to confirm the delete.
+    public func batchDelete(files: Set<CEWorkspaceFile>, confirmDelete: Bool = true) {
+        let deleteConfirmation = NSAlert()
+        deleteConfirmation.messageText = "Do you want to delete \(files.count) items?"
+        deleteConfirmation.informativeText = "These items will be deleted immediately. You can't undo this action."
+        deleteConfirmation.alertStyle = .critical
+        deleteConfirmation.addButton(withTitle: "Delete")
+        deleteConfirmation.buttons.last?.hasDestructiveAction = true
+        deleteConfirmation.addButton(withTitle: "Cancel")
+        if !confirmDelete || deleteConfirmation.runModal() == .alertFirstButtonReturn {
+            for file in files where fileManager.fileExists(atPath: file.url.path) {
+                do {
+                    try fileManager.removeItem(at: file.url)
+                } catch {
+                    fatalError(error.localizedDescription)
+                }
+            }
+        }
+    }
+
     /// This function duplicates the item or folder
     /// - Parameter file: The file to duplicate
     /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja. *Moved from 7c27b1e*
