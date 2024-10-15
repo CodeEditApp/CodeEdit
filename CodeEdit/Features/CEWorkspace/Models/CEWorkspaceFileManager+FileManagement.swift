@@ -143,7 +143,7 @@ extension CEWorkspaceFileManager {
 
     /// This function deletes multiple files or folders from the current project by erasing immediately.
     /// - Parameters:
-    ///   - file: The file to delete
+    ///   - files: The files to delete
     ///   - confirmDelete: True to present an alert to confirm the delete.
     public func batchDelete(files: Set<CEWorkspaceFile>, confirmDelete: Bool = true) {
         let deleteConfirmation = NSAlert()
