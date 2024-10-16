@@ -74,6 +74,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             return false
         }
 
+        /// Check if all windows are either miniaturized or not visible.
+        /// If so, attempt to find the first miniaturized window and deminiaturize it.
         guard sender.windows.allSatisfy({ $0.isMiniaturized || !$0.isVisible }) else { return false }
         sender.windows.first(where: { $0.isMiniaturized })?.deminiaturize(sender)
         return false
