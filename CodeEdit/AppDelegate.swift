@@ -69,12 +69,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
-        if flag {
+        guard flag else {
+            handleOpen()
             return false
         }
 
-        handleOpen()
-
+        guard sender.windows.allSatisfy({ $0.isMiniaturized || !$0.isVisible }) else { return false }
+        sender.windows.first(where: { $0.isMiniaturized })?.deminiaturize(sender)
         return false
     }
 
