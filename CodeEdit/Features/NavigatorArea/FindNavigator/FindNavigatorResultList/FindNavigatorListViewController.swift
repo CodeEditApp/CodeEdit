@@ -165,7 +165,7 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         guard let tableColumn else { return nil }
         if let item = item as? SearchResultMatchModel {
-            let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: CGFloat.greatestFiniteMagnitude)
+            let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: outlineView.rowHeight)
             return FindNavigatorListMatchCell(frame: frameRect, matchItem: item)
         } else {
             let frameRect = NSRect(

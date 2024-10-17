@@ -20,7 +20,7 @@ final class FindNavigatorListMatchCell: NSTableCellView {
             x: frame.origin.x,
             y: frame.origin.y,
             width: frame.width,
-            height: CGFloat.greatestFiniteMagnitude
+            height: frame.height
         ))
 
         // Create the label
