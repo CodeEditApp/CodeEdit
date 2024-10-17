@@ -20,7 +20,7 @@ enum Shell: String, CaseIterable {
         case .zsh:
             "/bin/zsh"
         case .fish:
-            "/bin/fish"
+            "/opt/homebrew/bin/fish"
         }
     }
 
@@ -88,7 +88,7 @@ enum Shell: String, CaseIterable {
         case .zsh:
             "/bin/zsh"
         case .fish:
-            "/bin/fish"
+            "/opt/homebrew/bin/fish"
         }
     }
 

@@ -47,6 +47,8 @@ private extension TerminalSettingsView {
                 .tag(SettingsData.TerminalShell.zsh)
             Text("Bash")
                 .tag(SettingsData.TerminalShell.bash)
+            Text("Fish")
+                .tag(SettingsData.TerminalShell.fish)
         }
     }
 
@@ -95,7 +97,7 @@ private extension TerminalSettingsView {
         VStack {
             Toggle("Shell Integration", isOn: $settings.useShellIntegration)
             // swiftlint:disable:next line_length
-                .help("CodeEdit supports integrating with common shells such as Bash and Zsh. This enables features like terminal title detection.")
+                .help("CodeEdit supports integrating with common shells such as Bash, Fish and Zsh. This enables features like terminal title detection.")
             if !settings.useShellIntegration {
                 HStack {
                     Image(systemName: "exclamationmark.triangle.fill")
