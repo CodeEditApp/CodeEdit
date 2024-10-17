@@ -11,6 +11,7 @@ import Foundation
 enum Shell: String, CaseIterable {
     case bash
     case zsh
+    case fish
 
     var url: String {
         switch self {
@@ -18,12 +19,14 @@ enum Shell: String, CaseIterable {
             "/bin/bash"
         case .zsh:
             "/bin/zsh"
+        case .fish:
+            "/bin/fish"
         }
     }
 
     var isSh: Bool {
         switch self {
-        case .bash, .zsh:
+        case .bash, .zsh, .fish:
             return true
         }
     }
@@ -84,6 +87,8 @@ enum Shell: String, CaseIterable {
             "/bin/bash"
         case .zsh:
             "/bin/zsh"
+        case .fish:
+            "/bin/fish"
         }
     }
 

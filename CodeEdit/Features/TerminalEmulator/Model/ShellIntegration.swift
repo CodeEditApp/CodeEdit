@@ -26,6 +26,7 @@ enum ShellIntegration {
     enum Error: Swift.Error, LocalizedError {
         case bashShellFileNotFound
         case zshShellFileNotFound
+        case fishShellFileNotFound
 
         var localizedDescription: String {
             switch self {
@@ -33,6 +34,8 @@ enum ShellIntegration {
                 return "Failed to find bash injection file."
             case .zshShellFileNotFound:
                 return "Failed to find zsh injection file."
+            case .fishShellFileNotFound:
+                return "Failed to find fish injection file."
             }
         }
     }
@@ -64,6 +67,8 @@ enum ShellIntegration {
                 try bash(&args)
             case .zsh:
                 try zsh(&args, &environment, useLogin)
+            case .fish:
+                try fish(&args, &environment)
             }
 
             if useLogin {
@@ -153,6 +158,25 @@ enum ShellIntegration {
         try copyFile(envScriptURL, toDir: tempDir.appending(path: ".zshenv"))
         try copyFile(loginScriptURL, toDir: tempDir.appending(path: ".zlogin"))
         try copyFile(rcScriptURL, toDir: tempDir.appending(path: ".zshrc"))
+    }
+    
+    private static func fish(_ args: inout [String], _ environment: inout [String]) throws {
+        //Set the args for executing Fish shell
+        args.append("-i")
+        
+        //Locate the Fish integration script
+        guard let fishScriptURL = Bundle.main.url(
+            forResource: "codeedit_shell_integration",
+            withExtension: "fish"
+        ) else {
+            throw Error.fishShellFileNotFound
+        }
+        
+        //Make a temporary directory for storing the integration script
+        let tempDir = try makeTempDir(forShell: .fish)
+        
+        //Copy the Fish integration script to the temporary directory
+        try copyFile(fishScriptURL, toDir: tempDir.appending(path: "config.fish"))
     }
 
     /// Helper function for safely copying files, removing existing ones if needed.
