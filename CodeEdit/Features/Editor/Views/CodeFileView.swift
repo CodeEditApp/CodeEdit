@@ -83,8 +83,6 @@ struct CodeFileView: View {
                 codeFile.autosave(withImplicitCancellability: false) { error in
                     if let error {
                         CodeFileDocument.logger.error("Failed to autosave document, error: \(error)")
-                    } else {
-                        codeFile.updateChangeCount(.changeCleared)
                     }
                 }
             }
