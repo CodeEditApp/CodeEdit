@@ -159,23 +159,23 @@ enum ShellIntegration {
         try copyFile(loginScriptURL, toDir: tempDir.appending(path: ".zlogin"))
         try copyFile(rcScriptURL, toDir: tempDir.appending(path: ".zshrc"))
     }
-    
+
     private static func fish(_ args: inout [String], _ environment: inout [String]) throws {
-        //Set the args for executing Fish shell
+        // Set the args for executing Fish shell
         args.append("-i")
-        
-        //Locate the Fish integration script
+
+        // Locate the Fish integration script
         guard let fishScriptURL = Bundle.main.url(
             forResource: "codeedit_shell_integration",
             withExtension: "fish"
         ) else {
             throw Error.fishShellFileNotFound
         }
-        
-        //Make a temporary directory for storing the integration script
+
+        // Make a temporary directory for storing the integration script
         let tempDir = try makeTempDir(forShell: .fish)
-        
-        //Copy the Fish integration script to the temporary directory
+
+        // Copy the Fish integration script to the temporary directory
         try copyFile(fishScriptURL, toDir: tempDir.appending(path: "config.fish"))
     }
 
