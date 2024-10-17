@@ -191,6 +191,7 @@ For issues we want to focus on that are most relevant at any given time, please 
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/scaredcr6w"><img src="https://avatars.githubusercontent.com/u/85457088?v=4?s=100" width="100px;" alt="Levente Anda"/><br /><sub><b>Levente Anda</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=scaredcr6w" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://nobelliu.github.com"><img src="https://avatars.githubusercontent.com/u/10796646?v=4?s=100" width="100px;" alt="Nobel"/><br /><sub><b>Nobel</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=NobelLiu" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SavelyUkuren"><img src="https://avatars.githubusercontent.com/u/125015568?v=4?s=100" width="100px;" alt="Savely"/><br /><sub><b>Savely</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=SavelyUkuren" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Kihron"><img src="https://avatars.githubusercontent.com/u/30128800?v=4?s=100" width="100px;" alt="Kihron"/><br /><sub><b>Kihron</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3AKihron" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
