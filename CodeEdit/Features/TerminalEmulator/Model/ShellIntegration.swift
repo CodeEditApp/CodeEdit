@@ -160,6 +160,16 @@ enum ShellIntegration {
         try copyFile(rcScriptURL, toDir: tempDir.appending(path: ".zshrc"))
     }
 
+    /// Sets up the `fish` shell integration.
+    ///
+    /// Sets the fish init directory to a temporary directory containing CE setup scripts. Each script corresponds to an
+    /// available zsh init script, and will source the user's real init script.
+    /// Also sets up an interactive session using the `-i` parameter.
+    ///
+    /// - Parameters:
+    ///   - shellExecArgs: The args to use for shell exec, will be modified by this function.
+    ///   - environment: Environment variables in an array. Formatted as `EnvVar=Value`. Will be modified by this
+    ///                  function.
     private static func fish(_ args: inout [String], _ environment: inout [String]) throws {
         // Set the args for executing Fish shell
         args.append("-i")
