@@ -120,7 +120,7 @@ extension ProjectNavigatorMenu {
         var folderNumber = 0
         while workspaceFileManager.fileManager.fileExists(atPath: newFolderURL.path) {
             folderNumber += 1
-            newFolderURL = parent.url.appendingPathComponent("New Folder \(folderNumber)")
+            newFolderURL = parent.url.appendingPathComponent("New Folder With Items \(folderNumber)")
         }
 
         for selectedItem in selectedItems where selectedItem.url != newFolderURL {
