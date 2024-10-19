@@ -53,10 +53,11 @@ struct EditorTabBarContextMenu: ViewModifier {
                         }
                     }
                 }
+
                 Button("Close Tabs to the Right") {
                     withAnimation {
-                        if let index = tabs.tabs.firstIndex(where: { $0.file == item }) {
-                            tabs.tabs[index...].forEach {
+                        if let index = tabs.tabs.firstIndex(where: { $0.file == item }), index + 1 < tabs.tabs.count {
+                            tabs.tabs[(index + 1)...].forEach {
                                 tabs.closeTab(file: $0.file)
                             }
                         }
