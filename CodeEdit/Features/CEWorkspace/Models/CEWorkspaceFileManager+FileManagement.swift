@@ -148,6 +148,7 @@ extension CEWorkspaceFileManager {
     public func batchDelete(files: Set<CEWorkspaceFile>, confirmDelete: Bool = true) {
         let deleteConfirmation = NSAlert()
         deleteConfirmation.messageText = "Are you sure you want to delete the \(files.count) selected items?"
+        // swiftlint:disable:next line_length
         deleteConfirmation.informativeText = "\(files.count) items will be deleted immediately. You cannot undo this action."
         deleteConfirmation.alertStyle = .critical
         deleteConfirmation.addButton(withTitle: "Delete")
