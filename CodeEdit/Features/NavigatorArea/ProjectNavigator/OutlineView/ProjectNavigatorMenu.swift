@@ -17,10 +17,12 @@ final class ProjectNavigatorMenu: NSMenu {
     /// The workspace, for opening the item
     var workspace: WorkspaceDocument?
 
-    var outlineView: NSOutlineView
+    /// The  `ProjectNavigatorViewController` is being called from.
+    /// By sending it, we can access it's variables and functions.
+    var sender: ProjectNavigatorViewController
 
-    init(sender: NSOutlineView) {
-        outlineView = sender
+    init(_ sender: ProjectNavigatorViewController) {
+        self.sender = sender
         super.init(title: "Options")
     }
 
@@ -42,9 +44,9 @@ final class ProjectNavigatorMenu: NSMenu {
         return mItem
     }
 
-    /// Setup the menu and disables certain items when `isFile` is false
-    /// - Parameter isFile: A flag indicating that the item is a file instead of a directory
-    private func setupMenu() {
+    /// Configures the menu based on the current selection in the outline view.
+    /// - Menu items get added depending on the amount of selected items.
+    private func setupMenu() { // swiftlint:disable:this function_body_length
         guard let item else { return }
         let showInFinder = menuItem("Show in Finder", action: #selector(showInFinder))
 
@@ -92,18 +94,29 @@ final class ProjectNavigatorMenu: NSMenu {
             showFileInspector,
             NSMenuItem.separator(),
             newFile,
-            newFolder,
-            NSMenuItem.separator(),
-            rename,
-            trash,
-            delete,
-            duplicate,
-            NSMenuItem.separator(),
-            sortByName,
-            sortByType,
-            NSMenuItem.separator(),
-            sourceControl,
+            newFolder
         ]
+
+        if canCreateFolderFromSelection() {
+            items.append(menuItem("New Folder from Selection", action: #selector(newFolderFromSelection)))
+        }
+        items.append(NSMenuItem.separator())
+        if selectedItems().count == 1 {
+            items.append(rename)
+        }
+
+        items.append(
+            contentsOf: [
+                trash,
+                delete,
+                duplicate,
+                NSMenuItem.separator(),
+                sortByName,
+                sortByType,
+                NSMenuItem.separator(),
+                sourceControl,
+            ]
+        )
 
         setSubmenu(openAsMenu(item: item), for: openAs)
         setSubmenu(sourceControlMenu(item: item), for: sourceControl)
@@ -182,87 +195,6 @@ final class ProjectNavigatorMenu: NSMenu {
     override func update() {
         removeAllItems()
         setupMenu()
-    }
-
-    /// Action that opens **Finder** at the items location.
-    @objc
-    private func showInFinder() {
-        item?.showInFinder()
-    }
-
-    /// Action that opens the item, identical to clicking it.
-    @objc
-    private func openInTab() {
-        if let item {
-            workspace?.editorManager?.openTab(item: item)
-        }
-    }
-
-    /// Action that opens in an external editor
-    @objc
-    private func openWithExternalEditor() {
-        item?.openWithExternalEditor()
-    }
-
-    // TODO: allow custom file names
-    /// Action that creates a new untitled file
-    @objc
-    private func newFile() {
-        guard let item else { return }
-        do {
-            try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item)
-        } catch {
-            let alert = NSAlert(error: error)
-            alert.addButton(withTitle: "Dismiss")
-            alert.runModal()
-        }
-        outlineView.expandItem(item.isFolder ? item : item.parent)
-    }
-
-    // TODO: allow custom folder names
-    /// Action that creates a new untitled folder
-    @objc
-    private func newFolder() {
-        guard let item else { return }
-        workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item)
-        outlineView.expandItem(item)
-        outlineView.expandItem(item.isFolder ? item : item.parent)
-    }
-
-    /// Opens the rename file dialogue on the cell this was presented from.
-    @objc
-    private func renameFile() {
-        let row = outlineView.row(forItem: item)
-        guard row > 0,
-              let cell = outlineView.view(
-                atColumn: 0,
-                row: row,
-                makeIfNecessary: false
-              ) as? ProjectNavigatorTableViewCell else {
-            return
-        }
-        outlineView.window?.makeFirstResponder(cell.textField)
-    }
-
-    /// Action that moves the item to trash.
-    @objc
-    private func trash() {
-        guard let item else { return }
-        workspace?.workspaceFileManager?.trash(file: item)
-    }
-
-    /// Action that deletes the item immediately.
-    @objc
-    private func delete() {
-        guard let item else { return }
-        workspace?.workspaceFileManager?.delete(file: item)
-    }
-
-    /// Action that duplicates the item
-    @objc
-    private func duplicate() {
-        guard let item else { return }
-        workspace?.workspaceFileManager?.duplicate(file: item)
     }
 }
 
