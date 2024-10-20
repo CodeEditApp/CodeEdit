@@ -47,8 +47,8 @@ class LanguageServerFileMap {
     }
 
     func incrementVersion(for uri: DocumentUri) -> Int {
-        trackedDocumentVersions[uri] = (trackedDocumentVersions[uri] ?? 0) + 1
-        return  trackedDocumentVersions[uri] ?? 0
+        trackedDocumentVersions[uri, default: 0] += 1
+        return trackedDocumentVersions[uri, default: 1]
     }
 
     func documentVersion(for document: CodeFileDocument) -> Int? {
