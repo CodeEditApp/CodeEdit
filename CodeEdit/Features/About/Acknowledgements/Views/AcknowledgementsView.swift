@@ -14,7 +14,7 @@ struct AcknowledgementsView: View {
 
     var body: some View {
         AboutDetailView(title: "Acknowledgements", aboutMode: $aboutMode, namespace: namespace) {
-            VStack(spacing: 0) {
+            LazyVStack(spacing: 0) {
                 ForEach(
                     model.indexedAcknowledgements,
                     id: \.acknowledgement.name

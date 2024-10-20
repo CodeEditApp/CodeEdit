@@ -44,6 +44,7 @@ struct AboutDefaultView: View {
             VStack(spacing: 0) {
                 Text("CodeEdit")
                     .matchedGeometryEffect(id: "Title", in: namespace, properties: .position, anchor: .center)
+                    .blur(radius: aboutMode == .about ? 0 : 10)
                     .foregroundColor(.primary)
                     .font(.system(
                         size: 26,
@@ -61,6 +62,8 @@ struct AboutDefaultView: View {
                         properties: .position,
                         anchor: UnitPoint(x: 0.5, y: -0.75)
                     )
+                    .blur(radius: aboutMode == .about ? 0 : 10)
+                    .opacity(aboutMode == .about ? 1 : 0)
             }
             .padding(.horizontal)
         }
@@ -106,6 +109,8 @@ struct AboutDefaultView: View {
             }
             .matchedGeometryEffect(id: "Titlebar", in: namespace, properties: .position, anchor: .top)
             .matchedGeometryEffect(id: "ScrollView", in: namespace, properties: .position, anchor: .top)
+            .blur(radius: aboutMode == .about ? 0 : 10)
+            .opacity(aboutMode == .about ? 1 : 0)
         }
         .padding(.horizontal)
     }
