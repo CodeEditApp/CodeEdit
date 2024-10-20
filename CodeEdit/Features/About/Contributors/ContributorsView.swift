@@ -14,7 +14,7 @@ struct ContributorsView: View {
 
     var body: some View {
         AboutDetailView(title: "Contributors", aboutMode: $aboutMode, namespace: namespace) {
-            VStack(spacing: 0) {
+            LazyVStack(spacing: 0) {
                 ForEach(model.contributors) { contributor in
                     ContributorRowView(contributor: contributor)
                     Divider()
