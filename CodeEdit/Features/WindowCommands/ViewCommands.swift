@@ -71,7 +71,7 @@ struct ViewCommands: Commands {
 
             Divider()
 
-            HideCommands()
+            HideCommands(showEditorPathBar: $showEditorPathBar)
 
             Divider()
 
@@ -94,6 +94,7 @@ struct ViewCommands: Commands {
 extension ViewCommands {
     struct HideCommands: View {
         @UpdatingWindowController var windowController: CodeEditWindowController?
+        @Binding var showEditorPathBar: Bool
 
         var navigatorCollapsed: Bool {
             windowController?.navigatorCollapsed ?? true
@@ -109,6 +110,18 @@ extension ViewCommands {
 
         var toolbarCollapsed: Bool {
             windowController?.toolbarCollapsed ?? true
+        }
+
+        private var labelForInterfaceToggle: String {
+            let shouldShow = navigatorCollapsed && inspectorCollapsed &&
+                             toolbarCollapsed && !showEditorPathBar
+            return "\(shouldShow ? "Show" : "Hide") Interface"
+        }
+
+        private var isAnyPanelVisible: Bool {
+            return !navigatorCollapsed || !inspectorCollapsed ||
+                   !utilityAreaCollapsed || !toolbarCollapsed ||
+                   showEditorPathBar
         }
 
         var body: some View {
@@ -135,6 +148,39 @@ extension ViewCommands {
             }
             .disabled(windowController == nil)
             .keyboardShortcut("t", modifiers: [.option, .command])
+
+            Button(labelForInterfaceToggle) {
+                if isAnyPanelVisible {
+                    if !navigatorCollapsed {
+                        windowController?.toggleFirstPanel()
+                    }
+
+                    if !inspectorCollapsed {
+                        windowController?.toggleLastPanel()
+                    }
+
+                    if !utilityAreaCollapsed {
+                        CommandManager.shared.executeCommand("open.drawer")
+                    }
+
+                    if !toolbarCollapsed {
+                        windowController?.toggleToolbar()
+                    }
+
+                    if showEditorPathBar {
+                        showEditorPathBar.toggle()
+                    }
+
+                } else {
+                    // If all are closed, you can choose to open them again
+                    windowController?.toggleFirstPanel()
+                    windowController?.toggleLastPanel()
+                    windowController?.toggleToolbar()
+                    showEditorPathBar.toggle()
+                }
+            }
+            .disabled(windowController == nil)
+            .keyboardShortcut(".", modifiers: [.command])
         }
     }
 }
