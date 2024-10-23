@@ -36,6 +36,10 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineViewSelectionDidChange(_ notification: Notification) {
         guard let outlineView = notification.object as? NSOutlineView else { return }
 
+        /// If multiple rows are selected, do not open any file.
+        guard outlineView.selectedRowIndexes.count == 1 else { return }
+
+        /// If only one row is selected, proceed as before
         let selectedIndex = outlineView.selectedRow
 
         guard let item = outlineView.item(atRow: selectedIndex) as? CEWorkspaceFile else { return }
