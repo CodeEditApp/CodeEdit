@@ -159,7 +159,7 @@ extension CEWorkspaceFileManager {
                 do {
                     try fileManager.removeItem(at: file.url)
                 } catch {
-                    fatalError(error.localizedDescription)
+                    print(error.localizedDescription)
                 }
             }
         }
