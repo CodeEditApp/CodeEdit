@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct FileCommands: Commands {
+    static let recentProjectsMenu = RecentProjectsMenu()
+
     @Environment(\.openWindow)
     private var openWindow
 
@@ -28,9 +30,9 @@ struct FileCommands: Commands {
                 }
                 .keyboardShortcut("o")
 
-                // Leave this empty, is done through a hidden API in WindowCommands/Utils/CommandsFixes.swift
-                // This can't be done in SwiftUI Commands yet, as they don't support images in menu items.
-                Menu("Open Recent") {}
+                Menu("Open Recent") {
+//                    RecentProjectsMenu()
+                }
 
                 Button("Open Quickly") {
                     NSApp.sendAction(#selector(CodeEditWindowController.openQuickly(_:)), to: nil, from: nil)

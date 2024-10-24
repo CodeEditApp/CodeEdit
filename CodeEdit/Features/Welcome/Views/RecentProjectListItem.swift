@@ -1,5 +1,5 @@
 //
-//  RecentProjectItem.swift
+//  RecentProjectListItem.swift
 //  CodeEditModules/WelcomeModule
 //
 //  Created by Ziyuan Zhao on 2022/3/18.
@@ -13,7 +13,7 @@ extension String {
     }
 }
 
-struct RecentProjectItem: View {
+struct RecentProjectListItem: View {
     let projectPath: URL
 
     init(projectPath: URL) {
