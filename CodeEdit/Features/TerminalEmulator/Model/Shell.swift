@@ -88,7 +88,7 @@ enum Shell: String, CaseIterable {
         case .zsh:
             "/bin/zsh"
         case .fish:
-            "/opt/homebrew/bin/fish"
+            Shell.getFishShellPath()
         }
     }
 
@@ -100,5 +100,32 @@ enum Shell: String, CaseIterable {
             return Self.zsh.rawValue // macOS defaults to zsh
         }
         return currentUser.shell
+    }
+
+    static func getFishShellPath() -> String {
+        let command = "which fish"
+        let process = Process()
+        let outputPipe = Pipe()
+
+        process.executableURL = URL(fileURLWithPath: "/bin/zsh")
+        process.arguments = ["--login", "-c", command]
+        process.standardOutput = outputPipe
+        process.standardError = outputPipe
+
+        do {
+            try process.run()
+            process.waitUntilExit()
+
+            let data = outputPipe.fileHandleForReading.readDataToEndOfFile()
+            guard let shellPath = String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines), !shellPath.isEmpty
+            else {
+                print("Fish shell not found.")
+                return ""
+            }
+            return shellPath
+        } catch {
+            print("Error running command: \(error.localizedDescription)")
+            return ""
+        }
     }
 }
