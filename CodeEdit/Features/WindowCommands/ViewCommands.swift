@@ -112,7 +112,7 @@ extension ViewCommands {
             windowController?.toolbarCollapsed ?? true
         }
 
-        private var labelForInterfaceToggle: String {
+        private var interfaceToggleLabel: String {
             let shouldShow = navigatorCollapsed && inspectorCollapsed &&
                              toolbarCollapsed && !showEditorPathBar
             return "\(shouldShow ? "Show" : "Hide") Interface"
@@ -149,7 +149,7 @@ extension ViewCommands {
             .disabled(windowController == nil)
             .keyboardShortcut("t", modifiers: [.option, .command])
 
-            Button(labelForInterfaceToggle) {
+            Button(interfaceToggleLabel) {
                 if isAnyPanelVisible {
                     if !navigatorCollapsed {
                         windowController?.toggleFirstPanel()
