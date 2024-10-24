@@ -39,7 +39,7 @@ enum RecentProjectsStore {
         }
 
         // Limit list to to 100 items after de-duplication
-        UserDefaults.standard.setValue(paths.prefix(100), forKey: defaultsKey)
+        UserDefaults.standard.setValue(Array(paths.prefix(100)), forKey: defaultsKey)
         donateSearchableItems()
         NotificationCenter.default.post(name: Self.didUpdateNotification, object: nil)
     }
