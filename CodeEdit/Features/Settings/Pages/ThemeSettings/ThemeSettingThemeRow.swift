@@ -13,8 +13,6 @@ struct ThemeSettingsThemeRow: View {
 
     @ObservedObject private var themeModel: ThemeModel = .shared
 
-    @State private var presentingDetails: Bool = false
-
     @State private var isHovering = false
 
     var body: some View {
@@ -42,6 +40,7 @@ struct ThemeSettingsThemeRow: View {
             Menu {
                 Button("Details...") {
                     themeModel.detailsTheme = theme
+                    themeModel.detailsIsPresented = true
                 }
                 Button("Duplicate") {
                     if let fileURL = theme.fileURL {

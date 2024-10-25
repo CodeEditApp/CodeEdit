@@ -208,9 +208,12 @@ extension ThemeModel {
                     self.save(self.themes[index])
                 }
 
+                self.previousTheme = self.selectedTheme
+
                 activateTheme(self.themes[index])
 
                 self.detailsTheme = self.themes[index]
+                self.detailsIsPresented = true
             }
         } catch {
             print("Error adding theme: \(error.localizedDescription)")
@@ -238,6 +241,8 @@ extension ThemeModel {
                 iterator += 1
             }
 
+            let isActive = self.getThemeActive(theme)
+
             try filemanager.moveItem(at: oldURL, to: finalURL)
 
             try self.loadThemes()
@@ -246,6 +251,9 @@ extension ThemeModel {
                 themes[index].displayName = finalName
                 themes[index].fileURL = finalURL
                 themes[index].name = finalName.lowercased().replacingOccurrences(of: " ", with: "-")
+                if isActive {
+                    self.activateTheme(themes[index])
+                }
             }
 
         } catch {

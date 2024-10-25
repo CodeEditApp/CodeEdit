@@ -20,6 +20,12 @@ struct ThemeSettingsThemeDetails: View {
 
     @StateObject private var themeModel: ThemeModel = .shared
 
+    @State private var duplicatingTheme: Theme?
+
+    var isActive: Bool {
+        themeModel.getThemeActive(theme)
+    }
+
     init(theme: Binding<Theme>) {
         _theme = theme
         originalTheme = theme.wrappedValue
@@ -29,6 +35,7 @@ struct ThemeSettingsThemeDetails: View {
         VStack(spacing: 0) {
             Form {
                 Group {
+                    Text("Theme is\(isActive ? "" : " not") active")
                     Section {
                         TextField("Name", text: $theme.displayName)
                         TextField("Author", text: $theme.author)
@@ -177,6 +184,7 @@ struct ThemeSettingsThemeDetails: View {
                     }
                     Button {
                         if let fileURL = theme.fileURL {
+                            duplicatingTheme = theme
                             themeModel.duplicate(fileURL)
                         }
                     } label: {
@@ -188,6 +196,7 @@ struct ThemeSettingsThemeDetails: View {
                 if !themeModel.isAdding && theme.isBundled {
                     Button {
                         if let fileURL = theme.fileURL {
+                            duplicatingTheme = theme
                             themeModel.duplicate(fileURL)
                         }
                     } label: {
@@ -197,12 +206,28 @@ struct ThemeSettingsThemeDetails: View {
                 } else {
                     Button {
                         if themeModel.isAdding {
-                            themeModel.delete(theme)
+                            if let previousTheme = themeModel.previousTheme {
+                                themeModel.activateTheme(previousTheme)
+                            }
+                            if let duplicatingWithinDetails = duplicatingTheme {
+                                let duplicateTheme = theme
+                                themeModel.detailsTheme = duplicatingWithinDetails
+                                themeModel.delete(duplicateTheme)
+                            } else {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                    themeModel.delete(theme)
+                                }
+                            }
                         } else {
                             themeModel.cancelDetails(theme)
                         }
 
-                        dismiss()
+                        if duplicatingTheme == nil {
+                            dismiss()
+                        } else {
+                            duplicatingTheme = nil
+                            themeModel.isAdding = false
+                        }
                     } label: {
                         Text("Cancel")
                             .frame(minWidth: 56)

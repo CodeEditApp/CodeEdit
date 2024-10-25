@@ -72,7 +72,7 @@ final class ThemeModel: ObservableObject {
         }
     }
 
-    @Published var presentingDetails: Bool = false
+    @Published var detailsIsPresented: Bool = false
 
     @Published var isAdding: Bool = false
 
@@ -87,9 +87,10 @@ final class ThemeModel: ObservableObject {
             DispatchQueue.main.async {
                 Settings[\.theme].selectedTheme = self.selectedTheme?.name
             }
-            updateAppearanceTheme()
         }
     }
+
+    @Published var previousTheme: Theme?
 
     /// Only themes where ``Theme/appearance`` == ``Theme/ThemeType/dark``
     var darkThemes: [Theme] {
@@ -127,9 +128,9 @@ final class ThemeModel: ObservableObject {
     }
 
     /// Initialize to the app's current appearance.
-    @Published var selectedAppearance: ThemeSettingsAppearances = {
+    var selectedAppearance: ThemeSettingsAppearances {
         NSApp.effectiveAppearance.name == .darkAqua ? .dark : .light
-    }()
+    }
 
     enum ThemeSettingsAppearances: String, CaseIterable {
         case light = "Light Appearance"
@@ -137,13 +138,6 @@ final class ThemeModel: ObservableObject {
     }
 
     func getThemeActive(_ theme: Theme) -> Bool {
-        if settings.matchAppearance {
-            return selectedAppearance == .dark
-            ? selectedDarkTheme == theme
-            : selectedAppearance == .light
-                ? selectedLightTheme == theme
-                : selectedTheme == theme
-        }
         return selectedTheme == theme
     }
 
@@ -151,24 +145,12 @@ final class ThemeModel: ObservableObject {
     /// necessary.
     /// - Parameter theme: The theme to activate.
     func activateTheme(_ theme: Theme) {
-        if settings.matchAppearance {
-            if selectedAppearance == .dark {
-                selectedDarkTheme = theme
-            } else if selectedAppearance == .light {
-                selectedLightTheme = theme
-            }
-            if (selectedAppearance == .dark && colorScheme == .dark)
-                || (selectedAppearance == .light && colorScheme == .light) {
-                selectedTheme = theme
-            }
-        } else {
-            selectedTheme = theme
-            if colorScheme == .light {
-                selectedLightTheme = theme
-            }
-            if colorScheme == .dark {
-                selectedDarkTheme = theme
-            }
+        selectedTheme = theme
+        if colorScheme == .light {
+            selectedLightTheme = theme
+        }
+        if colorScheme == .dark {
+            selectedDarkTheme = theme
         }
     }
 }
