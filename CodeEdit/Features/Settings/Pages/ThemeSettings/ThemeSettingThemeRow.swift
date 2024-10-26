@@ -48,6 +48,11 @@ struct ThemeSettingsThemeRow: View {
                     }
                 }
                 Divider()
+                    Button("Export...") {
+                        themeModel.exportTheme(theme)
+                    }
+                    .disabled(theme.isBundled)
+                Divider()
                 Button("Delete") {
                     themeModel.delete(theme)
                 }
