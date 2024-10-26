@@ -15,6 +15,8 @@ struct ThemeSettingsThemeRow: View {
 
     @State private var isHovering = false
 
+    @State private var deleteConfirmationIsPresented = false
+
     var body: some View {
         HStack {
             Image(systemName: "checkmark")
@@ -52,8 +54,8 @@ struct ThemeSettingsThemeRow: View {
                 }
                 .disabled(theme.isBundled)
                 Divider()
-                Button("Delete") {
-                    themeModel.delete(theme)
+                Button("Delete...") {
+                    deleteConfirmationIsPresented = true
                 }
                 .disabled(theme.isBundled)
             } label: {
@@ -65,6 +67,19 @@ struct ThemeSettingsThemeRow: View {
         .padding(10)
         .onHover { hovering in
             isHovering = hovering
+        }
+        .alert(
+            Text("Are you sure you want to delete the theme “\(theme.displayName)”?"),
+            isPresented: $deleteConfirmationIsPresented
+        ) {
+            Button("Delete Theme") {
+                themeModel.delete(theme)
+            }
+            Button("Cancel") {
+                deleteConfirmationIsPresented = false
+            }
+        } message: {
+            Text("This action cannot be undone.")
         }
     }
 }
