@@ -246,16 +246,6 @@ extension ThemeModel {
             try filemanager.moveItem(at: oldURL, to: finalURL)
 
             try self.loadThemes()
-
-            if let index = themes.firstIndex(where: { $0.fileURL == finalURL }) {
-                themes[index].displayName = finalName
-                themes[index].fileURL = finalURL
-                themes[index].name = finalName.lowercased().replacingOccurrences(of: " ", with: "-")
-                if isActive {
-                    self.activateTheme(themes[index])
-                }
-            }
-
         } catch {
             print("Error renaming theme: \(error.localizedDescription)")
         }

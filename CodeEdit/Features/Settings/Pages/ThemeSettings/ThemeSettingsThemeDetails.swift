@@ -35,7 +35,6 @@ struct ThemeSettingsThemeDetails: View {
         VStack(spacing: 0) {
             Form {
                 Group {
-                    Text("Theme is\(isActive ? "" : " not") active")
                     Section {
                         TextField("Name", text: $theme.displayName)
                         TextField("Author", text: $theme.author)
