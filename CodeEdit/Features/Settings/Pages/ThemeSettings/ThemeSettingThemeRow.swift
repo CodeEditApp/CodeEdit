@@ -42,16 +42,15 @@ struct ThemeSettingsThemeRow: View {
                     themeModel.detailsTheme = theme
                     themeModel.detailsIsPresented = true
                 }
-                Button("Duplicate") {
+                Button("Duplicate...") {
                     if let fileURL = theme.fileURL {
                         themeModel.duplicate(fileURL)
                     }
                 }
-                Divider()
-                    Button("Export...") {
-                        themeModel.exportTheme(theme)
-                    }
-                    .disabled(theme.isBundled)
+                Button("Export...") {
+                    themeModel.exportTheme(theme)
+                }
+                .disabled(theme.isBundled)
                 Divider()
                 Button("Delete") {
                     themeModel.delete(theme)
