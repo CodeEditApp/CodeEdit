@@ -22,6 +22,8 @@ struct ThemeSettingsThemeDetails: View {
 
     @State private var duplicatingTheme: Theme?
 
+    @State private var deleteConfirmationIsPresented = false
+
     var isActive: Bool {
         themeModel.getThemeActive(theme)
     }
@@ -174,10 +176,9 @@ struct ThemeSettingsThemeDetails: View {
                     .accessibilityLabel("Warning: Duplicate this theme to make changes.")
                 } else if !themeModel.isAdding {
                     Button(role: .destructive) {
-                        themeModel.delete(theme)
-                        dismiss()
+                        deleteConfirmationIsPresented = true
                     } label: {
-                        Text("Delete")
+                        Text("Delete...")
                             .foregroundStyle(.red)
                             .frame(minWidth: 56)
                     }
@@ -187,7 +188,7 @@ struct ThemeSettingsThemeDetails: View {
                             themeModel.duplicate(fileURL)
                         }
                     } label: {
-                        Text("Duplicate")
+                        Text("Duplicate...")
                             .frame(minWidth: 56)
                     }
                 }
@@ -247,5 +248,19 @@ struct ThemeSettingsThemeDetails: View {
             .padding()
         }
         .constrainHeightToWindow()
+        .alert(
+            Text("Are you sure you want to delete the theme “\(theme.displayName)”?"),
+            isPresented: $deleteConfirmationIsPresented
+        ) {
+            Button("Delete Theme") {
+                themeModel.delete(theme)
+                dismiss()
+            }
+            Button("Cancel") {
+                deleteConfirmationIsPresented = false
+            }
+        } message: {
+            Text("This action cannot be undone.")
+        }
     }
 }
