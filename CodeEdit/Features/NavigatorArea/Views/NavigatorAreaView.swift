@@ -73,7 +73,7 @@ struct NavigatorAreaView: View {
                         return nil
                     }
                 }
-        if let selectedTab = viewModel.selectedTab, 
+        if let selectedTab = viewModel.selectedTab,
             !viewModel.tabItems.isEmpty &&
             !viewModel.tabItems.contains(selectedTab) {
             viewModel.selectedTab = viewModel.tabItems[0]
