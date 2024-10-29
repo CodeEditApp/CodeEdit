@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct CodeEditCommands: Commands {
+    @AppSettings(\.sourceControl.general.enableSourceControl)
+    private var enableSourceControl
+
     var body: some Commands {
         MainCommands()
         FileCommands()
         ViewCommands()
         FindCommands()
         NavigateCommands()
-        SourceControlCommands()
+        if enableSourceControl { SourceControlCommands() }
         ExtensionCommands()
         WindowCommands()
         HelpCommands()
