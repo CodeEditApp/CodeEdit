@@ -15,22 +15,13 @@ struct NavigatorAreaView: View {
     @AppSettings(\.general.navigatorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
+    @AppSettings(\.sourceControl.general.enableSourceControl)
+    private var enableSourceControl: Bool
+
     init(workspace: WorkspaceDocument, viewModel: NavigatorSidebarViewModel) {
         self.workspace = workspace
         self.viewModel = viewModel
-
-        viewModel.tabItems = [.project, .sourceControl, .search] +
-        extensionManager
-            .extensions
-            .map { ext in
-                ext.availableFeatures.compactMap {
-                    if case .sidebarItem(let data) = $0, data.kind == .navigator {
-                        return NavigatorTab.uiExtension(endpoint: ext.endpoint, data: data)
-                    }
-                    return nil
-                }
-            }
-            .joined()
+        updateTabItems()
     }
 
     var body: some View {
@@ -63,5 +54,29 @@ struct NavigatorAreaView: View {
         .environmentObject(workspace)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("navigator")
+        .onChange(of: enableSourceControl) { _ in
+            updateTabItems()
+        }
+    }
+
+    private func updateTabItems() {
+        viewModel.tabItems = [.project] +
+            (enableSourceControl ? [.sourceControl] : []) +
+            [.search] +
+            extensionManager
+                .extensions
+                .flatMap { ext in
+                    ext.availableFeatures.compactMap {
+                        if case .sidebarItem(let data) = $0, data.kind == .navigator {
+                            return NavigatorTab.uiExtension(endpoint: ext.endpoint, data: data)
+                        }
+                        return nil
+                    }
+                }
+        if let selectedTab = viewModel.selectedTab, 
+            !viewModel.tabItems.isEmpty &&
+            !viewModel.tabItems.contains(selectedTab) {
+            viewModel.selectedTab = viewModel.tabItems[0]
+        }
     }
 }
