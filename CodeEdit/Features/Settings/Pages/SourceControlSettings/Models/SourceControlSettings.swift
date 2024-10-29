@@ -54,17 +54,17 @@ extension SettingsData {
         /// Indicates whether or not the source control is active
         var enableSourceControl: Bool = true
         /// Indicates whether or not we should include the upstream changes
-        var refreshStatusLocally: Bool = false
+        var refreshStatusLocally: Bool = true
         /// Indicates whether or not we should include the upstream changes
-        var fetchRefreshServerStatus: Bool = false
+        var fetchRefreshServerStatus: Bool = true
         /// Indicates whether or not we should include the upstream changes
-        var addRemoveAutomatically: Bool = false
+        var addRemoveAutomatically: Bool = true
         /// Indicates whether or not we should include the upstream changes
-        var selectFilesToCommit: Bool = false
+        var selectFilesToCommit: Bool = true
         /// Indicates whether or not to show the source control changes
         var showSourceControlChanges: Bool = true
         /// Indicates whether or not we should include the upstream
-        var includeUpstreamChanges: Bool = false
+        var includeUpstreamChanges: Bool = true
         /// Indicates whether or not we should open the reported feedback in the browser
         var openFeedbackInBrowser: Bool = true
         /// The selected value of the comparison view
