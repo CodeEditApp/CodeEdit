@@ -71,8 +71,6 @@ extension SettingsData {
         var revisionComparisonLayout: RevisionComparisonLayout = .localLeft
         /// The selected value of the control navigator
         var controlNavigatorOrder: ControlNavigatorOrder = .sortByName
-        /// The name of the default branch
-        var defaultBranchName: String = "main"
         /// Default initializer
         init() {}
         /// Explicit decoder init for setting default values when key is not present in `JSON`
@@ -109,7 +107,6 @@ extension SettingsData {
                 ControlNavigatorOrder.self,
                 forKey: .controlNavigatorOrder
             ) ?? .sortByName
-            self.defaultBranchName = try container.decodeIfPresent(String.self, forKey: .defaultBranchName) ?? "main"
         }
     }
 

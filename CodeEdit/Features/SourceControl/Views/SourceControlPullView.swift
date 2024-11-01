@@ -13,10 +13,11 @@ struct SourceControlPullView: View {
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
+    let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
+
     @State var loading: Bool = false
 
-    @AppSettings(\.sourceControl.git.preferRebaseWhenPulling)
-    var preferRebaseWhenPulling
+    @State var preferRebaseWhenPulling: Bool = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -39,8 +40,11 @@ struct SourceControlPullView: View {
             .scrollDisabled(true)
             .scrollContentBackground(.hidden)
             .onAppear {
-                if preferRebaseWhenPulling {
-                    sourceControlManager.operationRebase = true
+                Task {
+                    preferRebaseWhenPulling = try await gitConfig.get(key: "pull.rebase", global: true) ?? false
+                    if preferRebaseWhenPulling {
+                        sourceControlManager.operationRebase = true
+                    }
                 }
             }
             HStack {
