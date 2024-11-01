@@ -11,7 +11,12 @@ struct SourceControlGitView: View {
     @AppSettings(\.sourceControl.git)
     var git
 
-    @State var ignoredFileSelection: IgnoredFiles.ID?
+    let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
+
+    @State private var authorName: String = ""
+    @State private var authorEmail: String = ""
+    @State private var preferRebaseWhenPulling: Bool = false
+    @State private var hasAppeared = false
 
     var body: some View {
         SettingsForm {
@@ -24,23 +29,61 @@ struct SourceControlGitView: View {
                 showMergeCommitsInPerFileLog
             }
         }
+        .onAppear {
+            Task {
+                authorName = try await gitConfig.get(key: "user.name", global: true) ?? ""
+                authorEmail = try await gitConfig.get(key: "user.email", global: true) ?? ""
+                preferRebaseWhenPulling = try await gitConfig.get(key: "pull.rebase", global: true) ?? false
+                Task {
+                    hasAppeared = true
+                }
+            }
+        }
     }
 }
 
 private extension SourceControlGitView {
     private var gitAuthorName: some View {
-        TextField("Author Name", text: $git.authorName)
+        TextField("Author Name", text: $authorName)
+            .onChange(of: authorName) { newValue in
+                if hasAppeared {
+                    Limiter.debounce(id: "authorNameDebouncer", duration: 0.5) {
+                        Task {
+                            await gitConfig.set(key: "user.name", value: newValue, global: true)
+                        }
+                    }
+                }
+            }
     }
 
     private var gitEmail: some View {
-        TextField("Author Email", text: $git.authorEmail)
+        TextField("Author Email", text: $authorEmail)
+            .onChange(of: authorEmail) { newValue in
+                if hasAppeared {
+                    Limiter.debounce(id: "authorEmailDebouncer", duration: 0.5) {
+                        Task {
+                            await gitConfig.set(key: "user.email", value: newValue, global: true)
+                        }
+                    }
+                }
+        }
     }
 
     private var preferToRebaseWhenPulling: some View {
         Toggle(
             "Prefer to rebase when pulling",
-            isOn: $git.preferRebaseWhenPulling
+            isOn: $preferRebaseWhenPulling
         )
+        .onChange(of: preferRebaseWhenPulling) { newValue in
+            if hasAppeared {
+                Limiter.debounce(id: "pullRebaseDebouncer", duration: 0.5) {
+                    Task {
+                        print("Setting pull.rebase to \(newValue)")
+                        await gitConfig.set(key: "pull.rebase", value: newValue, global: true)
+                    }
+                }
+            }
+        }
     }
 
     private var showMergeCommitsInPerFileLog: some View {

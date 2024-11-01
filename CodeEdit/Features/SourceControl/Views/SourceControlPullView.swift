@@ -15,6 +15,9 @@ struct SourceControlPullView: View {
 
     @State var loading: Bool = false
 
+    @AppSettings(\.sourceControl.git.preferRebaseWhenPulling)
+    var preferRebaseWhenPulling
+
     var body: some View {
         VStack(spacing: 0) {
             Form {
@@ -35,6 +38,11 @@ struct SourceControlPullView: View {
             .formStyle(.grouped)
             .scrollDisabled(true)
             .scrollContentBackground(.hidden)
+            .onAppear {
+                if preferRebaseWhenPulling {
+                    sourceControlManager.operationRebase = true
+                }
+            }
             HStack {
                 if loading {
                     HStack(spacing: 7.5) {

@@ -130,31 +130,18 @@ extension SettingsData {
     }
 
     struct SourceControlGit: Codable, Hashable {
-        /// The author name
-        var authorName: String = ""
-        /// The author email
-        var authorEmail: String = ""
-        /// Indicates what files should be ignored when committing
         var ignoredFiles: [IgnoredFiles] = []
         /// Indicates whether we should rebase when pulling commits
-        var preferRebaseWhenPulling: Bool = false
-        /// Indicates whether we should show commits per file log
         var showMergeCommitsPerFileLog: Bool = false
         /// Default initializer
         init() {}
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.authorName = try container.decodeIfPresent(String.self, forKey: .authorName) ?? ""
-            self.authorEmail = try container.decodeIfPresent(String.self, forKey: .authorEmail) ?? ""
             self.ignoredFiles = try container.decodeIfPresent(
                 [IgnoredFiles].self,
                 forKey: .ignoredFiles
             ) ?? []
-            self.preferRebaseWhenPulling = try container.decodeIfPresent(
-                Bool.self,
-                forKey: .preferRebaseWhenPulling
-            ) ?? false
             self.showMergeCommitsPerFileLog = try container.decodeIfPresent(
                 Bool.self,
                 forKey: .showMergeCommitsPerFileLog
