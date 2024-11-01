@@ -31,8 +31,11 @@ extension GitClient {
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
 
         let output = try await run(
-            "log \(showMergeCommits ? "" : "--no-merges") -z --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \(countString) \(branchString) -- \(fileString)"
-                .trimmingCharacters(in: .whitespacesAndNewlines)
+            """
+            log \(showMergeCommits ? "" : "--no-merges") -z \
+            --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \
+            \(countString) \(branchString) -- \(fileString)
+            """.trimmingCharacters(in: .whitespacesAndNewlines)
         )
         let remoteURL = try await getRemoteURL()
 
