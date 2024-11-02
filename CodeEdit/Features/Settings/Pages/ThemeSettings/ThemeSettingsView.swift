@@ -49,10 +49,10 @@ struct ThemeSettingsView: View {
                                     Text("Import Theme...")
                                 }
                                 Button {
-                                    // TODO: #1874
+                                    themeModel.exportAllCustomThemes()
                                 } label: {
                                     Text("Export All Custom Themes...")
-                                }.disabled(true)
+                                }
                             }
                         })
                         .padding(.horizontal, 5)
@@ -90,28 +90,35 @@ struct ThemeSettingsView: View {
                     }
                     .padding(.top, 10)
                 }
-                .sheet(item: $themeModel.detailsTheme) {
-                    themeModel.isAdding = false
-                } content: { theme in
-                    if let index = themeModel.themes.firstIndex(where: {
+                .sheet(isPresented: $themeModel.detailsIsPresented, onDismiss: {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        themeModel.isAdding = false
+                    }
+                }, content: {
+                    if let theme = themeModel.detailsTheme, let index = themeModel.themes.firstIndex(where: {
                         $0.fileURL?.absoluteString == theme.fileURL?.absoluteString
                     }) {
                         ThemeSettingsThemeDetails(theme: Binding(
                             get: { themeModel.themes[index] },
                             set: { newValue in
-                                themeModel.themes[index] = newValue
-                                themeModel.save(newValue)
-                                if settings.selectedTheme == theme.name {
-                                    themeModel.activateTheme(newValue)
+                                if themeModel.detailsIsPresented {
+                                    themeModel.themes[index] = newValue
+                                    themeModel.save(newValue)
+                                    if settings.selectedTheme == theme.name {
+                                        themeModel.activateTheme(newValue)
+                                    }
                                 }
                             }
                         ))
                     }
-                }
+                })
                 .onAppear {
                     updateFilteredThemes()
                 }
                 .onChange(of: themeSearchQuery) { _ in
+                    updateFilteredThemes()
+                }
+                .onChange(of: themeModel.themes) { _ in
                     updateFilteredThemes()
                 }
                 .onChange(of: colorScheme) { newColorScheme in

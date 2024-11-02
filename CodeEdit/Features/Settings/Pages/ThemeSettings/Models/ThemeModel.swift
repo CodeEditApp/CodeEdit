@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 /// The Theme View Model. Accessible via the singleton "``ThemeModel/shared``".
 ///
@@ -72,7 +73,7 @@ final class ThemeModel: ObservableObject {
         }
     }
 
-    @Published var presentingDetails: Bool = false
+    @Published var detailsIsPresented: Bool = false
 
     @Published var isAdding: Bool = false
 
@@ -87,9 +88,10 @@ final class ThemeModel: ObservableObject {
             DispatchQueue.main.async {
                 Settings[\.theme].selectedTheme = self.selectedTheme?.name
             }
-            updateAppearanceTheme()
         }
     }
+
+    @Published var previousTheme: Theme?
 
     /// Only themes where ``Theme/appearance`` == ``Theme/ThemeType/dark``
     var darkThemes: [Theme] {
@@ -127,9 +129,9 @@ final class ThemeModel: ObservableObject {
     }
 
     /// Initialize to the app's current appearance.
-    @Published var selectedAppearance: ThemeSettingsAppearances = {
+    var selectedAppearance: ThemeSettingsAppearances {
         NSApp.effectiveAppearance.name == .darkAqua ? .dark : .light
-    }()
+    }
 
     enum ThemeSettingsAppearances: String, CaseIterable {
         case light = "Light Appearance"
@@ -137,13 +139,6 @@ final class ThemeModel: ObservableObject {
     }
 
     func getThemeActive(_ theme: Theme) -> Bool {
-        if settings.matchAppearance {
-            return selectedAppearance == .dark
-            ? selectedDarkTheme == theme
-            : selectedAppearance == .light
-                ? selectedLightTheme == theme
-                : selectedTheme == theme
-        }
         return selectedTheme == theme
     }
 
@@ -151,24 +146,63 @@ final class ThemeModel: ObservableObject {
     /// necessary.
     /// - Parameter theme: The theme to activate.
     func activateTheme(_ theme: Theme) {
-        if settings.matchAppearance {
-            if selectedAppearance == .dark {
-                selectedDarkTheme = theme
-            } else if selectedAppearance == .light {
-                selectedLightTheme = theme
-            }
-            if (selectedAppearance == .dark && colorScheme == .dark)
-                || (selectedAppearance == .light && colorScheme == .light) {
-                selectedTheme = theme
-            }
-        } else {
-            selectedTheme = theme
-            if colorScheme == .light {
-                selectedLightTheme = theme
-            }
-            if colorScheme == .dark {
-                selectedDarkTheme = theme
+        selectedTheme = theme
+        if colorScheme == .light {
+            selectedLightTheme = theme
+        }
+        if colorScheme == .dark {
+            selectedDarkTheme = theme
+        }
+    }
+
+    func exportTheme(_ theme: Theme) {
+        guard let themeFileURL = theme.fileURL else {
+            print("Theme file URL not found.")
+            return
+        }
+
+        let savePanel = NSSavePanel()
+        savePanel.allowedContentTypes = [UTType(filenameExtension: "cetheme")!]
+        savePanel.nameFieldStringValue = theme.displayName
+        savePanel.prompt = "Export"
+        savePanel.canCreateDirectories = true
+
+        savePanel.begin { response in
+            if response == .OK, let destinationURL = savePanel.url {
+                do {
+                    try FileManager.default.copyItem(at: themeFileURL, to: destinationURL)
+                    print("Theme exported successfully to \(destinationURL.path)")
+                } catch {
+                    print("Failed to export theme: \(error.localizedDescription)")
+                }
             }
         }
     }
+
+    func exportAllCustomThemes() {
+            let openPanel = NSOpenPanel()
+            openPanel.prompt = "Export"
+            openPanel.canChooseFiles = false
+            openPanel.canChooseDirectories = true
+            openPanel.allowsMultipleSelection = false
+
+            openPanel.begin { result in
+                if result == .OK, let exportDirectory = openPanel.url {
+                    let customThemes = self.themes.filter { !$0.isBundled }
+
+                    for theme in customThemes {
+                        guard let sourceURL = theme.fileURL else { continue }
+
+                        let destinationURL = exportDirectory.appendingPathComponent("\(theme.displayName).cetheme")
+
+                        do {
+                            try FileManager.default.copyItem(at: sourceURL, to: destinationURL)
+                            print("Exported \(theme.displayName) to \(destinationURL.path)")
+                        } catch {
+                            print("Failed to export \(theme.displayName): \(error.localizedDescription)")
+                        }
+                    }
+                }
+            }
+        }
 }
