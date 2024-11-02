@@ -38,6 +38,7 @@ class IgnorePatternModel: ObservableObject {
         try? content.write(to: fileURL, atomically: true, encoding: .utf8)
     }
 
+    @MainActor
     func addPattern() {
         if patterns.isEmpty {
             Task {
@@ -45,9 +46,12 @@ class IgnorePatternModel: ObservableObject {
             }
         }
         patterns.append(GlobPattern(value: ""))
-        savePatterns()
+        Task {
+            savePatterns()
+        }
     }
 
+    @MainActor
     func removePatterns(_ selection: Set<GlobPattern>? = nil) {
         let patternsToRemove = selection ?? self.selection
         patterns.removeAll { patternsToRemove.contains($0) }
