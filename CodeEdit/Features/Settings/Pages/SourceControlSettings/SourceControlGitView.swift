@@ -16,7 +16,7 @@ struct SourceControlGitView: View {
     @State private var authorName: String = ""
     @State private var authorEmail: String = ""
     @State private var preferRebaseWhenPulling: Bool = false
-    @State private var hasAppeared = false
+    @State private var hasAppeared: Bool = false
 
     var body: some View {
         SettingsForm {
