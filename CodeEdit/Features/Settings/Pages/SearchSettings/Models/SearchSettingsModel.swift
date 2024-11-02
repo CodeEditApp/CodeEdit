@@ -7,14 +7,6 @@
 
 import SwiftUI
 
-struct GlobPattern: Identifiable, Hashable, Decodable, Encodable {
-    /// Ephimeral UUID used to track its representation in the UI
-    var id = UUID()
-
-    /// The Glob Pattern to render
-    var value: String
-}
-
 /// The Search Settings View Model. Accessible via the singleton "``SearchSettings/shared``".
 ///
 /// **Usage:**
@@ -55,6 +47,9 @@ final class SearchSettingsModel: ObservableObject {
         baseURL.appendingPathComponent("settings.json", isDirectory: true)
     }
 
+    /// Selected patterns
+    @Published var selection: Set<GlobPattern> = []
+
     /// Stores the new values from the Search Settings Model into the settings.json whenever
     /// `ignoreGlobPatterns` is updated
     @Published var ignoreGlobPatterns: [GlobPattern] {
@@ -63,5 +58,15 @@ final class SearchSettingsModel: ObservableObject {
                 Settings[\.search].ignoreGlobPatterns = self.ignoreGlobPatterns
             }
         }
+    }
+
+    func addPattern() {
+        ignoreGlobPatterns.append(GlobPattern(value: ""))
+    }
+
+    func removePatterns(_ selection: Set<GlobPattern>? = nil) {
+        let patternsToRemove = selection ?? self.selection
+        ignoreGlobPatterns.removeAll { patternsToRemove.contains($0) }
+        self.selection.removeAll()
     }
 }

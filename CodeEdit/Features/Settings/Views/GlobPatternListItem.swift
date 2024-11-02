@@ -1,5 +1,5 @@
 //
-//  IgnorePatternListItemView.swift
+//  GlobPatternListItem.swift
 //  CodeEdit
 //
 //  Created by Esteban on 2/2/24.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct IgnorePatternListItem: View {
+struct GlobPatternListItem: View {
     @Binding var pattern: GlobPattern
-    @Binding var selectedPattern: GlobPattern?
+    @Binding var selection: Set<GlobPattern>
     var addPattern: () -> Void
-    var removePattern: (GlobPattern) -> Void
+    var removePatterns: (_ selection: Set<GlobPattern>?) -> Void
     var focusedField: FocusState<String?>.Binding
     var isLast: Bool
 
@@ -21,18 +21,19 @@ struct IgnorePatternListItem: View {
 
     init(
         pattern: Binding<GlobPattern>,
-        selectedPattern: Binding<GlobPattern?>,
+        selection: Binding<Set<GlobPattern>>,
         addPattern: @escaping () -> Void,
-        removePattern: @escaping (GlobPattern) -> Void,
+        removePatterns: @escaping (_ selection: Set<GlobPattern>?) -> Void,
         focusedField: FocusState<String?>.Binding,
         isLast: Bool
     ) {
         self._pattern = pattern
-        self._selectedPattern = selectedPattern
+        self._selection = selection
         self.addPattern = addPattern
-        self.removePattern = removePattern
+        self.removePatterns = removePatterns
         self.focusedField = focusedField
         self.isLast = isLast
+
         self._value = State(initialValue: pattern.wrappedValue.value)
     }
 
@@ -50,12 +51,13 @@ struct IgnorePatternListItem: View {
             }
             .onChange(of: isFocused) { newIsFocused in
                 if newIsFocused {
-                    if selectedPattern != pattern {
-                        selectedPattern = pattern
+                    if !selection.contains(pattern) {
+                        selection.removeAll()
+                        selection.insert(pattern)
                     }
                 } else {
                     if value.isEmpty {
-                        removePattern(pattern)
+                        removePatterns(nil)
                     } else {
                         pattern.value = value
                     }

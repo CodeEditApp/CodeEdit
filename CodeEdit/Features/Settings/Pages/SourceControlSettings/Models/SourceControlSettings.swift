@@ -127,7 +127,6 @@ extension SettingsData {
     }
 
     struct SourceControlGit: Codable, Hashable {
-        var ignoredFiles: [IgnoredFiles] = []
         /// Indicates whether we should rebase when pulling commits
         var showMergeCommitsPerFileLog: Bool = false
         /// Default initializer
@@ -135,10 +134,6 @@ extension SettingsData {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.ignoredFiles = try container.decodeIfPresent(
-                [IgnoredFiles].self,
-                forKey: .ignoredFiles
-            ) ?? []
             self.showMergeCommitsPerFileLog = try container.decodeIfPresent(
                 Bool.self,
                 forKey: .showMergeCommitsPerFileLog

@@ -28,6 +28,11 @@ struct SourceControlGitView: View {
                 preferToRebaseWhenPulling
                 showMergeCommitsInPerFileLog
             }
+            Section {
+                IgnoredFilesListView()
+            } header: {
+                Text("Ignored Files")
+            }
         }
         .onAppear {
             Task {
