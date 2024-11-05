@@ -2696,7 +2696,7 @@
 				61A3E3DA2C33130B00076BD3 /* Models */,
 			);
 			name = CEWorkspaceSettings;
-			path = CEWorkSpaceSettings/CEWorkspaceSettings;
+			path = CEWorkSpaceSettings;
 			sourceTree = "<group>";
 		};
 		61A3E3DA2C33130B00076BD3 /* Models */ = {
