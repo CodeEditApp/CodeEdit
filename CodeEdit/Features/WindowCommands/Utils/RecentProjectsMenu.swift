@@ -16,6 +16,7 @@ class RecentProjectsMenu: NSObject {
         for projectPath in paths {
             let icon = NSWorkspace.shared.icon(forFile: projectPath.path())
             icon.size = NSSize(width: 16, height: 16)
+            let alternateTitle = alternateTitle(for: projectPath)
 
             let primaryItem = NSMenuItem(
                 title: projectPath.lastPathComponent,
@@ -29,18 +30,6 @@ class RecentProjectsMenu: NSObject {
             let containsDuplicate = paths.contains { url in
                 url != projectPath && url.lastPathComponent == projectPath.lastPathComponent
             }
-
-            let parentPath = projectPath
-                .deletingLastPathComponent()
-                .path(percentEncoded: false)
-                .abbreviatingWithTildeInPath()
-            let alternateTitle = NSMutableAttributedString(
-                string: projectPath.lastPathComponent + " ", attributes: [.foregroundColor: NSColor.labelColor]
-            )
-            alternateTitle.append(NSAttributedString(
-                string: parentPath,
-                attributes: [.foregroundColor: NSColor.secondaryLabelColor]
-            ))
 
             // If there's a duplicate, add the path.
             if containsDuplicate {
@@ -74,6 +63,21 @@ class RecentProjectsMenu: NSObject {
         menu.addItem(clearMenuItem)
 
         return menu
+    }
+
+    private func alternateTitle(for projectPath: URL) -> NSAttributedString {
+        let parentPath = projectPath
+            .deletingLastPathComponent()
+            .path(percentEncoded: false)
+            .abbreviatingWithTildeInPath()
+        let alternateTitle = NSMutableAttributedString(
+            string: projectPath.lastPathComponent + " ", attributes: [.foregroundColor: NSColor.labelColor]
+        )
+        alternateTitle.append(NSAttributedString(
+            string: parentPath,
+            attributes: [.foregroundColor: NSColor.secondaryLabelColor]
+        ))
+        return alternateTitle
     }
 
     @objc
