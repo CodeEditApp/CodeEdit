@@ -80,7 +80,7 @@ enum RecentProjectsStore {
             CodeEditDocumentController.shared.noteNewRecentDocumentURL(path)
         }
     }
-    
+
     /// Donates all recent URLs to Core Search, making them searchable in Spotlight
     private static func donateSearchableItems() {
         let searchableItems = recentProjectURLs().map { entity in
