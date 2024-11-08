@@ -40,6 +40,7 @@ enum RecentProjectsStore {
 
         // Limit list to to 100 items after de-duplication
         UserDefaults.standard.setValue(Array(paths.prefix(100)), forKey: defaultsKey)
+        setDocumentControllerRecents()
         donateSearchableItems()
         NotificationCenter.default.post(name: Self.didUpdateNotification, object: nil)
     }
@@ -72,6 +73,15 @@ enum RecentProjectsStore {
         setPaths([])
     }
 
+    /// Syncs AppKit's recent documents list with ours, keeping the dock menu and other lists up-to-date.
+    private static func setDocumentControllerRecents() {
+        CodeEditDocumentController.shared.clearRecentDocuments(nil)
+        for path in recentProjectURLs().prefix(10) {
+            CodeEditDocumentController.shared.noteNewRecentDocumentURL(path)
+        }
+    }
+    
+    /// Donates all recent URLs to Core Search, making them searchable in Spotlight
     private static func donateSearchableItems() {
         let searchableItems = recentProjectURLs().map { entity in
             let attributeSet = CSSearchableItemAttributeSet(contentType: .content)

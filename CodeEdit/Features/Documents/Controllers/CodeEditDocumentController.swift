@@ -93,11 +93,6 @@ final class CodeEditDocumentController: NSDocumentController {
         }
     }
 
-    override func clearRecentDocuments(_ sender: Any?) {
-        super.clearRecentDocuments(sender)
-        UserDefaults.standard.set([Any](), forKey: "recentProjectPaths")
-    }
-
     override func addDocument(_ document: NSDocument) {
         super.addDocument(document)
         if let document = document as? CodeFileDocument {
