@@ -11,7 +11,9 @@ class RecentProjectsMenu: NSObject {
     func makeMenu() -> NSMenu {
         let menu = NSMenu(title: NSLocalizedString("Open Recent", comment: "Open Recent menu title"))
 
-        for projectPath in RecentProjectsStore.recentProjectURLs().prefix(10) {
+        let paths = RecentProjectsStore.recentProjectURLs().prefix(10)
+
+        for projectPath in paths {
             let icon = NSWorkspace.shared.icon(forFile: projectPath.path())
             icon.size = NSSize(width: 16, height: 16)
 
@@ -24,7 +26,14 @@ class RecentProjectsMenu: NSObject {
             primaryItem.image = icon
             primaryItem.representedObject = projectPath
 
-            let parentPath = projectPath.deletingLastPathComponent().path(percentEncoded: false).abbreviatingWithTildeInPath()
+            let containsDuplicate = paths.contains { url in
+                url != projectPath && url.lastPathComponent == projectPath.lastPathComponent
+            }
+
+            let parentPath = projectPath
+                .deletingLastPathComponent()
+                .path(percentEncoded: false)
+                .abbreviatingWithTildeInPath()
             let alternateTitle = NSMutableAttributedString(
                 string: projectPath.lastPathComponent + " ", attributes: [.foregroundColor: NSColor.labelColor]
             )
@@ -32,6 +41,11 @@ class RecentProjectsMenu: NSObject {
                 string: parentPath,
                 attributes: [.foregroundColor: NSColor.secondaryLabelColor]
             ))
+
+            // If there's a duplicate, add the path.
+            if containsDuplicate {
+                primaryItem.attributedTitle = alternateTitle
+            }
 
             let alternateItem = NSMenuItem(
                 title: "",
