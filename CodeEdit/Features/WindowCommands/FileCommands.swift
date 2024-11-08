@@ -30,9 +30,9 @@ struct FileCommands: Commands {
                 }
                 .keyboardShortcut("o")
 
-                Menu("Open Recent") {
-//                    RecentProjectsMenu()
-                }
+                // Leave this empty, is done through a hidden API in WindowCommands/Utils/CommandsFixes.swift
+                // We set this with a custom NSMenu. See WindowCommands/Utils/RecentProjectsMenu.swift
+                Menu("Open Recent") { }
 
                 Button("Open Quickly") {
                     NSApp.sendAction(#selector(CodeEditWindowController.openQuickly(_:)), to: nil, from: nil)
