@@ -12,6 +12,7 @@ import Combine
 struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
     @EnvironmentObject var workspace: WorkspaceDocument
+    @EnvironmentObject var editorManager: EditorManager
 
     @StateObject var prefs: Settings = .shared
 
@@ -21,6 +22,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         let controller = ProjectNavigatorViewController()
         controller.workspace = workspace
         controller.iconColor = prefs.preferences.general.fileIconStyle
+        controller.editor = editorManager.activeEditor
         workspace.workspaceFileManager?.addObserver(context.coordinator)
 
         context.coordinator.controller = controller
