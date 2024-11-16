@@ -48,7 +48,7 @@ extension CEWorkspaceFileManager {
                 self.notifyObservers(updatedItems: files)
             }
 
-            if Settings.shared.preferences.sourceControl.general.enableSourceControl &&
+            if Settings.shared.preferences.sourceControl.general.sourceControlIsEnabled &&
                 Settings.shared.preferences.sourceControl.general.refreshStatusLocally {
                 self.handleGitEvents(events: events)
             }

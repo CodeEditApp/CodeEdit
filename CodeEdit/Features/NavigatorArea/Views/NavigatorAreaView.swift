@@ -15,8 +15,8 @@ struct NavigatorAreaView: View {
     @AppSettings(\.general.navigatorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    @AppSettings(\.sourceControl.general.enableSourceControl)
-    private var enableSourceControl: Bool
+    @AppSettings(\.sourceControl.general.sourceControlIsEnabled)
+    private var sourceControlIsEnabled: Bool
 
     init(workspace: WorkspaceDocument, viewModel: NavigatorSidebarViewModel) {
         self.workspace = workspace
@@ -54,14 +54,14 @@ struct NavigatorAreaView: View {
         .environmentObject(workspace)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("navigator")
-        .onChange(of: enableSourceControl) { _ in
+        .onChange(of: sourceControlIsEnabled) { _ in
             updateTabItems()
         }
     }
 
     private func updateTabItems() {
         viewModel.tabItems = [.project] +
-            (enableSourceControl ? [.sourceControl] : []) +
+            (sourceControlIsEnabled ? [.sourceControl] : []) +
             [.search] +
             extensionManager
                 .extensions

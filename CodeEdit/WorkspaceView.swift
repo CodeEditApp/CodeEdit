@@ -19,8 +19,8 @@ struct WorkspaceView: View {
     @AppSettings(\.theme.matchAppearance)
     var matchAppearance
 
-    @AppSettings(\.sourceControl.general.enableSourceControl)
-    var enableSourceControl
+    @AppSettings(\.sourceControl.general.sourceControlIsEnabled)
+    var sourceControlIsEnabled
 
     @EnvironmentObject private var workspace: WorkspaceDocument
     @EnvironmentObject private var editorManager: EditorManager
@@ -133,7 +133,7 @@ struct WorkspaceView: View {
                             : themeModel.selectedLightTheme
                         }
                     }
-                    .onChange(of: enableSourceControl) { newValue in
+                    .onChange(of: sourceControlIsEnabled) { newValue in
                         if !newValue {
                             Task {
                                 await sourceControlManager.refreshCurrentBranch()

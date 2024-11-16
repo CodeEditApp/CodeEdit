@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 
+// TODO: Look into improving this API by using async by default so `Task` isn't needed when used.
 enum Limiter {
     // Keep track of debounce timers and throttle states
     private static var debounceTimers: [AnyHashable: AnyCancellable] = [:]

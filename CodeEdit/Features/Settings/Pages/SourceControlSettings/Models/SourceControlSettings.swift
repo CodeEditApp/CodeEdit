@@ -52,14 +52,14 @@ extension SettingsData {
 
     struct SourceControlGeneral: Codable, Hashable {
         /// Indicates whether or not the source control is active
-        var enableSourceControl: Bool = true
-        /// Indicates whether or not we should include the upstream changes
+        var sourceControlIsEnabled: Bool = true
+        /// Indicates whether the status should be refreshed locally without fetching updates from the server.
         var refreshStatusLocally: Bool = true
-        /// Indicates whether or not we should include the upstream changes
+        /// Indicates whether the application should automatically fetch updates from the server and refresh the status.
         var fetchRefreshServerStatus: Bool = true
-        /// Indicates whether or not we should include the upstream changes
+        /// Indicates whether new files should be automatically added and removed files should be removed from version control.
         var addRemoveAutomatically: Bool = true
-        /// Indicates whether or not we should include the upstream changes
+        /// Indicates whether the application should automatically select files to commit.
         var selectFilesToCommit: Bool = true
         /// Indicates whether or not to show the source control changes
         var showSourceControlChanges: Bool = true
@@ -76,7 +76,7 @@ extension SettingsData {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.enableSourceControl = try container.decodeIfPresent(Bool.self, forKey: .enableSourceControl) ?? true
+            self.sourceControlIsEnabled = try container.decodeIfPresent(Bool.self, forKey: .sourceControlIsEnabled) ?? true
             self.refreshStatusLocally = try container.decodeIfPresent(Bool.self, forKey: .refreshStatusLocally) ?? true
             self.fetchRefreshServerStatus = try container.decodeIfPresent(
                 Bool.self,

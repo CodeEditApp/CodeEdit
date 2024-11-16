@@ -8,8 +8,8 @@ struct InspectorAreaView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
-    @AppSettings(\.sourceControl.general.enableSourceControl)
-    private var enableSourceControl: Bool
+    @AppSettings(\.sourceControl.general.sourceControlIsEnabled)
+    private var sourceControlIsEnabled: Bool
 
     @AppSettings(\.general.inspectorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
@@ -57,14 +57,14 @@ struct InspectorAreaView: View {
         .formStyle(.grouped)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("inspector")
-        .onChange(of: enableSourceControl) { _ in
+        .onChange(of: sourceControlIsEnabled) { _ in
             updateTabItems()
         }
     }
 
     private func updateTabItems() {
         viewModel.tabItems = [.file] +
-            (enableSourceControl ? [.gitHistory] : []) +
+            (sourceControlIsEnabled ? [.gitHistory] : []) +
             extensionManager
                 .extensions
                 .flatMap { ext in
