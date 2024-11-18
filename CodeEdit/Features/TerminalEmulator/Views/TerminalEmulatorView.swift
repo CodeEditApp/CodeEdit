@@ -66,6 +66,8 @@ struct TerminalEmulatorView: NSViewRepresentable {
             return "/bin/bash"
         case .zsh:
             return "/bin/zsh"
+        case .fish:
+            return Shell.getFishShellPath()
         }
     }
 

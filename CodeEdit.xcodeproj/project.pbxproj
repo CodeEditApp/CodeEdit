@@ -624,6 +624,7 @@
 		DE513F52281B672D002260B9 /* EditorTabBarAccessory.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE513F51281B672D002260B9 /* EditorTabBarAccessory.swift */; };
 		DE6F77872813625500D00A76 /* EditorTabBarDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE6F77862813625500D00A76 /* EditorTabBarDivider.swift */; };
 		EC0870F72A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0870F62A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift */; };
+		F3176C932CC2177100670B85 /* codeedit_shell_integration.fish in Resources */ = {isa = PBXBuildFile; fileRef = F3176C922CC2177100670B85 /* codeedit_shell_integration.fish */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1293,6 +1294,7 @@
 		DE513F51281B672D002260B9 /* EditorTabBarAccessory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarAccessory.swift; sourceTree = "<group>"; };
 		DE6F77862813625500D00A76 /* EditorTabBarDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabBarDivider.swift; sourceTree = "<group>"; };
 		EC0870F62A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+NSMenuDelegate.swift"; sourceTree = "<group>"; };
+		F3176C922CC2177100670B85 /* codeedit_shell_integration.fish */ = {isa = PBXFileReference; lastKnownFileType = text; path = codeedit_shell_integration.fish; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1611,6 +1613,7 @@
 			isa = PBXGroup;
 			children = (
 				3E0196792A392B45002648D8 /* codeedit_shell_integration.bash */,
+				F3176C922CC2177100670B85 /* codeedit_shell_integration.fish */,
 				3E0196722A3921AC002648D8 /* codeedit_shell_integration_rc.zsh */,
 				6C48B5D52C0D08C5001E9955 /* codeedit_shell_integration_profile.zsh */,
 				6C48B5D72C0D5DB5001E9955 /* codeedit_shell_integration_login.zsh */,
@@ -3851,6 +3854,7 @@
 				3E0196732A3921AC002648D8 /* codeedit_shell_integration_rc.zsh in Resources */,
 				58A5DFA529339F6400D1BD5D /* default_keybindings.json in Resources */,
 				6C48B5D42C0D0743001E9955 /* codeedit_shell_integration_env.zsh in Resources */,
+				F3176C932CC2177100670B85 /* codeedit_shell_integration.fish in Resources */,
 				3E01967A2A392B45002648D8 /* codeedit_shell_integration.bash in Resources */,
 				D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */,
 				6C48B5D62C0D08C5001E9955 /* codeedit_shell_integration_profile.zsh in Resources */,
