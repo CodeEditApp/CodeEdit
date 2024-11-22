@@ -18,6 +18,7 @@ struct TaskView: View {
         HStack(spacing: 5) {
             Image(systemName: "gearshape")
             Text(task.name)
+                .frame(minWidth: 0)
             Spacer(minLength: 0)
         }
         .padding(.trailing, 7.5)

@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct TaskNotificationView: View {
+    @Environment(\.controlActiveState)
+    private var activeState
+
     @ObservedObject var taskNotificationHandler: TaskNotificationHandler
     @State private var isPresented: Bool = false
     @State var notification: TaskNotificationModel?
@@ -46,6 +49,7 @@ struct TaskNotificationView: View {
                     }
                 }
                 .transition(.opacity.combined(with: .move(edge: .trailing)))
+                .opacity(activeState == .inactive ? 0.4 : 1.0)
                 .padding(3)
                 .padding(-3)
                 .padding(.trailing, 3)
