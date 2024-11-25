@@ -57,7 +57,7 @@ extension SettingsData {
         var refreshStatusLocally: Bool = true
         /// Indicates whether the application should automatically fetch updates from the server and refresh the status.
         var fetchRefreshServerStatus: Bool = true
-        /// Indicates whether new files should be automatically added and removed files should be removed from version control.
+        /// Indicates whether new and deleted files should be automatically staged for commit.
         var addRemoveAutomatically: Bool = true
         /// Indicates whether the application should automatically select files to commit.
         var selectFilesToCommit: Bool = true
@@ -76,7 +76,10 @@ extension SettingsData {
         /// Explicit decoder init for setting default values when key is not present in `JSON`
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.sourceControlIsEnabled = try container.decodeIfPresent(Bool.self, forKey: .sourceControlIsEnabled) ?? true
+            self.sourceControlIsEnabled = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .sourceControlIsEnabled
+            ) ?? true
             self.refreshStatusLocally = try container.decodeIfPresent(Bool.self, forKey: .refreshStatusLocally) ?? true
             self.fetchRefreshServerStatus = try container.decodeIfPresent(
                 Bool.self,
