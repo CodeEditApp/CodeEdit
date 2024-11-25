@@ -13,9 +13,9 @@ struct ThemeSettingsThemeRow: View {
 
     @ObservedObject private var themeModel: ThemeModel = .shared
 
-    @State private var presentingDetails: Bool = false
-
     @State private var isHovering = false
+
+    @State private var deleteConfirmationIsPresented = false
 
     var body: some View {
         HStack {
@@ -42,15 +42,20 @@ struct ThemeSettingsThemeRow: View {
             Menu {
                 Button("Details...") {
                     themeModel.detailsTheme = theme
+                    themeModel.detailsIsPresented = true
                 }
-                Button("Duplicate") {
+                Button("Duplicate...") {
                     if let fileURL = theme.fileURL {
                         themeModel.duplicate(fileURL)
                     }
                 }
+                Button("Export...") {
+                    themeModel.exportTheme(theme)
+                }
+                .disabled(theme.isBundled)
                 Divider()
-                Button("Delete") {
-                    themeModel.delete(theme)
+                Button("Delete...") {
+                    deleteConfirmationIsPresented = true
                 }
                 .disabled(theme.isBundled)
             } label: {
@@ -62,6 +67,19 @@ struct ThemeSettingsThemeRow: View {
         .padding(10)
         .onHover { hovering in
             isHovering = hovering
+        }
+        .alert(
+            Text("Are you sure you want to delete the theme “\(theme.displayName)”?"),
+            isPresented: $deleteConfirmationIsPresented
+        ) {
+            Button("Delete Theme") {
+                themeModel.delete(theme)
+            }
+            Button("Cancel") {
+                deleteConfirmationIsPresented = false
+            }
+        } message: {
+            Text("This action cannot be undone.")
         }
     }
 }

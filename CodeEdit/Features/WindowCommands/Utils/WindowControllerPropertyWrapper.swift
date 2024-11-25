@@ -42,7 +42,9 @@ struct UpdatingWindowController: DynamicProperty {
         private var activeEditorCancellable: AnyCancellable?
 
         init() {
-            windowCancellable = NSApp.publisher(for: \.keyWindow).sink { [weak self] window in
+            windowCancellable = NSApp.publisher(for: \.keyWindow).receive(on: RunLoop.main).sink { [weak self] window in
+                // Fix an issue where NSMenuItems with custom views would trigger this callback.
+                guard window?.className != "NSPopupMenuWindow" else { return }
                 self?.setNewController(window?.windowController as? CodeEditWindowController)
             }
         }

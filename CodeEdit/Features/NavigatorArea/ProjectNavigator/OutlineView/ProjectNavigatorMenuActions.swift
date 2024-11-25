@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import SwiftUI
 
 extension ProjectNavigatorMenu {
     /// - Returns: the currently selected `CEWorkspaceFile` items in the outline view.
@@ -150,6 +151,9 @@ extension ProjectNavigatorMenu {
     func trash() {
         selectedItems().forEach { item in
             workspace?.workspaceFileManager?.trash(file: item)
+            withAnimation {
+                sender.editor?.closeTab(file: item)
+            }
         }
         reloadData()
     }
@@ -165,6 +169,13 @@ extension ProjectNavigatorMenu {
         } else {
             workspace?.workspaceFileManager?.batchDelete(files: selectedItems)
         }
+
+        withAnimation {
+            selectedItems.forEach { item in
+                sender.editor?.closeTab(file: item)
+            }
+        }
+
         reloadData()
     }
 
