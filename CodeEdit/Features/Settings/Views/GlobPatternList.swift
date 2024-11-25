@@ -9,19 +9,19 @@ import SwiftUI
 
 struct GlobPatternList: View {
     @Binding var patterns: [GlobPattern]
-    let selection: Binding<Set<GlobPattern>>
+    @Binding var selection: Set<UUID>
     let addPattern: () -> Void
-    let removePatterns: (_ selection: Set<GlobPattern>?) -> Void
+    let removePatterns: (_ selection: Set<UUID>?) -> Void
     let emptyMessage: String
 
     @FocusState private var focusedField: String?
 
     var body: some View {
-        List(selection: selection) {
-            ForEach(Array(patterns.enumerated()), id: \.element) { index, pattern in
+        List(selection: $selection) {
+            ForEach(Array(patterns.enumerated()), id: \.element.id) { index, pattern in
                 GlobPatternListItem(
                     pattern: $patterns[index],
-                    selection: selection,
+                    selection: $selection,
                     addPattern: addPattern,
                     removePatterns: removePatterns,
                     focusedField: $focusedField,
@@ -36,13 +36,14 @@ struct GlobPatternList: View {
             .onMove { fromOffsets, toOffset in
                 patterns.move(fromOffsets: fromOffsets, toOffset: toOffset)
             }
-            .onDelete { _ in
-                removePatterns(nil)
+            .onDelete { indexSet in
+                let patternIDs = indexSet.compactMap { patterns[$0].id }
+                    removePatterns(Set(patternIDs))
             }
         }
         .frame(minHeight: 96)
-        .contextMenu(forSelectionType: GlobPattern.self, menu: { selection in
-            if let pattern = selection.first {
+        .contextMenu(forSelectionType: UUID.self, menu: { selection in
+            if let patternID = selection.first, let pattern = patterns.first(where: { $0.id == patternID }) {
                 Button("Edit") {
                     focusedField = pattern.id.uuidString
                 }
@@ -51,13 +52,11 @@ struct GlobPatternList: View {
                 }
                 Divider()
                 Button("Remove") {
-                    if !patterns.isEmpty {
-                        removePatterns(selection)
-                    }
+                    removePatterns(selection)
                 }
             }
         }, primaryAction: { selection in
-            if let pattern = selection.first {
+            if let patternID = selection.first, let pattern = patterns.first(where: { $0.id == patternID }) {
                 focusedField = pattern.id.uuidString
             }
         })
@@ -73,15 +72,15 @@ struct GlobPatternList: View {
             }
             Divider()
             Button {
-                removePatterns(nil)
+                removePatterns(selection)
             } label: {
                 Image(systemName: "minus")
-                    .opacity(selection.wrappedValue.isEmpty ? 0.5 : 1)
+                    .opacity(selection.isEmpty ? 0.5 : 1)
             }
-            .disabled(selection.wrappedValue.isEmpty)
+            .disabled(selection.isEmpty)
         }
         .onDeleteCommand {
-            removePatterns(nil)
+            removePatterns(selection)
         }
     }
 }

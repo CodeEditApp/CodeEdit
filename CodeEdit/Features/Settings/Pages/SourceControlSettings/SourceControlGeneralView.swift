@@ -38,7 +38,7 @@ struct SourceControlGeneralView: View {
         .onAppear {
             Task {
                 defaultBranch = try await gitConfig.get(key: "init.defaultBranch", global: true) ?? ""
-                Task {
+                DispatchQueue.main.async {
                     hasAppeared = true
                 }
             }

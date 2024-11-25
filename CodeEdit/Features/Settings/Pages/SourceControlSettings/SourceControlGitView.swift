@@ -27,11 +27,15 @@ struct SourceControlGitView: View {
             Section {
                 preferToRebaseWhenPulling
                 showMergeCommitsInPerFileLog
+            } footer: {
+                Button("Open in Editor...", action: openGitConfigFile)
             }
             Section {
                 IgnoredFilesListView()
             } header: {
                 Text("Ignored Files")
+            } footer: {
+                Button("Open in Editor...", action: openGitIgnoreFile)
             }
         }
         .onAppear {
@@ -39,9 +43,8 @@ struct SourceControlGitView: View {
                 authorName = try await gitConfig.get(key: "user.name", global: true) ?? ""
                 authorEmail = try await gitConfig.get(key: "user.email", global: true) ?? ""
                 preferRebaseWhenPulling = try await gitConfig.get(key: "pull.rebase", global: true) ?? false
-                Task {
-                    hasAppeared = true
-                }
+                try? await Task.sleep(for: .milliseconds(0))
+                hasAppeared = true
             }
         }
     }
@@ -111,6 +114,45 @@ private extension SourceControlGitView {
             .disabled(true)
             .buttonStyle(.plain)
             Spacer()
+        }
+    }
+
+    private func openGitConfigFile() {
+        let fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".gitconfig")
+
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            FileManager.default.createFile(atPath: fileURL.path, contents: nil)
+        }
+
+        NSDocumentController.shared.openDocument(
+            withContentsOf: fileURL,
+            display: true
+        ) { _, _, error in
+            if let error = error {
+                print("Failed to open document: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    private func openGitIgnoreFile() {
+        let fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".gitignore_global")
+
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
+            FileManager.default.createFile(atPath: fileURL.path, contents: nil)
+            guard !FileManager.default.fileExists(atPath: fileURL.path) else { return }
+            FileManager.default.createFile(atPath: fileURL.path, contents: nil)
+            Task {
+                await gitConfig.set(key: "core.excludesfile", value: fileURL.path, global: true)
+            }
+        }
+
+        NSDocumentController.shared.openDocument(
+            withContentsOf: fileURL,
+            display: true
+        ) { _, _, error in
+            if let error = error {
+                print("Failed to open document: \(error.localizedDescription)")
+            }
         }
     }
 }

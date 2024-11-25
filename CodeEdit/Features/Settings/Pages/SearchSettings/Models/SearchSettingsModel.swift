@@ -48,7 +48,7 @@ final class SearchSettingsModel: ObservableObject {
     }
 
     /// Selected patterns
-    @Published var selection: Set<GlobPattern> = []
+    @Published var selection: Set<UUID> = []
 
     /// Stores the new values from the Search Settings Model into the settings.json whenever
     /// `ignoreGlobPatterns` is updated
@@ -60,12 +60,16 @@ final class SearchSettingsModel: ObservableObject {
         }
     }
 
+    func getPattern(for id: UUID) -> GlobPattern? {
+        return ignoreGlobPatterns.first(where: { $0.id == id })
+    }
+
     func addPattern() {
         ignoreGlobPatterns.append(GlobPattern(value: ""))
     }
 
-    func removePatterns(_ selection: Set<GlobPattern>? = nil) {
-        let patternsToRemove = selection ?? self.selection
+    func removePatterns(_ selection: Set<UUID>? = nil) {
+        let patternsToRemove = selection?.compactMap { getPattern(for: $0) } ?? []
         ignoreGlobPatterns.removeAll { patternsToRemove.contains($0) }
         self.selection.removeAll()
     }

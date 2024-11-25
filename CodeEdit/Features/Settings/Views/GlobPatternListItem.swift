@@ -9,9 +9,9 @@ import SwiftUI
 
 struct GlobPatternListItem: View {
     @Binding var pattern: GlobPattern
-    @Binding var selection: Set<GlobPattern>
+    @Binding var selection: Set<UUID>
     var addPattern: () -> Void
-    var removePatterns: (_ selection: Set<GlobPattern>?) -> Void
+    var removePatterns: (_ selection: Set<UUID>?) -> Void
     var focusedField: FocusState<String?>.Binding
     var isLast: Bool
 
@@ -21,9 +21,9 @@ struct GlobPatternListItem: View {
 
     init(
         pattern: Binding<GlobPattern>,
-        selection: Binding<Set<GlobPattern>>,
+        selection: Binding<Set<UUID>>,
         addPattern: @escaping () -> Void,
-        removePatterns: @escaping (_ selection: Set<GlobPattern>?) -> Void,
+        removePatterns: @escaping (_ selection: Set<UUID>?) -> Void,
         focusedField: FocusState<String?>.Binding,
         isLast: Bool
     ) {
@@ -45,22 +45,23 @@ struct GlobPatternListItem: View {
             .autocorrectionDisabled()
             .labelsHidden()
             .onSubmit {
-                if !value.isEmpty && isLast {
-                    addPattern()
+                if !value.isEmpty {
+                    if isLast {
+                        addPattern()
+                    } else {
+                        selection.insert(pattern.id)
+                    }
                 }
             }
             .onChange(of: isFocused) { newIsFocused in
                 if newIsFocused {
-                    if !selection.contains(pattern) {
-                        selection.removeAll()
-                        selection.insert(pattern)
+                    if !selection.contains(pattern.id) {
+                        selection = [pattern.id]
                     }
-                } else {
-                    if value.isEmpty {
-                        removePatterns(nil)
-                    } else {
-                        pattern.value = value
-                    }
+                } else if pattern.value.isEmpty {
+                    removePatterns(selection)
+                } else if pattern.value != value {
+                    pattern.value = value
                 }
             }
     }
