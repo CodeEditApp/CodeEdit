@@ -157,7 +157,7 @@ private extension SourceControlGitView {
                 // Fallback to `.gitignore_global` in the home directory
                 fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".gitignore_global")
                 // Set the default path in Git config if not set
-                await gitConfig.set(key: "core.excludesfile", value: fileURL.path, global: true)
+                await gitConfig.set(key: "core.excludesfile", value: "~/\(fileURL.lastPathComponent)")
             }
 
             // Ensure the file exists

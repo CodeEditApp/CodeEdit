@@ -182,6 +182,12 @@ class IgnorePatternModel: ObservableObject {
 
     private func writeAllPatterns() {
         let content = patterns.map(\.value).joined(separator: "\n")
+        Task {
+            let excludesfile: String? = try await gitConfig.get(key: "core.excludesfile")
+            if excludesfile == "" {
+                await gitConfig.set(key: "core.excludesfile", value: "~/\(fileURL.lastPathComponent)")
+            }
+        }
         try? content.write(to: fileURL, atomically: true, encoding: .utf8)
     }
 
@@ -271,6 +277,6 @@ class IgnorePatternModel: ObservableObject {
     func setupGlobalIgnoreFile() async {
         guard !FileManager.default.fileExists(atPath: fileURL.path) else { return }
         FileManager.default.createFile(atPath: fileURL.path, contents: nil)
-        await gitConfig.set(key: "core.excludesfile", value: fileURL.path, global: true)
+        await gitConfig.set(key: "core.excludesfile", value: "~/\(fileURL.lastPathComponent)")
     }
 }
