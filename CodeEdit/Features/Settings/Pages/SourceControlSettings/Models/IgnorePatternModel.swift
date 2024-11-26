@@ -259,11 +259,6 @@ class IgnorePatternModel: ObservableObject {
 
     @MainActor
     func addPattern() {
-        if patterns.isEmpty {
-            Task {
-                await setupGlobalIgnoreFile()
-            }
-        }
         patterns.append(GlobPattern(value: ""))
     }
 
@@ -272,11 +267,5 @@ class IgnorePatternModel: ObservableObject {
         let patternsToRemove = selection?.compactMap { getPattern(for: $0) } ?? []
         patterns.removeAll { patternsToRemove.contains($0) }
         self.selection.removeAll()
-    }
-
-    func setupGlobalIgnoreFile() async {
-        guard !FileManager.default.fileExists(atPath: fileURL.path) else { return }
-        FileManager.default.createFile(atPath: fileURL.path, contents: nil)
-        await gitConfig.set(key: "core.excludesfile", value: "~/\(fileURL.lastPathComponent)")
     }
 }
