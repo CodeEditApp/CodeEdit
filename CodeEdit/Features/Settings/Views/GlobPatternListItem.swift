@@ -48,8 +48,6 @@ struct GlobPatternListItem: View {
                 if !value.isEmpty {
                     if isLast {
                         addPattern()
-                    } else {
-                        selection.insert(pattern.id)
                     }
                 }
             }
@@ -58,7 +56,7 @@ struct GlobPatternListItem: View {
                     if !selection.contains(pattern.id) {
                         selection = [pattern.id]
                     }
-                } else if pattern.value.isEmpty {
+                } else if value.isEmpty {
                     removePatterns(selection)
                 } else if pattern.value != value {
                     pattern.value = value

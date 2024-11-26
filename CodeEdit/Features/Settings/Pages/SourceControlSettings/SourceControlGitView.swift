@@ -135,23 +135,44 @@ private extension SourceControlGitView {
     }
 
     private func openGitIgnoreFile() {
-        let fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".gitignore_global")
+        Task {
+            // Get the `core.excludesfile` configuration
+            let excludesfile: String? = try await gitConfig.get(key: "core.excludesfile")
 
-        if !FileManager.default.fileExists(atPath: fileURL.path) {
-            FileManager.default.createFile(atPath: fileURL.path, contents: nil)
-            guard !FileManager.default.fileExists(atPath: fileURL.path) else { return }
-            FileManager.default.createFile(atPath: fileURL.path, contents: nil)
-            Task {
+            // Determine the file URL
+            let fileURL: URL
+            if let excludesfile, !excludesfile.isEmpty {
+                if excludesfile.starts(with: "~/") {
+                    // If the path starts with "~/", expand it to the home directory
+                    let relativePath = String(excludesfile.dropFirst(2)) // Remove "~/"
+                    fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(relativePath)
+                } else if excludesfile.starts(with: "/") {
+                    // If the path is absolute, use it directly
+                    fileURL = URL(fileURLWithPath: excludesfile)
+                } else {
+                    // Assume it's relative to the home directory
+                    fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(excludesfile)
+                }
+            } else {
+                // Fallback to `.gitignore_global` in the home directory
+                fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".gitignore_global")
+                // Set the default path in Git config if not set
                 await gitConfig.set(key: "core.excludesfile", value: fileURL.path, global: true)
             }
-        }
 
-        NSDocumentController.shared.openDocument(
-            withContentsOf: fileURL,
-            display: true
-        ) { _, _, error in
-            if let error = error {
-                print("Failed to open document: \(error.localizedDescription)")
+            // Ensure the file exists
+            if !FileManager.default.fileExists(atPath: fileURL.path) {
+                FileManager.default.createFile(atPath: fileURL.path, contents: nil)
+            }
+
+            // Open the file in the editor
+            NSDocumentController.shared.openDocument(
+                withContentsOf: fileURL,
+                display: true
+            ) { _, _, error in
+                if let error = error {
+                    print("Failed to open document: \(error.localizedDescription)")
+                }
             }
         }
     }

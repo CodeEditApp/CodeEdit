@@ -87,51 +87,19 @@ class IgnorePatternModel: ObservableObject {
     }
 
     func savePatterns() {
-        // Suspend the file monitor to avoid self-triggered updates
-        stopFileMonitor()
+        stopFileMonitor() // Suspend the file monitor to avoid self-triggered updates
+        defer { startFileMonitor() }
 
-        defer {
-            startFileMonitor()
-        }
-
-        // Get the file contents; if the file doesn't exist, create it with the patterns
         guard let fileContent = try? String(contentsOf: fileURL) else {
             writeAllPatterns()
             return
         }
 
         let lines = fileContent.split(separator: "\n", omittingEmptySubsequences: false).map(String.init)
-        var patternToLineIndex: [String: Int] = [:] // Map patterns to their line indices
-        var reorderedLines: [String] = [] // Store the final reordered lines
+        let (patternToLineIndex, nonPatternLines) = mapLines(lines)
+        let globalCommentLines = extractGlobalComments(nonPatternLines, patternToLineIndex)
 
-        // Map existing patterns in the file
-        for (index, line) in lines.enumerated() {
-            let trimmedLine = line.trimmingCharacters(in: .whitespaces)
-            if !trimmedLine.isEmpty && !trimmedLine.hasPrefix("#") {
-                patternToLineIndex[trimmedLine] = index
-            }
-        }
-
-        // Add patterns in the new order specified by the `patterns` array
-        for pattern in patterns {
-            let value = pattern.value
-            if let index = patternToLineIndex[value] {
-                // Keep the original line if it matches a pattern
-                reorderedLines.append(lines[index])
-                patternToLineIndex.removeValue(forKey: value)
-            } else {
-                // Add new patterns that don't exist in the file
-                reorderedLines.append(value)
-            }
-        }
-
-        // Add remaining non-pattern lines (comments, whitespace)
-        for (index, line) in lines.enumerated() {
-            let trimmedLine = line.trimmingCharacters(in: .whitespaces)
-            if trimmedLine.isEmpty || trimmedLine.hasPrefix("#") {
-                reorderedLines.insert(line, at: index)
-            }
-        }
+        var reorderedLines = reorderPatterns(globalCommentLines, patternToLineIndex, nonPatternLines, lines)
 
         // Ensure single blank line at the end
         reorderedLines = cleanUpWhitespace(in: reorderedLines)
@@ -139,6 +107,77 @@ class IgnorePatternModel: ObservableObject {
         // Write the updated content back to the file
         let updatedContent = reorderedLines.joined(separator: "\n")
         try? updatedContent.write(to: fileURL, atomically: true, encoding: .utf8)
+    }
+
+    private func mapLines(_ lines: [String]) -> ([String: Int], [(line: String, index: Int)]) {
+        var patternToLineIndex: [String: Int] = [:]
+        var nonPatternLines: [(line: String, index: Int)] = []
+
+        for (index, line) in lines.enumerated() {
+            let trimmedLine = line.trimmingCharacters(in: .whitespaces)
+            if !trimmedLine.isEmpty && !trimmedLine.hasPrefix("#") {
+                patternToLineIndex[trimmedLine] = index
+            } else if index != lines.count - 1 {
+                nonPatternLines.append((line: line, index: index))
+            }
+        }
+
+        return (patternToLineIndex, nonPatternLines)
+    }
+
+    private func extractGlobalComments(
+        _ nonPatternLines: [(line: String, index: Int)],
+        _ patternToLineIndex: [String: Int]
+    ) -> [String] {
+        let globalComments = nonPatternLines.filter { $0.index < (patternToLineIndex.values.min() ?? Int.max) }
+        return globalComments.map(\.line)
+    }
+
+    private func reorderPatterns(
+        _ globalCommentLines: [String],
+        _ patternToLineIndex: [String: Int],
+        _ nonPatternLines: [(line: String, index: Int)],
+        _ lines: [String]
+    ) -> [String] {
+        var reorderedLines: [String] = globalCommentLines
+        var usedNonPatternLines = Set<Int>()
+        var usedPatterns = Set<String>()
+
+        for pattern in patterns {
+            let value = pattern.value
+
+            // Insert the pattern
+            reorderedLines.append(value)
+            usedPatterns.insert(value)
+
+            // Preserve associated non-pattern lines
+            if let currentIndex = patternToLineIndex[value] {
+                for nextIndex in (currentIndex + 1)..<lines.count {
+                    if let nonPatternLine = nonPatternLines.first(where: { $0.index == nextIndex }),
+                       !usedNonPatternLines.contains(nonPatternLine.index) {
+                        reorderedLines.append(nonPatternLine.line)
+                        usedNonPatternLines.insert(nonPatternLine.index)
+                    } else {
+                        break
+                    }
+                }
+            }
+        }
+
+        // Retain non-pattern lines that follow deleted patterns
+        for (line, index) in nonPatternLines {
+            if !usedNonPatternLines.contains(index) && !reorderedLines.contains(line) {
+                reorderedLines.append(line)
+                usedNonPatternLines.insert(index)
+            }
+        }
+
+        // Add new patterns that were not in the original file
+        for pattern in patterns where !usedPatterns.contains(pattern.value) {
+            reorderedLines.append(pattern.value)
+        }
+
+        return reorderedLines
     }
 
     private func writeAllPatterns() {
