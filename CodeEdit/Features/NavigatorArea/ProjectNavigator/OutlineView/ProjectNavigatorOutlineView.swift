@@ -77,7 +77,8 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
             guard let outlineView = controller?.outlineView else { return }
 
             for item in updatedItems {
-                outlineView.reloadItem(item, reloadChildren: true)
+                controller?.filteredContentChildren.removeAll()
+                outlineView.reloadData()
             }
         }
 
