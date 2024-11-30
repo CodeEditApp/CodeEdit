@@ -15,33 +15,50 @@ struct SourceControlGitView: View {
 
     @State private var authorName: String = ""
     @State private var authorEmail: String = ""
+    @State private var defaultBranch: String = ""
     @State private var preferRebaseWhenPulling: Bool = false
     @State private var hasAppeared: Bool = false
+    @State private var resolvedGitIgnorePath: String = "~/.gitignore_global"
 
     var body: some View {
         SettingsForm {
             Section {
                 gitAuthorName
                 gitEmail
+            } header: {
+                Text("Git Configuration")
+                Text("""
+                Applied globally to all repositories on your Mac. \
+                [Learn more...](https://git-scm.com/docs/git-config)
+                """)
             }
             Section {
+                defaultBranchName
                 preferToRebaseWhenPulling
                 showMergeCommitsInPerFileLog
-            } footer: {
-                Button("Open in Editor...", action: openGitConfigFile)
+            }
+            Section {
+                gitConfigEditor
             }
             Section {
                 IgnoredFilesListView()
             } header: {
                 Text("Ignored Files")
-            } footer: {
-                Button("Open in Editor...", action: openGitIgnoreFile)
+                Text("""
+                Patterns for files and folders that Git should ignore and not track. \
+                Applied globally to all repositories on your Mac. \
+                [Learn more...](https://git-scm.com/docs/gitignore)
+                """)
+            }
+            Section {
+                gitIgnoreEditor
             }
         }
         .onAppear {
             Task {
                 authorName = try await gitConfig.get(key: "user.name", global: true) ?? ""
                 authorEmail = try await gitConfig.get(key: "user.email", global: true) ?? ""
+                defaultBranch = try await gitConfig.get(key: "init.defaultBranch", global: true) ?? ""
                 preferRebaseWhenPulling = try await gitConfig.get(key: "pull.rebase", global: true) ?? false
                 try? await Task.sleep(for: .milliseconds(0))
                 hasAppeared = true
@@ -74,6 +91,22 @@ private extension SourceControlGitView {
                         }
                     }
                 }
+            }
+    }
+
+    private var defaultBranchName: some View {
+        TextField(text: $defaultBranch) {
+            Text("Default branch name")
+            Text("Cannot contain spaces, backslashes, or other symbols")
+        }
+        .onChange(of: defaultBranch) { newValue in
+            if hasAppeared {
+                Limiter.debounce(id: "defaultBranchDebouncer", duration: 0.5) {
+                    Task {
+                        await gitConfig.set(key: "init.defaultBranch", value: newValue, global: true)
+                    }
+                }
+            }
         }
     }
 
@@ -86,7 +119,6 @@ private extension SourceControlGitView {
             if hasAppeared {
                 Limiter.debounce(id: "pullRebaseDebouncer", duration: 0.5) {
                     Task {
-                        print("Setting pull.rebase to \(newValue)")
                         await gitConfig.set(key: "pull.rebase", value: newValue, global: true)
                     }
                 }
@@ -101,19 +133,63 @@ private extension SourceControlGitView {
         )
     }
 
-    private var bottomToolbar: some View {
-        HStack(spacing: 12) {
-            Button {} label: {
-                Image(systemName: "plus")
-                    .foregroundColor(Color.secondary)
+    private var gitConfigEditor: some View {
+        HStack {
+            Text("Git configuration is stored in \"~/.gitconfig\".")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Button("Open in Editor...", action: openGitConfigFile)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private var gitIgnoreEditor: some View {
+        HStack {
+            Text("Ignored file patterns are stored in \"\(resolvedGitIgnorePath)\".")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Button("Open in Editor...", action: openGitIgnoreFile)
+        }
+        .frame(maxWidth: .infinity)
+        .onAppear {
+            Task {
+                resolvedGitIgnorePath = await gitIgnorePath()
             }
-            .buttonStyle(.plain)
-            Button {} label: {
-                Image(systemName: "minus")
+        }
+    }
+
+    private var gitIgnoreURL: URL {
+        get async throws {
+            if let excludesfile: String = try await gitConfig.get(
+                key: "core.excludesfile",
+                global: true
+            ), !excludesfile.isEmpty {
+                if excludesfile.starts(with: "~/") {
+                    let relativePath = String(excludesfile.dropFirst(2))
+                    return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(relativePath)
+                } else if excludesfile.starts(with: "/") {
+                    return URL(fileURLWithPath: excludesfile)
+                } else {
+                    return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(excludesfile)
+                }
+            } else {
+                let defaultURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
+                    ".gitignore_global"
+                )
+                await gitConfig.set(key: "core.excludesfile", value: "~/\(defaultURL.lastPathComponent)", global: true)
+                return defaultURL
             }
-            .disabled(true)
-            .buttonStyle(.plain)
-            Spacer()
+        }
+    }
+
+    private func gitIgnorePath() async -> String {
+        do {
+            let url = try await gitIgnoreURL
+            return url.path.replacingOccurrences(of: FileManager.default.homeDirectoryForCurrentUser.path, with: "~")
+        } catch {
+            return "~/.gitignore_global"
         }
     }
 
@@ -136,43 +212,18 @@ private extension SourceControlGitView {
 
     private func openGitIgnoreFile() {
         Task {
-            // Get the `core.excludesfile` configuration
-            let excludesfile: String? = try await gitConfig.get(key: "core.excludesfile")
+            do {
+                let fileURL = try await gitIgnoreURL
 
-            // Determine the file URL
-            let fileURL: URL
-            if let excludesfile, !excludesfile.isEmpty {
-                if excludesfile.starts(with: "~/") {
-                    // If the path starts with "~/", expand it to the home directory
-                    let relativePath = String(excludesfile.dropFirst(2)) // Remove "~/"
-                    fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(relativePath)
-                } else if excludesfile.starts(with: "/") {
-                    // If the path is absolute, use it directly
-                    fileURL = URL(fileURLWithPath: excludesfile)
-                } else {
-                    // Assume it's relative to the home directory
-                    fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(excludesfile)
+                // Ensure the file exists
+                if !FileManager.default.fileExists(atPath: fileURL.path) {
+                    FileManager.default.createFile(atPath: fileURL.path, contents: nil)
                 }
-            } else {
-                // Fallback to `.gitignore_global` in the home directory
-                fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".gitignore_global")
-                // Set the default path in Git config if not set
-                await gitConfig.set(key: "core.excludesfile", value: "~/\(fileURL.lastPathComponent)", global: true)
-            }
 
-            // Ensure the file exists
-            if !FileManager.default.fileExists(atPath: fileURL.path) {
-                FileManager.default.createFile(atPath: fileURL.path, contents: nil)
-            }
-
-            // Open the file in the editor
-            NSDocumentController.shared.openDocument(
-                withContentsOf: fileURL,
-                display: true
-            ) { _, _, error in
-                if let error = error {
-                    print("Failed to open document: \(error.localizedDescription)")
-                }
+                // Open the file in the editor
+                try await NSDocumentController.shared.openDocument(withContentsOf: fileURL, display: true)
+            } catch {
+                print("Failed to open document: \(error.localizedDescription)")
             }
         }
     }

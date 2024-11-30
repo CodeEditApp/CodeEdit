@@ -21,23 +21,42 @@ class IgnorePatternModel: ObservableObject {
     @Published var selection: Set<UUID> = []
 
     private let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
-    private let fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".gitignore_global")
     private var fileMonitor: DispatchSourceFileSystemObject?
 
     init() {
-        loadPatterns()
-        startFileMonitor()
+        Task {
+            try? await startFileMonitor()
+            await loadPatterns()
+        }
     }
 
     deinit {
         stopFileMonitor()
     }
 
-    private func startFileMonitor() {
-        let fileDescriptor = open(fileURL.path, O_EVTONLY)
-        guard fileDescriptor != -1 else {
-            return
+    private func gitIgnoreURL() async throws -> URL {
+        let excludesfile = try await gitConfig.get(key: "core.excludesfile") ?? ""
+        if !excludesfile.isEmpty {
+            if excludesfile.starts(with: "~/") {
+                let relativePath = String(excludesfile.dropFirst(2)) // Remove "~/"
+                return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(relativePath)
+            } else if excludesfile.starts(with: "/") {
+                return URL(fileURLWithPath: excludesfile) // Absolute path
+            } else {
+                return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(excludesfile)
+            }
+        } else {
+            let defaultPath = ".gitignore_global"
+            let fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(defaultPath)
+            await gitConfig.set(key: "core.excludesfile", value: "~/\(defaultPath)", global: true)
+            return fileURL
         }
+    }
+
+    private func startFileMonitor() async throws {
+        let fileURL = try await gitIgnoreURL()
+        let fileDescriptor = open(fileURL.path, O_EVTONLY)
+        guard fileDescriptor != -1 else { return }
 
         let source = DispatchSource.makeFileSystemObjectSource(
             fileDescriptor: fileDescriptor,
@@ -46,14 +65,16 @@ class IgnorePatternModel: ObservableObject {
         )
 
         source.setEventHandler { [weak self] in
-            self?.loadPatterns()
+            Task {
+                await self?.loadPatterns()
+            }
         }
 
         source.setCancelHandler {
             close(fileDescriptor)
         }
 
-        fileMonitor?.cancel() // Cancel any existing monitor
+        fileMonitor?.cancel()
         fileMonitor = source
         source.resume()
     }
@@ -63,50 +84,76 @@ class IgnorePatternModel: ObservableObject {
         fileMonitor = nil
     }
 
-    func loadPatterns() {
-        loadingPatterns = true
+    func loadPatterns() async {
+        await MainActor.run { loadingPatterns = true } // Ensure `loadingPatterns` is updated on the main thread
 
-        guard FileManager.default.fileExists(atPath: fileURL.path) else {
-            patterns = []
-            return
-        }
+        do {
+            let fileURL = try await gitIgnoreURL()
+            guard FileManager.default.fileExists(atPath: fileURL.path) else {
+                await MainActor.run {
+                    patterns = []
+                    loadingPatterns = false // Update on the main thread
+                }
+                return
+            }
 
-        if let content = try? String(contentsOf: fileURL) {
-            patterns = content.split(separator: "\n")
-                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-                .filter { !$0.isEmpty && !$0.starts(with: "#") }
-                .map { GlobPattern(value: String($0)) }
+            if let content = try? String(contentsOf: fileURL) {
+                let parsedPatterns = content.split(separator: "\n")
+                    .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                    .filter { !$0.isEmpty && !$0.starts(with: "#") }
+                    .map { GlobPattern(value: String($0)) }
+
+                await MainActor.run {
+                    patterns = parsedPatterns // Update `patterns` on the main thread
+                    loadingPatterns = false  // Ensure `loadingPatterns` is updated on the main thread
+                }
+            } else {
+                await MainActor.run {
+                    patterns = []
+                    loadingPatterns = false
+                }
+            }
+        } catch {
+            print("Error loading patterns: \(error)")
+            await MainActor.run {
+                patterns = []
+                loadingPatterns = false
+            }
         }
     }
-
-    // Map to track the line numbers of patterns.
-    var patternLineMapping: [String: Int] = [:]
 
     func getPattern(for id: UUID) -> GlobPattern? {
         return patterns.first(where: { $0.id == id })
     }
 
     func savePatterns() {
-        stopFileMonitor() // Suspend the file monitor to avoid self-triggered updates
-        defer { startFileMonitor() }
+        Task {
+            stopFileMonitor()
+            defer { Task { try? await startFileMonitor() } }
 
-        guard let fileContent = try? String(contentsOf: fileURL) else {
-            writeAllPatterns()
-            return
+            do {
+                let fileURL = try await gitIgnoreURL()
+                guard let fileContent = try? String(contentsOf: fileURL) else {
+                    writeAllPatterns()
+                    return
+                }
+
+                let lines = fileContent.split(separator: "\n", omittingEmptySubsequences: false).map(String.init)
+                let (patternToLineIndex, nonPatternLines) = mapLines(lines)
+                let globalCommentLines = extractGlobalComments(nonPatternLines, patternToLineIndex)
+
+                var reorderedLines = reorderPatterns(globalCommentLines, patternToLineIndex, nonPatternLines, lines)
+
+                // Ensure single blank line at the end
+                reorderedLines = cleanUpWhitespace(in: reorderedLines)
+
+                // Write the updated content back to the file
+                let updatedContent = reorderedLines.joined(separator: "\n")
+                try updatedContent.write(to: fileURL, atomically: true, encoding: .utf8)
+            } catch {
+                print("Error saving patterns: \(error)")
+            }
         }
-
-        let lines = fileContent.split(separator: "\n", omittingEmptySubsequences: false).map(String.init)
-        let (patternToLineIndex, nonPatternLines) = mapLines(lines)
-        let globalCommentLines = extractGlobalComments(nonPatternLines, patternToLineIndex)
-
-        var reorderedLines = reorderPatterns(globalCommentLines, patternToLineIndex, nonPatternLines, lines)
-
-        // Ensure single blank line at the end
-        reorderedLines = cleanUpWhitespace(in: reorderedLines)
-
-        // Write the updated content back to the file
-        let updatedContent = reorderedLines.joined(separator: "\n")
-        try? updatedContent.write(to: fileURL, atomically: true, encoding: .utf8)
     }
 
     private func mapLines(_ lines: [String]) -> ([String: Int], [(line: String, index: Int)]) {
@@ -181,53 +228,18 @@ class IgnorePatternModel: ObservableObject {
     }
 
     private func writeAllPatterns() {
-        let content = patterns.map(\.value).joined(separator: "\n")
         Task {
-            let excludesfile: String? = try await gitConfig.get(key: "core.excludesfile")
-            if excludesfile == "" {
-                await gitConfig.set(key: "core.excludesfile", value: "~/\(fileURL.lastPathComponent)")
-            }
-        }
-        try? content.write(to: fileURL, atomically: true, encoding: .utf8)
-    }
-
-    private func handlePatterns(
-        _ lines: inout [String],
-        existingPatterns: inout Set<String>,
-        patternLineMap: inout [String: Int]
-    ) {
-        var handledPatterns = Set<String>()
-
-        // Update or preserve existing patterns
-        for pattern in patterns {
-            let value = pattern.value
-            if let lineIndex = patternLineMap[value] {
-                // Pattern already exists, update it in place
-                lines[lineIndex] = value
-                handledPatterns.insert(value)
-            } else {
-                // Check if the pattern has been edited and corresponds to a previous pattern
-                if let oldPattern = existingPatterns.first(where: { !handledPatterns.contains($0) && $0 != value }),
-                   let lineIndex = patternLineMap[oldPattern] {
-                    lines[lineIndex] = value
-                    existingPatterns.remove(oldPattern)
-                    patternLineMap[value] = lineIndex
-                    handledPatterns.insert(value)
-                } else {
-                    // Append new patterns at the end
-                    if let lastLine = lines.last, lastLine.trimmingCharacters(in: .whitespaces).isEmpty {
-                        lines.removeLast() // Remove trailing blank line before appending
-                    }
-                    lines.append(value)
+            do {
+                let fileURL = try await gitIgnoreURL()
+                if !FileManager.default.fileExists(atPath: fileURL.path) {
+                    FileManager.default.createFile(atPath: fileURL.path, contents: nil)
                 }
-            }
-        }
 
-        // Remove patterns no longer in the list
-        let currentPatterns = Set(patterns.map(\.value))
-        lines = lines.filter { line in
-            let trimmedLine = line.trimmingCharacters(in: .whitespaces)
-            return trimmedLine.isEmpty || trimmedLine.hasPrefix("#") || currentPatterns.contains(trimmedLine)
+                let content = patterns.map(\.value).joined(separator: "\n")
+                try content.write(to: fileURL, atomically: true, encoding: .utf8)
+            } catch {
+                print("Failed to write all patterns: \(error)")
+            }
         }
     }
 

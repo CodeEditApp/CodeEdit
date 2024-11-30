@@ -13,9 +13,6 @@ struct SourceControlGeneralView: View {
 
     let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
 
-    @State private var defaultBranch: String = ""
-    @State private var hasAppeared = false
-
     var body: some View {
         SettingsForm {
             Section("Source Control") {
@@ -32,15 +29,6 @@ struct SourceControlGeneralView: View {
             Section {
                 comparisonView
                 sourceControlNavigator
-                defaultBranchName
-            }
-        }
-        .onAppear {
-            Task {
-                defaultBranch = try await gitConfig.get(key: "init.defaultBranch", global: true) ?? ""
-                DispatchQueue.main.async {
-                    hasAppeared = true
-                }
             }
         }
     }
@@ -123,22 +111,6 @@ private extension SourceControlGeneralView {
                 .tag(SettingsData.ControlNavigatorOrder.sortByName)
             Text("Sort by Date")
                 .tag(SettingsData.ControlNavigatorOrder.sortByDate)
-        }
-    }
-
-    private var defaultBranchName: some View {
-        TextField(text: $defaultBranch) {
-            Text("Default branch name")
-            Text("Cannot contain spaces, backslashes, or other symbols")
-        }
-        .onChange(of: defaultBranch) { newValue in
-            if hasAppeared {
-                Limiter.debounce(id: "defaultBranchDebouncer", duration: 0.5) {
-                    Task {
-                        await gitConfig.set(key: "init.defaultBranch", value: newValue, global: true)
-                    }
-                }
-            }
         }
     }
 }
