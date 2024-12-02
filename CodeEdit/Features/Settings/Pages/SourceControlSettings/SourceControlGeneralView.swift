@@ -15,8 +15,10 @@ struct SourceControlGeneralView: View {
 
     var body: some View {
         SettingsForm {
-            Section("Source Control") {
+            Section {
                 sourceControlIsEnabled
+            }
+            Section("Source Control") {
                 refreshLocalStatusAuto
                 fetchRefreshStatusAuto
                 addRemoveFilesAuto
@@ -37,9 +39,20 @@ struct SourceControlGeneralView: View {
 private extension SourceControlGeneralView {
     private var sourceControlIsEnabled: some View {
         Toggle(
-            "Enable source control",
             isOn: $settings.sourceControlIsEnabled
-        )
+        ) {
+            Label {
+                Text("Source Control")
+                Text("""
+                 Back up your files, collaborate with others, and tag your releases. \
+                 [Learn more...](https://developer.apple.com/documentation/xcode/source-control-management)
+                 """)
+                .font(.callout)
+             } icon: {
+                FeatureIcon(symbol: Image(symbol: "vault"), color: Color(.systemBlue), size: 26)
+            }
+        }
+        .controlSize(.large)
     }
 
     private var refreshLocalStatusAuto: some View {

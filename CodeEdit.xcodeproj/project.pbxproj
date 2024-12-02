@@ -571,6 +571,7 @@
 		B6966A302C33282200259C2D /* RemoteBranchPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A2F2C33282200259C2D /* RemoteBranchPicker.swift */; };
 		B6966A322C3348D300259C2D /* WorkspaceSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A312C3348D300259C2D /* WorkspaceSheets.swift */; };
 		B6966A342C34996B00259C2D /* SourceControlManager+GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A332C34996B00259C2D /* SourceControlManager+GitClient.swift */; };
+		B696A7E62CFE20C40048CFE1 /* FeatureIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B696A7E52CFE20C40048CFE1 /* FeatureIcon.swift */; };
 		B697937A29FF5668002027EC /* AccountsSettingsAccountLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */; };
 		B69BFDC72B0686910050D9A6 /* GitClient+Initiate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */; };
 		B69D3EDE2C5E85A2005CF43A /* StopTaskToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D3EDD2C5E85A2005CF43A /* StopTaskToolbarButton.swift */; };
@@ -1246,6 +1247,7 @@
 		B6966A2F2C33282200259C2D /* RemoteBranchPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteBranchPicker.swift; sourceTree = "<group>"; };
 		B6966A312C3348D300259C2D /* WorkspaceSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceSheets.swift; sourceTree = "<group>"; };
 		B6966A332C34996B00259C2D /* SourceControlManager+GitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SourceControlManager+GitClient.swift"; sourceTree = "<group>"; };
+		B696A7E52CFE20C40048CFE1 /* FeatureIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureIcon.swift; sourceTree = "<group>"; };
 		B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSettingsAccountLink.swift; sourceTree = "<group>"; };
 		B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Initiate.swift"; sourceTree = "<group>"; };
 		B69D3EDD2C5E85A2005CF43A /* StopTaskToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopTaskToolbarButton.swift; sourceTree = "<group>"; };
@@ -3558,6 +3560,7 @@
 		B6CF632A29E5436C0085880A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B696A7E52CFE20C40048CFE1 /* FeatureIcon.swift */,
 				B67DBB932CD5FBE2007F4F18 /* GlobPatternListItem.swift */,
 				B67DBB912CD5EAA4007F4F18 /* GlobPatternList.swift */,
 				B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */,
@@ -4032,6 +4035,7 @@
 				30B0880D2C0D53080063A882 /* LanguageServer+References.swift in Sources */,
 				77A01E2E2BB4261200F0EA38 /* CEWorkspaceSettings.swift in Sources */,
 				6C4104E9297C970F00F472BA /* AboutDefaultView.swift in Sources */,
+				B696A7E62CFE20C40048CFE1 /* FeatureIcon.swift in Sources */,
 				587B9E6F29301D8F00AC7927 /* GitLabProjectAccess.swift in Sources */,
 				587B9E6929301D8F00AC7927 /* GitLabEvent.swift in Sources */,
 				B63F6A7B2C561BCB003B4342 /* RegexFormatter.swift in Sources */,
