@@ -15,34 +15,39 @@ struct AccountsSettingsView: View {
     @State private var selectedProvider: SourceControlAccount.Provider?
 
     var body: some View {
-        SettingsForm {
-            Section {
-                if $gitAccounts.isEmpty {
-                    Text("No accounts")
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                } else {
-                    ForEach($gitAccounts, id: \.self) { $account in
-                        AccountsSettingsAccountLink($account)
-                    }
-                }
-            } footer: {
-                HStack {
-                    Spacer()
-                    Button("Add Account...") { addAccountSheetPresented.toggle() }
-                    .sheet(isPresented: $addAccountSheetPresented, content: {
-                        AccountSelectionView(selectedProvider: $selectedProvider)
-                    })
-                    .sheet(item: $selectedProvider, content: { provider in
-                        switch provider {
-                        case .github, .githubEnterprise, .gitlab, .gitlabSelfHosted:
-                            AccountsSettingsSigninView(provider, addAccountSheetPresented: $addAccountSheetPresented)
-                        default:
-                            implementationNeeded
+        NavigationStack {
+            SettingsForm {
+                Section {
+                    if $gitAccounts.isEmpty {
+                        Text("No accounts")
+                            .foregroundColor(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    } else {
+                        ForEach($gitAccounts, id: \.self) { $account in
+                            AccountsSettingsAccountLink($account)
                         }
-                    })
+                    }
+                } footer: {
+                    HStack {
+                        Spacer()
+                        Button("Add Account...") { addAccountSheetPresented.toggle() }
+                            .sheet(isPresented: $addAccountSheetPresented, content: {
+                                AccountSelectionView(selectedProvider: $selectedProvider)
+                            })
+                            .sheet(item: $selectedProvider, content: { provider in
+                                switch provider {
+                                case .github, .githubEnterprise, .gitlab, .gitlabSelfHosted:
+                                    AccountsSettingsSigninView(
+                                        provider,
+                                        addAccountSheetPresented: $addAccountSheetPresented
+                                    )
+                                default:
+                                    implementationNeeded
+                                }
+                            })
+                    }
+                    .padding(.top, 10)
                 }
-                .padding(.top, 10)
             }
         }
     }
