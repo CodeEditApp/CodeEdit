@@ -21,7 +21,7 @@ struct SourceControlGitView: View {
     @State private var resolvedGitIgnorePath: String = "~/.gitignore_global"
 
     var body: some View {
-        SettingsForm {
+        Group {
             Section {
                 gitAuthorName
                 gitEmail

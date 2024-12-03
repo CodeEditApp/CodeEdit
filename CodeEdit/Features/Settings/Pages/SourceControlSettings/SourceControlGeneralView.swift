@@ -14,10 +14,7 @@ struct SourceControlGeneralView: View {
     let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
 
     var body: some View {
-        SettingsForm {
-            Section {
-                sourceControlIsEnabled
-            }
+        Group {
             Section("Source Control") {
                 refreshLocalStatusAuto
                 fetchRefreshStatusAuto
@@ -37,30 +34,11 @@ struct SourceControlGeneralView: View {
 }
 
 private extension SourceControlGeneralView {
-    private var sourceControlIsEnabled: some View {
-        Toggle(
-            isOn: $settings.sourceControlIsEnabled
-        ) {
-            Label {
-                Text("Source Control")
-                Text("""
-                 Back up your files, collaborate with others, and tag your releases. \
-                 [Learn more...](https://developer.apple.com/documentation/xcode/source-control-management)
-                 """)
-                .font(.callout)
-             } icon: {
-                FeatureIcon(symbol: Image(symbol: "vault"), color: Color(.systemBlue), size: 26)
-            }
-        }
-        .controlSize(.large)
-    }
-
     private var refreshLocalStatusAuto: some View {
         Toggle(
             "Refresh local status automatically",
             isOn: $settings.refreshStatusLocally
         )
-        .disabled(!settings.sourceControlIsEnabled)
     }
 
     private var fetchRefreshStatusAuto: some View {
@@ -68,7 +46,6 @@ private extension SourceControlGeneralView {
             "Fetch and refresh server status automatically",
             isOn: $settings.fetchRefreshServerStatus
         )
-        .disabled(!settings.sourceControlIsEnabled)
     }
 
     private var addRemoveFilesAuto: some View {
@@ -76,7 +53,6 @@ private extension SourceControlGeneralView {
             "Add and remove files automatically",
             isOn: $settings.addRemoveAutomatically
         )
-        .disabled(!settings.sourceControlIsEnabled)
     }
 
     private var selectFilesToCommitAuto: some View {
@@ -84,7 +60,6 @@ private extension SourceControlGeneralView {
             "Select files to commit automatically",
             isOn: $settings.selectFilesToCommit
         )
-        .disabled(!settings.sourceControlIsEnabled)
     }
 
     private var showSourceControlChanges: some View {
@@ -92,7 +67,6 @@ private extension SourceControlGeneralView {
             "Show source control changes",
             isOn: $settings.showSourceControlChanges
         )
-        .disabled(!settings.sourceControlIsEnabled)
     }
 
     private var includeUpstreamChanges: some View {
@@ -100,7 +74,7 @@ private extension SourceControlGeneralView {
             "Include upstream changes",
             isOn: $settings.includeUpstreamChanges
         )
-        .disabled(!settings.sourceControlIsEnabled || !settings.showSourceControlChanges)
+        .disabled(!settings.showSourceControlChanges)
     }
 
     private var comparisonView: some View {
