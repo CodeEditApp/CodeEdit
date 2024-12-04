@@ -134,7 +134,7 @@ struct WorkspaceView: View {
                         }
                     }
                     .onChange(of: sourceControlIsEnabled) { newValue in
-                        if !newValue {
+                        if newValue {
                             Task {
                                 await sourceControlManager.refreshCurrentBranch()
                             }
