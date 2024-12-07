@@ -36,6 +36,7 @@ final class ProjectNavigatorViewController: NSViewController {
     var expandedItems: Set<CEWorkspaceFile> = []
 
     weak var workspace: WorkspaceDocument?
+    weak var editor: Editor?
 
     var iconColor: SettingsData.FileIconStyle = .color {
         willSet {
@@ -75,9 +76,10 @@ final class ProjectNavigatorViewController: NSViewController {
         self.outlineView.autosaveExpandedItems = true
         self.outlineView.autosaveName = workspace?.workspaceFileManager?.folderUrl.path ?? ""
         self.outlineView.headerView = nil
-        self.outlineView.menu = ProjectNavigatorMenu(sender: self.outlineView)
+        self.outlineView.menu = ProjectNavigatorMenu(self)
         self.outlineView.menu?.delegate = self
         self.outlineView.doubleAction = #selector(onItemDoubleClicked)
+        self.outlineView.allowsMultipleSelection = true
 
         self.outlineView.setAccessibilityIdentifier("ProjectNavigator")
         self.outlineView.setAccessibilityLabel("Project Navigator")
@@ -157,6 +159,9 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Expand or collapse the folder on double click
     @objc
     private func onItemDoubleClicked() {
+        /// If there are multiples items selected, don't do anything, just like in Xcode.
+        guard outlineView.selectedRowIndexes.count == 1 else { return }
+
         guard let item = outlineView.item(atRow: outlineView.clickedRow) as? CEWorkspaceFile else { return }
 
         if item.isFolder {

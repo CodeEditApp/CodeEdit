@@ -38,7 +38,7 @@ struct TaskDropDownView: View {
         .onHover { hovering in
             self.isHoveringTasks = hovering
         }
-        .popover(isPresented: $isTaskPopOverPresented, arrowEdge: .bottom) {
+        .instantPopover(isPresented: $isTaskPopOverPresented, arrowEdge: .bottom) {
             taskPopoverContent
         }
         .onTapGesture {

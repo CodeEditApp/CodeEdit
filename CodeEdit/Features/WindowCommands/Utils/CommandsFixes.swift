@@ -14,7 +14,6 @@ extension EventModifiers {
 extension NSMenuItem {
     @objc
     fileprivate func fixAlternate(_ newValue: NSEvent.ModifierFlags) {
-
         if newValue.contains(.numericPad) {
             isAlternate = true
             fixAlternate(newValue.subtracting(.numericPad))
@@ -23,10 +22,7 @@ extension NSMenuItem {
         fixAlternate(newValue)
 
         if self.title == "Open Recent" {
-            let openRecentMenu = NSMenu(title: "Open Recent")
-            openRecentMenu.perform(NSSelectorFromString("_setMenuName:"), with: "NSRecentDocumentsMenu")
-            self.submenu = openRecentMenu
-            NSDocumentController.shared.value(forKey: "_installOpenRecentMenus")
+            self.submenu = FileCommands.recentProjectsMenu.makeMenu()
         }
 
         if self.title == "OpenWindowAction" || self.title.isEmpty {

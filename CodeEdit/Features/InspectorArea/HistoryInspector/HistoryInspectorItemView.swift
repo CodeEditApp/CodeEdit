@@ -18,7 +18,7 @@ struct HistoryInspectorItemView: View {
         } set: { newValue in
             if newValue {
                 selection = commit
-            } else {
+            } else if selection == commit {
                 selection = nil
             }
         }
@@ -26,7 +26,7 @@ struct HistoryInspectorItemView: View {
 
     var body: some View {
         CommitListItemView(commit: commit, showRef: false)
-            .popover(isPresented: showPopup, arrowEdge: .leading) {
+            .instantPopover(isPresented: showPopup, arrowEdge: .leading) {
                 HistoryPopoverView(commit: commit)
             }
     }

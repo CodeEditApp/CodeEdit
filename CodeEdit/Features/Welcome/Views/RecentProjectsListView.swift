@@ -19,14 +19,8 @@ struct RecentProjectsListView: View {
     init(openDocument: @escaping (URL?, @escaping () -> Void) -> Void, dismissWindow: @escaping () -> Void) {
         self.openDocument = openDocument
         self.dismissWindow = dismissWindow
-
-        let recentProjectPaths: [String] = UserDefaults.standard.array(
-            forKey: "recentProjectPaths"
-        ) as? [String] ?? []
-        let projectsURL = recentProjectPaths.map { URL(filePath: $0) }
-        _selection = .init(initialValue: Set(projectsURL.prefix(1)))
-        _recentProjects = .init(initialValue: projectsURL)
-        donateSearchableItems()
+        self._recentProjects = .init(initialValue: RecentProjectsStore.recentProjectURLs())
+        self._selection = .init(initialValue: Set(RecentProjectsStore.recentProjectURLs().prefix(1)))
     }
 
     var listEmptyView: some View {
@@ -41,7 +35,7 @@ struct RecentProjectsListView: View {
 
     var body: some View {
         List(recentProjects, id: \.self, selection: $selection) { project in
-            RecentProjectItem(projectPath: project)
+            RecentProjectListItem(projectPath: project)
         }
         .listStyle(.sidebar)
         .contextMenu(forSelectionType: URL.self) { items in
@@ -60,33 +54,22 @@ struct RecentProjectsListView: View {
                 }
 
                 Button("Remove from Recents") {
-                    removeRecentProjects(items)
+                    removeRecentProjects()
                 }
             }
         } primaryAction: { items in
-            items.forEach {
-                openDocument($0, dismissWindow)
-            }
+            items.forEach { openDocument($0, dismissWindow) }
         }
         .onCopyCommand {
-            selection.map {
-                NSItemProvider(object: $0.path(percentEncoded: false) as NSString)
-            }
+            selection.map { NSItemProvider(object: $0.path(percentEncoded: false) as NSString) }
         }
         .onDeleteCommand {
-            removeRecentProjects(selection)
+            removeRecentProjects()
         }
         .background(EffectView(.underWindowBackground, blendingMode: .behindWindow))
-        .onReceive(NSApp.publisher(for: \.keyWindow)) { _ in
-            // Update the list whenever the key window changes.
-            // Ideally, this should be 'whenever a doc opens/closes'.
-            updateRecentProjects()
-        }
         .background {
             Button("") {
-                selection.forEach {
-                    openDocument($0, dismissWindow)
-                }
+                selection.forEach { openDocument($0, dismissWindow) }
             }
             .keyboardShortcut(.defaultAction)
             .hidden()
@@ -98,44 +81,16 @@ struct RecentProjectsListView: View {
                 }
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: RecentProjectsStore.didUpdateNotification)) { _ in
+            updateRecentProjects()
+        }
     }
 
-    func removeRecentProjects(_ items: Set<URL>) {
-        var recentProjectPaths: [String] = UserDefaults.standard.array(
-            forKey: "recentProjectPaths"
-        ) as? [String] ?? []
-        items.forEach { url in
-            recentProjectPaths.removeAll { url == URL(filePath: $0) }
-            selection.remove(url)
-        }
-        UserDefaults.standard.set(recentProjectPaths, forKey: "recentProjectPaths")
-        let projectsURL = recentProjectPaths.map { URL(filePath: $0) }
-        recentProjects = projectsURL
+    func removeRecentProjects() {
+        recentProjects = RecentProjectsStore.removeRecentProjects(selection)
     }
 
     func updateRecentProjects() {
-        let recentProjectPaths: [String] = UserDefaults.standard.array(
-            forKey: "recentProjectPaths"
-        ) as? [String] ?? []
-        let projectsURL = recentProjectPaths.map { URL(filePath: $0) }
-        recentProjects = projectsURL
-    }
-
-    func donateSearchableItems() {
-        let searchableItems = recentProjects.map { entity in
-            let attributeSet = CSSearchableItemAttributeSet(contentType: .content)
-            attributeSet.title = entity.lastPathComponent
-            attributeSet.relatedUniqueIdentifier = entity.path()
-            return CSSearchableItem(
-                uniqueIdentifier: entity.path(),
-                domainIdentifier: "app.codeedit.CodeEdit.ProjectItem",
-                attributeSet: attributeSet
-            )
-        }
-        CSSearchableIndex.default().indexSearchableItems(searchableItems) { error in
-            if let error = error {
-                print(error)
-            }
-        }
+        recentProjects = RecentProjectsStore.recentProjectURLs()
     }
 }

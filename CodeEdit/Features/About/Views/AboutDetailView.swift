@@ -46,6 +46,8 @@ struct AboutDetailView<Content: View>: View {
             }
             .frame(maxWidth: .infinity)
             .matchedGeometryEffect(id: "ScrollView", in: namespace, properties: .position, anchor: .top)
+            .blur(radius: aboutMode != .about ? 0 : 10)
+            .opacity(aboutMode != .about ? 1 : 0)
             .clipShape(Rectangle())
         }
 
@@ -113,6 +115,8 @@ struct AboutDetailView<Content: View>: View {
                     }
                     .contentShape(Rectangle())
                     .matchedGeometryEffect(id: "Title", in: namespace, properties: .position, anchor: .center)
+                    .blur(radius: aboutMode != .about ? 0 : 10)
+                    .opacity(aboutMode != .about ? 1 : 0)
             }
             .buttonStyle(.plain)
 
@@ -135,9 +139,17 @@ struct AboutDetailView<Content: View>: View {
         minOffset: CGFloat,
         maxOffset: CGFloat
     ) -> CGFloat {
+        let currentOffset = scrollOffset
+        let threshold: CGFloat = 1.0
+
+        /// Prevents unnecessary view updates if the scroll offset is below the threshold
+        if abs(currentOffset) < threshold {
+            return minValue
+        }
+
         let valueRange = maxValue - minValue
         let offsetRange = maxOffset - minOffset
-        let currentOffset = scrollOffset
+
         let percentage = (currentOffset - minOffset) / offsetRange
         let value = minValue + (valueRange * percentage)
 

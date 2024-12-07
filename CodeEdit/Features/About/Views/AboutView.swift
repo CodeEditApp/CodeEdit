@@ -36,7 +36,7 @@ public struct AboutView: View {
                 ContributorsView(aboutMode: $aboutMode, namespace: animator)
             }
         }
-        .animation(.spring(), value: aboutMode)
+        .animation(.smooth, value: aboutMode)
         .ignoresSafeArea()
         .frame(width: 280, height: 400 - 28)
         .fixedSize()
