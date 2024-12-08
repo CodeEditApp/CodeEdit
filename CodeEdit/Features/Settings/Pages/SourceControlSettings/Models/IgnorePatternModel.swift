@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// A model to manage Git ignore patterns for a file, including loading, saving, and monitoring changes.
 class IgnorePatternModel: ObservableObject {
     @Published var loadingPatterns: Bool = false
     @Published var patterns: [GlobPattern] = [] {
@@ -34,16 +35,18 @@ class IgnorePatternModel: ObservableObject {
         stopFileMonitor()
     }
 
+    /// Resolves the URL for the Git ignore file.
+    /// - Returns: The resolved `URL` for the Git ignore file.
     private func gitIgnoreURL() async throws -> URL {
-        let excludesfile = try await gitConfig.get(key: "core.excludesfile") ?? ""
-        if !excludesfile.isEmpty {
-            if excludesfile.starts(with: "~/") {
-                let relativePath = String(excludesfile.dropFirst(2)) // Remove "~/"
+        let excludesFile = try await gitConfig.get(key: "core.excludesfile") ?? ""
+        if !excludesFile.isEmpty {
+            if excludesFile.starts(with: "~/") {
+                let relativePath = String(excludesFile.dropFirst(2)) // Remove "~/"
                 return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(relativePath)
-            } else if excludesfile.starts(with: "/") {
-                return URL(fileURLWithPath: excludesfile) // Absolute path
+            } else if excludesFile.starts(with: "/") {
+                return URL(fileURLWithPath: excludesFile) // Absolute path
             } else {
-                return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(excludesfile)
+                return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(excludesFile)
             }
         } else {
             let defaultPath = ".gitignore_global"
@@ -53,6 +56,7 @@ class IgnorePatternModel: ObservableObject {
         }
     }
 
+    /// Starts monitoring the Git ignore file for changes.
     private func startFileMonitor() async throws {
         let fileURL = try await gitIgnoreURL()
         let fileDescriptor = open(fileURL.path, O_EVTONLY)
@@ -79,11 +83,13 @@ class IgnorePatternModel: ObservableObject {
         source.resume()
     }
 
+    /// Stops monitoring the Git ignore file.
     private func stopFileMonitor() {
         fileMonitor?.cancel()
         fileMonitor = nil
     }
 
+    /// Loads patterns from the Git ignore file into the `patterns` property.
     func loadPatterns() async {
         await MainActor.run { loadingPatterns = true } // Ensure `loadingPatterns` is updated on the main thread
 
@@ -122,10 +128,14 @@ class IgnorePatternModel: ObservableObject {
         }
     }
 
+    /// Retrieves the pattern associated with a specific UUID.
+    /// - Parameter id: The UUID of the pattern to retrieve.
+    /// - Returns: The matching `GlobPattern`, if found.
     func getPattern(for id: UUID) -> GlobPattern? {
         return patterns.first(where: { $0.id == id })
     }
 
+    /// Saves the current patterns back to the Git ignore file.
     func savePatterns() {
         Task {
             stopFileMonitor()
@@ -134,7 +144,7 @@ class IgnorePatternModel: ObservableObject {
             do {
                 let fileURL = try await gitIgnoreURL()
                 guard let fileContent = try? String(contentsOf: fileURL) else {
-                    writeAllPatterns()
+                    await writeAllPatterns()
                     return
                 }
 
@@ -156,6 +166,7 @@ class IgnorePatternModel: ObservableObject {
         }
     }
 
+    /// Maps lines to patterns and non-pattern lines (e.g., comments or whitespace).
     private func mapLines(_ lines: [String]) -> ([String: Int], [(line: String, index: Int)]) {
         var patternToLineIndex: [String: Int] = [:]
         var nonPatternLines: [(line: String, index: Int)] = []
@@ -172,6 +183,7 @@ class IgnorePatternModel: ObservableObject {
         return (patternToLineIndex, nonPatternLines)
     }
 
+    /// Extracts global comments from the non-pattern lines.
     private func extractGlobalComments(
         _ nonPatternLines: [(line: String, index: Int)],
         _ patternToLineIndex: [String: Int]
@@ -180,6 +192,7 @@ class IgnorePatternModel: ObservableObject {
         return globalComments.map(\.line)
     }
 
+    /// Reorders patterns while preserving associated comments and whitespace.
     private func reorderPatterns(
         _ globalCommentLines: [String],
         _ patternToLineIndex: [String: Int],
@@ -227,22 +240,22 @@ class IgnorePatternModel: ObservableObject {
         return reorderedLines
     }
 
-    private func writeAllPatterns() {
-        Task {
-            do {
-                let fileURL = try await gitIgnoreURL()
-                if !FileManager.default.fileExists(atPath: fileURL.path) {
-                    FileManager.default.createFile(atPath: fileURL.path, contents: nil)
-                }
-
-                let content = patterns.map(\.value).joined(separator: "\n")
-                try content.write(to: fileURL, atomically: true, encoding: .utf8)
-            } catch {
-                print("Failed to write all patterns: \(error)")
+    /// Writes all patterns to the Git ignore file.
+    private func writeAllPatterns() async {
+        do {
+            let fileURL = try await gitIgnoreURL()
+            if !FileManager.default.fileExists(atPath: fileURL.path) {
+                FileManager.default.createFile(atPath: fileURL.path, contents: nil)
             }
+
+            let content = patterns.map(\.value).joined(separator: "\n")
+            try content.write(to: fileURL, atomically: true, encoding: .utf8)
+        } catch {
+            print("Failed to write all patterns: \(error)")
         }
     }
 
+    /// Cleans up extra whitespace from lines.
     private func cleanUpWhitespace(in lines: [String]) -> [String] {
         var cleanedLines: [String] = []
         var previousLineWasBlank = false
@@ -269,11 +282,13 @@ class IgnorePatternModel: ObservableObject {
         return cleanedLines
     }
 
+    /// Adds a new, empty pattern to the list of patterns.
     @MainActor
     func addPattern() {
         patterns.append(GlobPattern(value: ""))
     }
-
+    /// Removes the specified patterns from the list of patterns.
+    /// - Parameter selection: The set of UUIDs for the patterns to remove. If `nil`, no patterns are removed.
     @MainActor
     func removePatterns(_ selection: Set<UUID>? = nil) {
         let patternsToRemove = selection?.compactMap { getPattern(for: $0) } ?? []
