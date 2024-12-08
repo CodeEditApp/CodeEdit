@@ -71,8 +71,10 @@ struct ToolbarBranchPicker: View {
             isHovering = active
         }
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { (_) in
-            Task {
-                await sourceControlManager?.refreshCurrentBranch()
+            if self.currentBranch != nil {
+                Task {
+                    await sourceControlManager?.refreshCurrentBranch()
+                }
             }
         }
         .onReceive(
@@ -82,8 +84,10 @@ struct ToolbarBranchPicker: View {
             self.currentBranch = branch
         }
         .task {
-            await self.sourceControlManager?.refreshCurrentBranch()
-            await self.sourceControlManager?.refreshBranches()
+            if Settings.shared.preferences.sourceControl.general.sourceControlIsEnabled {
+                await self.sourceControlManager?.refreshCurrentBranch()
+                await self.sourceControlManager?.refreshBranches()
+            }
         }
     }
 

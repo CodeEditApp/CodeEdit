@@ -15,6 +15,9 @@ struct SourceControlNavigatorHistoryView: View {
         case error(error: Error)
     }
 
+    @AppSettings(\.sourceControl.git.showMergeCommitsPerFileLog)
+    var showMergeCommitsPerFileLog
+
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
     @State var commitHistoryStatus: Status = .loading
@@ -28,7 +31,10 @@ struct SourceControlNavigatorHistoryView: View {
             commitHistoryStatus = .loading
             let commits = try await sourceControlManager
                 .gitClient
-                .getCommitHistory(branchName: sourceControlManager.currentBranch?.name)
+                .getCommitHistory(
+                    branchName: sourceControlManager.currentBranch?.name,
+                    showMergeCommits: Settings.shared.preferences.sourceControl.git.showMergeCommitsPerFileLog
+                )
             await MainActor.run {
                 commitHistory = commits
                 commitHistoryStatus = .ready
@@ -101,6 +107,11 @@ struct SourceControlNavigatorHistoryView: View {
         }
         .task {
             await updateCommitHistory()
+        }
+        .onChange(of: showMergeCommitsPerFileLog) { _ in
+            Task {
+                await updateCommitHistory()
+            }
         }
     }
 }

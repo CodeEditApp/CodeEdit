@@ -38,9 +38,20 @@ class GitClient {
     internal let directoryURL: URL
     internal let shellClient: ShellClient
 
+    private let configClient: GitConfigClient
+
     init(directoryURL: URL, shellClient: ShellClient) {
         self.directoryURL = directoryURL
         self.shellClient = shellClient
+        self.configClient = GitConfigClient(projectURL: directoryURL, shellClient: shellClient)
+    }
+
+    func getConfig<T: GitConfigRepresentable>(key: String) async throws -> T? {
+        return try await configClient.get(key: key, global: false)
+    }
+
+    func setConfig<T: GitConfigRepresentable>(key: String, value: T) async {
+        await configClient.set(key: key, value: value, global: false)
     }
 
     /// Runs a git command, it will prepend the command with `cd <directoryURL>;git`,

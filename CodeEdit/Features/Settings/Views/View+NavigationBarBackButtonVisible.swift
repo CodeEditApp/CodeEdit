@@ -21,6 +21,7 @@ struct NavigationBarBackButtonVisible: ViewModifier {
                     self.presentationMode.wrappedValue.dismiss()
                 } label: {
                     Image(systemName: "chevron.left")
+                        .frame(width: 23)
                 }
             }
         }
