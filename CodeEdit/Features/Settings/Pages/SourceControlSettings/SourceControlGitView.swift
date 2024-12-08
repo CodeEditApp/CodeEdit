@@ -55,6 +55,8 @@ struct SourceControlGitView: View {
             }
         }
         .onAppear {
+            // Intentionally using an onAppear with a Task instead of just a .task modifier.
+            // When we did this it was executing too often.
             Task {
                 authorName = try await gitConfig.get(key: "user.name", global: true) ?? ""
                 authorEmail = try await gitConfig.get(key: "user.email", global: true) ?? ""

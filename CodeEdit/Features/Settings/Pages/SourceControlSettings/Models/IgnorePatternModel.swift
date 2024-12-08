@@ -8,8 +8,12 @@
 import Foundation
 
 /// A model to manage Git ignore patterns for a file, including loading, saving, and monitoring changes.
+@MainActor
 class IgnorePatternModel: ObservableObject {
+    /// Indicates whether patterns are currently being loaded from the Git ignore file.
     @Published var loadingPatterns: Bool = false
+
+    /// A collection of Git ignore patterns being managed by this model.
     @Published var patterns: [GlobPattern] = [] {
         didSet {
             if !loadingPatterns {
@@ -19,10 +23,18 @@ class IgnorePatternModel: ObservableObject {
             }
         }
     }
+
+    /// Tracks the selected patterns by their unique identifiers (UUIDs).
     @Published var selection: Set<UUID> = []
 
+    /// A client for interacting with the Git configuration.
     private let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
+
+    /// A file system monitor for detecting changes to the Git ignore file.
     private var fileMonitor: DispatchSourceFileSystemObject?
+
+    /// Task tracking the current save operation
+    private var savingTask: Task<Void, Never>?
 
     init() {
         Task {
@@ -32,7 +44,9 @@ class IgnorePatternModel: ObservableObject {
     }
 
     deinit {
-        stopFileMonitor()
+        Task { @MainActor [weak self] in
+            self?.stopFileMonitor()
+        }
     }
 
     /// Resolves the URL for the Git ignore file.
@@ -69,9 +83,7 @@ class IgnorePatternModel: ObservableObject {
         )
 
         source.setEventHandler {
-            Task {
-                await self.loadPatterns()
-            }
+            Task { await self.loadPatterns() }
         }
 
         source.setCancelHandler {
@@ -91,40 +103,30 @@ class IgnorePatternModel: ObservableObject {
 
     /// Loads patterns from the Git ignore file into the `patterns` property.
     func loadPatterns() async {
-        await MainActor.run { loadingPatterns = true } // Ensure `loadingPatterns` is updated on the main thread
+        loadingPatterns = true
 
         do {
             let fileURL = try await gitIgnoreURL()
             guard FileManager.default.fileExists(atPath: fileURL.path) else {
-                await MainActor.run {
-                    patterns = []
-                    loadingPatterns = false // Update on the main thread
-                }
+                patterns = []
+                loadingPatterns = false
                 return
             }
 
             if let content = try? String(contentsOf: fileURL) {
-                let parsedPatterns = content.split(separator: "\n")
+                patterns = content.split(separator: "\n")
                     .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
                     .filter { !$0.isEmpty && !$0.starts(with: "#") }
                     .map { GlobPattern(value: String($0)) }
-
-                await MainActor.run {
-                    patterns = parsedPatterns // Update `patterns` on the main thread
-                    loadingPatterns = false  // Ensure `loadingPatterns` is updated on the main thread
-                }
+                loadingPatterns = false
             } else {
-                await MainActor.run {
-                    patterns = []
-                    loadingPatterns = false
-                }
-            }
-        } catch {
-            print("Error loading patterns: \(error)")
-            await MainActor.run {
                 patterns = []
                 loadingPatterns = false
             }
+        } catch {
+            print("Error loading patterns: \(error)")
+            patterns = []
+            loadingPatterns = false
         }
     }
 
@@ -137,9 +139,16 @@ class IgnorePatternModel: ObservableObject {
 
     /// Saves the current patterns back to the Git ignore file.
     func savePatterns() {
-        Task {
+        // Cancel the existing task if it exists
+        savingTask?.cancel()
+
+        // Start a new task for saving patterns
+        savingTask = Task {
             stopFileMonitor()
-            defer { Task { try? await startFileMonitor() } }
+            defer {
+                savingTask = nil // Clear the task when done
+                Task { try? await startFileMonitor() }
+            }
 
             do {
                 let fileURL = try await gitIgnoreURL()
@@ -283,13 +292,12 @@ class IgnorePatternModel: ObservableObject {
     }
 
     /// Adds a new, empty pattern to the list of patterns.
-    @MainActor
     func addPattern() {
         patterns.append(GlobPattern(value: ""))
     }
+
     /// Removes the specified patterns from the list of patterns.
     /// - Parameter selection: The set of UUIDs for the patterns to remove. If `nil`, no patterns are removed.
-    @MainActor
     func removePatterns(_ selection: Set<UUID>? = nil) {
         let patternsToRemove = selection?.compactMap { getPattern(for: $0) } ?? []
         patterns.removeAll { patternsToRemove.contains($0) }
