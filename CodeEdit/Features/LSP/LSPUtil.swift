@@ -57,7 +57,7 @@ enum LSPCompletionItemsUtil {
     }
 
     private static func calculateEndPosition(from startPosition: Position, text: String) -> Position {
-        // Avoid overflowing position by ensuring `character` stays within valid bounds
-        return Position((startPosition.line, startPosition.character + text.count))
+        let newCharacter = max(0, startPosition.character + text.count)
+        return Position((startPosition.line, newCharacter))
     }
 }
