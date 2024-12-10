@@ -180,27 +180,26 @@ final class LSPService: ObservableObject {
               let lspLanguage = document.getLanguage().lspLanguage else {
             return
         }
-        Task.detached {
-            let languageServer: LanguageServer
+        
+        Task {
             do {
-                if let server = await self.languageClients[ClientKey(lspLanguage, workspacePath)] {
-                    languageServer = server
-                } else {
-                    languageServer = try await self.startServer(for: lspLanguage, workspacePath: workspacePath)
-                }
-            } catch {
-                // swiftlint:disable:next line_length
-                self.logger.error("Failed to find/start server for language: \(lspLanguage.rawValue), workspace: \(workspacePath, privacy: .private)")
-                return
-            }
-            do {
+                let languageServer = try await self.getOrStartServer(for: lspLanguage, workspacePath: workspacePath)
                 try await languageServer.openDocument(document)
             } catch {
-                let uri = await document.languageServerURI
-                // swiftlint:disable:next line_length
-                self.logger.error("Failed to close document: \(uri ?? "<NO URI>", privacy: .private), language: \(lspLanguage.rawValue). Error \(error)")
+                self.logError(error, message: "Failed to open document")
             }
         }
+    }
+    
+    private func getOrStartServer(for languageId: LanguageIdentifier, workspacePath: String) async throws -> LanguageServer {
+        if let server = languageClient(for: languageId, workspacePath: workspacePath) {
+            return server
+        }
+        return try await startServer(for: languageId, workspacePath: workspacePath)
+    }
+    
+    private func logError(_ error: Error, message: String) {
+        logger.error("\(message): \(error.localizedDescription)")
     }
 
     /// Notify all relevant language clients that a document was closed.
