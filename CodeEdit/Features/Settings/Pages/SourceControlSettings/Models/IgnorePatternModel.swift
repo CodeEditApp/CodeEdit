@@ -138,6 +138,7 @@ class IgnorePatternModel: ObservableObject {
     }
 
     /// Saves the current patterns back to the Git ignore file.
+    @MainActor
     func savePatterns() {
         // Cancel the existing task if it exists
         savingTask?.cancel()
