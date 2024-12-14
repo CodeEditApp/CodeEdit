@@ -17,7 +17,8 @@ extension GitClient {
     func getCommitHistory(
         branchName: String? = nil,
         maxCount: Int? = nil,
-        fileLocalPath: String? = nil
+        fileLocalPath: String? = nil,
+        showMergeCommits: Bool = false
     ) async throws -> [GitCommit] {
         let branchString = branchName != nil ? "\"\(branchName ?? "")\"" : ""
         let fileString = fileLocalPath != nil ? "\"\(fileLocalPath ?? "")\"" : ""
@@ -30,8 +31,11 @@ extension GitClient {
         dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
 
         let output = try await run(
-            "log -z --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \(countString) \(branchString) -- \(fileString)"
-                .trimmingCharacters(in: .whitespacesAndNewlines)
+            """
+            log \(showMergeCommits ? "" : "--no-merges") -z \
+            --pretty=%h¦%H¦%s¦%aN¦%ae¦%cn¦%ce¦%aD¦%b¦%D¦ \
+            \(countString) \(branchString) -- \(fileString)
+            """.trimmingCharacters(in: .whitespacesAndNewlines)
         )
         let remoteURL = try await getRemoteURL()
 

@@ -11,38 +11,29 @@ struct SourceControlGeneralView: View {
     @AppSettings(\.sourceControl.general)
     var settings
 
-    @State private var text: String = "main"
+    let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
 
     var body: some View {
-        SettingsForm {
-            Section {
-                enableSourceControl
+        Group {
+            Section("Source Control") {
                 refreshLocalStatusAuto
                 fetchRefreshStatusAuto
                 addRemoveFilesAuto
                 selectFilesToCommitAuto
             }
-            Section {
+            Section("Text Editing") {
                 showSourceControlChanges
                 includeUpstreamChanges
             }
             Section {
                 comparisonView
                 sourceControlNavigator
-                defaultBranchName
             }
         }
     }
 }
 
 private extension SourceControlGeneralView {
-    private var enableSourceControl: some View {
-        Toggle(
-            "Enable source control",
-            isOn: $settings.enableSourceControl
-        )
-    }
-
     private var refreshLocalStatusAuto: some View {
         Toggle(
             "Refresh local status automatically",
@@ -83,6 +74,7 @@ private extension SourceControlGeneralView {
             "Include upstream changes",
             isOn: $settings.includeUpstreamChanges
         )
+        .disabled(!settings.showSourceControlChanges)
     }
 
     private var comparisonView: some View {
@@ -106,13 +98,6 @@ private extension SourceControlGeneralView {
                 .tag(SettingsData.ControlNavigatorOrder.sortByName)
             Text("Sort by Date")
                 .tag(SettingsData.ControlNavigatorOrder.sortByDate)
-        }
-    }
-
-    private var defaultBranchName: some View {
-        TextField(text: $text) {
-            Text("Default branch name")
-            Text("Cannot contain spaces, backslashes, or other symbols")
         }
     }
 }

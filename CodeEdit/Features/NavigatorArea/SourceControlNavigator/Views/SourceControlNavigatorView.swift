@@ -10,6 +10,9 @@ import SwiftUI
 struct SourceControlNavigatorView: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
 
+    @AppSettings(\.sourceControl.general.fetchRefreshServerStatus)
+    var fetchRefreshServerStatus
+
     var body: some View {
         if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager {
             VStack(spacing: 0) {
@@ -18,7 +21,9 @@ struct SourceControlNavigatorView: View {
                     .task {
                         do {
                             while true {
-                                try await sourceControlManager.fetch()
+                                if fetchRefreshServerStatus {
+                                    try await sourceControlManager.fetch()
+                                }
                                 try await Task.sleep(for: .seconds(10))
                             }
                         } catch {
