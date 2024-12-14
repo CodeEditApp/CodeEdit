@@ -1275,7 +1275,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>43</string>
+	<string>44</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.developer-tools</string>
 	<key>NSHumanReadableCopyright</key>
@@ -1286,6 +1286,8 @@
 	<true/>
 	<key>SUFeedURL</key>
 	<string>https://github.com/CodeEditApp/CodeEdit/releases/latest/download/appcast.xml</string>
+	<key>CFBundleDisplayName</key>
+	<string></string>
 	<key>SUPublicEDKey</key>
 	<string>/vAnxnK9wj4IqnUt6wS9EN3Ug69zHb+S/Pb9CyZuwa0=</string>
 </dict>
