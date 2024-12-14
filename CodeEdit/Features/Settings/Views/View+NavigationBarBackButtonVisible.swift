@@ -25,9 +25,12 @@ struct NavigationBarBackButtonVisible: ViewModifier {
                 }
             }
         }
-        .hideSidebarToggle()
+        .navigationBarBackButtonHidden()
         .onAppear {
             model.backButtonVisible = true
+        }
+        .onDisappear {
+            model.backButtonVisible = false
         }
     }
 }

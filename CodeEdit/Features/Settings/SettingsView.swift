@@ -156,6 +156,7 @@ struct SettingsView: View {
                 }
             }
             .navigationSplitViewColumnWidth(215)
+            .hideSidebarToggle()
         } detail: {
             Group {
                 switch selectedPage.name {
@@ -184,7 +185,6 @@ struct SettingsView: View {
                 }
             }
             .navigationSplitViewColumnWidth(500)
-            .hideSidebarToggle()
             .onAppear {
                 model.backButtonVisible = false
             }
