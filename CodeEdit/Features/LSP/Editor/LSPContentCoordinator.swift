@@ -33,9 +33,12 @@ class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
     private var task: Task<Void, Never>?
 
     weak var languageServer: LanguageServer?
-    var uri: String?
+    var documentURI: String
 
-    init() {
+    /// Initializes a content coordinator, and begins an async stream of updates
+    init(documentURI: String, languageServer: LanguageServer) {
+        self.documentURI = documentURI
+        self.languageServer = languageServer
         self.stream = AsyncStream { continuation in
             self.sequenceContinuation = continuation
         }
@@ -71,12 +74,12 @@ class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
     }
 
     func textView(_ textView: TextView, didReplaceContentsIn range: NSRange, with string: String) {
-        guard let uri,
-              let lspRange = editedRange else {
+        print("didReplaceContents")
+        guard let lspRange = editedRange else {
             return
         }
         self.editedRange = nil
-        self.sequenceContinuation?.yield(SequenceElement(uri: uri, range: lspRange, string: string))
+        self.sequenceContinuation?.yield(SequenceElement(uri: documentURI, range: lspRange, string: string))
     }
 
     func destroy() {

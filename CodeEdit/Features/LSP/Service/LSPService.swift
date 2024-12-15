@@ -135,7 +135,7 @@ final class LSPService: ObservableObject {
     }
 
     /// Gets the language server for the specified language and workspace.
-    func server(for languageId: LanguageIdentifier, workspacePath: String) async -> InitializingServer? {
+    func server(for languageId: LanguageIdentifier, workspacePath: String) -> InitializingServer? {
         return languageClients[ClientKey(languageId, workspacePath)]?.lspInstance
     }
 

@@ -92,13 +92,6 @@ final class CodeEditDocumentController: NSDocumentController {
             }
         }
     }
-
-    override func addDocument(_ document: NSDocument) {
-        super.addDocument(document)
-        if let document = document as? CodeFileDocument {
-            lspService.openDocument(document)
-        }
-    }
 }
 
 extension NSDocumentController {

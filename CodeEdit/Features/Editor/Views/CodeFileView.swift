@@ -56,11 +56,17 @@ struct CodeFileView: View {
 
     init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
         self._codeFile = .init(wrappedValue: codeFile)
-        self.textViewCoordinators = textViewCoordinators + [
-            codeFile.contentCoordinator,
-            codeFile.languageServerCoordinator
-        ]
+        self.textViewCoordinators = [] // Temporary value, so we can use ``getLSPAddons``
         self.isEditable = isEditable
+
+        let lspCoordinator: [TextViewCoordinator]
+        if let coordinator = getLSPAddons(codeFile: codeFile) {
+            lspCoordinator = [coordinator]
+        } else {
+            lspCoordinator = []
+        }
+
+        self.textViewCoordinators = textViewCoordinators + [codeFile.contentCoordinator] + lspCoordinator
 
         if let openOptions = codeFile.openOptions {
             codeFile.openOptions = nil
@@ -175,6 +181,21 @@ struct CodeFileView: View {
         case .underline:
             return .underline(color: color)
         }
+    }
+
+    /// Use this method to find and return any LSP-related objects that should be injected into the editor view.
+    /// - Returns: The content coordinator for language server content synchronization.
+    private func getLSPAddons(codeFile: CodeFileDocument) -> LSPContentCoordinator? {
+        guard let lspService = ServiceContainer.resolve(.singleton, LSPService.self),
+            let workspaceURL = codeFile.findWorkspace()?.fileURL,
+            let language = codeFile.language?.lspLanguage,
+            let coordinator = lspService.languageClient(
+                for: language,
+                workspacePath: workspaceURL.absoluteURL.path()
+            )?.openFiles.contentCoordinator(for: codeFile) else {
+            return nil
+        }
+        return coordinator
     }
 }
 

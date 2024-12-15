@@ -29,7 +29,10 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CodeFileDocument")
 
-    @Service var lspService: LSPService
+    /// Sent when the document is opened. The document will be sent in the notification's object.
+    static let didOpenNotification = Notification.Name(rawValue: "CodeFileDocument.didOpen")
+    /// Sent when the document is closed. The document's `fileURL` will be sent in the notification's object.
+    static let didCloseNotification = Notification.Name(rawValue: "CodeFileDocument.didClose")
 
     /// The text content of the document, stored as a text storage
     ///
@@ -46,12 +49,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// The coordinator to use to subscribe to edit events and cursor location events.
     /// See ``CodeEditSourceEditor/CombineCoordinator``.
     @Published var contentCoordinator: CombineCoordinator = CombineCoordinator()
-
-    lazy var languageServerCoordinator: LSPContentCoordinator = {
-        let coordinator = LSPContentCoordinator()
-        coordinator.uri = self.languageServerURI
-        return coordinator
-    }()
 
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
@@ -161,6 +158,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         } else {
             Self.logger.error("Failed to read file from data using encoding: \(rawEncoding)")
         }
+        NotificationCenter.default.post(name: Self.didOpenNotification, object: self)
     }
 
     /// Triggered when change occurred
@@ -187,7 +185,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     override func close() {
         super.close()
-        lspService.closeDocument(self)
+        NotificationCenter.default.post(name: Self.didCloseNotification, object: self.fileURL)
     }
 
     func getLanguage() -> CodeLanguage {

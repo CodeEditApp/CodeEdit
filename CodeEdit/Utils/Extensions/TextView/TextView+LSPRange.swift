@@ -20,4 +20,11 @@ extension TextView {
             end: Position(line: endLine.index, character: nsRange.max - endLine.range.location)
         )
     }
+
+    func nsRangeFrom(line: UInt32, char: UInt32, length: UInt32) -> NSRange? {
+        guard let line = layoutManager.textLineForIndex(Int(line)) else {
+            return nil
+        }
+        return NSRange(location: line.range.location + Int(char), length: Int(length))
+    }
 }

@@ -22,7 +22,13 @@ class LanguageServer {
     /// A cache to hold responses from the server, to minimize duplicate server requests
     let lspCache = LSPCache()
 
-    let openFiles: LanguageServerFileMap
+    /// Tracks documents and their associated objects.
+    /// Use this property when adding new objects that need to track file data, or have a state associated with the
+    /// language server and a document. For example, the content coordinator.
+    let openFiles: LanguageServerFileData
+
+    /// Maps the language server's highlight config to one CodeEdit can read. See ``SemanticTokenMap``.
+    let highlightMap: SemanticTokenMap?
 
     /// The configuration options this server supports.
     var serverCapabilities: ServerCapabilities
@@ -44,11 +50,18 @@ class LanguageServer {
         self.lspInstance = lspInstance
         self.serverCapabilities = serverCapabilities
         self.rootPath = rootPath
-        self.openFiles = LanguageServerFileMap()
+        self.openFiles = LanguageServerFileData()
         self.logger = Logger(
             subsystem: Bundle.main.bundleIdentifier ?? "",
             category: "LanguageServer.\(languageId.rawValue)"
         )
+        if let semanticTokensProvider = serverCapabilities.semanticTokensProvider {
+            self.highlightMap = SemanticTokenMap(semanticCapability: semanticTokensProvider)
+        } else {
+            self.highlightMap = nil // Server doesn't support semantic highlights
+        }
+
+        setUpNotifications()
     }
 
     /// Creates and initializes a language server.
@@ -82,6 +95,8 @@ class LanguageServer {
         )
     }
 
+    // MARK: - Make Local Server Connection
+
     /// Creates a data channel for sending and receiving data with an LSP.
     /// - Parameters:
     ///   - languageId: The ID of the language to create the channel for.
@@ -104,6 +119,8 @@ class LanguageServer {
             throw error
         }
     }
+
+    // MARK: - Get Init Params
 
     // swiftlint:disable function_body_length
     static func getInitParams(workspacePath: String) -> InitializingServer.InitializeParamsProvider {
@@ -136,15 +153,15 @@ class LanguageServer {
                 // swiftlint:disable:next line_length
                 // https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#semanticTokensClientCapabilities
                 semanticTokens: SemanticTokensClientCapabilities(
-                    dynamicRegistration: true,
-                    requests: .init(range: true, delta: false),
-                    tokenTypes: [],
-                    tokenModifiers: [],
+                    dynamicRegistration: false,
+                    requests: .init(range: true, delta: true),
+                    tokenTypes: SemanticTokenTypes.allStrings,
+                    tokenModifiers: SemanticTokenModifiers.allStrings,
                     formats: [.relative],
                     overlappingTokenSupport: true,
                     multilineTokenSupport: true,
                     serverCancelSupport: true,
-                    augmentsSyntaxTokens: false
+                    augmentsSyntaxTokens: true
                 )
             )
 
@@ -218,6 +235,10 @@ class LanguageServer {
     public func shutdown() async throws {
         self.logger.info("Shutting down language server")
         try await lspInstance.shutdownAndExit()
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

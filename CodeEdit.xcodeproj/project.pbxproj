@@ -382,6 +382,9 @@
 		6C2C155A29B4F4CC00EA60A5 /* Variadic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155929B4F4CC00EA60A5 /* Variadic.swift */; };
 		6C2C155D29B4F4E500EA60A5 /* SplitViewReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */; };
 		6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2C156029B4F52F00EA60A5 /* SplitViewModifiers.swift */; };
+		6C3B4CD12D0E2C2900C6759E /* SemanticTokenMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3B4CD02D0E2C2900C6759E /* SemanticTokenMap.swift */; };
+		6C3B4CD42D0E2CB000C6759E /* SemanticTokenMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3B4CD32D0E2CB000C6759E /* SemanticTokenMapTests.swift */; };
+		6C3B4CD82D0E39A900C6759E /* LanguageServer+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3B4CD72D0E39A900C6759E /* LanguageServer+Notifications.swift */; };
 		6C3E12D32CC830D700DD12F1 /* RecentProjectsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3E12D22CC830D700DD12F1 /* RecentProjectsStore.swift */; };
 		6C3E12D62CC8388000DD12F1 /* URL+componentCompare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3E12D52CC8388000DD12F1 /* URL+componentCompare.swift */; };
 		6C3E12D82CC83CB600DD12F1 /* RecentProjectsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C3E12D72CC83CB600DD12F1 /* RecentProjectsMenu.swift */; };
@@ -461,7 +464,7 @@
 		6CC9E4B229B5669900C97388 /* Environment+ActiveEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */; };
 		6CD0358A2C3461160091E1F4 /* KeyWindowControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD035892C3461160091E1F4 /* KeyWindowControllerObserver.swift */; };
 		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
-		6CD26C6E2C8EA1E600ADBA38 /* LanguageServerFileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileMap.swift */; };
+		6CD26C6E2C8EA1E600ADBA38 /* LanguageServerFileData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileData.swift */; };
 		6CD26C772C8EA83900ADBA38 /* URL+LanguageServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C762C8EA83900ADBA38 /* URL+LanguageServer.swift */; };
 		6CD26C7A2C8EA8A500ADBA38 /* LSPCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C782C8EA8A500ADBA38 /* LSPCache.swift */; };
 		6CD26C7B2C8EA8A500ADBA38 /* LSPCache+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C792C8EA8A500ADBA38 /* LSPCache+Data.swift */; };
@@ -1064,11 +1067,14 @@
 		6C1CC99A2B1E7CBC0002349B /* FindNavigatorIndexBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNavigatorIndexBar.swift; sourceTree = "<group>"; };
 		6C1F3DA12C18C55800F6DEF6 /* ShellIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellIntegrationTests.swift; sourceTree = "<group>"; };
 		6C23842E2C796B4C003FBDD4 /* GitChangedFileLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitChangedFileLabel.swift; sourceTree = "<group>"; };
-		6C278CC62C93971F0066F6D9 /* LSPContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPContentCoordinator.swift; sourceTree = "<group>"; };
+		6C278CC62C93971F0066F6D9 /* LSPContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPContentCoordinator.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		6C2C155729B4F49100EA60A5 /* SplitViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewItem.swift; sourceTree = "<group>"; };
 		6C2C155929B4F4CC00EA60A5 /* Variadic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Variadic.swift; sourceTree = "<group>"; };
 		6C2C155C29B4F4E500EA60A5 /* SplitViewReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewReader.swift; sourceTree = "<group>"; };
 		6C2C156029B4F52F00EA60A5 /* SplitViewModifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitViewModifiers.swift; sourceTree = "<group>"; };
+		6C3B4CD02D0E2C2900C6759E /* SemanticTokenMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticTokenMap.swift; sourceTree = "<group>"; };
+		6C3B4CD32D0E2CB000C6759E /* SemanticTokenMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticTokenMapTests.swift; sourceTree = "<group>"; };
+		6C3B4CD72D0E39A900C6759E /* LanguageServer+Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LanguageServer+Notifications.swift"; sourceTree = "<group>"; };
 		6C3E12D22CC830D700DD12F1 /* RecentProjectsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectsStore.swift; sourceTree = "<group>"; };
 		6C3E12D52CC8388000DD12F1 /* URL+componentCompare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+componentCompare.swift"; sourceTree = "<group>"; };
 		6C3E12D72CC83CB600DD12F1 /* RecentProjectsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentProjectsMenu.swift; sourceTree = "<group>"; };
@@ -1133,7 +1139,7 @@
 		6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveEditor.swift"; sourceTree = "<group>"; };
 		6CD035892C3461160091E1F4 /* KeyWindowControllerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyWindowControllerObserver.swift; sourceTree = "<group>"; };
 		6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInjector.swift; sourceTree = "<group>"; };
-		6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageServerFileMap.swift; sourceTree = "<group>"; };
+		6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageServerFileData.swift; sourceTree = "<group>"; };
 		6CD26C762C8EA83900ADBA38 /* URL+LanguageServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+LanguageServer.swift"; sourceTree = "<group>"; };
 		6CD26C782C8EA8A500ADBA38 /* LSPCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPCache.swift; sourceTree = "<group>"; };
 		6CD26C792C8EA8A500ADBA38 /* LSPCache+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LSPCache+Data.swift"; sourceTree = "<group>"; };
@@ -1587,6 +1593,7 @@
 		30B087FB2C0D53080063A882 /* LSP */ = {
 			isa = PBXGroup;
 			children = (
+				6C3B4CD22D0E2C5400C6759E /* Editor */,
 				6CD26C732C8EA71F00ADBA38 /* LanguageServer */,
 				6CD26C742C8EA79100ADBA38 /* Service */,
 				30B087FA2C0D53080063A882 /* LSPUtil.swift */,
@@ -2889,6 +2896,15 @@
 			path = ChangedFile;
 			sourceTree = "<group>";
 		};
+		6C3B4CD22D0E2C5400C6759E /* Editor */ = {
+			isa = PBXGroup;
+			children = (
+				6C278CC62C93971F0066F6D9 /* LSPContentCoordinator.swift */,
+				6C3B4CD02D0E2C2900C6759E /* SemanticTokenMap.swift */,
+			);
+			path = Editor;
+			sourceTree = "<group>";
+		};
 		6C3E12D42CC830DE00DD12F1 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -3069,10 +3085,10 @@
 			isa = PBXGroup;
 			children = (
 				30B087F72C0D53080063A882 /* LanguageServer.swift */,
-				6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileMap.swift */,
+				6C3B4CD72D0E39A900C6759E /* LanguageServer+Notifications.swift */,
+				6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileData.swift */,
 				6CD26C782C8EA8A500ADBA38 /* LSPCache.swift */,
 				6CD26C792C8EA8A500ADBA38 /* LSPCache+Data.swift */,
-				6C278CC62C93971F0066F6D9 /* LSPContentCoordinator.swift */,
 				30B0881E2C12626B0063A882 /* Capabilities */,
 			);
 			path = LanguageServer;
@@ -3100,8 +3116,9 @@
 		6CD26C882C8F91B600ADBA38 /* LSP */ = {
 			isa = PBXGroup;
 			children = (
-				6CD26C892C8F91ED00ADBA38 /* LanguageServer+DocumentTests.swift */,
 				6C7D6D452C9092EC00B69EE0 /* BufferingServerConnection.swift */,
+				6CD26C892C8F91ED00ADBA38 /* LanguageServer+DocumentTests.swift */,
+				6C3B4CD32D0E2CB000C6759E /* SemanticTokenMapTests.swift */,
 			);
 			path = LSP;
 			sourceTree = "<group>";
@@ -3989,9 +4006,10 @@
 				3000516C2BBD3A9500A98562 /* ServiceWrapper.swift in Sources */,
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
 				201169E52837B40300F92B46 /* SourceControlNavigatorRepositoryView.swift in Sources */,
-				6CD26C6E2C8EA1E600ADBA38 /* LanguageServerFileMap.swift in Sources */,
+				6CD26C6E2C8EA1E600ADBA38 /* LanguageServerFileData.swift in Sources */,
 				587B9E6A29301D8F00AC7927 /* GitLabPermissions.swift in Sources */,
 				B6EA1FF529DA380E001BF195 /* TextEditingSettingsView.swift in Sources */,
+				6C3B4CD82D0E39A900C6759E /* LanguageServer+Notifications.swift in Sources */,
 				D7DC4B76298FFBE900D6C83D /* ProjectNavigatorViewController+OutlineTableViewCellDelegate.swift in Sources */,
 				587B9E9229301D8F00AC7927 /* BitBucketAccount.swift in Sources */,
 				DE513F52281B672D002260B9 /* EditorTabBarAccessory.swift in Sources */,
@@ -4339,6 +4357,7 @@
 				6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */,
 				30B087FF2C0D53080063A882 /* LanguageServer+Completion.swift in Sources */,
 				61C7E82F2C6CDBA500845336 /* Theme+FuzzySearchable.swift in Sources */,
+				6C3B4CD12D0E2C2900C6759E /* SemanticTokenMap.swift in Sources */,
 				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
 				B60718462B17DC15009CDAB4 /* RepoOutlineGroupItem.swift in Sources */,
 				613899B32B6E6FEE00A5CAF6 /* FuzzySearchable.swift in Sources */,
@@ -4539,6 +4558,7 @@
 				6195E3112B640485007261CA /* WorkspaceDocument+SearchState+IndexTests.swift in Sources */,
 				6130536B2B24722C00D767E3 /* AsyncIndexingTests.swift in Sources */,
 				613899C02B6E70FE00A5CAF6 /* FuzzySearchTests.swift in Sources */,
+				6C3B4CD42D0E2CB000C6759E /* SemanticTokenMapTests.swift in Sources */,
 				6195E30D2B64044F007261CA /* WorkspaceDocument+SearchState+FindTests.swift in Sources */,
 				6195E30F2B640474007261CA /* WorkspaceDocument+SearchState+FindAndReplaceTests.swift in Sources */,
 				587B612E293419B700D5CD8F /* CodeFileTests.swift in Sources */,
