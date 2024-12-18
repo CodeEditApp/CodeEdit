@@ -21,8 +21,6 @@ struct CodeFileView: View {
 
     /// Any coordinators passed to the view.
     private var textViewCoordinators: [TextViewCoordinator]
-    /// The coordinator that manages the autocomplete window (item box)
-    private let autocompleteCoordinator = AutoCompleteCoordinator()
 
     @AppSettings(\.textEditing.defaultTabWidth)
     var defaultTabWidth
@@ -61,7 +59,6 @@ struct CodeFileView: View {
         self.textViewCoordinators = textViewCoordinators + [
             codeFile.contentCoordinator,
             codeFile.languageServerCoordinator,
-            autocompleteCoordinator,
         ]
         self.isEditable = isEditable
 

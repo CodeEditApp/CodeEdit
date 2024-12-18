@@ -158,14 +158,42 @@ final class LSPService: ObservableObject {
             throw LSPError.binaryNotFound
         }
 
+        let taskUuidString = UUID().uuidString
+
+        // Log start message to the activity viewer
+        let createInfo: [String: Any] = [
+            "id": taskUuidString,
+            "action": "create",
+            "title": "Starting \(languageId.rawValue) language server",
+            "isLoading": true
+        ]
         logger.info("Starting \(languageId.rawValue) language server")
+        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createInfo)
+
+        // Attempt to start the language server
         let server = try await LanguageServer.createServer(
             for: languageId,
             with: serverBinary,
             workspacePath: workspacePath
         )
         languageClients[ClientKey(languageId, workspacePath)] = server
+
+        // Log success message update
+        let updateInfo: [String: Any] = [
+            "id": taskUuidString,
+            "action": "update",
+            "title": "Successfully started \(languageId.rawValue) language server",
+            "isLoading": false
+        ]
+        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: updateInfo)
+
+        let deleteInfo: [String: Any] = [
+            "id": taskUuidString,
+            "action": "deleteWithDelay",
+            "delay": 4.0
+        ]
         logger.info("Successfully started \(languageId.rawValue) language server")
+        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteInfo)
 
         self.startListeningToEvents(for: ClientKey(languageId, workspacePath))
         return server

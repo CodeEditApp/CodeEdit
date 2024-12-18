@@ -27,6 +27,7 @@ class EditorInstance: Hashable {
     // Public TextViewCoordinator APIs
 
     var rangeTranslator: RangeTranslator?
+    var autoCompleteCoordinator: AutoCompleteCoordinator?
 
     // Internal Combine subjects
 
@@ -38,6 +39,7 @@ class EditorInstance: Hashable {
         self.file = file
         self.cursorSubject.send(cursorPositions)
         self.rangeTranslator = RangeTranslator(cursorSubject: cursorSubject)
+        self.autoCompleteCoordinator = AutoCompleteCoordinator()
     }
 
     func hash(into hasher: inout Hasher) {
