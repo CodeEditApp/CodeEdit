@@ -11,14 +11,14 @@ import CodeEditSourceEditor
 import CodeEditTextView
 
 // swiftlint:disable line_length
-/// Creates a mapping from a language server's semantic token options to a format readable by CodeEdit
+/// Creates a mapping from a language server's semantic token options to a format readable by CodeEdit.
 /// Provides a convenience method for mapping tokens received from the server to highlight ranges suitable for
-/// highlighting in the editor
+/// highlighting in the editor.
 ///
 /// Use this type to handle the initially received semantic highlight capabilities structures. This type will figure
 /// out how to read it into a format it can use.
 ///
-/// After initialization, the map it static (until the server is reinitialized). Similarly, this type is `Sendable`
+/// After initialization, the map is static until the server is reinitialized. Consequently, this type is `Sendable`
 /// and immutable after initialization.
 ///
 /// This type is not coupled to any text system via the use of the ``SemanticTokenMapRangeProvider``. When decoding to
@@ -43,7 +43,7 @@ struct SemanticTokenMap: Sendable { // swiftlint:enable line_length
     }
 
     /// Decodes the compressed semantic token data into a `HighlightRange` type for use in an editor.
-    /// This is run on the main actor to prevent runtime errors, due to the use of the actor-isolated `textView`.
+    /// This is marked main actor to prevent runtime errors, due to the use of the actor-isolated `rangeProvider`.
     /// - Parameters:
     ///   - tokens: Semantic tokens from a language server.
     ///   - rangeProvider: The provider to use to translate token ranges to text view ranges.
@@ -56,7 +56,9 @@ struct SemanticTokenMap: Sendable { // swiftlint:enable line_length
             }
 
             let modifiers = decodeModifier(token.modifiers)
-            let type = token.type > 0 ? Int(token.type.trailingZeroBitCount) : -1 // Don't decode 0
+
+            // Capture types are indicated by the index of the set bit.
+            let type = token.type > 0 ? Int(token.type.trailingZeroBitCount) : -1 // Don't try to decode 0
             let capture = tokenTypeMap.indices.contains(type) ? tokenTypeMap[type] : nil
 
             return HighlightRange(

@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 protocol SemanticTokenMapRangeProvider {
     func nsRangeFrom(line: UInt32, char: UInt32, length: UInt32) -> NSRange?
 }
