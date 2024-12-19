@@ -9,7 +9,7 @@ import Foundation
 import LanguageServerProtocol
 
 /// Tracks data associated with files and language servers.
-class LanguageServerFileData {
+class LanguageServerFileMap {
     /// Extend this struct as more objects are associated with a code document.
     private struct DocumentObject {
         let uri: String

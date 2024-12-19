@@ -25,7 +25,7 @@ class LanguageServer {
     /// Tracks documents and their associated objects.
     /// Use this property when adding new objects that need to track file data, or have a state associated with the
     /// language server and a document. For example, the content coordinator.
-    let openFiles: LanguageServerFileData
+    let openFiles: LanguageServerFileMap
 
     /// Maps the language server's highlight config to one CodeEdit can read. See ``SemanticTokenMap``.
     let highlightMap: SemanticTokenMap?
@@ -50,7 +50,7 @@ class LanguageServer {
         self.lspInstance = lspInstance
         self.serverCapabilities = serverCapabilities
         self.rootPath = rootPath
-        self.openFiles = LanguageServerFileData()
+        self.openFiles = LanguageServerFileMap()
         self.logger = Logger(
             subsystem: Bundle.main.bundleIdentifier ?? "",
             category: "LanguageServer.\(languageId.rawValue)"
