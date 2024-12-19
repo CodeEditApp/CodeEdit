@@ -19,7 +19,7 @@ extension LanguageServer {
             }
             logger.debug("Opening Document \(content.uri, privacy: .private)")
 
-            self.openFiles.addDocument(document, for: self)
+            openFiles.addDocument(document, for: self)
 
             let textDocument = TextDocumentItem(
                 uri: content.uri,
@@ -28,6 +28,8 @@ extension LanguageServer {
                 text: content.string
             )
             try await lspInstance.textDocumentDidOpen(DidOpenTextDocumentParams(textDocument: textDocument))
+
+            await updateIsolatedDocument(document, coordinator: openFiles.contentCoordinator(for: document))
         } catch {
             logger.warning("addDocument: Error \(error)")
             throw error
@@ -115,6 +117,11 @@ extension LanguageServer {
             return nil
         }
         return DocumentContent(uri: uri, language: language, string: content)
+    }
+
+    @MainActor
+    private func updateIsolatedDocument(_ document: CodeFileDocument, coordinator: LSPContentCoordinator?) {
+        document.lspCoordinator = coordinator
     }
 
     // swiftlint:disable line_length

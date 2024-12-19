@@ -50,6 +50,9 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// See ``CodeEditSourceEditor/CombineCoordinator``.
     @Published var contentCoordinator: CombineCoordinator = CombineCoordinator()
 
+    /// Set by ``LanguageServer`` when initialized.
+    @Published var lspCoordinator: LSPContentCoordinator?
+
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
 
