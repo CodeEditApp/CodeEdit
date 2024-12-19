@@ -12,7 +12,7 @@ final class CodeEditDocumentController: NSDocumentController {
     @Environment(\.openWindow)
     private var openWindow
 
-    @LazyService var lspService: LSPService
+    @Service var lspService: LSPService
 
     private let fileManager = FileManager.default
 
@@ -90,13 +90,6 @@ final class CodeEditDocumentController: NSDocumentController {
                 NSApplication.shared.terminate(nil)
             case .doNothing: break
             }
-        }
-    }
-
-    override func addDocument(_ document: NSDocument) {
-        super.addDocument(document)
-        if let document = document as? CodeFileDocument {
-            lspService.openDocument(document)
         }
     }
 }
