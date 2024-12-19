@@ -26,7 +26,8 @@ class EditorInstance: Hashable {
 
     // Public TextViewCoordinator APIs
 
-    var rangeTranslator: RangeTranslator?
+    @Published var rangeTranslator: RangeTranslator?
+    @Published var lspContentCoordinator: LSPContentCoordinator?
 
     // Internal Combine subjects
 

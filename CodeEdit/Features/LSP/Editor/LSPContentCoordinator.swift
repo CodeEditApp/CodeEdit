@@ -36,7 +36,7 @@ class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
     var documentURI: String
 
     /// Initializes a content coordinator, and begins an async stream of updates
-    init(documentURI: String, languageServer: LanguageServer) {
+    init(documentURI: String, languageServer: LanguageServer?) {
         self.documentURI = documentURI
         self.languageServer = languageServer
         self.stream = AsyncStream { continuation in

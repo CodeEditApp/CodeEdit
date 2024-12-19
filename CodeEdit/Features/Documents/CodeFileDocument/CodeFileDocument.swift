@@ -80,8 +80,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         return type
     }
 
-    /// A stable string to use when identifying documents with language servers.
-    var languageServerURI: String? { fileURL?.languageServerURI }
+    /// Use when identifying documents globally on the user's computer, eg with a language server.
+    var absolutePath: String? { fileURL?.absolutePath }
 
     /// Specify options for opening the file such as the initial cursor positions.
     /// Nulled by ``CodeFileView`` on first load.
@@ -185,7 +185,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     override func close() {
         super.close()
-        NotificationCenter.default.post(name: Self.didCloseNotification, object: self.fileURL)
+        NotificationCenter.default.post(name: Self.didCloseNotification, object: fileURL)
     }
 
     func getLanguage() -> CodeLanguage {
@@ -200,15 +200,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     func findWorkspace() -> WorkspaceDocument? {
-        CodeEditDocumentController.shared.documents.first(where: { doc in
-            guard let workspace = doc as? WorkspaceDocument, let path = self.languageServerURI else { return false }
-            // createIfNotFound is safe here because it will still exit if the file and the workspace
-            // do not share a path prefix
-            return workspace
-                .workspaceFileManager?
-                .getFile(path, createIfNotFound: true)?
-                .fileDocument?
-                .isEqual(self) ?? false
-        }) as? WorkspaceDocument
+        fileURL?.findWorkspace()
     }
 }

@@ -109,7 +109,7 @@ extension LanguageServer {
     /// Helper function for grabbing a document's content from the main actor.
     @MainActor
     private func getIsolatedDocumentContent(_ document: CodeFileDocument) -> DocumentContent? {
-        guard let uri = document.languageServerURI,
+        guard let uri = document.absolutePath,
               let language = document.getLanguage().lspLanguage,
               let content = document.content?.string else {
             return nil

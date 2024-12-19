@@ -56,7 +56,7 @@ struct SemanticTokenMap: Sendable { // swiftlint:enable line_length
             }
 
             let modifiers = decodeModifier(token.modifiers)
-            let type = Int(token.type)
+            let type = token.type > 0 ? Int(token.type.trailingZeroBitCount) : -1 // Don't decode 0
             let capture = tokenTypeMap.indices.contains(type) ? tokenTypeMap[type] : nil
 
             return HighlightRange(
@@ -81,8 +81,7 @@ struct SemanticTokenMap: Sendable { // swiftlint:enable line_length
             guard let modifier = modifierMap.indices.contains(idx) ? modifierMap[idx] : nil else {
                 continue
             }
-            // modifiers.insert(modifier)
-            modifiers.rawValue |= 1 << modifier.rawValue
+            modifiers.insert(modifier)
         }
         return modifiers
     }

@@ -60,8 +60,6 @@ class LanguageServer {
         } else {
             self.highlightMap = nil // Server doesn't support semantic highlights
         }
-
-        setUpNotifications()
     }
 
     /// Creates and initializes a language server.
