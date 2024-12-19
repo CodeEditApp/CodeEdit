@@ -36,7 +36,11 @@ final class SemanticTokenMapTestsTests: XCTestCase {
             "defaultLibrary"
         ]
     )
-    let mockProvider = MockRangeProvider()
+    var mockProvider: MockRangeProvider!
+
+    override func setUp() async throws {
+        mockProvider = await MockRangeProvider()
+    }
 
     @MainActor
     func testOptionA() {
