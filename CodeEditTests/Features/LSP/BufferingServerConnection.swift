@@ -10,12 +10,20 @@ import LanguageClient
 import LanguageServerProtocol
 import JSONRPC
 
+/// Mock server connection that retains all requests and notifications in an array for comparing later.
+///
+/// To listen for changes, this type produces an async stream of all requests and notifications. Use the
+/// `clientEventSequence` sequence to receive a copy of both whenever they're updated.
+/// 
 class BufferingServerConnection: ServerConnection {
     typealias ClientEventSequence = AsyncStream<([ClientRequest], [ClientNotification])>
 
-    var eventSequence: EventSequence
-    var clientEventSequence: ClientEventSequence
+    public var eventSequence: EventSequence
+
+    /// A sequence of all events.
+    public var clientEventSequence: ClientEventSequence
     private var clientEventContinuation: ClientEventSequence.Continuation
+
     private var id = 0
 
     public var clientRequests: [ClientRequest] = []
