@@ -83,8 +83,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         return type
     }
 
-    /// Use when identifying documents globally on the user's computer, eg with a language server.
-    var absolutePath: String? { fileURL?.absolutePath }
+    /// A stable string to use when identifying documents with language servers.
+    var languageServerURI: String? { fileURL?.absolutePath }
 
     /// Specify options for opening the file such as the initial cursor positions.
     /// Nulled by ``CodeFileView`` on first load.

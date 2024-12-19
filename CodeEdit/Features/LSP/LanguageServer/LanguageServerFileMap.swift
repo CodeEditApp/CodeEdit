@@ -27,7 +27,7 @@ class LanguageServerFileMap {
     // MARK: - Track & Remove Documents
 
     func addDocument(_ document: CodeFileDocument, for server: LanguageServer) {
-        guard let uri = document.absolutePath else { return }
+        guard let uri = document.languageServerURI else { return }
         trackedDocuments.setObject(document, forKey: uri as NSString)
         trackedDocumentData[uri] = DocumentObject(
             uri: uri,
@@ -42,7 +42,7 @@ class LanguageServerFileMap {
     }
 
     func removeDocument(for document: CodeFileDocument) {
-        guard let uri = document.absolutePath else { return }
+        guard let uri = document.languageServerURI else { return }
         removeDocument(for: uri)
     }
 
@@ -54,7 +54,7 @@ class LanguageServerFileMap {
     // MARK: - Version Number Tracking
 
     func incrementVersion(for document: CodeFileDocument) -> Int {
-        guard let uri = document.absolutePath else { return 0 }
+        guard let uri = document.languageServerURI else { return 0 }
         return incrementVersion(for: uri)
     }
 
@@ -64,7 +64,7 @@ class LanguageServerFileMap {
     }
 
     func documentVersion(for document: CodeFileDocument) -> Int? {
-        guard let uri = document.absolutePath else { return nil }
+        guard let uri = document.languageServerURI else { return nil }
         return documentVersion(for: uri)
     }
 
@@ -75,7 +75,7 @@ class LanguageServerFileMap {
     // MARK: - Content Coordinator
 
     func contentCoordinator(for document: CodeFileDocument) -> LSPContentCoordinator? {
-        guard let uri = document.absolutePath else { return nil }
+        guard let uri = document.languageServerURI else { return nil }
         return contentCoordinator(for: uri)
     }
 
