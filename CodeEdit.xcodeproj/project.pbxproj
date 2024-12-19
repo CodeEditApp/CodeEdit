@@ -467,7 +467,7 @@
 		6CC9E4B229B5669900C97388 /* Environment+ActiveEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */; };
 		6CD0358A2C3461160091E1F4 /* KeyWindowControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD035892C3461160091E1F4 /* KeyWindowControllerObserver.swift */; };
 		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
-		6CD26C6E2C8EA1E600ADBA38 /* LanguageServerFileData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileData.swift */; };
+		6CD26C6E2C8EA1E600ADBA38 /* LanguageServerFileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileMap.swift */; };
 		6CD26C772C8EA83900ADBA38 /* URL+absolutePath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C762C8EA83900ADBA38 /* URL+absolutePath.swift */; };
 		6CD26C7A2C8EA8A500ADBA38 /* LSPCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C782C8EA8A500ADBA38 /* LSPCache.swift */; };
 		6CD26C7B2C8EA8A500ADBA38 /* LSPCache+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C792C8EA8A500ADBA38 /* LSPCache+Data.swift */; };
@@ -1144,7 +1144,7 @@
 		6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveEditor.swift"; sourceTree = "<group>"; };
 		6CD035892C3461160091E1F4 /* KeyWindowControllerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyWindowControllerObserver.swift; sourceTree = "<group>"; };
 		6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInjector.swift; sourceTree = "<group>"; };
-		6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageServerFileData.swift; sourceTree = "<group>"; };
+		6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageServerFileMap.swift; sourceTree = "<group>"; };
 		6CD26C762C8EA83900ADBA38 /* URL+absolutePath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+absolutePath.swift"; sourceTree = "<group>"; };
 		6CD26C782C8EA8A500ADBA38 /* LSPCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LSPCache.swift; sourceTree = "<group>"; };
 		6CD26C792C8EA8A500ADBA38 /* LSPCache+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LSPCache+Data.swift"; sourceTree = "<group>"; };
@@ -3091,7 +3091,7 @@
 			isa = PBXGroup;
 			children = (
 				30B087F72C0D53080063A882 /* LanguageServer.swift */,
-				6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileData.swift */,
+				6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileMap.swift */,
 				6CD26C782C8EA8A500ADBA38 /* LSPCache.swift */,
 				6CD26C792C8EA8A500ADBA38 /* LSPCache+Data.swift */,
 				30B0881E2C12626B0063A882 /* Capabilities */,
@@ -4012,7 +4012,7 @@
 				3000516C2BBD3A9500A98562 /* ServiceWrapper.swift in Sources */,
 				587B9DA029300ABD00AC7927 /* PanelDivider.swift in Sources */,
 				201169E52837B40300F92B46 /* SourceControlNavigatorRepositoryView.swift in Sources */,
-				6CD26C6E2C8EA1E600ADBA38 /* LanguageServerFileData.swift in Sources */,
+				6CD26C6E2C8EA1E600ADBA38 /* LanguageServerFileMap.swift in Sources */,
 				587B9E6A29301D8F00AC7927 /* GitLabPermissions.swift in Sources */,
 				B6EA1FF529DA380E001BF195 /* TextEditingSettingsView.swift in Sources */,
 				D7DC4B76298FFBE900D6C83D /* ProjectNavigatorViewController+OutlineTableViewCellDelegate.swift in Sources */,
