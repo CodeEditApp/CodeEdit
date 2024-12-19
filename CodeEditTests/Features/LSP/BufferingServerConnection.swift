@@ -28,7 +28,6 @@ class BufferingServerConnection: ServerConnection {
     }
 
     func sendNotification(_ notif: ClientNotification) async throws {
-        print("NOTIFICATION", notif.method)
         clientNotifications.append(notif)
         clientEventContinuation.yield((clientRequests, clientNotifications))
     }
