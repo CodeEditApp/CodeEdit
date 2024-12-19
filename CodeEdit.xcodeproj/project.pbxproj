@@ -461,6 +461,8 @@
 		6CC17B512C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC17B502C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift */; };
 		6CC17B532C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC17B522C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift */; };
 		6CC17B5B2C44258700834E2C /* WindowControllerPropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC17B5A2C44258700834E2C /* WindowControllerPropertyWrapper.swift */; };
+		6CC3D1FB2D1475EC00822B65 /* TextView+SemanticTokenRangeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3D1FA2D1475EC00822B65 /* TextView+SemanticTokenRangeProvider.swift */; };
+		6CC3D1FD2D14761A00822B65 /* SemanticTokenMapRangeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3D1FC2D14761A00822B65 /* SemanticTokenMapRangeProvider.swift */; };
 		6CC9E4B229B5669900C97388 /* Environment+ActiveEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */; };
 		6CD0358A2C3461160091E1F4 /* KeyWindowControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD035892C3461160091E1F4 /* KeyWindowControllerObserver.swift */; };
 		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
@@ -1136,6 +1138,8 @@
 		6CC17B502C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+NSOutlineViewDataSource.swift"; sourceTree = "<group>"; };
 		6CC17B522C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+NSOutlineViewDelegate.swift"; sourceTree = "<group>"; };
 		6CC17B5A2C44258700834E2C /* WindowControllerPropertyWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowControllerPropertyWrapper.swift; sourceTree = "<group>"; };
+		6CC3D1FA2D1475EC00822B65 /* TextView+SemanticTokenRangeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextView+SemanticTokenRangeProvider.swift"; sourceTree = "<group>"; };
+		6CC3D1FC2D14761A00822B65 /* SemanticTokenMapRangeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticTokenMapRangeProvider.swift; sourceTree = "<group>"; };
 		6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveEditor.swift"; sourceTree = "<group>"; };
 		6CD035892C3461160091E1F4 /* KeyWindowControllerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyWindowControllerObserver.swift; sourceTree = "<group>"; };
 		6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInjector.swift; sourceTree = "<group>"; };
@@ -2901,6 +2905,7 @@
 			children = (
 				6C278CC62C93971F0066F6D9 /* LSPContentCoordinator.swift */,
 				6C3B4CD02D0E2C2900C6759E /* SemanticTokenMap.swift */,
+				6CC3D1FC2D14761A00822B65 /* SemanticTokenMapRangeProvider.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -3038,6 +3043,7 @@
 			isa = PBXGroup;
 			children = (
 				6CB94CFD2C9F1C9A00E8651C /* TextView+LSPRange.swift */,
+				6CC3D1FA2D1475EC00822B65 /* TextView+SemanticTokenRangeProvider.swift */,
 			);
 			path = TextView;
 			sourceTree = "<group>";
@@ -4140,6 +4146,7 @@
 				201169E72837B5CA00F92B46 /* SourceControlManager.swift in Sources */,
 				58822528292C280D00E83CDE /* StatusBarEncodingSelector.swift in Sources */,
 				0FD96BCE2BEF42530025A697 /* CodeEditWindowController+Toolbar.swift in Sources */,
+				6CC3D1FB2D1475EC00822B65 /* TextView+SemanticTokenRangeProvider.swift in Sources */,
 				6C7F37FE2A3EA6FA00217B83 /* View+focusedValue.swift in Sources */,
 				6653EE552C34817900B82DE2 /* QuickSearchResultLabel.swift in Sources */,
 				6139B9152C29B36100CA584B /* CEActiveTask.swift in Sources */,
@@ -4485,6 +4492,7 @@
 				611191FA2B08CC9000D4459B /* SearchIndexer.swift in Sources */,
 				58822532292C280D00E83CDE /* UtilityAreaViewModel.swift in Sources */,
 				043BCF03281DA18A000AC47C /* WorkspaceDocument+SearchState.swift in Sources */,
+				6CC3D1FD2D14761A00822B65 /* SemanticTokenMapRangeProvider.swift in Sources */,
 				58822527292C280D00E83CDE /* StatusBarIndentSelector.swift in Sources */,
 				587B9E9629301D8F00AC7927 /* BitBucketRepositories.swift in Sources */,
 				5878DAA6291AE76700DD95A3 /* OpenQuicklyPreviewView.swift in Sources */,
