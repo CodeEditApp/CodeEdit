@@ -234,10 +234,6 @@ class LanguageServer {
         self.logger.info("Shutting down language server")
         try await lspInstance.shutdownAndExit()
     }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
 }
 
 /// Represents a language server binary.
