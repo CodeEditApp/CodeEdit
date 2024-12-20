@@ -56,10 +56,9 @@ struct CodeFileView: View {
 
     init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
         self._codeFile = .init(wrappedValue: codeFile)
-        self.textViewCoordinators = textViewCoordinators + [
-            codeFile.contentCoordinator,
-            codeFile.languageServerCoordinator
-        ]
+        self.textViewCoordinators = textViewCoordinators
+            + [codeFile.contentCoordinator]
+            + [codeFile.lspCoordinator].compactMap({ $0 })
         self.isEditable = isEditable
 
         if let openOptions = codeFile.openOptions {
@@ -138,7 +137,6 @@ struct CodeFileView: View {
             undoManager: undoManager,
             coordinators: textViewCoordinators
         )
-
         .id(codeFile.fileURL)
         .background {
             if colorScheme == .dark {

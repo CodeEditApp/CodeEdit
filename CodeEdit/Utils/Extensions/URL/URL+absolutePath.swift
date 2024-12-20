@@ -8,7 +8,7 @@
 import Foundation
 
 extension URL {
-    var languageServerURI: String {
+    var absolutePath: String {
         absoluteURL.path(percentEncoded: false)
     }
 }

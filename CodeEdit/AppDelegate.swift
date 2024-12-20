@@ -20,7 +20,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @LazyService var lspService: LSPService
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        setupServiceContainer()
         enableWindowSizeSaveOnQuit()
         Settings.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
@@ -270,14 +269,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         documents.forEach { workspace in
             workspace.taskManager?.stopAllTasks()
         }
-    }
-
-    /// Setup all the services into a ServiceContainer for the application to use.
-    @MainActor
-    private func setupServiceContainer() {
-        ServiceContainer.register(
-            LSPService()
-        )
     }
 }
 

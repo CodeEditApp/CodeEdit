@@ -132,10 +132,32 @@ final class LSPService: ObservableObject {
                 )
             }
         }
+
+        NotificationCenter.default.addObserver(
+            forName: CodeFileDocument.didOpenNotification,
+            object: nil,
+            queue: .main
+        ) { notification in
+            MainActor.assumeIsolated {
+                guard let document = notification.object as? CodeFileDocument else { return }
+                self.openDocument(document)
+            }
+        }
+
+        NotificationCenter.default.addObserver(
+            forName: CodeFileDocument.didCloseNotification,
+            object: nil,
+            queue: .main
+        ) { notification in
+            MainActor.assumeIsolated {
+                guard let url = notification.object as? URL else { return }
+                self.closeDocument(url)
+            }
+        }
     }
 
     /// Gets the language server for the specified language and workspace.
-    func server(for languageId: LanguageIdentifier, workspacePath: String) async -> InitializingServer? {
+    func server(for languageId: LanguageIdentifier, workspacePath: String) -> InitializingServer? {
         return languageClients[ClientKey(languageId, workspacePath)]?.lspInstance
     }
 
@@ -180,10 +202,10 @@ final class LSPService: ObservableObject {
               let lspLanguage = document.getLanguage().lspLanguage else {
             return
         }
-        Task.detached {
+        Task {
             let languageServer: LanguageServer
             do {
-                if let server = await self.languageClients[ClientKey(lspLanguage, workspacePath)] {
+                if let server = self.languageClients[ClientKey(lspLanguage, workspacePath)] {
                     languageServer = server
                 } else {
                     languageServer = try await self.startServer(for: lspLanguage, workspacePath: workspacePath)
@@ -204,21 +226,19 @@ final class LSPService: ObservableObject {
     }
 
     /// Notify all relevant language clients that a document was closed.
-    /// - Parameter document: The code document that was closed.
-    func closeDocument(_ document: CodeFileDocument) {
-        guard let workspace = document.findWorkspace(),
-              let workspacePath = workspace.fileURL?.absoluteURL.path(),
-              let lspLanguage = document.getLanguage().lspLanguage,
-              let languageClient = self.languageClient(for: lspLanguage, workspacePath: workspacePath),
-              let uri = document.languageServerURI else {
+    /// - Parameter url: The url of the document that was closed
+    func closeDocument(_ url: URL) {
+        guard let languageClient = languageClients.first(where: {
+                  $0.value.openFiles.document(for: url.absolutePath) != nil
+              })?.value else {
             return
         }
         Task {
             do {
-                try await languageClient.closeDocument(uri)
+                try await languageClient.closeDocument(url.absolutePath)
             } catch {
                 // swiftlint:disable:next line_length
-                logger.error("Failed to close document: \(uri, privacy: .private), language: \(lspLanguage.rawValue). Error \(error)")
+                logger.error("Failed to close document: \(url.absolutePath, privacy: .private), language: \(languageClient.languageId.rawValue). Error \(error)")
             }
         }
     }
@@ -252,7 +272,7 @@ final class LSPService: ObservableObject {
     ///   - languageId: The ID of the language server to stop.
     ///   - workspacePath: The path of the workspace to stop the language server for.
     func stopServer(forLanguage languageId: LanguageIdentifier, workspacePath: String) async throws {
-        guard let server = await self.server(for: languageId, workspacePath: workspacePath) else {
+        guard let server = server(for: languageId, workspacePath: workspacePath) else {
             logger.error("Server not found for language \(languageId.rawValue) during stop operation")
             throw ServerManagerError.serverNotFound
         }
