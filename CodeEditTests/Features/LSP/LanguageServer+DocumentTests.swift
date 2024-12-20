@@ -92,6 +92,9 @@ final class LanguageServerDocumentTests: XCTestCase {
             ofType: "public.swift-source"
         )
 
+        // This is usually sent from the LSPService
+        try await server.openDocument(codeFile)
+
         await waitForClientEventCount(
             3,
             connection: connection,
@@ -101,7 +104,6 @@ final class LanguageServerDocumentTests: XCTestCase {
         // Set up full content changes
         server.serverCapabilities = ServerCapabilities()
         server.serverCapabilities.textDocumentSync = syncOption
-        server.openFiles.addDocument(codeFile, for: server)
 
         return codeFile
     }
@@ -127,6 +129,7 @@ final class LanguageServerDocumentTests: XCTestCase {
         // Set up test server
         let (connection, server) = try await makeTestServer()
 
+        // This service should receive the didOpen/didClose notifications
         let lspService = ServiceContainer.resolve(.singleton, LSPService.self)
         await MainActor.run { lspService?.languageClients[.init(.swift, tempTestDir.path() + "/")] = server }
 
@@ -148,8 +151,6 @@ final class LanguageServerDocumentTests: XCTestCase {
             ofType: "public.swift-source"
         )
         file.fileDocument = codeFile
-
-        // This should trigger a documentDidOpen event
         CodeEditDocumentController.shared.addDocument(codeFile)
 
         await waitForClientEventCount(3, connection: connection, description: "Pre-close event count")
