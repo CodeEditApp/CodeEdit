@@ -45,6 +45,7 @@ struct ActivityViewer: View {
             TaskNotificationView(taskNotificationHandler: taskNotificationHandler)
                 .fixedSize()
         }
+        .frame(minWidth: 0)
         .fixedSize(horizontal: false, vertical: false)
         .padding(.horizontal, 5)
         .padding(.vertical, 1.5)
