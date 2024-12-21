@@ -80,15 +80,48 @@ final class LanguageServerDocumentTests: XCTestCase {
         return (workspace, fileManager)
     }
 
+    func openCodeFile(
+        for server: LanguageServer,
+        connection: BufferingServerConnection,
+        file: CEWorkspaceFile,
+        syncOption: TwoTypeOption<TextDocumentSyncOptions, TextDocumentSyncKind>?
+    ) async throws -> CodeFileDocument {
+        let codeFile = try await CodeFileDocument(
+            for: file.url,
+            withContentsOf: file.url,
+            ofType: "public.swift-source"
+        )
+
+        // This is usually sent from the LSPService
+        try await server.openDocument(codeFile)
+
+        await waitForClientEventCount(
+            3,
+            connection: connection,
+            description: "Initialized (2) and opened (1) notification count"
+        )
+
+        // Set up full content changes
+        server.serverCapabilities = ServerCapabilities()
+        server.serverCapabilities.textDocumentSync = syncOption
+
+        return codeFile
+    }
+
     func waitForClientEventCount(_ count: Int, connection: BufferingServerConnection, description: String) async {
         let expectation = expectation(description: description)
-        Task.detached {
-            while connection.clientNotifications.count + connection.clientRequests.count < count {
-                try await Task.sleep(for: .milliseconds(10))
+
+        await withTaskGroup(of: Void.self) { group in
+            group.addTask {
+                await self.fulfillment(of: [expectation], timeout: 2)
             }
-            expectation.fulfill()
+            group.addTask {
+                for await events in connection.clientEventSequence where events.0.count + events.1.count == count {
+                    expectation.fulfill()
+                    return
+                }
+            }
         }
-        await fulfillment(of: [expectation], timeout: 2)
     }
 
     @MainActor
@@ -96,6 +129,7 @@ final class LanguageServerDocumentTests: XCTestCase {
         // Set up test server
         let (connection, server) = try await makeTestServer()
 
+        // This service should receive the didOpen/didClose notifications
         let lspService = ServiceContainer.resolve(.singleton, LSPService.self)
         await MainActor.run { lspService?.languageClients[.init(.swift, tempTestDir.path() + "/")] = server }
 
@@ -117,8 +151,6 @@ final class LanguageServerDocumentTests: XCTestCase {
             ofType: "public.swift-source"
         )
         file.fileDocument = codeFile
-
-        // This should trigger a documentDidOpen event
         CodeEditDocumentController.shared.addDocument(codeFile)
 
         await waitForClientEventCount(3, connection: connection, description: "Pre-close event count")
@@ -184,36 +216,29 @@ final class LanguageServerDocumentTests: XCTestCase {
         for option in syncOptions {
             // Set up test server
             let (connection, server) = try await makeTestServer()
-
             // Create a CodeFileDocument to test with, attach it to the workspace and file
-            let codeFile = try CodeFileDocument(
-                for: file.url,
-                withContentsOf: file.url,
-                ofType: "public.swift-source"
-            )
-
-            // Set up full content changes
-            server.serverCapabilities = ServerCapabilities()
-            server.serverCapabilities.textDocumentSync = option
-            server.openFiles.addDocument(codeFile)
-            codeFile.languageServerCoordinator.languageServer = server
-            codeFile.languageServerCoordinator.setUpUpdatesTask()
+            let codeFile = try await openCodeFile(for: server, connection: connection, file: file, syncOption: option)
+            XCTAssertNotNil(server.openFiles.contentCoordinator(for: codeFile))
+            server.openFiles.contentCoordinator(for: codeFile)?.setUpUpdatesTask()
             codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
 
             let textView = TextView(string: "")
             textView.setTextStorage(codeFile.content!)
-            textView.delegate = codeFile.languageServerCoordinator
+            textView.delegate = server.openFiles.contentCoordinator(for: codeFile)
+
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "Worlld")
             textView.replaceCharacters(in: NSRange(location: 39, length: 6), with: "")
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "World")
 
-            await waitForClientEventCount(3, connection: connection, description: "Edited notification count")
+            // Added one notification
+            await waitForClientEventCount(4, connection: connection, description: "Edited notification count")
 
             // Make sure our text view is intact
             XCTAssertEqual(textView.string, #"func testFunction() -> String { "Hello World" }"#)
             XCTAssertEqual(
                 [
                     ClientNotification.Method.initialized,
+                    ClientNotification.Method.textDocumentDidOpen,
                     ClientNotification.Method.textDocumentDidChange
                 ],
                 connection.clientNotifications.map { $0.method }
@@ -230,7 +255,7 @@ final class LanguageServerDocumentTests: XCTestCase {
     @MainActor
     func testDocumentEditNotificationsIncrementalChanges() async throws {
         // Set up test server
-        let (connection, server) = try await makeTestServer()
+        let (_, _) = try await makeTestServer()
 
         // Set up a workspace in the temp directory
         let (_, fileManager) = try makeTestWorkspace()
@@ -250,37 +275,28 @@ final class LanguageServerDocumentTests: XCTestCase {
         for option in syncOptions {
             // Set up test server
             let (connection, server) = try await makeTestServer()
+            let codeFile = try await openCodeFile(for: server, connection: connection, file: file, syncOption: option)
 
-            // Create a CodeFileDocument to test with, attach it to the workspace and file
-            let codeFile = try CodeFileDocument(
-                for: file.url,
-                withContentsOf: file.url,
-                ofType: "public.swift-source"
-            )
-
-            // Set up full content changes
-            server.serverCapabilities = ServerCapabilities()
-            server.serverCapabilities.textDocumentSync = option
-            server.openFiles.addDocument(codeFile)
-            codeFile.languageServerCoordinator.languageServer = server
-            codeFile.languageServerCoordinator.setUpUpdatesTask()
+            XCTAssertNotNil(server.openFiles.contentCoordinator(for: codeFile))
+            server.openFiles.contentCoordinator(for: codeFile)?.setUpUpdatesTask()
             codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
 
             let textView = TextView(string: "")
             textView.setTextStorage(codeFile.content!)
-            textView.delegate = codeFile.languageServerCoordinator
+            textView.delegate = server.openFiles.contentCoordinator(for: codeFile)
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "Worlld")
             textView.replaceCharacters(in: NSRange(location: 39, length: 6), with: "")
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "World")
 
-            // Throttling means we should receive one edited notification + init notification + init request
-            await waitForClientEventCount(3, connection: connection, description: "Edited notification count")
+            // Throttling means we should receive one edited notification + init notification + didOpen + init request
+            await waitForClientEventCount(4, connection: connection, description: "Edited notification count")
 
             // Make sure our text view is intact
             XCTAssertEqual(textView.string, #"func testFunction() -> String { "Hello World" }"#)
             XCTAssertEqual(
                 [
                     ClientNotification.Method.initialized,
+                    ClientNotification.Method.textDocumentDidOpen,
                     ClientNotification.Method.textDocumentDidChange
                 ],
                 connection.clientNotifications.map { $0.method }

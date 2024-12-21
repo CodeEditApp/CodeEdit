@@ -29,7 +29,10 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CodeFileDocument")
 
-    @Service var lspService: LSPService
+    /// Sent when the document is opened. The document will be sent in the notification's object.
+    static let didOpenNotification = Notification.Name(rawValue: "CodeFileDocument.didOpen")
+    /// Sent when the document is closed. The document's `fileURL` will be sent in the notification's object.
+    static let didCloseNotification = Notification.Name(rawValue: "CodeFileDocument.didClose")
 
     /// The text content of the document, stored as a text storage
     ///
@@ -47,11 +50,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// See ``CodeEditSourceEditor/CombineCoordinator``.
     @Published var contentCoordinator: CombineCoordinator = CombineCoordinator()
 
-    lazy var languageServerCoordinator: LSPContentCoordinator = {
-        let coordinator = LSPContentCoordinator()
-        coordinator.uri = self.languageServerURI
-        return coordinator
-    }()
+    /// Set by ``LanguageServer`` when initialized.
+    @Published var lspCoordinator: LSPContentCoordinator?
 
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
@@ -84,7 +84,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     /// A stable string to use when identifying documents with language servers.
-    var languageServerURI: String? { fileURL?.languageServerURI }
+    var languageServerURI: String? { fileURL?.absolutePath }
 
     /// Specify options for opening the file such as the initial cursor positions.
     /// Nulled by ``CodeFileView`` on first load.
@@ -161,6 +161,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         } else {
             Self.logger.error("Failed to read file from data using encoding: \(rawEncoding)")
         }
+        NotificationCenter.default.post(name: Self.didOpenNotification, object: self)
     }
 
     /// Triggered when change occurred
@@ -187,7 +188,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     override func close() {
         super.close()
-        lspService.closeDocument(self)
+        NotificationCenter.default.post(name: Self.didCloseNotification, object: fileURL)
     }
 
     func getLanguage() -> CodeLanguage {
@@ -202,15 +203,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     func findWorkspace() -> WorkspaceDocument? {
-        CodeEditDocumentController.shared.documents.first(where: { doc in
-            guard let workspace = doc as? WorkspaceDocument, let path = self.languageServerURI else { return false }
-            // createIfNotFound is safe here because it will still exit if the file and the workspace
-            // do not share a path prefix
-            return workspace
-                .workspaceFileManager?
-                .getFile(path, createIfNotFound: true)?
-                .fileDocument?
-                .isEqual(self) ?? false
-        }) as? WorkspaceDocument
+        fileURL?.findWorkspace()
     }
 }

@@ -8,9 +8,17 @@
 import Foundation
 import LanguageServerProtocol
 
+/// Tracks data associated with files and language servers.
 class LanguageServerFileMap {
+    /// Extend this struct as more objects are associated with a code document.
+    private struct DocumentObject {
+        let uri: String
+        var documentVersion: Int
+        var contentCoordinator: LSPContentCoordinator
+    }
+
     private var trackedDocuments: NSMapTable<NSString, CodeFileDocument>
-    private var trackedDocumentVersions: [String: Int] = [:]
+    private var trackedDocumentData: [String: DocumentObject] = [:]
 
     init() {
         trackedDocuments = NSMapTable<NSString, CodeFileDocument>(valueOptions: [.weakMemory])
@@ -18,15 +26,19 @@ class LanguageServerFileMap {
 
     // MARK: - Track & Remove Documents
 
-    func addDocument(_ document: CodeFileDocument) {
+    func addDocument(_ document: CodeFileDocument, for server: LanguageServer) {
         guard let uri = document.languageServerURI else { return }
         trackedDocuments.setObject(document, forKey: uri as NSString)
-        trackedDocumentVersions[uri] = 0
+        trackedDocumentData[uri] = DocumentObject(
+            uri: uri,
+            documentVersion: 0,
+            contentCoordinator: LSPContentCoordinator(documentURI: uri, languageServer: server)
+        )
     }
 
     func document(for uri: DocumentUri) -> CodeFileDocument? {
         let url = URL(filePath: uri)
-        return trackedDocuments.object(forKey: url.languageServerURI as NSString)
+        return trackedDocuments.object(forKey: url.absolutePath as NSString)
     }
 
     func removeDocument(for document: CodeFileDocument) {
@@ -36,7 +48,7 @@ class LanguageServerFileMap {
 
     func removeDocument(for uri: DocumentUri) {
         trackedDocuments.removeObject(forKey: uri as NSString)
-        trackedDocumentVersions.removeValue(forKey: uri)
+        trackedDocumentData.removeValue(forKey: uri)
     }
 
     // MARK: - Version Number Tracking
@@ -47,8 +59,8 @@ class LanguageServerFileMap {
     }
 
     func incrementVersion(for uri: DocumentUri) -> Int {
-        trackedDocumentVersions[uri] = (trackedDocumentVersions[uri] ?? 0) + 1
-        return  trackedDocumentVersions[uri] ?? 0
+        trackedDocumentData[uri]?.documentVersion += 1
+        return trackedDocumentData[uri]?.documentVersion ?? 0
     }
 
     func documentVersion(for document: CodeFileDocument) -> Int? {
@@ -57,6 +69,17 @@ class LanguageServerFileMap {
     }
 
     func documentVersion(for uri: DocumentUri) -> Int? {
-        return trackedDocumentVersions[uri]
+        return trackedDocumentData[uri]?.documentVersion
+    }
+
+    // MARK: - Content Coordinator
+
+    func contentCoordinator(for document: CodeFileDocument) -> LSPContentCoordinator? {
+        guard let uri = document.languageServerURI else { return nil }
+        return contentCoordinator(for: uri)
+    }
+
+    func contentCoordinator(for uri: DocumentUri) -> LSPContentCoordinator? {
+        trackedDocumentData[uri]?.contentCoordinator
     }
 }
