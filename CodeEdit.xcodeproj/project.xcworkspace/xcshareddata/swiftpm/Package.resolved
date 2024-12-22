@@ -1,5 +1,5 @@
 {
-  "originHash" : "bb72acfad31b288599b6721256b508d8209ba1bc1d7ab0fff6a358d49a1deae0",
+  "originHash" : "ac57a6899925c3e4ac6d43aed791c845c6fc24a4441b6a10297a207d951b7836",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -29,12 +29,30 @@
       }
     },
     {
+      "identity" : "codeeditsourceeditor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
+      "state" : {
+        "revision" : "b0688fa59fb8060840fb013afb4d6e6a96000f14",
+        "version" : "0.9.1"
+      }
+    },
+    {
       "identity" : "codeeditsymbols",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSymbols",
       "state" : {
         "revision" : "a794528172314f9be5d838f8579c4435895e0988",
         "version" : "0.2.2"
+      }
+    },
+    {
+      "identity" : "codeedittextview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
+      "state" : {
+        "revision" : "509d7b2e86460e8ec15b0dd5410cbc8e8c05940f",
+        "version" : "0.7.7"
       }
     },
     {

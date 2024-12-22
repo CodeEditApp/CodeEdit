@@ -15,6 +15,11 @@ struct CodeEditApp: App {
     let updater: SoftwareUpdater = SoftwareUpdater()
 
     init() {
+        // Register singleton services before anything else
+        ServiceContainer.register(
+            LSPService()
+        )
+
         _ = CodeEditDocumentController.shared
         NSMenuItem.swizzle()
         NSSplitViewItem.swizzle()

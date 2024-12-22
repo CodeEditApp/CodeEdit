@@ -30,7 +30,7 @@ extension CEWorkspaceFileManager {
                     // Can be ignored for now, these I think not related to tree changes
                     continue
                 case .rootChanged:
-                    // TODO: Handle workspace root changing.
+                    // TODO: #1880 - Handle workspace root changing.
                     continue
                 case .itemCreated, .itemCloned, .itemRemoved, .itemRenamed:
                     for fileItem in fileItems {
@@ -48,7 +48,10 @@ extension CEWorkspaceFileManager {
                 self.notifyObservers(updatedItems: files)
             }
 
-            self.handleGitEvents(events: events)
+            if Settings.shared.preferences.sourceControl.general.sourceControlIsEnabled &&
+                Settings.shared.preferences.sourceControl.general.refreshStatusLocally {
+                self.handleGitEvents(events: events)
+            }
         }
     }
 
