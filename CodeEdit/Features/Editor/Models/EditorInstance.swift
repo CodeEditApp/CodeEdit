@@ -39,7 +39,7 @@ class EditorInstance: Hashable {
         self.file = file
         self.cursorSubject.send(cursorPositions)
         self.rangeTranslator = RangeTranslator(cursorSubject: cursorSubject)
-        self.autoCompleteCoordinator = AutoCompleteCoordinator()
+        self.autoCompleteCoordinator = AutoCompleteCoordinator(file)
     }
 
     func hash(into hasher: inout Hasher) {

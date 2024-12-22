@@ -12,9 +12,14 @@ import LanguageServerProtocol
 
 class AutoCompleteCoordinator: TextViewCoordinator {
     private weak var textViewController: TextViewController?
+    private unowned var file: CEWorkspaceFile
     private var localEventMonitor: Any?
 
     private var itemBoxController: ItemBoxWindowController?
+
+    init(_ file: CEWorkspaceFile) {
+        self.file = file
+    }
 
     func prepareCoordinator(controller: TextViewController) {
         itemBoxController = ItemBoxWindowController()
@@ -25,45 +30,65 @@ class AutoCompleteCoordinator: TextViewCoordinator {
         localEventMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
             // `ctrl + space` keyboard shortcut listener for the item box to show
             if event.modifierFlags.contains(.control) && event.charactersIgnoringModifiers == " " {
-                self.showAutocompleteWindow()
+                Task {
+                    await self.showAutocompleteWindow()
+                }
                 return nil
             }
             return event
         }
     }
 
+    @MainActor
     func showAutocompleteWindow() {
         guard let cursorPos = textViewController?.cursorPositions.first,
               let textView = textViewController?.textView,
               let window = NSApplication.shared.keyWindow,
-              let itemBoxController = itemBoxController,
-              !itemBoxController.isVisible
+              let itemBoxController = itemBoxController
         else {
             return
         }
 
+        Task {
+            let textPosition = Position(line: cursorPos.line - 1, character: cursorPos.column - 1)
+            let completionItems = await fetchCompletions(position: textPosition)
+            itemBoxController.items = completionItems
+
+            let cursorRect = textView.firstRect(forCharacterRange: cursorPos.range, actualRange: nil)
+            itemBoxController.constrainWindowToScreenEdges(cursorRect: cursorRect)
+            itemBoxController.showWindow(attachedTo: window)
+        }
+    }
+
+    private func fetchCompletions(position: Position) async -> [CompletionItem] {
+        let workspace = await file.fileDocument?.findWorkspace()
+        guard let workspacePath = workspace?.fileURL?.absoluteURL.path() else { return [] }
+        guard let language = await file.fileDocument?.getLanguage().lspLanguage else { return [] }
+
         @Service var lspService: LSPService
+        guard let client = await lspService.languageClient(
+            for: language, workspacePath: workspacePath
+        ) else {
+            return []
+        }
 
-//        lspService.
+        do {
+            let completions = try await client.requestCompletion(
+                for: file.url.absoluteURL.path(), position: position
+            )
 
-        itemBoxController.items = [
-            CompletionItem(label: "CETable", kind: .class),
-            CompletionItem(label: "CETask", kind: .enum),
-            CompletionItem(label: "CETarget", kind: .function),
-            CompletionItem(label: "CEItem", kind: .color),
-            CompletionItem(label: "tableView", kind: .constant),
-            CompletionItem(label: "itemBoxController", kind: .constructor),
-            CompletionItem(label: "showAutocompleteWindow", kind: .enumMember),
-            CompletionItem(label: "NSApplication", kind: .field),
-            CompletionItem(label: "CECell", kind: .file),
-            CompletionItem(label: "Item10", kind: .folder),
-            CompletionItem(label: "Item11", kind: .snippet),
-            CompletionItem(label: "Item12", kind: .reference),
-        ]
-
-        let cursorRect = textView.firstRect(forCharacterRange: cursorPos.range, actualRange: nil)
-        itemBoxController.constrainWindowToScreenEdges(cursorRect: cursorRect)
-        itemBoxController.showWindow(attachedTo: window)
+            // Extract the completion items list
+            switch completions {
+            case .optionA(let completionItems):
+                return completionItems
+            case .optionB(let completionList):
+                return completionList.items
+            case .none:
+                return []
+            }
+        } catch {
+            return []
+        }
     }
 
     deinit {
@@ -75,34 +100,41 @@ class AutoCompleteCoordinator: TextViewCoordinator {
     }
 }
 
-extension MarkupContent {
-    public init(kind: MarkupKind, value: String) {
-        do {
-            let dictionary: [String: Any] = ["kind": kind.rawValue, "value": value]
-            let data = try JSONSerialization.data(withJSONObject: dictionary)
-            self = try JSONDecoder().decode(MarkupContent.self, from: data)
-        } catch {
-            print("Failed to create MarkupContent: \(error)")
-            // swiftlint:disable:next force_try
-            self = try! JSONDecoder().decode(MarkupContent.self, from: """
-                {"kind": "plaintext", "value": ""}
-                """.data(using: .utf8)!)
-        }
-    }
-}
-
 extension AutoCompleteCoordinator: ItemBoxDelegate {
     func applyCompletionItem(_ item: CompletionItem) {
-        guard let cursorPos = textViewController?.cursorPositions.first else {
+        guard let cursorPos = textViewController?.cursorPositions.first,
+              let textView = textViewController?.textView else {
             return
         }
 
         do {
-            let token = try textViewController?.treeSitterClient?.nodesAt(range: cursorPos.range)
-            guard let token = token?.first else {
-                return
+            let textPosition = Position(
+                line: cursorPos.line - 1,
+                character: cursorPos.column - 1
+            )
+            var textEdits = LSPCompletionItemsUtil.getCompletionItemEdits(
+                startPosition: textPosition,
+                item: item
+            )
+            // Appropriately order the text edits
+            textEdits = TextEdit.makeApplicable(textEdits)
+
+            // Make the updates
+            textView.undoManager?.beginUndoGrouping()
+            for textEdit in textEdits {
+                textView.replaceString(
+                    in: NSRange(location: 0, length: 0),
+                    with: textEdit.newText
+                )
             }
-            print("Token \(token)")
+            textView.undoManager?.endUndoGrouping()
+
+//            textViewController?.textView.applyMutations(<#T##mutations: [TextMutation]##[TextMutation]#>)
+//            let token = try textViewController?.treeSitterClient?.nodesAt(range: cursorPos.range)
+//            guard let token = token?.first else {
+//                return
+//            }
+//            print("Token \(token)")
         } catch {
             print("\(error)")
             return
