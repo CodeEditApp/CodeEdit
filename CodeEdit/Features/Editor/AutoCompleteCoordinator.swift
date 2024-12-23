@@ -11,10 +11,13 @@ import CodeEditSourceEditor
 import LanguageServerProtocol
 
 class AutoCompleteCoordinator: TextViewCoordinator {
+    /// A reference to the `TextViewController`, to be able to make edits
     private weak var textViewController: TextViewController?
+    /// A reference to the file we are working with, to be able to query file information
     private unowned var file: CEWorkspaceFile
+    /// The event monitor that looks for the keyboard shortcut to bring up the autocomplete menu
     private var localEventMonitor: Any?
-
+    /// The `ItemBoxWindowController` lets us display the autocomplete items
     private var itemBoxController: ItemBoxWindowController?
 
     init(_ file: CEWorkspaceFile) {
@@ -39,6 +42,7 @@ class AutoCompleteCoordinator: TextViewCoordinator {
         }
     }
 
+    /// Will query the language server for autocomplete suggestions and then display the window.
     @MainActor
     func showAutocompleteWindow() {
         guard let cursorPos = textViewController?.cursorPositions.first,
@@ -67,14 +71,16 @@ class AutoCompleteCoordinator: TextViewCoordinator {
 
         @Service var lspService: LSPService
         guard let client = await lspService.languageClient(
-            for: language, workspacePath: workspacePath
+            for: language,
+            workspacePath: workspacePath
         ) else {
             return []
         }
 
         do {
             let completions = try await client.requestCompletion(
-                for: file.url.absoluteURL.path(), position: position
+                for: file.url.absoluteURL.path(),
+                position: position
             )
 
             // Extract the completion items list
@@ -101,43 +107,50 @@ class AutoCompleteCoordinator: TextViewCoordinator {
 }
 
 extension AutoCompleteCoordinator: ItemBoxDelegate {
+    /// Takes a `CompletionItem` and modifies the text view with the new string
     func applyCompletionItem(_ item: CompletionItem) {
         guard let cursorPos = textViewController?.cursorPositions.first,
               let textView = textViewController?.textView else {
             return
         }
 
-        do {
-            let textPosition = Position(
-                line: cursorPos.line - 1,
-                character: cursorPos.column - 1
-            )
-            var textEdits = LSPCompletionItemsUtil.getCompletionItemEdits(
-                startPosition: textPosition,
-                item: item
-            )
-            // Appropriately order the text edits
-            textEdits = TextEdit.makeApplicable(textEdits)
+        let textPosition = Position(
+            line: cursorPos.line - 1,
+            character: cursorPos.column - 1
+        )
+        var textEdits = LSPCompletionItemsUtil.getCompletionItemEdits(
+            startPosition: textPosition,
+            item: item
+        )
+        // Appropriately order the text edits
+        textEdits = TextEdit.makeApplicable(textEdits)
 
-            // Make the updates
-            textView.undoManager?.beginUndoGrouping()
-            for textEdit in textEdits {
-                textView.replaceString(
-                    in: NSRange(location: 0, length: 0),
-                    with: textEdit.newText
-                )
-            }
-            textView.undoManager?.endUndoGrouping()
+        // Make the updates
+        textView.undoManager?.beginUndoGrouping()
+        for textEdit in textEdits {
+            textView.replaceString(
+                in: cursorPos.range,
+                with: textEdit.newText
+            )
+        }
+        textView.undoManager?.endUndoGrouping()
 
-//            textViewController?.textView.applyMutations(<#T##mutations: [TextMutation]##[TextMutation]#>)
+        // Set the cursor to the end of the completion
+        let insertText = LSPCompletionItemsUtil.getInsertText(from: item)
+        guard let newCursorPos = cursorPos.range.shifted(by: insertText.count) else {
+            return
+        }
+        textViewController?.setCursorPositions([CursorPosition(range: newCursorPos)])
+
+//        do {
 //            let token = try textViewController?.treeSitterClient?.nodesAt(range: cursorPos.range)
 //            guard let token = token?.first else {
 //                return
 //            }
 //            print("Token \(token)")
-        } catch {
-            print("\(error)")
-            return
-        }
+//        } catch {
+//            print("\(error)")
+//            return
+//        }
     }
 }

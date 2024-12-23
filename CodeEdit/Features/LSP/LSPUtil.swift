@@ -38,6 +38,22 @@ enum LSPCompletionItemsUtil {
         return edits
     }
 
+    static func getInsertText(from completionItem: CompletionItem) -> String {
+        // According to LSP spec, textEdit takes precedence if present, then insertText, then label
+        if let textEdit = completionItem.textEdit {
+            switch textEdit {
+            case .optionA(let edit):
+                return edit.newText
+            case .optionB(let insertReplaceEdit):
+                return insertReplaceEdit.newText
+            }
+        }
+        if let insertText = completionItem.insertText {
+            return insertText
+        }
+        return completionItem.label
+    }
+
     private static func editOrReplaceItem(edit: TwoTypeOption<TextEdit, InsertReplaceEdit>, _ edits: inout [TextEdit]) {
         switch edit {
         case .optionA(let textEdit):
