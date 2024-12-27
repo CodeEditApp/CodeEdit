@@ -29,7 +29,7 @@ extension LanguageServer {
             )
             try await lspInstance.textDocumentDidOpen(DidOpenTextDocumentParams(textDocument: textDocument))
 
-            await updateIsolatedDocument(document, coordinator: openFiles.contentCoordinator(for: document))
+            await updateIsolatedDocument(document)
         } catch {
             logger.warning("addDocument: Error \(error)")
             throw error
@@ -120,8 +120,9 @@ extension LanguageServer {
     }
 
     @MainActor
-    private func updateIsolatedDocument(_ document: CodeFileDocument, coordinator: LSPContentCoordinator?) {
-        document.lspCoordinator = coordinator
+    private func updateIsolatedDocument(_ document: CodeFileDocument) {
+        document.lspCoordinator = openFiles.contentCoordinator(for: document)
+        document.lspHighlightProvider = openFiles.semanticHighlighter(for: document)
     }
 
     // swiftlint:disable line_length

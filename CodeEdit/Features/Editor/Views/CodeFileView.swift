@@ -22,6 +22,8 @@ struct CodeFileView: View {
     /// Any coordinators passed to the view.
     private var textViewCoordinators: [TextViewCoordinator]
 
+    private var highlightProviders: [any HighlightProviding]
+
     @AppSettings(\.textEditing.defaultTabWidth)
     var defaultTabWidth
     @AppSettings(\.textEditing.indentOption)
@@ -59,6 +61,7 @@ struct CodeFileView: View {
         self.textViewCoordinators = textViewCoordinators
             + [codeFile.contentCoordinator]
             + [codeFile.lspCoordinator].compactMap({ $0 })
+        self.highlightProviders = [TreeSitterClient()] + [codeFile.lspHighlightProvider].compactMap({ $0 })
         self.isEditable = isEditable
 
         if let openOptions = codeFile.openOptions {
@@ -129,6 +132,7 @@ struct CodeFileView: View {
             wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
             cursorPositions: $cursorPositions,
             useThemeBackground: useThemeBackground,
+            highlightProviders: highlightProviders,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable,
             letterSpacing: letterSpacing,

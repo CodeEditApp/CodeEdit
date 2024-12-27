@@ -56,6 +56,7 @@ class LanguageServer {
             category: "LanguageServer.\(languageId.rawValue)"
         )
         if let semanticTokensProvider = serverCapabilities.semanticTokensProvider {
+            logger.log("Setting up semantic tokens")
             self.highlightMap = SemanticTokenMap(semanticCapability: semanticTokensProvider)
         } else {
             self.highlightMap = nil // Server doesn't support semantic highlights
@@ -152,13 +153,13 @@ class LanguageServer {
                 // https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#semanticTokensClientCapabilities
                 semanticTokens: SemanticTokensClientCapabilities(
                     dynamicRegistration: false,
-                    requests: .init(range: true, delta: true),
+                    requests: .init(range: false, delta: true),
                     tokenTypes: SemanticTokenTypes.allStrings,
                     tokenModifiers: SemanticTokenModifiers.allStrings,
                     formats: [.relative],
                     overlappingTokenSupport: true,
                     multilineTokenSupport: true,
-                    serverCancelSupport: true,
+                    serverCancelSupport: false,
                     augmentsSyntaxTokens: true
                 )
             )

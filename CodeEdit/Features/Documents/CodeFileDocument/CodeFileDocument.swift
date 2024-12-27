@@ -53,6 +53,9 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// Set by ``LanguageServer`` when initialized.
     @Published var lspCoordinator: LSPContentCoordinator?
 
+    /// Set by ``LanguageServer`` when initialized.
+    @Published var lspHighlightProvider: SemanticTokenHighlightProvider<ConcreteSemanticTokenStorage>?
+
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
 

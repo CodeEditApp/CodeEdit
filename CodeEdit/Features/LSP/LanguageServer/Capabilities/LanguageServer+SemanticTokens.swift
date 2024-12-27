@@ -12,6 +12,7 @@ extension LanguageServer {
     /// Setup and test the validity of a rename operation at a given location
     func requestSemanticTokens(for documentURI: String) async throws -> SemanticTokensResponse {
         do {
+            logger.log("Requesting all tokens")
             let params = SemanticTokensParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI)
             )
@@ -40,6 +41,7 @@ extension LanguageServer {
         previousResultId: String
     ) async throws -> SemanticTokensDeltaResponse {
         do {
+            logger.log("Requesting delta tokens")
             let params = SemanticTokensDeltaParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
                 previousResultId: previousResultId
