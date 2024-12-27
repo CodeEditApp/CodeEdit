@@ -65,6 +65,7 @@
 		3000516C2BBD3A9500A98562 /* ServiceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3000516B2BBD3A9500A98562 /* ServiceWrapper.swift */; };
 		3026F50F2AC006C80061227E /* InspectorAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3026F50E2AC006C80061227E /* InspectorAreaViewModel.swift */; };
 		3046374E2CB15FA900180667 /* AutoCompleteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3046374D2CB15F9200180667 /* AutoCompleteCoordinator.swift */; };
+		3048523D2D182DA6000CD5CF /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */; };
 		30AB4EBB2BF718A100ED4431 /* DeveloperSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EBA2BF718A100ED4431 /* DeveloperSettings.swift */; };
 		30AB4EBD2BF71CA800ED4431 /* DeveloperSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EBC2BF71CA800ED4431 /* DeveloperSettingsView.swift */; };
 		30AB4EC22BF7253200ED4431 /* KeyValueTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB4EC12BF7253200ED4431 /* KeyValueTable.swift */; };
@@ -458,8 +459,7 @@
 		6CBA0D512A1BF524002C6FAA /* SegmentedControlImproved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA0D502A1BF524002C6FAA /* SegmentedControlImproved.swift */; };
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
 		6CBE1CFB2B71DAA6003AC32E /* Loopable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBE1CFA2B71DAA6003AC32E /* Loopable.swift */; };
-		6CC00A8B2CBEF150004E8134 /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */; };
-		6CC17B4F2C432AE000834E2C /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CC17B4E2C432AE000834E2C /* CodeEditSourceEditor */; };
+		6CC17B4F2C432AE000834E2C /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		6CC17B512C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC17B502C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift */; };
 		6CC17B532C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC17B522C43314000834E2C /* ProjectNavigatorViewController+NSOutlineViewDelegate.swift */; };
 		6CC17B5B2C44258700834E2C /* WindowControllerPropertyWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC17B5A2C44258700834E2C /* WindowControllerPropertyWrapper.swift */; };
@@ -1339,6 +1339,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3048523D2D182DA6000CD5CF /* CodeEditSourceEditor in Frameworks */,
 				6C85BB402C2105ED00EB5DEF /* CodeEditKit in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
@@ -1346,7 +1347,7 @@
 				6CE21E872C650D2C0031B056 /* SwiftTerm in Frameworks */,
 				6CD3CA552C8B508200D83DCD /* (null) in Frameworks */,
 				6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */,
-				6CC17B4F2C432AE000834E2C /* CodeEditSourceEditor in Frameworks */,
+				6CC17B4F2C432AE000834E2C /* (null) in Frameworks */,
 				30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */,
 				6C4E37FC2C73E00700AEE7B5 /* SwiftTerm in Frameworks */,
 				6C6BD6F429CD142C00235D17 /* CollectionConcurrencyKit in Frameworks */,
@@ -1354,7 +1355,6 @@
 				6CB446402B6DFF3A00539ED0 /* CodeEditSourceEditor in Frameworks */,
 				6C05CF9E2CDE8699006AAECD /* CodeEditSourceEditor in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
-				6CD26C852C8F907800ADBA38 /* (null) in Frameworks */,
 				30CB64942C16CA9100CC8A9E /* LanguageClient in Frameworks */,
 				6C6BD6F829CD14D100235D17 /* CodeEditKit in Frameworks */,
 				6C0824A12C5C0C9700A0751E /* SwiftTerm in Frameworks */,
@@ -3771,7 +3771,6 @@
 				6C0617D52BDB4432008C9C42 /* LogStream */,
 				6C85BB3F2C2105ED00EB5DEF /* CodeEditKit */,
 				6C85BB432C210EFD00EB5DEF /* SwiftUIIntrospect */,
-				6CC17B4E2C432AE000834E2C /* CodeEditSourceEditor */,
 				6C0824A02C5C0C9700A0751E /* SwiftTerm */,
 				6CE21E862C650D2C0031B056 /* SwiftTerm */,
 				6C4E37FB2C73E00700AEE7B5 /* SwiftTerm */,

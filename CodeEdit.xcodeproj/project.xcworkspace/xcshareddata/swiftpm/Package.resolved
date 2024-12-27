@@ -38,6 +38,15 @@
       }
     },
     {
+      "identity" : "codeedittextview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
+      "state" : {
+        "revision" : "509d7b2e86460e8ec15b0dd5410cbc8e8c05940f",
+        "version" : "0.7.7"
+      }
+    },
+    {
       "identity" : "collectionconcurrencykit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/johnsundell/collectionconcurrencykit",

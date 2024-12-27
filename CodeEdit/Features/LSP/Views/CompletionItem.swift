@@ -6,9 +6,8 @@
 //
 
 import SwiftUI
-import CodeEditTextView
-import LanguageServerProtocol
 import CodeEditSourceEditor
+import LanguageServerProtocol
 
 // TODO: REMOVE Y OFFSET ON 16 PX?
 
@@ -40,7 +39,7 @@ let fontSizeToRightPadding: [CGFloat: CGFloat] = [
     18: 12.5,
 ]
 
-extension CompletionItem: @retroactive ItemBoxEntry {
+extension CompletionItem: @retroactive CodeSuggestionEntry {
     public var view: NSView {
         NSHostingView(
             rootView: HStack(spacing: 0) {
