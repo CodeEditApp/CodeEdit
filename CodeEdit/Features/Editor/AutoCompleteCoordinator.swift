@@ -22,6 +22,10 @@ class AutoCompleteCoordinator: TextViewCoordinator {
     private var suggestionController: SuggestionController?
     /// The current TreeSitter node that the main cursor is at
     private var currentNode: SwiftTreeSitter.Node?
+    /// The current filter text based on partial token input
+    private var currentFilterText: String = ""
+    /// Stores the unfiltered completion items
+    private var completionItems: [CompletionItem] = []
 
     init(_ file: CEWorkspaceFile) {
         self.file = file
@@ -56,20 +60,24 @@ class AutoCompleteCoordinator: TextViewCoordinator {
             return
         }
 
+        var tokenSubstringCount = 0
+        currentFilterText = ""
         do {
             if let token = try textViewController?.treeSitterClient?.nodesAt(range: cursorPos.range).first {
                 if tokenIsActionable(token.node) {
                     currentNode = token.node
-                }
 
-                // Get the string from the start of the token to the location of the cursor
-                if cursorPos.range.location > token.node.range.location {
-                    let selectedRange = NSRange(
-                        location: token.node.range.location,
-                        length: cursorPos.range.location - token.node.range.location
-                    )
-                    let tokenSubstring = textView.textStorage?.substring(from: selectedRange)
-//                    print("Token word: \(String(describing: tokenSubstring))")
+                    // Get the string from the start of the token to the location of the cursor
+                    if cursorPos.range.location > token.node.range.location {
+                        let selectedRange = NSRange(
+                            location: token.node.range.location,
+                            length: cursorPos.range.location - token.node.range.location
+                        )
+                        if let tokenSubstring = textView.textStorage?.substring(from: selectedRange) {
+                            currentFilterText = tokenSubstring
+                            tokenSubstringCount = tokenSubstring.count
+                        }
+                    }
                 }
             }
         } catch {
@@ -77,21 +85,24 @@ class AutoCompleteCoordinator: TextViewCoordinator {
         }
 
         Task {
-            let textPosition = Position(line: cursorPos.line - 1, character: cursorPos.column - 1)
+            var textPosition = Position(line: cursorPos.line - 1, character: cursorPos.column - 1)
             // If we are asking for completions in the middle of a token, then
             // query the language server for completion items at the start of the token
-//            if let currentNode = currentNode, tokenIsActionable(currentNode) {
-//                if let newPos = textView.lspRangeFrom(nsRange: currentNode.range) {
-//                    _currentNode
-//                }
-//            }
-            print("Getting completion items at token position: \(textPosition)")
-
-            let completionItems = await fetchCompletions(position: textPosition)
-            suggestionController.items = completionItems
+            if currentNode != nil {
+                textPosition = Position(
+                    line: cursorPos.line - 1,
+                    character: cursorPos.column - tokenSubstringCount - 1
+                )
+            }
+            completionItems = await fetchCompletions(position: textPosition)
+            suggestionController.items = filterCompletionItems(completionItems)
 
             let cursorRect = textView.firstRect(forCharacterRange: cursorPos.range, actualRange: nil)
-            suggestionController.constrainWindowToScreenEdges(cursorRect: cursorRect)
+            suggestionController.constrainWindowToScreenEdges(
+                cursorRect: cursorRect,
+                // TODO: CALCULATE PADDING BASED ON FONT SIZE, THIS IS JUST TEMP
+                horizontalOffset: 13 + 16.5 + CGFloat(tokenSubstringCount) * 7.4
+            )
             suggestionController.showWindow(attachedTo: window)
         }
     }
@@ -129,6 +140,26 @@ class AutoCompleteCoordinator: TextViewCoordinator {
         }
     }
 
+    /// Filters completion items based on the current partial token input
+    private func filterCompletionItems(_ items: [CompletionItem]) -> [CompletionItem] {
+        guard !currentFilterText.isEmpty else {
+            return items
+        }
+
+        return items.filter { item in
+            let insertText = LSPCompletionItemsUtil.getInsertText(from: item)
+            let label = item.label.lowercased()
+            let filterText = currentFilterText.lowercased()
+            if insertText.lowercased().hasPrefix(filterText) {
+                return true
+            }
+            if label.hasPrefix(filterText) {
+                return true
+            }
+            return false
+        }
+    }
+
     /// Determines if a TreeSitter node is a type where we can build featues off of. This helps filter out
     /// nodes that represent blank spaces or other information that is not useful.
     private func tokenIsActionable(_ node: SwiftTreeSitter.Node) -> Bool {
@@ -162,20 +193,8 @@ extension AutoCompleteCoordinator: SuggestionControllerDelegate {
             return
         }
 
-        // Get the token the cursor is currently on. Here we will check if we want to
-        // replace the current token we are on or just add text onto it.
-        var replacementRange = cursorPos.range
-        do {
-            if let token = try textViewController?.treeSitterClient?.nodesAt(range: cursorPos.range).first {
-                if tokenIsActionable(token.node) {
-                    replacementRange = token.node.range
-                }
-            }
-        } catch {
-            print("Error getting TreeSitter node: \(error)")
-        }
-
         // Make the updates
+        let replacementRange = currentNode?.range ?? cursorPos.range
         let insertText = LSPCompletionItemsUtil.getInsertText(from: item)
         textView.undoManager?.beginUndoGrouping()
         textView.replaceString(in: replacementRange, with: insertText)
@@ -188,9 +207,7 @@ extension AutoCompleteCoordinator: SuggestionControllerDelegate {
         self.onCompletion()
     }
 
-    func onCompletion() {
-
-    }
+    func onCompletion() { }
 
     func onCursorMove() {
         guard let cursorPos = textViewController?.cursorPositions.first,
@@ -206,37 +223,40 @@ extension AutoCompleteCoordinator: SuggestionControllerDelegate {
             return
         }
 
-        do {
-            if let token = try textViewController?.treeSitterClient?.nodesAt(range: cursorPos.range).first {
-                // Moving to a new token requires a new call to the language server
-                // We extend the range so that the `contains` can include the end value of
-                // the token, since its check is exclusive.
-                let adjustedRange = currentNode.range.shifted(endBy: 1)
-                if let adjustedRange = adjustedRange,
-                   !adjustedRange.contains(cursorPos.range.location) {
-                    suggestionController.close()
-                    return
-                }
+        // Moving to a new token requires a new call to the language server
+        // We extend the range so that the `contains` can include the end value of
+        // the token, since its check is exclusive.
+        let adjustedRange = currentNode.range.shifted(endBy: 1)
+        if let adjustedRange = adjustedRange,
+           !adjustedRange.contains(cursorPos.range.location) {
+            suggestionController.close()
+            return
+        }
 
-                // 1. Print cursor position and token range
-                print("Current node: \(String(describing: currentNode))")
-                print("Cursor pos: \(cursorPos.range.location) : Line: \(cursorPos.line) Col: \(cursorPos.column)")
+        // Check if cursor is at the start of the token
+        if cursorPos.range.location == currentNode.range.location {
+            currentFilterText = ""
+            suggestionController.items = completionItems
+            return
+        }
 
-                // Get the token string from the start of the token to the location of the cursor
-//                print("Token contains cursor position: \(String(describing: currentNode.range.contains(cursorPos.range.location)))")
-//                print("Token info: \(String(describing: tokenSubstring)) Range: \(String(describing: adjustedRange))")
-//                print("Current cursor position: \(cursorPos.range)")
+        // Filter through the completion items based on how far the cursor is in the token
+        if cursorPos.range.location > currentNode.range.location {
+            let selectedRange = NSRange(
+                location: currentNode.range.location,
+                length: cursorPos.range.location - currentNode.range.location
+            )
+            if let tokenSubstring = textView.textStorage?.substring(from: selectedRange) {
+                currentFilterText = tokenSubstring
+                suggestionController.items = filterCompletionItems(completionItems)
             }
-        } catch {
-            print("Error getting TreeSitter node: \(error)")
         }
     }
 
-    func onItemSelect(item: LanguageServerProtocol.CompletionItem) {
-
-    }
+    func onItemSelect(item: LanguageServerProtocol.CompletionItem) { }
 
     func onClose() {
         currentNode = nil
+        currentFilterText = ""
     }
 }
