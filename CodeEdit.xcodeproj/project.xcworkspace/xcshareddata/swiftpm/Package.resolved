@@ -1,5 +1,5 @@
 {
-  "originHash" : "ac57a6899925c3e4ac6d43aed791c845c6fc24a4441b6a10297a207d951b7836",
+  "originHash" : "bb72acfad31b288599b6721256b508d8209ba1bc1d7ab0fff6a358d49a1deae0",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -13,7 +13,7 @@
     {
       "identity" : "codeeditkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditKit.git",
+      "location" : "https://github.com/CodeEditApp/CodeEditKit",
       "state" : {
         "revision" : "ad28213a968586abb0cb21a8a56a3587227895f1",
         "version" : "0.1.2"
@@ -26,15 +26,6 @@
       "state" : {
         "revision" : "331d5dbc5fc8513be5848fce8a2a312908f36a11",
         "version" : "0.1.20"
-      }
-    },
-    {
-      "identity" : "codeeditsourceeditor",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
-      "state" : {
-        "revision" : "b0688fa59fb8060840fb013afb4d6e6a96000f14",
-        "version" : "0.9.1"
       }
     },
     {
@@ -123,8 +114,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/LanguageServerProtocol",
       "state" : {
-        "revision" : "ac76fccf0e981c8e30c5ee4de1b15adc1decd697",
-        "version" : "0.13.2"
+        "revision" : "d51412945ae88ffcab65ec339ca89aed9c9f0b8a",
+        "version" : "0.13.3"
       }
     },
     {
@@ -150,8 +141,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattmassicotte/Queue",
       "state" : {
-        "revision" : "8d6f936097888f97011610ced40313655dc5948d",
-        "version" : "0.1.4"
+        "revision" : "6adf359a705e3252742905b413bb8f56401043ca",
+        "version" : "0.2.0"
       }
     },
     {
@@ -195,8 +186,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
-        "revision" : "9bf03ff58ce34478e66aaee630e491823326fd06",
-        "version" : "1.1.3"
+        "revision" : "671108c96644956dddcd89dd59c203dcdb36cec7",
+        "version" : "1.1.4"
       }
     },
     {
@@ -222,8 +213,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
       "state" : {
-        "revision" : "5a65f4074975f811da666dfe31a19850950b1ea4",
-        "version" : "0.56.2"
+        "revision" : "87454f5c9ff4d644086aec2a0df1ffba678e7f3c",
+        "version" : "0.57.1"
       }
     },
     {

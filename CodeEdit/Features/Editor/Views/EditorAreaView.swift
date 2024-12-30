@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeEditTextView
+import CodeEditSourceEditor
 
 struct EditorAreaView: View {
     @AppSettings(\.general.showEditorPathBar)
@@ -52,7 +53,10 @@ struct EditorAreaView: View {
                 if let codeFile = codeFile {
                     EditorAreaFileView(
                         codeFile: codeFile,
-                        textViewCoordinators: [selected.rangeTranslator].compactMap({ $0 })
+                        // Linter keeps complaining about types, which is why there are these weird casts
+                        textViewCoordinators: [
+                            selected.rangeTranslator as Any, selected.autoCompleteCoordinator as Any
+                        ].compactMap({ $0 as? any TextViewCoordinator })
                     )
                     .focusedObject(editor)
                     .transformEnvironment(\.edgeInsets) { insets in

@@ -55,7 +55,7 @@ struct ExternalLink<Content: View, Icon: View>: View {
         @ViewBuilder content: @escaping () -> Content,
         title: String? = nil,
         subtitle: String? = nil,
-        @ViewBuilder icon: @escaping() -> Icon = { EmptyView() }
+        @ViewBuilder icon: @escaping () -> Icon = { EmptyView() }
     ) {
         self.showInFinder = showInFinder
         self.title = title
