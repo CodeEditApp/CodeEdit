@@ -187,8 +187,9 @@ class AutoCompleteCoordinator: TextViewCoordinator {
 
 extension AutoCompleteCoordinator: SuggestionControllerDelegate {
     /// Takes a `CompletionItem` and modifies the text view with the new string
-    func applyCompletionItem(item: CompletionItem) {
+    func applyCompletionItem(item: CodeSuggestionEntry) {
         guard let cursorPos = textViewController?.cursorPositions.first,
+              let item = item as? CompletionItem,
               let textView = textViewController?.textView else {
             return
         }
@@ -253,7 +254,7 @@ extension AutoCompleteCoordinator: SuggestionControllerDelegate {
         }
     }
 
-    func onItemSelect(item: LanguageServerProtocol.CompletionItem) { }
+    func onItemSelect(item: CodeSuggestionEntry) { }
 
     func onClose() {
         currentNode = nil
