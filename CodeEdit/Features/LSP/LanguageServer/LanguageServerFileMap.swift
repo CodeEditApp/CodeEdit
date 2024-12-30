@@ -41,7 +41,7 @@ class LanguageServerFileMap {
         )
 
         if let tokenMap = server.highlightMap {
-            docData.semanticHighlighter = .init(tokenMap: tokenMap, languageServer: server)
+            docData.semanticHighlighter = .init(tokenMap: tokenMap, languageServer: server, documentURI: uri)
         }
 
         trackedDocumentData[uri] = docData

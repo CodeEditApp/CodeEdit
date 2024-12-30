@@ -30,6 +30,7 @@ extension LanguageServer {
             try await lspInstance.textDocumentDidOpen(DidOpenTextDocumentParams(textDocument: textDocument))
 
             await updateIsolatedDocument(document)
+            try await document.lspHighlightProvider?.documentDidChange()
         } catch {
             logger.warning("addDocument: Error \(error)")
             throw error
@@ -78,10 +79,11 @@ extension LanguageServer {
     func documentChanged(uri: String, changes: [DocumentChange]) async throws {
         do {
             logger.debug("Document updated, \(uri, privacy: .private)")
+            guard let document = openFiles.document(for: uri) else { return }
+
             switch resolveDocumentSyncKind() {
             case .full:
-                guard let document = openFiles.document(for: uri),
-                      let content = await getIsolatedDocumentContent(document) else {
+                guard let content = await getIsolatedDocumentContent(document) else {
                     return
                 }
                 let changeEvent = TextDocumentContentChangeEvent(range: nil, rangeLength: nil, text: content.string)
@@ -100,6 +102,10 @@ extension LanguageServer {
             case .none:
                 return
             }
+
+            // Let the semantic token provider know about the update.
+            // Note for future: If a related LSP object need notifying about document changes, do it here.
+            try await document.lspHighlightProvider?.documentDidChange()
         } catch {
             logger.warning("closeDocument: Error \(error)")
             throw error

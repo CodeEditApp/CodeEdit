@@ -13,9 +13,7 @@ extension LanguageServer {
     func requestSemanticTokens(for documentURI: String) async throws -> SemanticTokensResponse {
         do {
             logger.log("Requesting all tokens")
-            let params = SemanticTokensParams(
-                textDocument: TextDocumentIdentifier(uri: documentURI)
-            )
+            let params = SemanticTokensParams(textDocument: TextDocumentIdentifier(uri: documentURI))
             return try await lspInstance.semanticTokensFull(params)
         } catch {
             logger.warning("requestSemanticTokens full: Error \(error)")

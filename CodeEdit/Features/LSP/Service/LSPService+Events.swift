@@ -33,6 +33,7 @@ extension LSPService {
 
     private func handleEvent(_ event: ServerEvent, for key: ClientKey) {
         // TODO: Handle Events
+        print(event)
 //        switch event {
 //        case let .request(id, request):
 //            print("Request ID: \(id) for \(key.languageId.rawValue)")
@@ -46,6 +47,7 @@ extension LSPService {
 
     private func handleRequest(_ request: ServerRequest) {
         // TODO: Handle Requests
+        print(request )
 //        switch request {
 //        case let .workspaceConfiguration(params, _):
 //            print("workspaceConfiguration: \(params)")
@@ -75,6 +77,7 @@ extension LSPService {
 
     private func handleNotification(_ notification: ServerNotification) {
         // TODO: Handle Notifications
+        print(notification)
 //        switch notification {
 //        case let .windowLogMessage(params):
 //            print("windowLogMessage \(params.type)\n```\n\(params.message)\n```\n")

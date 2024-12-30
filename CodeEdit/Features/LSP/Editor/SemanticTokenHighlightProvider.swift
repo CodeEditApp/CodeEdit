@@ -29,6 +29,7 @@ final class SemanticTokenHighlightProvider<Storage: SemanticTokenStorage>: Highl
     typealias EditCallback = @MainActor (Result<IndexSet, any Error>) -> Void
 
     private let tokenMap: SemanticTokenMap
+    private let documentURI: String
     private weak var languageServer: LanguageServer?
     private weak var textView: TextView?
 
@@ -39,14 +40,18 @@ final class SemanticTokenHighlightProvider<Storage: SemanticTokenStorage>: Highl
         textView?.documentRange ?? .zero
     }
 
-    init(tokenMap: SemanticTokenMap, languageServer: LanguageServer) {
+    init(tokenMap: SemanticTokenMap, languageServer: LanguageServer, documentURI: String) {
         self.tokenMap = tokenMap
         self.languageServer = languageServer
+        self.documentURI = documentURI
         self.storage = Storage()
     }
 
-    func documentDidChange(documentURI: String) async throws {
-        guard let languageServer, let textView, let lastEditCallback else { return }
+    func documentDidChange() async throws {
+        guard let languageServer, let textView else {
+            return
+        }
+        print("Doc did change")
 
         // The document was updated. Update our cache and send the invalidated ranges for the editor to handle.
         if let lastRequestId = storage.lastRequestId {
@@ -73,6 +78,9 @@ final class SemanticTokenHighlightProvider<Storage: SemanticTokenStorage>: Highl
     func setUp(textView: TextView, codeLanguage: CodeLanguage) {
         // Send off a request to get the initial token data
         self.textView = textView
+        Task {
+            try await self.documentDidChange()
+        }
     }
 
     func applyEdit(textView: TextView, range: NSRange, delta: Int, completion: @escaping EditCallback) {
@@ -87,6 +95,7 @@ final class SemanticTokenHighlightProvider<Storage: SemanticTokenStorage>: Highl
         range: NSRange,
         completion: @escaping @MainActor (Result<[HighlightRange], any Error>) -> Void
     ) {
+        print("Querying highlights")
         guard let lspRange = textView.lspRangeFrom(nsRange: range) else {
             completion(.failure(HighlightError.lspRangeFailure))
             return
@@ -98,18 +107,20 @@ final class SemanticTokenHighlightProvider<Storage: SemanticTokenStorage>: Highl
 
     // MARK: - Apply Response
 
-    private func applyDeltaResponse(_ data: SemanticTokensDelta, callback: EditCallback, textView: TextView?) async {
+    private func applyDeltaResponse(_ data: SemanticTokensDelta, callback: EditCallback?, textView: TextView?) async {
+        print("Applying delta: \(data)")
         let lspRanges = storage.applyDelta(data, requestId: data.resultId)
         await MainActor.run {
             let ranges = lspRanges.compactMap { textView?.nsRangeFrom($0) }
-            callback(.success(IndexSet(ranges: ranges)))
+            callback?(.success(IndexSet(ranges: ranges)))
         }
         lastEditCallback = nil // Don't use this callback again.
     }
 
-    private func applyEntireResponse(_ data: SemanticTokens, callback: EditCallback) async {
+    private func applyEntireResponse(_ data: SemanticTokens, callback: EditCallback?) async {
+        print("Applying entire: \(data)")
         storage.setData(data)
-        await callback(.success(IndexSet(integersIn: documentRange)))
+        await callback?(.success(IndexSet(integersIn: documentRange)))
         lastEditCallback = nil // Don't use this callback again.
     }
 

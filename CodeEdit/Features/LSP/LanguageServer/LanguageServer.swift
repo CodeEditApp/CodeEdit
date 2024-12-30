@@ -56,7 +56,6 @@ class LanguageServer {
             category: "LanguageServer.\(languageId.rawValue)"
         )
         if let semanticTokensProvider = serverCapabilities.semanticTokensProvider {
-            logger.log("Setting up semantic tokens")
             self.highlightMap = SemanticTokenMap(semanticCapability: semanticTokensProvider)
         } else {
             self.highlightMap = nil // Server doesn't support semantic highlights
