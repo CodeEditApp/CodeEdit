@@ -59,5 +59,7 @@ struct ActivityViewer: View {
                     .opacity(0.1)
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Activity Viewer")
     }
 }

@@ -26,8 +26,10 @@ struct CEWorkspaceSettingsView: View {
                         "Name",
                         text: $workspaceSettingsManager.settings.project.projectName
                     )
+                    .accessibilityLabel("Workspace Name")
                 } header: {
                     Text("Workspace")
+                        .accessibilityHidden(true)
                 }
 
                 Section {

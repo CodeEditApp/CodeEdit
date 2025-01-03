@@ -125,6 +125,7 @@ extension CodeEditWindowController {
             settingsWindow.contentView = NSHostingView(rootView: contentView)
             settingsWindow.titlebarAppearsTransparent = true
             settingsWindow.setContentSize(NSSize(width: 515, height: 515))
+            settingsWindow.setAccessibilityTitle("Workspace Settings")
 
             window.beginSheet(settingsWindow, completionHandler: nil)
         }

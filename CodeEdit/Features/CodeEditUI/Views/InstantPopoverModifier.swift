@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+/// See ``SwiftUI/View/instantPopover(isPresented:arrowEdge:content:)``
+/// - Warning: Views presented using this sheet must be dismissed by negating the `isPresented` binding. Using
+///            SwiftUI's `dismiss` will likely cause a crash. See [FB16221871](rdar://FB16221871)
 struct InstantPopoverModifier<PopoverContent: View>: ViewModifier {
     @Binding var isPresented: Bool
     let arrowEdge: Edge
@@ -24,6 +27,9 @@ struct InstantPopoverModifier<PopoverContent: View>: ViewModifier {
     }
 }
 
+/// See ``SwiftUI/View/instantPopover(isPresented:arrowEdge:content:)``
+/// - Warning: Views presented using this sheet must be dismissed by negating the `isPresented` binding. Using
+///            SwiftUI's `dismiss` will likely cause a crash. See [FB16221871](rdar://FB16221871)
 struct PopoverPresenter<ContentView: View>: NSViewRepresentable {
     @Binding var isPresented: Bool
     let arrowEdge: Edge
@@ -32,7 +38,7 @@ struct PopoverPresenter<ContentView: View>: NSViewRepresentable {
     func makeNSView(context: Context) -> NSView { NSView() }
 
     func updateNSView(_ nsView: NSView, context: Context) {
-        if isPresented, context.coordinator.popover == nil {
+        if isPresented && context.coordinator.popover == nil {
             let popover = NSPopover()
             popover.animates = false
             let hostingController = NSHostingController(rootView: contentView)
@@ -109,8 +115,9 @@ struct PopoverPresenter<ContentView: View>: NSViewRepresentable {
 }
 
 extension View {
-
     /// A custom view modifier that presents a popover attached to the view with no animation.
+    /// - Warning: Views presented using this sheet must be dismissed by negating the `isPresented` binding. Using
+    ///            SwiftUI's `dismiss` will likely cause a crash. See [FB16221871](rdar://FB16221871)
     /// - Parameters:
     ///   - isPresented: A binding to whether the popover is presented.
     ///   - arrowEdge: The edge of the view that the popover points to. Defaults to `.bottom`.

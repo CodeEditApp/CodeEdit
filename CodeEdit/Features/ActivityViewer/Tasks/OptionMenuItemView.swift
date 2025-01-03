@@ -10,6 +10,7 @@ import SwiftUI
 struct OptionMenuItemView: View {
     var label: String
     var action: () -> Void
+
     var body: some View {
         HStack {
             Text(label)
@@ -22,6 +23,11 @@ struct OptionMenuItemView: View {
         .onTapGesture {
             action()
         }
+        .accessibilityElement()
+        .accessibilityAction {
+            action()
+        }
+        .accessibilityLabel(label)
     }
 }
 

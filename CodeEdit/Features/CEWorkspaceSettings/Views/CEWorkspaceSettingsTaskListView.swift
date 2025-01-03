@@ -15,6 +15,7 @@ struct CEWorkspaceSettingsTaskListView: View {
 
     @Binding var selectedTaskID: UUID?
     @Binding var showAddTaskSheet: Bool
+
     var body: some View {
         if settings.tasks.isEmpty {
             Text("No tasks")

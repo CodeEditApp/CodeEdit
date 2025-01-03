@@ -51,7 +51,8 @@ struct TaskNotificationView: View {
                 .padding(.trailing, 3)
                 .popover(isPresented: $isPresented, arrowEdge: .bottom) {
                     TaskNotificationsDetailView(taskNotificationHandler: taskNotificationHandler)
-                }.onTapGesture {
+                }
+                .onTapGesture {
                     self.isPresented.toggle()
                 }
             }
