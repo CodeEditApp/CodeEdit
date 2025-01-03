@@ -67,7 +67,8 @@ struct SchemeDropDownView: View {
         .accessibilityIdentifier("SchemeDropdown")
         .accessibilityValue(workspaceDisplayName)
         .accessibilityLabel("Active Scheme")
-        .accessibilityAction(named: "show menu") {
+        .accessibilityHint("Open the active scheme menu")
+        .accessibilityAction {
             isSchemePopOverPresented.toggle()
         }
     }

@@ -49,7 +49,8 @@ struct TaskDropDownView: View {
         .accessibilityIdentifier("TaskDropdown")
         .accessibilityValue(taskManager.selectedTask?.name ?? "Create Tasks")
         .accessibilityLabel("Active Task")
-        .accessibilityAction(named: "show menu") {
+        .accessibilityHint("Open the active task menu")
+        .accessibilityAction {
             isTaskPopOverPresented = true
         }
     }
