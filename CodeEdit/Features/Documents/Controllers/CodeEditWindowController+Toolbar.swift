@@ -32,6 +32,7 @@ extension CodeEditWindowController {
             .flexibleSpace,
             .activityViewer,
             .flexibleSpace,
+//            .showLibrary,
             .itemListTrackingSeparator,
             .flexibleSpace,
             .toggleLastSidebarItem
@@ -48,7 +49,8 @@ extension CodeEditWindowController {
             .branchPicker,
             .activityViewer,
             .startTaskSidebarItem,
-            .stopTaskSidebarItem
+            .stopTaskSidebarItem,
+            .showLibrary
         ]
     }
 
@@ -111,6 +113,20 @@ extension CodeEditWindowController {
             )?.withSymbolConfiguration(.init(scale: .large))
 
             return toolbarItem
+        case .showLibrary:
+            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.showLibrary)
+            toolbarItem.label = "Test"
+            toolbarItem.paletteLabel = "Test"
+            toolbarItem.toolTip = "Test"
+            toolbarItem.isBordered = true
+            toolbarItem.target = self
+            toolbarItem.action = #selector(self.toggleLastPanel)
+            toolbarItem.image = NSImage(
+                systemSymbolName: "plus",
+                accessibilityDescription: nil
+            )
+
+            return toolbarItem
         case .stopTaskSidebarItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.stopTaskSidebarItem)
 
@@ -138,20 +154,25 @@ extension CodeEditWindowController {
             return toolbarItem
         case .branchPicker:
             let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
+
             let view = NSHostingView(
                 rootView: ToolbarBranchPicker(
                     workspaceFileManager: workspace?.workspaceFileManager
                 )
             )
+
             toolbarItem.view = view
+            toolbarItem.visibilityPriority = .high
 
             return toolbarItem
         case .activityViewer:
             let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.activityViewer)
-            toolbarItem.visibilityPriority = .user
+            toolbarItem.visibilityPriority = .low
+
             guard let workspaceSettingsManager = workspace?.workspaceSettingsManager,
                   let taskNotificationHandler = workspace?.taskNotificationHandler,
-                  let taskManager = workspace?.taskManager
+                  let taskManager = workspace?.taskManager,
+                  let window = self.window
             else { return nil }
 
             let view = NSHostingView(
@@ -163,17 +184,28 @@ extension CodeEditWindowController {
                 )
             )
 
-            let weakWidth = view.widthAnchor.constraint(equalToConstant: 650)
-            weakWidth.priority = .defaultLow
-            let strongWidth = view.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
-            strongWidth.priority = .defaultHigh
+            let dynamicWidthConstraint = view.widthAnchor.constraint(equalToConstant: window.frame.width * 0.4)
+            dynamicWidthConstraint.priority = .defaultLow
+            dynamicWidthConstraint.isActive = true
+
+            let minWidthConstraint = view.widthAnchor.constraint(greaterThanOrEqualToConstant: 0)
 
             NSLayoutConstraint.activate([
-                weakWidth,
-                strongWidth
+                dynamicWidthConstraint,
+                minWidthConstraint,
             ])
 
+            NotificationCenter.default.addObserver(
+                forName: NSWindow.didResizeNotification,
+                object: window,
+                queue: .main
+            ) { [weak view] _ in
+                guard let window = view?.window else { return }
+                dynamicWidthConstraint.constant = window.frame.width * 0.4
+            }
+
             toolbarItem.view = view
+
             return toolbarItem
         default:
             return NSToolbarItem(itemIdentifier: itemIdentifier)
