@@ -7,12 +7,13 @@
 
 import SwiftUI
 
+/// - Note: This view **cannot** use the `dismiss` environment value to dismiss the sheet. It has to negate the boolean
+///         value that presented it initially.
+///         See ``SwiftUI/View/instantPopover(isPresented:arrowEdge:content:)``
 struct TasksPopoverMenuItem: View {
-    @Environment(\.dismiss)
-    private var dismiss
-
     @ObservedObject var taskManager: TaskManager
     var task: CETask
+    var dismiss: () -> Void
 
     var body: some View {
         HStack(spacing: 5) {

@@ -2705,14 +2705,14 @@
 		618725A22C29EFE200987354 /* Tasks */ = {
 			isa = PBXGroup;
 			children = (
+				B69D3EE22C5F536B005CF43A /* ActiveTaskView.swift */,
+				618725A52C29F02500987354 /* DropdownMenuItemStyleModifier.swift */,
+				618725A72C29F05500987354 /* OptionMenuItemView.swift */,
 				618725A02C29EFCC00987354 /* SchemeDropDownView.swift */,
 				618725AA2C29F2C000987354 /* TaskDropDownView.swift */,
-				B69D3EE02C5F5357005CF43A /* TaskView.swift */,
-				B69D3EE22C5F536B005CF43A /* ActiveTaskView.swift */,
 				B69D3EE42C5F54B3005CF43A /* TasksPopoverMenuItem.swift */,
+				B69D3EE02C5F5357005CF43A /* TaskView.swift */,
 				618725A32C29F00400987354 /* WorkspaceMenuItemView.swift */,
-				618725A72C29F05500987354 /* OptionMenuItemView.swift */,
-				618725A52C29F02500987354 /* DropdownMenuItemStyleModifier.swift */,
 			);
 			path = Tasks;
 			sourceTree = "<group>";
