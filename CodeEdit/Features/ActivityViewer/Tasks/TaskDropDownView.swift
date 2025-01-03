@@ -44,6 +44,14 @@ struct TaskDropDownView: View {
         .onTapGesture {
             self.isTaskPopOverPresented.toggle()
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityIdentifier("TaskDropdown")
+        .accessibilityValue(taskManager.selectedTask?.name ?? "Create Tasks")
+        .accessibilityLabel("Active Task")
+        .accessibilityAction(named: "show menu") {
+            isTaskPopOverPresented = true
+        }
     }
 
     private var backgroundColor: some View {

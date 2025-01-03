@@ -21,15 +21,18 @@ struct SchemeDropDownView: View {
         workspaceSettingsManager.settings.project.projectName
     }
 
+    /// Resolves the name one step further than `workspaceName`.
+    var workspaceDisplayName: String {
+        workspaceName.isEmpty
+        ? (workspaceFileManager?.workspaceItem.fileName() ?? "No Project found")
+        : workspaceName
+    }
+
     var body: some View {
         HStack(spacing: 6) {
             Image(systemName: "folder.badge.gearshape")
                 .imageScale(.medium)
-            Text(
-                workspaceName.isEmpty
-                ? (workspaceFileManager?.workspaceItem.fileName() ?? "No Project found")
-                : workspaceName
-            )
+            Text(workspaceDisplayName)
         }
         .font(.subheadline)
         .padding(.trailing, 11.5)
@@ -54,31 +57,18 @@ struct SchemeDropDownView: View {
             self.isHoveringScheme = hovering
         })
         .instantPopover(isPresented: $isSchemePopOverPresented, arrowEdge: .bottom) {
-            VStack(alignment: .leading, spacing: 0) {
-                WorkspaceMenuItemView(
-                    workspaceFileManager: workspaceFileManager,
-                    item: workspaceFileManager?.workspaceItem
-                )
-                Divider()
-                    .padding(.vertical, 5)
-                Group {
-                    OptionMenuItemView(label: "Add Folder...") {
-                        // TODO: Implment Add Folder
-                        print("NOT IMPLEMENTED")
-                    }
-                    OptionMenuItemView(label: "Workspace Settings...") {
-                        NSApp.sendAction(
-                            #selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil
-                        )
-                    }
-                }
-            }
-            .font(.subheadline)
-            .padding(5)
-            .frame(minWidth: 215)
+            popoverContent
         }
         .onTapGesture {
-            self.isSchemePopOverPresented.toggle()
+            isSchemePopOverPresented.toggle()
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityIdentifier("SchemeDropdown")
+        .accessibilityValue(workspaceDisplayName)
+        .accessibilityLabel("Active Scheme")
+        .accessibilityAction(named: "show menu") {
+            isSchemePopOverPresented.toggle()
         }
     }
 
@@ -96,6 +86,33 @@ struct SchemeDropDownView: View {
         }
         .font(.system(size: 8, weight: .semibold, design: .default))
         .padding(.top, 0.5)
+    }
+
+    @ViewBuilder
+    var popoverContent: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            WorkspaceMenuItemView(
+                workspaceFileManager: workspaceFileManager,
+                item: workspaceFileManager?.workspaceItem
+            )
+            Divider()
+                .padding(.vertical, 5)
+            Group {
+                OptionMenuItemView(label: "Add Folder...") {
+                    // TODO: Implment Add Folder
+                    print("NOT IMPLEMENTED")
+                }
+                .disabled(true)
+                OptionMenuItemView(label: "Workspace Settings...") {
+                    NSApp.sendAction(
+                        #selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil
+                    )
+                }
+            }
+        }
+        .font(.subheadline)
+        .padding(5)
+        .frame(minWidth: 215)
     }
 }
 
