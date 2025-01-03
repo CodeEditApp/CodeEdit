@@ -89,8 +89,7 @@ struct SchemeDropDownView: View {
         .padding(.top, 0.5)
     }
 
-    @ViewBuilder
-    var popoverContent: some View {
+    @ViewBuilder var popoverContent: some View {
         VStack(alignment: .leading, spacing: 0) {
             WorkspaceMenuItemView(
                 workspaceFileManager: workspaceFileManager,
