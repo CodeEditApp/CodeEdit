@@ -39,4 +39,5 @@ func tempProjectPath() throws -> String {
 func cleanUpTempProjectPaths() throws {
     let baseDir = FileManager.default.temporaryDirectory.appending(path: "CodeEditUITests")
     try FileManager.default.removeItem(at: baseDir)
+    tempProjectPathIds.removeAll()
 }
