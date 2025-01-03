@@ -8,34 +8,81 @@
 import XCTest
 
 final class ActivityViewerTasksMenuTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
+    // After all tests in this group
+    override static func tearDown() {
+        do {
+            try cleanUpTempProjectPaths()
+        } catch {
+            print("Failed to clean up test temp directories.")
+            print(error)
         }
+    }
+
+    var app: XCUIApplication!
+    var window: XCUIElement!
+
+    @MainActor
+    override func setUp() async throws {
+        app = try App.launchWithTempDir()
+        window = Query.getWindow(app)
+        XCTAssertTrue(window.exists, "Window not found")
+    }
+
+    func testOpenTaskMenu() {
+        let viewer = window.groups["Activity Viewer"]
+        XCTAssertNotNil(viewer, "No Activity Viewer")
+
+        let taskDropdown = viewer.buttons["Active Task"]
+        XCTAssertTrue(taskDropdown.exists, "No Task Dropdown")
+        XCTAssertEqual(taskDropdown.value as? String, "Create Tasks", "Incorrect empty tasks label")
+
+        taskDropdown.click()
+        XCTAssertGreaterThan(app.popovers.count, 0, "Popover didn't show up")
+    }
+
+    func testNewTask() {
+        let viewer = window.groups["Activity Viewer"]
+        let taskDropdown = viewer.buttons["Active Task"]
+        taskDropdown.click()
+        let popover = app.popovers.firstMatch
+        XCTAssertTrue(popover.exists, "Popover did not appear on click")
+
+        let addTaskListOption = popover.buttons["Add Task..."]
+        XCTAssertTrue(addTaskListOption.exists, "No add task option in dropdown")
+        addTaskListOption.click()
+
+        let workspaceSettingsWindow = window.sheets["Workspace Settings"]
+        XCTAssertTrue(workspaceSettingsWindow.exists, "Workspace settings did not appear")
+
+        let addTaskButton = workspaceSettingsWindow.buttons["Add Task..."]
+        XCTAssertTrue(addTaskButton.exists, "No add task button")
+        addTaskButton.click()
+
+        // Enter in task information
+        let newSheet = workspaceSettingsWindow.sheets.firstMatch
+        XCTAssertTrue(newSheet.exists)
+        let taskName = newSheet.textFields["Task Name"]
+        XCTAssertTrue(taskName.exists)
+        taskName.click()
+        taskName.typeText("New Test Task")
+        XCTAssertEqual(taskName.value as? String, "New Test Task", "Name did not enter in")
+
+        let taskCommand = newSheet.textFields["Task Command"]
+        XCTAssertTrue(taskCommand.exists)
+        taskCommand.click()
+        taskCommand.typeText("echo \"Hello World\"")
+        XCTAssertEqual(taskCommand.value as? String, "echo \"Hello World\"", "Command did not enter in")
+
+        let saveButton = newSheet.buttons["Save"]
+        XCTAssertTrue(saveButton.exists)
+        saveButton.click()
+
+        workspaceSettingsWindow.buttons["Done"].click()
+        XCTAssertFalse(workspaceSettingsWindow.exists, "Workspace Settings should have dismissed")
+
+        // Ensure the new task was added as an option
+        XCTAssertEqual(taskDropdown.value as? String, "New Test Task")
+        taskDropdown.click()
+        XCTAssertTrue(popover.buttons["New Test Task"].exists, "New task was not added to the task list.")
     }
 }
