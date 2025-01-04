@@ -1,5 +1,5 @@
 //
-//  EditorPathBarView.swift
+//  EditorJumpBarView.swift
 //  CodeEditModules/PathBar
 //
 //  Created by Lukas Pistrol on 17.03.22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct EditorPathBarView: View {
+struct EditorJumpBarView: View {
     private let file: CEWorkspaceFile?
     private let shouldShowTabBar: Bool
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
@@ -58,7 +58,7 @@ struct EditorPathBarView: View {
                         )
                 } else {
                     ForEach(fileItems, id: \.self) { fileItem in
-                        EditorPathBarComponent(
+                        EditorJumpBarComponent(
                             fileItem: fileItem,
                             tappedOpenFile: tappedOpenFile,
                             isLastItem: fileItems.last == fileItem

@@ -131,9 +131,9 @@
 		5878DAA6291AE76700DD95A3 /* OpenQuicklyPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA2291AE76700DD95A3 /* OpenQuicklyPreviewView.swift */; };
 		5878DAA7291AE76700DD95A3 /* OpenQuicklyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA3291AE76700DD95A3 /* OpenQuicklyViewModel.swift */; };
 		5878DAA8291AE76700DD95A3 /* OpenQuicklyListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAA4291AE76700DD95A3 /* OpenQuicklyListItemView.swift */; };
-		5878DAB0291D627C00DD95A3 /* EditorPathBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAD291D627C00DD95A3 /* EditorPathBarMenu.swift */; };
-		5878DAB1291D627C00DD95A3 /* EditorPathBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAE291D627C00DD95A3 /* EditorPathBarComponent.swift */; };
-		5878DAB2291D627C00DD95A3 /* EditorPathBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAF291D627C00DD95A3 /* EditorPathBarView.swift */; };
+		5878DAB0291D627C00DD95A3 /* EditorJumpBarMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAD291D627C00DD95A3 /* EditorJumpBarMenu.swift */; };
+		5878DAB1291D627C00DD95A3 /* EditorJumpBarComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAE291D627C00DD95A3 /* EditorJumpBarComponent.swift */; };
+		5878DAB2291D627C00DD95A3 /* EditorJumpBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5878DAAF291D627C00DD95A3 /* EditorJumpBarView.swift */; };
 		58798218292D92370085B254 /* String+SafeOffset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798213292D92370085B254 /* String+SafeOffset.swift */; };
 		58798219292D92370085B254 /* SearchModeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798215292D92370085B254 /* SearchModeModel.swift */; };
 		5879821A292D92370085B254 /* SearchResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58798216292D92370085B254 /* SearchResultModel.swift */; };
@@ -807,9 +807,9 @@
 		5878DAA2291AE76700DD95A3 /* OpenQuicklyPreviewView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenQuicklyPreviewView.swift; sourceTree = "<group>"; };
 		5878DAA3291AE76700DD95A3 /* OpenQuicklyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenQuicklyViewModel.swift; sourceTree = "<group>"; };
 		5878DAA4291AE76700DD95A3 /* OpenQuicklyListItemView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenQuicklyListItemView.swift; sourceTree = "<group>"; };
-		5878DAAD291D627C00DD95A3 /* EditorPathBarMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorPathBarMenu.swift; sourceTree = "<group>"; };
-		5878DAAE291D627C00DD95A3 /* EditorPathBarComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorPathBarComponent.swift; sourceTree = "<group>"; };
-		5878DAAF291D627C00DD95A3 /* EditorPathBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorPathBarView.swift; sourceTree = "<group>"; };
+		5878DAAD291D627C00DD95A3 /* EditorJumpBarMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorJumpBarMenu.swift; sourceTree = "<group>"; };
+		5878DAAE291D627C00DD95A3 /* EditorJumpBarComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorJumpBarComponent.swift; sourceTree = "<group>"; };
+		5878DAAF291D627C00DD95A3 /* EditorJumpBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorJumpBarView.swift; sourceTree = "<group>"; };
 		58798213292D92370085B254 /* String+SafeOffset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SafeOffset.swift"; sourceTree = "<group>"; };
 		58798215292D92370085B254 /* SearchModeModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchModeModel.swift; sourceTree = "<group>"; };
 		58798216292D92370085B254 /* SearchResultModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultModel.swift; sourceTree = "<group>"; };
@@ -1892,20 +1892,20 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		5878DAAB291D627C00DD95A3 /* PathBar */ = {
+		5878DAAB291D627C00DD95A3 /* JumpBar */ = {
 			isa = PBXGroup;
 			children = (
 				5878DAAC291D627C00DD95A3 /* Views */,
 			);
-			path = PathBar;
+			path = JumpBar;
 			sourceTree = "<group>";
 		};
 		5878DAAC291D627C00DD95A3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5878DAAD291D627C00DD95A3 /* EditorPathBarMenu.swift */,
-				5878DAAE291D627C00DD95A3 /* EditorPathBarComponent.swift */,
-				5878DAAF291D627C00DD95A3 /* EditorPathBarView.swift */,
+				5878DAAD291D627C00DD95A3 /* EditorJumpBarMenu.swift */,
+				5878DAAE291D627C00DD95A3 /* EditorJumpBarComponent.swift */,
+				5878DAAF291D627C00DD95A3 /* EditorJumpBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2819,7 +2819,7 @@
 		6C147C3C29A328020089B630 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
-				5878DAAB291D627C00DD95A3 /* PathBar */,
+				5878DAAB291D627C00DD95A3 /* JumpBar */,
 				287776EB27E350BA00D46668 /* TabBar */,
 				B67660642AA970ED00CD56B0 /* Models */,
 				B67660632AA970E300CD56B0 /* Views */,
@@ -4033,7 +4033,7 @@
 				58D01C9B293167DC00C5B6B4 /* CodeEditKeychainConstants.swift in Sources */,
 				B640A99E29E2184700715F20 /* SettingsForm.swift in Sources */,
 				B62AEDD12A27B264009A9F52 /* View+paneToolbar.swift in Sources */,
-				5878DAB1291D627C00DD95A3 /* EditorPathBarComponent.swift in Sources */,
+				5878DAB1291D627C00DD95A3 /* EditorJumpBarComponent.swift in Sources */,
 				B628B7B72B223BAD00F9775A /* FindModePicker.swift in Sources */,
 				587B9E6E29301D8F00AC7927 /* GitLabProject.swift in Sources */,
 				58798234292E30B90085B254 /* FeedbackIssueArea.swift in Sources */,
@@ -4386,7 +4386,7 @@
 				58D01C99293167DC00C5B6B4 /* String+MD5.swift in Sources */,
 				20EBB505280C329800F3A5DA /* CommitListItemView.swift in Sources */,
 				669A50512C380C1800304CD8 /* String+escapedWhiteSpaces.swift in Sources */,
-				5878DAB2291D627C00DD95A3 /* EditorPathBarView.swift in Sources */,
+				5878DAB2291D627C00DD95A3 /* EditorJumpBarView.swift in Sources */,
 				664935422C35A5BC00461C35 /* NSTableViewWrapper.swift in Sources */,
 				04BC1CDE2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift in Sources */,
 				6C6BD70129CD172700235D17 /* ExtensionsListView.swift in Sources */,
@@ -4411,7 +4411,7 @@
 				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
 				6C6362D42C3E321A0025570D /* Editor+History.swift in Sources */,
 				6C85BB412C21061A00EB5DEF /* GitHubComment.swift in Sources */,
-				5878DAB0291D627C00DD95A3 /* EditorPathBarMenu.swift in Sources */,
+				5878DAB0291D627C00DD95A3 /* EditorJumpBarMenu.swift in Sources */,
 				04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift in Sources */,
 				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
 				6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */,

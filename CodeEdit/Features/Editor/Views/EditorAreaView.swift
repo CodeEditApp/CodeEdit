@@ -43,7 +43,7 @@ struct EditorAreaView: View {
 
         var editorInsetAmount: Double {
             let tabBarHeight = shouldShowTabBar ? (EditorTabBarView.height + 1) : 0
-            let pathBarHeight = showEditorPathBar ? (EditorPathBarView.height + 1) : 0
+            let pathBarHeight = showEditorPathBar ? (EditorJumpBarView.height + 1) : 0
             return tabBarHeight + pathBarHeight
         }
 
@@ -90,7 +90,7 @@ struct EditorAreaView: View {
                     Divider()
                 }
                 if showEditorPathBar {
-                    EditorPathBarView(
+                    EditorJumpBarView(
                         file: editor.selectedTab?.file,
                         shouldShowTabBar: shouldShowTabBar
                     ) { [weak editor] newFile in
