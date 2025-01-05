@@ -20,12 +20,12 @@ A collection of all the views that make up the main app window.
 - ``ImageFileView``
 - ``PDFFileView``
 
-### PathBar
+### JumpBar
 
-- ``PathBarView``
-- ``PathBarComponent``
-- ``PathBarMenu``
-- ``PathBarMenuItem``
+- ``JumpBarView``
+- ``JumpBarComponent``
+- ``JumpBarMenu``
+- ``JumpBarMenuItem``
 
 ### Navigator Sidebar
 
