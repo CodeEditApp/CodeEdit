@@ -13,6 +13,7 @@ enum UtilityAreaTab: AreaTab, CaseIterable {
     case terminal
     case debugConsole
     case output
+    case ports
 
     var title: String {
         switch self {
@@ -22,6 +23,8 @@ enum UtilityAreaTab: AreaTab, CaseIterable {
             return "Debug Console"
         case .output:
             return "Output"
+        case .ports:
+            return "Ports"
         }
     }
 
@@ -33,6 +36,8 @@ enum UtilityAreaTab: AreaTab, CaseIterable {
             return "ladybug"
         case .output:
             return "list.bullet.indent"
+        case .ports:
+            return "powerplug"
         }
     }
 
@@ -44,6 +49,8 @@ enum UtilityAreaTab: AreaTab, CaseIterable {
             UtilityAreaDebugView()
         case .output:
             UtilityAreaOutputView()
+        case .ports:
+            UtilityAreaPortsView()
         }
     }
 }

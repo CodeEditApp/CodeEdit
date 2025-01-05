@@ -505,6 +505,7 @@
 		85773E1E2A3E0A1F00C5D926 /* SettingsSearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85773E1D2A3E0A1F00C5D926 /* SettingsSearchResult.swift */; };
 		85E4122A2A46C8CA00183F2B /* LocationsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85E412292A46C8CA00183F2B /* LocationsSettings.swift */; };
 		9D36E1BF2B5E7D7500443C41 /* GitBranchesGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D36E1BE2B5E7D7500443C41 /* GitBranchesGroup.swift */; };
+		AEB135BB2D29D9B1001AA50E /* UtilityAreaPortsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEB135BA2D29D9B1001AA50E /* UtilityAreaPortsView.swift */; };
 		B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */; };
 		B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */; };
 		B607181D2B0C5BE3009CDAB4 /* GitClient+Stash.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607181C2B0C5BE3009CDAB4 /* GitClient+Stash.swift */; };
@@ -1181,6 +1182,7 @@
 		85E412292A46C8CA00183F2B /* LocationsSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsSettings.swift; sourceTree = "<group>"; };
 		8B9A0E162B9FE84B007E2DBF /* Pre.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Pre.xcconfig; sourceTree = "<group>"; };
 		9D36E1BE2B5E7D7500443C41 /* GitBranchesGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitBranchesGroup.swift; sourceTree = "<group>"; };
+		AEB135BA2D29D9B1001AA50E /* UtilityAreaPortsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityAreaPortsView.swift; sourceTree = "<group>"; };
 		B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
 		B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		B607181C2B0C5BE3009CDAB4 /* GitClient+Stash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Stash.swift"; sourceTree = "<group>"; };
@@ -2369,6 +2371,7 @@
 				B676606A2AA973A500CD56B0 /* TerminalUtility */,
 				B676606B2AA973B200CD56B0 /* DebugUtility */,
 				B676606C2AA973C000CD56B0 /* OutputUtility */,
+				AEB135B92D29D98B001AA50E /* PortsUtility */,
 				58822514292C280D00E83CDE /* Toolbar */,
 				B676606D2AA9741900CD56B0 /* Models */,
 				58822539292C333600E83CDE /* ViewModels */,
@@ -3161,6 +3164,14 @@
 				85E412292A46C8CA00183F2B /* LocationsSettings.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		AEB135B92D29D98B001AA50E /* PortsUtility */ = {
+			isa = PBXGroup;
+			children = (
+				AEB135BA2D29D9B1001AA50E /* UtilityAreaPortsView.swift */,
+			);
+			path = PortsUtility;
 			sourceTree = "<group>";
 		};
 		B60718472B17DC5B009CDAB4 /* Views */ = {
@@ -4099,6 +4110,7 @@
 				58798233292E30B90085B254 /* FeedbackToolbar.swift in Sources */,
 				6CC17B5B2C44258700834E2C /* WindowControllerPropertyWrapper.swift in Sources */,
 				587B9E6829301D8F00AC7927 /* GitLabAccountModel.swift in Sources */,
+				AEB135BB2D29D9B1001AA50E /* UtilityAreaPortsView.swift in Sources */,
 				B67DBB882CD51C55007F4F18 /* Limiter.swift in Sources */,
 				5878DAA7291AE76700DD95A3 /* OpenQuicklyViewModel.swift in Sources */,
 				6CFF967429BEBCC300182D6F /* FindCommands.swift in Sources */,
