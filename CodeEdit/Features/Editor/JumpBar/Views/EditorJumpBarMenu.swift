@@ -1,13 +1,13 @@
 //
-//  EditorPathBarMenu.swift
-//  CodeEditModules/PathBar
+//  EditorJumpBarMenu.swift
+//  CodeEdit
 //
 //  Created by Ziyuan Zhao on 2022/3/29.
 //
 
 import AppKit
 
-final class EditorPathBarMenu: NSMenu, NSMenuDelegate {
+final class EditorJumpBarMenu: NSMenu, NSMenuDelegate {
     private let fileItems: [CEWorkspaceFile]
     private weak var fileManager: CEWorkspaceFileManager?
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
@@ -23,7 +23,7 @@ final class EditorPathBarMenu: NSMenu, NSMenuDelegate {
         super.init(title: "")
         delegate = self
         fileItems.forEach { item in
-            let menuItem = PathBarMenuItem(fileItem: item, tappedOpenFile: tappedOpenFile)
+            let menuItem = JumpBarMenuItem(fileItem: item, tappedOpenFile: tappedOpenFile)
             menuItem.onStateImage = nil
             self.addItem(menuItem)
         }
@@ -44,10 +44,10 @@ final class EditorPathBarMenu: NSMenu, NSMenuDelegate {
         }
     }
 
-    private func generateSubmenu(_ fileItem: CEWorkspaceFile) -> EditorPathBarMenu? {
+    private func generateSubmenu(_ fileItem: CEWorkspaceFile) -> EditorJumpBarMenu? {
         if let fileManager = fileManager,
            let children = fileManager.childrenOfFile(fileItem) {
-            let menu = EditorPathBarMenu(
+            let menu = EditorJumpBarMenu(
                 fileItems: children,
                 fileManager: fileManager,
                 tappedOpenFile: tappedOpenFile
@@ -58,7 +58,7 @@ final class EditorPathBarMenu: NSMenu, NSMenuDelegate {
     }
 }
 
-final class PathBarMenuItem: NSMenuItem {
+final class JumpBarMenuItem: NSMenuItem {
     private let fileItem: CEWorkspaceFile
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
     private let generalSettings = Settings.shared.preferences.general

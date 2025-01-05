@@ -9,7 +9,6 @@ import SwiftUI
 
 struct InspectorAreaView: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
-
     @ObservedObject private var extensionManager = ExtensionManager.shared
     @ObservedObject public var viewModel: InspectorAreaViewModel
 
