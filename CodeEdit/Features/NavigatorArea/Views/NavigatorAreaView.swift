@@ -10,7 +10,7 @@ import SwiftUI
 struct NavigatorAreaView: View {
     @ObservedObject private var workspace: WorkspaceDocument
     @ObservedObject private var extensionManager = ExtensionManager.shared
-    @ObservedObject public var viewModel: NavigatorSidebarViewModel
+    @ObservedObject public var viewModel: NavigatorAreaViewModel
 
     @AppSettings(\.general.navigatorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
@@ -25,32 +25,12 @@ struct NavigatorAreaView: View {
     }
 
     var body: some View {
-        VStack {
-            if let selection = viewModel.selectedTab {
-                selection
-            } else {
-                NoSelectionInspectorView()
-            }
-        }
-        .safeAreaInset(edge: .leading, spacing: 0) {
-            if sidebarPosition == .side {
-                HStack(spacing: 0) {
-                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
-                    Divider()
-                }
-            }
-        }
-        .safeAreaInset(edge: .top, spacing: 0) {
-            if sidebarPosition == .top {
-                VStack(spacing: 0) {
-                    Divider()
-                    AreaTabBar(items: $viewModel.tabItems, selection: $viewModel.selectedTab, position: sidebarPosition)
-                    Divider()
-                }
-            } else {
-                Divider()
-            }
-        }
+        WorkspacePanelView(
+            viewModel: viewModel,
+            selectedTab: $viewModel.selectedTab,
+            tabItems: $viewModel.tabItems,
+            sidebarPosition: sidebarPosition
+        )
         .environmentObject(workspace)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("navigator")
