@@ -28,7 +28,7 @@ final class ActivityViewerTasksMenuTests: XCTestCase {
         XCTAssertTrue(window.exists, "Window not found")
     }
 
-    func testOpenTaskMenu() {
+    func testTaskMenu() {
         let viewer = window.groups["Activity Viewer"]
         XCTAssertNotNil(viewer, "No Activity Viewer")
 
