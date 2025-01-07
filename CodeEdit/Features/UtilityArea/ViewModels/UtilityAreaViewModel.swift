@@ -34,7 +34,7 @@ class UtilityAreaViewModel: ObservableObject {
     @Published var tabViewModel = UtilityAreaTabViewModel()
 
     func removeTerminals(_ ids: Set<UUID>) {
-        for (idx, terminal) in terminals.lazy.reversed().enumerated()
+        for (idx, terminal) in terminals.enumerated().reversed()
         where ids.contains(terminal.id) {
             TerminalCache.shared.removeCachedView(terminal.id)
             terminals.remove(at: idx)

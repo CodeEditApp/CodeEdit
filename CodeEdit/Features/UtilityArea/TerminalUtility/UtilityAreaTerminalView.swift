@@ -179,33 +179,3 @@ struct UtilityAreaTerminalView: View {
         }
     }
 }
-
-struct UtilityAreaTerminalPicker: View {
-    @Binding var selectedIDs: Set<UUID>
-    var terminals: [UtilityAreaTerminal]
-
-    var selectedID: Binding<UUID?> {
-        Binding<UUID?>(
-            get: {
-                selectedIDs.first
-            },
-            set: { newValue in
-                if let selectedID = newValue {
-                    selectedIDs = [selectedID]
-                }
-            }
-        )
-    }
-
-    var body: some View {
-        Picker("Terminal Tab", selection: selectedID) {
-            ForEach(terminals, id: \.self.id) { terminal in
-                Text(terminal.title)
-                    .tag(terminal.id as UUID?)
-            }
-        }
-        .labelsHidden()
-        .controlSize(.small)
-        .buttonStyle(.borderless)
-    }
-}
