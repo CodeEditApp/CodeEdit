@@ -33,7 +33,7 @@ final class ActivityViewerTasksMenuTests: XCTestCase {
         XCTAssertNotNil(viewer, "No Activity Viewer")
 
         let taskDropdown = viewer.buttons["Active Task"]
-        XCTAssertTrue(taskDropdown.exists, "No Task Dropdown")
+        XCTAssertTrue(taskDropdown.waitForExistence(timeout: 2.0), "No Task Dropdown")
         XCTAssertEqual(taskDropdown.value as? String, "Create Tasks", "Incorrect empty tasks label")
 
         taskDropdown.click()
@@ -45,14 +45,14 @@ final class ActivityViewerTasksMenuTests: XCTestCase {
         let taskDropdown = viewer.buttons["Active Task"]
         taskDropdown.click()
         let popover = app.popovers.firstMatch
-        XCTAssertTrue(popover.exists, "Popover did not appear on click")
+        XCTAssertTrue(popover.waitForExistence(timeout: 2.0), "Popover did not appear on click")
 
         let addTaskListOption = popover.buttons["Add Task..."]
         XCTAssertTrue(addTaskListOption.exists, "No add task option in dropdown")
         addTaskListOption.click()
 
         let workspaceSettingsWindow = window.sheets["Workspace Settings"]
-        XCTAssertTrue(workspaceSettingsWindow.exists, "Workspace settings did not appear")
+        XCTAssertTrue(workspaceSettingsWindow.waitForExistence(timeout: 2.0), "Workspace settings did not appear")
 
         let addTaskButton = workspaceSettingsWindow.buttons["Add Task..."]
         XCTAssertTrue(addTaskButton.exists, "No add task button")
@@ -60,7 +60,7 @@ final class ActivityViewerTasksMenuTests: XCTestCase {
 
         // Enter in task information
         let newSheet = workspaceSettingsWindow.sheets.firstMatch
-        XCTAssertTrue(newSheet.exists)
+        XCTAssertTrue(newSheet.waitForExistence(timeout: 2.0), "New task sheet did not appear")
         let taskName = newSheet.textFields["Task Name"]
         XCTAssertTrue(taskName.exists)
         taskName.click()
@@ -78,7 +78,7 @@ final class ActivityViewerTasksMenuTests: XCTestCase {
         saveButton.click()
 
         workspaceSettingsWindow.buttons["Done"].click()
-        XCTAssertFalse(workspaceSettingsWindow.exists, "Workspace Settings should have dismissed")
+        XCTAssertFalse(workspaceSettingsWindow.waitForNonExistence(timeout: 2.0), "Workspace Settings should have dismissed")
 
         // Ensure the new task was added as an option
         XCTAssertEqual(taskDropdown.value as? String, "New Test Task")
