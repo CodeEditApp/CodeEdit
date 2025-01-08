@@ -403,6 +403,7 @@
 		6C48D8F72972E5F300D6D205 /* WindowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C48D8F62972E5F300D6D205 /* WindowObserver.swift */; };
 		6C4E37F62C73DA5200AEE7B5 /* UtilityAreaTerminalSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4E37F52C73DA5200AEE7B5 /* UtilityAreaTerminalSidebar.swift */; };
 		6C4E37FC2C73E00700AEE7B5 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 6C4E37FB2C73E00700AEE7B5 /* SwiftTerm */; };
+		6C510CB82D2E4639006EBE85 /* XCUITest+waitForNonExistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C510CB72D2E4639006EBE85 /* XCUITest+waitForNonExistence.swift */; };
 		6C5228B529A868BD00AC48F6 /* Environment+ContentInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5228B429A868BD00AC48F6 /* Environment+ContentInsets.swift */; };
 		6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */; };
 		6C578D8129CD294800DC73B2 /* ExtensionActivatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C578D8029CD294800DC73B2 /* ExtensionActivatorView.swift */; };
@@ -1095,6 +1096,7 @@
 		6C48D8F32972DB1A00D6D205 /* Env+Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Env+Window.swift"; sourceTree = "<group>"; };
 		6C48D8F62972E5F300D6D205 /* WindowObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowObserver.swift; sourceTree = "<group>"; };
 		6C4E37F52C73DA5200AEE7B5 /* UtilityAreaTerminalSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityAreaTerminalSidebar.swift; sourceTree = "<group>"; };
+		6C510CB72D2E4639006EBE85 /* XCUITest+waitForNonExistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUITest+waitForNonExistence.swift"; sourceTree = "<group>"; };
 		6C5228B429A868BD00AC48F6 /* Environment+ContentInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ContentInsets.swift"; sourceTree = "<group>"; };
 		6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
 		6C578D8029CD294800DC73B2 /* ExtensionActivatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionActivatorView.swift; sourceTree = "<group>"; };
@@ -2966,6 +2968,14 @@
 			path = Environment;
 			sourceTree = "<group>";
 		};
+		6C510CB62D2E462D006EBE85 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6C510CB72D2E4639006EBE85 /* XCUITest+waitForNonExistence.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		6C6BD6ED29CD123000235D17 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -3031,6 +3041,7 @@
 		6C96191F2C3F27E3009733CE /* CodeEditUITests */ = {
 			isa = PBXGroup;
 			children = (
+				6C510CB62D2E462D006EBE85 /* Extensions */,
 				6CFBA54A2C4E168A00E3A914 /* App.swift */,
 				6C9619232C3F2809009733CE /* ProjectPath.swift */,
 				6C9619212C3F27F1009733CE /* Query.swift */,
@@ -4596,6 +4607,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C510CB82D2E4639006EBE85 /* XCUITest+waitForNonExistence.swift in Sources */,
 				6C9619242C3F2809009733CE /* ProjectPath.swift in Sources */,
 				6CFBA54B2C4E168A00E3A914 /* App.swift in Sources */,
 				6CFBA54D2C4E16C900E3A914 /* WindowCloseCommandTests.swift in Sources */,
