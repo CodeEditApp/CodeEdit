@@ -46,6 +46,7 @@ struct UtilityAreaTerminalTab: View {
             }
         } icon: {
             Image(systemName: "terminal")
+                .accessibilityHidden(true)
         }
         .contextMenu {
             Button("Rename...") {

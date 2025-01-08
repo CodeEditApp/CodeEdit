@@ -138,7 +138,7 @@ struct UtilityAreaTerminalView: View {
                         guard let terminal = getSelectedTerminal() else {
                             return
                         }
-                        utilityAreaViewModel.addTerminal(shell: nil, workspace: workspace, replacing: terminal.id)
+                        utilityAreaViewModel.replaceTerminal(terminal.id)
                     } label: {
                         Image(systemName: "trash")
                     }
@@ -161,7 +161,11 @@ struct UtilityAreaTerminalView: View {
             UtilityAreaTerminalSidebar()
         }
         .onAppear {
-            utilityAreaViewModel.initializeTerminals(workspace)
+            guard let workspaceURL = workspace.fileURL else {
+                assertionFailure("Workspace does not have a file URL.")
+                return
+            }
+            utilityAreaViewModel.initializeTerminals(workspaceURL: workspaceURL)
         }
     }
 

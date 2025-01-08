@@ -82,6 +82,7 @@ struct WorkspaceView: View {
                                         }
                                 }
                             }
+                            .accessibilityHidden(true)
                     }
                     .edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -100,6 +101,7 @@ struct WorkspaceView: View {
                             }
                             .offset(y: utilityAreaViewModel.isMaximized ? 0 : editorsHeight - statusbarHeight)
                         }
+                        .accessibilityElement(children: .contain)
                     }
                     .onChange(of: focusedEditor) { newValue in
                         /// update active tab group only if the new one is not the same with it.

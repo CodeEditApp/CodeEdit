@@ -41,5 +41,7 @@ struct UtilityAreaView: View {
                     .overlay(Color(nsColor: colorScheme == .dark ? .black : .clear))
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Utility Area")
     }
 }
