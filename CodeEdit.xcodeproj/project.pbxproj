@@ -3041,12 +3041,12 @@
 		6C96191F2C3F27E3009733CE /* CodeEditUITests */ = {
 			isa = PBXGroup;
 			children = (
-				6C510CB62D2E462D006EBE85 /* Extensions */,
 				6CFBA54A2C4E168A00E3A914 /* App.swift */,
-				6C9619232C3F2809009733CE /* ProjectPath.swift */,
-				6C9619212C3F27F1009733CE /* Query.swift */,
+				6C510CB62D2E462D006EBE85 /* Extensions */,
 				6C96191E2C3F27E3009733CE /* Features */,
 				6CFBA54E2C4E182100E3A914 /* Other Tests */,
+				6C9619232C3F2809009733CE /* ProjectPath.swift */,
+				6C9619212C3F27F1009733CE /* Query.swift */,
 			);
 			path = CodeEditUITests;
 			sourceTree = "<group>";

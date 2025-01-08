@@ -13,14 +13,13 @@ extension XCUIElement {
     /// Waits the specified amount of time for the element’s `exists` property to become `false`.
     /// - Parameter timeout: The amount of time to wait.
     /// - Returns: `false` if the timeout expires without the element coming out of existence.
-    ///
     func waitForNonExistence(timeout: TimeInterval) -> Bool {
-        let timeStart = Date().timeIntervalSince1970
-
-        while Date().timeIntervalSince1970 <= (timeStart + timeout) {
-            if !exists { return true }
+        let predicate = NSPredicate(format: "exists == false")
+        switch XCTWaiter.wait(for: [XCTNSPredicateExpectation(predicate: predicate, object: self)], timeout: timeout) {
+        case .completed:
+            return true
+        default:
+            return false
         }
-
-        return false
     }
 }
