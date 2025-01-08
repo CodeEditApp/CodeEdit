@@ -19,6 +19,7 @@ struct CETaskFormView: View {
                 TextField(text: $task.name) {
                     Text("Name")
                 }
+                .accessibilityLabel("Task Name")
                 Picker("Target", selection: $task.target) {
                     Text("My Mac")
                         .tag("My Mac")
@@ -32,12 +33,14 @@ struct CETaskFormView: View {
                     Text("Docker Compose")
                         .tag("Docker Compose")
                 }
+                .disabled(true)
             }
 
             Section {
                 TextField(text: $task.command) {
                     Text("Task")
                 }
+                .accessibilityLabel("Task Command")
                 TextField(text: $task.workingDirectory) {
                     Text("Working Directory")
                 }

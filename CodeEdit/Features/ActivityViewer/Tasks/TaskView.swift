@@ -27,5 +27,7 @@ struct TaskView: View {
                 .frame(width: 5, height: 5)
                 .padding(.trailing, 2.5)
         }
+        .accessibilityElement()
+        .accessibilityLabel(task.name)
     }
 }
