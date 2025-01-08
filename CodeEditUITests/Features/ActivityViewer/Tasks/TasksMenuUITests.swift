@@ -78,7 +78,10 @@ final class ActivityViewerTasksMenuTests: XCTestCase {
         saveButton.click()
 
         workspaceSettingsWindow.buttons["Done"].click()
-        XCTAssertFalse(workspaceSettingsWindow.waitForNonExistence(timeout: 2.0), "Workspace Settings should have dismissed")
+        XCTAssertFalse(
+            workspaceSettingsWindow.waitForNonExistence(timeout: 2.0),
+            "Workspace Settings should have dismissed"
+        )
 
         // Ensure the new task was added as an option
         XCTAssertEqual(taskDropdown.value as? String, "New Test Task")
