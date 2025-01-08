@@ -50,6 +50,11 @@ struct CECircularProgressView: View {
                         .font(.caption)
                 }
             }
+            .accessibilityElement()
+            .accessibilityAddTraits(.updatesFrequently)
+            .accessibilityValue(
+                progress != nil ? Text(progress!, format: .percent) : Text("working")
+            )
     }
 }
 
