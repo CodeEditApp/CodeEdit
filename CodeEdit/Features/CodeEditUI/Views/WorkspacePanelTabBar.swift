@@ -1,5 +1,5 @@
 //
-//  AreaTabBar.swift
+//  WorkspacePanelTabBar.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 5/25/23.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-protocol AreaTab: View, Identifiable, Hashable {
+protocol WorkspacePanelTab: View, Identifiable, Hashable {
     var title: String { get }
     var systemImage: String { get }
 }
 
-struct AreaTabBar<Tab: AreaTab>: View {
+struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
     @Binding var items: [Tab]
     @Binding var selection: Tab?
 
@@ -113,7 +113,7 @@ struct AreaTabBar<Tab: AreaTab>: View {
             )
         )
         .focusable(false)
-        .accessibilityIdentifier("TabAreaTab-\(tab.title)")
+        .accessibilityIdentifier("WorkspacePanelTab-\(tab.title)")
         .accessibilityLabel(tab.title)
     }
 

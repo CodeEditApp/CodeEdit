@@ -141,7 +141,7 @@ extension ViewCommands {
 
 extension ViewCommands {
     struct NavigatorCommands: View {
-        @ObservedObject var model: NavigatorSidebarViewModel
+        @ObservedObject var model: NavigatorAreaViewModel
 
         var body: some View {
             Menu("Navigators", content: {
