@@ -10,7 +10,7 @@ import XCTest
 
 final class UtilityAreaViewModelTests: XCTestCase {
     var model: UtilityAreaViewModel!
-    let rootURL = URL(filePath: "~/")!
+    let rootURL: URL = URL(filePath: "~/")
 
     override func setUp() {
         model = UtilityAreaViewModel()
@@ -92,7 +92,6 @@ final class UtilityAreaViewModelTests: XCTestCase {
 
     func testReplaceTerminal() {
         let terminalToReplace = model.terminals[2]
-        let shell = terminalToReplace.shell
         model.replaceTerminal(terminalToReplace.id)
         XCTAssertNotEqual(model.terminals[2].id, terminalToReplace.id)
         XCTAssertEqual(model.terminals[2].shell, terminalToReplace.shell)
