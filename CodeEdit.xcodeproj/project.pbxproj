@@ -404,6 +404,7 @@
 		6C4E37F62C73DA5200AEE7B5 /* UtilityAreaTerminalSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C4E37F52C73DA5200AEE7B5 /* UtilityAreaTerminalSidebar.swift */; };
 		6C4E37FC2C73E00700AEE7B5 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 6C4E37FB2C73E00700AEE7B5 /* SwiftTerm */; };
 		6C510CB82D2E4639006EBE85 /* XCUITest+waitForNonExistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C510CB72D2E4639006EBE85 /* XCUITest+waitForNonExistence.swift */; };
+		6C510CBC2D2ECD68006EBE85 /* UtilityAreaViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C510CBA2D2ECD68006EBE85 /* UtilityAreaViewModelTests.swift */; };
 		6C5228B529A868BD00AC48F6 /* Environment+ContentInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C5228B429A868BD00AC48F6 /* Environment+ContentInsets.swift */; };
 		6C53AAD829A6C4FD00EE9ED6 /* SplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */; };
 		6C578D8129CD294800DC73B2 /* ExtensionActivatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C578D8029CD294800DC73B2 /* ExtensionActivatorView.swift */; };
@@ -467,6 +468,7 @@
 		6CC3D1FB2D1475EC00822B65 /* TextView+SemanticTokenRangeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3D1FA2D1475EC00822B65 /* TextView+SemanticTokenRangeProvider.swift */; };
 		6CC3D1FD2D14761A00822B65 /* SemanticTokenMapRangeProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC3D1FC2D14761A00822B65 /* SemanticTokenMapRangeProvider.swift */; };
 		6CC9E4B229B5669900C97388 /* Environment+ActiveEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */; };
+		6CCEE7F52D2C91F700B2B854 /* UtilityAreaTerminalPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CCEE7F42D2C91F700B2B854 /* UtilityAreaTerminalPicker.swift */; };
 		6CD0358A2C3461160091E1F4 /* KeyWindowControllerObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD035892C3461160091E1F4 /* KeyWindowControllerObserver.swift */; };
 		6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */; };
 		6CD26C6E2C8EA1E600ADBA38 /* LanguageServerFileMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileMap.swift */; };
@@ -1098,6 +1100,7 @@
 		6C48D8F62972E5F300D6D205 /* WindowObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowObserver.swift; sourceTree = "<group>"; };
 		6C4E37F52C73DA5200AEE7B5 /* UtilityAreaTerminalSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityAreaTerminalSidebar.swift; sourceTree = "<group>"; };
 		6C510CB72D2E4639006EBE85 /* XCUITest+waitForNonExistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUITest+waitForNonExistence.swift"; sourceTree = "<group>"; };
+		6C510CBA2D2ECD68006EBE85 /* UtilityAreaViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityAreaViewModelTests.swift; sourceTree = "<group>"; };
 		6C5228B429A868BD00AC48F6 /* Environment+ContentInsets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ContentInsets.swift"; sourceTree = "<group>"; };
 		6C53AAD729A6C4FD00EE9ED6 /* SplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplitView.swift; sourceTree = "<group>"; };
 		6C578D8029CD294800DC73B2 /* ExtensionActivatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionActivatorView.swift; sourceTree = "<group>"; };
@@ -1147,6 +1150,7 @@
 		6CC3D1FA2D1475EC00822B65 /* TextView+SemanticTokenRangeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextView+SemanticTokenRangeProvider.swift"; sourceTree = "<group>"; };
 		6CC3D1FC2D14761A00822B65 /* SemanticTokenMapRangeProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticTokenMapRangeProvider.swift; sourceTree = "<group>"; };
 		6CC9E4B129B5669900C97388 /* Environment+ActiveEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Environment+ActiveEditor.swift"; sourceTree = "<group>"; };
+		6CCEE7F42D2C91F700B2B854 /* UtilityAreaTerminalPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilityAreaTerminalPicker.swift; sourceTree = "<group>"; };
 		6CD035892C3461160091E1F4 /* KeyWindowControllerObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyWindowControllerObserver.swift; sourceTree = "<group>"; };
 		6CD03B6929FC773F001BD1D0 /* SettingsInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsInjector.swift; sourceTree = "<group>"; };
 		6CD26C6D2C8EA1E600ADBA38 /* LanguageServerFileMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageServerFileMap.swift; sourceTree = "<group>"; };
@@ -2070,6 +2074,7 @@
 				613899BD2B6E70E200A5CAF6 /* Search */,
 				61FB03A92C3C1FC4001B3671 /* Tasks */,
 				6141CF392C3DA4180073BC9F /* TerminalEmulator */,
+				6C510CBB2D2ECD68006EBE85 /* UtilityArea */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -2678,8 +2683,7 @@
 				6C1F3DA12C18C55800F6DEF6 /* ShellIntegrationTests.swift */,
 				61FB03AA2C3C1FD5001B3671 /* Shell */,
 			);
-			name = TerminalEmulator;
-			path = ActivityViewer/TerminalEmulator;
+			path = TerminalEmulator;
 			sourceTree = "<group>";
 		};
 		617DB3CE2C25AF5B00B58BFE /* ActivityViewer */ = {
@@ -2977,6 +2981,14 @@
 				6C510CB72D2E4639006EBE85 /* XCUITest+waitForNonExistence.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6C510CBB2D2ECD68006EBE85 /* UtilityArea */ = {
+			isa = PBXGroup;
+			children = (
+				6C510CBA2D2ECD68006EBE85 /* UtilityAreaViewModelTests.swift */,
+			);
+			path = UtilityArea;
 			sourceTree = "<group>";
 		};
 		6C6BD6ED29CD123000235D17 /* Extensions */ = {
@@ -3473,9 +3485,10 @@
 		B676606A2AA973A500CD56B0 /* TerminalUtility */ = {
 			isa = PBXGroup;
 			children = (
-				B62AEDB22A1FD95B009A9F52 /* UtilityAreaTerminalView.swift */,
-				B62AEDBB2A210DBB009A9F52 /* UtilityAreaTerminalTab.swift */,
+				6CCEE7F42D2C91F700B2B854 /* UtilityAreaTerminalPicker.swift */,
 				6C4E37F52C73DA5200AEE7B5 /* UtilityAreaTerminalSidebar.swift */,
+				B62AEDBB2A210DBB009A9F52 /* UtilityAreaTerminalTab.swift */,
+				B62AEDB22A1FD95B009A9F52 /* UtilityAreaTerminalView.swift */,
 			);
 			path = TerminalUtility;
 			sourceTree = "<group>";
@@ -4553,6 +4566,7 @@
 				613899BC2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift in Sources */,
 				611192002B08CCD700D4459B /* SearchIndexer+Memory.swift in Sources */,
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
+				6CCEE7F52D2C91F700B2B854 /* UtilityAreaTerminalPicker.swift in Sources */,
 				611191FE2B08CCD200D4459B /* SearchIndexer+File.swift in Sources */,
 				B69D3EE52C5F54B3005CF43A /* TasksPopoverMenuItem.swift in Sources */,
 				669A50532C380C8E00304CD8 /* Collection+subscript_safe.swift in Sources */,
@@ -4585,6 +4599,7 @@
 				583E528C29361B39001AB554 /* CodeEditUITests.swift in Sources */,
 				6C7D6D462C9092EC00B69EE0 /* BufferingServerConnection.swift in Sources */,
 				613053652B23A49300D767E3 /* TemporaryFile.swift in Sources */,
+				6C510CBC2D2ECD68006EBE85 /* UtilityAreaViewModelTests.swift in Sources */,
 				617DB3DF2C25E13800B58BFE /* TaskNotificationHandlerTests.swift in Sources */,
 				775566502C27FD1B001E7A4D /* CodeFileDocument+UTTypeTests.swift in Sources */,
 				587B60F82934124200D5CD8F /* CEWorkspaceFileManagerTests.swift in Sources */,

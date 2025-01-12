@@ -18,5 +18,7 @@ struct UtilityAreaView: View {
             sidebarPosition: .side,
             darkDivider: true
         )
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Utility Area")
     }
 }

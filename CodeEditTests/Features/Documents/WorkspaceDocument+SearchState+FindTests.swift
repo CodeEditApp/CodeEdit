@@ -55,8 +55,10 @@ final class FindTests: XCTestCase {
 
         files = fileURLs.map { CEWorkspaceFile(url: $0) }
 
-        files[1].parent = CEWorkspaceFile(url: folder1)
-        files[2].parent = CEWorkspaceFile(url: folder2)
+        let parent1 = CEWorkspaceFile(url: folder1)
+        let parent2 = CEWorkspaceFile(url: folder2)
+        files[1].parent = parent1
+        files[2].parent = parent2
 
         await mockWorkspace.searchState?.addProjectToIndex()
 
