@@ -102,10 +102,16 @@ extension ProjectNavigatorMenu {
     @objc
     func newFolder() {
         guard let item else { return }
-        workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item)
-        reloadData()
-        sender.outlineView.expandItem(item)
-        sender.outlineView.expandItem(item.isFolder ? item : item.parent)
+        do {
+            try workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item)
+            reloadData()
+            sender.outlineView.expandItem(item)
+            sender.outlineView.expandItem(item.isFolder ? item : item.parent)
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
+        }
     }
 
     /// Creates a new folder with the items selected.
@@ -124,8 +130,14 @@ extension ProjectNavigatorMenu {
             newFolderURL = parent.url.appendingPathComponent("New Folder With Items \(folderNumber)")
         }
 
-        for selectedItem in selectedItems where selectedItem.url != newFolderURL {
-            workspaceFileManager.move(file: selectedItem, to: newFolderURL.appending(path: selectedItem.name))
+        do {
+            for selectedItem in selectedItems where selectedItem.url != newFolderURL {
+                try workspaceFileManager.move(file: selectedItem, to: newFolderURL.appending(path: selectedItem.name))
+            }
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
         }
 
         reloadData()
@@ -149,43 +161,61 @@ extension ProjectNavigatorMenu {
     /// Action that moves the item to trash.
     @objc
     func trash() {
-        selectedItems().forEach { item in
-            workspace?.workspaceFileManager?.trash(file: item)
-            withAnimation {
-                sender.editor?.closeTab(file: item)
+        do {
+            try selectedItems().forEach { item in
+                try workspace?.workspaceFileManager?.trash(file: item)
+                withAnimation {
+                    sender.editor?.closeTab(file: item)
+                }
             }
+            reloadData()
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
         }
-        reloadData()
     }
 
     /// Action that deletes the item immediately.
     @objc
     func delete() {
-        let selectedItems = selectedItems()
-        if selectedItems.count == 1 {
-            selectedItems.forEach { item in
-                workspace?.workspaceFileManager?.delete(file: item)
+        do {
+            let selectedItems = selectedItems()
+            if selectedItems.count == 1 {
+                try selectedItems.forEach { item in
+                    try workspace?.workspaceFileManager?.delete(file: item)
+                }
+            } else {
+                try workspace?.workspaceFileManager?.batchDelete(files: selectedItems)
             }
-        } else {
-            workspace?.workspaceFileManager?.batchDelete(files: selectedItems)
-        }
 
-        withAnimation {
-            selectedItems.forEach { item in
-                sender.editor?.closeTab(file: item)
+            withAnimation {
+                selectedItems.forEach { item in
+                    sender.editor?.closeTab(file: item)
+                }
             }
-        }
 
-        reloadData()
+            reloadData()
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
+        }
     }
 
     /// Action that duplicates the item
     @objc
     func duplicate() {
-        selectedItems().forEach { item in
-            workspace?.workspaceFileManager?.duplicate(file: item)
+        do {
+            try selectedItems().forEach { item in
+                try workspace?.workspaceFileManager?.duplicate(file: item)
+            }
+            reloadData()
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
         }
-        reloadData()
     }
 
     private func reloadData() {

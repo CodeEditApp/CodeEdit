@@ -80,6 +80,7 @@ final class CEWorkspaceFileManager {
 
         Task {
             try await self.sourceControlManager?.validate()
+            await sourceControlManager?.refreshAllChangedFiles()
         }
     }
 

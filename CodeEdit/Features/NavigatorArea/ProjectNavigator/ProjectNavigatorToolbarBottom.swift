@@ -98,7 +98,13 @@ struct ProjectNavigatorToolbarBottom: View {
                 let filePathURL = activeTabURL()
                 guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
                 do {
-                    try workspace.workspaceFileManager?.addFile(fileName: "untitled", toFile: rootFile)
+                    if let newFile = try workspace.workspaceFileManager?.addFile(
+                        fileName: "untitled",
+                        toFile: rootFile
+                    ) {
+                        editorManager.openTab(item: newFile)
+                        NSApp.sendAction(#selector(ProjectNavigatorViewController.revealFile(_:)), to: nil, from: nil)
+                    }
                 } catch {
                     let alert = NSAlert(error: error)
                     alert.addButton(withTitle: "Dismiss")
@@ -108,7 +114,13 @@ struct ProjectNavigatorToolbarBottom: View {
             Button("Add Folder") {
                 let filePathURL = activeTabURL()
                 guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
-                workspace.workspaceFileManager?.addFolder(folderName: "untitled", toFile: rootFile)
+                do {
+                    try workspace.workspaceFileManager?.addFolder(folderName: "untitled", toFile: rootFile)
+                } catch {
+                    let alert = NSAlert(error: error)
+                    alert.addButton(withTitle: "Dismiss")
+                    alert.runModal()
+                }
             }
         } label: {}
         .background {
