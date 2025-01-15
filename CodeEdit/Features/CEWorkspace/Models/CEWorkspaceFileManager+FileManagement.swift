@@ -58,7 +58,7 @@ extension CEWorkspaceFileManager {
     /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja. *Moved from 7c27b1e*
     /// - Throws: Throws a `CocoaError.fileWriteUnknown` with the file url if creating the file fails, and calls
     ///           ``rebuildFiles(fromItem:deep:)`` which throws other `FileManager` errors.
-    /// - Returns: The newly created file.
+    /// - Returns: The ``CEWorkspaceFile`` representing the new file in the file manager's cache.  
     func addFile(
         fileName: String,
         toFile file: CEWorkspaceFile,
