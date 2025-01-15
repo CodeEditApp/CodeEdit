@@ -200,7 +200,7 @@ extension CEWorkspaceFileManager {
             }
         }
     }
-    
+
     /// Delete a file from the file system.
     /// - Note: Use ``trash(file:)`` if the file should be moved to the trash. This is irreversible.
     /// - Parameter url: The file URL to delete.
