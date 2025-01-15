@@ -13,6 +13,7 @@ extension CEWorkspaceFileManager {
     /// - Parameters:
     ///   - folderName: The name of the new folder
     ///   - file: The file to add the new folder to.
+    /// - Returns: The ``CEWorkspaceFile`` representing the folder in the file manager's cache.
     /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja. *Moved from 7c27b1e*
     func addFolder(folderName: String, toFile file: CEWorkspaceFile) throws -> CEWorkspaceFile {
         // Check if folder, if it is create folder under self, else create on same level.
