@@ -166,6 +166,7 @@ final class CodeEditUtilsExtensionsUnitTests: XCTestCase {
     func testInvalidFileName() {
         // The only limitations for macOS file extensions is no ':' and no NULL characters and 255 UTF16 char limit.
         let invalidCases = [
+            "",
             ":",
             "\0",
             "Hell\0 World!",

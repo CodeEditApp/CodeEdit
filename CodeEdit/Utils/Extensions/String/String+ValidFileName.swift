@@ -13,9 +13,9 @@ extension CharacterSet {
 }
 
 extension String {
-    /// On macOS, valid file names must not contain the `NULL` or `:` characters and must be less than
-    /// 256 UTF16 characters.
+    /// On macOS, valid file names must not contain the `NULL` or `:` characters, must be non-empty, and must be less
+    /// than 256 UTF16 characters.
     var isValidFilename: Bool {
-        CharacterSet(charactersIn: self).isDisjoint(with: .invalidFileNameCharacters) && utf16.count < 256
+        !isEmpty && CharacterSet(charactersIn: self).isDisjoint(with: .invalidFileNameCharacters) && utf16.count < 256
     }
 }
