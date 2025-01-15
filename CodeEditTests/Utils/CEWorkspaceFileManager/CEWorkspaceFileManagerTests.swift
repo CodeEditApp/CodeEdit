@@ -171,6 +171,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         var file = try fileManager.addFile(fileName: "Test File.txt", toFile: fileManager.workspaceItem)
 
         // Should not add a new file extension, it already has one. This adds a '.' at the end if incorrect.
+        // See #1966
         XCTAssertEqual(file.name, "Test File.txt")
 
         // Test the automatic file extension stuff

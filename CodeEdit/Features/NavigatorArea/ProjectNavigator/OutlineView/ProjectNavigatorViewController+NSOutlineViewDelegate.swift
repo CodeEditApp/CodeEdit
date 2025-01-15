@@ -115,7 +115,6 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             outlineView.deselectRow(outlineView.selectedRow)
         }
         shouldSendSelectionUpdate = false
-        print("Selecting", id.id)
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
         shouldSendSelectionUpdate = true
     }
@@ -129,7 +128,6 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         }
         let row = outlineView.row(forItem: fileItem)
         shouldSendSelectionUpdate = false
-        print("Revealing", fileItem.url.relativePath)
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
         shouldSendSelectionUpdate = true
 
