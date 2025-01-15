@@ -58,7 +58,7 @@ extension CEWorkspaceFileManager {
     /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja. *Moved from 7c27b1e*
     /// - Throws: Throws a `CocoaError.fileWriteUnknown` with the file url if creating the file fails, and calls
     ///           ``rebuildFiles(fromItem:deep:)`` which throws other `FileManager` errors.
-    /// - Returns: The ``CEWorkspaceFile`` representing the new file in the file manager's cache.  
+    /// - Returns: The ``CEWorkspaceFile`` representing the new file in the file manager's cache.
     func addFile(
         fileName: String,
         toFile file: CEWorkspaceFile,
@@ -200,7 +200,10 @@ extension CEWorkspaceFileManager {
             }
         }
     }
-
+    
+    /// Delete a file from the file system.
+    /// - Note: Use ``trash(file:)`` if the file should be moved to the trash. This is irreversible.
+    /// - Parameter url: The file URL to delete.
     private func deleteFile(at url: URL) throws {
         do {
             guard fileManager.fileExists(atPath: url.path) else {
