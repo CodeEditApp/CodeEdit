@@ -21,12 +21,14 @@ without having to read long XCUI queries. For instance
 ```swift
 let window = application.windows.element(matching: .window, identifier: "workspace")
 let navigator = window.descendants(matching: .any).matching(identifier: "ProjectNavigator").element
-let newFileCell = navigator.descendants(matching: .outlineRow)
+let newFileCell = navigator
+                .descendants(matching: .outlineRow)
                 .containing(.textField, identifier: "ProjectNavigatorTableViewCell-FileName")
-                .element(boundBy: index)
+                .element(boundBy: 0)
 ```
 
-Should be shortened to the following, which is much easier to read and intuit what the test is doing.
+Should be shortened to the following, which should be easier to read and intuit what the test is doing.
+
 ```swift
 let window = Query.getWindow(app)
 let navigator = Query.Window.getProjectNavigator(window)
