@@ -15,12 +15,13 @@ enum App {
         return application
     }
 
-    // Launches CodeEdit in a new directory
-    static func launchWithTempDir() throws -> XCUIApplication {
+    // Launches CodeEdit in a new directory and returns the directory path.
+    static func launchWithTempDir() throws -> (XCUIApplication, String) {
+        let tempDirURL = try tempProjectPath()
         let application = XCUIApplication()
-        application.launchArguments = ["-ApplePersistenceIgnoreState", "YES", "--open", try tempProjectPath()]
+        application.launchArguments = ["-ApplePersistenceIgnoreState", "YES", "--open", tempDirURL]
         application.launch()
-        return application
+        return (application, tempDirURL)
     }
 
     static func launch() -> XCUIApplication {

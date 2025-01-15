@@ -87,14 +87,15 @@ extension ProjectNavigatorMenu {
     func newFile() {
         guard let item else { return }
         do {
-            try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item)
+            if let newFile = try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item) {
+                workspace?.listenerModel.highlightedFileItem = newFile
+                workspace?.editorManager?.openTab(item: newFile)
+            }
         } catch {
             let alert = NSAlert(error: error)
             alert.addButton(withTitle: "Dismiss")
             alert.runModal()
         }
-        reloadData()
-        sender.outlineView.expandItem(item.isFolder ? item : item.parent)
     }
 
     // TODO: allow custom folder names
@@ -103,10 +104,9 @@ extension ProjectNavigatorMenu {
     func newFolder() {
         guard let item else { return }
         do {
-            try workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item)
-            reloadData()
-            sender.outlineView.expandItem(item)
-            sender.outlineView.expandItem(item.isFolder ? item : item.parent)
+            if let newFolder = try workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item) {
+                workspace?.listenerModel.highlightedFileItem = newFolder
+            }
         } catch {
             let alert = NSAlert(error: error)
             alert.addButton(withTitle: "Dismiss")
@@ -163,10 +163,14 @@ extension ProjectNavigatorMenu {
     func trash() {
         do {
             try selectedItems().forEach { item in
-                try workspace?.workspaceFileManager?.trash(file: item)
                 withAnimation {
                     sender.editor?.closeTab(file: item)
                 }
+                guard FileManager.default.fileExists(atPath: item.url.path) else {
+                    // Was likely already trashed (eg selecting files in a folder and deleting the folder and files)
+                    return
+                }
+                try workspace?.workspaceFileManager?.trash(file: item)
             }
             reloadData()
         } catch {

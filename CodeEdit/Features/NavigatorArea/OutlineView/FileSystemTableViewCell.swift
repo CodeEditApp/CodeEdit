@@ -176,11 +176,3 @@ extension FileSystemTableViewCell: NSTextFieldDelegate {
         }
     }
 }
-
-extension String {
-    var isValidFilename: Bool {
-        let regex = "[^:]"
-        let testString = NSPredicate(format: "SELF MATCHES %@", regex)
-        return !testString.evaluate(with: self)
-    }
-}

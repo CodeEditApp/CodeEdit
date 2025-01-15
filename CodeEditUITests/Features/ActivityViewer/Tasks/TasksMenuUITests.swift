@@ -23,7 +23,7 @@ final class ActivityViewerTasksMenuTests: XCTestCase {
 
     @MainActor
     override func setUp() async throws {
-        app = try App.launchWithTempDir()
+        (app, _) = try App.launchWithTempDir()
         window = Query.getWindow(app)
         XCTAssertTrue(window.exists, "Window not found")
     }

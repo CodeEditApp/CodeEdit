@@ -102,8 +102,8 @@ struct ProjectNavigatorToolbarBottom: View {
                         fileName: "untitled",
                         toFile: rootFile
                     ) {
-                        editorManager.openTab(item: newFile)
-                        NSApp.sendAction(#selector(ProjectNavigatorViewController.revealFile(_:)), to: nil, from: nil)
+                        workspace.listenerModel.highlightedFileItem = newFile
+                        workspace.editorManager?.openTab(item: newFile)
                     }
                 } catch {
                     let alert = NSAlert(error: error)
@@ -111,11 +111,17 @@ struct ProjectNavigatorToolbarBottom: View {
                     alert.runModal()
                 }
             }
+
             Button("Add Folder") {
                 let filePathURL = activeTabURL()
                 guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
                 do {
-                    try workspace.workspaceFileManager?.addFolder(folderName: "untitled", toFile: rootFile)
+                    if let newFolder = try workspace.workspaceFileManager?.addFolder(
+                        folderName: "untitled",
+                        toFile: rootFile
+                    ) {
+                        workspace.listenerModel.highlightedFileItem = newFolder
+                    }
                 } catch {
                     let alert = NSAlert(error: error)
                     alert.addButton(withTitle: "Dismiss")
@@ -125,11 +131,14 @@ struct ProjectNavigatorToolbarBottom: View {
         } label: {}
         .background {
             Image(systemName: "plus")
+                .accessibilityHidden(true)
         }
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
         .frame(maxWidth: 18, alignment: .center)
         .opacity(activeState == .inactive ? 0.45 : 1)
+        .accessibilityLabel("Add Folder or File")
+        .accessibilityIdentifier("addButton")
     }
 
     /// We clear the text and remove the first responder which removes the cursor

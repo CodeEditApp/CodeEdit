@@ -14,7 +14,7 @@ extension CEWorkspaceFileManager {
     ///   - folderName: The name of the new folder
     ///   - file: The file to add the new folder to.
     /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja. *Moved from 7c27b1e*
-    func addFolder(folderName: String, toFile file: CEWorkspaceFile) throws {
+    func addFolder(folderName: String, toFile file: CEWorkspaceFile) throws -> CEWorkspaceFile {
         // Check if folder, if it is create folder under self, else create on same level.
         var folderUrl = (
             file.isFolder ? file.url.appendingPathComponent(folderName)
@@ -35,6 +35,14 @@ extension CEWorkspaceFileManager {
                 withIntermediateDirectories: true,
                 attributes: [:]
             )
+
+            try rebuildFiles(fromItem: file.isFolder ? file : file.parent ?? file)
+            notifyObservers(updatedItems: [file.isFolder ? file : file.parent ?? file])
+
+            guard let newFolder = getFile(folderUrl.path(), createIfNotFound: true) else {
+                throw FileManagerError.fileNotFound
+            }
+            return newFolder
         } catch {
             logger.error("Failed to create folder: \(error, privacy: .auto)")
             throw error
@@ -57,10 +65,17 @@ extension CEWorkspaceFileManager {
     ) throws -> CEWorkspaceFile {
         // check the folder for other files, and see what the most common file extension is
         do {
-            var fileExtension: String = useExtension ?? findCommonFileExtension(for: file)
+            var fileExtension: String
+            if fileName.contains(".") {
+                // If we already have a file extension in the name, don't add another one
+                fileExtension = ""
+            } else {
+                fileExtension = useExtension ?? findCommonFileExtension(for: file)
 
-            if !fileExtension.starts(with: ".") {
-                fileExtension = "." + fileExtension
+                // Don't add a . if the extension is empty, but add it if it's missing.
+                if !fileExtension.isEmpty && !fileExtension.starts(with: ".") {
+                    fileExtension = "." + fileExtension
+                }
             }
 
             var fileUrl = file.nearestFolder.appendingPathComponent("\(fileName)\(fileExtension)")
@@ -70,6 +85,10 @@ extension CEWorkspaceFileManager {
                 fileNumber += 1
                 fileUrl = fileUrl.deletingLastPathComponent()
                     .appendingPathComponent("\(fileName)\(fileNumber)\(fileExtension)")
+            }
+
+            guard fileUrl.fileName.isValidFilename else {
+                throw FileManagerError.invalidFileName
             }
 
             // Create the file
@@ -84,7 +103,9 @@ extension CEWorkspaceFileManager {
             try rebuildFiles(fromItem: file)
             notifyObservers(updatedItems: [file])
 
-            guard let newFile = getFile(fileUrl.path) else {
+            // Create if not found here because this should be indexed if we're creating it.
+            // It's not often a user makes a file and then doesn't use it.
+            guard let newFile = getFile(fileUrl.path, createIfNotFound: true) else {
                 throw FileManagerError.fileNotIndexed
             }
             return newFile
@@ -124,10 +145,10 @@ extension CEWorkspaceFileManager {
     ///   - file: The file or folder to delete
     /// - Authors: Paul Ebose
     public func trash(file: CEWorkspaceFile) throws {
-        guard fileManager.fileExists(atPath: file.url.path) else {
-            throw FileManagerError.fileNotFound
-        }
         do {
+            guard fileManager.fileExists(atPath: file.url.path) else {
+                throw FileManagerError.fileNotFound
+            }
             try fileManager.trashItem(at: file.url, resultingItemURL: nil)
         } catch {
             logger.error("Failed to trash file: \(error, privacy: .auto)")
@@ -180,10 +201,10 @@ extension CEWorkspaceFileManager {
     }
 
     private func deleteFile(at url: URL) throws {
-        guard fileManager.fileExists(atPath: url.path) else {
-            throw FileManagerError.fileNotFound
-        }
         do {
+            guard fileManager.fileExists(atPath: url.path) else {
+                throw FileManagerError.fileNotFound
+            }
             try fileManager.removeItem(at: url)
         } catch {
             logger.error("Failed to delete file: \(error, privacy: .auto)")
@@ -220,14 +241,20 @@ extension CEWorkspaceFileManager {
     ///   - file: The file to move.
     ///   - newLocation: The destination to move the file to.
     /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja. *Moved from 7c27b1e*
-    /// - Returns: The new file object.
+    /// - Returns: The new file object, if it has been indexed. The file manager does not index folders that have not
+    ///            been revealed to save memory. This may move a file deeper into the tree than is indexed. In that
+    ///            case, it is correct to return nothing. This is intentionally different than `addFile`.
     @discardableResult
-    public func move(file: CEWorkspaceFile, to newLocation: URL) throws -> CEWorkspaceFile {
-        guard !fileManager.fileExists(atPath: newLocation.path) else {
-            throw FileManagerError.originFileNotFound
-        }
-
+    public func move(file: CEWorkspaceFile, to newLocation: URL) throws -> CEWorkspaceFile? {
         do {
+            guard fileManager.fileExists(atPath: file.url.path()) else {
+                throw FileManagerError.originFileNotFound
+            }
+
+            guard !fileManager.fileExists(atPath: newLocation.path) else {
+                throw FileManagerError.destinationFileExists
+            }
+
             try createMissingParentDirectory(for: newLocation.deletingLastPathComponent())
 
             try fileManager.moveItem(at: file.url, to: newLocation)
@@ -255,10 +282,7 @@ extension CEWorkspaceFileManager {
                 notifyObservers(updatedItems: [parent])
             }
 
-            guard let newFile = getFile(newLocation.absoluteURL.path) else {
-                throw FileManagerError.fileNotIndexed
-            }
-            return newFile
+            return getFile(newLocation.absoluteURL.path)
         } catch {
             logger.error("Failed to move file: \(error, privacy: .auto)")
             throw error
@@ -270,8 +294,10 @@ extension CEWorkspaceFileManager {
     ///   - file: The file to copy.
     ///   - newLocation: The location to copy to.
     public func copy(file: CEWorkspaceFile, to newLocation: URL) throws {
-        guard file.url != newLocation && !fileManager.fileExists(atPath: newLocation.absoluteString) else { return }
         do {
+            guard file.url != newLocation && !fileManager.fileExists(atPath: newLocation.absoluteString) else {
+                throw FileManagerError.originFileNotFound
+            }
             try fileManager.copyItem(at: file.url, to: newLocation)
         } catch {
             logger.error("Failed to copy file: \(error, privacy: .auto)")
