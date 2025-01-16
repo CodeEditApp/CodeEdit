@@ -13,7 +13,7 @@ struct SchemeDropDownView: View {
 
     @Environment(\.controlActiveState)
     private var activeState
-    
+
     @State var isSchemePopOverPresented: Bool = false
     @State private var isHoveringScheme: Bool = false
 
