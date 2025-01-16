@@ -11,6 +11,9 @@ struct SchemeDropDownView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @Environment(\.controlActiveState)
+    private var activeState
+
     @State var isSchemePopOverPresented: Bool = false
     @State private var isHoveringScheme: Bool = false
 
@@ -33,7 +36,9 @@ struct SchemeDropDownView: View {
             Image(systemName: "folder.badge.gearshape")
                 .imageScale(.medium)
             Text(workspaceDisplayName)
+                .frame(minWidth: 0)
         }
+        .opacity(activeState == .inactive ? 0.4 : 1.0)
         .font(.subheadline)
         .padding(.trailing, 11.5)
         .padding(.horizontal, 2.5)
