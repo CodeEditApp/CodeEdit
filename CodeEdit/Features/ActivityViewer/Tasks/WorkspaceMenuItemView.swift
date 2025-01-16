@@ -30,8 +30,10 @@ struct WorkspaceMenuItemView: View {
         .padding(.vertical, 4)
         .padding(.horizontal, 8)
         .modifier(DropdownMenuItemStyleModifier())
-        .onTapGesture { }
+        .onTapGesture { } // add accessibility action when this is filled in
         .clipShape(RoundedRectangle(cornerRadius: 5))
+        .accessibilityElement()
+        .accessibilityLabel(item?.name ?? "")
     }
 }
 

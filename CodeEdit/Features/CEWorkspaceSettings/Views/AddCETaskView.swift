@@ -42,6 +42,7 @@ struct AddCETaskView: View {
             }
             .padding()
         }
+        .accessibilityIdentifier("AddTaskView")
     }
 
 }

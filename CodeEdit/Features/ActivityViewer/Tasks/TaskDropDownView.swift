@@ -43,11 +43,20 @@ struct TaskDropDownView: View {
         .onHover { hovering in
             self.isHoveringTasks = hovering
         }
-        .instantPopover(isPresented: $isTaskPopOverPresented, arrowEdge: .bottom) {
+        .instantPopover(isPresented: $isTaskPopOverPresented, arrowEdge: .top) {
             taskPopoverContent
         }
         .onTapGesture {
             self.isTaskPopOverPresented.toggle()
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityIdentifier("TaskDropdown")
+        .accessibilityValue(taskManager.selectedTask?.name ?? "Create Tasks")
+        .accessibilityLabel("Active Task")
+        .accessibilityHint("Open the active task menu")
+        .accessibilityAction {
+            isTaskPopOverPresented = true
         }
     }
 
@@ -76,7 +85,9 @@ struct TaskDropDownView: View {
         VStack(alignment: .leading, spacing: 0) {
             if !taskManager.availableTasks.isEmpty {
                 ForEach(taskManager.availableTasks, id: \.id) { task in
-                    TasksPopoverMenuItem(taskManager: taskManager, task: task)
+                    TasksPopoverMenuItem(taskManager: taskManager, task: task) {
+                        isTaskPopOverPresented = false
+                    }
                 }
                 Divider()
                     .padding(.vertical, 5)

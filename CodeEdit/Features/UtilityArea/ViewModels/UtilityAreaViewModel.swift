@@ -33,15 +33,7 @@ class UtilityAreaViewModel: ObservableObject {
     /// The tab bar view model for UtilityAreaTabView
     @Published var tabViewModel = UtilityAreaTabViewModel()
 
-    func removeTerminals(_ ids: Set<UUID>) {
-        for (idx, terminal) in terminals.lazy.reversed().enumerated()
-        where ids.contains(terminal.id) {
-            TerminalCache.shared.removeCachedView(terminal.id)
-            terminals.remove(at: idx)
-        }
-
-        selectedTerminals = [terminals.last?.id ?? UUID()]
-    }
+    // MARK: - State Restoration
 
     func restoreFromState(_ workspace: WorkspaceDocument) {
         isCollapsed = workspace.getFromWorkspaceState(.utilityAreaCollapsed) as? Bool ?? false
@@ -62,6 +54,25 @@ class UtilityAreaViewModel: ObservableObject {
 
     // MARK: - Terminal Management
 
+    /// Removes all terminals included in the given set and selects a new terminal if the selection was modified.
+    /// The new selection is either the same selection minus the ids removed, or if that's empty the last terminal.
+    /// - Parameter ids: A set of all terminal ids to remove.
+    func removeTerminals(_ ids: Set<UUID>) {
+        for (idx, terminal) in terminals.enumerated().reversed()
+        where ids.contains(terminal.id) {
+            TerminalCache.shared.removeCachedView(terminal.id)
+            terminals.remove(at: idx)
+        }
+
+        var newSelection = selectedTerminals.subtracting(ids)
+
+        if newSelection.isEmpty, let terminal = terminals.last {
+            newSelection = [terminal.id]
+        }
+
+        selectedTerminals = newSelection
+    }
+
     /// Update a terminal's title.
     /// - Parameters:
     ///   - id: The id of the terminal to update.
@@ -81,56 +92,65 @@ class UtilityAreaViewModel: ObservableObject {
 
     /// Create a new terminal if there are no existing terminals.
     /// Will not perform any action if terminals exist in the ``terminals`` array.
-    /// - Parameter workspace: The workspace to use to find the default path.
-    func initializeTerminals(_ workspace: WorkspaceDocument) {
+    /// - Parameter workspaceURL: The base url of the workspace, to initialize terminals.l
+    func initializeTerminals(workspaceURL: URL) {
         guard terminals.isEmpty else { return }
-        addTerminal(shell: nil, workspace: workspace)
+        addTerminal(rootURL: workspaceURL)
     }
 
-    /// Add a new terminal to the workspace and selects it. Optionally replaces an existing terminal
-    ///
-    /// Terminals being replaced will have the `SIGKILL` signal sent to the running shell. The new terminal will
-    /// inherit the same `url` and `shell` parameters from the old one, in case they were specified.
-    ///
+    /// Add a new terminal to the workspace and selects it.
     /// - Parameters:
     ///   - shell: The shell to use, `nil` if auto-detect the default shell.
-    ///   - workspace: The workspace to use to find the default path.
-    ///   - replacing: The ID of a terminal to replace with a new terminal. If left `nil`, will ignore.
-    func addTerminal(shell: Shell? = nil, workspace: WorkspaceDocument, replacing: UUID? = nil) {
+    ///   - rootURL: The url to start the new terminal at. If left `nil` defaults to the user's home directory.
+    func addTerminal(shell: Shell? = nil, rootURL: URL?) {
         let id = UUID()
 
-        if let replacing, let index = terminals.firstIndex(where: { $0.id == replacing }) {
-            let url = terminals[index].url
-            let shell = terminals[index].shell
-            if let shellPid = TerminalCache.shared.getTerminalView(replacing)?.process.shellPid {
-                kill(shellPid, SIGKILL)
-            }
-            terminals[index] = UtilityAreaTerminal(
+        terminals.append(
+            UtilityAreaTerminal(
                 id: id,
-                url: url,
-                title: "terminal",
+                url: rootURL ?? URL(filePath: "~/"),
+                title: shell?.rawValue ?? "terminal",
                 shell: shell
             )
-            TerminalCache.shared.removeCachedView(replacing)
-        } else {
-            terminals.append(
-                UtilityAreaTerminal(
-                    id: id,
-                    url: workspace.workspaceFileManager?.folderUrl ?? URL(filePath: "/"),
-                    title: "terminal",
-                    shell: shell
-                )
-            )
-        }
+        )
 
         selectedTerminals = [id]
+    }
+
+    /// Replaces the terminal with a given ID, killing the shell and restarting it at the same directory.
+    ///
+    /// Terminals being replaced will have the `SIGKILL` signal sent to the running shell. The new terminal will
+    /// inherit the same `url` and `shell` parameters from the old one.
+    /// - Parameter replacing: The ID of a terminal to replace with a new terminal.
+    func replaceTerminal(_ replacing: UUID) {
+        guard let index = terminals.firstIndex(where: { $0.id == replacing }) else {
+            return
+        }
+
+        let id = UUID()
+        let url = terminals[index].url
+        let shell = terminals[index].shell
+        if let shellPid = TerminalCache.shared.getTerminalView(replacing)?.process.shellPid {
+            kill(shellPid, SIGKILL)
+        }
+
+        terminals[index] = UtilityAreaTerminal(
+            id: id,
+            url: url,
+            title: shell?.rawValue ?? "terminal",
+            shell: shell
+        )
+        TerminalCache.shared.removeCachedView(replacing)
+
+        selectedTerminals = [id]
+        return
     }
 
     /// Reorders terminals in the ``utilityAreaViewModel``.
     /// - Parameters:
     ///   - source: The source indices.
     ///   - destination: The destination indices.
-    func moveItems(from source: IndexSet, to destination: Int) {
+    func reorderTerminals(from source: IndexSet, to destination: Int) {
         terminals.move(fromOffsets: source, toOffset: destination)
     }
 }

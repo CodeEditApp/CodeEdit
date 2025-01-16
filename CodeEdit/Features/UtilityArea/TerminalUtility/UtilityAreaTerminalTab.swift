@@ -46,13 +46,21 @@ struct UtilityAreaTerminalTab: View {
             }
         } icon: {
             Image(systemName: "terminal")
+                .accessibilityHidden(true)
         }
         .contextMenu {
             Button("Rename...") {
                 isFocused = true
             }
-            Button("Kill Terminal") {
-                if isSelected { removeTerminals([terminal.id]) }
+
+            if selectedIDs.contains(terminal.id) && selectedIDs.count > 1 {
+                Button("Kill Terminals") {
+                    removeTerminals(selectedIDs)
+                }
+            } else {
+                Button("Kill Terminal") {
+                    removeTerminals([terminal.id])
+                }
             }
         }
     }
