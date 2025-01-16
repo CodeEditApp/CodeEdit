@@ -101,8 +101,8 @@ extension CEWorkspaceFileManager {
                 throw CocoaError.error(.fileWriteUnknown, url: fileUrl)
             }
 
-            try rebuildFiles(fromItem: file)
-            notifyObservers(updatedItems: [file])
+            try rebuildFiles(fromItem: file.isFolder ? file : file.parent ?? file)
+            notifyObservers(updatedItems: [file.isFolder ? file : file.parent ?? file])
 
             // Create if not found here because this should be indexed if we're creating it.
             // It's not often a user makes a file and then doesn't use it.
@@ -284,6 +284,12 @@ extension CEWorkspaceFileManager {
             if let parent = file.parent {
                 try rebuildFiles(fromItem: parent)
                 notifyObservers(updatedItems: [parent])
+            }
+
+            // If we have the new parent file, let's rebuild that directory too
+            if let newFileParent = getFile(newLocation.deletingLastPathComponent().path) {
+                try rebuildFiles(fromItem: newFileParent)
+                notifyObservers(updatedItems: [newFileParent])
             }
 
             return getFile(newLocation.absoluteURL.path)
