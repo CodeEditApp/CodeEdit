@@ -75,10 +75,17 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
         func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>) {
             guard let outlineView = controller?.outlineView else { return }
+            let selectedRows = outlineView.selectedRowIndexes.compactMap({ outlineView.item(atRow: $0) })
 
             for item in updatedItems {
                 outlineView.reloadItem(item, reloadChildren: true)
             }
+
+            // Restore selected items where the files still exist.
+            let selectedIndexes = selectedRows.compactMap({ outlineView.row(forItem: $0) }).filter({ $0 >= 0 })
+            controller?.shouldSendSelectionUpdate = false
+            outlineView.selectRowIndexes(IndexSet(selectedIndexes), byExtendingSelection: false)
+            controller?.shouldSendSelectionUpdate = true
         }
 
         deinit {
