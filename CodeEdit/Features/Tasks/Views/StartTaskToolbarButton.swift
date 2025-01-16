@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct StartTaskToolbarButton: View {
+    @Environment(\.controlActiveState)
+    private var activeState
+
     @UpdatingWindowController var windowController: CodeEditWindowController?
 
     @ObservedObject var taskManager: TaskManager
@@ -28,6 +31,7 @@ struct StartTaskToolbarButton: View {
         } label: {
             Label("Start", systemImage: "play.fill")
                 .labelStyle(.iconOnly)
+                .opacity(activeState == .inactive ? 0.5 : 1.0)
                 .font(.system(size: 18, weight: .regular))
                 .help("Start selected task")
                 .frame(width: 28)

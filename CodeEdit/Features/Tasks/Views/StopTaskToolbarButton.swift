@@ -9,6 +9,9 @@ import SwiftUI
 import Combine
 
 struct StopTaskToolbarButton: View {
+    @Environment(\.controlActiveState)
+    private var activeState
+
     @ObservedObject var taskManager: TaskManager
 
     /// Tracks the current selected task's status. Updated by `updateStatusListener`
@@ -25,6 +28,7 @@ struct StopTaskToolbarButton: View {
                     } label: {
                         Label("Stop", systemImage: "stop.fill")
                             .labelStyle(.iconOnly)
+                            .opacity(activeState == .inactive ? 0.5 : 1.0)
                             .font(.system(size: 15, weight: .regular))
                             .help("Stop selected task")
                             .frame(width: 28)
