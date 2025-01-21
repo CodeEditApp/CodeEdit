@@ -3002,12 +3002,6 @@
 			path = Environment;
 			sourceTree = "<group>";
 		};
-		6C52466E2D1E518A00F57F11 /* SemanticToken */ = {
-			isa = PBXGroup;
-			children = (
-				6C52466C2D1E515700F57F11 /* SemanticToken+Position.swift */,
-			);
-			path = SemanticToken;
 		6C510CB62D2E462D006EBE85 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -3022,6 +3016,14 @@
 				6C510CBA2D2ECD68006EBE85 /* UtilityAreaViewModelTests.swift */,
 			);
 			path = UtilityArea;
+			sourceTree = "<group>";
+		};
+		6C52466E2D1E518A00F57F11 /* SemanticToken */ = {
+			isa = PBXGroup;
+			children = (
+				6C52466C2D1E515700F57F11 /* SemanticToken+Position.swift */,
+			);
+			path = SemanticToken;
 			sourceTree = "<group>";
 		};
 		6C6BD6ED29CD123000235D17 /* Extensions */ = {
