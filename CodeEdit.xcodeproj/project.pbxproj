@@ -453,7 +453,7 @@
 		6C9AE6962D1DD71500FAE8D2 /* SemanticTokenHighlightProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9AE6952D1DD71500FAE8D2 /* SemanticTokenHighlightProvider.swift */; };
 		6C9AE6992D1DD84600FAE8D2 /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6C9AE6982D1DD84600FAE8D2 /* CodeEditSourceEditor */; };
 		6C9AE69B2D1DF80300FAE8D2 /* SemanticTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9AE69A2D1DF80300FAE8D2 /* SemanticTokenStorage.swift */; };
-		6C9AE69D2D1DF84300FAE8D2 /* ConcreteSemanticTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9AE69C2D1DF84300FAE8D2 /* ConcreteSemanticTokenStorage.swift */; };
+		6C9AE69D2D1DF84300FAE8D2 /* LSPSemanticTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9AE69C2D1DF84300FAE8D2 /* LSPSemanticTokenStorage.swift */; };
 		6CA1AE952B46950000378EAB /* EditorInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA1AE942B46950000378EAB /* EditorInstance.swift */; };
 		6CAAF68A29BC9C2300A1F48A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		6CAAF69229BCC71C00A1F48A /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -1153,7 +1153,7 @@
 		6C9AE6702D14A9F700FAE8D2 /* LazyServiceWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LazyServiceWrapper.swift; sourceTree = "<group>"; };
 		6C9AE6952D1DD71500FAE8D2 /* SemanticTokenHighlightProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticTokenHighlightProvider.swift; sourceTree = "<group>"; };
 		6C9AE69A2D1DF80300FAE8D2 /* SemanticTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemanticTokenStorage.swift; sourceTree = "<group>"; };
-		6C9AE69C2D1DF84300FAE8D2 /* ConcreteSemanticTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConcreteSemanticTokenStorage.swift; sourceTree = "<group>"; };
+		6C9AE69C2D1DF84300FAE8D2 /* LSPSemanticTokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPSemanticTokenStorage.swift; sourceTree = "<group>"; };
 		6CA1AE942B46950000378EAB /* EditorInstance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorInstance.swift; sourceTree = "<group>"; };
 		6CABB1A029C5593800340467 /* SearchPanelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPanelView.swift; sourceTree = "<group>"; };
 		6CB52DC82AC8DC3E002E75B3 /* CEWorkspaceFileManager+FileManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CEWorkspaceFileManager+FileManagement.swift"; sourceTree = "<group>"; };
@@ -3106,7 +3106,7 @@
 		6C9AE69E2D1DF8DE00FAE8D2 /* SemanticTokenStorage */ = {
 			isa = PBXGroup;
 			children = (
-				6C9AE69C2D1DF84300FAE8D2 /* ConcreteSemanticTokenStorage.swift */,
+				6C9AE69C2D1DF84300FAE8D2 /* LSPSemanticTokenStorage.swift */,
 				6C52466F2D1E5CC100F57F11 /* SemanticTokenRange.swift */,
 				6C9AE69A2D1DF80300FAE8D2 /* SemanticTokenStorage.swift */,
 			);
@@ -4537,7 +4537,7 @@
 				B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */,
 				6139B9162C29B36500CA584B /* CETaskStatus.swift in Sources */,
 				B6EA1FF829DB78DB001BF195 /* ThemeSettingThemeRow.swift in Sources */,
-				6C9AE69D2D1DF84300FAE8D2 /* ConcreteSemanticTokenStorage.swift in Sources */,
+				6C9AE69D2D1DF84300FAE8D2 /* LSPSemanticTokenStorage.swift in Sources */,
 				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
 				587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */,
 				588847692992ABCA00996D95 /* Array+SortURLs.swift in Sources */,

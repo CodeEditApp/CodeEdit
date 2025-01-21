@@ -15,7 +15,7 @@ class LanguageServerFileMap {
         let uri: String
         var documentVersion: Int
         var contentCoordinator: LSPContentCoordinator
-        var semanticHighlighter: SemanticTokenHighlightProvider<ConcreteSemanticTokenStorage>?
+        var semanticHighlighter: SemanticTokenHighlightProvider<LSPSemanticTokenStorage>?
     }
 
     private var trackedDocuments: NSMapTable<NSString, CodeFileDocument>
@@ -98,7 +98,7 @@ class LanguageServerFileMap {
 
     func semanticHighlighter(
         for document: CodeFileDocument
-    ) -> SemanticTokenHighlightProvider<ConcreteSemanticTokenStorage>? {
+    ) -> SemanticTokenHighlightProvider<LSPSemanticTokenStorage>? {
         guard let uri = document.languageServerURI else { return nil }
         return trackedDocumentData[uri]?.semanticHighlighter
     }

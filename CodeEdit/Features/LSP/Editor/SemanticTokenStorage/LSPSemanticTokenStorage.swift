@@ -16,7 +16,8 @@ import CodeEditSourceEditor
 /// tokens and their decoded counterparts. It supports applying delta updates from the language server.
 ///
 /// See ``SemanticTokenHighlightProvider`` for it's connection to the editor view.
-final class ConcreteSemanticTokenStorage: SemanticTokenStorage {
+final class LSPSemanticTokenStorage: SemanticTokenStorage {
+    /// Represents compressed semantic token data received from a language server.
     struct CurrentState {
         let requestId: String?
         let tokenData: [UInt32]
@@ -59,7 +60,7 @@ final class ConcreteSemanticTokenStorage: SemanticTokenStorage {
     /// To calculate invalidated ranges:
     /// - Grabs all semantic tokens that *will* be updated and invalidates their ranges
     /// - Loops over all inserted tokens and invalidates their ranges
-    /// This may result in duplicated ranges. It's up to the object using this method to de-duplicate if necessary.
+    /// This may result in duplicated ranges. It's up to the caller to de-duplicate if necessary.
     ///
     /// - Parameter deltas: The deltas to apply.
     /// - Returns: All ranges invalidated by the applied deltas.
@@ -129,6 +130,7 @@ final class ConcreteSemanticTokenStorage: SemanticTokenStorage {
     // MARK: - Binary Search
 
     /// Perform a binary search to find the given position
+    /// - Complexity: O(log n)
     func findIndex(of position: Position, data: ArraySlice<SemanticToken>) -> Int {
         var lower = 0
         var upper = data.count

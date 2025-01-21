@@ -11,8 +11,8 @@ import CodeEditSourceEditor
 
 /// Defines a protocol for an object to provide a storage mechanism for semantic tokens.
 /// 
-/// There is only one concrete type that conforms to this in CE, but this protocol is used in testing.
-/// See ``ConcreteSemanticTokenStorage`` for use.
+/// There is only one concrete type that conforms to this in CE, but this protocol is useful  in testing.
+/// See ``LSPSemanticTokenStorage`` for use.
 protocol SemanticTokenStorage: AnyObject {
     var lastRequestId: String? { get }
 
