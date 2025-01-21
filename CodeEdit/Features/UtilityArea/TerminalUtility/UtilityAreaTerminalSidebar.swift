@@ -26,7 +26,7 @@ struct UtilityAreaTerminalSidebar: View {
                 .listRowSeparator(.hidden)
             }
             .onMove { [weak utilityAreaViewModel] (source, destination) in
-                utilityAreaViewModel?.moveItems(from: source, to: destination)
+                utilityAreaViewModel?.reorderTerminals(from: source, to: destination)
             }
         }
         .focusedObject(utilityAreaViewModel)
@@ -34,29 +34,29 @@ struct UtilityAreaTerminalSidebar: View {
         .accentColor(.secondary)
         .contextMenu {
             Button("New Terminal") {
-                utilityAreaViewModel.addTerminal(workspace: workspace)
+                utilityAreaViewModel.addTerminal(rootURL: workspace.fileURL)
             }
             Menu("New Terminal With Profile") {
                 Button("Default") {
-                    utilityAreaViewModel.addTerminal(workspace: workspace)
+                    utilityAreaViewModel.addTerminal(rootURL: workspace.fileURL)
                 }
                 Divider()
                 ForEach(Shell.allCases, id: \.self) { shell in
                     Button(shell.rawValue) {
-                        utilityAreaViewModel.addTerminal(shell: shell, workspace: workspace)
+                        utilityAreaViewModel.addTerminal(shell: shell, rootURL: workspace.fileURL)
                     }
                 }
             }
         }
         .onChange(of: utilityAreaViewModel.terminals) { newValue in
             if newValue.isEmpty {
-                utilityAreaViewModel.addTerminal(workspace: workspace)
+                utilityAreaViewModel.addTerminal(rootURL: workspace.fileURL)
             }
         }
         .paneToolbar {
             PaneToolbarSection {
                 Button {
-                    utilityAreaViewModel.addTerminal(workspace: workspace)
+                    utilityAreaViewModel.addTerminal(rootURL: workspace.fileURL)
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -70,6 +70,8 @@ struct UtilityAreaTerminalSidebar: View {
             }
             Spacer()
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Terminals")
     }
 }
 

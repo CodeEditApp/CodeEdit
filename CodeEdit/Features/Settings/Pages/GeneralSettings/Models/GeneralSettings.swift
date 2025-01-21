@@ -27,7 +27,7 @@ extension SettingsData {
                 "Appearance",
                 "File Icon Style",
                 "Tab Bar Style",
-                "Show Path Bar",
+                "Show Jump Bar",
                 "Dim editors without focus",
                 "Navigator Tab Bar Position",
                 "Inspector Tab Bar Position",
@@ -51,8 +51,8 @@ extension SettingsData {
             .map { NSLocalizedString($0, comment: "") }
         }
 
-        /// Show editor path bar
-        var showEditorPathBar: Bool = true
+        /// Show editor jump bar
+        var showEditorJumpBar: Bool = true
 
         /// Dims editors without focus
         var dimEditorsWithoutFocus: Bool = false
@@ -115,9 +115,9 @@ extension SettingsData {
                 Bool.self,
                 forKey: .showLiveIssues
             ) ?? true
-            self.showEditorPathBar = try container.decodeIfPresent(
+            self.showEditorJumpBar = try container.decodeIfPresent(
                 Bool.self,
-                forKey: .showEditorPathBar
+                forKey: .showEditorJumpBar
             ) ?? true
             self.dimEditorsWithoutFocus = try container.decodeIfPresent(
                 Bool.self,

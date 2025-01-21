@@ -13,8 +13,8 @@ struct ViewCommands: Commands {
     var editorFontSize
     @AppSettings(\.terminal.font.size)
     var terminalFontSize
-    @AppSettings(\.general.showEditorPathBar)
-    var showEditorPathBar
+    @AppSettings(\.general.showEditorJumpBar)
+    var showEditorJumpBar
     @AppSettings(\.general.dimEditorsWithoutFocus)
     var dimEditorsWithoutFocus
 
@@ -75,8 +75,8 @@ struct ViewCommands: Commands {
 
             Divider()
 
-            Button("\(showEditorPathBar ? "Hide" : "Show") Path Bar") {
-                showEditorPathBar.toggle()
+            Button("\(showEditorJumpBar ? "Hide" : "Show") Jump Bar") {
+                showEditorJumpBar.toggle()
             }
 
             Toggle("Dim editors without focus", isOn: $dimEditorsWithoutFocus)
@@ -141,7 +141,7 @@ extension ViewCommands {
 
 extension ViewCommands {
     struct NavigatorCommands: View {
-        @ObservedObject var model: NavigatorSidebarViewModel
+        @ObservedObject var model: NavigatorAreaViewModel
 
         var body: some View {
             Menu("Navigators", content: {

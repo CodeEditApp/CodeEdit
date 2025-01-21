@@ -9,8 +9,8 @@ import SwiftUI
 import CodeEditTextView
 
 struct EditorAreaView: View {
-    @AppSettings(\.general.showEditorPathBar)
-    var showEditorPathBar
+    @AppSettings(\.general.showEditorJumpBar)
+    var showEditorJumpBar
 
     @AppSettings(\.navigation.navigationStyle)
     var navigationStyle
@@ -43,8 +43,8 @@ struct EditorAreaView: View {
 
         var editorInsetAmount: Double {
             let tabBarHeight = shouldShowTabBar ? (EditorTabBarView.height + 1) : 0
-            let pathBarHeight = showEditorPathBar ? (EditorPathBarView.height + 1) : 0
-            return tabBarHeight + pathBarHeight
+            let jumpBarHeight = showEditorJumpBar ? (EditorJumpBarView.height + 1) : 0
+            return tabBarHeight + jumpBarHeight
         }
 
         VStack {
@@ -89,8 +89,8 @@ struct EditorAreaView: View {
                         .environmentObject(editor)
                     Divider()
                 }
-                if showEditorPathBar {
-                    EditorPathBarView(
+                if showEditorJumpBar {
+                    EditorJumpBarView(
                         file: editor.selectedTab?.file,
                         shouldShowTabBar: shouldShowTabBar
                     ) { [weak editor] newFile in

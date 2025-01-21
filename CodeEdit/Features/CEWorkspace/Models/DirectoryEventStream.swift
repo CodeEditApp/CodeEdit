@@ -92,6 +92,8 @@ class DirectoryEventStream {
                 // it is useful when file renamed, because it's firing to separate events with old and new path,
                 // but they can be linked by file id
                 | kFSEventStreamCreateFlagUseExtendedData
+                // Useful for us, always sends after the debounce duration.
+                | kFSEventStreamCreateFlagNoDefer
             )
         ) {
             self.streamRef = ref

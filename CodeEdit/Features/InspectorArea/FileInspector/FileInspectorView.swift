@@ -92,15 +92,20 @@ struct FileInspectorView: View {
                         let destinationURL = file.url
                             .deletingLastPathComponent()
                             .appendingPathComponent(fileName)
-                        if !file.isFolder {
-                            editorManager.editorLayout.closeAllTabs(of: file)
-                        }
                         DispatchQueue.main.async { [weak workspace] in
-                            workspace?.workspaceFileManager?.move(file: file, to: destinationURL)
-                            let newItem = CEWorkspaceFile(url: destinationURL)
-                            newItem.parent = file.parent
-                            if !newItem.isFolder {
-                                editorManager.openTab(item: newItem)
+                            do {
+                                if let newItem = try workspace?.workspaceFileManager?.move(
+                                    file: file,
+                                    to: destinationURL
+                                ),
+                                   !newItem.isFolder {
+                                    editorManager.editorLayout.closeAllTabs(of: file)
+                                    editorManager.openTab(item: newItem)
+                                }
+                            } catch {
+                                let alert = NSAlert(error: error)
+                                alert.addButton(withTitle: "Dismiss")
+                                alert.runModal()
                             }
                         }
                     } else {
@@ -134,25 +139,20 @@ struct FileInspectorView: View {
                         guard let newURL = chooseNewFileLocation() else {
                             return
                         }
-                        if !file.isFolder {
-                            editorManager.editorLayout.closeAllTabs(of: file)
-                        }
                         // This is ugly but if the tab is opened at the same time as closing the others, it doesn't open
                         // And if the files are re-built at the same time as the tab is opened, it causes a memory error
                         DispatchQueue.main.async { [weak workspace] in
-                            workspace?.workspaceFileManager?.move(file: file, to: newURL)
-                            // If the parent directory doesn't exist in the workspace, don't open it in a tab.
-                            if let newParent = workspace?.workspaceFileManager?.getFile(
-                                newURL.deletingLastPathComponent().path
-                            ) {
-                                let newItem = CEWorkspaceFile(url: newURL)
-                                newItem.parent = newParent
-                                if !file.isFolder {
-                                    editorManager.openTab(item: newItem)
+                            do {
+                                guard let newItem = try workspace?.workspaceFileManager?.move(file: file, to: newURL),
+                                      !newItem.isFolder else {
+                                    return
                                 }
-                                DispatchQueue.main.async { [weak workspace] in
-                                    _ = try? workspace?.workspaceFileManager?.rebuildFiles(fromItem: newParent)
-                                }
+                                editorManager.editorLayout.closeAllTabs(of: file)
+                                editorManager.openTab(item: newItem)
+                            } catch {
+                                let alert = NSAlert(error: error)
+                                alert.addButton(withTitle: "Dismiss")
+                                alert.runModal()
                             }
                         }
                     }

@@ -25,5 +25,6 @@ struct SplitView<Content: View>: View {
             }
         }
         ._trait(SplitViewControllerLayoutValueKey.self, viewController)
+        .accessibilityElement(children: .contain)
     }
 }

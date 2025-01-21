@@ -1,6 +1,6 @@
 //
-//  PathBar.swift
-//  CodeEditModules/PathBar
+//  EditorJumpBar.swift
+//  CodeEdit
 //
 //  Created by Lukas Pistrol on 18.03.22.
 //
@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 import CodeEditSymbols
 
-struct EditorPathBarComponent: View {
+struct EditorJumpBarComponent: View {
     private let fileItem: CEWorkspaceFile
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
     private let isLastItem: Bool
@@ -54,7 +54,7 @@ struct EditorPathBarComponent: View {
         NSPopUpButtonView(selection: $selection) {
             guard let fileManager = workspace.workspaceFileManager else { return NSPopUpButton() }
 
-            button.menu = EditorPathBarMenu(
+            button.menu = EditorJumpBarMenu(
                 fileItems: siblings,
                 fileManager: fileManager,
                 tappedOpenFile: tappedOpenFile

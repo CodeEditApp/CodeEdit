@@ -18,6 +18,7 @@ struct TaskView: View {
         HStack(spacing: 5) {
             Image(systemName: "gearshape")
             Text(task.name)
+                .frame(minWidth: 0)
             Spacer(minLength: 0)
         }
         .padding(.trailing, 7.5)
@@ -27,5 +28,7 @@ struct TaskView: View {
                 .frame(width: 5, height: 5)
                 .padding(.trailing, 2.5)
         }
+        .accessibilityElement()
+        .accessibilityLabel(task.name)
     }
 }

@@ -253,13 +253,15 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
     }
 
     func validateFileName(for newName: String) -> Bool {
-        guard newName != labelFileName() else { return true }
-
-        guard !newName.isEmpty && newName.isValidFilename &&
+        // Name must be: new, nonempty, valid characters, and not exist in the filesystem.
+        guard newName != labelFileName() &&
+                !newName.isEmpty &&
+                newName.isValidFilename &&
                 !FileManager.default.fileExists(
                     atPath: self.url.deletingLastPathComponent().appendingPathComponent(newName).path
-                )
-        else { return false }
+                ) else {
+            return false
+        }
 
         return true
     }

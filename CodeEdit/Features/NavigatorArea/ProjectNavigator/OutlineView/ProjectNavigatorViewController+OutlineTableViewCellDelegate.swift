@@ -6,35 +6,37 @@
 //
 
 import Foundation
+import AppKit
 
 // MARK: - OutlineTableViewCellDelegate
 
 extension ProjectNavigatorViewController: OutlineTableViewCellDelegate {
     func moveFile(file: CEWorkspaceFile, to destination: URL) {
-        if !file.isFolder {
-            workspace?.editorManager?.editorLayout.closeAllTabs(of: file)
-        }
-        workspace?.workspaceFileManager?.move(file: file, to: destination)
-        if let parent = file.parent {
-            do {
-                try workspace?.workspaceFileManager?.rebuildFiles(fromItem: parent)
-
-                // Grab the file connected to the rest of the cached file tree.
-                guard let newFile = workspace?.workspaceFileManager?.getFile(
-                    destination.absoluteURL.path(percentEncoded: false)
-                ),
-                      !newFile.isFolder else {
-                    return
-                }
-
-                workspace?.editorManager?.openTab(item: newFile)
-            } catch {
-                Self.logger.error("Failed to rebuild file item after moving: \(error)")
+        do {
+            guard let newFile = try workspace?.workspaceFileManager?.move(file: file, to: destination),
+                  !newFile.isFolder else {
+                return
             }
+            outlineView.reloadItem(file.parent, reloadChildren: true)
+            if !file.isFolder {
+                workspace?.editorManager?.editorLayout.closeAllTabs(of: file)
+            }
+            workspace?.listenerModel.highlightedFileItem = newFile
+            workspace?.editorManager?.openTab(item: newFile)
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
         }
     }
 
     func copyFile(file: CEWorkspaceFile, to destination: URL) {
-        workspace?.workspaceFileManager?.copy(file: file, to: destination)
+        do {
+            try workspace?.workspaceFileManager?.copy(file: file, to: destination)
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
+        }
     }
 }

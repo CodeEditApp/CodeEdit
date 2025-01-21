@@ -15,7 +15,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
     static let minSnapWidth: CGFloat = snapWidth - 10
 
     private weak var workspace: WorkspaceDocument?
-    private weak var navigatorViewModel: NavigatorSidebarViewModel?
+    private weak var navigatorViewModel: NavigatorAreaViewModel?
     private weak var windowRef: NSWindow?
     private unowned var hapticPerformer: NSHapticFeedbackPerformer
 
@@ -23,7 +23,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     init(
         workspace: WorkspaceDocument,
-        navigatorViewModel: NavigatorSidebarViewModel,
+        navigatorViewModel: NavigatorAreaViewModel,
         windowRef: NSWindow,
         hapticPerformer: NSHapticFeedbackPerformer = NSHapticFeedbackManager.defaultPerformer
     ) {
