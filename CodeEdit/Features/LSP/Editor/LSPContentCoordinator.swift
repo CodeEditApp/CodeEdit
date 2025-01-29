@@ -52,7 +52,6 @@ class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
         task = Task.detached { [weak self] in
             // Send edit events every 250ms
             for await events in stream.chunked(by: .repeating(every: .milliseconds(250), clock: .continuous)) {
-
                 guard !Task.isCancelled, self != nil else { return }
                 guard !events.isEmpty, let uri = events.first?.uri else { continue }
                 // Errors thrown here are already logged, not much else to do right now.

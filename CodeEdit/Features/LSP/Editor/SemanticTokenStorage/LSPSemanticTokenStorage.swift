@@ -19,13 +19,17 @@ import CodeEditSourceEditor
 final class LSPSemanticTokenStorage: SemanticTokenStorage {
     /// Represents compressed semantic token data received from a language server.
     struct CurrentState {
-        let requestId: String?
+        let resultId: String?
         let tokenData: [UInt32]
         let tokens: [SemanticToken]
     }
 
-    var lastRequestId: String? {
-        state?.requestId
+    var lastResultId: String? {
+        state?.resultId
+    }
+
+    var hasTokens: Bool {
+        state != nil
     }
 
     var state: CurrentState?
@@ -42,17 +46,18 @@ final class LSPSemanticTokenStorage: SemanticTokenStorage {
         }
         var tokens: [SemanticToken] = []
 
-        var idx = findIndex(of: range.start, data: state.tokens[...])
-        while idx < state.tokens.count && state.tokens[idx].startPosition > range.end {
-            tokens.append(state.tokens[idx])
-            idx += 1
-        }
+//        var idx = findLowerBound(of: range.start, data: state.tokens[...])
+//        while idx < state.tokens.count && state.tokens[idx].startPosition < range.end {
+//            tokens.append(state.tokens[idx])
+//            idx += 1
+//        }
 
         return tokens
     }
 
     func setData(_ data: borrowing SemanticTokens) {
-        state = CurrentState(requestId: nil, tokenData: data.data, tokens: data.decode())
+        print(data.decode())
+        state = CurrentState(resultId: data.resultId, tokenData: data.data, tokens: data.decode())
     }
 
     /// Apply a delta object from a language server and returns all token ranges that may need re-drawing.
@@ -64,7 +69,7 @@ final class LSPSemanticTokenStorage: SemanticTokenStorage {
     ///
     /// - Parameter deltas: The deltas to apply.
     /// - Returns: All ranges invalidated by the applied deltas.
-    func applyDelta(_ deltas: SemanticTokensDelta, requestId: String?) -> [SemanticTokenRange] {
+    func applyDelta(_ deltas: SemanticTokensDelta) -> [SemanticTokenRange] {
         assert(state != nil, "State should be set before applying any deltas.")
         guard var tokenData = state?.tokenData else { return [] }
         var invalidatedSet: [SemanticTokenRange] = []
@@ -104,7 +109,7 @@ final class LSPSemanticTokenStorage: SemanticTokenStorage {
                 modifiers: tokenData[idx + 4]
             ))
         }
-        state = CurrentState(requestId: requestId, tokenData: tokenData, tokens: decodedTokens)
+        state = CurrentState(resultId: deltas.resultId, tokenData: tokenData, tokens: decodedTokens)
 
         return invalidatedSet
     }
@@ -131,21 +136,24 @@ final class LSPSemanticTokenStorage: SemanticTokenStorage {
 
     /// Perform a binary search to find the given position
     /// - Complexity: O(log n)
-    func findIndex(of position: Position, data: ArraySlice<SemanticToken>) -> Int {
-        var lower = 0
-        var upper = data.count
-        var idx = 0
-        while lower <= upper {
-            idx = lower + upper / 2
-            if data[idx].startPosition < position {
-                lower = idx + 1
-            } else if data[idx].startPosition > position {
-                upper = idx
-            } else {
-                return idx
-            }
-        }
-
-        return idx
+    func findLowerBound(in range: LSPRange, data: ArraySlice<SemanticToken>) -> Int? {
+        // TODO: This needs to find the closest value in a range, there's a good chance there's no result for a
+        // specific indice
+//        var lower = 0
+//        var upper = data.count
+//        var idx = 0
+//        while lower < upper {
+//            idx = lower + upper / 2
+//            if data[idx].startPosition < position {
+//                lower = idx + 1
+//            } else if data[idx].startPosition > position {
+//                upper = idx
+//            } else {
+//                return idx
+//            }
+//        }
+//
+//        return (data[idx].startPosition..<data[idx].endPosition).contains(position) ? idx : nil
+        return nil
     }
 }

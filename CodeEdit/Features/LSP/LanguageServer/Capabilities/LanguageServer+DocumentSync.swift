@@ -29,7 +29,7 @@ extension LanguageServer {
             )
             try await lspInstance.textDocumentDidOpen(DidOpenTextDocumentParams(textDocument: textDocument))
 
-            try await updateIsolatedDocument(document)
+            await updateIsolatedDocument(document)
         } catch {
             logger.warning("addDocument: Error \(error)")
             throw error
@@ -117,18 +117,16 @@ extension LanguageServer {
     @MainActor
     private func getIsolatedDocumentContent(_ document: CodeFileDocument) -> DocumentContent? {
         guard let uri = document.languageServerURI,
-              let language = document.getLanguage().lspLanguage,
               let content = document.content?.string else {
             return nil
         }
-        return DocumentContent(uri: uri, language: language, string: content)
+        return DocumentContent(uri: uri, language: document.getLanguage().id.rawValue, string: content)
     }
 
     @MainActor
-    private func updateIsolatedDocument(_ document: CodeFileDocument) async throws {
+    private func updateIsolatedDocument(_ document: CodeFileDocument) {
         document.lspCoordinator = openFiles.contentCoordinator(for: document)
         document.lspHighlightProvider = openFiles.semanticHighlighter(for: document)
-        try await document.lspHighlightProvider?.documentDidChange()
     }
 
     // swiftlint:disable line_length
@@ -163,7 +161,7 @@ extension LanguageServer {
     // Used to avoid a lint error (`large_tuple`) for the return type of `getIsolatedDocumentContent`
     fileprivate struct DocumentContent {
         let uri: String
-        let language: LanguageIdentifier
+        let language: String
         let string: String
     }
 }

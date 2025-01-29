@@ -14,11 +14,12 @@ import CodeEditSourceEditor
 /// There is only one concrete type that conforms to this in CE, but this protocol is useful  in testing.
 /// See ``LSPSemanticTokenStorage`` for use.
 protocol SemanticTokenStorage: AnyObject {
-    var lastRequestId: String? { get }
+    var lastResultId: String? { get }
+    var hasTokens: Bool { get }
 
     init()
 
     func getTokensFor(range: LSPRange) -> [SemanticToken]
     func setData(_ data: borrowing SemanticTokens)
-    func applyDelta(_ deltas: SemanticTokensDelta, requestId: String?) -> [SemanticTokenRange]
+    func applyDelta(_ deltas: SemanticTokensDelta) -> [SemanticTokenRange]
 }

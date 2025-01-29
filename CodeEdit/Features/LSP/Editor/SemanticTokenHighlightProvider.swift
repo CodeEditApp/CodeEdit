@@ -27,6 +27,7 @@ final class SemanticTokenHighlightProvider<Storage: SemanticTokenStorage>: Highl
     }
 
     typealias EditCallback = @MainActor (Result<IndexSet, any Error>) -> Void
+    typealias HighlightCallback = @MainActor (Result<[HighlightRange], any Error>) -> Void
 
     private let tokenMap: SemanticTokenMap
     private let documentURI: String
@@ -34,6 +35,7 @@ final class SemanticTokenHighlightProvider<Storage: SemanticTokenStorage>: Highl
     private weak var textView: TextView?
 
     private var lastEditCallback: EditCallback?
+    private var pendingHighlightCallbacks: [HighlightCallback] = []
     private var storage: Storage
 
     var documentRange: NSRange {
@@ -47,33 +49,91 @@ final class SemanticTokenHighlightProvider<Storage: SemanticTokenStorage>: Highl
         self.storage = Storage()
     }
 
+    // MARK: - Language Server Content Lifecycle
+
+    /// Called when the language server finishes sending a document update.
+    ///
+    /// This method first checks if this object has any semantic tokens. If not, requests new tokens and responds to the
+    /// `pendingHighlightCallbacks` queue with cancellation errors, causing the highlighter to re-query those indices.
+    ///
+    /// If this object already has some tokens, it determines whether or not we can request a token delta and
+    /// performs the request.
     func documentDidChange() async throws {
         guard let languageServer, let textView else {
             return
         }
-        print("Doc did change")
 
-        // The document was updated. Update our cache and send the invalidated ranges for the editor to handle.
-        if let lastRequestId = storage.lastRequestId {
-            guard let response = try await languageServer.requestSemanticTokens( // Not sure why these are optional...
-                for: documentURI,
-                previousResultId: lastRequestId
-            ) else {
-                return
+        guard storage.hasTokens else {
+            // We have no semantic token info, request it!
+            try await requestTokens(languageServer: languageServer, textView: textView)
+            await MainActor.run {
+                for callback in pendingHighlightCallbacks {
+                    callback(.failure(HighlightProvidingError.operationCancelled))
+                }
+                pendingHighlightCallbacks.removeAll()
             }
-            switch response {
-            case let .optionA(tokenData):
-                await applyEntireResponse(tokenData, callback: lastEditCallback)
-            case let .optionB(deltaData):
-                await applyDeltaResponse(deltaData, callback: lastEditCallback, textView: textView)
-            }
-        } else {
-            guard let response = try await languageServer.requestSemanticTokens(for: documentURI) else {
-                return
-            }
-            await applyEntireResponse(response, callback: lastEditCallback)
+            return
+        }
+
+        // The document was updated. Update our token cache and send the invalidated ranges for the editor to handle.
+        if let lastResultId = storage.lastResultId {
+            try await requestDeltaTokens(languageServer: languageServer, textView: textView, lastResultId: lastResultId)
+            return
+        }
+
+        try await requestTokens(languageServer: languageServer, textView: textView)
+    }
+
+    // MARK: - LSP Token Requests
+
+    /// Requests and applies a token delta. Requires a previous response identifier.
+    private func requestDeltaTokens(
+        languageServer: LanguageServer,
+        textView: TextView,
+        lastResultId: String
+    ) async throws {
+        guard let response = try await languageServer.requestSemanticTokens(
+            for: documentURI,
+            previousResultId: lastResultId
+        ) else {
+            return
+        }
+        switch response {
+        case let .optionA(tokenData):
+            await applyEntireResponse(tokenData, callback: lastEditCallback)
+        case let .optionB(deltaData):
+            await applyDeltaResponse(deltaData, callback: lastEditCallback, textView: textView)
         }
     }
+
+    /// Requests and applies tokens for an entire document. This does not require a previous response id, and should be
+    /// used in place of `requestDeltaTokens` when that's the case.
+    private func requestTokens(languageServer: LanguageServer, textView: TextView) async throws {
+        guard let response = try await languageServer.requestSemanticTokens(for: documentURI) else {
+            return
+        }
+        await applyEntireResponse(response, callback: lastEditCallback)
+    }
+
+    // MARK: - Apply LSP Response
+
+    /// Applies a delta response from the LSP to our storage.
+    private func applyDeltaResponse(_ data: SemanticTokensDelta, callback: EditCallback?, textView: TextView?) async {
+        let lspRanges = storage.applyDelta(data)
+        lastEditCallback = nil // Don't use this callback again.
+        await MainActor.run {
+            let ranges = lspRanges.compactMap { textView?.nsRangeFrom($0) }
+            callback?(.success(IndexSet(ranges: ranges)))
+        }
+    }
+
+    private func applyEntireResponse(_ data: SemanticTokens, callback: EditCallback?) async {
+        storage.setData(data)
+        lastEditCallback = nil // Don't use this callback again.
+        await callback?(.success(IndexSet(integersIn: documentRange)))
+    }
+
+    // MARK: - Highlight Provider Conformance
 
     func setUp(textView: TextView, codeLanguage: CodeLanguage) {
         // Send off a request to get the initial token data
@@ -90,12 +150,12 @@ final class SemanticTokenHighlightProvider<Storage: SemanticTokenStorage>: Highl
         lastEditCallback = completion
     }
 
-    func queryHighlightsFor(
-        textView: TextView,
-        range: NSRange,
-        completion: @escaping @MainActor (Result<[HighlightRange], any Error>) -> Void
-    ) {
-        print("Querying highlights")
+    func queryHighlightsFor(textView: TextView, range: NSRange, completion: @escaping HighlightCallback) {
+        guard storage.hasTokens else {
+            pendingHighlightCallbacks.append(completion)
+            return
+        }
+
         guard let lspRange = textView.lspRangeFrom(nsRange: range) else {
             completion(.failure(HighlightError.lspRangeFailure))
             return
@@ -104,24 +164,4 @@ final class SemanticTokenHighlightProvider<Storage: SemanticTokenStorage>: Highl
         let highlights = tokenMap.decode(tokens: rawTokens, using: textView)
         completion(.success(highlights))
     }
-
-    // MARK: - Apply Response
-
-    private func applyDeltaResponse(_ data: SemanticTokensDelta, callback: EditCallback?, textView: TextView?) async {
-        print("Applying delta: \(data)")
-        let lspRanges = storage.applyDelta(data, requestId: data.resultId)
-        await MainActor.run {
-            let ranges = lspRanges.compactMap { textView?.nsRangeFrom($0) }
-            callback?(.success(IndexSet(ranges: ranges)))
-        }
-        lastEditCallback = nil // Don't use this callback again.
-    }
-
-    private func applyEntireResponse(_ data: SemanticTokens, callback: EditCallback?) async {
-        print("Applying entire: \(data)")
-        storage.setData(data)
-        await callback?(.success(IndexSet(integersIn: documentRange)))
-        lastEditCallback = nil // Don't use this callback again.
-    }
-
 }

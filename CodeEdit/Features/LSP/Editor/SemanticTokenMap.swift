@@ -66,11 +66,13 @@ struct SemanticTokenMap: Sendable { // swiftlint:enable line_length
                 return nil
             }
 
+            // Only modifiers are bit packed, capture types are given as a simple index into the ``tokenTypeMap``
             let modifiers = decodeModifier(token.modifiers)
 
-            // Capture types are indicated by the index of the set bit.
-            let type = token.type > 0 ? Int(token.type.trailingZeroBitCount) : -1 // Don't try to decode 0
+            let type = Int(token.type)
             let capture = tokenTypeMap.indices.contains(type) ? tokenTypeMap[type] : nil
+
+//            print(token.line, token.char, token.length, range, capture, modifiers.values)
 
             return HighlightRange(
                 range: range,

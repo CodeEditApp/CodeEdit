@@ -9,7 +9,6 @@ import Foundation
 import LanguageServerProtocol
 
 extension LanguageServer {
-    /// Setup and test the validity of a rename operation at a given location
     func requestSemanticTokens(for documentURI: String) async throws -> SemanticTokensResponse {
         do {
             logger.log("Requesting all tokens")
