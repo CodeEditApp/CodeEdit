@@ -179,4 +179,21 @@ final class CodeEditUtilsExtensionsUnitTests: XCTestCase {
             XCTAssertFalse(invalidCase.isValidFilename, "Detected valid case \"\(invalidCase)\", should be invalid.")
         }
     }
+
+    // MARK: - STRING + ESCAPED
+
+    func testEscapeQuotes() {
+        let string = #"this/is/"a path/Hello "world"#
+        XCTAssertEqual(string.escapedQuotes(), #"this/is/\"a path/Hello \"world"#)
+    }
+
+    func testEscapeQuotesForAlreadyEscapedString() {
+        let string = #"this/is/"a path/Hello \"world"#
+        XCTAssertEqual(string.escapedQuotes(), #"this/is/\"a path/Hello \"world"#)
+    }
+
+    func testEscapedDirectory() {
+        let path = #"/Hello World/ With Spaces/ And " Characters "#
+        XCTAssertEqual(path.escapedDirectory(), #""/Hello World/ With Spaces/ And \" Characters ""#)
+    }
 }
