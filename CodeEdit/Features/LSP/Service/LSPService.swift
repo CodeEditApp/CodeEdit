@@ -34,69 +34,6 @@ import CodeEditLanguages
 /// )
 /// try await lspService.stopServer(for: .python)
 /// ```
-///
-/// ## Completion Example
-///
-/// ```swift
-/// func testCompletion() async throws {
-///     do {
-///         guard var languageClient = self.languageClient(for: .python) else {
-///             print("Failed to get client")
-///             throw ServerManagerError.languageClientNotFound
-///         }
-///
-///         let testFilePathStr = ""
-///         let testFileURL = URL(fileURLWithPath: testFilePathStr)
-///
-///         // Tell server we opened a document
-///         _ = await languageClient.addDocument(testFileURL)
-///
-///         // Completion example
-///         let textPosition = Position(line: 32, character: 18)  // Lines and characters start at 0
-///         let completions = try await languageClient.requestCompletion(
-///             document: testFileURL.absoluteString,
-///             position: textPosition
-///         )
-///         switch completions {
-///         case .optionA(let completionItems):
-///             // Handle the case where completions is an array of CompletionItem
-///             print("\n*******\nCompletion Items:\n*******\n")
-///             for item in completionItems {
-///                 let textEdits = LSPCompletionItemsUtil.getCompletionItemEdits(
-///                     startPosition: textPosition,
-///                     item: item
-///                 )
-///                 for edit in textEdits {
-///                     print(edit)
-///                 }
-///             }
-///
-///         case .optionB(let completionList):
-///             // Handle the case where completions is a CompletionList
-///             print("\n*******\nCompletion Items:\n*******\n")
-///             for item in completionList.items {
-///                 let textEdits = LSPCompletionItemsUtil.getCompletionItemEdits(
-///                     startPosition: textPosition,
-///                     item: item
-///                 )
-///                 for edit in textEdits {
-///                     print(edit)
-///                 }
-///             }
-///
-///             print(completionList.items[0])
-///
-///         case .none:
-///             print("No completions found")
-///         }
-///
-///         // Close the document
-///         _ = await languageClient.closeDocument(testFilePathStr)
-///     } catch {
-///         print(error)
-///     }
-/// }
-/// ```
 @MainActor
 final class LSPService: ObservableObject {
     let logger: Logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
@@ -180,14 +117,42 @@ final class LSPService: ObservableObject {
             throw LSPError.binaryNotFound
         }
 
+        let taskUuidString = UUID().uuidString
+
+        // Log start message to the activity viewer
+        let createInfo: [String: Any] = [
+            "id": taskUuidString,
+            "action": "create",
+            "title": "Starting \(languageId.rawValue) language server",
+            "isLoading": true
+        ]
         logger.info("Starting \(languageId.rawValue) language server")
+        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createInfo)
+
+        // Attempt to start the language server
         let server = try await LanguageServer.createServer(
             for: languageId,
             with: serverBinary,
             workspacePath: workspacePath
         )
         languageClients[ClientKey(languageId, workspacePath)] = server
+
+        // Log success message update
+        let updateInfo: [String: Any] = [
+            "id": taskUuidString,
+            "action": "update",
+            "title": "Successfully started \(languageId.rawValue) language server",
+            "isLoading": false
+        ]
+        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: updateInfo)
+
+        let deleteInfo: [String: Any] = [
+            "id": taskUuidString,
+            "action": "deleteWithDelay",
+            "delay": 4.0
+        ]
         logger.info("Successfully started \(languageId.rawValue) language server")
+        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteInfo)
 
         self.startListeningToEvents(for: ClientKey(languageId, workspacePath))
         return server
@@ -218,7 +183,7 @@ final class LSPService: ObservableObject {
             do {
                 try await languageServer.openDocument(document)
             } catch {
-                let uri = await document.languageServerURI
+                let uri = document.languageServerURI
                 // swiftlint:disable:next line_length
                 self.logger.error("Failed to close document: \(uri ?? "<NO URI>", privacy: .private), language: \(lspLanguage.rawValue). Error \(error)")
             }
