@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct NotificationOverlayView: View {
+    @Environment(\.controlActiveState)
+    private var controlActiveState
+
     @ObservedObject private var notificationManager = NotificationManager.shared
+
     @Namespace private var animation
-    @Environment(\.controlActiveState) private var controlActiveState
 
     var body: some View {
         VStack(spacing: 10) {

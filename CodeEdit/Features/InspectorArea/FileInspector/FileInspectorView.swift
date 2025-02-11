@@ -91,7 +91,7 @@ struct FileInspectorView: View {
 
     func addTestNotification () {
         NotificationManager.shared.post(
-            iconSymbol: "bell",
+            iconSymbol: "bell.badge.fill",
             iconColor: .red,
             title: "New Notification Created",
             description: "Successfully created new notification",

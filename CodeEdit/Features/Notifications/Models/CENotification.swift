@@ -115,7 +115,30 @@ struct CENotification: Identifiable, Equatable {
         self.isRead = isRead
         self.timestamp = Date()
     }
-    
+
+    init(
+        id: UUID = UUID(),
+        iconText: String,
+        iconTextColor: Color? = nil,
+        iconColor: Color? = nil,
+        title: String,
+        description: String,
+        actionButtonTitle: String,
+        action: @escaping () -> Void,
+        isSticky: Bool = false,
+        isRead: Bool = false
+    ) {
+        self.id = id
+        self.icon = .text(iconText, backgroundColor: iconColor, textColor: iconTextColor)
+        self.title = title
+        self.description = description
+        self.actionButtonTitle = actionButtonTitle
+        self.action = action
+        self.isSticky = isSticky
+        self.isRead = isRead
+        self.timestamp = Date()
+    }
+
     init(
         id: UUID = UUID(),
         iconImage: Image,
