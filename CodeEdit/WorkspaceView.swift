@@ -53,6 +53,9 @@ struct WorkspaceView: View {
                                     focus: $focusedEditor
                                 )
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .overlay(alignment: .topTrailing) {
+                                    NotificationOverlayView()
+                                }
                                 .onChange(of: geo.size.height) { newHeight in
                                     editorsHeight = newHeight
                                 }

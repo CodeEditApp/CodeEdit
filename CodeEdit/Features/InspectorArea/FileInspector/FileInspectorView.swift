@@ -59,6 +59,14 @@ struct FileInspectorView: View {
                         widthOptions
                         wrapLinesToggle
                     }
+                    Section {
+                        Button("Add Test Notification") {
+                            addTestNotification()
+                        }
+                        Button("Add Test Notification After Delay") {
+                            addTestNotificationAfterDelay()
+                        }
+                    }
                 }
             } else {
                 NoSelectionInspectorView()
@@ -78,6 +86,24 @@ struct FileInspectorView: View {
         }
         .onChange(of: textEditing) { newValue in
             updateFileOptions(newValue)
+        }
+    }
+
+    func addTestNotification () {
+        NotificationManager.shared.post(
+            icon: "bell",
+            title: "New Notification Created",
+            description: "Successfully created new notification",
+            actionButtonTitle: "Action",
+            action: {
+                print("Action taken")
+            }
+        )
+    }
+    
+    func addTestNotificationAfterDelay () {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            addTestNotification()
         }
     }
 
