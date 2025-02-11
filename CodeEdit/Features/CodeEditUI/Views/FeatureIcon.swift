@@ -24,6 +24,17 @@ struct FeatureIcon: View {
     }
 
     init(
+        text: String,
+        textColor: Color? = nil,
+        color: Color? = nil,
+        size: CGFloat? = nil
+    ) {
+        self.content = .text(text, textColor: textColor)
+        self.color = color ?? .accentColor
+        self.size = size ?? 20
+    }
+
+    init(
         image: Image,
         size: CGFloat? = nil
     ) {
@@ -45,13 +56,17 @@ struct FeatureIcon: View {
             .fill(background)
             .overlay {
                 switch content {
-                case .symbol(let name):
+                case let .symbol(name):
                     getSafeImage(named: name)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .foregroundColor(.white)
                         .padding(size / 8)
-                case .image(let image):
+                case let .text(text, textColor):
+                    Text(text)
+                        .font(.system(size: size * 0.65))
+                        .foregroundColor(textColor ?? .primary)
+                case let .image(image):
                     image
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -68,7 +83,7 @@ struct FeatureIcon: View {
 
     private var background: AnyShapeStyle {
         switch content {
-        case .symbol:
+        case .symbol, .text:
             return AnyShapeStyle((color ?? .accentColor).gradient)
         case .image:
             return AnyShapeStyle(.regularMaterial)
@@ -78,5 +93,6 @@ struct FeatureIcon: View {
 
 private enum IconContent {
     case symbol(String)
+    case text(String, textColor: Color?)
     case image(Image)
 }

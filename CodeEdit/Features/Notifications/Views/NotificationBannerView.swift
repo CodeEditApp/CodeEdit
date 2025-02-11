@@ -8,17 +8,21 @@
 import SwiftUI
 
 struct NotificationBannerView: View {
+    @Environment(\.isOverlay)
+    private var isOverlay
+
+    @Environment(\.isSingleListItem)
+    private var isSingleListItem
+
     let notification: CENotification
     let namespace: Namespace.ID
     let onDismiss: () -> Void
     let onAction: () -> Void
 
-    @Environment(\.isOverlay) private var isOverlay
-    @Environment(\.isSingleListItem) private var isSingleListItem
     @State private var offset: CGFloat = 0
     @State private var opacity: CGFloat = 1
     @State private var isHovering = false
-    
+
     private let dismissThreshold: CGFloat = 100
 
     private var cornerRadius: CGFloat {
@@ -33,13 +37,20 @@ struct NotificationBannerView: View {
         VStack(spacing: 10) {
             HStack(alignment: .top, spacing: 10) {
                 switch notification.icon {
-                case .symbol(let name, let color):
+                case let .symbol(name, color):
                     FeatureIcon(
                         symbol: name,
                         color: color ?? Color(.systemBlue),
                         size: 26
                     )
-                case .image(let image):
+                case let .text(text, backgroundColor, textColor):
+                    FeatureIcon(
+                        text: text,
+                        textColor: textColor ?? .primary,
+                        color: backgroundColor ?? Color(.systemBlue),
+                        size: 26
+                    )
+                case let .image(image):
                     FeatureIcon(
                         image: image,
                         size: 26
@@ -47,9 +58,9 @@ struct NotificationBannerView: View {
                 }
                 VStack(alignment: .leading, spacing: 1) {
                     Text(notification.title)
-                        .font(.headline)
-                        .fontWeight(.medium)
-                        .padding(.top, -2)
+                        .font(.system(size: 12))
+                        .fontWeight(.semibold)
+                        .padding(.top, -3)
                     Text(notification.description)
                         .font(.callout)
                         .foregroundColor(.secondary)
@@ -97,7 +108,7 @@ struct NotificationBannerView: View {
             }
             .onEnded { value in
                 let velocity = value.predictedEndLocation.x - value.location.x
-                
+
                 if offset > dismissThreshold || velocity > 100 {
                     withAnimation(.easeOut(duration: 0.2)) {
                         offset = NSScreen.main?.frame.width ?? 1000

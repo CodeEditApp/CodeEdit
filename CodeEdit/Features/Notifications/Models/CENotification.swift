@@ -18,12 +18,13 @@ struct CENotification: Identifiable, Equatable {
     let isSticky: Bool
     var isRead: Bool
     let timestamp: Date
-    
+
     enum IconType {
         case symbol(name: String, color: Color?)
         case image(Image)
+        case text(String, backgroundColor: Color?, textColor: Color?)
     }
-    
+
     init(
         id: UUID = UUID(),
         iconSymbol: String,
@@ -45,7 +46,30 @@ struct CENotification: Identifiable, Equatable {
         self.isRead = isRead
         self.timestamp = Date()
     }
-    
+
+    init(
+        id: UUID = UUID(),
+        iconText: String,
+        iconTextColor: Color? = nil,
+        iconColor: Color? = nil,
+        title: String,
+        description: String,
+        actionButtonTitle: String,
+        action: @escaping () -> Void,
+        isSticky: Bool = false,
+        isRead: Bool = false
+    ) {
+        self.id = id
+        self.icon = .text(iconText, backgroundColor: iconColor, textColor: iconTextColor)
+        self.title = title
+        self.description = description
+        self.actionButtonTitle = actionButtonTitle
+        self.action = action
+        self.isSticky = isSticky
+        self.isRead = isRead
+        self.timestamp = Date()
+    }
+
     init(
         id: UUID = UUID(),
         iconImage: Image,
@@ -66,8 +90,8 @@ struct CENotification: Identifiable, Equatable {
         self.isRead = isRead
         self.timestamp = Date()
     }
-    
+
     static func == (lhs: CENotification, rhs: CENotification) -> Bool {
         lhs.id == rhs.id
     }
-} 
+}

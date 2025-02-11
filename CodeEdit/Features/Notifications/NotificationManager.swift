@@ -30,7 +30,7 @@ final class NotificationManager: NSObject, ObservableObject {
     private var isPaused: Bool = false
     private var isAppActive: Bool = true
 
-    private override init() {
+    override private init() {
         super.init()
 
         // Request notification permissions
@@ -141,6 +141,48 @@ final class NotificationManager: NSObject, ObservableObject {
         DispatchQueue.main.async { [weak self] in
             self?.notifications.append(notification)
 
+            if self?.isAppActive == true {
+                self?.showTemporaryNotification(notification)
+            } else {
+                self?.showSystemNotification(notification)
+            }
+        }
+    }
+
+    /// Posts a new notification
+    /// - Parameters:
+    ///   - iconText: Text or emoji for the notification icon
+    ///   - iconTextColor: Color of the text/emoji (defaults to primary label color)
+    ///   - iconColor: Background color for the icon
+    ///   - title: Main notification title
+    ///   - description: Detailed notification message
+    ///   - actionButtonTitle: Title for the action button
+    ///   - action: Closure to execute when action button is clicked
+    ///   - isSticky: Whether the notification should persist until manually dismissed
+    func post(
+        iconText: String,
+        iconTextColor: Color? = nil,
+        iconColor: Color? = Color(.systemBlue),
+        title: String,
+        description: String,
+        actionButtonTitle: String,
+        action: @escaping () -> Void,
+        isSticky: Bool = false
+    ) {
+        let notification = CENotification(
+            iconText: iconText,
+            iconTextColor: iconTextColor,
+            iconColor: iconColor,
+            title: title,
+            description: description,
+            actionButtonTitle: actionButtonTitle,
+            action: action,
+            isSticky: isSticky
+        )
+
+        DispatchQueue.main.async { [weak self] in
+            self?.notifications.append(notification)
+            
             if self?.isAppActive == true {
                 self?.showTemporaryNotification(notification)
             } else {

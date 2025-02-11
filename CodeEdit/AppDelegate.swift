@@ -29,10 +29,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         // Add test notification
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             NotificationManager.shared.post(
-                iconSymbol: "bell.badge",
+                iconText: "👋",
+                iconTextColor: .white,
+                iconColor: .indigo,
                 title: "Welcome to CodeEdit",
                 description: "This is a test notification to demonstrate the notification system.",
-                actionButtonTitle: "Learn More",
+                actionButtonTitle: "Learn More...",
                 action: {
                     print("Action button clicked!")
                 }
@@ -85,7 +87,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             handleOpen()
             return false
         }
-        
+
         /// Check if all windows are either miniaturized or not visible.
         /// If so, attempt to find the first miniaturized window and deminiaturize it.
         guard sender.windows.allSatisfy({ $0.isMiniaturized || !$0.isVisible }) else { return false }
@@ -164,9 +166,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         let projects: [String] = CodeEditDocumentController.shared.documents
             .compactMap { ($0 as? WorkspaceDocument)?.fileURL?.path }
-        
+
         UserDefaults.standard.set(projects, forKey: AppDelegate.recoverWorkspacesKey)
-        
+
         let areAllDocumentsClean = CodeEditDocumentController.shared.documents.allSatisfy { !$0.isDocumentEdited }
         guard areAllDocumentsClean else {
             CodeEditDocumentController.shared.closeAllDocuments(
