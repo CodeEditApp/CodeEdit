@@ -1,3 +1,10 @@
+//
+//  NotificationBannerView.swift
+//  CodeEdit
+//
+//  Created by Austin Condiff on 2/10/24.
+//
+
 import SwiftUI
 
 struct NotificationBannerView: View {
@@ -25,7 +32,19 @@ struct NotificationBannerView: View {
     private var content: some View {
         VStack(spacing: 10) {
             HStack(alignment: .top, spacing: 10) {
-                FeatureIcon(symbol: Image(systemName: notification.icon), color: Color(.systemBlue), size: 26)
+                switch notification.icon {
+                case .symbol(let name, let color):
+                    FeatureIcon(
+                        symbol: name,
+                        color: color ?? Color(.systemBlue),
+                        size: 26
+                    )
+                case .image(let image):
+                    FeatureIcon(
+                        image: image,
+                        size: 26
+                    )
+                }
                 VStack(alignment: .leading, spacing: 1) {
                     Text(notification.title)
                         .font(.headline)

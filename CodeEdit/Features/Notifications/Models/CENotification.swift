@@ -1,8 +1,16 @@
+//
+//  CENotification.swift
+//  CodeEdit
+//
+//  Created by Austin Condiff on 2/10/24.
+//
+
+import Foundation
 import SwiftUI
 
 struct CENotification: Identifiable, Equatable {
     let id: UUID
-    let icon: String // SF Symbol name
+    let icon: IconType
     let title: String
     let description: String
     let actionButtonTitle: String
@@ -11,9 +19,15 @@ struct CENotification: Identifiable, Equatable {
     var isRead: Bool
     let timestamp: Date
     
+    enum IconType {
+        case symbol(name: String, color: Color?)
+        case image(Image)
+    }
+    
     init(
         id: UUID = UUID(),
-        icon: String,
+        iconSymbol: String,
+        iconColor: Color? = nil,
         title: String,
         description: String,
         actionButtonTitle: String,
@@ -22,7 +36,28 @@ struct CENotification: Identifiable, Equatable {
         isRead: Bool = false
     ) {
         self.id = id
-        self.icon = icon
+        self.icon = .symbol(name: iconSymbol, color: iconColor)
+        self.title = title
+        self.description = description
+        self.actionButtonTitle = actionButtonTitle
+        self.action = action
+        self.isSticky = isSticky
+        self.isRead = isRead
+        self.timestamp = Date()
+    }
+    
+    init(
+        id: UUID = UUID(),
+        iconImage: Image,
+        title: String,
+        description: String,
+        actionButtonTitle: String,
+        action: @escaping () -> Void,
+        isSticky: Bool = false,
+        isRead: Bool = false
+    ) {
+        self.id = id
+        self.icon = .image(iconImage)
         self.title = title
         self.description = description
         self.actionButtonTitle = actionButtonTitle
