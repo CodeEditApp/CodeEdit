@@ -25,11 +25,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         checkForFilesToOpen()
 
         NSApp.closeWindow(.welcome, .about)
-        
+
         // Add test notification
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             NotificationManager.shared.post(
-                icon: "bell.badge",
+                iconSymbol: "bell.badge",
                 title: "Welcome to CodeEdit",
                 description: "This is a test notification to demonstrate the notification system.",
                 actionButtonTitle: "Learn More",
@@ -38,10 +38,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 }
             )
         }
-        
+
         DispatchQueue.main.async {
             var needToHandleOpen = true
-            
+
             // If no windows were reopened by NSQuitAlwaysKeepsWindows, do default behavior.
             // Non-WindowGroup SwiftUI Windows are still in NSApp.windows when they are closed,
             // So we need to think about those.
@@ -73,13 +73,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        
+
     }
-    
+
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
         true
     }
-    
+
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         guard flag else {
             handleOpen()
@@ -92,11 +92,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         sender.windows.first(where: { $0.isMiniaturized })?.deminiaturize(sender)
         return false
     }
-    
+
     func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
         false
     }
-    
+
     func handleOpen() {
         let behavior = Settings.shared.preferences.general.reopenBehavior
         switch behavior {
@@ -110,7 +110,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             CodeEditDocumentController.shared.newDocument(self)
         }
     }
-    
+
     /// Handle urls with the form `codeedit://file/{filepath}:{line}:{column}`
     func application(_ application: NSApplication, open urls: [URL]) {
         for url in urls {
@@ -118,7 +118,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             let filePath = URL(fileURLWithPath: String(file[0]))
             let line = file.count > 1 ? Int(file[1]) ?? 0 : 0
             let column = file.count > 2 ? Int(file[2]) ?? 1 : 1
-            
+
             CodeEditDocumentController.shared
                 .openDocument(withContentsOf: filePath, display: true) { document, _, error in
                     if let error {
@@ -133,7 +133,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                     // Add notification when workspace is opened via URL
                     if let workspaceDoc = document as? WorkspaceDocument {
                         NotificationManager.shared.post(
-                            icon: "folder.badge.plus",
+                            iconSymbol: "folder.badge.plus",
                             title: "Workspace Opened",
                             description: "Successfully opened workspace: \(workspaceDoc.fileURL?.lastPathComponent ?? "")",
                             actionButtonTitle: "View Files",
@@ -146,7 +146,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 }
         }
     }
-    
+
     /// Defers the application terminate message until we've finished cleanup.
     ///
     /// All paths _must_ call `NSApplication.shared.reply(toApplicationShouldTerminate: true)` as soon as possible.

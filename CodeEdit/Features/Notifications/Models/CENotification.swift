@@ -106,7 +106,28 @@ struct CENotification: Identifiable, Equatable {
         isRead: Bool
     ) {
         self.id = id
-        self.icon = icon
+        self.icon = .symbol(name: iconSymbol, color: iconColor)
+        self.title = title
+        self.description = description
+        self.actionButtonTitle = actionButtonTitle
+        self.action = action
+        self.isSticky = isSticky
+        self.isRead = isRead
+        self.timestamp = Date()
+    }
+    
+    init(
+        id: UUID = UUID(),
+        iconImage: Image,
+        title: String,
+        description: String,
+        actionButtonTitle: String,
+        action: @escaping () -> Void,
+        isSticky: Bool = false,
+        isRead: Bool = false
+    ) {
+        self.id = id
+        self.icon = .image(iconImage)
         self.title = title
         self.description = description
         self.actionButtonTitle = actionButtonTitle

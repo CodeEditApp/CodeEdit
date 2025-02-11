@@ -91,7 +91,8 @@ struct FileInspectorView: View {
 
     func addTestNotification () {
         NotificationManager.shared.post(
-            icon: "bell",
+            iconSymbol: "bell",
+            iconColor: .red,
             title: "New Notification Created",
             description: "Successfully created new notification",
             actionButtonTitle: "Action",
@@ -100,7 +101,7 @@ struct FileInspectorView: View {
             }
         )
     }
-    
+
     func addTestNotificationAfterDelay () {
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             addTestNotification()
