@@ -580,6 +580,13 @@
 		B67DBB942CD5FC08007F4F18 /* GlobPatternListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67DBB932CD5FBE2007F4F18 /* GlobPatternListItem.swift */; };
 		B68108042C60287F008B27C1 /* StartTaskToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68108032C60287F008B27C1 /* StartTaskToolbarButton.swift */; };
 		B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */; };
+		B68DE5DF2D5A61E5009A43EF /* CENotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5D72D5A61E5009A43EF /* CENotification.swift */; };
+		B68DE5E02D5A61E5009A43EF /* NotificationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5D92D5A61E5009A43EF /* NotificationBannerView.swift */; };
+		B68DE5E12D5A61E5009A43EF /* NotificationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5DA2D5A61E5009A43EF /* NotificationListView.swift */; };
+		B68DE5E22D5A61E5009A43EF /* NotificationToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5DB2D5A61E5009A43EF /* NotificationToolbarItem.swift */; };
+		B68DE5E32D5A61E5009A43EF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5DD2D5A61E5009A43EF /* NotificationManager.swift */; };
+		B68DE5E52D5A7988009A43EF /* NotificationOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5E42D5A7988009A43EF /* NotificationOverlayView.swift */; };
+		B68DE5E72D5A7D62009A43EF /* NotificationBannerEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5E62D5A7D62009A43EF /* NotificationBannerEnvironment.swift */; };
 		B6966A282C2F683300259C2D /* SourceControlPullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A272C2F683300259C2D /* SourceControlPullView.swift */; };
 		B6966A2A2C2F687A00259C2D /* SourceControlFetchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */; };
 		B6966A2E2C3056AD00259C2D /* SourceControlCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A2D2C3056AD00259C2D /* SourceControlCommands.swift */; };
@@ -1270,6 +1277,13 @@
 		B67DBB932CD5FBE2007F4F18 /* GlobPatternListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobPatternListItem.swift; sourceTree = "<group>"; };
 		B68108032C60287F008B27C1 /* StartTaskToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartTaskToolbarButton.swift; sourceTree = "<group>"; };
 		B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarIcon.swift; sourceTree = "<group>"; };
+		B68DE5D72D5A61E5009A43EF /* CENotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CENotification.swift; sourceTree = "<group>"; };
+		B68DE5D92D5A61E5009A43EF /* NotificationBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBannerView.swift; sourceTree = "<group>"; };
+		B68DE5DA2D5A61E5009A43EF /* NotificationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListView.swift; sourceTree = "<group>"; };
+		B68DE5DB2D5A61E5009A43EF /* NotificationToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationToolbarItem.swift; sourceTree = "<group>"; };
+		B68DE5DD2D5A61E5009A43EF /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		B68DE5E42D5A7988009A43EF /* NotificationOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationOverlayView.swift; sourceTree = "<group>"; };
+		B68DE5E62D5A7D62009A43EF /* NotificationBannerEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBannerEnvironment.swift; sourceTree = "<group>"; };
 		B6966A272C2F683300259C2D /* SourceControlPullView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlPullView.swift; sourceTree = "<group>"; };
 		B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlFetchView.swift; sourceTree = "<group>"; };
 		B6966A2D2C3056AD00259C2D /* SourceControlCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlCommands.swift; sourceTree = "<group>"; };
@@ -1761,6 +1775,7 @@
 				58A5DF9D29339F6400D1BD5D /* Keybindings */,
 				30B087FB2C0D53080063A882 /* LSP */,
 				287776EA27E350A100D46668 /* NavigatorArea */,
+				B68DE5DE2D5A61E5009A43EF /* Notifications */,
 				5878DAA0291AE76700DD95A3 /* OpenQuickly */,
 				58798210292D92370085B254 /* Search */,
 				B67B270029D7868000FB9301 /* Settings */,
@@ -2130,6 +2145,7 @@
 				587B9D8F29300ABD00AC7927 /* ToolbarBranchPicker.swift */,
 				B6DCDAC52CCDE2B90099FBF9 /* InstantPopoverModifier.swift */,
 				2897E1C62979A29200741E32 /* TrackableScrollView.swift */,
+				B696A7E52CFE20C40048CFE1 /* FeatureIcon.swift */,
 				B60718302B15A9A3009CDAB4 /* CEOutlineGroup.swift */,
 			);
 			path = Views;
@@ -3547,6 +3563,36 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		B68DE5D82D5A61E5009A43EF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B68DE5D72D5A61E5009A43EF /* CENotification.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B68DE5DC2D5A61E5009A43EF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B68DE5E62D5A7D62009A43EF /* NotificationBannerEnvironment.swift */,
+				B68DE5D92D5A61E5009A43EF /* NotificationBannerView.swift */,
+				B68DE5DA2D5A61E5009A43EF /* NotificationListView.swift */,
+				B68DE5DB2D5A61E5009A43EF /* NotificationToolbarItem.swift */,
+				B68DE5E42D5A7988009A43EF /* NotificationOverlayView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B68DE5DE2D5A61E5009A43EF /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				B68DE5D82D5A61E5009A43EF /* Models */,
+				B68DE5DC2D5A61E5009A43EF /* Views */,
+				B68DE5DD2D5A61E5009A43EF /* NotificationManager.swift */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 		B6966A262C2F673A00259C2D /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -3643,7 +3689,6 @@
 		B6CF632A29E5436C0085880A /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B696A7E52CFE20C40048CFE1 /* FeatureIcon.swift */,
 				B67DBB932CD5FBE2007F4F18 /* GlobPatternListItem.swift */,
 				B67DBB912CD5EAA4007F4F18 /* GlobPatternList.swift */,
 				B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */,
@@ -4065,6 +4110,11 @@
 				B6BF41422C2C672A003AB4B3 /* SourceControlPushView.swift in Sources */,
 				587B9E8429301D8F00AC7927 /* GitHubUser.swift in Sources */,
 				04BA7C1C2AE2D84100584E1C /* GitClient+Commit.swift in Sources */,
+				B68DE5DF2D5A61E5009A43EF /* CENotification.swift in Sources */,
+				B68DE5E02D5A61E5009A43EF /* NotificationBannerView.swift in Sources */,
+				B68DE5E12D5A61E5009A43EF /* NotificationListView.swift in Sources */,
+				B68DE5E22D5A61E5009A43EF /* NotificationToolbarItem.swift in Sources */,
+				B68DE5E32D5A61E5009A43EF /* NotificationManager.swift in Sources */,
 				B65B10EC2B073913002852CF /* CEContentUnavailableView.swift in Sources */,
 				5B698A0A2B262FA000DE9392 /* SearchSettingsView.swift in Sources */,
 				B65B10FB2B08B054002852CF /* Divided.swift in Sources */,
@@ -4183,6 +4233,7 @@
 				B6B2D7A12CE8797B00379967 /* GitConfigExtensions.swift in Sources */,
 				587B9E7329301D8F00AC7927 /* GitRouter.swift in Sources */,
 				6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */,
+				B68DE5E52D5A7988009A43EF /* NotificationOverlayView.swift in Sources */,
 				61A53A812B4449F00093BF8A /* WorkspaceDocument+Index.swift in Sources */,
 				66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */,
 				30CB648D2C12680F00CC8A9E /* LSPService+Events.swift in Sources */,
@@ -4384,6 +4435,7 @@
 				6C578D8729CD345900DC73B2 /* ExtensionSceneView.swift in Sources */,
 				617DB3D02C25AFAE00B58BFE /* TaskNotificationHandler.swift in Sources */,
 				77EF6C052C57DE4B00984B69 /* URL+ResouceValues.swift in Sources */,
+				B68DE5E72D5A7D62009A43EF /* NotificationBannerEnvironment.swift in Sources */,
 				B640A9A129E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift in Sources */,
 				587B9E7929301D8F00AC7927 /* GitHubIssueRouter.swift in Sources */,
 				B67700F92D2A2662004FD61F /* WorkspacePanelView.swift in Sources */,

@@ -64,11 +64,7 @@ struct AccountsSettingsSigninView: View {
                     },
                     header: {
                         VStack(alignment: .center, spacing: 10) {
-                            Image(provider.iconName)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                .frame(width: 52, height: 52)
+                            FeatureIcon(image: Image(provider.iconName), size: 52)
                                 .padding(.top, 5)
                             Text("Sign in to \(provider.name)")
                                 .multilineTextAlignment(.center)
@@ -81,6 +77,7 @@ struct AccountsSettingsSigninView: View {
                                 Text("\(provider.name) personal access tokens must have these scopes set:")
                                     .font(.system(size: 10.5))
                                     .foregroundColor(.secondary)
+                                    .multilineTextAlignment(.leading)
                                 HStack(alignment: .center) {
                                     Spacer()
                                     VStack(alignment: .leading) {
