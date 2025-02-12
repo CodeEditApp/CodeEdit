@@ -1,5 +1,5 @@
 //
-//  ConcreteSemanticTokenStorage.swift
+//  SemanticTokenStorage.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 12/26/24.
@@ -16,7 +16,7 @@ import CodeEditSourceEditor
 /// tokens and their decoded counterparts. It supports applying delta updates from the language server.
 ///
 /// See ``SemanticTokenHighlightProvider`` for it's connection to the editor view.
-final class LSPSemanticTokenStorage: SemanticTokenStorage {
+final class SemanticTokenStorage: GenericSemanticTokenStorage {
     /// Represents compressed semantic token data received from a language server.
     struct CurrentState {
         let resultId: String?
@@ -46,11 +46,14 @@ final class LSPSemanticTokenStorage: SemanticTokenStorage {
         }
         var tokens: [SemanticToken] = []
 
-//        var idx = findLowerBound(of: range.start, data: state.tokens[...])
-//        while idx < state.tokens.count && state.tokens[idx].startPosition < range.end {
-//            tokens.append(state.tokens[idx])
-//            idx += 1
-//        }
+        guard var idx = findLowerBound(in: range, data: state.tokens[...]) else {
+            return []
+        }
+
+        while idx < state.tokens.count && state.tokens[idx].startPosition < range.end {
+            tokens.append(state.tokens[idx])
+            idx += 1
+        }
 
         return tokens
     }
@@ -134,26 +137,33 @@ final class LSPSemanticTokenStorage: SemanticTokenStorage {
 
     // MARK: - Binary Search
 
-    /// Perform a binary search to find the given position
-    /// - Complexity: O(log n)
+    /// Finds the lowest index of a `SemanticToken` that is entirely within the specified range.
+    /// - Complexity: Runs an **O(log n)** binary search on the data array.
+    /// - Parameters:
+    ///   - range: The range to search in, *not* inclusive.
+    ///   - data: The tokens to search. Takes an array slice to avoid unnecessary copying. This must be ordered by
+    ///           `startPosition`.
+    /// - Returns: The index in the data array of the lowest data element that lies within the given range, or `nil`
+    ///            if none are found.
     func findLowerBound(in range: LSPRange, data: ArraySlice<SemanticToken>) -> Int? {
-        // TODO: This needs to find the closest value in a range, there's a good chance there's no result for a
-        // specific indice
-//        var lower = 0
-//        var upper = data.count
-//        var idx = 0
-//        while lower < upper {
-//            idx = lower + upper / 2
-//            if data[idx].startPosition < position {
-//                lower = idx + 1
-//            } else if data[idx].startPosition > position {
-//                upper = idx
-//            } else {
-//                return idx
-//            }
-//        }
-//
-//        return (data[idx].startPosition..<data[idx].endPosition).contains(position) ? idx : nil
+        var low = 0
+        var high = data.count
+
+        // Find the first token with startPosition >= range.start.
+        while low < high {
+            let mid = low + (high - low) / 2
+            if data[mid].startPosition < range.start {
+                low = mid + 1
+            } else {
+                high = mid
+            }
+        }
+
+        // Return the item at `low` if it's valid.
+        if low < data.count && data[low].startPosition >= range.start && data[low].endPosition < range.end {
+            return low
+        }
+
         return nil
     }
 }
