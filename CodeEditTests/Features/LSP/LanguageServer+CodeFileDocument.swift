@@ -1,5 +1,5 @@
 //
-//  LanguageServer+DocumentTests.swift
+//  LanguageServer+CodeFileDocument.swift
 //  CodeEditTests
 //
 //  Created by Khan Winter on 9/9/24.
@@ -13,9 +13,11 @@ import LanguageServerProtocol
 
 @testable import CodeEdit
 
-final class LanguageServerDocumentTests: XCTestCase {
+final class LanguageServerCodeFileDocumentTests: XCTestCase {
     // Test opening documents in CodeEdit triggers creating a language server,
     // further opened documents don't create new servers
+
+    typealias LanguageServerType = LanguageServer<CodeFileDocument>
 
     var tempTestDir: URL!
 
@@ -44,7 +46,7 @@ final class LanguageServerDocumentTests: XCTestCase {
         }
     }
 
-    func makeTestServer() async throws -> (connection: BufferingServerConnection, server: LanguageServer) {
+    func makeTestServer() async throws -> (connection: BufferingServerConnection, server: LanguageServerType) {
         let bufferingConnection = BufferingServerConnection()
         var capabilities = ServerCapabilities()
         capabilities.textDocumentSync = .optionA(
@@ -56,12 +58,12 @@ final class LanguageServerDocumentTests: XCTestCase {
                 save: nil
             )
         )
-        let server = LanguageServer(
+        let server = LanguageServerType(
             languageId: .swift,
             binary: .init(execPath: "", args: [], env: nil),
             lspInstance: InitializingServer(
                 server: bufferingConnection,
-                initializeParamsProvider: LanguageServer.getInitParams(workspacePath: tempTestDir.path())
+                initializeParamsProvider: LanguageServerType.getInitParams(workspacePath: tempTestDir.path())
             ),
             serverCapabilities: capabilities,
             rootPath: tempTestDir
@@ -81,7 +83,7 @@ final class LanguageServerDocumentTests: XCTestCase {
     }
 
     func openCodeFile(
-        for server: LanguageServer,
+        for server: LanguageServerType,
         connection: BufferingServerConnection,
         file: CEWorkspaceFile,
         syncOption: TwoTypeOption<TextDocumentSyncOptions, TextDocumentSyncKind>?
@@ -138,7 +140,7 @@ final class LanguageServerDocumentTests: XCTestCase {
         CodeEditDocumentController.shared.addDocument(workspace)
 
         // Add a CEWorkspaceFile
-        try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
+        _ = try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
         guard let file = fileManager.childrenOfFile(fileManager.workspaceItem)?.first else {
             XCTFail("No File")
             return
@@ -201,7 +203,7 @@ final class LanguageServerDocumentTests: XCTestCase {
         let (_, fileManager) = try makeTestWorkspace()
 
         // Make our example file
-        try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
+        _ = try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
         guard let file = fileManager.childrenOfFile(fileManager.workspaceItem)?.first else {
             XCTFail("No File")
             return
@@ -261,7 +263,7 @@ final class LanguageServerDocumentTests: XCTestCase {
         let (_, fileManager) = try makeTestWorkspace()
 
         // Make our example file
-        try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
+        _ = try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
         guard let file = fileManager.childrenOfFile(fileManager.workspaceItem)?.first else {
             XCTFail("No File")
             return

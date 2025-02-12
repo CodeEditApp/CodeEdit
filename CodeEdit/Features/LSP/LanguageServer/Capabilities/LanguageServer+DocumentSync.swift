@@ -41,9 +41,12 @@ extension LanguageServer {
     /// - Throws: Throws errors produced by the language server connection.
     func closeDocument(_ uri: String) async throws {
         do {
-            guard resolveOpenCloseSupport() && openFiles.document(for: uri) != nil else { return }
+            guard resolveOpenCloseSupport(), let document = openFiles.document(for: uri) else { return }
             logger.debug("Closing document \(uri, privacy: .private)")
+
             openFiles.removeDocument(for: uri)
+            await clearIsolatedDocument(document)
+
             let params = DidCloseTextDocumentParams(textDocument: TextDocumentIdentifier(uri: uri))
             try await lspInstance.textDocumentDidClose(params)
         } catch {
@@ -125,8 +128,15 @@ extension LanguageServer {
 
     @MainActor
     private func updateIsolatedDocument(_ document: DocumentType) {
-        document.languageServerObjects.textCoordinator = openFiles.contentCoordinator(for: document)
-        document.languageServerObjects.highlightProvider = openFiles.semanticHighlighter(for: document)
+        document.languageServerObjects = LanguageServerDocumentObjects(
+            textCoordinator: openFiles.contentCoordinator(for: document),
+            highlightProvider: openFiles.semanticHighlighter(for: document)
+        )
+    }
+
+    @MainActor
+    private func clearIsolatedDocument(_ document: DocumentType) {
+        document.languageServerObjects = LanguageServerDocumentObjects()
     }
 
     // swiftlint:disable line_length
