@@ -59,14 +59,6 @@ struct FileInspectorView: View {
                         widthOptions
                         wrapLinesToggle
                     }
-                    Section {
-                        Button("Add Test Notification") {
-                            addTestNotification()
-                        }
-                        Button("Add Test Notification After Delay") {
-                            addTestNotificationAfterDelay()
-                        }
-                    }
                 }
             } else {
                 NoSelectionInspectorView()
@@ -89,26 +81,9 @@ struct FileInspectorView: View {
         }
     }
 
-    func addTestNotification () {
-        NotificationManager.shared.post(
-            iconSymbol: "bell.badge.fill",
-            iconColor: .red,
-            title: "New Notification Created",
-            description: "Successfully created new notification",
-            actionButtonTitle: "Action",
-            action: {
-                print("Action taken")
-            }
-        )
-    }
-
-    func addTestNotificationAfterDelay () {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            addTestNotification()
-        }
-    }
-
     @ViewBuilder private var fileNameField: some View {
+        @State var isValid: Bool = true
+
         if let file {
             TextField("Name", text: $fileName)
                 .background(
@@ -136,6 +111,7 @@ struct FileInspectorView: View {
                             }
                         }
                     } else {
+                        isValid = false
                         fileName = file.labelFileName()
                     }
                 }

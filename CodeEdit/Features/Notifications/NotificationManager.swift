@@ -22,6 +22,9 @@ final class NotificationManager: NSObject, ObservableObject {
     @Published private(set) var notifications: [CENotification] = []
 
     private var isAppActive: Bool = true
+    private var hiddenStickyNotifications: [CENotification] = []
+    private var hiddenNonStickyNotifications: [CENotification] = []
+    private var dismissedNotificationIds: Set<UUID> = [] // Track dismissed notifications
 
     /// Number of unread notifications
     var unreadCount: Int {

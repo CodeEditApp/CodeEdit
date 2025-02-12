@@ -17,7 +17,7 @@ struct NotificationOverlayView: View {
 
     var body: some View {
         VStack(spacing: 10) {
-            ForEach(Array([notificationManager.activeNotification].compactMap { $0 }), id: \.id) { notification in
+            ForEach(notificationManager.activeNotifications, id: \.id) { notification in
                 if controlActiveState == .active || controlActiveState == .key {
                     NotificationBannerView(
                         notification: notification,
@@ -41,6 +41,6 @@ struct NotificationOverlayView: View {
             }
         }
         .padding(8)
-        .animation(.easeInOut(duration: 0.2), value: notificationManager.activeNotification?.id)
+        .animation(.easeInOut(duration: 0.2), value: notificationManager.activeNotifications)
     }
 }
