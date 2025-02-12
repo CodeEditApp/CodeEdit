@@ -10,4 +10,4 @@ struct FileInspector: View {
         }
         .listStyle(.inset)
     }
-} 
+}
