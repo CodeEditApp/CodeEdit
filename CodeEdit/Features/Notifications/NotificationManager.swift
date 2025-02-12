@@ -104,7 +104,7 @@ final class NotificationManager: NSObject, ObservableObject {
 
         DispatchQueue.main.async { [weak self] in
             self?.notifications.append(notification)
-            
+
             if self?.isAppActive == true {
                 self?.showTemporaryNotification(notification)
             } else {
@@ -182,7 +182,7 @@ final class NotificationManager: NSObject, ObservableObject {
 
         DispatchQueue.main.async { [weak self] in
             self?.notifications.append(notification)
-            
+
             if self?.isAppActive == true {
                 self?.showTemporaryNotification(notification)
             } else {
@@ -197,13 +197,13 @@ final class NotificationManager: NSObject, ObservableObject {
         content.title = notification.title
         content.body = notification.description
         content.userInfo = ["id": notification.id.uuidString]
-        
+
         let request = UNNotificationRequest(
             identifier: notification.id.uuidString,
             content: content,
             trigger: nil
         )
-        
+
         UNUserNotificationCenter.current().add(request)
     }
 

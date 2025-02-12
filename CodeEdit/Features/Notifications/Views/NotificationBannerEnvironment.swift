@@ -20,7 +20,7 @@ extension EnvironmentValues {
         get { self[IsOverlayKey.self] }
         set { self[IsOverlayKey.self] = newValue }
     }
-    
+
     var isSingleListItem: Bool {
         get { self[IsSingleListItemKey.self] }
         set { self[IsSingleListItemKey.self] = newValue }

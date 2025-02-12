@@ -27,7 +27,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         NSApp.closeWindow(.welcome, .about)
 
         // Add test notification
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
             NotificationManager.shared.post(
                 iconText: "👋",
                 iconTextColor: .white,
@@ -130,19 +130,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                     if line > 0, let document = document as? CodeFileDocument {
                         document.openOptions = CodeFileDocument.OpenOptions(
                             cursorPositions: [CursorPosition(line: line, column: column > 0 ? column : 1)]
-                        )
-                    }
-                    // Add notification when workspace is opened via URL
-                    if let workspaceDoc = document as? WorkspaceDocument {
-                        NotificationManager.shared.post(
-                            iconSymbol: "folder.badge.plus",
-                            title: "Workspace Opened",
-                            description: "Successfully opened workspace: \(workspaceDoc.fileURL?.lastPathComponent ?? "")",
-                            actionButtonTitle: "View Files",
-                            action: {
-                                // Ensure the workspace window is frontmost
-                                workspaceDoc.windowControllers.first?.window?.makeKeyAndOrderFront(nil)
-                            }
                         )
                     }
                 }
