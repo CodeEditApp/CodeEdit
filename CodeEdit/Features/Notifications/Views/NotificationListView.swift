@@ -8,8 +8,21 @@
 import SwiftUI
 
 struct NotificationListView: View {
+    @Environment(\.dismiss)
+    private var dismiss
+
     @ObservedObject private var notificationManager = NotificationManager.shared
+
     @Namespace private var animation
+
+    private var sortedNotifications: [CENotification] {
+        notificationManager.notifications.sorted { first, second in
+            if first.isSticky == second.isSticky {
+                return first.timestamp > second.timestamp
+            }
+            return first.isSticky && !second.isSticky
+        }
+    }
 
     var body: some View {
         ScrollView {
@@ -19,30 +32,48 @@ struct NotificationListView: View {
                         .foregroundColor(.secondary)
                         .padding()
                 } else {
-                    ForEach(notificationManager.notifications) { notification in
+                    ForEach(sortedNotifications) { notification in
                         NotificationBannerView(
                             notification: notification,
                             namespace: animation,
                             onDismiss: {
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    notificationManager.dismissNotification(notification)
+                                if !notification.isSticky && notificationManager.notifications.count == 1 {
+                                    dismiss()
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                            notificationManager.dismissNotification(notification)
+                                        }
+                                    }
+                                } else {
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        notificationManager.dismissNotification(notification)
+                                    }
                                 }
                             },
                             onAction: {
-                                withAnimation(.easeInOut(duration: 0.2)) {
-                                    notification.action()
-                                    notificationManager.dismissNotification(notification)
+                                if !notification.isSticky && notificationManager.notifications.count == 1 {
+                                    dismiss()
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                        notification.action()
+                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                            notificationManager.dismissNotification(notification)
+                                        }
+                                    }
+                                } else {
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        notification.action()
+                                        notificationManager.dismissNotification(notification)
+                                    }
                                 }
                             }
                         )
                         .environment(\.isOverlay, false)
                         .environment(\.isSingleListItem, notificationManager.notifications.count == 1)
-                        .transition(.opacity.combined(with: .move(edge: .trailing)))
+                        .transition(.opacity)
                     }
                 }
             }
-            .padding(notificationManager.notifications.count == 1 ? 0 : 10)
-            .animation(.easeInOut(duration: 0.2), value: notificationManager.notifications)
+            .padding(10)
         }
     }
 }

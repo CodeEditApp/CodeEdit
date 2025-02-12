@@ -16,9 +16,8 @@ struct NotificationToolbarItem: View {
     var body: some View {
         if notificationManager.unreadCount > 0 {
             Button {
-                if notificationManager.hasActiveNotification {
-                    notificationManager.hideActiveNotification()
-                }
+                // Hide all notifications from overlay
+                notificationManager.hideOverlayNotifications()
                 showingPopover.toggle()
             } label: {
                 HStack(spacing: 4) {
@@ -31,6 +30,12 @@ struct NotificationToolbarItem: View {
             }
             .popover(isPresented: $showingPopover, arrowEdge: .bottom) {
                 NotificationListView()
+            }
+            .onChange(of: showingPopover) { isShowing in
+                if !isShowing {
+                    // Restore only sticky notifications when popover closes
+                    notificationManager.restoreOverlayStickies()
+                }
             }
             .transition(.opacity.animation(.none))
         }

@@ -22,13 +22,17 @@ final class NotificationManager: NSObject, ObservableObject {
     /// Collection of all notifications, both read and unread
     @Published private(set) var notifications: [CENotification] = []
 
-    /// Currently displayed notification in the overlay
+    /// Currently displayed notifications in the overlay
     @Published private(set) var activeNotification: CENotification?
+    @Published private(set) var activeNotifications: [CENotification] = []
 
-    private var timer: Timer?
+    private var timers: [UUID: Timer] = [:]
     private let displayDuration: TimeInterval = 5.0
     private var isPaused: Bool = false
     private var isAppActive: Bool = true
+    private var hiddenStickyNotifications: [CENotification] = []
+    private var hiddenNonStickyNotifications: [CENotification] = []
+    private var dismissedNotificationIds: Set<UUID> = [] // Track dismissed notifications
 
     override private init() {
         super.init()
@@ -69,9 +73,9 @@ final class NotificationManager: NSObject, ObservableObject {
         notifications.filter { !$0.isRead }.count
     }
 
-    /// Whether there is currently a notification being displayed in the overlay
+    /// Whether there are currently notifications being displayed in the overlay
     var hasActiveNotification: Bool {
-        activeNotification != nil
+        !activeNotifications.isEmpty
     }
 
     /// Posts a new notification
@@ -209,53 +213,53 @@ final class NotificationManager: NSObject, ObservableObject {
 
     /// Shows a notification in the app's overlay UI
     private func showTemporaryNotification(_ notification: CENotification) {
-        activeNotification = notification
+        activeNotifications.insert(notification, at: 0) // Add to start of array
 
         guard !notification.isSticky else { return }
 
-        startHideTimer()
+        startHideTimer(for: notification)
     }
 
-    /// Starts the timer to automatically hide non-sticky notifications
-    private func startHideTimer() {
-        timer?.invalidate()
-        timer = nil
+    /// Starts the timer to automatically hide a non-sticky notification
+    private func startHideTimer(for notification: CENotification) {
+        timers[notification.id]?.invalidate()
+        timers[notification.id] = nil
 
         guard !isPaused else { return }
 
-        timer = Timer.scheduledTimer(withTimeInterval: displayDuration, repeats: false) { [weak self] _ in
-            self?.hideActiveNotification()
+        timers[notification.id] = Timer.scheduledTimer(
+            withTimeInterval: displayDuration,
+            repeats: false
+        ) { [weak self] _ in
+            self?.hideNotification(notification)
         }
     }
 
-    /// Pauses the auto-hide timer (used when hovering over notification)
+    /// Pauses all auto-hide timers
     func pauseTimer() {
         isPaused = true
-        timer?.invalidate()
-        timer = nil
+        timers.values.forEach { $0.invalidate() }
     }
 
-    /// Resumes the auto-hide timer
+    /// Resumes all auto-hide timers
     func resumeTimer() {
         isPaused = false
-        if activeNotification != nil && !activeNotification!.isSticky {
-            startHideTimer()
-        }
+        activeNotifications
+            .filter { !$0.isSticky }
+            .forEach { startHideTimer(for: $0) }
     }
 
-    /// Hides the currently active notification
-    func hideActiveNotification() {
-        activeNotification = nil
-        timer?.invalidate()
-        timer = nil
+    /// Hides a specific notification
+    private func hideNotification(_ notification: CENotification) {
+        timers[notification.id]?.invalidate()
+        timers[notification.id] = nil
+        activeNotifications.removeAll(where: { $0.id == notification.id })
     }
 
     /// Dismisses a specific notification
-    /// - Parameter notification: The notification to dismiss
     func dismissNotification(_ notification: CENotification) {
-        if activeNotification?.id == notification.id {
-            hideActiveNotification()
-        }
+        hideNotification(notification)
+        dismissedNotificationIds.insert(notification.id) // Track dismissed notification
         notifications.removeAll(where: { $0.id == notification.id })
     }
 
@@ -275,6 +279,23 @@ final class NotificationManager: NSObject, ObservableObject {
             notification.action()
             dismissNotification(notification)
         }
+    }
+
+    /// Hides all notifications from the overlay view
+    func hideOverlayNotifications() {
+        dismissedNotificationIds.removeAll() // Clear dismissed tracking when hiding
+        hiddenStickyNotifications = activeNotifications.filter { $0.isSticky }
+        hiddenNonStickyNotifications = activeNotifications.filter { !$0.isSticky }
+        activeNotifications.removeAll()
+    }
+
+    /// Restores only sticky notifications to the overlay
+    func restoreOverlayStickies() {
+        // Only restore sticky notifications that weren't dismissed
+        let nonDismissedStickies = hiddenStickyNotifications.filter { !dismissedNotificationIds.contains($0.id) }
+        activeNotifications.insert(contentsOf: nonDismissedStickies, at: 0)
+        hiddenStickyNotifications.removeAll()
+        dismissedNotificationIds.removeAll() // Clear tracking after restore
     }
 }
 

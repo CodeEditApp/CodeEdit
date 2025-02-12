@@ -14,6 +14,9 @@ struct NotificationBannerView: View {
     @Environment(\.isSingleListItem)
     private var isSingleListItem
 
+    @Environment(\.colorScheme)
+    private var colorScheme
+
     let notification: CENotification
     let namespace: Namespace.ID
     let onDismiss: () -> Void
@@ -66,36 +69,50 @@ struct NotificationBannerView: View {
                         .foregroundColor(.secondary)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .mask(
+                    LinearGradient(
+                        gradient: Gradient(
+                            colors: [
+                                .black,
+                                .black,
+                                !notification.isSticky && isHovering ? .clear : .black,
+                                !notification.isSticky && isHovering ? .clear : .black
+                            ]
+                        ),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
             }
-            HStack(spacing: 8) {
-                Button(action: onDismiss, label: {
-                    Text("Dismiss")
-                        .frame(maxWidth: .infinity)
-                })
-                .buttonStyle(.secondaryBlur)
-                .controlSize(.small)
-                Button(action: onAction, label: {
-                    Text(notification.actionButtonTitle)
-                        .frame(maxWidth: .infinity)
-                })
-                .buttonStyle(.secondaryBlur)
-                .controlSize(.small)
+            if notification.isSticky {
+                HStack(spacing: 8) {
+                    Button(action: onDismiss, label: {
+                        Text("Dismiss")
+                            .frame(maxWidth: .infinity)
+                    })
+                    .buttonStyle(.secondaryBlur)
+                    .controlSize(.small)
+                    Button(action: onAction, label: {
+                        Text(notification.actionButtonTitle)
+                            .frame(maxWidth: .infinity)
+                    })
+                    .buttonStyle(.secondaryBlur)
+                    .controlSize(.small)
+                }
+                .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }
         .padding(10)
-        .matchedGeometryEffect(id: "content-\(notification.id)", in: namespace)
     }
 
     private var backgroundContainer: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
             .fill(.regularMaterial)
-            .matchedGeometryEffect(id: "background-\(notification.id)", in: namespace)
     }
 
     private var borderOverlay: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
             .stroke(Color(nsColor: .separatorColor), lineWidth: 2)
-            .matchedGeometryEffect(id: "border-\(notification.id)", in: namespace)
     }
 
     private var dragGesture: some Gesture {
@@ -128,19 +145,52 @@ struct NotificationBannerView: View {
 
     var body: some View {
         VStack {
-            if shouldShowBackground {
-                content
-                    .background(backgroundContainer)
-                    .overlay(borderOverlay)
-                    .cornerRadius(cornerRadius)
-                    .shadow(
-                        color: Color(.black.withAlphaComponent(0.2)),
-                        radius: 5,
-                        x: 0,
-                        y: 2
-                    )
-            } else {
-                content
+            content
+                .background(backgroundContainer)
+                .overlay(borderOverlay)
+                .cornerRadius(cornerRadius)
+                .shadow(
+                    color: Color(.black.withAlphaComponent(colorScheme == .dark ? 0.2 : 0.1)),
+                    radius: 5,
+                    x: 0,
+                    y: 2
+                )
+        }
+        .overlay(alignment: .bottomTrailing) {
+            if !notification.isSticky && isHovering {
+                Button(action: onAction, label: {
+                    Text(notification.actionButtonTitle)
+                })
+                .buttonStyle(.secondaryBlur)
+                .controlSize(.small)
+                .padding(10)
+                .transition(.opacity)
+            }
+        }
+        .overlay(alignment: .topLeading) {
+            if !notification.isSticky && isHovering {
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 10))
+                        .foregroundColor(.secondary)
+                        .frame(width: 20, height: 20, alignment: .center)
+                        .background(.regularMaterial)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color(nsColor: .separatorColor), lineWidth: 2)
+                        )
+                        .cornerRadius(10)
+                        .shadow(
+                            color: Color(.black.withAlphaComponent(colorScheme == .dark ? 0.2 : 0.1)),
+                            radius: 5,
+                            x: 0,
+                            y: 2
+                        )
+                }
+                .buttonStyle(.borderless)
+                .padding(.top, -5)
+                .padding(.leading, -5)
+                .transition(.opacity)
             }
         }
         .frame(width: 300)
@@ -148,7 +198,10 @@ struct NotificationBannerView: View {
         .opacity(opacity)
         .simultaneousGesture(dragGesture)
         .onHover { hovering in
-            isHovering = hovering
+            withAnimation(.easeOut(duration: 0.2)) {
+                isHovering = hovering
+            }
+
             if hovering {
                 NotificationManager.shared.pauseTimer()
             } else {

@@ -39,7 +39,10 @@ struct BlurButtonStyle: ButtonStyle {
                 case .dark:
                     ZStack {
                         Color.gray.opacity(0.001)
-                        if !isSecondary {
+                        if isSecondary {
+                            Rectangle()
+                                .fill(.regularMaterial)
+                        } else {
                             Rectangle()
                                 .fill(.regularMaterial)
                                 .blendMode(.plusLighter)
@@ -50,11 +53,9 @@ struct BlurButtonStyle: ButtonStyle {
                 case .light:
                     ZStack {
                         Color.gray.opacity(0.001)
-                        if !isSecondary {
-                            Rectangle()
-                                .fill(.regularMaterial)
-                                .blendMode(.darken)
-                        }
+                        Rectangle()
+                            .fill(.regularMaterial)
+                            .blendMode(.darken)
                         Color.gray.opacity(isSecondary ? 0.05 : 0.15)
                             .blendMode(.plusDarker)
                         Color.gray.opacity(configuration.isPressed ? 0.10 : 0.00)
