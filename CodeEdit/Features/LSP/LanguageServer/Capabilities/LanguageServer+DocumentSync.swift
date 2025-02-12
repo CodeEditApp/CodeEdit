@@ -12,7 +12,7 @@ extension LanguageServer {
     /// Tells the language server we've opened a document and would like to begin working with it.
     /// - Parameter document: The code document to open.
     /// - Throws: Throws errors produced by the language server connection.
-    func openDocument(_ document: CodeFileDocument) async throws {
+    func openDocument(_ document: DocumentType) async throws {
         do {
             guard resolveOpenCloseSupport(), let content = await getIsolatedDocumentContent(document) else {
                 return
@@ -104,7 +104,7 @@ extension LanguageServer {
 
             // Let the semantic token provider know about the update.
             // Note for future: If a related LSP object need notifying about document changes, do it here.
-            try await document.lspHighlightProvider?.documentDidChange()
+            try await document.languageServerObjects.highlightProvider?.documentDidChange()
         } catch {
             logger.warning("closeDocument: Error \(error)")
             throw error
@@ -115,7 +115,7 @@ extension LanguageServer {
 
     /// Helper function for grabbing a document's content from the main actor.
     @MainActor
-    private func getIsolatedDocumentContent(_ document: CodeFileDocument) -> DocumentContent? {
+    private func getIsolatedDocumentContent(_ document: DocumentType) -> DocumentContent? {
         guard let uri = document.languageServerURI,
               let content = document.content?.string else {
             return nil
@@ -124,9 +124,9 @@ extension LanguageServer {
     }
 
     @MainActor
-    private func updateIsolatedDocument(_ document: CodeFileDocument) {
-        document.lspCoordinator = openFiles.contentCoordinator(for: document)
-        document.lspHighlightProvider = openFiles.semanticHighlighter(for: document)
+    private func updateIsolatedDocument(_ document: DocumentType) {
+        document.languageServerObjects.textCoordinator = openFiles.contentCoordinator(for: document)
+        document.languageServerObjects.highlightProvider = openFiles.semanticHighlighter(for: document)
     }
 
     // swiftlint:disable line_length

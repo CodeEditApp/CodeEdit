@@ -112,7 +112,7 @@ final class LSPService: ObservableObject {
     }
 
     /// Holds the active language clients
-    var languageClients: [ClientKey: LanguageServer] = [:]
+    var languageClients: [ClientKey: LanguageServer<CodeFileDocument>] = [:]
     /// Holds the language server configurations for all the installed language servers
     var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
     /// Holds all the event listeners for each active language client
@@ -162,7 +162,7 @@ final class LSPService: ObservableObject {
     }
 
     /// Gets the language client for the specified language
-    func languageClient(for languageId: LanguageIdentifier, workspacePath: String) -> LanguageServer? {
+    func languageClient(for languageId: LanguageIdentifier, workspacePath: String) -> LanguageServer<CodeFileDocument>? {
         return languageClients[ClientKey(languageId, workspacePath)]
     }
 
@@ -174,14 +174,14 @@ final class LSPService: ObservableObject {
     func startServer(
         for languageId: LanguageIdentifier,
         workspacePath: String
-    ) async throws -> LanguageServer {
+    ) async throws -> LanguageServer<CodeFileDocument> {
         guard let serverBinary = languageConfigs[languageId] else {
             logger.error("Couldn't find language sever binary for \(languageId.rawValue)")
             throw LSPError.binaryNotFound
         }
 
         logger.info("Starting \(languageId.rawValue) language server")
-        let server = try await LanguageServer.createServer(
+        let server = try await LanguageServer<CodeFileDocument>.createServer(
             for: languageId,
             with: serverBinary,
             workspacePath: workspacePath
@@ -203,7 +203,7 @@ final class LSPService: ObservableObject {
             return
         }
         Task {
-            let languageServer: LanguageServer
+            let languageServer: LanguageServer<CodeFileDocument>
             do {
                 if let server = self.languageClients[ClientKey(lspLanguage, workspacePath)] {
                     languageServer = server

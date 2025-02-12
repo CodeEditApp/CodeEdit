@@ -63,7 +63,7 @@ struct CodeFileView: View {
 
         self.textViewCoordinators = textViewCoordinators
             + [codeFile.contentCoordinator]
-            + [codeFile.lspCoordinator].compactMap({ $0 })
+        + [codeFile.languageServerObjects.textCoordinator].compactMap({ $0 })
         self.isEditable = isEditable
 
         if let openOptions = codeFile.openOptions {
@@ -162,8 +162,8 @@ struct CodeFileView: View {
         .onChange(of: bracketHighlight) { _ in
             bracketPairHighlight = getBracketPairHighlight()
         }
-        .onReceive(codeFile.$lspHighlightProvider) { provider in
-            updateHighlightProviders(provider)
+        .onReceive(codeFile.$languageServerObjects) { languageServerObjects in
+            updateHighlightProviders(languageServerObjects.highlightProvider)
         }
     }
 

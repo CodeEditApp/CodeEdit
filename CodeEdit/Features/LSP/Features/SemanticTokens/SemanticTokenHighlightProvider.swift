@@ -21,7 +21,10 @@ import CodeEditLanguages
 /// ``SemanticTokenHighlightProvider/applyEdit(textView:range:delta:completion:)`` method. One might expect this class
 /// to respond to that method immediately, but it does not. It instead stores the completion passed in that method until
 /// it can respond to the edit with invalidated indices.
-final class SemanticTokenHighlightProvider<Storage: GenericSemanticTokenStorage>: HighlightProviding {
+final class SemanticTokenHighlightProvider<
+    Storage: GenericSemanticTokenStorage,
+    DocumentType: LanguageServerDocument
+>: HighlightProviding {
     enum HighlightError: Error {
         case lspRangeFailure
     }
@@ -31,7 +34,7 @@ final class SemanticTokenHighlightProvider<Storage: GenericSemanticTokenStorage>
 
     private let tokenMap: SemanticTokenMap
     private let documentURI: String
-    private weak var languageServer: LanguageServer?
+    private weak var languageServer: LanguageServer<DocumentType>?
     private weak var textView: TextView?
 
     private var lastEditCallback: EditCallback?
@@ -42,7 +45,7 @@ final class SemanticTokenHighlightProvider<Storage: GenericSemanticTokenStorage>
         textView?.documentRange ?? .zero
     }
 
-    init(tokenMap: SemanticTokenMap, languageServer: LanguageServer, documentURI: String) {
+    init(tokenMap: SemanticTokenMap, languageServer: LanguageServer<DocumentType>, documentURI: String) {
         self.tokenMap = tokenMap
         self.languageServer = languageServer
         self.documentURI = documentURI
@@ -88,7 +91,7 @@ final class SemanticTokenHighlightProvider<Storage: GenericSemanticTokenStorage>
 
     /// Requests and applies a token delta. Requires a previous response identifier.
     private func requestDeltaTokens(
-        languageServer: LanguageServer,
+        languageServer: LanguageServer<DocumentType>,
         textView: TextView,
         lastResultId: String
     ) async throws {
@@ -108,7 +111,7 @@ final class SemanticTokenHighlightProvider<Storage: GenericSemanticTokenStorage>
 
     /// Requests and applies tokens for an entire document. This does not require a previous response id, and should be
     /// used in place of `requestDeltaTokens` when that's the case.
-    private func requestTokens(languageServer: LanguageServer, textView: TextView) async throws {
+    private func requestTokens(languageServer: LanguageServer<DocumentType>, textView: TextView) async throws {
         guard let response = try await languageServer.requestSemanticTokens(for: documentURI) else {
             return
         }

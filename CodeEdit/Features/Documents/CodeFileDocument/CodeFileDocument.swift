@@ -50,12 +50,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// See ``CodeEditSourceEditor/CombineCoordinator``.
     @Published var contentCoordinator: CombineCoordinator = CombineCoordinator()
 
-    /// Set by ``LanguageServer`` when initialized.
-    @Published var lspCoordinator: LSPContentCoordinator?
-
-    /// Set by ``LanguageServer`` when initialized.
-    @Published var lspHighlightProvider: SemanticTokenHighlightProvider<SemanticTokenStorage>?
-
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
 
@@ -67,6 +61,9 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     /// Document-specific overridden line wrap preference.
     @Published var wrapLines: Bool?
+
+    /// Set up by ``LanguageServer``, conforms this type to ``LanguageServerDocument``.
+    @Published var languageServerObjects: LanguageServerDocumentObjects<CodeFileDocument> = .init()
 
     /// The type of data this file document contains.
     ///
@@ -85,9 +82,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
         return type
     }
-
-    /// A stable string to use when identifying documents with language servers.
-    var languageServerURI: String? { fileURL?.absolutePath }
 
     /// Specify options for opening the file such as the initial cursor positions.
     /// Nulled by ``CodeFileView`` on first load.
@@ -194,6 +188,10 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         NotificationCenter.default.post(name: Self.didCloseNotification, object: fileURL)
     }
 
+    /// Determines the code language of the document.
+    /// Use ``CodeFileDocument/language`` for the default value before using this. That property is used to override
+    /// the file's language.
+    /// - Returns: The detected code language.
     func getLanguage() -> CodeLanguage {
         guard let url = fileURL else {
             return .default
@@ -208,4 +206,11 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     func findWorkspace() -> WorkspaceDocument? {
         fileURL?.findWorkspace()
     }
+}
+
+// MARK: LanguageServerDocument
+
+extension CodeFileDocument: LanguageServerDocument {
+    /// A stable string to use when identifying documents with language servers.
+    var languageServerURI: String? { fileURL?.absolutePath }
 }

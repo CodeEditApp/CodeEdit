@@ -11,8 +11,10 @@ import LanguageClient
 import LanguageServerProtocol
 import OSLog
 
-class LanguageServer {
-    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LanguageServer")
+class LanguageServer<DocumentType: LanguageServerDocument> {
+    static var logger: Logger {
+        Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LanguageServer")
+    }
     let logger: Logger
 
     /// Identifies which language the server belongs to
@@ -25,7 +27,7 @@ class LanguageServer {
     /// Tracks documents and their associated objects.
     /// Use this property when adding new objects that need to track file data, or have a state associated with the
     /// language server and a document. For example, the content coordinator.
-    let openFiles: LanguageServerFileMap
+    let openFiles: LanguageServerFileMap<DocumentType>
 
     /// Maps the language server's highlight config to one CodeEdit can read. See ``SemanticTokenMap``.
     let highlightMap: SemanticTokenMap?
