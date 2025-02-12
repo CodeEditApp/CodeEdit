@@ -41,7 +41,7 @@ extension GitClient {
         remoteUrl: URL,
         localPath: URL
     ) -> AsyncThrowingMapSequence<LiveCommandStream, CloneProgress> {
-        let command = "clone \(remoteUrl.absoluteString) \(localPath.relativePath.escapedWhiteSpaces()) --progress"
+        let command = "clone \(remoteUrl.absoluteString) \(localPath.relativePath.escapedDirectory()) --progress"
 
         return self.runLive(command)
             .map { line in

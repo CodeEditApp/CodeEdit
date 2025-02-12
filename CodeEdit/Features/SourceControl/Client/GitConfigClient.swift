@@ -34,7 +34,7 @@ class GitConfigClient {
         if global {
             fullCommand += " --global"
         } else if let projectURL = projectURL {
-            fullCommand = "cd \(projectURL.relativePath.escapedWhiteSpaces()); " + fullCommand
+            fullCommand = "cd \(projectURL.relativePath.escapedDirectory()); " + fullCommand
         }
 
         fullCommand += " \(command)"

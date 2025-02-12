@@ -78,7 +78,7 @@ class GitClient {
     }
 
     private func generateCommand(_ command: String) -> String {
-        "cd \(directoryURL.relativePath.escapedWhiteSpaces());git \(command)"
+        "cd \(directoryURL.relativePath.escapedDirectory());git \(command)"
     }
 
     private func processCommonErrors(_ output: String) throws -> String {
