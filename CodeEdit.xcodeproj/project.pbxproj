@@ -431,6 +431,7 @@
 		6C6BD70129CD172700235D17 /* ExtensionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BD70029CD172700235D17 /* ExtensionsListView.swift */; };
 		6C6BD70429CD17B600235D17 /* ExtensionsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BD70329CD17B600235D17 /* ExtensionsManager.swift */; };
 		6C7256D729A3D7D000C2D3E0 /* SplitViewControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7256D629A3D7D000C2D3E0 /* SplitViewControllerView.swift */; };
+		6C73A6D32D4F1E550012D95C /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6C73A6D22D4F1E550012D95C /* CodeEditSourceEditor */; };
 		6C7D6D462C9092EC00B69EE0 /* BufferingServerConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7D6D452C9092EC00B69EE0 /* BufferingServerConnection.swift */; };
 		6C7F37FE2A3EA6FA00217B83 /* View+focusedValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C7F37FD2A3EA6FA00217B83 /* View+focusedValue.swift */; };
 		6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C81916629B3E80700B75C92 /* ModifierKeysObserver.swift */; };
@@ -451,9 +452,9 @@
 		6C9AE66F2D148DD200FAE8D2 /* URL+FindWorkspace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9AE66E2D148DD200FAE8D2 /* URL+FindWorkspace.swift */; };
 		6C9AE6712D14A9F700FAE8D2 /* LazyServiceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9AE6702D14A9F700FAE8D2 /* LazyServiceWrapper.swift */; };
 		6C9AE6962D1DD71500FAE8D2 /* SemanticTokenHighlightProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9AE6952D1DD71500FAE8D2 /* SemanticTokenHighlightProvider.swift */; };
-		6C9AE6992D1DD84600FAE8D2 /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6C9AE6982D1DD84600FAE8D2 /* CodeEditSourceEditor */; };
 		6C9AE69B2D1DF80300FAE8D2 /* GenericSemanticTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9AE69A2D1DF80300FAE8D2 /* GenericSemanticTokenStorage.swift */; };
 		6C9AE69D2D1DF84300FAE8D2 /* SemanticTokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C9AE69C2D1DF84300FAE8D2 /* SemanticTokenStorage.swift */; };
+		6C9DB9E42D55656300ACD86E /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6C9DB9E32D55656300ACD86E /* CodeEditSourceEditor */; };
 		6CA1AE952B46950000378EAB /* EditorInstance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA1AE942B46950000378EAB /* EditorInstance.swift */; };
 		6CAAF68A29BC9C2300A1F48A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		6CAAF69229BCC71C00A1F48A /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -1385,7 +1386,7 @@
 				6C0824A12C5C0C9700A0751E /* SwiftTerm in Frameworks */,
 				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 				6CB94D032CA1205100E8651C /* AsyncAlgorithms in Frameworks */,
-				6C5246742D1E612700F57F11 /* CodeEditSourceEditor in Frameworks */,
+				6C9DB9E42D55656300ACD86E /* CodeEditSourceEditor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3976,6 +3977,7 @@
 				303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 				6C4E37FA2C73E00700AEE7B5 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
+				6C9DB9E22D55656300ACD86E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -5900,6 +5902,14 @@
 				minimumVersion = 1.2.0;
 			};
 		};
+		6C9DB9E22D55656300ACD86E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
+			};
+		};
 		6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-async-algorithms.git";
@@ -5973,6 +5983,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditKit;
 		};
+		6C73A6D22D4F1E550012D95C /* CodeEditSourceEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditSourceEditor;
+		};
 		6C7B1C752A1D57CE005CBBFC /* SwiftLint */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */;
@@ -5993,8 +6007,9 @@
 			package = 6C85BB422C210EFD00EB5DEF /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = SwiftUIIntrospect;
 		};
-		6C9AE6982D1DD84600FAE8D2 /* CodeEditSourceEditor */ = {
+		6C9DB9E32D55656300ACD86E /* CodeEditSourceEditor */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 6C9DB9E22D55656300ACD86E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */;
 			productName = CodeEditSourceEditor;
 		};
 		6CB4463F2B6DFF3A00539ED0 /* CodeEditSourceEditor */ = {
