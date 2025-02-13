@@ -23,16 +23,40 @@ final class NotificationManager: NSObject, ObservableObject {
     @Published private(set) var notifications: [CENotification] = []
 
     /// Currently displayed notifications in the overlay
-    @Published private(set) var activeNotification: CENotification?
     @Published private(set) var activeNotifications: [CENotification] = []
 
     private var timers: [UUID: Timer] = [:]
     private let displayDuration: TimeInterval = 5.0
     private var isPaused: Bool = false
     private var isAppActive: Bool = true
-    private var hiddenStickyNotifications: [CENotification] = []
-    private var hiddenNonStickyNotifications: [CENotification] = []
-    private var dismissedNotificationIds: Set<UUID> = [] // Track dismissed notifications
+
+    /// Whether notifications were manually shown via toolbar
+    @Published private(set) var isManuallyShown: Bool = false
+
+    /// Set of hidden notification IDs
+    private var hiddenNotificationIds: Set<UUID> = []
+
+    /// Whether any non-sticky notifications are currently hidden
+    private var hasHiddenNotifications: Bool {
+        activeNotifications.contains { notification in
+            !notification.isSticky && !isNotificationVisible(notification)
+        }
+    }
+
+    /// Whether a notification should be visible in the overlay
+    func isNotificationVisible(_ notification: CENotification) -> Bool {
+        if notification.isBeingDismissed {
+            return true // Always show notifications being dismissed
+        }
+        if notification.isSticky {
+            return true // Always show sticky notifications
+        }
+        if isManuallyShown {
+            return true // Show all notifications when manually shown
+        }
+        // Otherwise, show if not hidden and has active timer
+        return !hiddenNotificationIds.contains(notification.id) && timers[notification.id] != nil
+    }
 
     override private init() {
         super.init()
@@ -61,6 +85,16 @@ final class NotificationManager: NSObject, ObservableObject {
     @objc
     private func applicationDidBecomeActive() {
         isAppActive = true
+
+        // Show any pending notifications in the overlay
+        notifications
+            .filter { notification in
+                // Only show notifications that aren't already in the overlay
+                !activeNotifications.contains { $0.id == notification.id }
+            }
+            .forEach { notification in
+                showTemporaryNotification(notification)
+            }
     }
 
     @objc
@@ -103,7 +137,8 @@ final class NotificationManager: NSObject, ObservableObject {
             description: description,
             actionButtonTitle: actionButtonTitle,
             action: action,
-            isSticky: isSticky
+            isSticky: isSticky,
+            isRead: false // Always start as unread
         )
 
         DispatchQueue.main.async { [weak self] in
@@ -213,11 +248,37 @@ final class NotificationManager: NSObject, ObservableObject {
 
     /// Shows a notification in the app's overlay UI
     private func showTemporaryNotification(_ notification: CENotification) {
-        activeNotifications.insert(notification, at: 0) // Add to start of array
+        withAnimation(.easeInOut(duration: 0.3)) {
+            insertNotification(notification)
+            hiddenNotificationIds.remove(notification.id) // Ensure new notification is visible
+            // Only start timer if notifications aren't manually shown
+            if !isManuallyShown && !notification.isSticky {
+                startHideTimer(for: notification)
+            }
+        }
+    }
 
-        guard !notification.isSticky else { return }
-
-        startHideTimer(for: notification)
+    /// Inserts a notification in the correct position (sticky notifications on top)
+    private func insertNotification(_ notification: CENotification) {
+        if notification.isSticky {
+            // Find the first sticky notification (to insert before it)
+            if let firstStickyIndex = activeNotifications.firstIndex(where: { $0.isSticky }) {
+                // Insert at the very start of sticky group
+                activeNotifications.insert(notification, at: firstStickyIndex)
+            } else {
+                // No sticky notifications yet, insert at the start
+                activeNotifications.insert(notification, at: 0)
+            }
+        } else {
+            // Find the first non-sticky notification
+            if let firstNonStickyIndex = activeNotifications.firstIndex(where: { !$0.isSticky }) {
+                // Insert at the start of non-sticky group
+                activeNotifications.insert(notification, at: firstNonStickyIndex)
+            } else {
+                // No non-sticky notifications yet, append at the end
+                activeNotifications.append(notification)
+            }
+        }
     }
 
     /// Starts the timer to automatically hide a non-sticky notification
@@ -231,7 +292,14 @@ final class NotificationManager: NSObject, ObservableObject {
             withTimeInterval: displayDuration,
             repeats: false
         ) { [weak self] _ in
-            self?.hideNotification(notification)
+            guard let self = self else { return }
+            self.timers[notification.id] = nil
+
+            withAnimation(.easeInOut(duration: 0.3)) {
+                // Hide this specific notification
+                self.hiddenNotificationIds.insert(notification.id)
+                self.objectWillChange.send()
+            }
         }
     }
 
@@ -244,23 +312,29 @@ final class NotificationManager: NSObject, ObservableObject {
     /// Resumes all auto-hide timers
     func resumeTimer() {
         isPaused = false
+        // Only restart timers for notifications that are currently visible
         activeNotifications
-            .filter { !$0.isSticky }
+            .filter { !$0.isSticky && isNotificationVisible($0) }
             .forEach { startHideTimer(for: $0) }
-    }
-
-    /// Hides a specific notification
-    private func hideNotification(_ notification: CENotification) {
-        timers[notification.id]?.invalidate()
-        timers[notification.id] = nil
-        activeNotifications.removeAll(where: { $0.id == notification.id })
     }
 
     /// Dismisses a specific notification
     func dismissNotification(_ notification: CENotification) {
-        hideNotification(notification)
-        dismissedNotificationIds.insert(notification.id) // Track dismissed notification
+        timers[notification.id]?.invalidate()
+        timers[notification.id] = nil
+        hiddenNotificationIds.remove(notification.id)
+        
+        if let index = activeNotifications.firstIndex(where: { $0.id == notification.id }) {
+            activeNotifications[index].isBeingDismissed = true
+        }
+        
+        withAnimation(.easeOut(duration: 0.2)) {
+            activeNotifications.removeAll(where: { $0.id == notification.id })
+        }
         notifications.removeAll(where: { $0.id == notification.id })
+        
+        // Mark as read when dismissed
+        markAsRead(notification)
     }
 
     /// Marks a notification as read
@@ -281,21 +355,22 @@ final class NotificationManager: NSObject, ObservableObject {
         }
     }
 
-    /// Hides all notifications from the overlay view
-    func hideOverlayNotifications() {
-        dismissedNotificationIds.removeAll() // Clear dismissed tracking when hiding
-        hiddenStickyNotifications = activeNotifications.filter { $0.isSticky }
-        hiddenNonStickyNotifications = activeNotifications.filter { !$0.isSticky }
-        activeNotifications.removeAll()
-    }
-
-    /// Restores only sticky notifications to the overlay
-    func restoreOverlayStickies() {
-        // Only restore sticky notifications that weren't dismissed
-        let nonDismissedStickies = hiddenStickyNotifications.filter { !dismissedNotificationIds.contains($0.id) }
-        activeNotifications.insert(contentsOf: nonDismissedStickies, at: 0)
-        hiddenStickyNotifications.removeAll()
-        dismissedNotificationIds.removeAll() // Clear tracking after restore
+    /// Toggles visibility of notifications in the overlay
+    func toggleNotificationsVisibility() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            if hasHiddenNotifications || !isManuallyShown {
+                // Show all notifications
+                isManuallyShown = true
+                hiddenNotificationIds.removeAll() // Clear all hidden states
+            } else {
+                // Hide all non-sticky notifications
+                isManuallyShown = false
+                activeNotifications
+                    .filter { !$0.isSticky }
+                    .forEach { hiddenNotificationIds.insert($0.id) }
+            }
+            objectWillChange.send()
+        }
     }
 }
 

@@ -582,11 +582,9 @@
 		B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */; };
 		B68DE5DF2D5A61E5009A43EF /* CENotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5D72D5A61E5009A43EF /* CENotification.swift */; };
 		B68DE5E02D5A61E5009A43EF /* NotificationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5D92D5A61E5009A43EF /* NotificationBannerView.swift */; };
-		B68DE5E12D5A61E5009A43EF /* NotificationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5DA2D5A61E5009A43EF /* NotificationListView.swift */; };
 		B68DE5E22D5A61E5009A43EF /* NotificationToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5DB2D5A61E5009A43EF /* NotificationToolbarItem.swift */; };
 		B68DE5E32D5A61E5009A43EF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5DD2D5A61E5009A43EF /* NotificationManager.swift */; };
 		B68DE5E52D5A7988009A43EF /* NotificationOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5E42D5A7988009A43EF /* NotificationOverlayView.swift */; };
-		B68DE5E72D5A7D62009A43EF /* NotificationBannerEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5E62D5A7D62009A43EF /* NotificationBannerEnvironment.swift */; };
 		B6966A282C2F683300259C2D /* SourceControlPullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A272C2F683300259C2D /* SourceControlPullView.swift */; };
 		B6966A2A2C2F687A00259C2D /* SourceControlFetchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */; };
 		B6966A2E2C3056AD00259C2D /* SourceControlCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A2D2C3056AD00259C2D /* SourceControlCommands.swift */; };
@@ -1279,11 +1277,9 @@
 		B685DE7829CC9CCD002860C8 /* StatusBarIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarIcon.swift; sourceTree = "<group>"; };
 		B68DE5D72D5A61E5009A43EF /* CENotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CENotification.swift; sourceTree = "<group>"; };
 		B68DE5D92D5A61E5009A43EF /* NotificationBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBannerView.swift; sourceTree = "<group>"; };
-		B68DE5DA2D5A61E5009A43EF /* NotificationListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationListView.swift; sourceTree = "<group>"; };
 		B68DE5DB2D5A61E5009A43EF /* NotificationToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationToolbarItem.swift; sourceTree = "<group>"; };
 		B68DE5DD2D5A61E5009A43EF /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		B68DE5E42D5A7988009A43EF /* NotificationOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationOverlayView.swift; sourceTree = "<group>"; };
-		B68DE5E62D5A7D62009A43EF /* NotificationBannerEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBannerEnvironment.swift; sourceTree = "<group>"; };
 		B6966A272C2F683300259C2D /* SourceControlPullView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlPullView.swift; sourceTree = "<group>"; };
 		B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlFetchView.swift; sourceTree = "<group>"; };
 		B6966A2D2C3056AD00259C2D /* SourceControlCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlCommands.swift; sourceTree = "<group>"; };
@@ -3574,9 +3570,7 @@
 		B68DE5DC2D5A61E5009A43EF /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B68DE5E62D5A7D62009A43EF /* NotificationBannerEnvironment.swift */,
 				B68DE5D92D5A61E5009A43EF /* NotificationBannerView.swift */,
-				B68DE5DA2D5A61E5009A43EF /* NotificationListView.swift */,
 				B68DE5DB2D5A61E5009A43EF /* NotificationToolbarItem.swift */,
 				B68DE5E42D5A7988009A43EF /* NotificationOverlayView.swift */,
 			);
@@ -4112,7 +4106,6 @@
 				04BA7C1C2AE2D84100584E1C /* GitClient+Commit.swift in Sources */,
 				B68DE5DF2D5A61E5009A43EF /* CENotification.swift in Sources */,
 				B68DE5E02D5A61E5009A43EF /* NotificationBannerView.swift in Sources */,
-				B68DE5E12D5A61E5009A43EF /* NotificationListView.swift in Sources */,
 				B68DE5E22D5A61E5009A43EF /* NotificationToolbarItem.swift in Sources */,
 				B68DE5E32D5A61E5009A43EF /* NotificationManager.swift in Sources */,
 				B65B10EC2B073913002852CF /* CEContentUnavailableView.swift in Sources */,
@@ -4435,7 +4428,6 @@
 				6C578D8729CD345900DC73B2 /* ExtensionSceneView.swift in Sources */,
 				617DB3D02C25AFAE00B58BFE /* TaskNotificationHandler.swift in Sources */,
 				77EF6C052C57DE4B00984B69 /* URL+ResouceValues.swift in Sources */,
-				B68DE5E72D5A7D62009A43EF /* NotificationBannerEnvironment.swift in Sources */,
 				B640A9A129E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift in Sources */,
 				587B9E7929301D8F00AC7927 /* GitHubIssueRouter.swift in Sources */,
 				B67700F92D2A2662004FD61F /* WorkspacePanelView.swift in Sources */,

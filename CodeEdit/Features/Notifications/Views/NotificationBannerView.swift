@@ -8,17 +8,12 @@
 import SwiftUI
 
 struct NotificationBannerView: View {
-    @Environment(\.isOverlay)
-    private var isOverlay
-
-    @Environment(\.isSingleListItem)
-    private var isSingleListItem
-
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @ObservedObject private var notificationManager = NotificationManager.shared
+
     let notification: CENotification
-    let namespace: Namespace.ID
     let onDismiss: () -> Void
     let onAction: () -> Void
 
@@ -28,15 +23,57 @@ struct NotificationBannerView: View {
 
     private let dismissThreshold: CGFloat = 100
 
-    private var cornerRadius: CGFloat {
-        isOverlay ? 10 : 6
+    let cornerRadius: CGFloat = 10
+
+    private var backgroundContainer: some View {
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .fill(.regularMaterial)
     }
 
-    private var shouldShowBackground: Bool {
-        isOverlay || !isSingleListItem
+    private var borderOverlay: some View {
+        RoundedRectangle(cornerRadius: cornerRadius)
+            .stroke(Color(nsColor: .separatorColor), lineWidth: 2)
     }
 
-    private var content: some View {
+    private var dragGesture: some Gesture {
+        DragGesture(minimumDistance: 2)
+            .onChanged { value in
+                if value.translation.width > 0 {
+                    offset = value.translation.width
+                    opacity = 1 - (offset / dismissThreshold)
+                }
+            }
+            .onEnded { value in
+                let velocity = value.predictedEndLocation.x - value.location.x
+
+                if offset > dismissThreshold || velocity > 100 {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        offset = NSScreen.main?.frame.width ?? 1000
+                        opacity = 0
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        onDismiss()
+                    }
+                } else {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        offset = 0
+                        opacity = 1
+                    }
+                }
+            }
+    }
+
+    private var xOffset: CGFloat {
+        if offset > 0 {
+            return offset
+        }
+        if !notificationManager.isNotificationVisible(notification) && !notification.isBeingDismissed {
+            return 350 // Width of banner + padding
+        }
+        return 0
+    }
+
+    var body: some View {
         VStack(spacing: 10) {
             HStack(alignment: .top, spacing: 10) {
                 switch notification.icon {
@@ -103,59 +140,15 @@ struct NotificationBannerView: View {
             }
         }
         .padding(10)
-    }
-
-    private var backgroundContainer: some View {
-        RoundedRectangle(cornerRadius: cornerRadius)
-            .fill(.regularMaterial)
-    }
-
-    private var borderOverlay: some View {
-        RoundedRectangle(cornerRadius: cornerRadius)
-            .stroke(Color(nsColor: .separatorColor), lineWidth: 2)
-    }
-
-    private var dragGesture: some Gesture {
-        DragGesture(minimumDistance: 2)
-            .onChanged { value in
-                if value.translation.width > 0 {
-                    offset = value.translation.width
-                    opacity = 1 - (offset / dismissThreshold)
-                }
-            }
-            .onEnded { value in
-                let velocity = value.predictedEndLocation.x - value.location.x
-
-                if offset > dismissThreshold || velocity > 100 {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        offset = NSScreen.main?.frame.width ?? 1000
-                        opacity = 0
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        onDismiss()
-                    }
-                } else {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        offset = 0
-                        opacity = 1
-                    }
-                }
-            }
-    }
-
-    var body: some View {
-        VStack {
-            content
-                .background(backgroundContainer)
-                .overlay(borderOverlay)
-                .cornerRadius(cornerRadius)
-                .shadow(
-                    color: Color(.black.withAlphaComponent(colorScheme == .dark ? 0.2 : 0.1)),
-                    radius: 5,
-                    x: 0,
-                    y: 2
-                )
-        }
+        .background(backgroundContainer)
+        .overlay(borderOverlay)
+        .cornerRadius(cornerRadius)
+        .shadow(
+            color: Color(.black.withAlphaComponent(colorScheme == .dark ? 0.2 : 0.1)),
+            radius: 5,
+            x: 0,
+            y: 2
+        )
         .overlay(alignment: .bottomTrailing) {
             if !notification.isSticky && isHovering {
                 Button(action: onAction, label: {
@@ -194,7 +187,7 @@ struct NotificationBannerView: View {
             }
         }
         .frame(width: 300)
-        .offset(x: offset)
+        .offset(x: xOffset)
         .opacity(opacity)
         .simultaneousGesture(dragGesture)
         .onHover { hovering in

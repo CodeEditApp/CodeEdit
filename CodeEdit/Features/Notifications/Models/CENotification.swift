@@ -18,6 +18,7 @@ struct CENotification: Identifiable, Equatable {
     let isSticky: Bool
     var isRead: Bool
     let timestamp: Date
+    var isBeingDismissed: Bool = false
 
     enum IconType {
         case symbol(name: String, color: Color?)
