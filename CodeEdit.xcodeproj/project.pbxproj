@@ -549,7 +549,6 @@
 				6C578D8729CD345900DC73B2 /* ExtensionSceneView.swift in Sources */,
 				617DB3D02C25AFAE00B58BFE /* TaskNotificationHandler.swift in Sources */,
 				77EF6C052C57DE4B00984B69 /* URL+ResouceValues.swift in Sources */,
-				B68DE5E72D5A7D62009A43EF /* NotificationBannerEnvironment.swift in Sources */,
 				B640A9A129E2188F00715F20 /* View+NavigationBarBackButtonVisible.swift in Sources */,
 				587B9E7929301D8F00AC7927 /* GitHubIssueRouter.swift in Sources */,
 				B67700F92D2A2662004FD61F /* WorkspacePanelView.swift in Sources */,

@@ -22,9 +22,34 @@ final class NotificationManager: NSObject, ObservableObject {
     @Published private(set) var notifications: [CENotification] = []
 
     private var isAppActive: Bool = true
-    private var hiddenStickyNotifications: [CENotification] = []
-    private var hiddenNonStickyNotifications: [CENotification] = []
-    private var dismissedNotificationIds: Set<UUID> = [] // Track dismissed notifications
+
+    /// Whether notifications were manually shown via toolbar
+    @Published private(set) var isManuallyShown: Bool = false
+
+    /// Set of hidden notification IDs
+    private var hiddenNotificationIds: Set<UUID> = []
+
+    /// Whether any non-sticky notifications are currently hidden
+    private var hasHiddenNotifications: Bool {
+        activeNotifications.contains { notification in
+            !notification.isSticky && !isNotificationVisible(notification)
+        }
+    }
+
+    /// Whether a notification should be visible in the overlay
+    func isNotificationVisible(_ notification: CENotification) -> Bool {
+        if notification.isBeingDismissed {
+            return true // Always show notifications being dismissed
+        }
+        if notification.isSticky {
+            return true // Always show sticky notifications
+        }
+        if isManuallyShown {
+            return true // Show all notifications when manually shown
+        }
+        // Otherwise, show if not hidden and has active timer
+        return !hiddenNotificationIds.contains(notification.id) && timers[notification.id] != nil
+    }
 
     /// Number of unread notifications
     var unreadCount: Int {

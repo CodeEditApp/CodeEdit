@@ -17,6 +17,8 @@ struct NotificationBannerView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @ObservedObject private var notificationManager = NotificationManager.shared
+
     let notification: CENotification
     let onDismiss: () -> Void
     let onAction: () -> Void
