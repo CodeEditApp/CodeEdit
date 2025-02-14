@@ -107,11 +107,6 @@ final class NotificationManager: NSObject, ObservableObject {
         notifications.filter { !$0.isRead }.count
     }
 
-    /// Whether there are currently notifications being displayed in the overlay
-    var hasActiveNotification: Bool {
-        !activeNotifications.isEmpty
-    }
-
     /// Posts a new notification
     /// - Parameters:
     ///   - iconSymbol: SF Symbol or CodeEditSymbol name for the notification icon
@@ -230,22 +225,6 @@ final class NotificationManager: NSObject, ObservableObject {
         }
     }
 
-    /// Shows a notification in macOS Notification Center when app is in background
-    private func showSystemNotification(_ notification: CENotification) {
-        let content = UNMutableNotificationContent()
-        content.title = notification.title
-        content.body = notification.description
-        content.userInfo = ["id": notification.id.uuidString]
-
-        let request = UNNotificationRequest(
-            identifier: notification.id.uuidString,
-            content: content,
-            trigger: nil
-        )
-
-        UNUserNotificationCenter.current().add(request)
-    }
-
     /// Shows a notification in the app's overlay UI
     private func showTemporaryNotification(_ notification: CENotification) {
         withAnimation(.easeInOut(duration: 0.3)) {
@@ -350,16 +329,6 @@ final class NotificationManager: NSObject, ObservableObject {
         }
     }
 
-    /// Handles response from system notification
-    /// - Parameter id: ID of the notification that was interacted with
-    func handleSystemNotificationResponse(id: String) {
-        if let uuid = UUID(uuidString: id),
-           let notification = notifications.first(where: { $0.id == uuid }) {
-            notification.action()
-            dismissNotification(notification)
-        }
-    }
-
     /// Toggles visibility of notifications in the overlay
     func toggleNotificationsVisibility() {
         withAnimation(.easeInOut(duration: 0.3)) {
@@ -376,31 +345,5 @@ final class NotificationManager: NSObject, ObservableObject {
             }
             objectWillChange.send()
         }
-    }
-}
-
-// MARK: - UNUserNotificationCenterDelegate
-
-extension NotificationManager: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(
-        _ center: UNUserNotificationCenter,
-        didReceive response: UNNotificationResponse,
-        withCompletionHandler completionHandler: @escaping () -> Void
-    ) {
-        if let id = response.notification.request.content.userInfo["id"] as? String {
-            DispatchQueue.main.async {
-                self.handleSystemNotificationResponse(id: id)
-            }
-        }
-        completionHandler()
-    }
-
-    func userNotificationCenter(
-        _ center: UNUserNotificationCenter,
-        willPresent notification: UNNotification,
-        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
-    ) {
-        // Don't show system notifications when app is active
-        completionHandler([])
     }
 }

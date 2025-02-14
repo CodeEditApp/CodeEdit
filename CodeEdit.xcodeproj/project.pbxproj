@@ -558,6 +558,8 @@
 		B65B10FE2B08B07D002852CF /* SourceControlNavigatorChangesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */; };
 		B65B11012B09D5D4002852CF /* GitClient+Pull.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B11002B09D5D4002852CF /* GitClient+Pull.swift */; };
 		B65B11042B09DB1C002852CF /* GitClient+Fetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B65B11032B09DB1C002852CF /* GitClient+Fetch.swift */; };
+		B66460592D600E9500EC1411 /* NotificationManager+Delegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66460572D600E9500EC1411 /* NotificationManager+Delegate.swift */; };
+		B664605A2D600E9500EC1411 /* NotificationManager+System.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66460582D600E9500EC1411 /* NotificationManager+System.swift */; };
 		B664C3B02B965F6C00816B4E /* NavigationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B664C3AF2B965F6C00816B4E /* NavigationSettings.swift */; };
 		B664C3B32B96634F00816B4E /* NavigationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B664C3B22B96634F00816B4E /* NavigationSettingsView.swift */; };
 		B66A4E4529C8E86D004573B4 /* CommandsFixes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */; };
@@ -1253,6 +1255,8 @@
 		B65B10FD2B08B07D002852CF /* SourceControlNavigatorChangesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorChangesList.swift; sourceTree = "<group>"; };
 		B65B11002B09D5D4002852CF /* GitClient+Pull.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Pull.swift"; sourceTree = "<group>"; };
 		B65B11032B09DB1C002852CF /* GitClient+Fetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Fetch.swift"; sourceTree = "<group>"; };
+		B66460572D600E9500EC1411 /* NotificationManager+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationManager+Delegate.swift"; sourceTree = "<group>"; };
+		B66460582D600E9500EC1411 /* NotificationManager+System.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationManager+System.swift"; sourceTree = "<group>"; };
 		B664C3AF2B965F6C00816B4E /* NavigationSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSettings.swift; sourceTree = "<group>"; };
 		B664C3B22B96634F00816B4E /* NavigationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSettingsView.swift; sourceTree = "<group>"; };
 		B66A4E4429C8E86D004573B4 /* CommandsFixes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsFixes.swift; sourceTree = "<group>"; };
@@ -3583,6 +3587,8 @@
 				B68DE5D82D5A61E5009A43EF /* Models */,
 				B68DE5DC2D5A61E5009A43EF /* Views */,
 				B68DE5DD2D5A61E5009A43EF /* NotificationManager.swift */,
+				B66460572D600E9500EC1411 /* NotificationManager+Delegate.swift */,
+				B66460582D600E9500EC1411 /* NotificationManager+System.swift */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
@@ -4525,6 +4531,8 @@
 				B6A43C5D29FC4AF00027E0E0 /* CreateSSHKeyView.swift in Sources */,
 				B6EA200229DB7F81001BF195 /* View+ConstrainHeightToWindow.swift in Sources */,
 				66F370342BEE537B00D3B823 /* NonTextFileView.swift in Sources */,
+				B66460592D600E9500EC1411 /* NotificationManager+Delegate.swift in Sources */,
+				B664605A2D600E9500EC1411 /* NotificationManager+System.swift in Sources */,
 				613899B72B6E702F00A5CAF6 /* String+LengthOfMatchingPrefix.swift in Sources */,
 				6C48D8F42972DB1A00D6D205 /* Env+Window.swift in Sources */,
 				6C5FDF7A29E6160000BC08C0 /* AppSettings.swift in Sources */,
