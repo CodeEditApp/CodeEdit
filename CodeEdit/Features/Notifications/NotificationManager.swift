@@ -323,16 +323,21 @@ final class NotificationManager: NSObject, ObservableObject {
         timers[notification.id]?.invalidate()
         timers[notification.id] = nil
         hiddenNotificationIds.remove(notification.id)
-        
+
         if let index = activeNotifications.firstIndex(where: { $0.id == notification.id }) {
             activeNotifications[index].isBeingDismissed = true
         }
-        
+
         withAnimation(.easeOut(duration: 0.2)) {
             activeNotifications.removeAll(where: { $0.id == notification.id })
+
+            // If this was the last notification and they were manually shown, hide the panel
+            if activeNotifications.isEmpty && isManuallyShown {
+                isManuallyShown = false
+            }
         }
         notifications.removeAll(where: { $0.id == notification.id })
-        
+
         // Mark as read when dismissed
         markAsRead(notification)
     }

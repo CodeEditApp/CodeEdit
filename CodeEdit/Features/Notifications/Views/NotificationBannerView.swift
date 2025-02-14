@@ -7,6 +7,31 @@
 
 import SwiftUI
 
+struct CloseButtonStyle: ButtonStyle {
+    @Environment(\.colorScheme)
+    private var colorScheme
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: 10))
+            .foregroundColor(.secondary)
+            .frame(width: 20, height: 20, alignment: .center)
+            .background(Color.primary.opacity(configuration.isPressed ? colorScheme == .dark ? 0.10 : 0.05 : 0.00))
+            .background(.regularMaterial)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color(nsColor: .separatorColor), lineWidth: 2)
+            )
+            .cornerRadius(10)
+            .shadow(
+                color: Color(.black.withAlphaComponent(colorScheme == .dark ? 0.2 : 0.1)),
+                radius: 5,
+                x: 0,
+                y: 2
+            )
+    }
+}
+
 struct NotificationBannerView: View {
     @Environment(\.colorScheme)
     private var colorScheme
@@ -17,11 +42,7 @@ struct NotificationBannerView: View {
     let onDismiss: () -> Void
     let onAction: () -> Void
 
-    @State private var offset: CGFloat = 0
-    @State private var opacity: CGFloat = 1
     @State private var isHovering = false
-
-    private let dismissThreshold: CGFloat = 100
 
     let cornerRadius: CGFloat = 10
 
@@ -33,44 +54,6 @@ struct NotificationBannerView: View {
     private var borderOverlay: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
             .stroke(Color(nsColor: .separatorColor), lineWidth: 2)
-    }
-
-    private var dragGesture: some Gesture {
-        DragGesture(minimumDistance: 2)
-            .onChanged { value in
-                if value.translation.width > 0 {
-                    offset = value.translation.width
-                    opacity = 1 - (offset / dismissThreshold)
-                }
-            }
-            .onEnded { value in
-                let velocity = value.predictedEndLocation.x - value.location.x
-
-                if offset > dismissThreshold || velocity > 100 {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        offset = NSScreen.main?.frame.width ?? 1000
-                        opacity = 0
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                        onDismiss()
-                    }
-                } else {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        offset = 0
-                        opacity = 1
-                    }
-                }
-            }
-    }
-
-    private var xOffset: CGFloat {
-        if offset > 0 {
-            return offset
-        }
-        if !notificationManager.isNotificationVisible(notification) && !notification.isBeingDismissed {
-            return 350 // Width of banner + padding
-        }
-        return 0
     }
 
     var body: some View {
@@ -164,32 +147,27 @@ struct NotificationBannerView: View {
             if !notification.isSticky && isHovering {
                 Button(action: onDismiss) {
                     Image(systemName: "xmark")
-                        .font(.system(size: 10))
-                        .foregroundColor(.secondary)
-                        .frame(width: 20, height: 20, alignment: .center)
-                        .background(.regularMaterial)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color(nsColor: .separatorColor), lineWidth: 2)
-                        )
-                        .cornerRadius(10)
-                        .shadow(
-                            color: Color(.black.withAlphaComponent(colorScheme == .dark ? 0.2 : 0.1)),
-                            radius: 5,
-                            x: 0,
-                            y: 2
-                        )
                 }
-                .buttonStyle(.borderless)
+                .buttonStyle(CloseButtonStyle())
                 .padding(.top, -5)
                 .padding(.leading, -5)
                 .transition(.opacity)
             }
         }
         .frame(width: 300)
-        .offset(x: xOffset)
-        .opacity(opacity)
-        .simultaneousGesture(dragGesture)
+        .transition(.asymmetric(
+            insertion: .move(edge: .trailing),
+            removal: .modifier(
+                active: DismissTransition(
+                    useOpactityTransition: notification.isBeingDismissed,
+                    isIdentity: false
+                ),
+                identity: DismissTransition(
+                    useOpactityTransition: notification.isBeingDismissed,
+                    isIdentity: true
+                )
+            )
+        ))
         .onHover { hovering in
             withAnimation(.easeOut(duration: 0.2)) {
                 isHovering = hovering
@@ -201,5 +179,16 @@ struct NotificationBannerView: View {
                 NotificationManager.shared.resumeTimer()
             }
         }
+    }
+}
+
+struct DismissTransition: ViewModifier {
+    let useOpactityTransition: Bool
+    let isIdentity: Bool
+
+    func body(content: Content) -> some View {
+        content
+            .opacity(useOpactityTransition && !isIdentity ? 0 : 1)
+            .offset(x: !useOpactityTransition && !isIdentity ? 350 : 0)
     }
 }

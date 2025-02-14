@@ -52,9 +52,6 @@ struct WorkspaceView: View {
                                     focus: $focusedEditor
                                 )
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .overlay(alignment: .topTrailing) {
-                                    NotificationOverlayView()
-                                }
                                 .onChange(of: geo.size.height) { newHeight in
                                     editorsHeight = newHeight
                                 }
@@ -105,6 +102,9 @@ struct WorkspaceView: View {
                             .offset(y: utilityAreaViewModel.isMaximized ? 0 : editorsHeight - statusbarHeight)
                         }
                         .accessibilityElement(children: .contain)
+                    }
+                    .overlay(alignment: .topTrailing) {
+                        NotificationOverlayView()
                     }
                     .onChange(of: focusedEditor) { newValue in
                         /// update active tab group only if the new one is not the same with it.
