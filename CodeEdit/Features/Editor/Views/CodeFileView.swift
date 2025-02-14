@@ -63,7 +63,7 @@ struct CodeFileView: View {
 
         self.textViewCoordinators = textViewCoordinators
             + [codeFile.contentCoordinator]
-        + [codeFile.languageServerObjects.textCoordinator].compactMap({ $0 })
+            + [codeFile.languageServerObjects.textCoordinator].compactMap({ $0 })
         self.isEditable = isEditable
 
         if let openOptions = codeFile.openOptions {
@@ -163,7 +163,7 @@ struct CodeFileView: View {
             bracketPairHighlight = getBracketPairHighlight()
         }
         .onReceive(codeFile.$languageServerObjects) { languageServerObjects in
-            updateHighlightProviders(languageServerObjects.highlightProvider)
+            updateHighlightProviders(lspHighlightProvider: languageServerObjects.highlightProvider)
         }
     }
 
@@ -185,8 +185,10 @@ struct CodeFileView: View {
             return .underline(color: color)
         }
     }
-
-    private func updateHighlightProviders(_ lspHighlightProvider: HighlightProviding? = nil) {
+    
+    /// Updates the highlight providers array.
+    /// - Parameter lspHighlightProvider: The language server provider, if available.
+    private func updateHighlightProviders(lspHighlightProvider: HighlightProviding? = nil) {
         highlightProviders = [lspHighlightProvider].compactMap({ $0 }) + [treeSitterClient]
     }
 }
