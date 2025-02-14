@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -376,6 +376,7 @@
 		6C1A7E942D5D557D001B951C /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6C5246732D1E612700F57F11 /* CodeEditSourceEditor */; };
 		6C1A7E962D5D5762001B951C /* LanguageServerDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A7E952D5D5762001B951C /* LanguageServerDocument.swift */; };
 		6C1A7E9B2D5D5E0E001B951C /* LanguageServer+DocumentObjects.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1A7E9A2D5D5E0E001B951C /* LanguageServer+DocumentObjects.swift */; };
+		6C1A7EA02D5F9BFB001B951C /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6C1A7E9F2D5F9BFB001B951C /* CodeEditSourceEditor */; };
 		6C1CC9982B1E770B0002349B /* AsyncFileIterator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1CC9972B1E770B0002349B /* AsyncFileIterator.swift */; };
 		6C1CC99B2B1E7CBC0002349B /* FindNavigatorIndexBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1CC99A2B1E7CBC0002349B /* FindNavigatorIndexBar.swift */; };
 		6C1F3DA22C18C55800F6DEF6 /* ShellIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C1F3DA12C18C55800F6DEF6 /* ShellIntegrationTests.swift */; };
@@ -1372,6 +1373,7 @@
 				6C85BB402C2105ED00EB5DEF /* CodeEditKit in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
+				6C1A7EA02D5F9BFB001B951C /* CodeEditSourceEditor in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				6CE21E872C650D2C0031B056 /* SwiftTerm in Frameworks */,
 				6CC00A8B2CBEF150004E8134 /* CodeEditSourceEditor in Frameworks */,
@@ -3892,6 +3894,7 @@
 				6CB94D022CA1205100E8651C /* AsyncAlgorithms */,
 				6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */,
 				6C5246732D1E612700F57F11 /* CodeEditSourceEditor */,
+				6C1A7E9F2D5F9BFB001B951C /* CodeEditSourceEditor */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -3989,7 +3992,7 @@
 				303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 				6C4E37FA2C73E00700AEE7B5 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
-				6C9DB9E22D55656300ACD86E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
+				6C1A7E9E2D5F9BFB001B951C /* XCLocalSwiftPackageReference "../CodeEditSourceEditor" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -5795,6 +5798,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		6C1A7E9E2D5F9BFB001B951C /* XCLocalSwiftPackageReference "../CodeEditSourceEditor" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../CodeEditSourceEditor;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -5973,6 +5983,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = OrderedCollections;
+		};
+		6C1A7E9F2D5F9BFB001B951C /* CodeEditSourceEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditSourceEditor;
 		};
 		6C4E37FB2C73E00700AEE7B5 /* SwiftTerm */ = {
 			isa = XCSwiftPackageProductDependency;

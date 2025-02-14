@@ -212,5 +212,12 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
 extension CodeFileDocument: LanguageServerDocument {
     /// A stable string to use when identifying documents with language servers.
-    var languageServerURI: String? { fileURL?.absolutePath }
+    /// Needs to be a valid URI, so always returns with the `file://` prefix to indicate it's a file URI.
+    var languageServerURI: String? {
+        if let path = fileURL?.absolutePath {
+            return "file://" + path
+        } else {
+            return nil
+        }
+    }
 }

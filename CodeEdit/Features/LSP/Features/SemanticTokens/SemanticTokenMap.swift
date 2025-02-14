@@ -72,8 +72,6 @@ struct SemanticTokenMap: Sendable { // swiftlint:enable line_length
             let type = Int(token.type)
             let capture = tokenTypeMap.indices.contains(type) ? tokenTypeMap[type] : nil
 
-//            print(token.line, token.char, token.length, range, capture, modifiers.values)
-
             return HighlightRange(
                 range: range,
                 capture: capture,

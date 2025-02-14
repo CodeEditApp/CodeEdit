@@ -99,6 +99,8 @@ import CodeEditLanguages
 /// ```
 @MainActor
 final class LSPService: ObservableObject {
+    typealias LanguageServerType = LanguageServer<CodeFileDocument>
+
     let logger: Logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
 
     struct ClientKey: Hashable, Equatable {
@@ -112,7 +114,7 @@ final class LSPService: ObservableObject {
     }
 
     /// Holds the active language clients
-    var languageClients: [ClientKey: LanguageServer<CodeFileDocument>] = [:]
+    var languageClients: [ClientKey: LanguageServerType] = [:]
     /// Holds the language server configurations for all the installed language servers
     var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
     /// Holds all the event listeners for each active language client
@@ -162,7 +164,7 @@ final class LSPService: ObservableObject {
     }
 
     /// Gets the language client for the specified language
-    func languageClient(for languageId: LanguageIdentifier, workspacePath: String) -> LanguageServer<CodeFileDocument>? {
+    func languageClient(for languageId: LanguageIdentifier, workspacePath: String) -> LanguageServerType? {
         return languageClients[ClientKey(languageId, workspacePath)]
     }
 
@@ -174,14 +176,14 @@ final class LSPService: ObservableObject {
     func startServer(
         for languageId: LanguageIdentifier,
         workspacePath: String
-    ) async throws -> LanguageServer<CodeFileDocument> {
+    ) async throws -> LanguageServerType {
         guard let serverBinary = languageConfigs[languageId] else {
             logger.error("Couldn't find language sever binary for \(languageId.rawValue)")
             throw LSPError.binaryNotFound
         }
 
         logger.info("Starting \(languageId.rawValue) language server")
-        let server = try await LanguageServer<CodeFileDocument>.createServer(
+        let server = try await LanguageServerType.createServer(
             for: languageId,
             with: serverBinary,
             workspacePath: workspacePath
@@ -203,7 +205,7 @@ final class LSPService: ObservableObject {
             return
         }
         Task {
-            let languageServer: LanguageServer<CodeFileDocument>
+            let languageServer: LanguageServerType
             do {
                 if let server = self.languageClients[ClientKey(lspLanguage, workspacePath)] {
                     languageServer = server

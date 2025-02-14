@@ -28,7 +28,6 @@ class LSPContentCoordinator<DocumentType: LanguageServerDocument>: TextViewCoord
     }
 
     private var editedRange: LSPRange?
-    private var stream: AsyncStream<SequenceElement>?
     private var sequenceContinuation: AsyncStream<SequenceElement>.Continuation?
     private var task: Task<Void, Never>?
 
@@ -39,16 +38,17 @@ class LSPContentCoordinator<DocumentType: LanguageServerDocument>: TextViewCoord
     init(documentURI: String, languageServer: LanguageServer<DocumentType>) {
         self.documentURI = documentURI
         self.languageServer = languageServer
-        self.stream = AsyncStream { continuation in
-            self.sequenceContinuation = continuation
-        }
 
         setUpUpdatesTask()
     }
 
     func setUpUpdatesTask() {
         task?.cancel()
-        guard let stream else { return }
+        // Create this stream here so it's always set up when the text view is set up, rather than only once on init.
+        let stream = AsyncStream { continuation in
+            self.sequenceContinuation = continuation
+        }
+
         task = Task.detached { [weak self] in
             // Send edit events every 250ms
             for await events in stream.chunked(by: .repeating(every: .milliseconds(250), clock: .continuous)) {

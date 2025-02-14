@@ -11,7 +11,7 @@ import LanguageServerProtocol
 extension LanguageServer {
     func requestSemanticTokens(for documentURI: String) async throws -> SemanticTokensResponse {
         do {
-            logger.log("Requesting all tokens")
+            // No logging, called too often
             let params = SemanticTokensParams(textDocument: TextDocumentIdentifier(uri: documentURI))
             return try await lspInstance.semanticTokensFull(params)
         } catch {
@@ -20,25 +20,26 @@ extension LanguageServer {
         }
     }
 
-    func requestSemanticTokens(
-        for documentURI: String,
-        forRange range: LSPRange
-    ) async throws -> SemanticTokensResponse {
-        do {
-            let params = SemanticTokensRangeParams(textDocument: TextDocumentIdentifier(uri: documentURI), range: range)
-            return try await lspInstance.semanticTokensRange(params)
-        } catch {
-            logger.warning("requestSemanticTokens range: Error \(error)")
-            throw error
-        }
-    }
+    // Unused
+//    func requestSemanticTokens(
+//        for documentURI: String,
+//        forRange range: LSPRange
+//    ) async throws -> SemanticTokensResponse {
+//        do {
+//            let params = SemanticTokensRangeParams(textDocument: TextDocumentIdentifier(uri: documentURI), range: range)
+//            return try await lspInstance.semanticTokensRange(params)
+//        } catch {
+//            logger.warning("requestSemanticTokens range: Error \(error)")
+//            throw error
+//        }
+//    }
 
     func requestSemanticTokens(
         for documentURI: String,
         previousResultId: String
     ) async throws -> SemanticTokensDeltaResponse {
         do {
-            logger.log("Requesting delta tokens")
+            // No logging, called too often
             let params = SemanticTokensDeltaParams(
                 textDocument: TextDocumentIdentifier(uri: documentURI),
                 previousResultId: previousResultId

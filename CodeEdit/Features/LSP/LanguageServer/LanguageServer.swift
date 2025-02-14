@@ -220,7 +220,7 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
                 processId: nil,
                 locale: nil,
                 rootPath: nil,
-                rootUri: workspacePath,
+                rootUri: "file://" + workspacePath, // Make it a URI
                 initializationOptions: [],
                 capabilities: capabilities,
                 trace: nil,

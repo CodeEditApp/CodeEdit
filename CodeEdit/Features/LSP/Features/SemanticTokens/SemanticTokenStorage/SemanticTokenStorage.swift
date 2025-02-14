@@ -59,7 +59,6 @@ final class SemanticTokenStorage: GenericSemanticTokenStorage {
     }
 
     func setData(_ data: borrowing SemanticTokens) {
-        print(data.decode())
         state = CurrentState(resultId: data.resultId, tokenData: data.data, tokens: data.decode())
     }
 

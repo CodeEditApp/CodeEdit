@@ -164,7 +164,9 @@ final class SemanticTokenHighlightProvider<
             return
         }
         let rawTokens = storage.getTokensFor(range: lspRange)
-        let highlights = tokenMap.decode(tokens: rawTokens, using: textView)
+        let highlights = tokenMap
+            .decode(tokens: rawTokens, using: textView)
+            .filter({ $0.capture != nil || !$0.modifiers.isEmpty })
         completion(.success(highlights))
     }
 }

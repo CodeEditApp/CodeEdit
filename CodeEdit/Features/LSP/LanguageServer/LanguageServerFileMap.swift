@@ -54,8 +54,7 @@ class LanguageServerFileMap<DocumentType: LanguageServerDocument> {
     }
 
     func document(for uri: DocumentUri) -> DocumentType? {
-        let url = URL(filePath: uri)
-        return trackedDocuments.object(forKey: url.absolutePath as NSString)
+        return trackedDocuments.object(forKey: uri as NSString)
     }
 
     func removeDocument(for document: DocumentType) {
