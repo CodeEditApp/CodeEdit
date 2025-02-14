@@ -26,7 +26,10 @@ extension LanguageServer {
 //        forRange range: LSPRange
 //    ) async throws -> SemanticTokensResponse {
 //        do {
-//            let params = SemanticTokensRangeParams(textDocument: TextDocumentIdentifier(uri: documentURI), range: range)
+//            let params = SemanticTokensRangeParams(
+//                textDocument: TextDocumentIdentifier(uri: documentURI),
+//                range: range
+//            )
 //            return try await lspInstance.semanticTokensRange(params)
 //        } catch {
 //            logger.warning("requestSemanticTokens range: Error \(error)")

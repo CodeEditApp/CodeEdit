@@ -11,8 +11,9 @@ import LanguageClient
 import LanguageServerProtocol
 import OSLog
 
+/// A client for language servers.
 class LanguageServer<DocumentType: LanguageServerDocument> {
-    static var logger: Logger {
+    static var logger: Logger { // types with associated types cannot have constant static properties
         Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LanguageServer")
     }
     let logger: Logger

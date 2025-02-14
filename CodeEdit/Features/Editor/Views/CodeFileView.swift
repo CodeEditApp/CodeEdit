@@ -186,7 +186,7 @@ struct CodeFileView: View {
             return .underline(color: color)
         }
     }
-    
+
     /// Updates the highlight providers array.
     /// - Parameter lspHighlightProvider: The language server provider, if available.
     private func updateHighlightProviders(lspHighlightProvider: HighlightProviding? = nil) {
