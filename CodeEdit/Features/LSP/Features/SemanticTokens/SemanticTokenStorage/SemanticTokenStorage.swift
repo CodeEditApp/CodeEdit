@@ -9,10 +9,10 @@ import Foundation
 import LanguageServerProtocol
 import CodeEditSourceEditor
 
-/// This class provides an efficient storage mechanism for semantic token data.
+/// This class provides storage for semantic token data.
 ///
-/// The LSP spec requires that clients keep the original compressed data to apply delta edits to. The delta updates may
-/// come as a delta to a single number in the compressed array. This class maintains a current state of compressed
+/// The LSP spec requires that clients keep the original compressed data to apply delta edits. Delta updates may
+/// appear as a delta to a single number in the compressed array. This class maintains the current state of compressed
 /// tokens and their decoded counterparts. It supports applying delta updates from the language server.
 ///
 /// See ``SemanticTokenHighlightProvider`` for it's connection to the editor view.
@@ -34,18 +34,23 @@ final class SemanticTokenStorage: GenericSemanticTokenStorage {
 
     var state: CurrentState?
 
+    /// Create an empty storage object.
     init() {
         state = nil
     }
 
     // MARK: - Storage Conformance
-
+    
+    /// Finds all tokens in the given range.
+    /// - Parameter range: The range to query.
+    /// - Returns: All tokens found in the range.
     func getTokensFor(range: LSPRange) -> [SemanticToken] {
         guard let state = state, !state.tokens.isEmpty else {
             return []
         }
         var tokens: [SemanticToken] = []
 
+        // Perform a binary search
         guard var idx = findLowerBound(in: range, data: state.tokens[...]) else {
             return []
         }
@@ -57,7 +62,9 @@ final class SemanticTokenStorage: GenericSemanticTokenStorage {
 
         return tokens
     }
-
+    
+    /// Clear the current state and set a new one.
+    /// - Parameter data: The semantic tokens to set as the current state.
     func setData(_ data: borrowing SemanticTokens) {
         state = CurrentState(resultId: data.resultId, tokenData: data.data, tokens: data.decode())
     }
@@ -67,10 +74,11 @@ final class SemanticTokenStorage: GenericSemanticTokenStorage {
     /// To calculate invalidated ranges:
     /// - Grabs all semantic tokens that *will* be updated and invalidates their ranges
     /// - Loops over all inserted tokens and invalidates their ranges
-    /// This may result in duplicated ranges. It's up to the caller to de-duplicate if necessary.
+    /// This may result in duplicated ranges. It's up to the caller to de-duplicate if necessary. See
+    /// ``SemanticTokenStorage/invalidatedRanges(startIdx:length:data:)``.
     ///
     /// - Parameter deltas: The deltas to apply.
-    /// - Returns: All ranges invalidated by the applied deltas.
+    /// - Returns: Ranges invalidated by the applied deltas.
     func applyDelta(_ deltas: SemanticTokensDelta) -> [SemanticTokenRange] {
         assert(state != nil, "State should be set before applying any deltas.")
         guard var tokenData = state?.tokenData else { return [] }
@@ -117,7 +125,17 @@ final class SemanticTokenStorage: GenericSemanticTokenStorage {
     }
 
     // MARK: - Invalidated Indices
-
+    
+    /// Calculate what document ranges are invalidated due to changes in the compressed token data.
+    ///
+    /// This overestimates invalidated ranges by assuming all tokens touched by a change are invalid. All this does is
+    /// find what tokens are being updated by a delta and return them.
+    ///
+    /// - Parameters:
+    ///   - startIdx: The start index of the compressed token data an edits start at.
+    ///   - length: The length of any edits.
+    ///   - data: A reference to the compressed token data.
+    /// - Returns: All token ranges included in the range of the edit.
     func invalidatedRanges(startIdx: UInt, length: UInt, data: ArraySlice<UInt32>) -> [SemanticTokenRange] {
         var ranges: [SemanticTokenRange] = []
         var idx = startIdx - (startIdx % 5)

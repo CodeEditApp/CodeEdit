@@ -9,10 +9,10 @@ import Foundation
 import LanguageServerProtocol
 import CodeEditSourceEditor
 
-/// Defines a protocol for an object to provide a storage mechanism for semantic tokens.
+/// Defines a protocol for an object to provide storage for semantic tokens.
 /// 
-/// There is only one concrete type that conforms to this in CE, but this protocol is useful  in testing.
-/// See ``SemanticTokenStorage`` for use.
+/// There is only one concrete type that conforms to this in CE, but this protocol is useful in testing.
+/// See ``SemanticTokenStorage``.
 protocol GenericSemanticTokenStorage: AnyObject {
     var lastResultId: String? { get }
     var hasTokens: Bool { get }

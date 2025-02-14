@@ -163,6 +163,7 @@ struct CodeFileView: View {
             bracketPairHighlight = getBracketPairHighlight()
         }
         .onReceive(codeFile.$languageServerObjects) { languageServerObjects in
+            // This will not be called in single-file views (for now) but is safe to listen to either way
             updateHighlightProviders(lspHighlightProvider: languageServerObjects.highlightProvider)
         }
     }
