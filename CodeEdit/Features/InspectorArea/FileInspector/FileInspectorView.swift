@@ -59,33 +59,6 @@ struct FileInspectorView: View {
                         widthOptions
                         wrapLinesToggle
                     }
-                    Section("Test Notifications") {
-                        Button("Add Test Notification") {
-                            NotificationManager.shared.post(
-                                iconSymbol: "bell.badge.fill",
-                                iconColor: .red,
-                                title: "Test Notification",
-                                description: "This is a test notification",
-                                actionButtonTitle: "Action",
-                                action: {
-                                    print("Test notification action triggered")
-                                }
-                            )
-                        }
-                        Button("Add Sticky Notification") {
-                            NotificationManager.shared.post(
-                                iconSymbol: "pin.fill",
-                                iconColor: .orange,
-                                title: "Sticky Notification",
-                                description: "This notification will stay until dismissed",
-                                actionButtonTitle: "Acknowledge",
-                                action: {
-                                    print("Sticky notification acknowledged")
-                                },
-                                isSticky: true
-                            )
-                        }
-                    }
                 }
             } else {
                 NoSelectionInspectorView()
