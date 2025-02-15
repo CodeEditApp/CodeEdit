@@ -1,3 +1,10 @@
+//
+//  NotificationManager+Delegate.swift
+//  CodeEdit
+//
+//  Created by Austin Condiff on 2/14/24.
+//
+
 import UserNotifications
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
@@ -22,4 +29,4 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         // Don't show system notifications when app is active
         completionHandler([])
     }
-} 
+}

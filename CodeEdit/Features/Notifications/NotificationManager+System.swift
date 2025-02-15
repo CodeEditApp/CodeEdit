@@ -1,4 +1,12 @@
+//
+//  NotificationManager+System.swift
+//  CodeEdit
+//
+//  Created by Austin Condiff on 2/14/24.
+//
+
 import SwiftUI
+import UserNotifications
 
 extension NotificationManager {
     /// Shows a notification in macOS Notification Center when app is in background
@@ -25,4 +33,4 @@ extension NotificationManager {
             dismissNotification(notification)
         }
     }
-} 
+}
