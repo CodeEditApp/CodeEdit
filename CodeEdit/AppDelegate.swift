@@ -26,21 +26,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
         NSApp.closeWindow(.welcome, .about)
 
-        // Add test notification
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-            NotificationManager.shared.post(
-                iconText: "👋",
-                iconTextColor: .white,
-                iconColor: .indigo,
-                title: "Welcome to CodeEdit",
-                description: "This is a test notification to demonstrate the notification system.",
-                actionButtonTitle: "Learn More...",
-                action: {
-                    print("Action button clicked!")
-                }
-            )
-        }
-
         DispatchQueue.main.async {
             var needToHandleOpen = true
 
