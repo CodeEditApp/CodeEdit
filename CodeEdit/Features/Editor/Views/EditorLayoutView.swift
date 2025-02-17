@@ -30,10 +30,11 @@ struct EditorLayoutView: View {
                     .transformEnvironment(\.edgeInsets) { insets in
                         switch isAtEdge {
                         case .all:
-                            insets.top += toolbarHeight
+//                            insets.top += toolbarHeight
                             insets.bottom += StatusBarView.height + 5
                         case .top:
-                            insets.top += toolbarHeight
+//                            insets.top += toolbarHeight
+                            break
                         case .bottom:
                             insets.bottom += StatusBarView.height + 5
                         default:

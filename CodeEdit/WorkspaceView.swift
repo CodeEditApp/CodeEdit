@@ -84,7 +84,7 @@ struct WorkspaceView: View {
                             }
                             .accessibilityHidden(true)
                     }
-                    .edgesIgnoringSafeArea(.top)
+//                    .ignoresSafeArea(edges: .top)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .overlay(alignment: .top) {
                         ZStack(alignment: .top) {
