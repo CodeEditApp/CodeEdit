@@ -16,21 +16,32 @@ struct InspectorAreaView: View {
     @AppSettings(\.general.inspectorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
+    @AppSettings(\.developerSettings.showInternalDevelopmentInspector)
+    var showInternalDevelopmentInspector
+
     init(viewModel: InspectorAreaViewModel) {
         self.viewModel = viewModel
+        updateTabs()
+    }
 
-        viewModel.tabItems = [.file, .gitHistory] +
-            extensionManager
-                .extensions
-                .map { ext in
-                    ext.availableFeatures.compactMap {
-                        if case .sidebarItem(let data) = $0, data.kind == .inspector {
-                            return InspectorTab.uiExtension(endpoint: ext.endpoint, data: data)
-                        }
-                        return nil
+    private func updateTabs() {
+        var tabs: [InspectorTab] = [.file, .gitHistory]
+        
+        if showInternalDevelopmentInspector {
+            tabs.append(.internalDevelopment)
+        }
+        
+        viewModel.tabItems = tabs + extensionManager
+            .extensions
+            .map { ext in
+                ext.availableFeatures.compactMap {
+                    if case .sidebarItem(let data) = $0, data.kind == .inspector {
+                        return InspectorTab.uiExtension(endpoint: ext.endpoint, data: data)
                     }
+                    return nil
                 }
-                .joined()
+            }
+            .joined()
     }
 
     var body: some View {
@@ -43,5 +54,8 @@ struct InspectorAreaView: View {
         .formStyle(.grouped)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("inspector")
+        .onChange(of: showInternalDevelopmentInspector) { _ in
+            updateTabs()
+        }
     }
 }
