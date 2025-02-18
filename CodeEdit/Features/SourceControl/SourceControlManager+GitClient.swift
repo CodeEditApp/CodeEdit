@@ -188,7 +188,10 @@ extension SourceControlManager {
 
     /// Commit files selected by user
     func commit(message: String, details: String? = nil) async throws {
-        try await gitClient.commit(message: message, details: details)
+        guard let repository else { return }
+
+        let message = if let details { "\(message)\n\n\(details)" } else { message }
+        try repository.commit(message: message)
 
         await self.refreshAllChangedFiles()
         await self.refreshNumberOfUnsyncedCommits()
@@ -197,13 +200,15 @@ extension SourceControlManager {
     /// Adds the given URLs to the staged changes.
     /// - Parameter files: The files to stage.
     func add(_ files: [URL]) async throws {
-        try await gitClient.add(files)
+        guard let repository else { return }
+        try repository.add(files: files)
     }
 
     /// Removes the given URLs from the staged changes.
     /// - Parameter files: The URLs to un-stage.
     func reset(_ files: [URL]) async throws {
-        try await gitClient.reset(files)
+        guard let repository else { return }
+        try repository.restore(.staged, files: files)
     }
 
     /// Refresh number of unsynced commits
