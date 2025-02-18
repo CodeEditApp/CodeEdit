@@ -1363,6 +1363,7 @@
 				6CC17B4F2C432AE000834E2C /* CodeEditSourceEditor in Frameworks */,
 				30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */,
 				6C4E37FC2C73E00700AEE7B5 /* SwiftTerm in Frameworks */,
+				0FF8F8882D634CB500C5D113 /* SwiftGitX in Frameworks */,
 				6C6BD6F429CD142C00235D17 /* CollectionConcurrencyKit in Frameworks */,
 				6C85BB442C210EFD00EB5DEF /* SwiftUIIntrospect in Frameworks */,
 				6CB446402B6DFF3A00539ED0 /* CodeEditSourceEditor in Frameworks */,
@@ -3829,6 +3830,7 @@
 				6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */,
 				6C73A6D22D4F1E550012D95C /* CodeEditSourceEditor */,
 				6C9DB9E32D55656300ACD86E /* CodeEditSourceEditor */,
+				0FF8F8872D634CB500C5D113 /* SwiftGitX */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -3927,6 +3929,7 @@
 				6C4E37FA2C73E00700AEE7B5 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
 				6C9DB9E22D55656300ACD86E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
+				0FF8F8862D634CB500C5D113 /* XCRemoteSwiftPackageReference "SwiftGitX" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -5725,6 +5728,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0FF8F8862D634CB500C5D113 /* XCRemoteSwiftPackageReference "SwiftGitX" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ibrahimcetin/SwiftGitX";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.7;
+			};
+		};
 		2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditSymbols";
@@ -5864,6 +5875,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0FF8F8872D634CB500C5D113 /* SwiftGitX */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0FF8F8862D634CB500C5D113 /* XCRemoteSwiftPackageReference "SwiftGitX" */;
+			productName = SwiftGitX;
+		};
 		2816F593280CF50500DD548B /* CodeEditSymbols */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */;

@@ -9,6 +9,7 @@ import SwiftUI
 import CodeEditSymbols
 import CodeEditSourceEditor
 import OSLog
+import SwiftGitX
 
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "AppDelegate")
@@ -23,6 +24,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         enableWindowSizeSaveOnQuit()
         Settings.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
+
+        _ = try? SwiftGitX.initialize()
 
         NSApp.closeWindow(.welcome, .about)
 
@@ -60,7 +63,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-
+        _ = try? SwiftGitX.shutdown()
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
