@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import SwiftGitX
 
 struct CommitDetailsView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
-    @Binding var commit: GitCommit?
+    @Binding var commit: Commit?
 
     @State var commitChanges: [GitChangedFile] = []
 
@@ -19,7 +20,7 @@ struct CommitDetailsView: View {
     func updateCommitChanges() async throws {
         if let commit = commit {
             let changes = await sourceControlManager
-                .getCommitChangedFiles(commitSHA: commit.commitHash)
+                .getCommitChangedFiles(commitSHA: commit.id.hex)
             commitChanges = changes
         }
     }

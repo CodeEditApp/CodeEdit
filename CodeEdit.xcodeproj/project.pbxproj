@@ -22,12 +22,12 @@
 		04BA7C1C2AE2D84100584E1C /* GitClient+Commit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C1B2AE2D84100584E1C /* GitClient+Commit.swift */; };
 		04BA7C1E2AE2D8A000584E1C /* GitClient+Clone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C1D2AE2D8A000584E1C /* GitClient+Clone.swift */; };
 		04BA7C202AE2D92B00584E1C /* GitClient+Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C1F2AE2D92B00584E1C /* GitClient+Status.swift */; };
-		04BA7C222AE2D95E00584E1C /* GitClient+CommitHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C212AE2D95E00584E1C /* GitClient+CommitHistory.swift */; };
 		04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift */; };
 		04BA7C272AE2E9F100584E1C /* GitClient+Push.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */; };
 		04BC1CDE2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */; };
 		04C3255B2801F86400C8DA2D /* ProjectNavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC6D27FE4B4A00E57D53 /* ProjectNavigatorViewController.swift */; };
 		04C3255C2801F86900C8DA2D /* ProjectNavigatorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FEC7127FE4EEF00E57D53 /* ProjectNavigatorMenu.swift */; };
+		0FB8F70E2D650481004AF0B3 /* SwiftGitX in Frameworks */ = {isa = PBXBuildFile; productRef = 0FF8F8872D634CB500C5D113 /* SwiftGitX */; };
 		0FD96BCE2BEF42530025A697 /* CodeEditWindowController+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD96BCD2BEF42530025A697 /* CodeEditWindowController+Toolbar.swift */; };
 		201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169D62837B2E300F92B46 /* SourceControlNavigatorView.swift */; };
 		201169DB2837B34000F92B46 /* GitChangedFileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201169DA2837B34000F92B46 /* GitChangedFileListView.swift */; };
@@ -726,7 +726,6 @@
 		04BA7C1B2AE2D84100584E1C /* GitClient+Commit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Commit.swift"; sourceTree = "<group>"; };
 		04BA7C1D2AE2D8A000584E1C /* GitClient+Clone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Clone.swift"; sourceTree = "<group>"; };
 		04BA7C1F2AE2D92B00584E1C /* GitClient+Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Status.swift"; sourceTree = "<group>"; };
-		04BA7C212AE2D95E00584E1C /* GitClient+CommitHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+CommitHistory.swift"; sourceTree = "<group>"; };
 		04BA7C232AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlNavigatorSyncView.swift; sourceTree = "<group>"; };
 		04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Push.swift"; sourceTree = "<group>"; };
 		04BC1CDD2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorFileTabCloseButton.swift; sourceTree = "<group>"; };
@@ -1352,6 +1351,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0FB8F70E2D650481004AF0B3 /* SwiftGitX in Frameworks */,
 				6C85BB402C2105ED00EB5DEF /* CodeEditKit in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
@@ -1363,7 +1363,6 @@
 				6CC17B4F2C432AE000834E2C /* CodeEditSourceEditor in Frameworks */,
 				30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */,
 				6C4E37FC2C73E00700AEE7B5 /* SwiftTerm in Frameworks */,
-				0FF8F8882D634CB500C5D113 /* SwiftGitX in Frameworks */,
 				6C6BD6F429CD142C00235D17 /* CollectionConcurrencyKit in Frameworks */,
 				6C85BB442C210EFD00EB5DEF /* SwiftUIIntrospect in Frameworks */,
 				6CB446402B6DFF3A00539ED0 /* CodeEditSourceEditor in Frameworks */,
@@ -2323,7 +2322,6 @@
 				04BA7C182AE2D7C600584E1C /* GitClient+Branches.swift */,
 				04BA7C1D2AE2D8A000584E1C /* GitClient+Clone.swift */,
 				04BA7C1B2AE2D84100584E1C /* GitClient+Commit.swift */,
-				04BA7C212AE2D95E00584E1C /* GitClient+CommitHistory.swift */,
 				B65B11032B09DB1C002852CF /* GitClient+Fetch.swift */,
 				B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */,
 				B65B10EE2B07C454002852CF /* GitClient+Remote.swift */,
@@ -4196,7 +4194,6 @@
 				587B9E9829301D8F00AC7927 /* GitCommit.swift in Sources */,
 				6C5228B529A868BD00AC48F6 /* Environment+ContentInsets.swift in Sources */,
 				587B9E9429301D8F00AC7927 /* BitBucketTokenConfiguration.swift in Sources */,
-				04BA7C222AE2D95E00584E1C /* GitClient+CommitHistory.swift in Sources */,
 				581BFB672926431000D251EC /* WelcomeWindowView.swift in Sources */,
 				58A5DFA329339F6400D1BD5D /* CommandManager.swift in Sources */,
 				58798284292ED0FB0085B254 /* TerminalEmulatorView.swift in Sources */,

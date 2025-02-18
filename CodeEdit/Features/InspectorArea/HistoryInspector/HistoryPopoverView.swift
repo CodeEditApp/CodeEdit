@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import SwiftGitX
 
 struct HistoryPopoverView: View {
 
-    private var commit: GitCommit
+    private var commit: Commit
 
-    init(commit: GitCommit) {
+    init(commit: Commit) {
         self.commit = commit
     }
 
@@ -32,7 +33,7 @@ struct HistoryPopoverView: View {
                     .disabled(true)
                 ActionButton("Email \(commit.author)", systemImage: "envelope") {
                     let service = NSSharingService(named: NSSharingService.Name.composeEmail)
-                    service?.recipients = [commit.authorEmail]
+                    service?.recipients = [commit.author.email]
                     service?.perform(withItems: [])
                 }
             }

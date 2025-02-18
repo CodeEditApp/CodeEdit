@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftGitX
 
 final class HistoryInspectorModel: ObservableObject {
     private(set) var sourceControlManager: SourceControlManager?
@@ -17,7 +18,7 @@ final class HistoryInspectorModel: ObservableObject {
     private(set) var fileURL: String?
 
     /// The selected branch from the GitClient
-    @Published var commitHistory: [GitCommit] = []
+    @Published var commitHistory: [Commit] = []
 
     func setWorkspace(sourceControlManager: SourceControlManager?) async {
         self.sourceControlManager = sourceControlManager
@@ -32,19 +33,19 @@ final class HistoryInspectorModel: ObservableObject {
     }
 
     func updateCommitHistory() async {
-        guard let sourceControlManager, let fileURL else {
+        guard let repository = sourceControlManager?.repository, let fileURL else {
             await setCommitHistory([])
             return
         }
 
         do {
-            let commitHistory = try await sourceControlManager
-                .gitClient
-                .getCommitHistory(
-                    maxCount: 40,
-                    fileLocalPath: fileURL,
-                    showMergeCommits: Settings.shared.preferences.sourceControl.git.showMergeCommitsPerFileLog
-                )
+            let commitHistory = try Array(repository.log(sorting: .time).prefix(40))
+//                .gitClient
+//                .getCommitHistory(
+//                    maxCount: 40,
+//                    fileLocalPath: fileURL,
+//                    showMergeCommits: Settings.shared.preferences.sourceControl.git.showMergeCommitsPerFileLog
+//                )
             await setCommitHistory(commitHistory)
         } catch {
             await setCommitHistory([])
@@ -52,7 +53,7 @@ final class HistoryInspectorModel: ObservableObject {
     }
 
     @MainActor
-    private func setCommitHistory(_ history: [GitCommit]) {
+    private func setCommitHistory(_ history: [Commit]) {
         self.commitHistory = history
     }
 }

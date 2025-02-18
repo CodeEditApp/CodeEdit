@@ -5,6 +5,7 @@
 //  Created by Nanashi Li on 2022/03/24.
 //
 import SwiftUI
+import SwiftGitX
 
 struct HistoryInspectorView: View {
     @AppSettings(\.sourceControl.git.showMergeCommitsPerFileLog)
@@ -16,7 +17,7 @@ struct HistoryInspectorView: View {
 
     @ObservedObject private var model: HistoryInspectorModel
 
-    @State var selection: GitCommit?
+    @State var selection: Commit?
 
     /// Initialize with GitClient
     /// - Parameter gitClient: a GitClient
