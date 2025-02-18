@@ -5,16 +5,19 @@
 //  Created by Austin Condiff on 2/14/24.
 //
 
-import SwiftUI
+import Foundation
 import UserNotifications
 
 extension NotificationManager {
-    /// Shows a notification in macOS Notification Center when app is in background
+    /// Shows a system notification when app is in background
     func showSystemNotification(_ notification: CENotification) {
         let content = UNMutableNotificationContent()
         content.title = notification.title
         content.body = notification.description
-        content.userInfo = ["id": notification.id.uuidString]
+
+        if !notification.actionButtonTitle.isEmpty {
+            content.categoryIdentifier = "ACTIONABLE"
+        }
 
         let request = UNNotificationRequest(
             identifier: notification.id.uuidString,
@@ -23,6 +26,13 @@ extension NotificationManager {
         )
 
         UNUserNotificationCenter.current().add(request)
+    }
+
+    /// Removes a system notification
+    func removeSystemNotification(_ notification: CENotification) {
+        UNUserNotificationCenter.current().removeDeliveredNotifications(
+            withIdentifiers: [notification.id.uuidString]
+        )
     }
 
     /// Handles response from system notification

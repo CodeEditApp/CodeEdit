@@ -8,10 +8,12 @@
 import SwiftUI
 
 struct NotificationOverlayView: View {
+    @EnvironmentObject private var workspace: WorkspaceDocument
     @Environment(\.controlActiveState)
     private var controlActiveState
 
     @ObservedObject private var notificationManager = NotificationManager.shared
+    @FocusState private var isFocused: Bool
 
     // ID for the top anchor
     private let topID = "top"
@@ -21,6 +23,7 @@ struct NotificationOverlayView: View {
 
     @State private var hasOverflow: Bool = false
     @State private var contentHeight: CGFloat = 0.0
+    @State private var scrollOffset: CGFloat = 0
 
     private func updateOverflow(contentHeight: CGFloat, containerHeight: CGFloat) {
         if !hasOverflow && contentHeight > containerHeight {
@@ -31,41 +34,56 @@ struct NotificationOverlayView: View {
     }
 
     var notifications: some View {
-        VStack(spacing: 8) {
-            ForEach(
-                notificationManager.activeNotifications.filter {
-                    notificationManager.isNotificationVisible($0)
-                },
-                id: \.id
-            ) { notification in
+        let visibleNotifications = workspace.notificationOverlay.activeNotifications.filter {
+            workspace.notificationOverlay.isNotificationVisible($0)
+        }
+
+        return VStack(spacing: 8) {
+            ForEach(visibleNotifications, id: \.id) { notification in
                 NotificationBannerView(
                     notification: notification,
                     onDismiss: {
-                        notificationManager.dismissNotification(notification)
+                        workspace.notificationOverlay.dismissNotification(notification)
                     },
                     onAction: {
                         notification.action()
-                        notificationManager.dismissNotification(notification)
-                        // Only hide if manually shown
-                        if notificationManager.isManuallyShown {
-                            notificationManager.toggleNotificationsVisibility()
+                        workspace.notificationOverlay.dismissNotification(notification)
+                        if workspace.notificationOverlay.isManuallyShown {
+                            workspace.notificationOverlay.toggleNotificationsVisibility()
                         }
                     }
                 )
             }
         }
         .padding(10)
+        .animation(.easeInOut(duration: 0.3), value: visibleNotifications)
     }
 
     var notificationsWithScrollView: some View {
         GeometryReader { geometry in
             HStack {
-                Spacer() // Push content to trailing edge
+                Spacer()
                 ScrollViewReader { proxy in
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(alignment: .trailing, spacing: 0) {
-                            // Invisible anchor view at the top to scroll back to when closed
-                            Color.clear.frame(height: 0).id(topID)
+                            Color.clear
+                                .frame(height: 0)
+                                .id(topID)
+                                .background(
+                                    GeometryReader {
+                                        Color.clear.preference(
+                                            key: ViewOffsetKey.self,
+                                            value: -$0.frame(in: .named("scroll")).origin.y
+                                        )
+                                    }
+                                )
+                                .onPreferenceChange(ViewOffsetKey.self) {
+                                    if $0 <= 0.0 && !workspace.notificationOverlay.scrolledToTop {
+                                        workspace.notificationOverlay.scrolledToTop = true
+                                    } else if $0 > 0.0 && workspace.notificationOverlay.scrolledToTop {
+                                        workspace.notificationOverlay.scrolledToTop = false
+                                    }
+                                }
                             notifications
                         }
                         .background(
@@ -80,12 +98,16 @@ struct NotificationOverlayView: View {
                     .frame(maxWidth: notificationWidth, alignment: .trailing)
                     .frame(height: min(geometry.size.height, contentHeight))
                     .scrollDisabled(!hasOverflow)
+                    .coordinateSpace(name: "scroll")
+                    .onChange(of: isFocused) { newValue in
+                        workspace.notificationOverlay.handleFocusChange(isFocused: newValue)
+                    }
                     .onChange(of: geometry.size.height) { newValue in
                         updateOverflow(contentHeight: contentHeight, containerHeight: newValue)
                     }
-                    .onChange(of: notificationManager.isManuallyShown) { isShown in
-                        if !isShown {
-                            // Delay scroll animation until after notifications are hidden
+                    .onChange(of: workspace.notificationOverlay.isManuallyShown) { isShown in
+                        if !isShown && !workspace.notificationOverlay.scrolledToTop {
+                            // If scrolled, delay scroll animation until after notifications are hidden
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 withAnimation(.easeOut(duration: 0.3)) {
                                     proxy.scrollTo(topID, anchor: .top)
@@ -94,8 +116,8 @@ struct NotificationOverlayView: View {
                         }
                     }
                     .allowsHitTesting(
-                        notificationManager.activeNotifications
-                            .contains { notificationManager.isNotificationVisible($0) }
+                        workspace.notificationOverlay.activeNotifications
+                            .contains { workspace.notificationOverlay.isNotificationVisible($0) }
                     )
                 }
             }
@@ -107,12 +129,42 @@ struct NotificationOverlayView: View {
             if #available(macOS 14.0, *) {
                 notificationsWithScrollView
                     .scrollClipDisabled(true)
+                    .focusable()
+                    .focusEffectDisabled()
+                    .focused($isFocused)
+                    .onChange(of: workspace.notificationOverlay.isManuallyShown) { isShown in
+                        if isShown {
+                            isFocused = true
+                        }
+                    }
+                    .onChange(of: controlActiveState) { newState in
+                        if newState != .active && newState != .key && workspace.notificationOverlay.isManuallyShown {
+                            // Delay hiding notifications to match animation timing
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                workspace.notificationOverlay.toggleNotificationsVisibility()
+                            }
+                        }
+                    }
             } else {
                 notificationsWithScrollView
             }
         }
         .opacity(controlActiveState == .active || controlActiveState == .key ? 1 : 0)
-        .offset(x: controlActiveState == .active || controlActiveState == .key ? 0 : 350)
+        .offset(
+            x: (controlActiveState == .active || controlActiveState == .key) &&
+                (workspace.notificationOverlay.isManuallyShown || workspace.notificationOverlay.scrolledToTop)
+                ? 0
+                : 350
+        )
+        .animation(.easeInOut(duration: 0.3), value: workspace.notificationOverlay.isManuallyShown)
+        .animation(.easeInOut(duration: 0.3), value: workspace.notificationOverlay.scrolledToTop)
         .animation(.easeInOut(duration: 0.2), value: controlActiveState)
+    }
+}
+
+struct ScrollOffsetPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
     }
 }

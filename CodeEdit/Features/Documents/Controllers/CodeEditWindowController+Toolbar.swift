@@ -179,7 +179,11 @@ extension CodeEditWindowController {
             return toolbarItem
         case .notificationItem:
             let toolbarItem = NSToolbarItem(itemIdentifier: .notificationItem)
-            let view = NSHostingView(rootView: NotificationToolbarItem())
+            guard let workspace = workspace else { return nil }
+            let view = NSHostingView(
+                rootView: NotificationToolbarItem()
+                    .environmentObject(workspace)
+            )
             toolbarItem.view = view
             return toolbarItem
         default:

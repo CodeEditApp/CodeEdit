@@ -36,6 +36,7 @@ struct NotificationBannerView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @EnvironmentObject private var workspace: WorkspaceDocument
     @ObservedObject private var notificationManager = NotificationManager.shared
 
     let notification: CENotification
@@ -174,9 +175,9 @@ struct NotificationBannerView: View {
             }
 
             if hovering {
-                NotificationManager.shared.pauseTimer()
+                workspace.notificationOverlay.pauseTimer()
             } else {
-                NotificationManager.shared.resumeTimer()
+                workspace.notificationOverlay.resumeTimer()
             }
         }
     }

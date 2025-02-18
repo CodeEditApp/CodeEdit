@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct NotificationToolbarItem: View {
+    @EnvironmentObject private var workspace: WorkspaceDocument
     @ObservedObject private var notificationManager = NotificationManager.shared
     @Environment(\.controlActiveState)
     private var controlActiveState
 
     var body: some View {
-        if notificationManager.unreadCount > 0 {
+        let visibleNotifications = workspace.notificationOverlay.activeNotifications.filter {
+            !workspace.notificationOverlay.hiddenNotificationIds.contains($0.id)
+        }
+
+        if notificationManager.unreadCount > 0 || !visibleNotifications.isEmpty {
             Button {
-                notificationManager.toggleNotificationsVisibility()
+                workspace.notificationOverlay.toggleNotificationsVisibility()
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "bell.badge.fill")
