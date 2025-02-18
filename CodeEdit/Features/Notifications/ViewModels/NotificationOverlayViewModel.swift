@@ -28,13 +28,6 @@ final class NotificationOverlayViewModel: ObservableObject {
 
     private var notificationManager = NotificationManager.shared
 
-    /// Whether any non-sticky notifications are currently hidden
-    private var hasHiddenNotifications: Bool {
-        activeNotifications.contains { notification in
-            !notification.isSticky && !isNotificationVisible(notification)
-        }
-    }
-
     @Published var scrolledToTop: Bool = true
 
     /// Whether a notification should be visible in the overlay

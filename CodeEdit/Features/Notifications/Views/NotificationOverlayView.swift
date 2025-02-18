@@ -23,7 +23,6 @@ struct NotificationOverlayView: View {
 
     @State private var hasOverflow: Bool = false
     @State private var contentHeight: CGFloat = 0.0
-    @State private var scrollOffset: CGFloat = 0
 
     private func updateOverflow(contentHeight: CGFloat, containerHeight: CGFloat) {
         if !hasOverflow && contentHeight > containerHeight {
@@ -33,12 +32,12 @@ struct NotificationOverlayView: View {
         }
     }
 
-    var notifications: some View {
+    @ViewBuilder var notifications: some View {
         let visibleNotifications = workspace.notificationOverlay.activeNotifications.filter {
             workspace.notificationOverlay.isNotificationVisible($0)
         }
 
-        return VStack(spacing: 8) {
+        VStack(spacing: 8) {
             ForEach(visibleNotifications, id: \.id) { notification in
                 NotificationBannerView(
                     notification: notification,
@@ -59,7 +58,7 @@ struct NotificationOverlayView: View {
         .animation(.easeInOut(duration: 0.3), value: visibleNotifications)
     }
 
-    var notificationsWithScrollView: some View {
+    @ViewBuilder var notificationsWithScrollView: some View {
         GeometryReader { geometry in
             HStack {
                 Spacer()
@@ -159,12 +158,5 @@ struct NotificationOverlayView: View {
         .animation(.easeInOut(duration: 0.3), value: workspace.notificationOverlay.isManuallyShown)
         .animation(.easeInOut(duration: 0.3), value: workspace.notificationOverlay.scrolledToTop)
         .animation(.easeInOut(duration: 0.2), value: controlActiveState)
-    }
-}
-
-struct ScrollOffsetPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
     }
 }
