@@ -458,7 +458,6 @@
 		6CB9144B29BEC7F100BC47F2 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		6CB94CFE2C9F1C9A00E8651C /* TextView+LSPRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CB94CFD2C9F1C9A00E8651C /* TextView+LSPRange.swift */; };
 		6CB94D032CA1205100E8651C /* AsyncAlgorithms in Frameworks */ = {isa = PBXBuildFile; productRef = 6CB94D022CA1205100E8651C /* AsyncAlgorithms */; };
-		6CBA0D512A1BF524002C6FAA /* SegmentedControlImproved.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBA0D502A1BF524002C6FAA /* SegmentedControlImproved.swift */; };
 		6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */; };
 		6CBE1CFB2B71DAA6003AC32E /* Loopable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBE1CFA2B71DAA6003AC32E /* Loopable.swift */; };
 		6CC00A8B2CBEF150004E8134 /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */; };
@@ -527,6 +526,8 @@
 		B607184C2B17E037009CDAB4 /* SourceControlStashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607184B2B17E037009CDAB4 /* SourceControlStashView.swift */; };
 		B60BE8BD297A167600841125 /* AcknowledgementRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */; };
 		B6152B802ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */; };
+		B616EA882D651ADA00DF9029 /* ScrollOffsetPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616EA872D651ADA00DF9029 /* ScrollOffsetPreferenceKey.swift */; };
+		B616EA892D651ADA00DF9029 /* OverlayButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616EA862D651ADA00DF9029 /* OverlayButtonStyle.swift */; };
 		B61A606129F188AB009B43F9 /* ExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606029F188AB009B43F9 /* ExternalLink.swift */; };
 		B61A606929F4481A009B43F9 /* MonospacedFontPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */; };
 		B61DA9DF29D929E100BF4A43 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */; };
@@ -1154,7 +1155,6 @@
 		6CABB1A029C5593800340467 /* SearchPanelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPanelView.swift; sourceTree = "<group>"; };
 		6CB52DC82AC8DC3E002E75B3 /* CEWorkspaceFileManager+FileManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CEWorkspaceFileManager+FileManagement.swift"; sourceTree = "<group>"; };
 		6CB94CFD2C9F1C9A00E8651C /* TextView+LSPRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextView+LSPRange.swift"; sourceTree = "<group>"; };
-		6CBA0D502A1BF524002C6FAA /* SegmentedControlImproved.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedControlImproved.swift; sourceTree = "<group>"; };
 		6CBD1BC52978DE53006639D5 /* Font+Caption3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Caption3.swift"; sourceTree = "<group>"; };
 		6CBE1CFA2B71DAA6003AC32E /* Loopable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Loopable.swift; sourceTree = "<group>"; };
 		6CC17B502C43311900834E2C /* ProjectNavigatorViewController+NSOutlineViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+NSOutlineViewDataSource.swift"; sourceTree = "<group>"; };
@@ -1220,6 +1220,8 @@
 		B607184B2B17E037009CDAB4 /* SourceControlStashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlStashView.swift; sourceTree = "<group>"; };
 		B60BE8BC297A167600841125 /* AcknowledgementRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcknowledgementRowView.swift; sourceTree = "<group>"; };
 		B6152B7F2ADAE421004C6012 /* CodeEditWindowControllerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditWindowControllerExtensions.swift; sourceTree = "<group>"; };
+		B616EA862D651ADA00DF9029 /* OverlayButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayButtonStyle.swift; sourceTree = "<group>"; };
+		B616EA872D651ADA00DF9029 /* ScrollOffsetPreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollOffsetPreferenceKey.swift; sourceTree = "<group>"; };
 		B61A606029F188AB009B43F9 /* ExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLink.swift; sourceTree = "<group>"; };
 		B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonospacedFontPicker.swift; sourceTree = "<group>"; };
 		B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
@@ -2117,6 +2119,7 @@
 		587B9D7529300ABD00AC7927 /* CodeEditUI */ = {
 			isa = PBXGroup;
 			children = (
+				B616EA8A2D651B0A00DF9029 /* Styles */,
 				587B9D8629300ABD00AC7927 /* Views */,
 			);
 			path = CodeEditUI;
@@ -2132,17 +2135,14 @@
 				B65B10FA2B08B054002852CF /* Divided.swift */,
 				587B9D8B29300ABD00AC7927 /* EffectView.swift */,
 				587B9D9029300ABD00AC7927 /* HelpButton.swift */,
-				B67DB0F82AFDF638002DC647 /* IconButtonStyle.swift */,
-				B67DB0FB2AFDF71F002DC647 /* IconToggleStyle.swift */,
+				B616EA872D651ADA00DF9029 /* ScrollOffsetPreferenceKey.swift */,
 				587B9D8D29300ABD00AC7927 /* SearchPanel.swift */,
 				6CABB1A029C5593800340467 /* SearchPanelView.swift */,
 				61816B822C81DC2C00C71BF7 /* SearchField.swift */,
-				611028C72C8DC7F100DFD845 /* MenuWithButtonStyle.swift */,
 				587B9D8929300ABD00AC7927 /* PanelDivider.swift */,
 				B67DB0EE2AF3E381002DC647 /* PaneTextField.swift */,
 				587B9D8E29300ABD00AC7927 /* PressActionsModifier.swift */,
 				587B9D8829300ABD00AC7927 /* SegmentedControl.swift */,
-				6CBA0D502A1BF524002C6FAA /* SegmentedControlImproved.swift */,
 				587B9D8C29300ABD00AC7927 /* SettingsTextEditor.swift */,
 				587B9D8F29300ABD00AC7927 /* ToolbarBranchPicker.swift */,
 				B6DCDAC52CCDE2B90099FBF9 /* InstantPopoverModifier.swift */,
@@ -3271,6 +3271,17 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		B616EA8A2D651B0A00DF9029 /* Styles */ = {
+			isa = PBXGroup;
+			children = (
+				B67DB0F82AFDF638002DC647 /* IconButtonStyle.swift */,
+				B67DB0FB2AFDF71F002DC647 /* IconToggleStyle.swift */,
+				B616EA862D651ADA00DF9029 /* OverlayButtonStyle.swift */,
+				611028C72C8DC7F100DFD845 /* MenuWithButtonStyle.swift */,
+			);
+			path = Styles;
+			sourceTree = "<group>";
+		};
 		B61DA9DD29D929BF00BF4A43 /* Pages */ = {
 			isa = PBXGroup;
 			children = (
@@ -4297,7 +4308,6 @@
 				611192082B08CCFD00D4459B /* SearchIndexer+Terms.swift in Sources */,
 				B67DBB902CD5EA77007F4F18 /* GlobPattern.swift in Sources */,
 				28B8F884280FFE4600596236 /* NSTableView+Background.swift in Sources */,
-				6CBA0D512A1BF524002C6FAA /* SegmentedControlImproved.swift in Sources */,
 				58F2EB06292FB2B0004A9BDE /* KeybindingsSettings.swift in Sources */,
 				618725A12C29EFCC00987354 /* SchemeDropDownView.swift in Sources */,
 				587B9E8E29301D8F00AC7927 /* BitBucketRepositoryRouter.swift in Sources */,
@@ -4648,6 +4658,8 @@
 				613899BC2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift in Sources */,
 				611192002B08CCD700D4459B /* SearchIndexer+Memory.swift in Sources */,
 				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
+				B616EA882D651ADA00DF9029 /* ScrollOffsetPreferenceKey.swift in Sources */,
+				B616EA892D651ADA00DF9029 /* OverlayButtonStyle.swift in Sources */,
 				6CCEE7F52D2C91F700B2B854 /* UtilityAreaTerminalPicker.swift in Sources */,
 				611191FE2B08CCD200D4459B /* SearchIndexer+File.swift in Sources */,
 				B69D3EE52C5F54B3005CF43A /* TasksPopoverMenuItem.swift in Sources */,

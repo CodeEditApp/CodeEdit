@@ -59,23 +59,10 @@ final class NotificationManager: NSObject, ObservableObject {
             actionButtonTitle: actionButtonTitle,
             action: action,
             isSticky: isSticky,
-            isRead: false // Always start as unread
+            isRead: false
         )
 
-        DispatchQueue.main.async { [weak self] in
-            self?.notifications.append(notification)
-
-            // Always notify workspaces of new notification
-            NotificationCenter.default.post(
-                name: .init("NewNotificationAdded"),
-                object: notification
-            )
-
-            // Additionally show system notification when app is in background
-            if self?.isAppActive != true {
-                self?.showSystemNotification(notification)
-            }
-        }
+        postNotification(notification)
     }
 
     /// Posts a new notification
@@ -103,20 +90,7 @@ final class NotificationManager: NSObject, ObservableObject {
             isSticky: isSticky
         )
 
-        DispatchQueue.main.async { [weak self] in
-            self?.notifications.append(notification)
-
-            // Always notify workspaces of new notification
-            NotificationCenter.default.post(
-                name: .init("NewNotificationAdded"),
-                object: notification
-            )
-
-            // Additionally show system notification when app is in background
-            if self?.isAppActive != true {
-                self?.showSystemNotification(notification)
-            }
-        }
+        postNotification(notification)
     }
 
     /// Posts a new notification
@@ -150,20 +124,7 @@ final class NotificationManager: NSObject, ObservableObject {
             isSticky: isSticky
         )
 
-        DispatchQueue.main.async { [weak self] in
-            self?.notifications.append(notification)
-
-            // Always notify workspaces of new notification
-            NotificationCenter.default.post(
-                name: .init("NewNotificationAdded"),
-                object: notification
-            )
-
-            // Additionally show system notification when app is in background
-            if self?.isAppActive != true {
-                self?.showSystemNotification(notification)
-            }
-        }
+        postNotification(notification)
     }
 
     /// Dismisses a specific notification
@@ -208,13 +169,33 @@ final class NotificationManager: NSObject, ObservableObject {
         )
     }
 
-    @objc private func handleAppDidBecomeActive() {
+    @objc
+    private func handleAppDidBecomeActive() {
         isAppActive = true
         // Remove any system notifications when app becomes active
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
 
-    @objc private func handleAppDidResignActive() {
+    @objc
+    private func handleAppDidResignActive() {
         isAppActive = false
+    }
+
+    /// Posts a notification to workspaces and system
+    private func postNotification(_ notification: CENotification) {
+        DispatchQueue.main.async { [weak self] in
+            self?.notifications.append(notification)
+
+            // Always notify workspaces of new notification
+            NotificationCenter.default.post(
+                name: .init("NewNotificationAdded"),
+                object: notification
+            )
+
+            // Additionally show system notification when app is in background
+            if self?.isAppActive != true {
+                self?.showSystemNotification(notification)
+            }
+        }
     }
 }
