@@ -221,7 +221,6 @@
 		587B9E9529301D8F00AC7927 /* BitBucketUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4E29301D8F00AC7927 /* BitBucketUser.swift */; };
 		587B9E9629301D8F00AC7927 /* BitBucketRepositories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E4F29301D8F00AC7927 /* BitBucketRepositories.swift */; };
 		587B9E9729301D8F00AC7927 /* BitBucketAccount+Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5029301D8F00AC7927 /* BitBucketAccount+Token.swift */; };
-		587B9E9829301D8F00AC7927 /* GitCommit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5329301D8F00AC7927 /* GitCommit.swift */; };
 		587B9E9929301D8F00AC7927 /* GitChangedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5429301D8F00AC7927 /* GitChangedFile.swift */; };
 		587B9E9A29301D8F00AC7927 /* GitStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E5529301D8F00AC7927 /* GitStatus.swift */; };
 		587FB99029C1246400B519DD /* EditorTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587FB98F29C1246400B519DD /* EditorTabView.swift */; };
@@ -926,7 +925,6 @@
 		587B9E4E29301D8F00AC7927 /* BitBucketUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketUser.swift; sourceTree = "<group>"; };
 		587B9E4F29301D8F00AC7927 /* BitBucketRepositories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitBucketRepositories.swift; sourceTree = "<group>"; };
 		587B9E5029301D8F00AC7927 /* BitBucketAccount+Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BitBucketAccount+Token.swift"; sourceTree = "<group>"; };
-		587B9E5329301D8F00AC7927 /* GitCommit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitCommit.swift; sourceTree = "<group>"; };
 		587B9E5429301D8F00AC7927 /* GitChangedFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitChangedFile.swift; sourceTree = "<group>"; };
 		587B9E5529301D8F00AC7927 /* GitStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GitStatus.swift; sourceTree = "<group>"; };
 		587FB98F29C1246400B519DD /* EditorTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorTabView.swift; sourceTree = "<group>"; };
@@ -2340,7 +2338,6 @@
 				04BA7C0A2AE2A2D100584E1C /* GitBranch.swift */,
 				9D36E1BE2B5E7D7500443C41 /* GitBranchesGroup.swift */,
 				587B9E5429301D8F00AC7927 /* GitChangedFile.swift */,
-				587B9E5329301D8F00AC7927 /* GitCommit.swift */,
 				B65B10F12B07D34F002852CF /* GitRemote.swift */,
 				B607181F2B0C6CE7009CDAB4 /* GitStashEntry.swift */,
 				587B9E5529301D8F00AC7927 /* GitStatus.swift */,
@@ -4191,7 +4188,6 @@
 				587B9E8B29301D8F00AC7927 /* GitHubAccount+deleteReference.swift in Sources */,
 				6CD0358A2C3461160091E1F4 /* KeyWindowControllerObserver.swift in Sources */,
 				58798237292E30B90085B254 /* FeedbackView.swift in Sources */,
-				587B9E9829301D8F00AC7927 /* GitCommit.swift in Sources */,
 				6C5228B529A868BD00AC48F6 /* Environment+ContentInsets.swift in Sources */,
 				587B9E9429301D8F00AC7927 /* BitBucketTokenConfiguration.swift in Sources */,
 				581BFB672926431000D251EC /* WelcomeWindowView.swift in Sources */,
