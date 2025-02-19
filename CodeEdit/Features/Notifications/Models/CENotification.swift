@@ -128,15 +128,16 @@ struct CENotification: Identifiable, Equatable {
         isSticky: Bool = false,
         isRead: Bool = false
     ) {
-        self.id = id
-        self.icon = .text(iconText, backgroundColor: iconColor, textColor: iconTextColor)
-        self.title = title
-        self.description = description
-        self.actionButtonTitle = actionButtonTitle
-        self.action = action
-        self.isSticky = isSticky
-        self.isRead = isRead
-        self.timestamp = Date()
+        self.init(
+            id: id,
+            icon: .text(iconText, backgroundColor: iconColor, textColor: iconTextColor),
+            title: title,
+            description: description,
+            actionButtonTitle: actionButtonTitle,
+            action: action,
+            isSticky: isSticky,
+            isRead: isRead
+        )
     }
 
     init(
@@ -149,8 +150,30 @@ struct CENotification: Identifiable, Equatable {
         isSticky: Bool = false,
         isRead: Bool = false
     ) {
+        self.init(
+            id: id,
+            icon: .image(iconImage),
+            title: title,
+            description: description,
+            actionButtonTitle: actionButtonTitle,
+            action: action,
+            isSticky: isSticky,
+            isRead: isRead
+        )
+    }
+
+    private init(
+        id: UUID,
+        icon: IconType,
+        title: String,
+        description: String,
+        actionButtonTitle: String,
+        action: @escaping () -> Void,
+        isSticky: Bool,
+        isRead: Bool
+    ) {
         self.id = id
-        self.icon = .image(iconImage)
+        self.icon = icon
         self.title = title
         self.description = description
         self.actionButtonTitle = actionButtonTitle
