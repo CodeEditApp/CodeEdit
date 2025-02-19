@@ -38,7 +38,7 @@ extension SettingsData {
                 [String: String].self,
                 forKey: .lspBinaries
             ) ?? [:]
-            
+
             self.showInternalDevelopmentInspector = try container.decodeIfPresent(
                 Bool.self,
                 forKey: .showInternalDevelopmentInspector
