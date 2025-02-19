@@ -46,9 +46,11 @@ struct NotificationOverlayView: View {
                     },
                     onAction: {
                         notification.action()
-                        workspace.notificationOverlay.dismissNotification(notification)
                         if workspace.notificationOverlay.isManuallyShown {
                             workspace.notificationOverlay.toggleNotificationsVisibility()
+                            workspace.notificationOverlay.dismissNotification(notification, disableAnimation: true)
+                        } else {
+                            workspace.notificationOverlay.dismissNotification(notification)
                         }
                     }
                 )
