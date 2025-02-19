@@ -56,11 +56,6 @@ final class NotificationManager: NSObject, ObservableObject {
         notifications.filter { !$0.isRead }.count
     }
 
-    /// Whether there are currently notifications being displayed in the overlay
-    var hasActiveNotification: Bool {
-        !notifications.isEmpty
-    }
-
     /// Posts a new notification
     /// - Parameters:
     ///   - iconSymbol: SF Symbol or CodeEditSymbol name for the notification icon
