@@ -198,7 +198,7 @@ struct InternalDevelopmentNotificationsView: View {
             }
         }
     }
-    
+
     private func randomLetter() -> String {
         let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".map { String($0) }
         return letters.randomElement() ?? "A"
