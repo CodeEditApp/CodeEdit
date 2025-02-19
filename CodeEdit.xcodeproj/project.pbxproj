@@ -529,6 +529,7 @@
 		B616EA882D651ADA00DF9029 /* ScrollOffsetPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616EA872D651ADA00DF9029 /* ScrollOffsetPreferenceKey.swift */; };
 		B616EA892D651ADA00DF9029 /* OverlayButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616EA862D651ADA00DF9029 /* OverlayButtonStyle.swift */; };
 		B616EA8D2D65238900DF9029 /* InternalDevelopmentInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616EA8B2D65238900DF9029 /* InternalDevelopmentInspectorView.swift */; };
+		B616EA8F2D662E9800DF9029 /* InternalDevelopmentNotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616EA8E2D662E9800DF9029 /* InternalDevelopmentNotificationsView.swift */; };
 		B61A606129F188AB009B43F9 /* ExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606029F188AB009B43F9 /* ExternalLink.swift */; };
 		B61A606929F4481A009B43F9 /* MonospacedFontPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */; };
 		B61DA9DF29D929E100BF4A43 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */; };
@@ -1224,6 +1225,7 @@
 		B616EA862D651ADA00DF9029 /* OverlayButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayButtonStyle.swift; sourceTree = "<group>"; };
 		B616EA872D651ADA00DF9029 /* ScrollOffsetPreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollOffsetPreferenceKey.swift; sourceTree = "<group>"; };
 		B616EA8B2D65238900DF9029 /* InternalDevelopmentInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalDevelopmentInspectorView.swift; sourceTree = "<group>"; };
+		B616EA8E2D662E9800DF9029 /* InternalDevelopmentNotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalDevelopmentNotificationsView.swift; sourceTree = "<group>"; };
 		B61A606029F188AB009B43F9 /* ExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLink.swift; sourceTree = "<group>"; };
 		B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonospacedFontPicker.swift; sourceTree = "<group>"; };
 		B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
@@ -3288,6 +3290,7 @@
 			isa = PBXGroup;
 			children = (
 				B616EA8B2D65238900DF9029 /* InternalDevelopmentInspectorView.swift */,
+				B616EA8E2D662E9800DF9029 /* InternalDevelopmentNotificationsView.swift */,
 			);
 			path = InternalDevelopmentInspector;
 			sourceTree = "<group>";
@@ -4472,6 +4475,7 @@
 				587B9E7929301D8F00AC7927 /* GitHubIssueRouter.swift in Sources */,
 				B67700F92D2A2662004FD61F /* WorkspacePanelView.swift in Sources */,
 				587B9E8029301D8F00AC7927 /* GitHubConfiguration.swift in Sources */,
+				B616EA8F2D662E9800DF9029 /* InternalDevelopmentNotificationsView.swift in Sources */,
 				58822524292C280D00E83CDE /* StatusBarView.swift in Sources */,
 				581550D429FBD37D00684881 /* ProjectNavigatorToolbarBottom.swift in Sources */,
 				66AF6CE72BF17FFB00D83C9D /* UpdateStatusBarInfo.swift in Sources */,

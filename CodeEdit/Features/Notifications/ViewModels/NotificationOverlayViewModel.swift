@@ -181,7 +181,7 @@ final class NotificationOverlayViewModel: ObservableObject {
     }
 
     /// Dismisses a specific notification
-    func dismissNotification(_ notification: CENotification) {
+    func dismissNotification(_ notification: CENotification, disableAnimation: Bool = false) {
         // Clean up timers
         timers[notification.id]?.invalidate()
         timers[notification.id] = nil
@@ -189,6 +189,13 @@ final class NotificationOverlayViewModel: ObservableObject {
 
         // Mark as being dismissed for animation
         if let index = activeNotifications.firstIndex(where: { $0.id == notification.id }) {
+            if disableAnimation {
+                self.activeNotifications.removeAll(where: { $0.id == notification.id })
+                NotificationManager.shared.markAsRead(notification)
+                NotificationManager.shared.dismissNotification(notification)
+                return
+            }
+
             var dismissingNotification = activeNotifications[index]
             dismissingNotification.isBeingDismissed = true
             activeNotifications[index] = dismissingNotification
