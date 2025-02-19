@@ -2,9 +2,12 @@ import SwiftUI
 
 /// A button style for overlay buttons (like close, action buttons in notifications)
 struct OverlayButtonStyle: ButtonStyle {
-    @Environment(\.isEnabled) private var isEnabled
-    @Environment(\.controlActiveState) private var controlActive
-    
+    @Environment(\.isEnabled)
+    private var isEnabled
+
+    @Environment(\.controlActiveState)
+    private var controlActive
+
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .foregroundColor(

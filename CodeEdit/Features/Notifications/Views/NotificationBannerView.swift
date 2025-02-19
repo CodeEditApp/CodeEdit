@@ -175,9 +175,9 @@ struct NotificationBannerView: View {
             }
 
             if hovering {
-                workspace.notificationOverlay.pauseTimer()
+                workspace.notificationPanel.pauseTimer()
             } else {
-                workspace.notificationOverlay.resumeTimer()
+                workspace.notificationPanel.resumeTimer()
             }
         }
     }

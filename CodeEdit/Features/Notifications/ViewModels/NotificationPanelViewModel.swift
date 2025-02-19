@@ -1,5 +1,5 @@
 //
-//  NotificationOverlayViewModel.swift
+//  NotificationPanelViewModel.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 2/14/24.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-final class NotificationOverlayViewModel: ObservableObject {
-    /// Currently displayed notifications in the overlay
+final class NotificationPanelViewModel: ObservableObject {
+    /// Currently displayed notifications in the panel
     @Published private(set) var activeNotifications: [CENotification] = []
 
-    /// Whether notifications were manually shown via toolbar
-    @Published private(set) var isManuallyShown: Bool = false
+    /// Whether notifications panel was manually shown via toolbar
+    @Published private(set) var isPresented: Bool = false
 
     /// Set of hidden notification IDs
     @Published private(set) var hiddenNotificationIds: Set<UUID> = []
@@ -30,7 +30,7 @@ final class NotificationOverlayViewModel: ObservableObject {
 
     @Published var scrolledToTop: Bool = true
 
-    /// Whether a notification should be visible in the overlay
+    /// Whether a notification should be visible in the panel
     func isNotificationVisible(_ notification: CENotification) -> Bool {
         if notification.isBeingDismissed {
             return true // Always show notifications being dismissed
@@ -38,29 +38,29 @@ final class NotificationOverlayViewModel: ObservableObject {
         if notification.isSticky {
             return true // Always show sticky notifications
         }
-        if isManuallyShown {
+        if isPresented {
             return true // Show all notifications when manually shown
         }
         return !hiddenNotificationIds.contains(notification.id)
     }
 
-    /// Handles focus changes for the notification overlay
+    /// Handles focus changes for the notification panel
     func handleFocusChange(isFocused: Bool) {
         if !isFocused {
             // Only hide if manually shown and focus is completely lost
-            if isManuallyShown {
+            if isPresented {
                 toggleNotificationsVisibility()
             }
         }
     }
 
-    /// Toggles visibility of notifications in the overlay
+    /// Toggles visibility of notifications in the panel
     func toggleNotificationsVisibility() {
-        if isManuallyShown {
+        if isPresented {
             if !scrolledToTop {
-                // Just set isManuallyShown to false to trigger the offset animation
+                // Just set isPresented to false to trigger the offset animation
                 withAnimation(.easeInOut(duration: 0.3)) {
-                    isManuallyShown = false
+                    isPresented = false
                 }
 
                 // After the slide-out animation, hide notifications
@@ -82,7 +82,7 @@ final class NotificationOverlayViewModel: ObservableObject {
             }
         } else {
             withAnimation(.easeInOut(duration: 0.3)) {
-                isManuallyShown = true
+                isPresented = true
                 hiddenNotificationIds.removeAll()
                 objectWillChange.send()
             }
@@ -91,7 +91,7 @@ final class NotificationOverlayViewModel: ObservableObject {
 
     private func hideNotifications() {
         withAnimation(.easeInOut(duration: 0.3)) {
-            self.isManuallyShown = false
+            self.isPresented = false
             self.activeNotifications
                 .filter { !$0.isSticky }
                 .forEach { self.hiddenNotificationIds.insert($0.id) }
@@ -101,7 +101,7 @@ final class NotificationOverlayViewModel: ObservableObject {
 
     /// Starts the timer to automatically hide a notification
     func startHideTimer(for notification: CENotification) {
-        guard !notification.isSticky && !isManuallyShown else { return }
+        guard !notification.isSticky && !isPresented else { return }
 
         timers[notification.id]?.invalidate()
         timers[notification.id] = nil
@@ -174,7 +174,7 @@ final class NotificationOverlayViewModel: ObservableObject {
         withAnimation(.easeInOut(duration: 0.3)) {
             insertNotification(notification)
             hiddenNotificationIds.remove(notification.id)
-            if !isManuallyShown && !notification.isSticky {
+            if !isPresented && !notification.isSticky {
                 startHideTimer(for: notification)
             }
         }
@@ -204,8 +204,8 @@ final class NotificationOverlayViewModel: ObservableObject {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
                 withAnimation(.easeOut(duration: 0.2)) {
                     self.activeNotifications.removeAll(where: { $0.id == notification.id })
-                    if self.activeNotifications.isEmpty && self.isManuallyShown {
-                        self.isManuallyShown = false
+                    if self.activeNotifications.isEmpty && self.isPresented {
+                        self.isPresented = false
                     }
                 }
 
@@ -257,8 +257,8 @@ final class NotificationOverlayViewModel: ObservableObject {
             activeNotifications.removeAll(where: { $0.id == ceNotification.id })
 
             // If this was the last notification and they were manually shown, hide the panel
-            if activeNotifications.isEmpty && isManuallyShown {
-                isManuallyShown = false
+            if activeNotifications.isEmpty && isPresented {
+                isPresented = false
             }
         }
     }

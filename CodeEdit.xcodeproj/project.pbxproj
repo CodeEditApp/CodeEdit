@@ -589,7 +589,7 @@
 		B68DE5E02D5A61E5009A43EF /* NotificationBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5D92D5A61E5009A43EF /* NotificationBannerView.swift */; };
 		B68DE5E22D5A61E5009A43EF /* NotificationToolbarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5DB2D5A61E5009A43EF /* NotificationToolbarItem.swift */; };
 		B68DE5E32D5A61E5009A43EF /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5DD2D5A61E5009A43EF /* NotificationManager.swift */; };
-		B68DE5E52D5A7988009A43EF /* NotificationOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5E42D5A7988009A43EF /* NotificationOverlayView.swift */; };
+		B68DE5E52D5A7988009A43EF /* NotificationPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68DE5E42D5A7988009A43EF /* NotificationPanelView.swift */; };
 		B6966A282C2F683300259C2D /* SourceControlPullView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A272C2F683300259C2D /* SourceControlPullView.swift */; };
 		B6966A2A2C2F687A00259C2D /* SourceControlFetchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */; };
 		B6966A2E2C3056AD00259C2D /* SourceControlCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A2D2C3056AD00259C2D /* SourceControlCommands.swift */; };
@@ -598,7 +598,7 @@
 		B6966A342C34996B00259C2D /* SourceControlManager+GitClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6966A332C34996B00259C2D /* SourceControlManager+GitClient.swift */; };
 		B696A7E62CFE20C40048CFE1 /* FeatureIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = B696A7E52CFE20C40048CFE1 /* FeatureIcon.swift */; };
 		B697937A29FF5668002027EC /* AccountsSettingsAccountLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */; };
-		B69970322D63E5C700BB132D /* NotificationOverlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69970302D63E5C700BB132D /* NotificationOverlayViewModel.swift */; };
+		B69970322D63E5C700BB132D /* NotificationPanelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69970302D63E5C700BB132D /* NotificationPanelViewModel.swift */; };
 		B69BFDC72B0686910050D9A6 /* GitClient+Initiate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */; };
 		B69D3EDE2C5E85A2005CF43A /* StopTaskToolbarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D3EDD2C5E85A2005CF43A /* StopTaskToolbarButton.swift */; };
 		B69D3EE12C5F5357005CF43A /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B69D3EE02C5F5357005CF43A /* TaskView.swift */; };
@@ -1290,7 +1290,7 @@
 		B68DE5D92D5A61E5009A43EF /* NotificationBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBannerView.swift; sourceTree = "<group>"; };
 		B68DE5DB2D5A61E5009A43EF /* NotificationToolbarItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationToolbarItem.swift; sourceTree = "<group>"; };
 		B68DE5DD2D5A61E5009A43EF /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		B68DE5E42D5A7988009A43EF /* NotificationOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationOverlayView.swift; sourceTree = "<group>"; };
+		B68DE5E42D5A7988009A43EF /* NotificationPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPanelView.swift; sourceTree = "<group>"; };
 		B6966A272C2F683300259C2D /* SourceControlPullView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlPullView.swift; sourceTree = "<group>"; };
 		B6966A292C2F687A00259C2D /* SourceControlFetchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlFetchView.swift; sourceTree = "<group>"; };
 		B6966A2D2C3056AD00259C2D /* SourceControlCommands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlCommands.swift; sourceTree = "<group>"; };
@@ -1299,7 +1299,7 @@
 		B6966A332C34996B00259C2D /* SourceControlManager+GitClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SourceControlManager+GitClient.swift"; sourceTree = "<group>"; };
 		B696A7E52CFE20C40048CFE1 /* FeatureIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureIcon.swift; sourceTree = "<group>"; };
 		B697937929FF5668002027EC /* AccountsSettingsAccountLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSettingsAccountLink.swift; sourceTree = "<group>"; };
-		B69970302D63E5C700BB132D /* NotificationOverlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationOverlayViewModel.swift; sourceTree = "<group>"; };
+		B69970302D63E5C700BB132D /* NotificationPanelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPanelViewModel.swift; sourceTree = "<group>"; };
 		B69BFDC62B0686910050D9A6 /* GitClient+Initiate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Initiate.swift"; sourceTree = "<group>"; };
 		B69D3EDD2C5E85A2005CF43A /* StopTaskToolbarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopTaskToolbarButton.swift; sourceTree = "<group>"; };
 		B69D3EE02C5F5357005CF43A /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
@@ -3601,8 +3601,8 @@
 			isa = PBXGroup;
 			children = (
 				B68DE5D92D5A61E5009A43EF /* NotificationBannerView.swift */,
+				B68DE5E42D5A7988009A43EF /* NotificationPanelView.swift */,
 				B68DE5DB2D5A61E5009A43EF /* NotificationToolbarItem.swift */,
-				B68DE5E42D5A7988009A43EF /* NotificationOverlayView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3639,7 +3639,7 @@
 		B69970312D63E5C700BB132D /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				B69970302D63E5C700BB132D /* NotificationOverlayViewModel.swift */,
+				B69970302D63E5C700BB132D /* NotificationPanelViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -4269,8 +4269,8 @@
 				B6B2D7A12CE8797B00379967 /* GitConfigExtensions.swift in Sources */,
 				587B9E7329301D8F00AC7927 /* GitRouter.swift in Sources */,
 				6C2C156129B4F52F00EA60A5 /* SplitViewModifiers.swift in Sources */,
-				B69970322D63E5C700BB132D /* NotificationOverlayViewModel.swift in Sources */,
-				B68DE5E52D5A7988009A43EF /* NotificationOverlayView.swift in Sources */,
+				B69970322D63E5C700BB132D /* NotificationPanelViewModel.swift in Sources */,
+				B68DE5E52D5A7988009A43EF /* NotificationPanelView.swift in Sources */,
 				61A53A812B4449F00093BF8A /* WorkspaceDocument+Index.swift in Sources */,
 				66AF6CE22BF17CC300D83C9D /* StatusBarViewModel.swift in Sources */,
 				30CB648D2C12680F00CC8A9E /* LSPService+Events.swift in Sources */,

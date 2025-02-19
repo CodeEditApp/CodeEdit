@@ -1,5 +1,5 @@
 //
-//  NotificationOverlayView.swift
+//  NotificationPanelView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 2/10/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct NotificationOverlayView: View {
+struct NotificationPanelView: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
     @Environment(\.controlActiveState)
     private var controlActiveState
@@ -33,8 +33,8 @@ struct NotificationOverlayView: View {
     }
 
     @ViewBuilder var notifications: some View {
-        let visibleNotifications = workspace.notificationOverlay.activeNotifications.filter {
-            workspace.notificationOverlay.isNotificationVisible($0)
+        let visibleNotifications = workspace.notificationPanel.activeNotifications.filter {
+            workspace.notificationPanel.isNotificationVisible($0)
         }
 
         VStack(spacing: 8) {
@@ -42,15 +42,15 @@ struct NotificationOverlayView: View {
                 NotificationBannerView(
                     notification: notification,
                     onDismiss: {
-                        workspace.notificationOverlay.dismissNotification(notification)
+                        workspace.notificationPanel.dismissNotification(notification)
                     },
                     onAction: {
                         notification.action()
-                        if workspace.notificationOverlay.isManuallyShown {
-                            workspace.notificationOverlay.toggleNotificationsVisibility()
-                            workspace.notificationOverlay.dismissNotification(notification, disableAnimation: true)
+                        if workspace.notificationPanel.isPresented {
+                            workspace.notificationPanel.toggleNotificationsVisibility()
+                            workspace.notificationPanel.dismissNotification(notification, disableAnimation: true)
                         } else {
-                            workspace.notificationOverlay.dismissNotification(notification)
+                            workspace.notificationPanel.dismissNotification(notification)
                         }
                     }
                 )
@@ -79,10 +79,10 @@ struct NotificationOverlayView: View {
                                     }
                                 )
                                 .onPreferenceChange(ViewOffsetKey.self) {
-                                    if $0 <= 0.0 && !workspace.notificationOverlay.scrolledToTop {
-                                        workspace.notificationOverlay.scrolledToTop = true
-                                    } else if $0 > 0.0 && workspace.notificationOverlay.scrolledToTop {
-                                        workspace.notificationOverlay.scrolledToTop = false
+                                    if $0 <= 0.0 && !workspace.notificationPanel.scrolledToTop {
+                                        workspace.notificationPanel.scrolledToTop = true
+                                    } else if $0 > 0.0 && workspace.notificationPanel.scrolledToTop {
+                                        workspace.notificationPanel.scrolledToTop = false
                                     }
                                 }
                             notifications
@@ -101,13 +101,13 @@ struct NotificationOverlayView: View {
                     .scrollDisabled(!hasOverflow)
                     .coordinateSpace(name: "scroll")
                     .onChange(of: isFocused) { newValue in
-                        workspace.notificationOverlay.handleFocusChange(isFocused: newValue)
+                        workspace.notificationPanel.handleFocusChange(isFocused: newValue)
                     }
                     .onChange(of: geometry.size.height) { newValue in
                         updateOverflow(contentHeight: contentHeight, containerHeight: newValue)
                     }
-                    .onChange(of: workspace.notificationOverlay.isManuallyShown) { isShown in
-                        if !isShown && !workspace.notificationOverlay.scrolledToTop {
+                    .onChange(of: workspace.notificationPanel.isPresented) { isPresented in
+                        if !isPresented && !workspace.notificationPanel.scrolledToTop {
                             // If scrolled, delay scroll animation until after notifications are hidden
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 withAnimation(.easeOut(duration: 0.3)) {
@@ -117,8 +117,8 @@ struct NotificationOverlayView: View {
                         }
                     }
                     .allowsHitTesting(
-                        workspace.notificationOverlay.activeNotifications
-                            .contains { workspace.notificationOverlay.isNotificationVisible($0) }
+                        workspace.notificationPanel.activeNotifications
+                            .contains { workspace.notificationPanel.isNotificationVisible($0) }
                     )
                 }
             }
@@ -133,16 +133,16 @@ struct NotificationOverlayView: View {
                     .focusable()
                     .focusEffectDisabled()
                     .focused($isFocused)
-                    .onChange(of: workspace.notificationOverlay.isManuallyShown) { isShown in
-                        if isShown {
+                    .onChange(of: workspace.notificationPanel.isPresented) { isPresented in
+                        if isPresented {
                             isFocused = true
                         }
                     }
                     .onChange(of: controlActiveState) { newState in
-                        if newState != .active && newState != .key && workspace.notificationOverlay.isManuallyShown {
+                        if newState != .active && newState != .key && workspace.notificationPanel.isPresented {
                             // Delay hiding notifications to match animation timing
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                workspace.notificationOverlay.toggleNotificationsVisibility()
+                                workspace.notificationPanel.toggleNotificationsVisibility()
                             }
                         }
                     }
@@ -153,12 +153,12 @@ struct NotificationOverlayView: View {
         .opacity(controlActiveState == .active || controlActiveState == .key ? 1 : 0)
         .offset(
             x: (controlActiveState == .active || controlActiveState == .key) &&
-                (workspace.notificationOverlay.isManuallyShown || workspace.notificationOverlay.scrolledToTop)
+                (workspace.notificationPanel.isPresented || workspace.notificationPanel.scrolledToTop)
                 ? 0
                 : 350
         )
-        .animation(.easeInOut(duration: 0.3), value: workspace.notificationOverlay.isManuallyShown)
-        .animation(.easeInOut(duration: 0.3), value: workspace.notificationOverlay.scrolledToTop)
+        .animation(.easeInOut(duration: 0.3), value: workspace.notificationPanel.isPresented)
+        .animation(.easeInOut(duration: 0.3), value: workspace.notificationPanel.scrolledToTop)
         .animation(.easeInOut(duration: 0.2), value: controlActiveState)
     }
 }

@@ -43,16 +43,16 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceSettingsManager: CEWorkspaceSettings?
     var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
 
-    @Published var notificationOverlay = NotificationOverlayViewModel()
-    private var notificationOverlaySubscription: AnyCancellable?
+    @Published var notificationPanel = NotificationPanelViewModel()
+    private var notificationPanelSubscription: AnyCancellable?
 
     private var cancellables = Set<AnyCancellable>()
 
     override init() {
         super.init()
 
-        // Observe changes to notification overlay
-        notificationOverlaySubscription = notificationOverlay.objectWillChange
+        // Observe changes to notification panel
+        notificationPanelSubscription = notificationPanel.objectWillChange
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.objectWillChange.send()
@@ -62,7 +62,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     deinit {
         cancellables.forEach { $0.cancel() }
         NotificationCenter.default.removeObserver(self)
-        notificationOverlaySubscription?.cancel()
+        notificationPanelSubscription?.cancel()
     }
 
     func getFromWorkspaceState(_ key: WorkspaceStateKey) -> Any? {

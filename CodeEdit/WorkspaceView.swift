@@ -104,7 +104,7 @@ struct WorkspaceView: View {
                         .accessibilityElement(children: .contain)
                     }
                     .overlay(alignment: .topTrailing) {
-                        NotificationOverlayView()
+                        NotificationPanelView()
                     }
                     .onChange(of: focusedEditor) { newValue in
                         /// update active tab group only if the new one is not the same with it.

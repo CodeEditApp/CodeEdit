@@ -14,13 +14,13 @@ struct NotificationToolbarItem: View {
     private var controlActiveState
 
     var body: some View {
-        let visibleNotifications = workspace.notificationOverlay.activeNotifications.filter {
-            !workspace.notificationOverlay.hiddenNotificationIds.contains($0.id)
+        let visibleNotifications = workspace.notificationPanel.activeNotifications.filter {
+            !workspace.notificationPanel.hiddenNotificationIds.contains($0.id)
         }
 
         if notificationManager.unreadCount > 0 || !visibleNotifications.isEmpty {
             Button {
-                workspace.notificationOverlay.toggleNotificationsVisibility()
+                workspace.notificationPanel.toggleNotificationsVisibility()
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "bell.badge.fill")
