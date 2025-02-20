@@ -61,7 +61,6 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     deinit {
         cancellables.forEach { $0.cancel() }
         NotificationCenter.default.removeObserver(self)
-        notificationPanelSubscription?.cancel()
     }
 
     func getFromWorkspaceState(_ key: WorkspaceStateKey) -> Any? {
