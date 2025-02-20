@@ -2,25 +2,27 @@ import SwiftUI
 
 /// A button style for overlay buttons (like close, action buttons in notifications)
 struct OverlayButtonStyle: ButtonStyle {
-    @Environment(\.isEnabled)
-    private var isEnabled
-
-    @Environment(\.controlActiveState)
-    private var controlActive
+    @Environment(\.colorScheme)
+    private var colorScheme
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundColor(
-                isEnabled
-                ? (configuration.isPressed
-                   ? .primary.opacity(0.3)
-                   : (controlActive == .inactive
-                      ? .primary.opacity(0.5)
-                      : .primary.opacity(0.7)))
-                : .primary.opacity(0.3)
+            .font(.system(size: 10))
+            .foregroundColor(.secondary)
+            .frame(width: 20, height: 20, alignment: .center)
+            .background(Color.primary.opacity(configuration.isPressed ? colorScheme == .dark ? 0.10 : 0.05 : 0.00))
+            .background(.regularMaterial)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color(nsColor: .separatorColor), lineWidth: 2)
             )
-            .padding(4)
-            .contentShape(Rectangle())
+            .cornerRadius(10)
+            .shadow(
+                color: Color(.black.withAlphaComponent(colorScheme == .dark ? 0.2 : 0.1)),
+                radius: 5,
+                x: 0,
+                y: 2
+            )
     }
 }
 

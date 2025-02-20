@@ -82,19 +82,16 @@ struct FileInspectorView: View {
     }
 
     @ViewBuilder private var fileNameField: some View {
-        @State var isValid: Bool = true
-
         if let file {
             TextField("Name", text: $fileName)
                 .background(
-                    isValid ? Color.clear : Color(errorRed)
+                    fileName != file.fileName() && !file.validateFileName(for: fileName) ? Color(errorRed) : Color.clear
                 )
                 .onSubmit {
                     if file.validateFileName(for: fileName) {
                         let destinationURL = file.url
                             .deletingLastPathComponent()
                             .appendingPathComponent(fileName)
-                        isValid = true
                         DispatchQueue.main.async { [weak workspace] in
                             do {
                                 if let newItem = try workspace?.workspaceFileManager?.move(
@@ -112,7 +109,6 @@ struct FileInspectorView: View {
                             }
                         }
                     } else {
-                        isValid = false
                         fileName = file.labelFileName()
                     }
                 }
