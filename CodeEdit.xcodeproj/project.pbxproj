@@ -310,11 +310,11 @@
 		61538B902B111FE800A88846 /* String+AppearancesOfSubstring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */; };
 		61538B932B11201900A88846 /* String+Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B922B11201900A88846 /* String+Character.swift */; };
 		617DB3D02C25AFAE00B58BFE /* ActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3CF2C25AFAE00B58BFE /* ActivityManager.swift */; };
-		617DB3D62C25B02D00B58BFE /* ActivitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D52C25B02D00B58BFE /* ActivitiesView.swift */; };
+		617DB3D62C25B02D00B58BFE /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D52C25B02D00B58BFE /* ActivityView.swift */; };
 		617DB3D82C25B04D00B58BFE /* CECircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D72C25B04D00B58BFE /* CECircularProgressView.swift */; };
-		617DB3DA2C25B07F00B58BFE /* TaskNotificationsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D92C25B07F00B58BFE /* TaskNotificationsDetailView.swift */; };
+		617DB3DA2C25B07F00B58BFE /* ActivitiesDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D92C25B07F00B58BFE /* ActivitiesDetailView.swift */; };
 		617DB3DC2C25B14A00B58BFE /* ActivityViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3DB2C25B14A00B58BFE /* ActivityViewer.swift */; };
-		617DB3DF2C25E13800B58BFE /* TaskNotificationHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3DE2C25E13800B58BFE /* TaskNotificationHandlerTests.swift */; };
+		617DB3DF2C25E13800B58BFE /* ActivityManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3DE2C25E13800B58BFE /* ActivityManagerTests.swift */; };
 		61816B832C81DC2C00C71BF7 /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61816B822C81DC2C00C71BF7 /* SearchField.swift */; };
 		618725A12C29EFCC00987354 /* SchemeDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725A02C29EFCC00987354 /* SchemeDropDownView.swift */; };
 		618725A42C29F00400987354 /* WorkspaceMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725A32C29F00400987354 /* WorkspaceMenuItemView.swift */; };
@@ -1024,11 +1024,11 @@
 		61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AppearancesOfSubstring.swift"; sourceTree = "<group>"; };
 		61538B922B11201900A88846 /* String+Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Character.swift"; sourceTree = "<group>"; };
 		617DB3CF2C25AFAE00B58BFE /* ActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManager.swift; sourceTree = "<group>"; };
-		617DB3D52C25B02D00B58BFE /* ActivitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesView.swift; sourceTree = "<group>"; };
+		617DB3D52C25B02D00B58BFE /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		617DB3D72C25B04D00B58BFE /* CECircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CECircularProgressView.swift; sourceTree = "<group>"; };
-		617DB3D92C25B07F00B58BFE /* TaskNotificationsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNotificationsDetailView.swift; sourceTree = "<group>"; };
+		617DB3D92C25B07F00B58BFE /* ActivitiesDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesDetailView.swift; sourceTree = "<group>"; };
 		617DB3DB2C25B14A00B58BFE /* ActivityViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewer.swift; sourceTree = "<group>"; };
-		617DB3DE2C25E13800B58BFE /* TaskNotificationHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNotificationHandlerTests.swift; sourceTree = "<group>"; };
+		617DB3DE2C25E13800B58BFE /* ActivityManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManagerTests.swift; sourceTree = "<group>"; };
 		61816B822C81DC2C00C71BF7 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
 		618725A02C29EFCC00987354 /* SchemeDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemeDropDownView.swift; sourceTree = "<group>"; };
 		618725A32C29F00400987354 /* WorkspaceMenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceMenuItemView.swift; sourceTree = "<group>"; };
@@ -2099,7 +2099,7 @@
 			isa = PBXGroup;
 			children = (
 				283BDCC22972F211002AFF81 /* Acknowledgements */,
-				617DB3DD2C25E11500B58BFE /* ActivityViewer */,
+				617DB3DD2C25E11500B58BFE /* Activities */,
 				583E527429361B39001AB554 /* CodeEditUI */,
 				587B612C2934199800D5CD8F /* CodeFile */,
 				4EE96EC82960562000FFBEA8 /* Documents */,
@@ -2739,12 +2739,12 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		617DB3DD2C25E11500B58BFE /* ActivityViewer */ = {
+		617DB3DD2C25E11500B58BFE /* Activities */ = {
 			isa = PBXGroup;
 			children = (
-				617DB3DE2C25E13800B58BFE /* TaskNotificationHandlerTests.swift */,
+				617DB3DE2C25E13800B58BFE /* ActivityManagerTests.swift */,
 			);
-			path = ActivityViewer;
+			path = Activities;
 			sourceTree = "<group>";
 		};
 		618725A22C29EFE200987354 /* ViewModifiers */ = {
@@ -3286,8 +3286,8 @@
 				B69D3EE42C5F54B3005CF43A /* TasksPopoverMenuItem.swift */,
 				B69D3EE02C5F5357005CF43A /* TaskView.swift */,
 				618725A32C29F00400987354 /* WorkspaceMenuItemView.swift */,
-				617DB3D52C25B02D00B58BFE /* ActivitiesView.swift */,
-				617DB3D92C25B07F00B58BFE /* TaskNotificationsDetailView.swift */,
+				617DB3D52C25B02D00B58BFE /* ActivityView.swift */,
+				617DB3D92C25B07F00B58BFE /* ActivitiesDetailView.swift */,
 				617DB3D72C25B04D00B58BFE /* CECircularProgressView.swift */,
 				617DB3DB2C25B14A00B58BFE /* ActivityViewer.swift */,
 			);
@@ -4185,7 +4185,7 @@
 				04BA7C142AE2AA7300584E1C /* GitCloneViewModel.swift in Sources */,
 				B61A606129F188AB009B43F9 /* ExternalLink.swift in Sources */,
 				587B9E9729301D8F00AC7927 /* BitBucketAccount+Token.swift in Sources */,
-				617DB3D62C25B02D00B58BFE /* ActivitiesView.swift in Sources */,
+				617DB3D62C25B02D00B58BFE /* ActivityView.swift in Sources */,
 				587B9E7729301D8F00AC7927 /* String+PercentEncoding.swift in Sources */,
 				587B9E5B29301D8F00AC7927 /* GitCheckoutBranchView.swift in Sources */,
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
@@ -4688,7 +4688,7 @@
 				04C3255B2801F86400C8DA2D /* ProjectNavigatorViewController.swift in Sources */,
 				587B9E6029301D8F00AC7927 /* GitLabOAuthRouter.swift in Sources */,
 				B6AB09B32AB919CF0003A3A6 /* View+actionBar.swift in Sources */,
-				617DB3DA2C25B07F00B58BFE /* TaskNotificationsDetailView.swift in Sources */,
+				617DB3DA2C25B07F00B58BFE /* ActivitiesDetailView.swift in Sources */,
 				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
 				6C9AE6712D14A9F700FAE8D2 /* LazyServiceWrapper.swift in Sources */,
 				588847632992A2A200996D95 /* CEWorkspaceFile.swift in Sources */,
@@ -4710,7 +4710,7 @@
 				6C7D6D462C9092EC00B69EE0 /* BufferingServerConnection.swift in Sources */,
 				613053652B23A49300D767E3 /* TemporaryFile.swift in Sources */,
 				6C510CBC2D2ECD68006EBE85 /* UtilityAreaViewModelTests.swift in Sources */,
-				617DB3DF2C25E13800B58BFE /* TaskNotificationHandlerTests.swift in Sources */,
+				617DB3DF2C25E13800B58BFE /* ActivityManagerTests.swift in Sources */,
 				775566502C27FD1B001E7A4D /* CodeFileDocument+UTTypeTests.swift in Sources */,
 				587B60F82934124200D5CD8F /* CEWorkspaceFileManagerTests.swift in Sources */,
 				6130535F2B23A31300D767E3 /* MemorySearchTests.swift in Sources */,
