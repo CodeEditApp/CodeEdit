@@ -167,6 +167,7 @@
 		B616EA8D2D65238900DF9029 /* InternalDevelopmentInspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616EA8B2D65238900DF9029 /* InternalDevelopmentInspectorView.swift */; };
 		B616EA8F2D662E9800DF9029 /* InternalDevelopmentNotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616EA8E2D662E9800DF9029 /* InternalDevelopmentNotificationsView.swift */; };
 		B616EA942D67C4DA00DF9029 /* CEActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616EA932D67C4DA00DF9029 /* CEActivity.swift */; };
+		B616EA962D67E20A00DF9029 /* InternalDevelopmentActivitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B616EA952D67E20A00DF9029 /* InternalDevelopmentActivitiesView.swift */; };
 		B61A606129F188AB009B43F9 /* ExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606029F188AB009B43F9 /* ExternalLink.swift */; };
 		B61A606929F4481A009B43F9 /* MonospacedFontPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */; };
 		B61DA9DF29D929E100BF4A43 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */; };
@@ -580,6 +581,7 @@
 		B616EA8B2D65238900DF9029 /* InternalDevelopmentInspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalDevelopmentInspectorView.swift; sourceTree = "<group>"; };
 		B616EA8E2D662E9800DF9029 /* InternalDevelopmentNotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalDevelopmentNotificationsView.swift; sourceTree = "<group>"; };
 		B616EA932D67C4DA00DF9029 /* CEActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEActivity.swift; sourceTree = "<group>"; };
+		B616EA952D67E20A00DF9029 /* InternalDevelopmentActivitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalDevelopmentActivitiesView.swift; sourceTree = "<group>"; };
 		B61A606029F188AB009B43F9 /* ExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLink.swift; sourceTree = "<group>"; };
 		B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonospacedFontPicker.swift; sourceTree = "<group>"; };
 		B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
@@ -2552,6 +2554,7 @@
 			children = (
 				B616EA8B2D65238900DF9029 /* InternalDevelopmentInspectorView.swift */,
 				B616EA8E2D662E9800DF9029 /* InternalDevelopmentNotificationsView.swift */,
+				B616EA952D67E20A00DF9029 /* InternalDevelopmentActivitiesView.swift */,
 			);
 			path = InternalDevelopmentInspector;
 			sourceTree = "<group>";
@@ -3659,6 +3662,7 @@
 				B66A4E5329C91831004573B4 /* CodeEditCommands.swift in Sources */,
 				58822529292C280D00E83CDE /* StatusBarLineEndSelector.swift in Sources */,
 				5C4BB1E128212B1E00A92FB2 /* World.swift in Sources */,
+				B616EA962D67E20A00DF9029 /* InternalDevelopmentActivitiesView.swift in Sources */,
 				581550D029FBD30400684881 /* FileSystemTableViewCell.swift in Sources */,
 				B607183F2B17DB07009CDAB4 /* SourceControlNavigatorRepositoryView+contextMenu.swift in Sources */,
 				B62AEDD42A27B29F009A9F52 /* PaneToolbar.swift in Sources */,

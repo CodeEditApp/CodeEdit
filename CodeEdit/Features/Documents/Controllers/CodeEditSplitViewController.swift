@@ -88,6 +88,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
             InspectorAreaView(viewModel: InspectorAreaViewModel())
                 .environmentObject(workspace)
                 .environmentObject(editorManager)
+                .environmentObject(workspace.activityManager)
         })
 
         addSplitViewItem(inspector)
