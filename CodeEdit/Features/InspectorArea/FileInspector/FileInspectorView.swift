@@ -82,8 +82,6 @@ struct FileInspectorView: View {
     }
 
     @ViewBuilder private var fileNameField: some View {
-        @State var isValid: Bool = true
-
         if let file {
             TextField("Name", text: $fileName)
                 .background(
@@ -111,7 +109,6 @@ struct FileInspectorView: View {
                             }
                         }
                     } else {
-                        isValid = false
                         fileName = file.labelFileName()
                     }
                 }
