@@ -54,7 +54,7 @@ struct ActivityView: View {
                 .padding(-3)
                 .padding(.trailing, 3)
                 .popover(isPresented: $isPresented, arrowEdge: .bottom) {
-                    ActivitysDetailView(activityManager: activityManager)
+                    ActivitiesDetailView(activityManager: activityManager)
                 }
                 .onTapGesture {
                     self.isPresented.toggle()

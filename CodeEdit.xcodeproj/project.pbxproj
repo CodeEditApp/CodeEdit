@@ -53,11 +53,11 @@
 		61538B902B111FE800A88846 /* String+AppearancesOfSubstring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */; };
 		61538B932B11201900A88846 /* String+Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61538B922B11201900A88846 /* String+Character.swift */; };
 		617DB3D02C25AFAE00B58BFE /* ActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3CF2C25AFAE00B58BFE /* ActivityManager.swift */; };
-		617DB3D62C25B02D00B58BFE /* ActivitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D52C25B02D00B58BFE /* ActivitiesView.swift */; };
+		617DB3D62C25B02D00B58BFE /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D52C25B02D00B58BFE /* ActivityView.swift */; };
 		617DB3D82C25B04D00B58BFE /* CECircularProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D72C25B04D00B58BFE /* CECircularProgressView.swift */; };
-		617DB3DA2C25B07F00B58BFE /* TaskNotificationsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D92C25B07F00B58BFE /* TaskNotificationsDetailView.swift */; };
+		617DB3DA2C25B07F00B58BFE /* ActivitiesDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3D92C25B07F00B58BFE /* ActivitiesDetailView.swift */; };
 		617DB3DC2C25B14A00B58BFE /* ActivityViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3DB2C25B14A00B58BFE /* ActivityViewer.swift */; };
-		617DB3DF2C25E13800B58BFE /* TaskNotificationHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3DE2C25E13800B58BFE /* TaskNotificationHandlerTests.swift */; };
+		617DB3DF2C25E13800B58BFE /* ActivityManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617DB3DE2C25E13800B58BFE /* ActivityManagerTests.swift */; };
 		61816B832C81DC2C00C71BF7 /* SearchField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61816B822C81DC2C00C71BF7 /* SearchField.swift */; };
 		618725A12C29EFCC00987354 /* SchemeDropDownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725A02C29EFCC00987354 /* SchemeDropDownView.swift */; };
 		618725A42C29F00400987354 /* WorkspaceMenuItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618725A32C29F00400987354 /* WorkspaceMenuItemView.swift */; };
@@ -397,11 +397,11 @@
 		61538B8F2B111FE800A88846 /* String+AppearancesOfSubstring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+AppearancesOfSubstring.swift"; sourceTree = "<group>"; };
 		61538B922B11201900A88846 /* String+Character.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Character.swift"; sourceTree = "<group>"; };
 		617DB3CF2C25AFAE00B58BFE /* ActivityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManager.swift; sourceTree = "<group>"; };
-		617DB3D52C25B02D00B58BFE /* ActivitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesView.swift; sourceTree = "<group>"; };
+		617DB3D52C25B02D00B58BFE /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		617DB3D72C25B04D00B58BFE /* CECircularProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CECircularProgressView.swift; sourceTree = "<group>"; };
-		617DB3D92C25B07F00B58BFE /* TaskNotificationsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNotificationsDetailView.swift; sourceTree = "<group>"; };
+		617DB3D92C25B07F00B58BFE /* ActivitiesDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitiesDetailView.swift; sourceTree = "<group>"; };
 		617DB3DB2C25B14A00B58BFE /* ActivityViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityViewer.swift; sourceTree = "<group>"; };
-		617DB3DE2C25E13800B58BFE /* TaskNotificationHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskNotificationHandlerTests.swift; sourceTree = "<group>"; };
+		617DB3DE2C25E13800B58BFE /* ActivityManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityManagerTests.swift; sourceTree = "<group>"; };
 		61816B822C81DC2C00C71BF7 /* SearchField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchField.swift; sourceTree = "<group>"; };
 		618725A02C29EFCC00987354 /* SchemeDropDownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchemeDropDownView.swift; sourceTree = "<group>"; };
 		618725A32C29F00400987354 /* WorkspaceMenuItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceMenuItemView.swift; sourceTree = "<group>"; };
@@ -1379,7 +1379,7 @@
 			isa = PBXGroup;
 			children = (
 				283BDCC22972F211002AFF81 /* Acknowledgements */,
-				617DB3DD2C25E11500B58BFE /* ActivityViewer */,
+				617DB3DD2C25E11500B58BFE /* Activities */,
 				583E527429361B39001AB554 /* CodeEditUI */,
 				587B612C2934199800D5CD8F /* CodeFile */,
 				4EE96EC82960562000FFBEA8 /* Documents */,
@@ -2019,12 +2019,12 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		617DB3DD2C25E11500B58BFE /* ActivityViewer */ = {
+		617DB3DD2C25E11500B58BFE /* Activities */ = {
 			isa = PBXGroup;
 			children = (
-				617DB3DE2C25E13800B58BFE /* TaskNotificationHandlerTests.swift */,
+				617DB3DE2C25E13800B58BFE /* ActivityManagerTests.swift */,
 			);
-			path = ActivityViewer;
+			path = Activities;
 			sourceTree = "<group>";
 		};
 		618725A22C29EFE200987354 /* ViewModifiers */ = {
@@ -2566,8 +2566,8 @@
 				B69D3EE42C5F54B3005CF43A /* TasksPopoverMenuItem.swift */,
 				B69D3EE02C5F5357005CF43A /* TaskView.swift */,
 				618725A32C29F00400987354 /* WorkspaceMenuItemView.swift */,
-				617DB3D52C25B02D00B58BFE /* ActivitiesView.swift */,
-				617DB3D92C25B07F00B58BFE /* TaskNotificationsDetailView.swift */,
+				617DB3D52C25B02D00B58BFE /* ActivityView.swift */,
+				617DB3D92C25B07F00B58BFE /* ActivitiesDetailView.swift */,
 				617DB3D72C25B04D00B58BFE /* CECircularProgressView.swift */,
 				617DB3DB2C25B14A00B58BFE /* ActivityViewer.swift */,
 			);
@@ -3409,7 +3409,7 @@
 				04BA7C142AE2AA7300584E1C /* GitCloneViewModel.swift in Sources */,
 				B61A606129F188AB009B43F9 /* ExternalLink.swift in Sources */,
 				587B9E9729301D8F00AC7927 /* BitBucketAccount+Token.swift in Sources */,
-				617DB3D62C25B02D00B58BFE /* ActivitiesView.swift in Sources */,
+				617DB3D62C25B02D00B58BFE /* ActivityView.swift in Sources */,
 				587B9E7729301D8F00AC7927 /* String+PercentEncoding.swift in Sources */,
 				587B9E5B29301D8F00AC7927 /* GitCheckoutBranchView.swift in Sources */,
 				2813F93827ECC4AA00E305E4 /* FindNavigatorResultList.swift in Sources */,
@@ -3710,6 +3710,190 @@
 				04BA7C0B2AE2A2D100584E1C /* GitBranch.swift in Sources */,
 				6CAAF69229BCC71C00A1F48A /* (null) in Sources */,
 				6CAAF68A29BC9C2300A1F48A /* (null) in Sources */,
+				30AB4EBD2BF71CA800ED4431 /* DeveloperSettingsView.swift in Sources */,
+				6C6BD6EF29CD12E900235D17 /* ExtensionManagerWindow.swift in Sources */,
+				30B087FF2C0D53080063A882 /* LanguageServer+Completion.swift in Sources */,
+				61C7E82F2C6CDBA500845336 /* Theme+FuzzySearchable.swift in Sources */,
+				6C3B4CD12D0E2C2900C6759E /* SemanticTokenMap.swift in Sources */,
+				6CFF967629BEBCD900182D6F /* FileCommands.swift in Sources */,
+				B60718462B17DC15009CDAB4 /* RepoOutlineGroupItem.swift in Sources */,
+				613899B32B6E6FEE00A5CAF6 /* FuzzySearchable.swift in Sources */,
+				B697937A29FF5668002027EC /* AccountsSettingsAccountLink.swift in Sources */,
+				5B698A0D2B26327800DE9392 /* SearchSettings.swift in Sources */,
+				B685DE7929CC9CCD002860C8 /* StatusBarIcon.swift in Sources */,
+				587B9DA629300ABD00AC7927 /* ToolbarBranchPicker.swift in Sources */,
+				6C6BD6F629CD145F00235D17 /* ExtensionInfo.swift in Sources */,
+				04BA7C202AE2D92B00584E1C /* GitClient+Status.swift in Sources */,
+				4A6F0DB52CBA462B00499627 /* ProjectNavigatorMenuActions.swift in Sources */,
+				58F2EB05292FB2B0004A9BDE /* Settings.swift in Sources */,
+				6CBD1BC62978DE53006639D5 /* Font+Caption3.swift in Sources */,
+				30E6D0012A6E505200A58B20 /* NavigatorAreaViewModel.swift in Sources */,
+				6CD26C7B2C8EA8A500ADBA38 /* LSPCache+Data.swift in Sources */,
+				B6E41C9429DEAE260088F9F4 /* SourceControlAccount.swift in Sources */,
+				2806E9022979588B000040F4 /* Contributor.swift in Sources */,
+				58D01C98293167DC00C5B6B4 /* String+RemoveOccurrences.swift in Sources */,
+				5878DAA8291AE76700DD95A3 /* OpenQuicklyListItemView.swift in Sources */,
+				58FD7608291EA1CB0051D6E4 /* QuickActionsViewModel.swift in Sources */,
+				B65B11042B09DB1C002852CF /* GitClient+Fetch.swift in Sources */,
+				5878DA872918642F00DD95A3 /* AcknowledgementsViewModel.swift in Sources */,
+				6C4E37F62C73DA5200AEE7B5 /* UtilityAreaTerminalSidebar.swift in Sources */,
+				B6E41C7929DE02800088F9F4 /* AccountSelectionView.swift in Sources */,
+				6C48B5CE2C0C1BE4001E9955 /* Shell.swift in Sources */,
+				6CA1AE952B46950000378EAB /* EditorInstance.swift in Sources */,
+				B6B2D79F2CE8794E00379967 /* GitConfigRepresentable.swift in Sources */,
+				30AB4EBB2BF718A100ED4431 /* DeveloperSettings.swift in Sources */,
+				B6C4F2A92B3CB00100B2B140 /* CommitDetailsHeaderView.swift in Sources */,
+				30B088012C0D53080063A882 /* LanguageServer+Definition.swift in Sources */,
+				611028C82C8DC7F200DFD845 /* MenuWithButtonStyle.swift in Sources */,
+				B6EA1FFB29DB78F6001BF195 /* ThemeSettingsThemeDetails.swift in Sources */,
+				618725A62C29F02500987354 /* DropdownMenuItemStyleModifier.swift in Sources */,
+				587B9E7029301D8F00AC7927 /* GitLabUser.swift in Sources */,
+				04660F6A27E51E5C00477777 /* CodeEditWindowController.swift in Sources */,
+				58798218292D92370085B254 /* String+SafeOffset.swift in Sources */,
+				6C6BD70429CD17B600235D17 /* ExtensionsManager.swift in Sources */,
+				587B9E6129301D8F00AC7927 /* GitLabOAuthConfiguration.swift in Sources */,
+				617DB3DC2C25B14A00B58BFE /* ActivityViewer.swift in Sources */,
+				587B9E6229301D8F00AC7927 /* GitLabConfiguration.swift in Sources */,
+				61A53A7E2B4449870093BF8A /* WorkspaceDocument+Find.swift in Sources */,
+				30B0880A2C0D53080063A882 /* LanguageServer+Hover.swift in Sources */,
+				5879821B292D92370085B254 /* SearchResultMatchModel.swift in Sources */,
+				6C48B5DA2C0D5FC5001E9955 /* CurrentUser.swift in Sources */,
+				04BA7C1E2AE2D8A000584E1C /* GitClient+Clone.swift in Sources */,
+				58F2EB09292FB2B0004A9BDE /* TerminalSettings.swift in Sources */,
+				6C578D8429CD343800DC73B2 /* ExtensionDetailView.swift in Sources */,
+				B607181D2B0C5BE3009CDAB4 /* GitClient+Stash.swift in Sources */,
+				B65B10F22B07D34F002852CF /* GitRemote.swift in Sources */,
+				B6A43C5D29FC4AF00027E0E0 /* CreateSSHKeyView.swift in Sources */,
+				B6EA200229DB7F81001BF195 /* View+ConstrainHeightToWindow.swift in Sources */,
+				66F370342BEE537B00D3B823 /* NonTextFileView.swift in Sources */,
+				B66460592D600E9500EC1411 /* NotificationManager+Delegate.swift in Sources */,
+				B664605A2D600E9500EC1411 /* NotificationManager+System.swift in Sources */,
+				613899B72B6E702F00A5CAF6 /* String+LengthOfMatchingPrefix.swift in Sources */,
+				6C48D8F42972DB1A00D6D205 /* Env+Window.swift in Sources */,
+				6C5FDF7A29E6160000BC08C0 /* AppSettings.swift in Sources */,
+				61A3E3DF2C3318C900076BD3 /* CEWorkspaceSettingsTaskListView.swift in Sources */,
+				58F2EB07292FB2B0004A9BDE /* GeneralSettings.swift in Sources */,
+				B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */,
+				587B9E9A29301D8F00AC7927 /* GitStatus.swift in Sources */,
+				B65B10F82B081A34002852CF /* SourceControlNavigatorNoRemotesView.swift in Sources */,
+				58D01C97293167DC00C5B6B4 /* String+SHA256.swift in Sources */,
+				61A3E3D92C33126F00076BD3 /* CEWorkspaceSettingsData.swift in Sources */,
+				B6EA1FFD29DB792C001BF195 /* ThemeSettingsColorPreview.swift in Sources */,
+				66AF6CF02BF183CA00D83C9D /* ImageDimensions.swift in Sources */,
+				2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */,
+				3000516A2BBD3A8200A98562 /* ServiceType.swift in Sources */,
+				6C578D8C29CD372700DC73B2 /* ExtensionCommands.swift in Sources */,
+				B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */,
+				6139B9162C29B36500CA584B /* CETaskStatus.swift in Sources */,
+				B6EA1FF829DB78DB001BF195 /* ThemeSettingThemeRow.swift in Sources */,
+				587B9E7629301D8F00AC7927 /* GitTime.swift in Sources */,
+				587B9E5D29301D8F00AC7927 /* GitLabUserRouter.swift in Sources */,
+				588847692992ABCA00996D95 /* Array+SortURLs.swift in Sources */,
+				58822530292C280D00E83CDE /* UtilityAreaFilterTextField.swift in Sources */,
+				6C82D6B929BFE34900495C54 /* HelpCommands.swift in Sources */,
+				6C147C4929A32A080089B630 /* EditorLayoutView.swift in Sources */,
+				6C147C4129A328BF0089B630 /* EditorLayout.swift in Sources */,
+				B6D7EA592971078500301FAC /* InspectorSection.swift in Sources */,
+				B6AB09A32AAABFEC0003A3A6 /* EditorTabBarLeadingAccessories.swift in Sources */,
+				6CD26C772C8EA83900ADBA38 /* URL+absolutePath.swift in Sources */,
+				B69BFDC72B0686910050D9A6 /* GitClient+Initiate.swift in Sources */,
+				58F2EAEF292FB2B0004A9BDE /* ThemeSettingsView.swift in Sources */,
+				85745D632A38F8D900089AAB /* String+HighlightOccurrences.swift in Sources */,
+				B63F6A792C5618EF003B4342 /* TrimWhitespaceFormatter.swift in Sources */,
+				B6EE989027E8879A00CDD8AB /* InspectorAreaView.swift in Sources */,
+				587B9DA229300ABD00AC7927 /* EffectView.swift in Sources */,
+				6C97EBCC2978760400302F95 /* AcknowledgementsWindowController.swift in Sources */,
+				284DC84F2978B7B400BF2770 /* ContributorsView.swift in Sources */,
+				B62AEDC92A2704F3009A9F52 /* UtilityAreaTabView.swift in Sources */,
+				61816B832C81DC2C00C71BF7 /* SearchField.swift in Sources */,
+				30B088052C0D53080063A882 /* LanguageServer+DocumentLink.swift in Sources */,
+				58798250292E78D80085B254 /* CodeFileDocument.swift in Sources */,
+				5878DAA5291AE76700DD95A3 /* OpenQuicklyView.swift in Sources */,
+				B6966A302C33282200259C2D /* RemoteBranchPicker.swift in Sources */,
+				201169D72837B2E300F92B46 /* SourceControlNavigatorView.swift in Sources */,
+				B6F0517929D9E3C900D72287 /* SourceControlGitView.swift in Sources */,
+				587B9E8329301D8F00AC7927 /* GitHubPullRequest.swift in Sources */,
+				6C85F7562C3CA638008E9836 /* EditorHistoryMenus.swift in Sources */,
+				5878DA82291863F900DD95A3 /* AcknowledgementsView.swift in Sources */,
+				587B9E8529301D8F00AC7927 /* GitHubReview.swift in Sources */,
+				58D01C9A293167DC00C5B6B4 /* CodeEditKeychain.swift in Sources */,
+				6CB94CFE2C9F1C9A00E8651C /* TextView+LSPRange.swift in Sources */,
+				B6966A2E2C3056AD00259C2D /* SourceControlCommands.swift in Sources */,
+				B62AEDAA2A1FCBE5009A9F52 /* WorkspacePanelTabBar.swift in Sources */,
+				20D839AB280DEB2900B27357 /* NoSelectionInspectorView.swift in Sources */,
+				30B0880F2C0D53080063A882 /* LanguageServer+SelectionRange.swift in Sources */,
+				30B0880C2C0D53080063A882 /* LanguageServer+InlayHint.swift in Sources */,
+				587B9E5A29301D8F00AC7927 /* GitCloneView.swift in Sources */,
+				B65B10F52B081A0C002852CF /* SourceControlAddExistingRemoteView.swift in Sources */,
+				58D01C99293167DC00C5B6B4 /* String+MD5.swift in Sources */,
+				20EBB505280C329800F3A5DA /* CommitListItemView.swift in Sources */,
+				669A50512C380C1800304CD8 /* String+Escaped.swift in Sources */,
+				5878DAB2291D627C00DD95A3 /* EditorJumpBarView.swift in Sources */,
+				664935422C35A5BC00461C35 /* NSTableViewWrapper.swift in Sources */,
+				04BC1CDE2AD9B4B000A83EA5 /* EditorFileTabCloseButton.swift in Sources */,
+				6C6BD70129CD172700235D17 /* ExtensionsListView.swift in Sources */,
+				043C321627E3201F006AE443 /* WorkspaceDocument.swift in Sources */,
+				6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */,
+				58798236292E30B90085B254 /* FeedbackType.swift in Sources */,
+				6CE21E812C643D8F0031B056 /* CETerminalView.swift in Sources */,
+				587B9E6D29301D8F00AC7927 /* GitLabEventNote.swift in Sources */,
+				587B9E9129301D8F00AC7927 /* BitBucketOAuthRouter.swift in Sources */,
+				B6FA3F882BF41C940023DE9C /* ThemeSettingsThemeToken.swift in Sources */,
+				B6E41C7429DD40010088F9F4 /* View+HideSidebarToggle.swift in Sources */,
+				611191FA2B08CC9000D4459B /* SearchIndexer.swift in Sources */,
+				58822532292C280D00E83CDE /* UtilityAreaViewModel.swift in Sources */,
+				043BCF03281DA18A000AC47C /* WorkspaceDocument+SearchState.swift in Sources */,
+				6CC3D1FD2D14761A00822B65 /* SemanticTokenMapRangeProvider.swift in Sources */,
+				58822527292C280D00E83CDE /* StatusBarIndentSelector.swift in Sources */,
+				587B9E9629301D8F00AC7927 /* BitBucketRepositories.swift in Sources */,
+				5878DAA6291AE76700DD95A3 /* OpenQuicklyPreviewView.swift in Sources */,
+				58798286292ED0FB0085B254 /* SwiftTerm+Color+Init.swift in Sources */,
+				30B087FC2C0D53080063A882 /* LanguageServer+CallHierarchy.swift in Sources */,
+				6CFF967C29BEBD5200182D6F /* WindowCommands.swift in Sources */,
+				587B9E7229301D8F00AC7927 /* GitJSONPostRouter.swift in Sources */,
+				6C6362D42C3E321A0025570D /* Editor+History.swift in Sources */,
+				6C85BB412C21061A00EB5DEF /* GitHubComment.swift in Sources */,
+				5878DAB0291D627C00DD95A3 /* EditorJumpBarMenu.swift in Sources */,
+				04BA7C242AE2E7CD00584E1C /* SourceControlNavigatorSyncView.swift in Sources */,
+				587B9DA529300ABD00AC7927 /* PressActionsModifier.swift in Sources */,
+				6C147C4029A328BC0089B630 /* SplitViewData.swift in Sources */,
+				6C1CC9982B1E770B0002349B /* AsyncFileIterator.swift in Sources */,
+				587B9E9029301D8F00AC7927 /* BitBucketTokenRouter.swift in Sources */,
+				B6C6A42E29771A8D00A3D28F /* EditorTabButtonStyle.swift in Sources */,
+				6C278CC72C93971F0066F6D9 /* LSPContentCoordinator.swift in Sources */,
+				58822525292C280D00E83CDE /* StatusBarMenuStyle.swift in Sources */,
+				6C147C4229A328C10089B630 /* Editor.swift in Sources */,
+				B6C4F2A32B3CA74800B2B140 /* CommitDetailsView.swift in Sources */,
+				6C2C155829B4F49100EA60A5 /* SplitViewItem.swift in Sources */,
+				6CDA84AD284C1BA000C1CC3A /* EditorTabBarContextMenu.swift in Sources */,
+				6C81916729B3E80700B75C92 /* ModifierKeysObserver.swift in Sources */,
+				B6966A322C3348D300259C2D /* WorkspaceSheets.swift in Sources */,
+				613899BC2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift in Sources */,
+				611192002B08CCD700D4459B /* SearchIndexer+Memory.swift in Sources */,
+				587B9E8129301D8F00AC7927 /* PublicKey.swift in Sources */,
+				B616EA882D651ADA00DF9029 /* ScrollOffsetPreferenceKey.swift in Sources */,
+				B616EA892D651ADA00DF9029 /* OverlayButtonStyle.swift in Sources */,
+				6CCEE7F52D2C91F700B2B854 /* UtilityAreaTerminalPicker.swift in Sources */,
+				611191FE2B08CCD200D4459B /* SearchIndexer+File.swift in Sources */,
+				B69D3EE52C5F54B3005CF43A /* TasksPopoverMenuItem.swift in Sources */,
+				669A50532C380C8E00304CD8 /* Collection+subscript_safe.swift in Sources */,
+				6C08249E2C55768400A0751E /* UtilityAreaTerminal.swift in Sources */,
+				6CB52DC92AC8DC3E002E75B3 /* CEWorkspaceFileManager+FileManagement.swift in Sources */,
+				58F2EB0B292FB2B0004A9BDE /* AccountsSettings.swift in Sources */,
+				5882252A292C280D00E83CDE /* StatusBarToggleUtilityAreaButton.swift in Sources */,
+				B6AB09A12AAABAAE0003A3A6 /* EditorTabs.swift in Sources */,
+				04C3255B2801F86400C8DA2D /* ProjectNavigatorViewController.swift in Sources */,
+				587B9E6029301D8F00AC7927 /* GitLabOAuthRouter.swift in Sources */,
+				B6AB09B32AB919CF0003A3A6 /* View+actionBar.swift in Sources */,
+				617DB3DA2C25B07F00B58BFE /* ActivitiesDetailView.swift in Sources */,
+				6C05A8AF284D0CA3007F4EAA /* WorkspaceDocument+Listeners.swift in Sources */,
+				6C9AE6712D14A9F700FAE8D2 /* LazyServiceWrapper.swift in Sources */,
+				588847632992A2A200996D95 /* CEWorkspaceFile.swift in Sources */,
+				30B088082C0D53080063A882 /* LanguageServer+FoldingRange.swift in Sources */,
+				6C2C155D29B4F4E500EA60A5 /* SplitViewReader.swift in Sources */,
+				B65B10EF2B07C454002852CF /* GitClient+Remote.swift in Sources */,
+				58AFAA2F2933C69E00482B53 /* EditorItemID.swift in Sources */,
+				6C4104E3297C87A000F472BA /* BlurButtonStyle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3717,6 +3901,31 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				61FB03B02C3C76AF001B3671 /* TaskManagerTests.swift in Sources */,
+				61FB03AC2C3C1FDF001B3671 /* ShellTests.swift in Sources */,
+				583E528C29361B39001AB554 /* CodeEditUITests.swift in Sources */,
+				6C7D6D462C9092EC00B69EE0 /* BufferingServerConnection.swift in Sources */,
+				613053652B23A49300D767E3 /* TemporaryFile.swift in Sources */,
+				6C510CBC2D2ECD68006EBE85 /* UtilityAreaViewModelTests.swift in Sources */,
+				617DB3DF2C25E13800B58BFE /* ActivityManagerTests.swift in Sources */,
+				775566502C27FD1B001E7A4D /* CodeFileDocument+UTTypeTests.swift in Sources */,
+				587B60F82934124200D5CD8F /* CEWorkspaceFileManagerTests.swift in Sources */,
+				6130535F2B23A31300D767E3 /* MemorySearchTests.swift in Sources */,
+				587B61012934170A00D5CD8F /* UnitTests_Extensions.swift in Sources */,
+				6C1F3DA22C18C55800F6DEF6 /* ShellIntegrationTests.swift in Sources */,
+				283BDCC52972F236002AFF81 /* AcknowledgementsTests.swift in Sources */,
+				6CD26C8A2C8F91ED00ADBA38 /* LanguageServer+DocumentTests.swift in Sources */,
+				4EE96ECB2960565E00FFBEA8 /* DocumentsUnitTests.swift in Sources */,
+				4EE96ECE296059E000FFBEA8 /* NSHapticFeedbackPerformerMock.swift in Sources */,
+				61FB03AE2C3C2493001B3671 /* CEActiveTaskTests.swift in Sources */,
+				6130535C2B23933D00D767E3 /* MemoryIndexingTests.swift in Sources */,
+				6195E3112B640485007261CA /* WorkspaceDocument+SearchState+IndexTests.swift in Sources */,
+				6130536B2B24722C00D767E3 /* AsyncIndexingTests.swift in Sources */,
+				613899C02B6E70FE00A5CAF6 /* FuzzySearchTests.swift in Sources */,
+				6C3B4CD42D0E2CB000C6759E /* SemanticTokenMapTests.swift in Sources */,
+				6195E30D2B64044F007261CA /* WorkspaceDocument+SearchState+FindTests.swift in Sources */,
+				6195E30F2B640474007261CA /* WorkspaceDocument+SearchState+FindAndReplaceTests.swift in Sources */,
+				587B612E293419B700D5CD8F /* CodeFileTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

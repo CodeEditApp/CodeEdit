@@ -1,5 +1,5 @@
 //
-//  ActivitysDetailView.swift
+//  ActivitiesDetailView.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 21.06.24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ActivitysDetailView: View {
+struct ActivitiesDetailView: View {
     @ObservedObject var activityManager: ActivityManager
     @State private var selectedActivityIndex: Int = 0
 
@@ -45,5 +45,5 @@ struct ActivitysDetailView: View {
 }
 
 #Preview {
-    ActivitysDetailView(activityManager: ActivityManager())
+    ActivitiesDetailView(activityManager: ActivityManager())
 }
