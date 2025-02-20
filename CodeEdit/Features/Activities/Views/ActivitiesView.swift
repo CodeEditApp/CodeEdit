@@ -1,5 +1,5 @@
 //
-//  TaskNotificationView.swift
+//  ActivityView.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 21.06.24.
@@ -7,36 +7,36 @@
 
 import SwiftUI
 
-struct TaskNotificationView: View {
+struct ActivityView: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @ObservedObject var taskNotificationHandler: TaskNotificationHandler
+    @ObservedObject var activityManager: ActivityManager
     @State private var isPresented: Bool = false
-    @State var notification: TaskNotificationModel?
+    @State var activity: CEActivity?
 
     var body: some View {
         ZStack {
-            if let notification {
+            if let activity {
                 HStack {
-                    Text(notification.title)
+                    Text(activity.title)
                         .font(.subheadline)
                         .transition(
                             .asymmetric(insertion: .move(edge: .top), removal: .move(edge: .bottom))
                             .combined(with: .opacity)
                         )
-                        .id("NotificationTitle" + notification.title)
+                        .id("ActivityTitle" + activity.title)
 
-                    if notification.isLoading {
+                    if activity.isLoading {
                         CECircularProgressView(
-                            progress: notification.percentage,
-                            currentTaskCount: taskNotificationHandler.notifications.count
+                            progress: activity.percentage,
+                            currentTaskCount: activityManager.activities.count
                         )
                         .padding(.horizontal, -1)
                         .frame(height: 16)
                     } else {
-                        if taskNotificationHandler.notifications.count > 1 {
-                            Text("\(taskNotificationHandler.notifications.count)")
+                        if activityManager.activities.count > 1 {
+                            Text("\(activityManager.activities.count)")
                                 .font(.caption)
                                 .padding(5)
                                 .background(
@@ -54,17 +54,17 @@ struct TaskNotificationView: View {
                 .padding(-3)
                 .padding(.trailing, 3)
                 .popover(isPresented: $isPresented, arrowEdge: .bottom) {
-                    TaskNotificationsDetailView(taskNotificationHandler: taskNotificationHandler)
+                    ActivitysDetailView(activityManager: activityManager)
                 }
                 .onTapGesture {
                     self.isPresented.toggle()
                 }
             }
         }
-        .animation(.easeInOut, value: notification)
-        .onChange(of: taskNotificationHandler.notifications) { newValue in
+        .animation(.easeInOut, value: activity)
+        .onChange(of: activityManager.activities) { newValue in
             withAnimation {
-                notification = newValue.first
+                activity = newValue.first
             }
         }
     }
@@ -72,5 +72,5 @@ struct TaskNotificationView: View {
 }
 
 #Preview {
-    TaskNotificationView(taskNotificationHandler: TaskNotificationHandler())
+    ActivityView(activityManager: ActivityManager())
 }

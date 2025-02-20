@@ -15,15 +15,13 @@ extension WorkspaceDocument.SearchState {
         guard let url = workspace.fileURL else { return }
 
         indexStatus = .indexing(progress: 0.0)
-        let uuidString = UUID().uuidString
-        let createInfo: [String: Any] = [
-            "id": uuidString,
-            "action": "create",
-            "title": "Indexing | Processing files",
-            "message": "Creating an index to enable fast and accurate searches within your codebase.",
-            "isLoading": true
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createInfo)
+        
+        // Create activity using new API
+        let activity = workspace.activityManager.post(
+            title: "Indexing | Processing files",
+            message: "Creating an index to enable fast and accurate searches within your codebase.",
+            isLoading: true
+        )
 
         Task.detached {
             let filePaths = self.getFileURLs(at: url)
@@ -41,12 +39,11 @@ extension WorkspaceDocument.SearchState {
                     await MainActor.run {
                         self.indexStatus = .indexing(progress: progress)
                     }
-                    let updateInfo: [String: Any] = [
-                        "id": uuidString,
-                        "action": "update",
-                        "percentage": progress
-                    ]
-                    NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: updateInfo)
+                    // Update activity using new API
+                    self.workspace.activityManager.update(
+                        id: activity.id,
+                        percentage: progress
+                    )
                 }
             }
             asyncController.index.flush()
@@ -54,20 +51,18 @@ extension WorkspaceDocument.SearchState {
             await MainActor.run {
                 self.indexStatus = .done
             }
-            let updateInfo: [String: Any] = [
-                "id": uuidString,
-                "action": "update",
-                "title": "Finished indexing",
-                "isLoading": false
-            ]
-            NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: updateInfo)
-
-            let deleteInfo = [
-                "id": uuidString,
-                "action": "deleteWithDelay",
-                "delay": 4.0
-            ]
-            NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteInfo)
+            
+            // Update and delete activity using new API
+            self.workspace.activityManager.update(
+                id: activity.id,
+                title: "Finished indexing",
+                isLoading: false
+            )
+            
+            self.workspace.activityManager.delete(
+                id: activity.id,
+                delay: 4.0
+            )
         }
     }
 

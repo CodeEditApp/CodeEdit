@@ -1,5 +1,5 @@
 //
-//  TaskNotificationHandlerTests.swift
+//  ActivityManagerTests.swift
 //  CodeEditTests
 //
 //  Created by Tommy Ludwig on 21.06.24.
@@ -8,128 +8,66 @@
 import XCTest
 @testable import CodeEdit
 
-final class TaskNotificationHandlerTests: XCTestCase {
-    var taskNotificationHandler: TaskNotificationHandler!
+final class ActivityManagerTests: XCTestCase {
+    var activityManager: ActivityManager!
 
     override func setUp() {
         super.setUp()
-        taskNotificationHandler = TaskNotificationHandler()
+        activityManager = ActivityManager()
     }
 
     override func tearDown() {
-        taskNotificationHandler = nil
+        activityManager = nil
         super.tearDown()
     }
 
     func testCreateTask() {
-        let uuid = UUID().uuidString
-        let userInfo: [String: Any] = [
-            "id": uuid,
-            "action": "create",
-            "title": "Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: userInfo)
-
-        let testExpectation = XCTestExpectation()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            XCTAssertEqual(self.taskNotificationHandler.notifications.first?.id, uuid)
-            testExpectation.fulfill()
-        }
-        wait(for: [testExpectation], timeout: 1)
+        let activity = activityManager.post(title: "Task Title")
+        XCTAssertEqual(activityManager.activities.first?.id, activity.id)
+        XCTAssertEqual(activityManager.activities.first?.title, "Task Title")
     }
 
     func testCreateTaskWithPriority() {
-        let task1: [String: Any] = [
-            "id": UUID().uuidString,
-            "action": "create",
-            "title": "Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: task1)
+        let activity1 = activityManager.post(title: "Task Title")
+        let activity2 = activityManager.post(
+            priority: true,
+            title: "Priority Task Title"
+        )
 
-        let task2: [String: Any] = [
-            "id": UUID().uuidString,
-            "action": "createWithPriority",
-            "title": "Priority Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: task2)
-
-        let testExpectation = XCTestExpectation()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-            XCTAssertEqual(self.taskNotificationHandler.notifications.first?.title, "Priority Task Title")
-            testExpectation.fulfill()
-        }
-        wait(for: [testExpectation], timeout: 1)
+        XCTAssertEqual(activityManager.activities.first?.id, activity2.id)
+        XCTAssertEqual(activityManager.activities.first?.title, "Priority Task Title")
+        XCTAssertEqual(activityManager.activities.last?.id, activity1.id)
     }
 
     func testUpdateTask() {
-        let uuid = UUID().uuidString
-        let taskInfo: [String: Any] = [
-            "id": uuid,
-            "action": "create",
-            "title": "Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: taskInfo)
+        let activity = activityManager.post(title: "Task Title")
+        
+        activityManager.update(
+            id: activity.id,
+            title: "Updated Task Title"
+        )
 
-        let taskUpdateInfo: [String: Any] = [
-            "id": uuid,
-            "action": "update",
-            "title": "Updated Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: taskUpdateInfo)
-
-        let testExpectation = XCTestExpectation()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            XCTAssertEqual(self.taskNotificationHandler.notifications.first?.title, "Updated Task Title")
-            testExpectation.fulfill()
-        }
-        wait(for: [testExpectation], timeout: 1)
+        XCTAssertEqual(activityManager.activities.first?.title, "Updated Task Title")
     }
 
     func testDeleteTask() {
-        let uuid = UUID().uuidString
-        let createUserInfo: [String: Any] = [
-            "id": uuid,
-            "action": "create",
-            "title": "Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createUserInfo)
-        let deleteUserInfo: [String: Any] = [
-            "id": uuid,
-            "action": "delete"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteUserInfo)
-
-        let testExpectation = XCTestExpectation()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            XCTAssertTrue(self.taskNotificationHandler.notifications.isEmpty)
-            testExpectation.fulfill()
-        }
-        wait(for: [testExpectation], timeout: 1)
+        let activity = activityManager.post(title: "Task Title")
+        activityManager.delete(id: activity.id)
+        
+        XCTAssertTrue(activityManager.activities.isEmpty)
     }
 
     func testDeleteTaskWithDelay() {
-        let uuid = UUID().uuidString
-        let createUserInfo: [String: Any] = [
-            "id": uuid,
-            "action": "create",
-            "title": "Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createUserInfo)
-        let deleteUserInfo: [String: Any] = [
-            "id": uuid,
-            "action": "deleteWithDelay",
-            "delay": 0.2
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteUserInfo)
+        let activity = activityManager.post(title: "Task Title")
+        activityManager.delete(id: activity.id, delay: 0.2)
 
-        let testExpectation = XCTestExpectation()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            XCTAssertFalse(self.taskNotificationHandler.notifications.isEmpty)
-        }
+        XCTAssertFalse(activityManager.activities.isEmpty)
+        
+        let expectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            XCTAssertTrue(self.taskNotificationHandler.notifications.isEmpty)
-            testExpectation.fulfill()
+            XCTAssertTrue(self.activityManager.activities.isEmpty)
+            expectation.fulfill()
         }
-        wait(for: [testExpectation], timeout: 1)
+        wait(for: [expectation], timeout: 1)
     }
 }
