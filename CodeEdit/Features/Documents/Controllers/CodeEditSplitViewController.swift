@@ -41,7 +41,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let windowRef else {
+        guard windowRef != nil else {
             // swiftlint:disable:next line_length
             assertionFailure("No WindowRef found, not initialized properly or the window was dereferenced and the controller was not.")
             return

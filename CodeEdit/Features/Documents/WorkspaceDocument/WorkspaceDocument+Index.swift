@@ -10,18 +10,20 @@ import Foundation
 extension WorkspaceDocument.SearchState {
     /// Adds the contents of the current workspace URL to the search index.
     /// That means that the contents of the workspace will be indexed and searchable.
-    func addProjectToIndex() {
+    func addProjectToIndex() async {
         guard let indexer = indexer else { return }
         guard let url = workspace.fileURL else { return }
 
         indexStatus = .indexing(progress: 0.0)
-        
+
         // Create activity using new API
-        let activity = workspace.activityManager.post(
-            title: "Indexing | Processing files",
-            message: "Creating an index to enable fast and accurate searches within your codebase.",
-            isLoading: true
-        )
+        let activity = await MainActor.run {
+            workspace.activityManager.post(
+                title: "Indexing | Processing files",
+                message: "Creating an index to enable fast and accurate searches within your codebase.",
+                isLoading: true
+            )
+        }
 
         Task.detached {
             let filePaths = self.getFileURLs(at: url)
@@ -39,8 +41,7 @@ extension WorkspaceDocument.SearchState {
                     await MainActor.run {
                         self.indexStatus = .indexing(progress: progress)
                     }
-                    // Update activity using new API
-                    self.workspace.activityManager.update(
+                    await self.workspace.activityManager.update(
                         id: activity.id,
                         percentage: progress
                     )
@@ -51,15 +52,14 @@ extension WorkspaceDocument.SearchState {
             await MainActor.run {
                 self.indexStatus = .done
             }
-            
-            // Update and delete activity using new API
-            self.workspace.activityManager.update(
+
+            await self.workspace.activityManager.update(
                 id: activity.id,
                 title: "Finished indexing",
                 isLoading: false
             )
-            
-            self.workspace.activityManager.delete(
+
+            await self.workspace.activityManager.delete(
                 id: activity.id,
                 delay: 4.0
             )
