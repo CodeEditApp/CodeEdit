@@ -172,6 +172,64 @@ final class NotificationManager: NSObject, ObservableObject {
         }
     }
 
+    /// Updates an existing notification
+    /// - Parameters:
+    ///   - id: UUID of notification to update
+    ///   - title: New title (optional)
+    ///   - description: New description (optional)
+    ///   - actionButtonTitle: New action button title (optional)
+    ///   - action: New action closure (optional)
+    ///   - isSticky: New sticky state (optional)
+    func update(
+        id: UUID,
+        title: String? = nil,
+        description: String? = nil,
+        actionButtonTitle: String? = nil,
+        action: (() -> Void)? = nil,
+        isSticky: Bool? = nil
+    ) {
+        if let index = notifications.firstIndex(where: { $0.id == id }) {
+            var notification = notifications[index]
+
+            if let title = title {
+                notification.title = title
+            }
+            if let description = description {
+                notification.description = description
+            }
+            if let actionButtonTitle = actionButtonTitle {
+                notification.actionButtonTitle = actionButtonTitle
+            }
+            if let action = action {
+                notification.action = action
+            }
+            if let isSticky = isSticky {
+                notification.isSticky = isSticky
+            }
+
+            notifications[index] = notification
+        }
+    }
+
+    /// Deletes a notification
+    /// - Parameter id: UUID of notification to delete
+    func delete(id: UUID) {
+        if let notification = notifications.first(where: { $0.id == id }) {
+            dismissNotification(notification)
+        }
+    }
+
+    /// Deletes a notification after a delay
+    /// - Parameters:
+    ///   - id: UUID of notification to delete
+    ///   - delay: Time to wait before deleting
+    func delete(id: UUID, delay: TimeInterval) {
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(delay))
+            delete(id: id)
+        }
+    }
+
     override init() {
         super.init()
         setupNotificationDelegate()

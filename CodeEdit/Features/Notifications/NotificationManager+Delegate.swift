@@ -43,7 +43,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         completionHandler([.banner, .sound])
     }
 
-    func setupNotificationDelegate() {
+    public func setupNotificationDelegate() {
         UNUserNotificationCenter.current().delegate = self
 
         // Create action button
