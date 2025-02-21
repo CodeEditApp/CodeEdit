@@ -11,63 +11,83 @@ import XCTest
 final class ActivityManagerTests: XCTestCase {
     var activityManager: ActivityManager!
 
-    override func setUp() {
-        super.setUp()
-        activityManager = ActivityManager()
+    override func setUp() async throws {
+        try await super.setUp()
+        // Initialize on main actor since ActivityManager is main actor-isolated
+        await MainActor.run {
+            activityManager = ActivityManager()
+        }
     }
 
-    override func tearDown() {
-        activityManager = nil
-        super.tearDown()
+    override func tearDown() async throws {
+        await MainActor.run {
+            activityManager = nil
+        }
+        try await super.tearDown()
     }
 
-    func testCreateTask() {
-        let activity = activityManager.post(title: "Task Title")
-        XCTAssertEqual(activityManager.activities.first?.id, activity.id)
-        XCTAssertEqual(activityManager.activities.first?.title, "Task Title")
+    func testCreateTask() async {
+        await MainActor.run {
+            let activity = activityManager.post(title: "Task Title")
+            XCTAssertEqual(activityManager.activities.first?.id, activity.id)
+            XCTAssertEqual(activityManager.activities.first?.title, "Task Title")
+        }
     }
 
-    func testCreateTaskWithPriority() {
-        let activity1 = activityManager.post(title: "Task Title")
-        let activity2 = activityManager.post(
-            priority: true,
-            title: "Priority Task Title"
-        )
+    func testCreateTaskWithPriority() async {
+        await MainActor.run {
+            let activity1 = activityManager.post(title: "Task Title")
+            let activity2 = activityManager.post(
+                priority: true,
+                title: "Priority Task Title"
+            )
 
-        XCTAssertEqual(activityManager.activities.first?.id, activity2.id)
-        XCTAssertEqual(activityManager.activities.first?.title, "Priority Task Title")
-        XCTAssertEqual(activityManager.activities.last?.id, activity1.id)
+            XCTAssertEqual(activityManager.activities.first?.id, activity2.id)
+            XCTAssertEqual(activityManager.activities.first?.title, "Priority Task Title")
+            XCTAssertEqual(activityManager.activities.last?.id, activity1.id)
+        }
     }
 
-    func testUpdateTask() {
-        let activity = activityManager.post(title: "Task Title")
+    func testUpdateTask() async {
+        await MainActor.run {
+            let activity = activityManager.post(title: "Task Title")
 
-        activityManager.update(
-            id: activity.id,
-            title: "Updated Task Title"
-        )
+            activityManager.update(
+                id: activity.id,
+                title: "Updated Task Title"
+            )
 
-        XCTAssertEqual(activityManager.activities.first?.title, "Updated Task Title")
+            XCTAssertEqual(activityManager.activities.first?.title, "Updated Task Title")
+        }
     }
 
-    func testDeleteTask() {
-        let activity = activityManager.post(title: "Task Title")
-        activityManager.delete(id: activity.id)
+    func testDeleteTask() async {
+        await MainActor.run {
+            let activity = activityManager.post(title: "Task Title")
+            activityManager.delete(id: activity.id)
 
-        XCTAssertTrue(activityManager.activities.isEmpty)
+            XCTAssertTrue(activityManager.activities.isEmpty)
+        }
     }
 
-    func testDeleteTaskWithDelay() {
-        let activity = activityManager.post(title: "Task Title")
-        activityManager.delete(id: activity.id, delay: 0.2)
-
-        XCTAssertFalse(activityManager.activities.isEmpty)
-
+    func testDeleteTaskWithDelay() async throws {
         let expectation = XCTestExpectation()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+
+        await MainActor.run {
+            let activity = activityManager.post(title: "Task Title")
+            activityManager.delete(id: activity.id, delay: 0.2)
+
+            XCTAssertFalse(activityManager.activities.isEmpty)
+        }
+
+        // Wait for deletion
+        try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds
+
+        await MainActor.run {
             XCTAssertTrue(self.activityManager.activities.isEmpty)
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 1)
+
+        await fulfillment(of: [expectation], timeout: 1)
     }
 }
