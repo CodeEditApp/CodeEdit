@@ -10,6 +10,7 @@ import Combine
 import SwiftUI
 
 /// Manages activities for a workspace
+@MainActor
 final class ActivityManager: ObservableObject {
     /// Currently displayed activities
     @Published private(set) var activities: [CEActivity] = []
@@ -59,13 +60,13 @@ final class ActivityManager: ObservableObject {
     func update(
         id: String,
         title: String? = nil,
-        message: String? = nil, 
+        message: String? = nil,
         percentage: Double? = nil,
         isLoading: Bool? = nil
     ) {
         if let index = activities.firstIndex(where: { $0.id == id }) {
             var activity = activities[index]
-            
+
             if let title = title {
                 activity.title = title
             }
@@ -96,8 +97,9 @@ final class ActivityManager: ObservableObject {
     ///   - id: ID of activity to delete
     ///   - delay: Time to wait before deleting
     func delete(id: String, delay: TimeInterval) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
-            self?.delete(id: id)
+        Task { @MainActor in
+            try? await Task.sleep(for: .seconds(delay))
+            delete(id: id)
         }
     }
 }

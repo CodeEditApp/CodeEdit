@@ -41,7 +41,7 @@ final class ActivityManagerTests: XCTestCase {
 
     func testUpdateTask() {
         let activity = activityManager.post(title: "Task Title")
-        
+
         activityManager.update(
             id: activity.id,
             title: "Updated Task Title"
@@ -53,7 +53,7 @@ final class ActivityManagerTests: XCTestCase {
     func testDeleteTask() {
         let activity = activityManager.post(title: "Task Title")
         activityManager.delete(id: activity.id)
-        
+
         XCTAssertTrue(activityManager.activities.isEmpty)
     }
 
@@ -62,7 +62,7 @@ final class ActivityManagerTests: XCTestCase {
         activityManager.delete(id: activity.id, delay: 0.2)
 
         XCTAssertFalse(activityManager.activities.isEmpty)
-        
+
         let expectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             XCTAssertTrue(self.activityManager.activities.isEmpty)
