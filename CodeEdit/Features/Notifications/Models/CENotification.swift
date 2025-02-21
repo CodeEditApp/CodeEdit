@@ -11,11 +11,11 @@ import SwiftUI
 struct CENotification: Identifiable, Equatable {
     let id: UUID
     let icon: IconType
-    let title: String
-    let description: String
-    let actionButtonTitle: String
-    let action: () -> Void
-    let isSticky: Bool
+    var title: String
+    var description: String
+    var actionButtonTitle: String
+    var action: () -> Void
+    var isSticky: Bool
     var isRead: Bool
     let timestamp: Date
     var isBeingDismissed: Bool = false
