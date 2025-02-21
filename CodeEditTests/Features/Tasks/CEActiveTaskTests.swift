@@ -11,21 +11,28 @@ import XCTest
 final class CEActiveTaskTests: XCTestCase {
     var task: CETask!
     var activeTask: CEActiveTask!
+    var mockWorkspace: WorkspaceDocument!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+
+        mockWorkspace = try WorkspaceDocument(
+            contentsOf: URL(fileURLWithPath: NSTemporaryDirectory()),
+            ofType: "public.folder"
+        )
 
         task = CETask(
             name: "Test Task",
             command: "echo $STATE",
             environmentVariables: [CETask.EnvironmentVariable(key: "STATE", value: "Testing")]
         )
-        activeTask = CEActiveTask(task: task)
+        activeTask = CEActiveTask(task: task, workspace: mockWorkspace)
     }
 
     override func tearDownWithError() throws {
         task = nil
         activeTask = nil
+        mockWorkspace = nil
         try super.tearDownWithError()
     }
 
