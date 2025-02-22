@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftGitX
 
 struct RepoOutlineGroupItem: Hashable, Identifiable {
     var id: String
@@ -16,6 +17,6 @@ struct RepoOutlineGroupItem: Hashable, Identifiable {
     var imageColor: Color?
     var children: [RepoOutlineGroupItem]?
     var branch: GitBranch?
-    var stashEntry: GitStashEntry?
+    var stashEntry: StashEntry?
     var remote: GitRemote?
 }

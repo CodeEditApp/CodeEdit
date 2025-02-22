@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeEditSymbols
+import SwiftGitX
 
 struct SourceControlNavigatorHistoryView: View {
     enum Status {
@@ -21,20 +22,17 @@ struct SourceControlNavigatorHistoryView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
     @State var commitHistoryStatus: Status = .loading
-    @State var commitHistory: [GitCommit] = []
+    @State var commitHistory: [Commit] = []
 
-    @State var selection: GitCommit?
+    @State var selection: Commit?
     @State private var width: CGFloat = CGFloat.zero
 
     func updateCommitHistory() async {
+        guard let repository = sourceControlManager.repository else { return }
+
         do {
             commitHistoryStatus = .loading
-            let commits = try await sourceControlManager
-                .gitClient
-                .getCommitHistory(
-                    branchName: sourceControlManager.currentBranch?.name,
-                    showMergeCommits: Settings.shared.preferences.sourceControl.git.showMergeCommitsPerFileLog
-                )
+            let commits = try Array(repository.log(sorting: .time))
             await MainActor.run {
                 commitHistory = commits
                 commitHistoryStatus = .ready

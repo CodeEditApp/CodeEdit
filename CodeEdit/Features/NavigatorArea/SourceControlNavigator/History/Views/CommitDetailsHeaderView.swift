@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import SwiftGitX
 
 struct CommitDetailsHeaderView: View {
-    var commit: GitCommit
+    var commit: Commit
 
     private var defaultAvatar: some View {
         Image(systemName: "person.crop.circle.fill")
@@ -19,9 +20,9 @@ struct CommitDetailsHeaderView: View {
     }
 
     private func commitDetails() -> String {
-        if commit.committerEmail == "noreply@github.com" {
+        if commit.committer.email == "noreply@github.com" {
             return commit.message.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if commit.authorEmail != commit.committerEmail {
+        } else if commit.author.email != commit.committer.email {
             return commit.message.trimmingCharacters(in: .whitespacesAndNewlines)
         } else {
             return "\(commit.message)\n\n\(coAuthDetail())".trimmingCharacters(in: .whitespacesAndNewlines)
@@ -29,16 +30,16 @@ struct CommitDetailsHeaderView: View {
     }
 
     private func coAuthDetail() -> String {
-        if commit.committerEmail == "noreply@github.com" {
+        if commit.committer.email == "noreply@github.com" {
             return ""
-        } else if commit.authorEmail != commit.committerEmail {
-            return "Co-authored by: \(commit.committer)\n<\(commit.committerEmail)>"
+        } else if commit.author.email != commit.committer.email {
+            return "Co-authored by: \(commit.committer)\n<\(commit.committer.email)>"
         }
         return ""
     }
 
     private func generateAvatarHash() -> String {
-        let hash = commit.authorEmail.md5(trim: true, caseSensitive: false)
+        let hash = commit.author.email.md5(trim: true, caseSensitive: false)
         return "\(hash)?d=404&s=64" // send 404 if no image available, image size 64x64 (32x32 @2x)
     }
 
@@ -70,18 +71,18 @@ struct CommitDetailsHeaderView: View {
                             .resizable()
                             .clipShape(Circle())
                             .frame(width: 32, height: 32)
-                            .help(commit.author)
+                            .help(commit.author.name)
                     } else if phase.error != nil {
                         defaultAvatar
-                            .help(commit.author)
+                            .help(commit.author.name)
                     } else {
                         defaultAvatar
-                            .help(commit.author)
+                            .help(commit.author.name)
                     }
                 }
 
                 VStack(alignment: .leading) {
-                    Text(commit.author)
+                    Text(commit.author.name)
                         .fontWeight(.bold)
                     Text(commit.date.formatted(date: .abbreviated, time: .shortened))
                         .font(.subheadline)
@@ -90,7 +91,7 @@ struct CommitDetailsHeaderView: View {
 
                 Spacer()
 
-                Text(commit.hash)
+                Text(commit.id.abbreviated)
                     .font(.subheadline)
                     .fontDesign(.monospaced)
                     .background(
@@ -110,8 +111,8 @@ struct CommitDetailsHeaderView: View {
                 .padding(.horizontal, 16)
                 .frame(alignment: .leading)
 
-            if !commit.body.isEmpty {
-                Text(commit.body)
+            if let body = commit.body {
+                Text(body)
                     .padding(.horizontal, 16)
                     .frame(alignment: .leading)
             }

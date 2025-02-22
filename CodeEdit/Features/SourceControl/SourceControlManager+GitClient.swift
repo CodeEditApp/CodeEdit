@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftGitX
 
 extension SourceControlManager {
     /// Validate repository
@@ -69,21 +70,31 @@ extension SourceControlManager {
     }
 
     /// Delete stash entry
-    func deleteStashEntry(stashEntry: GitStashEntry) async throws {
-        try await gitClient.deleteStashEntry(stashEntry.index)
+    func deleteStashEntry(stashEntry: StashEntry) async throws {
+        guard let repository else { return }
+
+        try repository.stash.drop(stashEntry)
+
         try await refreshStashEntries()
     }
 
     /// Apply stash entry
-    func applyStashEntry(stashEntry: GitStashEntry) async throws {
-        try await gitClient.applyStashEntry(stashEntry.index)
+    func applyStashEntry(stashEntry: StashEntry) async throws {
+        guard let repository else { return }
+
+        try repository.stash.apply(stashEntry)
+
         try await refreshStashEntries()
         await refreshAllChangedFiles()
     }
 
+    // TODO: Add stash options
     /// Stash changes
     func stashChanges(message: String?) async throws {
-        try await gitClient.stash(message: message)
+        guard let repository else { return }
+
+        try repository.stash.save(message: message)
+
         try await refreshStashEntries()
         await refreshAllChangedFiles()
     }
@@ -188,7 +199,10 @@ extension SourceControlManager {
 
     /// Commit files selected by user
     func commit(message: String, details: String? = nil) async throws {
-        try await gitClient.commit(message: message, details: details)
+        guard let repository else { return }
+
+        let message = if let details { "\(message)\n\n\(details)" } else { message }
+        try repository.commit(message: message)
 
         await self.refreshAllChangedFiles()
         await self.refreshNumberOfUnsyncedCommits()
@@ -197,13 +211,15 @@ extension SourceControlManager {
     /// Adds the given URLs to the staged changes.
     /// - Parameter files: The files to stage.
     func add(_ files: [URL]) async throws {
-        try await gitClient.add(files)
+        guard let repository else { return }
+        try repository.add(files: files)
     }
 
     /// Removes the given URLs from the staged changes.
     /// - Parameter files: The URLs to un-stage.
     func reset(_ files: [URL]) async throws {
-        try await gitClient.reset(files)
+        guard let repository else { return }
+        try repository.restore(.staged, files: files)
     }
 
     /// Refresh number of unsynced commits
@@ -256,7 +272,9 @@ extension SourceControlManager {
     }
 
     func refreshStashEntries() async throws {
-        let stashEntries = (try? await gitClient.stashList()) ?? []
+        guard let repository else { return }
+
+        let stashEntries = try repository.stash.list()
         await MainActor.run {
             self.stashEntries = stashEntries
         }

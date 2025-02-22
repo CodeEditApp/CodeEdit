@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import SwiftGitX
 
 struct HistoryInspectorItemView: View {
-    var commit: GitCommit
+    var commit: Commit
 
-    @Binding var selection: GitCommit?
+    @Binding var selection: Commit?
 
     private var showPopup: Binding<Bool> {
         Binding<Bool> {

@@ -9,35 +9,6 @@ import Foundation
 import RegexBuilder
 
 extension GitClient {
-    /// Commit files
-    /// - Parameters:
-    ///   - message: Commit message
-    func commit(message: String, details: String?) async throws {
-        let message = message.replacingOccurrences(of: #"""#, with: #"\""#)
-        let command: String
-
-        if let msgDetails = details {
-            command = "commit --message=\"\(message + (msgDetails.isEmpty ? "" : ("\n\n" + msgDetails)))\""
-        } else {
-            command = "commit --message=\"\(message)\""
-        }
-
-        _ = try await run(command)
-    }
-
-    /// Add file to git
-    /// - Parameter file: File to add
-    func add(_ files: [URL]) async throws {
-        let output = try await run("add \(files.map { "'\($0.path(percentEncoded: false))'" }.joined(separator: " "))")
-        print(output)
-    }
-
-    /// Add file to git
-    /// - Parameter file: File to add
-    func reset(_ files: [URL]) async throws {
-        _ = try await run("reset \(files.map { "'\($0.path(percentEncoded: false))'" }.joined(separator: " "))")
-    }
-
     /// Returns tuple of unsynced commits both ahead and behind
     func numberOfUnsyncedCommits() async throws -> (ahead: Int, behind: Int) {
         let output = try await run("status -sb --porcelain=v2").trimmingCharacters(in: .whitespacesAndNewlines)

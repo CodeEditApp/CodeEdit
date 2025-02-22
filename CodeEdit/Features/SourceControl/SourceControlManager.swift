@@ -8,6 +8,7 @@
 import Foundation
 import AppKit
 import OSLog
+import SwiftGitX
 
 /// This class is used to perform git functions such as fetch, pull, add/remove of changes, commit, push, etc.
 /// It also stores remotes, branches, current changes, stashes, and commits
@@ -18,6 +19,9 @@ final class SourceControlManager: ObservableObject {
 
     /// The base URL of the workspace
     let workspaceURL: URL
+
+    /// The repository in the workspace
+    let repository: Repository?
 
     let editorManager: EditorManager
     weak var fileManager: CEWorkspaceFileManager?
@@ -35,7 +39,7 @@ final class SourceControlManager: ObservableObject {
     @Published var remotes: [GitRemote] = []
 
     /// All stashed entries
-    @Published var stashEntries: [GitStashEntry] = []
+    @Published var stashEntries: [StashEntry] = []
 
     /// Number of unsynced commits with remote in current branch
     @Published var numberOfUnsyncedCommits: (ahead: Int, behind: Int) = (ahead: 0, behind: 0)
@@ -119,7 +123,9 @@ final class SourceControlManager: ObservableObject {
     ) {
         self.workspaceURL = workspaceURL
         self.editorManager = editorManager
+
         gitClient = GitClient(directoryURL: workspaceURL, shellClient: currentWorld.shellClient)
+        repository = try? Repository.open(at: workspaceURL)
     }
 
     /// Show alert for error

@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import SwiftGitX
 
 struct CommitListItemView: View {
 
-    var commit: GitCommit
+    var commit: Commit
     var showRef: Bool
     var width: CGFloat
 
@@ -22,7 +23,7 @@ struct CommitListItemView: View {
     }
 
     private func generateAvatarHash() -> String {
-        let hash = commit.authorEmail.md5(trim: true, caseSensitive: false)
+        let hash = commit.author.email.md5(trim: true, caseSensitive: false)
         return "\(hash)?d=404&s=64" // send 404 if no image available, image size 64x64 (32x32 @2x)
     }
 
@@ -48,13 +49,13 @@ struct CommitListItemView: View {
     @Environment(\.openURL)
     private var openCommit
 
-    init(commit: GitCommit, showRef: Bool) {
+    init(commit: Commit, showRef: Bool) {
         self.commit = commit
         self.showRef = showRef
         self.width = 0
     }
 
-    init(commit: GitCommit, showRef: Bool, width: CGFloat) {
+    init(commit: Commit, showRef: Bool, width: CGFloat) {
         self.commit = commit
         self.showRef = showRef
         self.width = width
@@ -69,75 +70,76 @@ struct CommitListItemView: View {
                             .resizable()
                             .clipShape(Circle())
                             .frame(width: 32, height: 32)
-                            .help(commit.author)
+                            .help(commit.author.name)
                     } else if phase.error != nil {
                         defaultAvatar
-                            .help(commit.author)
+                            .help(commit.author.name)
                     } else {
                         defaultAvatar
-                            .help(commit.author)
+                            .help(commit.author.name)
                     }
                 }
             }
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Text(commit.author)
+                    Text(commit.author.name)
                         .fontWeight(.bold)
                         .font(.system(size: 11))
-                    if showRef {
-                        if !commit.refs.isEmpty {
-                            HStack {
-                                ForEach(commit.refs, id: \.self) { ref in
-                                    HStack(spacing: 2.5) {
-                                        Image.branch
-                                            .imageScale(.small)
-                                            .foregroundColor(.secondary)
-                                            .help(ref)
-                                        Text(ref)
-                                    }
-                                    .font(.system(size: 10))
-                                    .frame(height: 13)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 3)
-                                            .padding(.vertical, -1)
-                                            .padding(.leading, -2.5)
-                                            .padding(.trailing, -4)
-                                            .foregroundColor(Color(nsColor: .quaternaryLabelColor))
-                                    )
-                                    .padding(.trailing, 2.5)
-                                }
-                            }
-                        }
-
-                        if !commit.tag.isEmpty {
-                            HStack(spacing: 2.5) {
-                                Image(systemName: "tag")
-                                    .imageScale(.small)
-                                    .foregroundColor(.primary)
-                                    .help(commit.tag)
-                                Text(commit.tag)
-                            }
-                            .font(.system(size: 10))
-                            .frame(height: 13)
-                            .background(
-                                RoundedRectangle(cornerRadius: 3)
-                                    .padding(.vertical, -1)
-                                    .padding(.leading, -2.5)
-                                    .padding(.trailing, -4)
-                                    .foregroundColor(Color(nsColor: .purple).opacity(0.2))
-                            )
-                            .padding(.trailing, 2.5)
-                        }
-                    }
+                    // TODO: Migrate to SwiftGitX
+//                    if showRef {
+//                        if !commit.branches.isEmpty {
+//                            HStack {
+//                                ForEach(commit.refs, id: \.self) { ref in
+//                                    HStack(spacing: 2.5) {
+//                                        Image.branch
+//                                            .imageScale(.small)
+//                                            .foregroundColor(.secondary)
+//                                            .help(ref)
+//                                        Text(ref)
+//                                    }
+//                                    .font(.system(size: 10))
+//                                    .frame(height: 13)
+//                                    .background(
+//                                        RoundedRectangle(cornerRadius: 3)
+//                                            .padding(.vertical, -1)
+//                                            .padding(.leading, -2.5)
+//                                            .padding(.trailing, -4)
+//                                            .foregroundColor(Color(nsColor: .quaternaryLabelColor))
+//                                    )
+//                                    .padding(.trailing, 2.5)
+//                                }
+//                            }
+//                        }
+//
+//                        if !commit.tag.isEmpty {
+//                            HStack(spacing: 2.5) {
+//                                Image(systemName: "tag")
+//                                    .imageScale(.small)
+//                                    .foregroundColor(.primary)
+//                                    .help(commit.tag)
+//                                Text(commit.tag)
+//                            }
+//                            .font(.system(size: 10))
+//                            .frame(height: 13)
+//                            .background(
+//                                RoundedRectangle(cornerRadius: 3)
+//                                    .padding(.vertical, -1)
+//                                    .padding(.leading, -2.5)
+//                                    .padding(.trailing, -4)
+//                                    .foregroundColor(Color(nsColor: .purple).opacity(0.2))
+//                            )
+//                            .padding(.trailing, 2.5)
+//                        }
+//                    }
                 }
 
-                Text("\(commit.message) \(commit.body)")
+                Text(commit.message)
                     .font(.system(size: 11))
                     .lineLimit(2)
             }
             Spacer()
             VStack(alignment: .trailing, spacing: 5) {
-                Text(commit.hash)
+                Text(commit.id.abbreviated)
                     .font(.system(size: 10, design: .monospaced))
                     .background(
                         RoundedRectangle(cornerRadius: 3)
@@ -164,38 +166,40 @@ struct CommitListItemView: View {
                 Button("Copy Identifier") {
                     let pasteboard = NSPasteboard.general
                     pasteboard.clearContents()
-                    pasteboard.setString(commit.commitHash, forType: .string)
+                    pasteboard.setString(commit.id.hex, forType: .string)
                 }
-                Button("Email \(commit.author)...") {
+                Button("Email \(commit.author.name)...") {
                     let service = NSSharingService(named: NSSharingService.Name.composeEmail)
-                    service?.recipients = [commit.authorEmail]
+                    service?.recipients = [commit.author.email]
                     service?.perform(withItems: [])
                 }
                 Divider()
             }
             Group {
-                Button("Tag \(commit.hash)...") {}
+                Button("Tag \(commit.id.hex)...") {}
                     .disabled(true) // TODO: Implementation Needed
-                Button("New Branch from \(commit.hash)...") {}
+                Button("New Branch from \(commit.id.hex)...") {}
                     .disabled(true) // TODO: Implementation Needed
-                Button("Cherry-Pick \(commit.hash)...") {}
-                    .disabled(true) // TODO: Implementation Needed
-            }
-            Group {
-                Divider()
-                if let commitRemoteURL = commit.commitBaseURL?.absoluteString {
-                    Button("View on \(commit.remoteString)...") {
-                        let commitURL = "\(commitRemoteURL)/\(commit.commitHash)"
-                        openCommit(URL(string: commitURL)!)
-                    }
-                    Divider()
-                }
-                Button("Check Out \(commit.hash)...") {}
-                    .disabled(true) // TODO: Implementation Needed
-                Divider()
-                Button("History Editor Help") {}
+                Button("Cherry-Pick \(commit.id.hex)...") {}
                     .disabled(true) // TODO: Implementation Needed
             }
+
+            // TODO: Migrate to SwiftGitx
+//            Group {
+//                Divider()
+//                if let commitRemoteURL = commit.commitBaseURL?.absoluteString {
+//                    Button("View on \(commit.remoteString)...") {
+//                        let commitURL = "\(commitRemoteURL)/\(commit.id.hex)"
+//                        openCommit(URL(string: commitURL)!)
+//                    }
+//                    Divider()
+//                }
+//                Button("Check Out \(commit.id.hex)...") {}
+//                    .disabled(true) // TODO: Implementation Needed
+//                Divider()
+//                Button("History Editor Help") {}
+//                    .disabled(true) // TODO: Implementation Needed
+//            }
         }
     }
 }
