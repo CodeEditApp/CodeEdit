@@ -515,8 +515,6 @@
 		9D36E1BF2B5E7D7500443C41 /* GitBranchesGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D36E1BE2B5E7D7500443C41 /* GitBranchesGroup.swift */; };
 		B6041F4D29D7A4E9000F3454 /* SettingsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */; };
 		B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */; };
-		B607181D2B0C5BE3009CDAB4 /* GitClient+Stash.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607181C2B0C5BE3009CDAB4 /* GitClient+Stash.swift */; };
-		B60718202B0C6CE7009CDAB4 /* GitStashEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607181F2B0C6CE7009CDAB4 /* GitStashEntry.swift */; };
 		B60718312B15A9A3009CDAB4 /* CEOutlineGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60718302B15A9A3009CDAB4 /* CEOutlineGroup.swift */; };
 		B60718372B170638009CDAB4 /* SourceControlRenameBranchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60718362B170638009CDAB4 /* SourceControlRenameBranchView.swift */; };
 		B607183F2B17DB07009CDAB4 /* SourceControlNavigatorRepositoryView+contextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = B607183E2B17DB07009CDAB4 /* SourceControlNavigatorRepositoryView+contextMenu.swift */; };
@@ -1198,8 +1196,6 @@
 		9D36E1BE2B5E7D7500443C41 /* GitBranchesGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitBranchesGroup.swift; sourceTree = "<group>"; };
 		B6041F4C29D7A4E9000F3454 /* SettingsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPageView.swift; sourceTree = "<group>"; };
 		B6041F5129D7D6D6000F3454 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
-		B607181C2B0C5BE3009CDAB4 /* GitClient+Stash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Stash.swift"; sourceTree = "<group>"; };
-		B607181F2B0C6CE7009CDAB4 /* GitStashEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitStashEntry.swift; sourceTree = "<group>"; };
 		B60718302B15A9A3009CDAB4 /* CEOutlineGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CEOutlineGroup.swift; sourceTree = "<group>"; };
 		B60718362B170638009CDAB4 /* SourceControlRenameBranchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceControlRenameBranchView.swift; sourceTree = "<group>"; };
 		B607183E2B17DB07009CDAB4 /* SourceControlNavigatorRepositoryView+contextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SourceControlNavigatorRepositoryView+contextMenu.swift"; sourceTree = "<group>"; };
@@ -2325,7 +2321,6 @@
 				B65B10EE2B07C454002852CF /* GitClient+Remote.swift */,
 				B65B11002B09D5D4002852CF /* GitClient+Pull.swift */,
 				04BA7C262AE2E9F100584E1C /* GitClient+Push.swift */,
-				B607181C2B0C5BE3009CDAB4 /* GitClient+Stash.swift */,
 				04BA7C1F2AE2D92B00584E1C /* GitClient+Status.swift */,
 				B628B7922B18369800F9775A /* GitClient+Validate.swift */,
 			);
@@ -2339,7 +2334,6 @@
 				9D36E1BE2B5E7D7500443C41 /* GitBranchesGroup.swift */,
 				587B9E5429301D8F00AC7927 /* GitChangedFile.swift */,
 				B65B10F12B07D34F002852CF /* GitRemote.swift */,
-				B607181F2B0C6CE7009CDAB4 /* GitStashEntry.swift */,
 				587B9E5529301D8F00AC7927 /* GitStatus.swift */,
 			);
 			path = Models;
@@ -4085,7 +4079,6 @@
 				5B698A0F2B2636A700DE9392 /* SearchSettingsIgnoreGlobPatternItemView.swift in Sources */,
 				587B9E8A29301D8F00AC7927 /* GitHubIssue.swift in Sources */,
 				EC0870F72A455F6400EB8692 /* ProjectNavigatorViewController+NSMenuDelegate.swift in Sources */,
-				B60718202B0C6CE7009CDAB4 /* GitStashEntry.swift in Sources */,
 				6CAAF69429BCD78600A1F48A /* (null) in Sources */,
 				6CDAFDDF2D35DADD002B2D47 /* String+ValidFileName.swift in Sources */,
 				3026F50F2AC006C80061227E /* InspectorAreaViewModel.swift in Sources */,
@@ -4472,7 +4465,6 @@
 				04BA7C1E2AE2D8A000584E1C /* GitClient+Clone.swift in Sources */,
 				58F2EB09292FB2B0004A9BDE /* TerminalSettings.swift in Sources */,
 				6C578D8429CD343800DC73B2 /* ExtensionDetailView.swift in Sources */,
-				B607181D2B0C5BE3009CDAB4 /* GitClient+Stash.swift in Sources */,
 				B65B10F22B07D34F002852CF /* GitRemote.swift in Sources */,
 				B6A43C5D29FC4AF00027E0E0 /* CreateSSHKeyView.swift in Sources */,
 				B6EA200229DB7F81001BF195 /* View+ConstrainHeightToWindow.swift in Sources */,

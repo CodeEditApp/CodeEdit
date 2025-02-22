@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeEditSymbols
+import SwiftGitX
 
 struct SourceControlNavigatorRepositoryView: View {
     @Environment(\.controlActiveState)
@@ -23,8 +24,8 @@ struct SourceControlNavigatorRepositoryView: View {
     @State var isPresentingConfirmDeleteBranch: Bool = false
     @State var branchToDelete: GitBranch?
     @State var isPresentingConfirmDeleteStashEntry: Bool = false
-    @State var stashEntryToApply: GitStashEntry?
-    @State var stashEntryToDelete: GitStashEntry?
+    @State var stashEntryToApply: StashEntry?
+    @State var stashEntryToDelete: StashEntry?
     @State var isPresentingConfirmDeleteRemote: Bool = false
     @State var remoteToDelete: GitRemote?
     @State var keepStashAfterApplying: Bool = true

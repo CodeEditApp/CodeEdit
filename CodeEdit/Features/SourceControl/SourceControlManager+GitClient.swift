@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftGitX
 
 extension SourceControlManager {
     /// Validate repository
@@ -69,21 +70,31 @@ extension SourceControlManager {
     }
 
     /// Delete stash entry
-    func deleteStashEntry(stashEntry: GitStashEntry) async throws {
-        try await gitClient.deleteStashEntry(stashEntry.index)
+    func deleteStashEntry(stashEntry: StashEntry) async throws {
+        guard let repository else { return }
+
+        try repository.stash.drop(stashEntry)
+
         try await refreshStashEntries()
     }
 
     /// Apply stash entry
-    func applyStashEntry(stashEntry: GitStashEntry) async throws {
-        try await gitClient.applyStashEntry(stashEntry.index)
+    func applyStashEntry(stashEntry: StashEntry) async throws {
+        guard let repository else { return }
+
+        try repository.stash.apply(stashEntry)
+
         try await refreshStashEntries()
         await refreshAllChangedFiles()
     }
 
+    // TODO: Add stash options
     /// Stash changes
     func stashChanges(message: String?) async throws {
-        try await gitClient.stash(message: message)
+        guard let repository else { return }
+
+        try repository.stash.save(message: message)
+
         try await refreshStashEntries()
         await refreshAllChangedFiles()
     }
@@ -261,7 +272,9 @@ extension SourceControlManager {
     }
 
     func refreshStashEntries() async throws {
-        let stashEntries = (try? await gitClient.stashList()) ?? []
+        guard let repository else { return }
+
+        let stashEntries = try repository.stash.list()
         await MainActor.run {
             self.stashEntries = stashEntries
         }

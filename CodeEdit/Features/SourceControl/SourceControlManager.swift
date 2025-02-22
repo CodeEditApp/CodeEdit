@@ -39,7 +39,7 @@ final class SourceControlManager: ObservableObject {
     @Published var remotes: [GitRemote] = []
 
     /// All stashed entries
-    @Published var stashEntries: [GitStashEntry] = []
+    @Published var stashEntries: [StashEntry] = []
 
     /// Number of unsynced commits with remote in current branch
     @Published var numberOfUnsyncedCommits: (ahead: Int, behind: Int) = (ahead: 0, behind: 0)
