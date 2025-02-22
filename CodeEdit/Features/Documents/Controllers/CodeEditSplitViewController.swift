@@ -69,13 +69,15 @@ final class CodeEditSplitViewController: NSSplitViewController {
         addSplitViewItem(navigator)
 
         let workspaceView = SettingsInjector {
-            WorkspaceView()
-                .environmentObject(workspace)
-                .environmentObject(editorManager)
-                .environmentObject(statusBarViewModel)
-                .environmentObject(utilityAreaModel)
-                .environmentObject(taskManager)
-                .environmentObject(workspace.activityManager)
+            WindowObserver(window: WindowBox(value: windowRef)) {
+                WorkspaceView()
+                    .environmentObject(workspace)
+                    .environmentObject(editorManager)
+                    .environmentObject(statusBarViewModel)
+                    .environmentObject(utilityAreaModel)
+                    .environmentObject(taskManager)
+                    .environmentObject(workspace.activityManager)
+            }
         }
 
         let mainContent = NSSplitViewItem(viewController: NSHostingController(rootView: workspaceView))
