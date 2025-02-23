@@ -132,7 +132,8 @@ extension ProjectNavigatorMenu {
                 workspace?.listenerModel.highlightedFileItem = newFile
                 workspace?.editorManager?.openTab(item: newFile)
             }
-            DispatchQueue.main.async {
+            /// To resolve racing condition
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 self.renameFile()
             }
         } catch {
