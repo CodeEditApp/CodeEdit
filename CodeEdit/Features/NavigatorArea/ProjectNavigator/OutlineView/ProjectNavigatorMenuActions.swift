@@ -98,12 +98,27 @@ extension ProjectNavigatorMenu {
         }
     }
 
+    /// Opens the rename file dialogue on the cell this was presented from.
+    @objc
+    func renameFile() {
+        guard let newFile = workspace?.listenerModel.highlightedFileItem else { return }
+        let row = sender.outlineView.row(forItem: newFile)
+        guard row > 0,
+              let cell = sender.outlineView.view(
+                atColumn: 0,
+                row: row,
+                makeIfNecessary: false
+              ) as? ProjectNavigatorTableViewCell else {
+            return
+        }
+        sender.outlineView.window?.makeFirstResponder(cell.textField)
+    }
+
     /// Action that creates a new file
     /// with clipboard content
     @objc
     func newFileFromClipboard() {
         guard let item else { return }
-        print("Creating new file in: \(item.name), Type: \(item.type)")
         do {
             let clipBoardContent = NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
             if let newFile = try workspace?
@@ -116,6 +131,9 @@ extension ProjectNavigatorMenu {
                 ) {
                 workspace?.listenerModel.highlightedFileItem = newFile
                 workspace?.editorManager?.openTab(item: newFile)
+            }
+            DispatchQueue.main.async {
+                self.renameFile()
             }
         } catch {
             let alert = NSAlert(error: error)
@@ -167,21 +185,6 @@ extension ProjectNavigatorMenu {
         }
 
         reloadData()
-    }
-
-    /// Opens the rename file dialogue on the cell this was presented from.
-    @objc
-    func renameFile() {
-        let row = sender.outlineView.row(forItem: item)
-        guard row > 0,
-              let cell = sender.outlineView.view(
-                atColumn: 0,
-                row: row,
-                makeIfNecessary: false
-              ) as? ProjectNavigatorTableViewCell else {
-            return
-        }
-        sender.outlineView.window?.makeFirstResponder(cell.textField)
     }
 
     /// Action that moves the item to trash.
