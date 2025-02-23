@@ -98,6 +98,32 @@ extension ProjectNavigatorMenu {
         }
     }
 
+    /// Action that creates a new file
+    /// with clipboard content
+    @objc
+    func newFileFromClipboard() {
+        guard let item else { return }
+        print("Creating new file in: \(item.name), Type: \(item.type)")
+        do {
+            let clipBoardContent = NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
+            if let newFile = try workspace?
+                .workspaceFileManager?
+                .addFileWithContents(
+                    fileName: "untitled",
+                    toFile: item,
+                    useExtension: "",
+                    contents: clipBoardContent
+                ) {
+                workspace?.listenerModel.highlightedFileItem = newFile
+                workspace?.editorManager?.openTab(item: newFile)
+            }
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
+        }
+    }
+
     // TODO: allow custom folder names
     /// Action that creates a new untitled folder
     @objc
