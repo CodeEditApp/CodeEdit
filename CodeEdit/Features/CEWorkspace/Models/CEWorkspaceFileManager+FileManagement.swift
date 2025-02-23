@@ -116,7 +116,7 @@ extension CEWorkspaceFileManager {
         }
     }
 
-    /// This function is used to create a file with
+    /// This function is used to create a file with contents
     func addFileWithContents(
         fileName: String,
         toFile file: CEWorkspaceFile,

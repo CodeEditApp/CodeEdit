@@ -114,8 +114,8 @@ extension ProjectNavigatorMenu {
         sender.outlineView.window?.makeFirstResponder(cell.textField)
     }
 
-    /// Action that creates a new file
-    /// with clipboard content
+    /// Action that creates a new file with clipboard content
+    // TODO: Automatically identified the file type
     @objc
     func newFileFromClipboard() {
         guard let item else { return }
