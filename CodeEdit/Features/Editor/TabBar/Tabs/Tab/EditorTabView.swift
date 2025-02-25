@@ -21,7 +21,10 @@ struct EditorTabView: View {
     @Environment(\.isFullscreen)
     private var isFullscreen
 
+    @EnvironmentObject var workspace: WorkspaceDocument
     @EnvironmentObject private var editorManager: EditorManager
+
+    @StateObject private var fileObserver: EditorTabFileObserver
 
     @AppSettings(\.general.fileIconStyle)
     var fileIconStyle
@@ -57,7 +60,7 @@ struct EditorTabView: View {
     /// The item associated with the current tab.
     ///
     /// You can get tab-related information from here, like `label`, `icon`, etc.
-    private var item: CEWorkspaceFile
+    private let item: CEWorkspaceFile
 
     var index: Int
 
@@ -112,6 +115,7 @@ struct EditorTabView: View {
         self.draggingTabId = draggingTabId
         self.onDragTabId = onDragTabId
         self._closeButtonGestureActive = closeButtonGestureActive
+        self._fileObserver = StateObject(wrappedValue: EditorTabFileObserver(item: item))
     }
 
     @ViewBuilder var content: some View {
@@ -137,6 +141,7 @@ struct EditorTabView: View {
                         : .system(size: 11.0)
                     )
                     .lineLimit(1)
+                    .strikethrough(fileObserver.isDeleted, color: .primary)
             }
             .frame(maxHeight: .infinity) // To max-out the parent (tab bar) area.
             .accessibilityElement(children: .ignore)
@@ -230,5 +235,11 @@ struct EditorTabView: View {
             .id(item.id)
             .tabBarContextMenu(item: item, isTemporary: isTemporary)
             .accessibilityElement(children: .contain)
+            .onAppear {
+                workspace.workspaceFileManager?.addObserver(fileObserver)
+            }
+            .onDisappear {
+                workspace.workspaceFileManager?.removeObserver(fileObserver)
+            }
     }
 }
