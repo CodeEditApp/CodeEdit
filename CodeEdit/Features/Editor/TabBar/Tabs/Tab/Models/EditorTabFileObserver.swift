@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+/// Observer ViewModel for tracking file deletion
 final class EditorTabFileObserver: ObservableObject, CEWorkspaceFileManagerObserver {
     @Published private(set) var isDeleted = false
 
