@@ -59,7 +59,7 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         if fileItem.validateFileName(for: textField?.stringValue ?? "") {
             let destinationURL = fileItem.url
                 .deletingLastPathComponent()
-                .appendingPathComponent(textField?.stringValue ?? "")
+                .appending(path: textField?.stringValue ?? "")
             delegate?.moveFile(file: fileItem, to: destinationURL)
         } else {
             textField?.stringValue = fileItem.labelFileName()

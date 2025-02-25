@@ -25,8 +25,8 @@ final class FindTests: XCTestCase {
             appropriateFor: nil,
             create: true
         )
-        .appendingPathComponent("CodeEdit", isDirectory: true)
-        .appendingPathComponent("WorkspaceClientTests", isDirectory: true)
+        .appending(path: "CodeEdit", directoryHint: .isDirectory)
+        .appending(path: "WorkspaceClientTests", directoryHint: .isDirectory)
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 

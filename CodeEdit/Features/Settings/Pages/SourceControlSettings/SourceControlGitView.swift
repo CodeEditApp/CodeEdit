@@ -170,15 +170,15 @@ private extension SourceControlGitView {
             ), !excludesfile.isEmpty {
                 if excludesfile.starts(with: "~/") {
                     let relativePath = String(excludesfile.dropFirst(2))
-                    return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(relativePath)
+                    return FileManager.default.homeDirectoryForCurrentUser.appending(path: relativePath)
                 } else if excludesfile.starts(with: "/") {
                     return URL(fileURLWithPath: excludesfile)
                 } else {
-                    return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(excludesfile)
+                    return FileManager.default.homeDirectoryForCurrentUser.appending(path: excludesfile)
                 }
             } else {
-                let defaultURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
-                    ".gitignore_global"
+                let defaultURL = FileManager.default.homeDirectoryForCurrentUser.appending(
+                    path: ".gitignore_global"
                 )
                 await gitConfig.set(key: "core.excludesfile", value: "~/\(defaultURL.lastPathComponent)", global: true)
                 return defaultURL
@@ -196,7 +196,7 @@ private extension SourceControlGitView {
     }
 
     private func openGitConfigFile() {
-        let fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(".gitconfig")
+        let fileURL = FileManager.default.homeDirectoryForCurrentUser.appending(path: ".gitconfig")
 
         if !FileManager.default.fileExists(atPath: fileURL.path) {
             FileManager.default.createFile(atPath: fileURL.path, contents: nil)

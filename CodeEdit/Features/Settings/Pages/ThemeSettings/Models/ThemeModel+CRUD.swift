@@ -50,7 +50,7 @@ extension ThemeModel {
                 $0.contains(".cetheme")
             }
             let userDefinedThemeURLs = userDefinedThemeFilenames.map {
-                themesURL.appendingPathComponent($0)
+                themesURL.appending(path: $0)
             }
 
             // get all bundled theme URLs
@@ -58,7 +58,7 @@ extension ThemeModel {
                 $0.contains(".cetheme")
             }
             let bundledThemeURLs = bundledThemeFilenames.map {
-                bundledThemesURL.appendingPathComponent($0)
+                bundledThemesURL.appending(path: $0)
             }
 
             // combine user theme URLs with bundled theme URLs
@@ -154,7 +154,7 @@ extension ThemeModel {
         do {
             self.isAdding = true
             // Construct the destination file URL
-            var destinationFileURL = self.themesURL.appendingPathComponent(url.lastPathComponent)
+            var destinationFileURL = self.themesURL.appending(path: url.lastPathComponent)
 
             // Extract the base filename and extension
             let fileExtension = destinationFileURL.pathExtension
@@ -172,7 +172,7 @@ extension ThemeModel {
             if isBundled {
                 newFileName = "\(fileName) \(iterator)"
                 destinationFileURL = self.themesURL
-                    .appendingPathComponent(newFileName)
+                    .appending(path: newFileName)
                     .appendingPathExtension(fileExtension)
             }
 
@@ -188,7 +188,7 @@ extension ThemeModel {
                 // Generate a new filename with an iterator
                 newFileName = "\(fileName) \(iterator)"
                 destinationFileURL = self.themesURL
-                    .appendingPathComponent(newFileName)
+                    .appending(path: newFileName)
                     .appendingPathExtension(fileExtension)
 
                 iterator += 1
@@ -231,17 +231,17 @@ extension ThemeModel {
             }
 
             var finalName = newName
-            var finalURL = themesURL.appendingPathComponent(finalName).appendingPathExtension("cetheme")
+            var finalURL = themesURL.appending(path: finalName).appendingPathExtension("cetheme")
             var iterator = 1
 
             // Check for existing display names in themes
             while themes.contains(where: { theme != $0 && $0.displayName == finalName }) {
                 finalName = "\(newName) \(iterator)"
-                finalURL = themesURL.appendingPathComponent(finalName).appendingPathExtension("cetheme")
+                finalURL = themesURL.appending(path: finalName).appendingPathExtension("cetheme")
                 iterator += 1
             }
 
-            let isActive = self.getThemeActive(theme)
+            _ = self.getThemeActive(theme)
 
             try filemanager.moveItem(at: oldURL, to: finalURL)
 
