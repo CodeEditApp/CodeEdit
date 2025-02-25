@@ -191,6 +191,22 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         NotificationCenter.default.post(name: Self.didCloseNotification, object: fileURL)
     }
 
+    override func save(_ sender: Any?) {
+        guard let fileURL else {
+            super.save(sender)
+            return
+        }
+
+        do {
+            let directory = fileURL.deletingLastPathComponent()
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
+
+            try data(ofType: fileType ?? "").write(to: fileURL, options: .atomic)
+        } catch {
+            presentError(error)
+        }
+    }
+
     func getLanguage() -> CodeLanguage {
         guard let url = fileURL else {
             return .default
