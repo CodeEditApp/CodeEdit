@@ -87,6 +87,13 @@ struct SettingsView: View {
         ),
         .init(
             SettingsPage(
+                .extensions,
+                baseColor: Color(hex: "#6A69DC"), // Purple
+                icon: .system("cube.box.fill")
+            )
+        ),
+        .init(
+            SettingsPage(
                 .developer,
                 baseColor: .pink,
                 icon: .system("bolt")
@@ -177,6 +184,8 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
+                case .extensions:
+                    ExtensionsSettingsView()
                 case .developer:
                     DeveloperSettingsView()
                 default:

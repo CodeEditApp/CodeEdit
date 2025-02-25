@@ -18,11 +18,11 @@ final class CEWorkspaceSettings: ObservableObject {
     private(set) var folderURL: URL
 
     private var settingsURL: URL {
-        folderURL.appendingPathComponent("settings").appendingPathExtension("json")
+        folderURL.appending(path: "settings").appending(path: "json")
     }
 
     init(workspaceURL: URL) {
-        folderURL = workspaceURL.appendingPathComponent(".codeedit", isDirectory: true)
+        folderURL = workspaceURL.appending(path: ".codeedit", directoryHint: .isDirectory)
         loadSettings()
 
         storeTask = $settings
