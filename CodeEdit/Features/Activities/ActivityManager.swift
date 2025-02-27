@@ -15,6 +15,9 @@ final class ActivityManager: ObservableObject {
     /// Currently displayed activities
     @Published private(set) var activities: [CEActivity] = []
 
+    /// Debounce work item for batching updates
+    private var updateWorkItems: [String: DispatchWorkItem] = [:]
+
     /// Posts a new activity
     /// - Parameters:
     ///   - priority: Whether to insert at start of list
@@ -50,7 +53,7 @@ final class ActivityManager: ObservableObject {
         return activity
     }
 
-    /// Updates an existing activity
+    /// Updates an existing activity with debouncing
     /// - Parameters:
     ///   - id: ID of activity to update
     ///   - title: New title (optional)
@@ -64,29 +67,49 @@ final class ActivityManager: ObservableObject {
         percentage: Double? = nil,
         isLoading: Bool? = nil
     ) {
-        if let index = activities.firstIndex(where: { $0.id == id }) {
-            var activity = activities[index]
+        // Cancel any pending update for this specific activity
+        updateWorkItems[id]?.cancel()
 
-            if let title = title {
-                activity.title = title
-            }
-            if let message = message {
-                activity.message = message
-            }
-            if let percentage = percentage {
-                activity.percentage = percentage
-            }
-            if let isLoading = isLoading {
-                activity.isLoading = isLoading
+        // Create new work item
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+
+            if let index = self.activities.firstIndex(where: { $0.id == id }) {
+                var activity = self.activities[index]
+
+                if let title = title {
+                    activity.title = title
+                }
+                if let message = message {
+                    activity.message = message
+                }
+                if let percentage = percentage {
+                    activity.percentage = percentage
+                }
+                if let isLoading = isLoading {
+                    activity.isLoading = isLoading
+                }
+
+                withAnimation(.easeInOut(duration: 0.15)) {
+                    self.activities[index] = activity
+                }
             }
 
-            activities[index] = activity
+            self.updateWorkItems.removeValue(forKey: id)
         }
+
+        // Store work item and schedule after delay
+        updateWorkItems[id] = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: workItem)
     }
 
     /// Deletes an activity
     /// - Parameter id: ID of activity to delete
     func delete(id: String) {
+        // Clear any pending updates for this activity
+        updateWorkItems[id]?.cancel()
+        updateWorkItems.removeValue(forKey: id)
+
         withAnimation(.easeInOut(duration: 0.3)) {
             activities.removeAll { $0.id == id }
         }

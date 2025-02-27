@@ -27,42 +27,53 @@ extension WorkspaceDocument.SearchState {
 
         Task.detached {
             let filePaths = self.getFileURLs(at: url)
-
             let asyncController = SearchIndexer.AsyncManager(index: indexer)
             var lastProgress: Double = 0
 
-            for await (file, index) in AsyncFileIterator(fileURLs: filePaths) {
-                _ = await asyncController.addText(files: [file], flushWhenComplete: false)
-                let progress = Double(index) / Double(filePaths.count)
+            // Batch our progress updates
+            var pendingProgress: Double?
 
-                // Send only if difference is > 0.5%, to keep updates from sending too frequently
-                if progress - lastProgress > 0.005 || index == filePaths.count - 1 {
-                    lastProgress = progress
-                    await MainActor.run {
-                        self.indexStatus = .indexing(progress: progress)
-                    }
-                    await self.workspace.activityManager.update(
+            func updateProgress(_ progress: Double) async {
+                await MainActor.run {
+                    self.indexStatus = .indexing(progress: progress)
+                    self.workspace.activityManager.update(
                         id: activity.id,
                         percentage: progress
                     )
                 }
             }
+
+            for await (file, index) in AsyncFileIterator(fileURLs: filePaths) {
+                _ = await asyncController.addText(files: [file], flushWhenComplete: false)
+                let progress = Double(index) / Double(filePaths.count)
+
+                // Send only if difference is > 1%
+                if progress - lastProgress > 0.01 {
+                    lastProgress = progress
+                    pendingProgress = progress
+
+                    // Only update UI every 100ms
+                    if index == filePaths.count - 1 || pendingProgress != nil {
+                        await updateProgress(progress)
+                        pendingProgress = nil
+                    }
+                }
+            }
+
             asyncController.index.flush()
 
             await MainActor.run {
                 self.indexStatus = .done
+                self.workspace.activityManager.update(
+                    id: activity.id,
+                    title: "Finished indexing",
+                    isLoading: false
+                )
+                self.workspace.activityManager.delete(
+                    id: activity.id,
+                    delay: 4.0
+                )
             }
-
-            await self.workspace.activityManager.update(
-                id: activity.id,
-                title: "Finished indexing",
-                isLoading: false
-            )
-
-            await self.workspace.activityManager.delete(
-                id: activity.id,
-                delay: 4.0
-            )
         }
     }
 

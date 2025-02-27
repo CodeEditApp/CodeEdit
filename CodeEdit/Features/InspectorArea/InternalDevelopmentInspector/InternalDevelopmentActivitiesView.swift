@@ -18,6 +18,10 @@ struct InternalDevelopmentActivitiesView: View {
     @State private var autoDelete: Bool = false
     @State private var deleteDelay: Double = 3.0
 
+    // New state for progress timer
+    @State private var isProgressTimerRunning: Bool = false
+    @State private var progressActivity: CEActivity?
+
     var body: some View {
         Section("Activities") {
             Toggle("Priority", isOn: $isPriority)
@@ -67,6 +71,55 @@ struct InternalDevelopmentActivitiesView: View {
                 Button("Clear All Activities") {
                     for activity in activityManager.activities {
                         activityManager.delete(id: activity.id)
+                    }
+                }
+            }
+
+            Section("Progress Timer Test") {
+                Button(isProgressTimerRunning ? "Stop Progress Timer" : "Start Progress Timer") {
+                    if isProgressTimerRunning {
+                        isProgressTimerRunning = false
+                        if let activity = progressActivity {
+                            activityManager.delete(id: activity.id)
+                        }
+                        progressActivity = nil
+                    } else {
+                        isProgressTimerRunning = true
+                        progressActivity = activityManager.post(
+                            priority: isPriority,
+                            title: "Progress Timer",
+                            message: "Updating every 50ms",
+                            percentage: 0.0
+                        )
+
+                        // Start timer to update progress
+                        Task { @MainActor in
+                            var progress = 0.0
+                            while isProgressTimerRunning && progress < 1.0 {
+                                // Update in 5% increments
+                                progress = min(1.0, progress + 0.05)
+                                if let activity = progressActivity {
+                                    activityManager.update(
+                                        id: activity.id,
+                                        percentage: progress
+                                    )
+                                }
+                                // Wait longer between updates
+                                try? await Task.sleep(for: .milliseconds(100))
+                            }
+
+                            // Cleanup when done
+                            if let activity = progressActivity {
+                                activityManager.update(
+                                    id: activity.id,
+                                    title: "Progress Timer Complete",
+                                    percentage: 1.0
+                                )
+                                activityManager.delete(id: activity.id, delay: 2.0)
+                            }
+                            isProgressTimerRunning = false
+                            progressActivity = nil
+                        }
                     }
                 }
             }
