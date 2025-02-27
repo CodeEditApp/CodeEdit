@@ -49,6 +49,7 @@ final class ActivityManagerTests: XCTestCase {
     }
 
     func testUpdateTask() async {
+        let expectation = XCTestExpectation()
         await MainActor.run {
             let activity = activityManager.post(title: "Task Title")
 
@@ -56,9 +57,16 @@ final class ActivityManagerTests: XCTestCase {
                 id: activity.id,
                 title: "Updated Task Title"
             )
-
-            XCTAssertEqual(activityManager.activities.first?.title, "Updated Task Title")
         }
+
+        // Wait for update
+        try? await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds
+        await MainActor.run {
+            XCTAssertEqual(activityManager.activities.first?.title, "Updated Task Title")
+            expectation.fulfill()
+        }
+
+        await fulfillment(of: [expectation], timeout: 1)
     }
 
     func testDeleteTask() async {
