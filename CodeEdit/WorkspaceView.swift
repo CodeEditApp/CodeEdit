@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct WorkspaceView: View {
     @Environment(\.window.value)
@@ -167,8 +168,29 @@ struct WorkspaceView: View {
             }
             .background(EffectView(.contentBackground))
             .background(WorkspaceSheets().environmentObject(sourceControlManager))
+            .onDrop(of: [.fileURL], isTargeted: nil) { providers in
+                _ = handleDrop(providers: providers)
+                return true
+            }
             .accessibilityElement(children: .contain)
             .accessibilityLabel("workspace area")
         }
+    }
+
+    private func handleDrop(providers: [NSItemProvider]) -> Bool {
+        for provider in providers {
+            provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { item, _ in
+                guard let data = item as? Data,
+                      let url = URL(dataRepresentation: data, relativeTo: nil) else {
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    let file = CEWorkspaceFile(url: url)
+                    editorManager.activeEditor.openTab(file: file)
+                }
+            }
+        }
+        return true
     }
 }
