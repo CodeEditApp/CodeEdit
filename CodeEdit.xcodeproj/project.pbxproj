@@ -638,6 +638,7 @@
 		B6F0517D29D9E4B100D72287 /* TerminalSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6F0517C29D9E4B100D72287 /* TerminalSettingsView.swift */; };
 		B6FA3F882BF41C940023DE9C /* ThemeSettingsThemeToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6FA3F872BF41C940023DE9C /* ThemeSettingsThemeToken.swift */; };
 		B6FF04782B6C08AC002C2C78 /* DefaultThemes in Resources */ = {isa = PBXBuildFile; fileRef = B6FF04772B6C08AC002C2C78 /* DefaultThemes */; };
+		BDB4327F2D6D95130023ACC5 /* EditorTabFileObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB4327E2D6D95130023ACC5 /* EditorTabFileObserver.swift */; };
 		D7012EE827E757850001E1EF /* FindNavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7012EE727E757850001E1EF /* FindNavigatorView.swift */; };
 		D7211D4327E066CE008F2ED7 /* Localized+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */; };
 		D7211D4727E06BFE008F2ED7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D7211D4927E06BFE008F2ED7 /* Localizable.strings */; };
@@ -1328,6 +1329,7 @@
 		B6F0517C29D9E4B100D72287 /* TerminalSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TerminalSettingsView.swift; sourceTree = "<group>"; };
 		B6FA3F872BF41C940023DE9C /* ThemeSettingsThemeToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeSettingsThemeToken.swift; sourceTree = "<group>"; };
 		B6FF04772B6C08AC002C2C78 /* DefaultThemes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = DefaultThemes; sourceTree = "<group>"; };
+		BDB4327E2D6D95130023ACC5 /* EditorTabFileObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTabFileObserver.swift; sourceTree = "<group>"; };
 		D7012EE727E757850001E1EF /* FindNavigatorView.swift */ = {isa = PBXFileReference; indentWidth = 4; lastKnownFileType = sourcecode.swift; path = FindNavigatorView.swift; sourceTree = "<group>"; tabWidth = 4; };
 		D7211D4227E066CE008F2ED7 /* Localized+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Localized+Ex.swift"; sourceTree = "<group>"; };
 		D7211D4827E06BFE008F2ED7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2488,6 +2490,7 @@
 			children = (
 				58AFAA2D2933C69E00482B53 /* EditorItemID.swift */,
 				58AFAA2C2933C69E00482B53 /* EditorTabRepresentable.swift */,
+				BDB4327E2D6D95130023ACC5 /* EditorTabFileObserver.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -4496,6 +4499,7 @@
 				2806E904297958B9000040F4 /* ContributorRowView.swift in Sources */,
 				3000516A2BBD3A8200A98562 /* ServiceType.swift in Sources */,
 				6C578D8C29CD372700DC73B2 /* ExtensionCommands.swift in Sources */,
+				BDB4327F2D6D95130023ACC5 /* EditorTabFileObserver.swift in Sources */,
 				B6041F5229D7D6D6000F3454 /* SettingsWindow.swift in Sources */,
 				6139B9162C29B36500CA584B /* CETaskStatus.swift in Sources */,
 				B6EA1FF829DB78DB001BF195 /* ThemeSettingThemeRow.swift in Sources */,
