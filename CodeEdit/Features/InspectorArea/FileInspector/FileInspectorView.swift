@@ -85,7 +85,7 @@ struct FileInspectorView: View {
         if let file {
             TextField("Name", text: $fileName)
                 .background(
-                    file.validateFileName(for: fileName) ? Color.clear : Color(errorRed)
+                    fileName != file.fileName() && !file.validateFileName(for: fileName) ? Color(errorRed) : Color.clear
                 )
                 .onSubmit {
                     if file.validateFileName(for: fileName) {
