@@ -164,7 +164,7 @@ extension FileSystemTableViewCell: NSTextFieldDelegate {
             if fileItem.validateFileName(for: textField?.stringValue ?? "") {
                 let newURL = fileItem.url
                     .deletingLastPathComponent()
-                    .appendingPathComponent(textField?.stringValue ?? "")
+                    .appending(path: textField?.stringValue ?? "")
                 try workspace?.workspaceFileManager?.move(file: fileItem, to: newURL)
             } else {
                 textField?.stringValue = fileItem.labelFileName()

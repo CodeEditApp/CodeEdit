@@ -91,7 +91,7 @@ struct FileInspectorView: View {
                     if file.validateFileName(for: fileName) {
                         let destinationURL = file.url
                             .deletingLastPathComponent()
-                            .appendingPathComponent(fileName)
+                            .appending(path: fileName)
                         DispatchQueue.main.async { [weak workspace] in
                             do {
                                 if let newItem = try workspace?.workspaceFileManager?.move(

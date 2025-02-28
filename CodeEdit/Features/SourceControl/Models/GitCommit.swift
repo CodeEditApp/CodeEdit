@@ -48,7 +48,7 @@ struct GitCommit: Equatable, Hashable, Identifiable {
             formattedRemote = URL.init(fileURLWithPath: "\(domain)/\(parts[parts.count - 1])")
         }
 
-        return formattedRemote.deletingPathExtension().appendingPathComponent("commit")
+        return formattedRemote.deletingPathExtension().appending(path: "commit")
     }
 
     var remoteString: String {

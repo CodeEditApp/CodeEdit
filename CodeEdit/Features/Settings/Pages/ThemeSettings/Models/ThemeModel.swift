@@ -26,26 +26,26 @@ final class ThemeModel: ObservableObject {
 
     /// The base folder url `~/Library/Application Support/CodeEdit/`
     private var baseURL: URL {
-        filemanager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/CodeEdit")
+        filemanager.homeDirectoryForCurrentUser.appending(path: "Library/Application Support/CodeEdit")
     }
 
     var bundledThemesURL: URL? {
-        Bundle.main.resourceURL?.appendingPathComponent("DefaultThemes", isDirectory: true) ?? nil
+        Bundle.main.resourceURL?.appending(path: "DefaultThemes", directoryHint: .isDirectory) ?? nil
     }
 
     /// The URL of the `Themes` folder
     internal var themesURL: URL {
-        baseURL.appendingPathComponent("Themes", isDirectory: true)
+        baseURL.appending(path: "Themes", directoryHint: .isDirectory)
     }
 
     /// The URL of the `Extensions` folder
     internal var extensionsURL: URL {
-        baseURL.appendingPathComponent("Extensions", isDirectory: true)
+        baseURL.appending(path: "Extensions", directoryHint: .isDirectory)
     }
 
     /// The URL of the `settings.json` file
     internal var settingsURL: URL {
-        baseURL.appendingPathComponent("settings.json", isDirectory: true)
+        baseURL.appending(path: "settings.json", directoryHint: .isDirectory)
     }
 
     /// System color scheme
@@ -193,7 +193,7 @@ final class ThemeModel: ObservableObject {
                     for theme in customThemes {
                         guard let sourceURL = theme.fileURL else { continue }
 
-                        let destinationURL = exportDirectory.appendingPathComponent("\(theme.displayName).cetheme")
+                        let destinationURL = exportDirectory.appending(path: "\(theme.displayName).cetheme")
 
                         do {
                             try FileManager.default.copyItem(at: sourceURL, to: destinationURL)

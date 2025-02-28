@@ -29,22 +29,22 @@ final class SearchSettingsModel: ObservableObject {
 
     /// The base folder url `~/Library/Application Support/CodeEdit/`
     private var baseURL: URL {
-        filemanager.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support/CodeEdit")
+        filemanager.homeDirectoryForCurrentUser.appending(path: "Library/Application Support/CodeEdit")
     }
 
     /// The URL of the `search` folder
     internal var searchURL: URL {
-        baseURL.appendingPathComponent("search", isDirectory: true)
+        baseURL.appending(path: "search", directoryHint: .isDirectory)
     }
 
     /// The URL of the `Extensions` folder
     internal var extensionsURL: URL {
-        baseURL.appendingPathComponent("Extensions", isDirectory: true)
+        baseURL.appending(path: "Extensions", directoryHint: .isDirectory)
     }
 
     /// The URL of the `settings.json` file
     internal var settingsURL: URL {
-        baseURL.appendingPathComponent("settings.json", isDirectory: true)
+        baseURL.appending(path: "settings.json", directoryHint: .isDirectory)
     }
 
     /// Selected patterns

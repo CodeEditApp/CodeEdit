@@ -52,7 +52,7 @@ class TempFolderManager {
 
     init() {
         self.temporaryDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory())
-        self.customFolderURL = temporaryDirectoryURL.appendingPathComponent("TestingFolder")
+        self.customFolderURL = temporaryDirectoryURL.appending(path: "TestingFolder")
     }
 
     deinit {
@@ -72,8 +72,8 @@ class TempFolderManager {
     }
 
     func createFiles() {
-        let file1URL = customFolderURL.appendingPathComponent("file1.txt")
-        let file2URL = customFolderURL.appendingPathComponent("file2.txt")
+        let file1URL = customFolderURL.appending(path: "file1.txt")
+        let file2URL = customFolderURL.appending(path: "file2.txt")
 
         let file1Content = "This is file 1"
         let file2Content = "This is file 2"
@@ -88,8 +88,8 @@ class TempFolderManager {
 
     func cleanup() {
         do {
-            let file1URL = customFolderURL.appendingPathComponent("file1.txt")
-            let file2URL = customFolderURL.appendingPathComponent("file2.txt")
+            let file1URL = customFolderURL.appending(path: "file1.txt")
+            let file2URL = customFolderURL.appending(path: "file2.txt")
 
             try FileManager.default.removeItem(at: file1URL)
             try FileManager.default.removeItem(at: file2URL)
