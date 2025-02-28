@@ -76,7 +76,7 @@ import Combine
 ///         "id": "uniqueTaskID",
 ///         "action": "update",
 ///         "title": "Updated Task Title",
-///         "message": "Updated Task Message"
+///         "message": "Updated Task Message",
 ///         "percentage": 0.5,
 ///         "isLoading": true
 ///     ]

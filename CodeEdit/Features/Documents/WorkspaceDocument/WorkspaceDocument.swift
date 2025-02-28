@@ -43,7 +43,20 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceSettingsManager: CEWorkspaceSettings?
     var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
 
+    @Published var notificationPanel = NotificationPanelViewModel()
     private var cancellables = Set<AnyCancellable>()
+
+    override init() {
+        super.init()
+
+        // Observe changes to notification panel
+        notificationPanel.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            .store(in: &cancellables)
+    }
 
     deinit {
         cancellables.forEach { $0.cancel() }
