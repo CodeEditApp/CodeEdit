@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftUIIntrospect
 
 extension View {
     func hideSidebarToggle() -> some View {
@@ -15,14 +16,19 @@ extension View {
 
 struct HideSidebarToggleViewModifier: ViewModifier {
     func body(content: Content) -> some View {
-        content
-            .task {
-                let window = NSApp.windows.first { $0.identifier?.rawValue == SceneID.settings.rawValue }!
-                let sidebaritem = "com.apple.SwiftUI.navigationSplitView.toggleSidebar"
-                let index = window.toolbar?.items.firstIndex { $0.itemIdentifier.rawValue == sidebaritem }
-                if let index {
-                    window.toolbar?.removeItem(at: index)
+        if #available(macOS 14, *) {
+            content
+                .toolbar(removing: .sidebarToggle)
+        } else {
+            content
+                .task {
+                    let window = NSApp.windows.first { $0.identifier?.rawValue == SceneID.settings.rawValue }!
+                    let sidebaritem = "com.apple.SwiftUI.navigationSplitView.toggleSidebar"
+                    let index = window.toolbar?.items.firstIndex { $0.itemIdentifier.rawValue == sidebaritem }
+                    if let index {
+                        window.toolbar?.removeItem(at: index)
+                    }
                 }
-            }
+        }
     }
 }
