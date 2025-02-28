@@ -41,11 +41,11 @@ struct EditorAreaView: View {
             }
         }
 
-        var editorInsetAmount: Double {
-            let tabBarHeight = shouldShowTabBar ? (EditorTabBarView.height + 1) : 0
-            let jumpBarHeight = showEditorJumpBar ? (EditorJumpBarView.height + 1) : 0
-            return tabBarHeight + jumpBarHeight
-        }
+//        var editorInsetAmount: Double {
+//            let tabBarHeight = shouldShowTabBar ? (EditorTabBarView.height + 1) : 0
+//            let jumpBarHeight = showEditorJumpBar ? (EditorJumpBarView.height + 1) : 0
+//            return tabBarHeight + jumpBarHeight
+//        }
 
         VStack {
             if let selected = editor.selectedTab {
@@ -55,9 +55,9 @@ struct EditorAreaView: View {
                         textViewCoordinators: [selected.rangeTranslator].compactMap({ $0 })
                     )
                     .focusedObject(editor)
-                    .transformEnvironment(\.edgeInsets) { insets in
-                        insets.top += editorInsetAmount
-                    }
+//                    .transformEnvironment(\.edgeInsets) { insets in
+//                        insets.top += editorInsetAmount
+//                    }
                     .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
                 } else {
                     LoadingFileView(selected.file.name)
@@ -73,14 +73,14 @@ struct EditorAreaView: View {
 
             } else {
                 CEContentUnavailableView("No Editor")
-                    .padding(.top, editorInsetAmount)
+//                    .padding(.top, editorInsetAmount)
                     .onTapGesture {
                         editorManager.activeEditor = editor
                     }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .ignoresSafeArea(.all)
+//        .ignoresSafeArea(.all)
         .safeAreaInset(edge: .top, spacing: 0) {
             VStack(spacing: 0) {
                 if shouldShowTabBar {
