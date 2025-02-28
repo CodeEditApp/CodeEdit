@@ -12,19 +12,15 @@ import SwiftUI
 final class EditorTabFileObserver: ObservableObject, CEWorkspaceFileManagerObserver {
     @Published private(set) var isDeleted = false
 
-    private let item: CEWorkspaceFile
+    private let tabFile: CEWorkspaceFile
 
-    init(item: CEWorkspaceFile) {
-        self.item = item
+    init(file: CEWorkspaceFile) {
+        self.tabFile = file
     }
 
     func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>) {
-        guard let parent = item.parent else {
-            return
-        }
-
-        if updatedItems.contains(parent) {
-            isDeleted = item.doesExist == false
+        if let parent = tabFile.parent, updatedItems.contains(parent) {
+            isDeleted = tabFile.doesExist == false
         }
     }
 }
