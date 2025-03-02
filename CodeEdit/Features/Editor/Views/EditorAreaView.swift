@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeEditTextView
+import UniformTypeIdentifiers
 
 struct EditorAreaView: View {
     @AppSettings(\.general.showEditorJumpBar)
@@ -25,6 +26,9 @@ struct EditorAreaView: View {
     @EnvironmentObject private var editorManager: EditorManager
 
     @State var codeFile: CodeFileDocument?
+
+    @Environment(\.window.value)
+    private var window: NSWindow?
 
     init(editor: Editor, focus: FocusState<Editor?>.Binding) {
         self.editor = editor
@@ -59,6 +63,10 @@ struct EditorAreaView: View {
                         insets.top += editorInsetAmount
                     }
                     .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
+                    .onDrop(of: [.fileURL], isTargeted: nil) { providers in
+                        _ = handleDrop(providers: providers)
+                        return true
+                    }
                 } else {
                     LoadingFileView(selected.file.name)
                         .onAppear {
@@ -76,6 +84,10 @@ struct EditorAreaView: View {
                     .padding(.top, editorInsetAmount)
                     .onTapGesture {
                         editorManager.activeEditor = editor
+                    }
+                    .onDrop(of: [.fileURL], isTargeted: nil) { providers in
+                        _ = handleDrop(providers: providers)
+                        return true
                     }
             }
         }
@@ -121,5 +133,26 @@ struct EditorAreaView: View {
         .onChange(of: editor.selectedTab) { newValue in
             codeFile = newValue?.file.fileDocument
         }
+    }
+
+    private func handleDrop(providers: [NSItemProvider]) -> Bool {
+        for provider in providers {
+            provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { item, _ in
+                guard let data = item as? Data,
+                      let url = URL(dataRepresentation: data, relativeTo: nil) else {
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    let file = CEWorkspaceFile(url: url)
+                    editor.openTab(file: file)
+                    editorManager.activeEditor = editor
+                    focus = editor
+                    NSApp.activate(ignoringOtherApps: true)
+                    window?.makeKeyAndOrderFront(nil)
+                }
+            }
+        }
+        return true
     }
 }
