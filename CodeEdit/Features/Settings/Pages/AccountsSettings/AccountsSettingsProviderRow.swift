@@ -17,11 +17,7 @@ struct AccountsSettingsProviderRow: View {
 
     var body: some View {
         HStack {
-            Image(iconName)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .clipShape(RoundedRectangle(cornerRadius: 6))
-                .frame(width: 28, height: 28)
+            FeatureIcon(image: Image(iconName), size: 28)
             Text(name)
             Spacer()
             if hovering {
