@@ -148,8 +148,6 @@ struct EditorAreaView: View {
                     editor.openTab(file: file)
                     editorManager.activeEditor = editor
                     focus = editor
-                    NSApp.activate(ignoringOtherApps: true)
-                    window?.makeKeyAndOrderFront(nil)
                 }
             }
         }
