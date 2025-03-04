@@ -24,6 +24,10 @@ extension WorkspaceDocument.SearchState {
                 isLoading: true
             )
         }
+        
+        let (progressStream, continuation) = AsyncStream<Double>.makeStream()
+        // Dispatch this now, we want to continue after starting to monitor
+        Task { await self.monitorProgressStream(progressStream, activityId: activity.id) }
 
         Task.detached {
             let filePaths = self.getFileURLs(at: url)
@@ -32,16 +36,6 @@ extension WorkspaceDocument.SearchState {
 
             // Batch our progress updates
             var pendingProgress: Double?
-
-            func updateProgress(_ progress: Double) async {
-                await MainActor.run {
-                    self.indexStatus = .indexing(progress: progress)
-                    self.workspace.activityManager.update(
-                        id: activity.id,
-                        percentage: progress
-                    )
-                }
-            }
 
             for await (file, index) in AsyncFileIterator(fileURLs: filePaths) {
                 _ = await asyncController.addText(files: [file], flushWhenComplete: false)
@@ -54,7 +48,7 @@ extension WorkspaceDocument.SearchState {
 
                     // Only update UI every 100ms
                     if index == filePaths.count - 1 || pendingProgress != nil {
-                        await updateProgress(progress)
+                        continuation.yield(progress)
                         pendingProgress = nil
                     }
                 }
@@ -74,6 +68,25 @@ extension WorkspaceDocument.SearchState {
                     delay: 4.0
                 )
             }
+        }
+    }
+
+    /// Monitors a progress stream from ``addProjectToIndex()`` and updates ``indexStatus`` and the workspace's activity
+    /// manager accordingly.
+    ///
+    /// Without this, updates can come too fast for `Combine` to handle and can cause crashes.
+    ///
+    /// - Parameters:
+    ///   - stream: The stream to monitor for progress updates, in %.
+    ///   - activityId: The activity ID that's being monitored
+    @MainActor
+    private func monitorProgressStream(_ stream: AsyncStream<Double>, activityId: String) async {
+        for await progressUpdate in stream.debounce(for: .milliseconds(10)) {
+            self.indexStatus = .indexing(progress: progressUpdate)
+            self.workspace.activityManager.update(
+                id: activityId,
+                percentage: progressUpdate
+            )
         }
     }
 
