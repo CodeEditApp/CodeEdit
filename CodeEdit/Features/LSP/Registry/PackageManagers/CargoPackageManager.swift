@@ -71,7 +71,7 @@ class CargoPackageManager: PackageManagerProtocol {
             }
 
             cargoArgs.append(source.name)
-            let output = try await executeInDirectory(in: packagePath.path, cargoArgs)
+            _ = try await executeInDirectory(in: packagePath.path, cargoArgs)
             print("Successfully installed \(source.name)@\(source.version)")
         } catch {
             print("Installation failed: \(error)")
