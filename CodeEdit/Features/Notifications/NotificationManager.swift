@@ -23,34 +23,6 @@ final class NotificationManager: NSObject, ObservableObject {
 
     private var isAppActive: Bool = true
 
-    /// Whether notifications were manually shown via toolbar
-    @Published private(set) var isManuallyShown: Bool = false
-
-    /// Set of hidden notification IDs
-    private var hiddenNotificationIds: Set<UUID> = []
-
-    /// Whether any non-sticky notifications are currently hidden
-    private var hasHiddenNotifications: Bool {
-        activeNotifications.contains { notification in
-            !notification.isSticky && !isNotificationVisible(notification)
-        }
-    }
-
-    /// Whether a notification should be visible in the overlay
-    func isNotificationVisible(_ notification: CENotification) -> Bool {
-        if notification.isBeingDismissed {
-            return true // Always show notifications being dismissed
-        }
-        if notification.isSticky {
-            return true // Always show sticky notifications
-        }
-        if isManuallyShown {
-            return true // Show all notifications when manually shown
-        }
-        // Otherwise, show if not hidden and has active timer
-        return !hiddenNotificationIds.contains(notification.id) && timers[notification.id] != nil
-    }
-
     /// Number of unread notifications
     var unreadCount: Int {
         notifications.filter { !$0.isRead }.count
@@ -169,64 +141,6 @@ final class NotificationManager: NSObject, ObservableObject {
     func markAsRead(_ notification: CENotification) {
         if let index = notifications.firstIndex(where: { $0.id == notification.id }) {
             notifications[index].isRead = true
-        }
-    }
-
-    /// Updates an existing notification
-    /// - Parameters:
-    ///   - id: UUID of notification to update
-    ///   - title: New title (optional)
-    ///   - description: New description (optional)
-    ///   - actionButtonTitle: New action button title (optional)
-    ///   - action: New action closure (optional)
-    ///   - isSticky: New sticky state (optional)
-    func update(
-        id: UUID,
-        title: String? = nil,
-        description: String? = nil,
-        actionButtonTitle: String? = nil,
-        action: (() -> Void)? = nil,
-        isSticky: Bool? = nil
-    ) {
-        if let index = notifications.firstIndex(where: { $0.id == id }) {
-            var notification = notifications[index]
-
-            if let title = title {
-                notification.title = title
-            }
-            if let description = description {
-                notification.description = description
-            }
-            if let actionButtonTitle = actionButtonTitle {
-                notification.actionButtonTitle = actionButtonTitle
-            }
-            if let action = action {
-                notification.action = action
-            }
-            if let isSticky = isSticky {
-                notification.isSticky = isSticky
-            }
-
-            notifications[index] = notification
-        }
-    }
-
-    /// Deletes a notification
-    /// - Parameter id: UUID of notification to delete
-    func delete(id: UUID) {
-        if let notification = notifications.first(where: { $0.id == id }) {
-            dismissNotification(notification)
-        }
-    }
-
-    /// Deletes a notification after a delay
-    /// - Parameters:
-    ///   - id: UUID of notification to delete
-    ///   - delay: Time to wait before deleting
-    func delete(id: UUID, delay: TimeInterval) {
-        Task { @MainActor in
-            try? await Task.sleep(for: .seconds(delay))
-            delete(id: id)
         }
     }
 
