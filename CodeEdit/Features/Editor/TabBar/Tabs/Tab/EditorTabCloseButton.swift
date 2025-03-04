@@ -104,17 +104,3 @@ struct EditorTabCloseButton: View {
         }
     }
 }
-
-#Preview {
-    @State var closeButtonGestureActive: Bool = false
-    @State var isHoveringClose: Bool = false
-
-    return EditorTabCloseButton(
-        isActive: false,
-        isHoveringTab: false,
-        isDragging: false,
-        closeAction: { print("Close tab") },
-        closeButtonGestureActive: $closeButtonGestureActive,
-        isHoveringClose: $isHoveringClose
-    )
-}

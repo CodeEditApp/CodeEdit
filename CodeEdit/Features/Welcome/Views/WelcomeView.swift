@@ -9,6 +9,12 @@ import SwiftUI
 import AppKit
 import Foundation
 
+// Change from private to fileprivate
+private struct IdentifiableURL: Identifiable {
+    let url: URL
+    var id: String { url.absoluteString }
+}
+
 struct WelcomeView: View {
     @Environment(\.colorScheme)
     var colorScheme
@@ -21,7 +27,7 @@ struct WelcomeView: View {
 
     @State var showGitClone = false
 
-    @State var showCheckoutBranchItem: URL?
+    @State private var showCheckoutBranchItem: IdentifiableURL?
 
     @State var isHovering: Bool = false
 
@@ -116,21 +122,21 @@ struct WelcomeView: View {
         .sheet(isPresented: $showGitClone) {
             GitCloneView(
                 openBranchView: { url in
-                    showCheckoutBranchItem = url
+                    showCheckoutBranchItem = IdentifiableURL(url: url)
                 },
                 openDocument: { url in
                     openDocument(url, dismissWindow)
                 }
             )
         }
-        .sheet(item: $showCheckoutBranchItem, content: { repoPath in
+        .sheet(item: $showCheckoutBranchItem) { wrapper in
             GitCheckoutBranchView(
-                repoLocalPath: repoPath,
+                repoLocalPath: wrapper.url,
                 openDocument: { url in
                     openDocument(url, dismissWindow)
                 }
             )
-        })
+        }
     }
 
     private var mainContent: some View {

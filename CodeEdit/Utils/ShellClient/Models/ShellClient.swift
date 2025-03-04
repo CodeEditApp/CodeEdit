@@ -37,7 +37,12 @@ class ShellClient {
         let (task, pipe) = generateProcessAndPipe(args)
         try task.run()
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        return String(decoding: data, as: UTF8.self)
+        guard let output = String(bytes: data, encoding: .utf8) else {
+            throw NSError(domain: "ShellClient", code: -1, userInfo: [
+                NSLocalizedDescriptionKey: "Failed to decode command output"
+            ])
+        }
+        return output
     }
 
     /// Run a command with Publisher
@@ -65,8 +70,10 @@ class ShellClient {
                     subject.send(completion: .finished)
                     return
                 }
-                String(decoding: data, as: UTF8.self)
-                    .split(whereSeparator: \.isNewline)
+                guard let output = String(bytes: data, encoding: .utf8) else {
+                    return
+                }
+                output.split(whereSeparator: \.isNewline)
                     .forEach({ subject.send(String($0)) })
                 outputHandler.waitForDataInBackgroundAndNotify()
             }
@@ -84,8 +91,15 @@ class ShellClient {
             pipe.fileHandleForReading.readabilityHandler = { [unowned pipe] fileHandle in
                 let data = fileHandle.availableData
                 if !data.isEmpty {
-                    String(decoding: data, as: UTF8.self)
-                        .split(whereSeparator: \.isNewline)
+                    guard let output = String(bytes: data, encoding: .utf8) else {
+                        continuation.finish(throwing: NSError(
+                            domain: "ShellClient",
+                            code: -1,
+                            userInfo: [NSLocalizedDescriptionKey: "Failed to decode command output"]
+                        ))
+                        return
+                    }
+                    output.split(whereSeparator: \.isNewline)
                         .forEach({ continuation.yield(String($0)) })
                 } else {
                     if !task.isRunning && task.terminationStatus != 0 {

@@ -45,8 +45,14 @@ final class ShellTests: XCTestCase {
 
         // Additional assertion to check output
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let outputString = String(decoding: outputData, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
-        XCTAssertTrue(outputString.contains("Testing"))
+        if let outputString = String(
+            bytes: outputData,
+            encoding: .utf8
+        )?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            XCTAssertTrue(outputString.contains("Testing"))
+        } else {
+            XCTFail("Failed to decode output data")
+        }
     }
 
     func testExecuteCommandWithShellOutput() {
@@ -63,8 +69,14 @@ final class ShellTests: XCTestCase {
         ))
 
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let outputString = String(decoding: outputData, as: UTF8.self).trimmingCharacters(in: .whitespacesAndNewlines)
-        XCTAssertTrue(outputString.contains("Testing"))
+        if let outputString = String(
+            bytes: outputData,
+            encoding: .utf8
+        )?.trimmingCharacters(in: .whitespacesAndNewlines) {
+            XCTAssertTrue(outputString.contains("Testing"))
+        } else {
+            XCTFail("Failed to decode output data")
+        }
     }
 
     func testExecuteCommandWithExecutableOverrideAttempt() {
