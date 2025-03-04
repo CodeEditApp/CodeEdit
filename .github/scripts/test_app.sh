@@ -12,9 +12,8 @@ echo "Building with arch: ${ARCH}"
 echo "SwiftLint Version: $(swiftlint --version)"
 
 export LC_CTYPE=en_US.UTF-8
-export IDEFileSystemSynchronizedGroupsAreEnabled=YES
 
-set -o pipefail && arch -"${ARCH}" xcodebuild \
+set -o pipefail && env IDEFileSystemSynchronizedGroupsAreEnabled=YES arch -"${ARCH}" xcodebuild \
            -scheme CodeEdit \
            -destination "platform=OS X,arch=${ARCH}" \
            -skipPackagePluginValidation \
