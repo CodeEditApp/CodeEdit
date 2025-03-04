@@ -422,6 +422,7 @@
 				Base,
 			);
 			mainGroup = B658FB2327DA9E0F00EA4DBD;
+			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */,
 				287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */,
