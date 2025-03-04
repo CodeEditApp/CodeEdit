@@ -39,20 +39,6 @@
 		6CC17B4F2C432AE000834E2C /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CC17B4E2C432AE000834E2C /* CodeEditSourceEditor */; };
 		6CD3CA552C8B508200D83DCD /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CD3CA542C8B508200D83DCD /* CodeEditSourceEditor */; };
 		6CE21E872C650D2C0031B056 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 6CE21E862C650D2C0031B056 /* SwiftTerm */; };
-		B6240A012D777C0D009A86D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B62409EE2D777C0D009A86D1 /* Assets.xcassets */; };
-		B6240C2B2D777C0D009A86D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62409ED2D777C0D009A86D1 /* AppDelegate.swift */; };
-		B6240C2C2D777C0D009A86D1 /* CodeEditApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62409F02D777C0D009A86D1 /* CodeEditApp.swift */; };
-		B6240C2D2D777C0D009A86D1 /* SceneID.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62409F22D777C0D009A86D1 /* SceneID.swift */; };
-		B6240C2E2D777C0D009A86D1 /* WindowObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62409F32D777C0D009A86D1 /* WindowObserver.swift */; };
-		B6240C2F2D777C0D009A86D1 /* WorkspaceSheets.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62409F42D777C0D009A86D1 /* WorkspaceSheets.swift */; };
-		B6240C302D777C0D009A86D1 /* WorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62409F52D777C0D009A86D1 /* WorkspaceView.swift */; };
-		B6240C312D777C0D009A86D1 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62409F62D777C0D009A86D1 /* World.swift */; };
-		B6240C4F2D777C0D009A86D1 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6240C452D777C0D009A86D1 /* App.swift */; };
-		B6240C502D777C0D009A86D1 /* ProjectPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6240C462D777C0D009A86D1 /* ProjectPath.swift */; };
-		B6240C512D777C0D009A86D1 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6240C472D777C0D009A86D1 /* Query.swift */; };
-		B6240C522D777C0D009A86D1 /* UI TESTING.md in Resources */ = {isa = PBXBuildFile; fileRef = B6240C482D777C0D009A86D1 /* UI TESTING.md */; };
-		B6240C582D777C0D009A86D1 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6240C552D777C0D009A86D1 /* Media.xcassets */; };
-		B6240C592D777C0D009A86D1 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6240C532D777C0D009A86D1 /* FinderSync.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,114 +107,75 @@
 		589F3E342936185400E1A4DA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		58F2EACE292FB2B0004A9BDE /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		6C9619262C3F285C009733CE /* CodeEditTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CodeEditTestPlan.xctestplan; sourceTree = "<group>"; };
-		B62409ED2D777C0D009A86D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		B62409EE2D777C0D009A86D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		B62409EF2D777C0D009A86D1 /* CodeEdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CodeEdit.entitlements; sourceTree = "<group>"; };
-		B62409F02D777C0D009A86D1 /* CodeEditApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditApp.swift; sourceTree = "<group>"; };
-		B62409F12D777C0D009A86D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B62409F22D777C0D009A86D1 /* SceneID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneID.swift; sourceTree = "<group>"; };
-		B62409F32D777C0D009A86D1 /* WindowObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowObserver.swift; sourceTree = "<group>"; };
-		B62409F42D777C0D009A86D1 /* WorkspaceSheets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceSheets.swift; sourceTree = "<group>"; };
-		B62409F52D777C0D009A86D1 /* WorkspaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspaceView.swift; sourceTree = "<group>"; };
-		B62409F62D777C0D009A86D1 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
-		B6240C452D777C0D009A86D1 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
-		B6240C462D777C0D009A86D1 /* ProjectPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPath.swift; sourceTree = "<group>"; };
-		B6240C472D777C0D009A86D1 /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
-		B6240C482D777C0D009A86D1 /* UI TESTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "UI TESTING.md"; sourceTree = "<group>"; };
-		B6240C532D777C0D009A86D1 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
-		B6240C542D777C0D009A86D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B6240C552D777C0D009A86D1 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		B6240C562D777C0D009A86D1 /* OpenWithCodeEdit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenWithCodeEdit.entitlements; sourceTree = "<group>"; };
-		B6240C602D777C78009A86D1 /* Basic.cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = Basic.cetheme; sourceTree = "<group>"; };
-		B6240C612D777C78009A86D1 /* Civic.cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = Civic.cetheme; sourceTree = "<group>"; };
-		B6240C622D777C78009A86D1 /* Classic (Dark).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Classic (Dark).cetheme"; sourceTree = "<group>"; };
-		B6240C632D777C78009A86D1 /* Classic (Light).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Classic (Light).cetheme"; sourceTree = "<group>"; };
-		B6240C642D777C78009A86D1 /* Default (Dark).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Default (Dark).cetheme"; sourceTree = "<group>"; };
-		B6240C652D777C78009A86D1 /* Default (Light).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Default (Light).cetheme"; sourceTree = "<group>"; };
-		B6240C662D777C78009A86D1 /* Dusk.cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = Dusk.cetheme; sourceTree = "<group>"; };
-		B6240C672D777C78009A86D1 /* GitHub (Dark).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "GitHub (Dark).cetheme"; sourceTree = "<group>"; };
-		B6240C682D777C78009A86D1 /* GitHub (Light).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "GitHub (Light).cetheme"; sourceTree = "<group>"; };
-		B6240C692D777C78009A86D1 /* High Contrast (Dark).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "High Contrast (Dark).cetheme"; sourceTree = "<group>"; };
-		B6240C6A2D777C78009A86D1 /* High Contrast (Light).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "High Contrast (Light).cetheme"; sourceTree = "<group>"; };
-		B6240C6B2D777C78009A86D1 /* Low Key.cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Low Key.cetheme"; sourceTree = "<group>"; };
-		B6240C6C2D777C78009A86D1 /* Midnight.cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = Midnight.cetheme; sourceTree = "<group>"; };
-		B6240C6D2D777C78009A86D1 /* Presentation (Dark).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Presentation (Dark).cetheme"; sourceTree = "<group>"; };
-		B6240C6E2D777C78009A86D1 /* Presentation (Light).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Presentation (Light).cetheme"; sourceTree = "<group>"; };
-		B6240C6F2D777C78009A86D1 /* Solarized (Dark).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Solarized (Dark).cetheme"; sourceTree = "<group>"; };
-		B6240C702D777C78009A86D1 /* Solarized (Light).cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Solarized (Light).cetheme"; sourceTree = "<group>"; };
-		B6240C712D777C78009A86D1 /* Sunset.cetheme */ = {isa = PBXFileReference; lastKnownFileType = text; path = Sunset.cetheme; sourceTree = "<group>"; };
-		B6240C732D777C78009A86D1 /* Alpha.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Alpha.xcconfig; sourceTree = "<group>"; };
-		B6240C742D777C78009A86D1 /* Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Beta.xcconfig; sourceTree = "<group>"; };
-		B6240C752D777C78009A86D1 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
-		B6240C762D777C78009A86D1 /* Pre.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Pre.xcconfig; sourceTree = "<group>"; };
-		B6240C772D777C78009A86D1 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3D27DA9E1000EA4DBD /* CodeEditTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB4727DA9E1000EA4DBD /* CodeEditUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		B62417D62D777D59009A86D1 /* Exceptions for "CodeEdit" folder in "CodeEdit" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B658FB2B27DA9E0F00EA4DBD /* CodeEdit */;
+		};
+		B62417D82D777D59009A86D1 /* Exceptions for "OpenWithCodeEdit" folder in "OpenWithCodeEdit" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				FinderSync.swift,
+				Media.xcassets,
+			);
+			target = 2BE487EB28245162003F3F64 /* OpenWithCodeEdit */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		B62411992D777C86009A86D1 /* Exceptions for "Features" folder in "Embed ExtensionKit ExtensionPoint" phase from "CodeEdit" target */ = {
+		B62417D72D777D59009A86D1 /* Exceptions for "CodeEdit" folder in "Embed ExtensionKit ExtensionPoint" phase from "CodeEdit" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 6C6BD6FD29CD154900235D17 /* Embed ExtensionKit ExtensionPoint */;
 			membershipExceptions = (
-				Extensions/codeedit.extension.appextensionpoint,
+				Features/Extensions/codeedit.extension.appextensionpoint,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		B6240C7A2D777C85009A86D1 /* Preview Content */ = {
+		B624121B2D777D58009A86D1 /* DefaultThemes */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Preview Content";
+			path = DefaultThemes;
 			sourceTree = "<group>";
 		};
-		B6240C7F2D777C85009A86D1 /* Localization */ = {
+		B62412552D777D58009A86D1 /* CodeEditTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Localization;
+			path = CodeEditTests;
 			sourceTree = "<group>";
 		};
-		B6240CCA2D777C86009A86D1 /* Utils */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Utils;
-			sourceTree = "<group>";
-		};
-		B6240D002D777C86009A86D1 /* ShellIntegration */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ShellIntegration;
-			sourceTree = "<group>";
-		};
-		B6240F9E2D777C86009A86D1 /* Features */ = {
+		B62415732D777D58009A86D1 /* CodeEdit */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				B62411992D777C86009A86D1 /* Exceptions for "Features" folder in "Embed ExtensionKit ExtensionPoint" phase from "CodeEdit" target */,
+				B62417D62D777D59009A86D1 /* Exceptions for "CodeEdit" folder in "CodeEdit" target */,
+				B62417D72D777D59009A86D1 /* Exceptions for "CodeEdit" folder in "Embed ExtensionKit ExtensionPoint" phase from "CodeEdit" target */,
 			);
-			path = Features;
+			path = CodeEdit;
 			sourceTree = "<group>";
 		};
-		B62411CE2D777C8E009A86D1 /* Features */ = {
+		B62417B42D777D58009A86D1 /* Configs */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Features;
+			path = Configs;
 			sourceTree = "<group>";
 		};
-		B62411F52D777C8E009A86D1 /* Utils */ = {
+		B62417C52D777D58009A86D1 /* CodeEditUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Utils;
+			path = CodeEditUITests;
 			sourceTree = "<group>";
 		};
-		B62411FF2D777C98009A86D1 /* Features */ = {
+		B62417D32D777D58009A86D1 /* OpenWithCodeEdit */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Features;
-			sourceTree = "<group>";
-		};
-		B62412042D777C98009A86D1 /* Other Tests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Other Tests";
-			sourceTree = "<group>";
-		};
-		B62412072D777C98009A86D1 /* Extensions */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Extensions;
+			exceptions = (
+				B62417D82D777D59009A86D1 /* Exceptions for "OpenWithCodeEdit" folder in "OpenWithCodeEdit" target */,
+			);
+			path = OpenWithCodeEdit;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -296,109 +243,16 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B62406D92D777C0C009A86D1 /* CodeEditTests */ = {
-			isa = PBXGroup;
-			children = (
-				B62411CE2D777C8E009A86D1 /* Features */,
-				B62411F52D777C8E009A86D1 /* Utils */,
-			);
-			path = CodeEditTests;
-			sourceTree = "<group>";
-		};
-		B62409F72D777C0D009A86D1 /* CodeEdit */ = {
-			isa = PBXGroup;
-			children = (
-				B6240F9E2D777C86009A86D1 /* Features */,
-				B6240C7F2D777C85009A86D1 /* Localization */,
-				B6240C7A2D777C85009A86D1 /* Preview Content */,
-				B6240D002D777C86009A86D1 /* ShellIntegration */,
-				B6240CCA2D777C86009A86D1 /* Utils */,
-				B62409ED2D777C0D009A86D1 /* AppDelegate.swift */,
-				B62409EE2D777C0D009A86D1 /* Assets.xcassets */,
-				B62409EF2D777C0D009A86D1 /* CodeEdit.entitlements */,
-				B62409F02D777C0D009A86D1 /* CodeEditApp.swift */,
-				B62409F12D777C0D009A86D1 /* Info.plist */,
-				B62409F22D777C0D009A86D1 /* SceneID.swift */,
-				B62409F32D777C0D009A86D1 /* WindowObserver.swift */,
-				B62409F42D777C0D009A86D1 /* WorkspaceSheets.swift */,
-				B62409F52D777C0D009A86D1 /* WorkspaceView.swift */,
-				B62409F62D777C0D009A86D1 /* World.swift */,
-			);
-			path = CodeEdit;
-			sourceTree = "<group>";
-		};
-		B6240C492D777C0D009A86D1 /* CodeEditUITests */ = {
-			isa = PBXGroup;
-			children = (
-				B62412072D777C98009A86D1 /* Extensions */,
-				B62411FF2D777C98009A86D1 /* Features */,
-				B62412042D777C98009A86D1 /* Other Tests */,
-				B6240C452D777C0D009A86D1 /* App.swift */,
-				B6240C462D777C0D009A86D1 /* ProjectPath.swift */,
-				B6240C472D777C0D009A86D1 /* Query.swift */,
-				B6240C482D777C0D009A86D1 /* UI TESTING.md */,
-			);
-			path = CodeEditUITests;
-			sourceTree = "<group>";
-		};
-		B6240C572D777C0D009A86D1 /* OpenWithCodeEdit */ = {
-			isa = PBXGroup;
-			children = (
-				B6240C532D777C0D009A86D1 /* FinderSync.swift */,
-				B6240C542D777C0D009A86D1 /* Info.plist */,
-				B6240C552D777C0D009A86D1 /* Media.xcassets */,
-				B6240C562D777C0D009A86D1 /* OpenWithCodeEdit.entitlements */,
-			);
-			path = OpenWithCodeEdit;
-			sourceTree = "<group>";
-		};
-		B6240C722D777C78009A86D1 /* DefaultThemes */ = {
-			isa = PBXGroup;
-			children = (
-				B6240C602D777C78009A86D1 /* Basic.cetheme */,
-				B6240C612D777C78009A86D1 /* Civic.cetheme */,
-				B6240C622D777C78009A86D1 /* Classic (Dark).cetheme */,
-				B6240C632D777C78009A86D1 /* Classic (Light).cetheme */,
-				B6240C642D777C78009A86D1 /* Default (Dark).cetheme */,
-				B6240C652D777C78009A86D1 /* Default (Light).cetheme */,
-				B6240C662D777C78009A86D1 /* Dusk.cetheme */,
-				B6240C672D777C78009A86D1 /* GitHub (Dark).cetheme */,
-				B6240C682D777C78009A86D1 /* GitHub (Light).cetheme */,
-				B6240C692D777C78009A86D1 /* High Contrast (Dark).cetheme */,
-				B6240C6A2D777C78009A86D1 /* High Contrast (Light).cetheme */,
-				B6240C6B2D777C78009A86D1 /* Low Key.cetheme */,
-				B6240C6C2D777C78009A86D1 /* Midnight.cetheme */,
-				B6240C6D2D777C78009A86D1 /* Presentation (Dark).cetheme */,
-				B6240C6E2D777C78009A86D1 /* Presentation (Light).cetheme */,
-				B6240C6F2D777C78009A86D1 /* Solarized (Dark).cetheme */,
-				B6240C702D777C78009A86D1 /* Solarized (Light).cetheme */,
-				B6240C712D777C78009A86D1 /* Sunset.cetheme */,
-			);
-			path = DefaultThemes;
-			sourceTree = "<group>";
-		};
-		B6240C782D777C78009A86D1 /* Configs */ = {
-			isa = PBXGroup;
-			children = (
-				B6240C732D777C78009A86D1 /* Alpha.xcconfig */,
-				B6240C742D777C78009A86D1 /* Beta.xcconfig */,
-				B6240C752D777C78009A86D1 /* Debug.xcconfig */,
-				B6240C762D777C78009A86D1 /* Pre.xcconfig */,
-				B6240C772D777C78009A86D1 /* Release.xcconfig */,
-			);
-			path = Configs;
-			sourceTree = "<group>";
-		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
-				B62409F72D777C0D009A86D1 /* CodeEdit */,
-				B62406D92D777C0C009A86D1 /* CodeEditTests */,
-				B6240C492D777C0D009A86D1 /* CodeEditUITests */,
-				B6240C782D777C78009A86D1 /* Configs */,
-				B6240C722D777C78009A86D1 /* DefaultThemes */,
+				B62415732D777D58009A86D1 /* CodeEdit */,
+				B62412552D777D58009A86D1 /* CodeEditTests */,
+				B62417C52D777D58009A86D1 /* CodeEditUITests */,
+				B62417B42D777D58009A86D1 /* Configs */,
+				B624121B2D777D58009A86D1 /* DefaultThemes */,
 				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
-				B6240C572D777C0D009A86D1 /* OpenWithCodeEdit */,
+				B62417D32D777D58009A86D1 /* OpenWithCodeEdit */,
 				6C9619262C3F285C009733CE /* CodeEditTestPlan.xctestplan */,
 				284DC8502978BA2600BF2770 /* .all-contributorsrc */,
 				283BDCBC2972EEBD002AFF81 /* Package.resolved */,
@@ -460,11 +314,7 @@
 				2BE487F328245162003F3F64 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				B6240C7A2D777C85009A86D1 /* Preview Content */,
-				B6240C7F2D777C85009A86D1 /* Localization */,
-				B6240CCA2D777C86009A86D1 /* Utils */,
-				B6240D002D777C86009A86D1 /* ShellIntegration */,
-				B6240F9E2D777C86009A86D1 /* Features */,
+				B62415732D777D58009A86D1 /* CodeEdit */,
 			);
 			name = CodeEdit;
 			packageProductDependencies = (
@@ -507,8 +357,7 @@
 				B658FB3F27DA9E1000EA4DBD /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				B62411CE2D777C8E009A86D1 /* Features */,
-				B62411F52D777C8E009A86D1 /* Utils */,
+				B62412552D777D58009A86D1 /* CodeEditTests */,
 			);
 			name = CodeEditTests;
 			packageProductDependencies = (
@@ -532,9 +381,7 @@
 				B658FB4927DA9E1000EA4DBD /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				B62411FF2D777C98009A86D1 /* Features */,
-				B62412042D777C98009A86D1 /* Other Tests */,
-				B62412072D777C98009A86D1 /* Extensions */,
+				B62417C52D777D58009A86D1 /* CodeEditUITests */,
 			);
 			name = CodeEditUITests;
 			packageProductDependencies = (
@@ -613,7 +460,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6240C582D777C0D009A86D1 /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -621,7 +467,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6240A012D777C0D009A86D1 /* Assets.xcassets in Resources */,
 				283BDCBD2972EEBD002AFF81 /* Package.resolved in Resources */,
 				284DC8512978BA2600BF2770 /* .all-contributorsrc in Resources */,
 			);
@@ -638,7 +483,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6240C522D777C0D009A86D1 /* UI TESTING.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -690,7 +534,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6240C592D777C0D009A86D1 /* FinderSync.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -700,13 +543,6 @@
 			files = (
 				6CAAF69429BCD78600A1F48A /* (null) in Sources */,
 				58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */,
-				B6240C2B2D777C0D009A86D1 /* AppDelegate.swift in Sources */,
-				B6240C2C2D777C0D009A86D1 /* CodeEditApp.swift in Sources */,
-				B6240C2D2D777C0D009A86D1 /* SceneID.swift in Sources */,
-				B6240C2E2D777C0D009A86D1 /* WindowObserver.swift in Sources */,
-				B6240C2F2D777C0D009A86D1 /* WorkspaceSheets.swift in Sources */,
-				B6240C302D777C0D009A86D1 /* WorkspaceView.swift in Sources */,
-				B6240C312D777C0D009A86D1 /* World.swift in Sources */,
 				6CB9144B29BEC7F100BC47F2 /* (null) in Sources */,
 				6CAAF69229BCC71C00A1F48A /* (null) in Sources */,
 				6CAAF68A29BC9C2300A1F48A /* (null) in Sources */,
@@ -724,9 +560,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6240C4F2D777C0D009A86D1 /* App.swift in Sources */,
-				B6240C502D777C0D009A86D1 /* ProjectPath.swift in Sources */,
-				B6240C512D777C0D009A86D1 /* Query.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -757,7 +590,8 @@
 /* Begin XCBuildConfiguration section */
 		28052DEA2973045200F4F90A /* Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C732D777C78009A86D1 /* Alpha.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -822,7 +656,8 @@
 		};
 		28052DEB2973045200F4F90A /* Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C732D777C78009A86D1 /* Alpha.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -861,7 +696,8 @@
 		};
 		28052DEC2973045200F4F90A /* Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C732D777C78009A86D1 /* Alpha.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -887,7 +723,8 @@
 		};
 		28052DED2973045200F4F90A /* Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C732D777C78009A86D1 /* Alpha.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
@@ -914,7 +751,8 @@
 		};
 		28052DEE2973045200F4F90A /* Alpha */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C732D777C78009A86D1 /* Alpha.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
@@ -947,7 +785,8 @@
 		};
 		28052DEF2973045C00F4F90A /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C742D777C78009A86D1 /* Beta.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Beta.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1012,7 +851,8 @@
 		};
 		28052DF02973045C00F4F90A /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C742D777C78009A86D1 /* Beta.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Beta.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1051,7 +891,8 @@
 		};
 		28052DF12973045C00F4F90A /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C742D777C78009A86D1 /* Beta.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Beta.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1077,7 +918,8 @@
 		};
 		28052DF22973045C00F4F90A /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C742D777C78009A86D1 /* Beta.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Beta.xcconfig;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
@@ -1104,7 +946,8 @@
 		};
 		28052DF32973045C00F4F90A /* Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C742D777C78009A86D1 /* Beta.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Beta.xcconfig;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
@@ -1137,7 +980,8 @@
 		};
 		2BE487F628245162003F3F64 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C752D777C78009A86D1 /* Debug.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
@@ -1170,7 +1014,8 @@
 		};
 		2BE487F728245162003F3F64 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C772D777C78009A86D1 /* Release.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
@@ -1203,7 +1048,8 @@
 		};
 		8B9A0E112B9FE7D7007E2DBF /* Pre */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C732D777C78009A86D1 /* Alpha.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1269,7 +1115,8 @@
 		};
 		8B9A0E122B9FE7D7007E2DBF /* Pre */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C732D777C78009A86D1 /* Alpha.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1309,7 +1156,8 @@
 		};
 		8B9A0E132B9FE7D7007E2DBF /* Pre */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C732D777C78009A86D1 /* Alpha.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1335,7 +1183,8 @@
 		};
 		8B9A0E142B9FE7D7007E2DBF /* Pre */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C732D777C78009A86D1 /* Alpha.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
@@ -1362,7 +1211,8 @@
 		};
 		8B9A0E152B9FE7D7007E2DBF /* Pre */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C732D777C78009A86D1 /* Alpha.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OpenWithCodeEdit/OpenWithCodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
@@ -1395,7 +1245,8 @@
 		};
 		B658FB4F27DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C752D777C78009A86D1 /* Debug.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1466,7 +1317,8 @@
 		};
 		B658FB5027DA9E1000EA4DBD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C772D777C78009A86D1 /* Release.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1530,7 +1382,8 @@
 		};
 		B658FB5227DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C752D777C78009A86D1 /* Debug.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1569,7 +1422,8 @@
 		};
 		B658FB5327DA9E1000EA4DBD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C772D777C78009A86D1 /* Release.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1608,7 +1462,8 @@
 		};
 		B658FB5527DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C752D777C78009A86D1 /* Debug.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1634,7 +1489,8 @@
 		};
 		B658FB5627DA9E1000EA4DBD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C772D777C78009A86D1 /* Release.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -1660,7 +1516,8 @@
 		};
 		B658FB5827DA9E1000EA4DBD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C752D777C78009A86D1 /* Debug.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Debug.xcconfig;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
@@ -1688,7 +1545,8 @@
 		};
 		B658FB5927DA9E1000EA4DBD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6240C772D777C78009A86D1 /* Release.xcconfig */;
+			baseConfigurationReferenceAnchor = B62417B42D777D58009A86D1 /* Configs */;
+			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
