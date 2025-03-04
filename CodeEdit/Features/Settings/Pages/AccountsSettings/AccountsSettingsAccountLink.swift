@@ -22,13 +22,8 @@ struct AccountsSettingsAccountLink: View {
                     .font(.footnote)
                     .foregroundColor(.secondary)
             } icon: {
-                Image(account.provider.iconName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
-                    .frame(width: 26, height: 26)
-                    .padding(.top, 2)
-                    .padding(.bottom, 2)
+                FeatureIcon(image: Image(account.provider.iconName), size: 26)
+                    .padding(.vertical, 2)
                     .padding(.leading, 2)
             }
         }

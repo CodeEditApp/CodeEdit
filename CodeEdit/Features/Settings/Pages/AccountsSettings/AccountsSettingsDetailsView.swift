@@ -80,15 +80,15 @@ struct AccountsSettingsDetailsView: View {
                         Text("None")
                             .tag("")
                         Divider()
-                        if let sshPath = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(
-                            ".ssh",
-                            isDirectory: true
+                        if let sshPath = FileManager.default.homeDirectoryForCurrentUser.appending(
+                            path: ".ssh",
+                            directoryHint: .isDirectory
                         ) as URL? {
                             if let files = try? FileManager.default.contentsOfDirectory(
                                 atPath: sshPath.path
                             ) {
                                 ForEach(files, id: \.self) { filename in
-                                    let fileURL = sshPath.appendingPathComponent(filename)
+                                    let fileURL = sshPath.appending(path: filename)
                                     if let contents = try? String(contentsOf: fileURL) {
                                         if isPublicSSHKey(contents) {
                                             Text(filename.replacingOccurrences(of: ".pub", with: ""))

@@ -13,8 +13,15 @@ struct DeveloperSettingsView: View {
     @AppSettings(\.developerSettings.lspBinaries)
     var lspBinaries
 
+    @AppSettings(\.developerSettings.showInternalDevelopmentInspector)
+    var showInternalDevelopmentInspector
+
     var body: some View {
         SettingsForm {
+            Section {
+                Toggle("Show Internal Development Inspector", isOn: $showInternalDevelopmentInspector)
+            }
+
             Section {
                 KeyValueTable(
                     items: $lspBinaries,

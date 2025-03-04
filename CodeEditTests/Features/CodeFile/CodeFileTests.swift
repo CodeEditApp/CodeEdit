@@ -20,10 +20,10 @@ final class CodeFileUnitTests: XCTestCase {
             appropriateFor: nil,
             create: true
         )
-            .appendingPathComponent("CodeEdit", isDirectory: true)
-            .appendingPathComponent("WorkspaceClientTests", isDirectory: true)
+            .appending(path: "CodeEdit", directoryHint: .isDirectory)
+            .appending(path: "WorkspaceClientTests", directoryHint: .isDirectory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        fileURL = directory.appendingPathComponent("fakeFile.swift")
+        fileURL = directory.appending(path: "fakeFile.swift")
     }
 
     func testLoadUTF8Encoding() throws {

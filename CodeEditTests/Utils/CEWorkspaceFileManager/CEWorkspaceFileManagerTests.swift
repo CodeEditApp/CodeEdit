@@ -32,8 +32,8 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
             appropriateFor: nil,
             create: true
         )
-        .appendingPathComponent("CodeEdit", isDirectory: true)
-        .appendingPathComponent("WorkspaceClientTests", isDirectory: true)
+        .appending(path: "CodeEdit", directoryHint: .isDirectory)
+        .appending(path: "WorkspaceClientTests", directoryHint: .isDirectory)
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     }
@@ -48,7 +48,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         try files.forEach {
             let fakeData = Data("fake string".utf8)
             let fileUrl = directory
-                .appendingPathComponent($0)
+                .appending(path: $0)
             try fakeData.write(to: fileUrl)
         }
         let client = CEWorkspaceFileManager(
@@ -85,7 +85,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         try files.forEach {
             let fakeData = Data("fake string".utf8)
             let fileUrl = directory
-                .appendingPathComponent($0)
+                .appending(path: $0)
             try fakeData.write(to: fileUrl)
         }
 
@@ -144,7 +144,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
 
     func testDuplicateFile() throws {
         let testFileURL = directory.appending(path: "file.txt")
-        let testDuplicatedFileURL = directory.appendingPathComponent("file copy.txt")
+        let testDuplicatedFileURL = directory.appending(path: "file copy.txt")
         try "😄".write(to: testFileURL, atomically: true, encoding: .utf8)
 
         let fileManager = CEWorkspaceFileManager(

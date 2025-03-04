@@ -16,15 +16,14 @@ struct SettingsPageView: View {
         self.searchText = searchText
     }
 
-    var symbol: Image? {
+    private var iconName: String {
         switch page.icon {
-        case .system(let name):
-            Image(systemName: name)
-        case .symbol(let name):
-            Image(symbol: name)
+        case .system(let name), .symbol(let name):
+            return name
         case .asset(let name):
-            Image(name)
-        case .none: nil
+            return name
+        case .none:
+            return "questionmark.circle" // fallback icon
         }
     }
 
@@ -34,7 +33,11 @@ struct SettingsPageView: View {
                 page.name.rawValue.highlightOccurrences(self.searchText)
                     .padding(.leading, 2)
             } icon: {
-                FeatureIcon(symbol: symbol, color: page.baseColor, size: 20)
+                if case .asset(let name) = page.icon {
+                    FeatureIcon(image: Image(name), size: 20)
+                } else {
+                    FeatureIcon(symbol: iconName, color: page.baseColor, size: 20)
+                }
             }
         }
     }

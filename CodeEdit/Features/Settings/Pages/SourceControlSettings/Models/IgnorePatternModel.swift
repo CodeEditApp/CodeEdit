@@ -56,15 +56,15 @@ class IgnorePatternModel: ObservableObject {
         if !excludesFile.isEmpty {
             if excludesFile.starts(with: "~/") {
                 let relativePath = String(excludesFile.dropFirst(2)) // Remove "~/"
-                return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(relativePath)
+                return FileManager.default.homeDirectoryForCurrentUser.appending(path: relativePath)
             } else if excludesFile.starts(with: "/") {
                 return URL(fileURLWithPath: excludesFile) // Absolute path
             } else {
-                return FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(excludesFile)
+                return FileManager.default.homeDirectoryForCurrentUser.appending(path: excludesFile)
             }
         } else {
             let defaultPath = ".gitignore_global"
-            let fileURL = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent(defaultPath)
+            let fileURL = FileManager.default.homeDirectoryForCurrentUser.appending(path: defaultPath)
             await gitConfig.set(key: "core.excludesfile", value: "~/\(defaultPath)", global: true)
             return fileURL
         }

@@ -86,7 +86,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
         let destParentURL = fileItemDestination.url
 
         for fileItemURL in fileItemURLS {
-            let destURL = destParentURL.appendingPathComponent(fileItemURL.lastPathComponent)
+            let destURL = destParentURL.appending(path: fileItemURL.lastPathComponent)
             // cancel dropping file item on self or in parent directory
             if fileItemURL == destURL || fileItemURL == destParentURL {
                 return false
