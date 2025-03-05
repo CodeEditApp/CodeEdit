@@ -294,13 +294,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6C01F25D2C4820B600AA951B /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
@@ -316,7 +309,6 @@
 				283BDCBC2972EEBD002AFF81 /* Package.resolved */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
-				6C01F25D2C4820B600AA951B /* Recovered References */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
