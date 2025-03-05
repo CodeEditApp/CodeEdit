@@ -15,7 +15,7 @@ class ShellClient {
     /// - Parameter args: commands to run
     /// - Returns: command output
     func generateProcessAndPipe(_ args: [String]) -> (Process, Pipe) {
-        var arguments = ["-c"]
+        var arguments = ["-l", "-c"]
         arguments.append(contentsOf: args)
         let task = Process()
         let pipe = Pipe()
@@ -78,6 +78,42 @@ class ShellClient {
     /// - Parameter args: command to run
     /// - Returns: async stream of command output
     func runAsync(_ args: String...) -> AsyncThrowingStream<String, Error> {
+        let (task, pipe) = generateProcessAndPipe(args)
+
+        return AsyncThrowingStream { continuation in
+            pipe.fileHandleForReading.readabilityHandler = { [unowned pipe] fileHandle in
+                let data = fileHandle.availableData
+                if !data.isEmpty {
+                    String(decoding: data, as: UTF8.self)
+                        .split(whereSeparator: \.isNewline)
+                        .forEach({ continuation.yield(String($0)) })
+                } else {
+                    if !task.isRunning && task.terminationStatus != 0 {
+                        continuation.finish(
+                            throwing: NSError(domain: "ShellClient", code: Int(task.terminationStatus))
+                        )
+                    } else {
+                        continuation.finish()
+                    }
+
+                    // Clean up the handler to prevent repeated calls and continuation finishes for the same
+                    // process.
+                    pipe.fileHandleForReading.readabilityHandler = nil
+                }
+            }
+
+            do {
+                try task.run()
+            } catch {
+                continuation.finish(throwing: error)
+            }
+        }
+    }
+
+    /// Run a command with AsyncStream
+    /// - Parameter args: command to run
+    /// - Returns: async stream of command output
+    func runAsync(_ args: [String]) -> AsyncThrowingStream<String, Error> {
         let (task, pipe) = generateProcessAndPipe(args)
 
         return AsyncThrowingStream { continuation in
