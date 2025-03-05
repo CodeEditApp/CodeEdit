@@ -534,6 +534,7 @@
 		B61A606929F4481A009B43F9 /* MonospacedFontPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */; };
 		B61DA9DF29D929E100BF4A43 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */; };
 		B62423302C21EE280096668B /* ThemeModel+CRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = B624232F2C21EE280096668B /* ThemeModel+CRUD.swift */; };
+		B62445D42D78222B009A86D1 /* URL+Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62445D32D78222B009A86D1 /* URL+Identifiable.swift */; };
 		B628B7932B18369800F9775A /* GitClient+Validate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B628B7922B18369800F9775A /* GitClient+Validate.swift */; };
 		B628B7B72B223BAD00F9775A /* FindModePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B628B7B62B223BAD00F9775A /* FindModePicker.swift */; };
 		B62AEDAA2A1FCBE5009A9F52 /* WorkspacePanelTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B62AEDA92A1FCBE5009A9F52 /* WorkspacePanelTabBar.swift */; };
@@ -1230,6 +1231,7 @@
 		B61A606829F4481A009B43F9 /* MonospacedFontPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonospacedFontPicker.swift; sourceTree = "<group>"; };
 		B61DA9DE29D929E100BF4A43 /* GeneralSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsView.swift; sourceTree = "<group>"; };
 		B624232F2C21EE280096668B /* ThemeModel+CRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ThemeModel+CRUD.swift"; sourceTree = "<group>"; };
+		B62445D32D78222B009A86D1 /* URL+Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Identifiable.swift"; sourceTree = "<group>"; };
 		B628B7922B18369800F9775A /* GitClient+Validate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GitClient+Validate.swift"; sourceTree = "<group>"; };
 		B628B7B62B223BAD00F9775A /* FindModePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindModePicker.swift; sourceTree = "<group>"; };
 		B62AEDA92A1FCBE5009A9F52 /* WorkspacePanelTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkspacePanelTabBar.swift; sourceTree = "<group>"; };
@@ -2547,7 +2549,6 @@
 				6CBD1BC42978DE3E006639D5 /* Text */,
 				6CB94CFF2C9F1CB600E8651C /* TextView */,
 				77EF6C042C57DE4B00984B69 /* URL */,
-				6CD26C752C8EA80000ADBA38 /* URL */,
 				5831E3CA2933E86F00D5A6D2 /* View */,
 			);
 			path = Extensions;
@@ -3189,17 +3190,6 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
-		6CD26C752C8EA80000ADBA38 /* URL */ = {
-			isa = PBXGroup;
-			children = (
-				613899BB2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift */,
-				6CD26C762C8EA83900ADBA38 /* URL+absolutePath.swift */,
-				587B9E2729301D8F00AC7927 /* URL+URLParameters.swift */,
-				6C9AE66E2D148DD200FAE8D2 /* URL+FindWorkspace.swift */,
-			);
-			path = URL;
-			sourceTree = "<group>";
-		};
 		6CD26C882C8F91B600ADBA38 /* LSP */ = {
 			isa = PBXGroup;
 			children = (
@@ -3232,6 +3222,11 @@
 				77EF6C032C57DE4B00984B69 /* URL+ResouceValues.swift */,
 				77EF6C0A2C60C80800984B69 /* URL+Filename.swift */,
 				6C3E12D52CC8388000DD12F1 /* URL+componentCompare.swift */,
+				613899BB2B6E709C00A5CAF6 /* URL+FuzzySearchable.swift */,
+				6CD26C762C8EA83900ADBA38 /* URL+absolutePath.swift */,
+				587B9E2729301D8F00AC7927 /* URL+URLParameters.swift */,
+				6C9AE66E2D148DD200FAE8D2 /* URL+FindWorkspace.swift */,
+				B62445D32D78222B009A86D1 /* URL+Identifiable.swift */,
 			);
 			path = URL;
 			sourceTree = "<group>";
@@ -4639,6 +4634,7 @@
 				6CD03B6A29FC773F001BD1D0 /* SettingsInjector.swift in Sources */,
 				58798236292E30B90085B254 /* FeedbackType.swift in Sources */,
 				6CE21E812C643D8F0031B056 /* CETerminalView.swift in Sources */,
+				B62445D42D78222B009A86D1 /* URL+Identifiable.swift in Sources */,
 				587B9E6D29301D8F00AC7927 /* GitLabEventNote.swift in Sources */,
 				587B9E9129301D8F00AC7927 /* BitBucketOAuthRouter.swift in Sources */,
 				B6FA3F882BF41C940023DE9C /* ThemeSettingsThemeToken.swift in Sources */,
