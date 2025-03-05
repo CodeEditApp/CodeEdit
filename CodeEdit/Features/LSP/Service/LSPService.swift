@@ -218,7 +218,7 @@ final class LSPService: ObservableObject {
             do {
                 try await languageServer.openDocument(document)
             } catch {
-                let uri = await document.languageServerURI
+                let uri = document.languageServerURI
                 // swiftlint:disable:next line_length
                 self.logger.error("Failed to close document: \(uri ?? "<NO URI>", privacy: .private), language: \(lspLanguage.rawValue). Error \(error)")
             }

@@ -58,8 +58,8 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             }
 
             outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
-                let data = String(decoding: fileHandle.availableData, as: UTF8.self)
-                if !data.isEmpty {
+                if let data = String(bytes: fileHandle.availableData, encoding: .utf8),
+                   !data.isEmpty {
                     Task {
                         await self.updateOutput(data)
                     }
