@@ -27,7 +27,7 @@ struct WelcomeView: View {
 
     @State var showGitClone = false
 
-    @State private var showCheckoutBranchItem: IdentifiableURL?
+    @State var showCheckoutBranchItem: URL?
 
     @State var isHovering: Bool = false
 
@@ -122,16 +122,16 @@ struct WelcomeView: View {
         .sheet(isPresented: $showGitClone) {
             GitCloneView(
                 openBranchView: { url in
-                    showCheckoutBranchItem = IdentifiableURL(url: url)
+                    showCheckoutBranchItem = url
                 },
                 openDocument: { url in
                     openDocument(url, dismissWindow)
                 }
             )
         }
-        .sheet(item: $showCheckoutBranchItem) { wrapper in
+        .sheet(item: $showCheckoutBranchItem) { url in
             GitCheckoutBranchView(
-                repoLocalPath: wrapper.url,
+                repoLocalPath: url,
                 openDocument: { url in
                     openDocument(url, dismissWindow)
                 }

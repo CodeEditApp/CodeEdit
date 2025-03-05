@@ -8,6 +8,12 @@
 import Combine
 import Foundation
 
+/// Errors that can occur during shell operations
+enum ShellClientError: Error {
+    case failedToDecodeOutput
+    case taskTerminated(code: Int)
+}
+
 /// Shell Client
 /// Run commands in shell
 class ShellClient {
@@ -38,9 +44,7 @@ class ShellClient {
         try task.run()
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         guard let output = String(bytes: data, encoding: .utf8) else {
-            throw NSError(domain: "ShellClient", code: -1, userInfo: [
-                NSLocalizedDescriptionKey: "Failed to decode command output"
-            ])
+            throw ShellClientError.failedToDecodeOutput
         }
         return output
     }
@@ -71,6 +75,7 @@ class ShellClient {
                     return
                 }
                 guard let output = String(bytes: data, encoding: .utf8) else {
+                    subject.send(completion: .finished)
                     return
                 }
                 output.split(whereSeparator: \.isNewline)
@@ -92,11 +97,7 @@ class ShellClient {
                 let data = fileHandle.availableData
                 if !data.isEmpty {
                     guard let output = String(bytes: data, encoding: .utf8) else {
-                        continuation.finish(throwing: NSError(
-                            domain: "ShellClient",
-                            code: -1,
-                            userInfo: [NSLocalizedDescriptionKey: "Failed to decode command output"]
-                        ))
+                        continuation.finish(throwing: ShellClientError.failedToDecodeOutput)
                         return
                     }
                     output.split(whereSeparator: \.isNewline)
@@ -104,7 +105,7 @@ class ShellClient {
                 } else {
                     if !task.isRunning && task.terminationStatus != 0 {
                         continuation.finish(
-                            throwing: NSError(domain: "ShellClient", code: Int(task.terminationStatus))
+                            throwing: ShellClientError.taskTerminated(code: Int(task.terminationStatus))
                         )
                     } else {
                         continuation.finish()

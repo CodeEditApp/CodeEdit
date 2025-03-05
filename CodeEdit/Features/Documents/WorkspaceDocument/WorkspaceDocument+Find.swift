@@ -129,9 +129,7 @@ extension WorkspaceDocument.SearchState {
                         )
 
                         if let result = result {
-                            await MainActor.run {
-                                self.tempSearchResults.append(result)
-                            }
+                            await self.appendNewResultsToTempResults(newResult: result)
                         }
                         evaluateResultGroup.leave()
                     }
@@ -356,6 +354,16 @@ extension WorkspaceDocument.SearchState {
         }
     }
 
+    /// Evaluates a matched file to determine if it contains any search matches.
+    /// Requires a file score from the search model.
+    ///
+    /// Evaluates the file's contents asynchronously.
+    ///
+    /// - Parameters:
+    ///   - fileURL: The `URL` of the file to evaluate.
+    ///   - fileScore:  The file's score from a ``SearchIndexer``
+    ///   - regexPattern: The pattern to evaluate against the file's contents.
+    /// - Returns: `nil` if there are no relevant search matches, or a search result if matches are found.
     private func evaluateSearchResult(
         fileURL: URL,
         fileScore: Float,
