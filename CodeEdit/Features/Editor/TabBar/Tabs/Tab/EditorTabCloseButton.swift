@@ -105,6 +105,7 @@ struct EditorTabCloseButton: View {
     }
 }
 
+#if DEBUG
 @available(macOS 14.0, *)
 #Preview {
     @Previewable @State var closeButtonGestureActive: Bool = false
@@ -119,3 +120,4 @@ struct EditorTabCloseButton: View {
         isHoveringClose: $isHoveringClose
     )
 }
+#endif
