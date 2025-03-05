@@ -9,12 +9,6 @@ import SwiftUI
 import AppKit
 import Foundation
 
-// Change from private to fileprivate
-private struct IdentifiableURL: Identifiable {
-    let url: URL
-    var id: String { url.absoluteString }
-}
-
 struct WelcomeView: View {
     @Environment(\.colorScheme)
     var colorScheme

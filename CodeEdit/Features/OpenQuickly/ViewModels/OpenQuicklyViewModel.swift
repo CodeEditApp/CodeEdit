@@ -24,7 +24,7 @@ final class OpenQuicklyViewModel: ObservableObject {
     ///
     /// ``OpenQuicklyPreviewView`` also uses this to load the `fileUrl` for preview.
     struct SearchResult: Identifiable, Hashable {
-        var id: String { fileURL.absoluteString }
+        var id: String { fileURL.id }
         let fileURL: URL
         let matchedCharacters: [NSRange]
 
