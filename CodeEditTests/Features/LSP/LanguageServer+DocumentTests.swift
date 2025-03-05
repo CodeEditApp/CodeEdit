@@ -138,7 +138,7 @@ final class LanguageServerDocumentTests: XCTestCase {
         CodeEditDocumentController.shared.addDocument(workspace)
 
         // Add a CEWorkspaceFile
-        try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
+        _ = try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
         guard let file = fileManager.childrenOfFile(fileManager.workspaceItem)?.first else {
             XCTFail("No File")
             return
@@ -201,7 +201,7 @@ final class LanguageServerDocumentTests: XCTestCase {
         let (_, fileManager) = try makeTestWorkspace()
 
         // Make our example file
-        try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
+        _ = try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
         guard let file = fileManager.childrenOfFile(fileManager.workspaceItem)?.first else {
             XCTFail("No File")
             return
@@ -261,7 +261,7 @@ final class LanguageServerDocumentTests: XCTestCase {
         let (_, fileManager) = try makeTestWorkspace()
 
         // Make our example file
-        try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
+        _ = try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
         guard let file = fileManager.childrenOfFile(fileManager.workspaceItem)?.first else {
             XCTFail("No File")
             return
