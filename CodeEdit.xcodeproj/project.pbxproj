@@ -3924,7 +3924,6 @@
 				6CD3CA542C8B508200D83DCD /* CodeEditSourceEditor */,
 				6CB94D022CA1205100E8651C /* AsyncAlgorithms */,
 				6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */,
-				6C05CF9D2CDE8699006AAECD /* CodeEditSourceEditor */,
 				30818CB42D4E563900967860 /* ZIPFoundation */,
 			);
 			productName = CodeEdit;
@@ -4023,8 +4022,8 @@
 				303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 				6C4E37FA2C73E00700AEE7B5 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
-				6C05CF9C2CDE8699006AAECD /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 				30818CB32D4E563900967860 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				30C549D82D77BDF8008DDEF8 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 			);
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
 			projectDirPath = "";
@@ -5873,6 +5872,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.9.19;
+			};
+		};
+		30C549D82D77BDF8008DDEF8 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
 			};
 		};
 		30CB648F2C16CA8100CC8A9E /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */ = {

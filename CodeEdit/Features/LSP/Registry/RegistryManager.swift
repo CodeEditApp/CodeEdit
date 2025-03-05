@@ -135,18 +135,30 @@ final class RegistryManager {
 
     /// Loads registry items from disk
     private func loadItemsFromDisk() -> [RegistryItem]? {
+        let registryPath = saveLocation.appending(path: "registry.json")
+        let fileManager = FileManager.default
+
+        // Update the file every 24 hours
+        let needsUpdate = !fileManager.fileExists(atPath: registryPath.path) || {
+            guard let attributes = try? fileManager.attributesOfItem(atPath: registryPath.path),
+                  let modificationDate = attributes[.modificationDate] as? Date else {
+                return true
+            }
+            let hoursSinceLastUpdate = Date().timeIntervalSince(modificationDate) / 3600
+            return hoursSinceLastUpdate > 24
+        }()
+
+        if needsUpdate {
+            Task { await update() }
+            return nil
+        }
+
         do {
-            let registryPath = saveLocation.appending(path: "registry.json")
             let registryData = try Data(contentsOf: registryPath)
-            let decoder = JSONDecoder()
-            let items = try decoder.decode([RegistryItem].self, from: registryData)
-            return items.filter {
-                $0.categories.contains("LSP")
-            }
+            let items = try JSONDecoder().decode([RegistryItem].self, from: registryData)
+            return items.filter { $0.categories.contains("LSP") }
         } catch {
-            Task {
-                await update()
-            }
+            Task { await update() }
             return nil
         }
     }
