@@ -62,7 +62,8 @@ extension CEWorkspaceFileManager {
     func addFile(
         fileName: String,
         toFile file: CEWorkspaceFile,
-        useExtension: String? = nil
+        useExtension: String? = nil,
+        contents: Data? = nil
     ) throws -> CEWorkspaceFile {
         // check the folder for other files, and see what the most common file extension is
         do {
@@ -95,7 +96,7 @@ extension CEWorkspaceFileManager {
             // Create the file
             guard fileManager.createFile(
                 atPath: fileUrl.path,
-                contents: nil,
+                contents: contents,
                 attributes: [FileAttributeKey.creationDate: Date()]
             ) else {
                 throw CocoaError.error(.fileWriteUnknown, url: fileUrl)
@@ -112,57 +113,6 @@ extension CEWorkspaceFileManager {
             return newFile
         } catch {
             logger.error("Failed to add file: \(error, privacy: .auto)")
-            throw error
-        }
-    }
-
-    /// This function is used to create a file with contents
-    func addFileWithContents(
-        fileName: String,
-        toFile file: CEWorkspaceFile,
-        useExtension: String? = nil,
-        contents: Data?
-    ) throws -> CEWorkspaceFile {
-        do {
-            var fileExtension: String
-            if fileName.contains(".") {
-                fileExtension = ""
-            } else {
-                fileExtension = useExtension ?? findCommonFileExtension(for: file)
-                if !fileExtension.isEmpty && !fileExtension.starts(with: ".") {
-                    fileExtension = "." + fileExtension
-                }
-            }
-
-            var fileUrl = file.nearestFolder.appendingPathComponent("\(fileName)\(fileExtension)")
-            var fileNumber = 0
-            while fileManager.fileExists(atPath: fileUrl.path) {
-                fileNumber += 1
-                fileUrl = fileUrl.deletingLastPathComponent()
-                    .appendingPathComponent("\(fileName)\(fileNumber)\(fileExtension)")
-            }
-
-            guard fileUrl.fileName.isValidFilename else {
-                throw FileManagerError.invalidFileName
-            }
-
-            guard fileManager.createFile(
-                atPath: fileUrl.path,
-                contents: contents,
-                attributes: [FileAttributeKey.creationDate: Date()]
-            ) else {
-                throw CocoaError.error(.fileWriteUnknown, url: fileUrl)
-            }
-
-            try rebuildFiles(fromItem: file.isFolder ? file : file.parent ?? file)
-            notifyObservers(updatedItems: [file.isFolder ? file : file.parent ?? file])
-
-            guard let newFile = getFile(fileUrl.path, createIfNotFound: true) else {
-                throw FileManagerError.fileNotIndexed
-            }
-            return newFile
-        } catch {
-            logger.error("Failed to add file with contents: \(error, privacy: .auto)")
             throw error
         }
     }

@@ -123,7 +123,7 @@ extension ProjectNavigatorMenu {
             let clipBoardContent = NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
             if let newFile = try workspace?
                 .workspaceFileManager?
-                .addFileWithContents(
+                .addFile(
                     fileName: "untitled",
                     toFile: item,
                     useExtension: "",
