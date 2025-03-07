@@ -24,7 +24,8 @@ struct EditorTabBarView: View {
             EditorTabBarTrailingAccessories()
                 .padding(.top, hasTopInsets ? -1 : 0)
         }
-        .frame(height: EditorTabBarView.height)
+        .frame(height: EditorTabBarView.height - (hasTopInsets ? 1 : 0))
+        .clipped()
         .padding(.leading, -1)
     }
 }
