@@ -18,10 +18,16 @@ class TaskManager: ObservableObject {
 
     private var workspaceURL: URL?
     private var settingsListener: AnyCancellable?
+    private weak var workspace: WorkspaceDocument?
 
-    init(workspaceSettings: CEWorkspaceSettingsData, workspaceURL: URL? = nil) {
+    init(
+        workspaceSettings: CEWorkspaceSettingsData,
+        workspaceURL: URL? = nil,
+        workspace: WorkspaceDocument? = nil
+    ) {
         self.workspaceURL = workspaceURL
         self.workspaceSettings = workspaceSettings
+        self.workspace = workspace
 
         settingsListener = workspaceSettings.$tasks
             .receive(on: DispatchQueue.main)
@@ -79,7 +85,7 @@ class TaskManager: ObservableObject {
             }
             activeTask.run(workspaceURL: workspaceURL)
         } else {
-            let runningTask = CEActiveTask(task: task)
+            let runningTask = CEActiveTask(task: task, workspace: workspace)
             runningTask.run(workspaceURL: workspaceURL)
             await MainActor.run {
                 activeTasks[task.id] = runningTask
