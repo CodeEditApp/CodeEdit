@@ -94,29 +94,38 @@ struct EditorAreaView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(.all)
         .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                if shouldShowTabBar {
-                    EditorTabBarView()
-                        .id("TabBarView" + editor.id.uuidString)
-                        .environmentObject(editor)
-                    Divider()
-                }
-                if showEditorJumpBar {
-                    EditorJumpBarView(
-                        file: editor.selectedTab?.file,
-                        shouldShowTabBar: shouldShowTabBar
-                    ) { [weak editor] newFile in
-                        if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
-                            editor?.openTab(file: newFile, at: index)
-                        }
+            GeometryReader { geometry in
+                let topSafeArea = geometry.safeAreaInsets.top
+                VStack(spacing: 0) {
+                    if topSafeArea > 0 {
+                        Rectangle()
+                            .fill(.clear)
+                            .frame(height: 1)
+                            .background(.clear)
                     }
-                    .environmentObject(editor)
-                    .padding(.top, shouldShowTabBar ? -1 : 0)
-                    Divider()
+                    if shouldShowTabBar {
+                        EditorTabBarView(hasTopInsets: topSafeArea > 0)
+                            .id("TabBarView" + editor.id.uuidString)
+                            .environmentObject(editor)
+                        Divider()
+                    }
+                    if showEditorJumpBar {
+                        EditorJumpBarView(
+                            file: editor.selectedTab?.file,
+                            shouldShowTabBar: shouldShowTabBar
+                        ) { [weak editor] newFile in
+                            if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
+                                editor?.openTab(file: newFile, at: index)
+                            }
+                        }
+                        .environmentObject(editor)
+                        .padding(.top, shouldShowTabBar ? -1 : 0)
+                        Divider()
+                    }
                 }
+                .environment(\.isActiveEditor, editor == editorManager.activeEditor)
+                .background(EffectView(.headerView))
             }
-            .environment(\.isActiveEditor, editor == editorManager.activeEditor)
-            .background(EffectView(.headerView))
         }
         .focused($focus, equals: editor)
         // Fixing this is causing a malloc exception when a file is edited & closed. See #1886

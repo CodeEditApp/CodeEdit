@@ -226,8 +226,6 @@ struct EditorTabView: View {
                         }
                     }
             )
-            // This padding is to avoid background color overlapping with top divider.
-            .padding(.top, 1)
             .zIndex(isActive ? 2 : (isDragging ? 3 : (isPressing ? 1 : 0)))
             .id(item.id)
             .tabBarContextMenu(item: item, isTemporary: isTemporary)
