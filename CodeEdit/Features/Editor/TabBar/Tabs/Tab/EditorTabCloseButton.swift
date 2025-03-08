@@ -105,9 +105,10 @@ struct EditorTabCloseButton: View {
     }
 }
 
+@available(macOS 14.0, *)
 #Preview {
-    @State var closeButtonGestureActive: Bool = false
-    @State var isHoveringClose: Bool = false
+    @Previewable @State var closeButtonGestureActive: Bool = false
+    @Previewable @State var isHoveringClose: Bool = false
 
     return EditorTabCloseButton(
         isActive: false,

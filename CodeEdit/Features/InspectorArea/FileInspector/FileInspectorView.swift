@@ -85,13 +85,13 @@ struct FileInspectorView: View {
         if let file {
             TextField("Name", text: $fileName)
                 .background(
-                    file.validateFileName(for: fileName) ? Color.clear : Color(errorRed)
+                    fileName != file.fileName() && !file.validateFileName(for: fileName) ? Color(errorRed) : Color.clear
                 )
                 .onSubmit {
                     if file.validateFileName(for: fileName) {
                         let destinationURL = file.url
                             .deletingLastPathComponent()
-                            .appendingPathComponent(fileName)
+                            .appending(path: fileName)
                         DispatchQueue.main.async { [weak workspace] in
                             do {
                                 if let newItem = try workspace?.workspaceFileManager?.move(

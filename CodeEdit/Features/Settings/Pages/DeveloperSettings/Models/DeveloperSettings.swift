@@ -15,13 +15,17 @@ extension SettingsData {
             [
                 "Developer",
                 "Language Server Protocol",
-                "LSP Binaries"
+                "LSP Binaries",
+                "Show Internal Development Inspector"
             ]
             .map { NSLocalizedString($0, comment: "") }
         }
 
         /// A dictionary that stores a file type and a path to an LSP binary
         var lspBinaries: [String: String] = [:]
+
+        /// Toggle for showing the internal development inspector
+        var showInternalDevelopmentInspector: Bool = false
 
         /// Default initializer
         init() {}
@@ -34,6 +38,11 @@ extension SettingsData {
                 [String: String].self,
                 forKey: .lspBinaries
             ) ?? [:]
+
+            self.showInternalDevelopmentInspector = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .showInternalDevelopmentInspector
+            ) ?? false
         }
     }
 }

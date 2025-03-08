@@ -81,7 +81,6 @@ struct GitHubOAuthConfiguration: GitRouterConfiguration {
         code: String,
         completion: @escaping (_ config: GitHubTokenConfiguration) -> Void
     ) {
-
         let request = GitHubOAuthRouter.accessToken(self, code).URLRequest
         if let request {
             let task = session.dataTask(with: request) { data, response, _ in
@@ -89,8 +88,8 @@ struct GitHubOAuthConfiguration: GitRouterConfiguration {
                     if response.statusCode != 200 {
                         return
                     } else {
-                        if let data {
-                            let string = String(decoding: data, as: UTF8.self)
+                        if let data,
+                           let string = String(bytes: data, encoding: .utf8) {
                             let accessToken = self.accessTokenFromResponse(string)
                             if let accessToken {
                                 let config = GitHubTokenConfiguration(accessToken, url: self.apiEndpoint ?? "")

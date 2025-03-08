@@ -61,12 +61,6 @@ protocol GitRouter {
 
     func request(_ urlComponents: URLComponents, parameters: [String: Any]) -> URLRequest?
 
-    func loadJSON<T: Codable>(
-        _ session: GitURLSession,
-        expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void
-    ) -> GitURLSessionDataTaskProtocol?
-
     func load<T: Codable>(
         _ session: GitURLSession,
         dateDecodingStrategy: JSONDecoder.DateDecodingStrategy?,
@@ -190,15 +184,6 @@ extension GitRouter {
 
             return mutableURLRequest as URLRequest
         }
-    }
-
-    @available(*, deprecated, message: "Plase use `load` method instead")
-    func loadJSON<T: Codable>(
-        _ session: GitURLSession = URLSession.shared,
-        expectedResultType: T.Type,
-        completion: @escaping (_ json: T?, _ error: Error?) -> Void
-    ) -> GitURLSessionDataTaskProtocol? {
-        load(session, expectedResultType: expectedResultType, completion: completion)
     }
 
     func load<T: Codable>(

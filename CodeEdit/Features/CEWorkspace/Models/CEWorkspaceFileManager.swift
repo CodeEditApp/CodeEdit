@@ -198,7 +198,7 @@ final class CEWorkspaceFileManager {
     /// - Parameter file: The parent element.
     /// - Returns: A child element with an associated parent.
     func createChild(_ url: URL, forParent file: CEWorkspaceFile) -> CEWorkspaceFile {
-        let relativeURL = URL(filePath: file.id).appendingPathComponent(url.lastPathComponent)
+        let relativeURL = URL(filePath: file.id).appending(path: url.lastPathComponent)
         let childId = relativeURL.relativePath
         let newFileItem = CEWorkspaceFile(id: childId, url: relativeURL)
         newFileItem.parent = file
