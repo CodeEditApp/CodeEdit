@@ -1,5 +1,5 @@
 {
-  "originHash" : "454498edc6f3f47f3616318caf54005bbbfd026d4f4355edda503b072bfe9814",
+  "originHash" : "ac57a6899925c3e4ac6d43aed791c845c6fc24a4441b6a10297a207d951b7836",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "331d5dbc5fc8513be5848fce8a2a312908f36a11",
         "version" : "0.1.20"
+      }
+    },
+    {
+      "identity" : "codeeditsourceeditor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
+      "state" : {
+        "revision" : "6b2c945501f0a5c15d8aa6d159fb2550c391bdd0",
+        "version" : "0.10.0"
       }
     },
     {
@@ -213,8 +222,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
       "state" : {
-        "revision" : "5a65f4074975f811da666dfe31a19850950b1ea4",
-        "version" : "0.56.2"
+        "revision" : "3825ebf8d55bb877c91bc897e8e3d0c001f16fba",
+        "version" : "0.58.2"
       }
     },
     {

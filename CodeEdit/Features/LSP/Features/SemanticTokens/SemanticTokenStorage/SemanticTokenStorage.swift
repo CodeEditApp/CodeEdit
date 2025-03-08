@@ -40,7 +40,7 @@ final class SemanticTokenStorage: GenericSemanticTokenStorage {
     }
 
     // MARK: - Storage Conformance
-    
+
     /// Finds all tokens in the given range.
     /// - Parameter range: The range to query.
     /// - Returns: All tokens found in the range.
@@ -62,7 +62,7 @@ final class SemanticTokenStorage: GenericSemanticTokenStorage {
 
         return tokens
     }
-    
+
     /// Clear the current state and set a new one.
     /// - Parameter data: The semantic tokens to set as the current state.
     func setData(_ data: borrowing SemanticTokens) {
@@ -125,7 +125,7 @@ final class SemanticTokenStorage: GenericSemanticTokenStorage {
     }
 
     // MARK: - Invalidated Indices
-    
+
     /// Calculate what document ranges are invalidated due to changes in the compressed token data.
     ///
     /// This overestimates invalidated ranges by assuming all tokens touched by a change are invalid. All this does is
