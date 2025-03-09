@@ -21,6 +21,7 @@ struct RegistryItem: Codable {
     struct Source: Codable {
         let id: String
         let asset: AssetContainer?
+        let build: BuildContainer?
         let versionOverrides: [VersionOverride]?
 
         enum AssetContainer: Codable {
@@ -61,6 +62,44 @@ struct RegistryItem: Codable {
                     try container.encodeNil()
                 }
             }
+        }
+
+        enum BuildContainer: Codable {
+            case single(Build)
+            case multiple([Build])
+            case none
+
+            init(from decoder: Decoder) throws {
+                if let container = try? decoder.singleValueContainer() {
+                    if let singleValue = try? container.decode(Build.self) {
+                        self = .single(singleValue)
+                        return
+                    } else if let multipleValues = try? container.decode([Build].self) {
+                        self = .multiple(multipleValues)
+                        return
+                    }
+                }
+                self = .none
+            }
+
+            func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                switch self {
+                case .single(let value):
+                    try container.encode(value)
+                case .multiple(let values):
+                    try container.encode(values)
+                case .none:
+                    try container.encodeNil()
+                }
+            }
+        }
+
+        struct Build: Codable {
+            let target: String?
+            let run: String
+            let env: [String: String]?
+            let bin: String?
         }
 
         struct Asset: Codable {

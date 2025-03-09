@@ -9,7 +9,7 @@ import Foundation
 
 /// Factory for creating the appropriate package manager based on installation method
 final class PackageManagerFactory {
-    let installationDirectory: URL
+    private let installationDirectory: URL
 
     init(installationDirectory: URL) {
         self.installationDirectory = installationDirectory
@@ -37,94 +37,91 @@ final class PackageManagerFactory {
     }
 
     /// Parse a registry entry and create the appropriate installation method
-    static func parseRegistryEntry(_ entry: [String: Any]) -> InstallationMethod? {
-        guard let source = entry["source"] as? [String: Any],
-              let sourceId = source["id"] as? String else {
-            return nil
-        }
-
-        let buildInstructions = source["build"] as? [[String: Any]]
-
-        // Detect the build tool from the registry entry
-        var buildTool: String?
-        if let bin = entry["bin"] as? [String: String] {
-            let binValues = Array(bin.values)
-            if !binValues.isEmpty {
-                let value = binValues[0]
-                if value.hasPrefix("cargo:") {
-                    buildTool = "cargo"
-                } else if value.hasPrefix("npm:") {
-                    buildTool = "npm"
-                } else if value.hasPrefix("pypi:") {
-                    buildTool = "pip"
-                } else if value.hasPrefix("gem:") {
-                    buildTool = "gem"
-                } else if value.hasPrefix("golang:") {
-                    buildTool = "golang"
-                }
-            }
-        }
-
-        var method = PackageSourceParser.parse(sourceId, buildInstructions: buildInstructions)
-
-        if let buildTool = buildTool {
-            switch method {
-            case .standardPackage(var source):
-                var options = source.options
-                options["buildTool"] = buildTool
-                source = PackageSource(
-                    sourceId: source.sourceId,
-                    type: source.type,
-                    name: source.name,
-                    version: source.version,
-                    subpath: source.subpath,
-                    repositoryUrl: source.repositoryUrl,
-                    gitReference: source.gitReference,
-                    options: options
-                )
-                method = .standardPackage(source: source)
-            case .sourceBuild(var source, let instructions):
-                var options = source.options
-                options["buildTool"] = buildTool
-                source = PackageSource(
-                    sourceId: source.sourceId,
-                    type: source.type,
-                    name: source.name,
-                    version: source.version,
-                    subpath: source.subpath,
-                    repositoryUrl: source.repositoryUrl,
-                    gitReference: source.gitReference,
-                    options: options
-                )
-                method = .sourceBuild(source: source, buildInstructions: instructions)
-            case .binaryDownload(var source, let url):
-                var options = source.options
-                options["buildTool"] = buildTool
-                source = PackageSource(
-                    sourceId: source.sourceId,
-                    type: source.type,
-                    name: source.name,
-                    version: source.version,
-                    subpath: source.subpath,
-                    repositoryUrl: source.repositoryUrl,
-                    gitReference: source.gitReference,
-                    options: options
-                )
-                method = .binaryDownload(source: source, url: url)
-            case .unknown:
-                break
-            }
-        }
-        return method
+    static func parseRegistryEntry(_ entry: RegistryItem) -> InstallationMethod? {
+//        let buildInstructions = source["build"] as? [[String: Any]]
+//        entry.source.build
+//
+//        // Detect the build tool from the registry entry
+//        var buildTool: String?
+//        if let bin = entry.bin {
+//            let binValues = Array(bin.values)
+//            if !binValues.isEmpty {
+//                let value = binValues[0]
+//                if value.hasPrefix("cargo:") {
+//                    buildTool = "cargo"
+//                } else if value.hasPrefix("npm:") {
+//                    buildTool = "npm"
+//                } else if value.hasPrefix("pypi:") {
+//                    buildTool = "pip"
+//                } else if value.hasPrefix("gem:") {
+//                    buildTool = "gem"
+//                } else if value.hasPrefix("golang:") {
+//                    buildTool = "golang"
+//                }
+//            }
+//        }
+//
+//        var method = PackageSourceParser.parse(entry.source.id, buildInstructions: buildInstructions)
+//
+//        if let buildTool = buildTool {
+//            switch method {
+//            case .standardPackage(var source):
+//                var options = source.options
+//                options["buildTool"] = buildTool
+//                source = PackageSource(
+//                    sourceId: source.sourceId,
+//                    type: source.type,
+//                    name: source.name,
+//                    version: source.version,
+//                    subpath: source.subpath,
+//                    repositoryUrl: source.repositoryUrl,
+//                    gitReference: source.gitReference,
+//                    options: options
+//                )
+//                method = .standardPackage(source: source)
+//            case .sourceBuild(var source, let instructions):
+//                var options = source.options
+//                options["buildTool"] = buildTool
+//                source = PackageSource(
+//                    sourceId: source.sourceId,
+//                    type: source.type,
+//                    name: source.name,
+//                    version: source.version,
+//                    subpath: source.subpath,
+//                    repositoryUrl: source.repositoryUrl,
+//                    gitReference: source.gitReference,
+//                    options: options
+//                )
+//                method = .sourceBuild(source: source, buildInstructions: instructions)
+//            case .binaryDownload(var source, let url):
+//                var options = source.options
+//                options["buildTool"] = buildTool
+//                source = PackageSource(
+//                    sourceId: source.sourceId,
+//                    type: source.type,
+//                    name: source.name,
+//                    version: source.version,
+//                    subpath: source.subpath,
+//                    repositoryUrl: source.repositoryUrl,
+//                    gitReference: source.gitReference,
+//                    options: options
+//                )
+//                method = .binaryDownload(source: source, url: url)
+//            case .unknown:
+//                break
+//            }
+//        }
+//        return method
+        return nil
     }
 
     /// Install a package from a registry entry
     func installFromRegistryEntry(_ entry: [String: Any]) async throws {
-        guard let method = PackageManagerFactory.parseRegistryEntry(entry),
-              let manager = createPackageManager(for: method) else {
-            throw PackageManagerError.invalidConfiguration
-        }
-        try await manager.install(method: method)
+//        guard let method = PackageManagerFactory.parseRegistryEntry(entry),
+//              let manager = createPackageManager(for: method) else {
+//            throw PackageManagerError.invalidConfiguration
+//        }
+//        try await manager.install(method: method)
     }
 
     /// Install a package from a source ID string

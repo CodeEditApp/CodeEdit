@@ -107,6 +107,10 @@ final class RegistryManager {
         }
     }
 
+//    func installPackage(package entry: RegistryItem) {
+//        PackageManagerFactory.init(installationDirectory: saveLocation).installFromRegistryEntry(entry)
+//    }
+
     /// Attempts downloading from `url`, with error handling and a retry policy
     private func download(from url: URL, attempt: Int = 1) async throws -> Data {
         do {
