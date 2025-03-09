@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-extension URL: Identifiable {
-    public var id: String {
-        absoluteString
-    }
-}
-
 struct OpenQuicklyView: View {
     @EnvironmentObject private var workspace: WorkspaceDocument
 

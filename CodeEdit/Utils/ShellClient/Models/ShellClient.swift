@@ -8,6 +8,12 @@
 import Combine
 import Foundation
 
+/// Errors that can occur during shell operations
+enum ShellClientError: Error {
+    case failedToDecodeOutput
+    case taskTerminated(code: Int)
+}
+
 /// Shell Client
 /// Run commands in shell
 class ShellClient {
@@ -37,7 +43,10 @@ class ShellClient {
         let (task, pipe) = generateProcessAndPipe(args)
         try task.run()
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        return String(decoding: data, as: UTF8.self)
+        guard let output = String(bytes: data, encoding: .utf8) else {
+            throw ShellClientError.failedToDecodeOutput
+        }
+        return output
     }
 
     /// Run a command with Publisher
@@ -65,8 +74,11 @@ class ShellClient {
                     subject.send(completion: .finished)
                     return
                 }
-                String(decoding: data, as: UTF8.self)
-                    .split(whereSeparator: \.isNewline)
+                guard let output = String(bytes: data, encoding: .utf8) else {
+                    subject.send(completion: .finished)
+                    return
+                }
+                output.split(whereSeparator: \.isNewline)
                     .forEach({ subject.send(String($0)) })
                 outputHandler.waitForDataInBackgroundAndNotify()
             }
@@ -84,13 +96,16 @@ class ShellClient {
             pipe.fileHandleForReading.readabilityHandler = { [unowned pipe] fileHandle in
                 let data = fileHandle.availableData
                 if !data.isEmpty {
-                    String(decoding: data, as: UTF8.self)
-                        .split(whereSeparator: \.isNewline)
+                    guard let output = String(bytes: data, encoding: .utf8) else {
+                        continuation.finish(throwing: ShellClientError.failedToDecodeOutput)
+                        return
+                    }
+                    output.split(whereSeparator: \.isNewline)
                         .forEach({ continuation.yield(String($0)) })
                 } else {
                     if !task.isRunning && task.terminationStatus != 0 {
                         continuation.finish(
-                            throwing: NSError(domain: "ShellClient", code: Int(task.terminationStatus))
+                            throwing: ShellClientError.taskTerminated(code: Int(task.terminationStatus))
                         )
                     } else {
                         continuation.finish()
