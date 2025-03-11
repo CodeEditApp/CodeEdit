@@ -12,6 +12,7 @@ struct ExtensionsSettingsRowView: View, Equatable {
     let subtitle: String
     let icon: String
     let onCancel: (() -> Void)
+    let onInstall: (() async -> Void)
 
     private let cleanedTitle: String
     private let cleanedSubtitle: String
@@ -26,12 +27,14 @@ struct ExtensionsSettingsRowView: View, Equatable {
         title: String,
         subtitle: String,
         icon: String,
-        onCancel: @escaping (() -> Void)
+        onCancel: @escaping (() -> Void),
+        onInstall: @escaping () async -> Void
     ) {
         self.title = title
         self.subtitle = subtitle
         self.icon = icon
         self.onCancel = onCancel
+        self.onInstall = onInstall
 
         self.cleanedTitle = title
             .replacingOccurrences(of: "-", with: " ")
@@ -117,10 +120,14 @@ struct ExtensionsSettingsRowView: View, Equatable {
         } else if isHovering {
             Button {
                 isInstalling = true
-                withAnimation(.linear(duration: 2)) {
-                    installProgress = 1.0
+                withAnimation(.linear(duration: 3)) {
+                    installProgress = 0.75
                 }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                Task {
+                    await onInstall()
+                    withAnimation(.linear(duration: 1)) {
+                        installProgress = 1.0
+                    }
                     isInstalling = false
                     isInstalled = true
                     isEnabled = true

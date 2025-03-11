@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ExtensionsSettingsView: View {
+    @State private var didError = false
+    @State private var installationFailure: InstallationFailure?
     @State private var registryItems: [RegistryItem] = []
     @State private var isLoading = true
 
@@ -27,7 +29,14 @@ struct ExtensionsSettingsView: View {
                             title: item.name,
                             subtitle: item.description,
                             icon: "GitHubIcon",
-                            onCancel: { }
+                            onCancel: { },
+                            onInstall: {
+                                do {
+                                    try await RegistryManager.shared.installPackage(package: item)
+                                } catch {
+                                    installationFailure = InstallationFailure(error: error.localizedDescription)
+                                }
+                            }
                         )
                         .listRowInsets(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                     }
@@ -40,6 +49,15 @@ struct ExtensionsSettingsView: View {
         .onReceive(NotificationCenter.default.publisher(for: .RegistryUpdatedNotification)) { _ in
             loadRegistryItems()
         }
+        .alert(
+            "Installation Failed",
+            isPresented: $didError,
+            presenting: installationFailure
+        ) { _ in
+            Button("Dismiss") { }
+        } message: { details in
+            Text(details.error)
+        }
     }
 
     private func loadRegistryItems() {
@@ -49,4 +67,9 @@ struct ExtensionsSettingsView: View {
             isLoading = false
         }
     }
+}
+
+private struct InstallationFailure: Identifiable {
+    let error: String
+    let id = UUID()
 }
