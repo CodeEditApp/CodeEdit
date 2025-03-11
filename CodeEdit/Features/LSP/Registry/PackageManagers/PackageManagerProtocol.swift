@@ -43,21 +43,11 @@ extension PackageManagerProtocol {
     }
 }
 
-enum PackageInstallationStatus: String, Codable {
-    case inProgress
-    case completed
-    case failed
-}
-
 enum PackageManagerError: Error {
     case packageManagerNotInstalled
     case initializationFailed(String)
     case installationFailed(String)
-    case versionCheckFailed(String)
     case invalidConfiguration
-    case fileSystemError(String)
-    case processError(String)
-    case networkError(String)
 }
 
 enum RegistryManagerError: Error {
@@ -69,38 +59,35 @@ enum RegistryManagerError: Error {
 
 /// Package manager types supported by the system
 enum PackageManagerType: String, Codable {
+    /// JavaScript
     case npm
+    /// Rust
     case cargo
+    /// Go
     case golang
+    /// Python
     case pip
+    /// Ruby
     case gem
-    case github
+    /// C#
     case nuget
+    /// OCaml
     case opam
-    case customBuild
-
-    var executableName: String {
-        switch self {
-        case .npm: return "npm"
-        case .cargo: return "cargo"
-        case .golang: return "go"
-        case .pip: return "pip"
-        case .gem: return "gem"
-        case .github: return "git"
-        case .nuget: return "dotnet"
-        case .opam: return "opam"
-        case .customBuild: return "sh"
-        }
-    }
+    /// PHP
+    case composer
+    /// Building from source
+    case sourceBuild
+    /// Binary download
+    case github
 }
 
 enum GitReference: Equatable, Codable {
     case tag(String)
     case revision(String)
-    case branch(String)
 }
 
-/// Generic package source information that applies to all installation methods
+/// Generic package source information that applies to all installation methods.
+/// Takes all the necessary information from `RegistryItem`.
 struct PackageSource: Equatable, Codable {
     /// The raw source ID string from the registry
     let sourceId: String
@@ -110,21 +97,18 @@ struct PackageSource: Equatable, Codable {
     let name: String
     /// Package version
     let version: String
-    /// Optional subpath for packages that specify a specific component or path
-    let subpath: String?
     /// URL for repository or download link
     let repositoryUrl: String?
     /// Git reference type if this is a git based package
     let gitReference: GitReference?
     /// Additional possible options
-    let options: [String: String]
+    var options: [String: String]
 
     init(
         sourceId: String,
         type: PackageManagerType,
         name: String,
         version: String,
-        subpath: String? = nil,
         repositoryUrl: String? = nil,
         gitReference: GitReference? = nil,
         options: [String: String] = [:]
@@ -133,21 +117,10 @@ struct PackageSource: Equatable, Codable {
         self.type = type
         self.name = name
         self.version = version
-        self.subpath = subpath
         self.repositoryUrl = repositoryUrl
         self.gitReference = gitReference
         self.options = options
     }
-}
-
-/// Build instructions for source-based installations
-struct BuildInstructions: Equatable, Codable {
-    /// Target platform
-    let target: String
-    /// Commands to run for building
-    let commands: [String]
-    /// Path to the binary after building
-    let binaryPath: String
 }
 
 /// Installation method enum with all supported types
@@ -155,10 +128,10 @@ enum InstallationMethod: Equatable {
     /// For standard package manager installations
     case standardPackage(source: PackageSource)
     /// For packages that need to be built from source with custom build steps
-    case sourceBuild(source: PackageSource, buildInstructions: [BuildInstructions])
-    /// For direct binary downloads (pre-compiled binaries)
+    case sourceBuild(source: PackageSource, command: String)
+    /// For direct binary downloads
     case binaryDownload(source: PackageSource, url: String)
-    /// For installations that aren't supported or recognized
+    /// For installations that aren't recognized
     case unknown
 
     var packageName: String? {

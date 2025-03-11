@@ -21,55 +21,46 @@ class GolangPackageManager: PackageManagerProtocol {
             throw PackageManagerError.packageManagerNotInstalled
         }
 
-        try createDirectoryStructure(for: packagePath)
+        do {
+            try createDirectoryStructure(for: packagePath)
 
-        // For Go, we need to set up a proper module structure
-        let goModPath = packagePath.appendingPathComponent("go.mod")
-        if !FileManager.default.fileExists(atPath: goModPath.path) {
-            let moduleName = "codeedit.temp/placeholder"
-            _ = try await executeInDirectory(
-                in: packagePath.path, ["go mod init \(moduleName)"]
-            )
+            // For Go, we need to set up a proper module structure
+            let goModPath = packagePath.appendingPathComponent("go.mod")
+            if !FileManager.default.fileExists(atPath: goModPath.path) {
+                let moduleName = "codeedit.temp/placeholder"
+                _ = try await executeInDirectory(
+                    in: packagePath.path, ["go mod init \(moduleName)"]
+                )
+            }
+        } catch {
+            throw PackageManagerError.initializationFailed(error.localizedDescription)
         }
     }
 
     func install(method: InstallationMethod) async throws {
-        switch method {
-        case .standardPackage(let source):
-            try await installGolangPackage(source)
-        case let .sourceBuild(source, instructions):
-            try await buildFromSource(source, instructions)
-        case .binaryDownload:
-            throw PackageManagerError.invalidConfiguration
-        case .unknown:
+        guard case .standardPackage(let source) = method else {
             throw PackageManagerError.invalidConfiguration
         }
-    }
 
-    /// Install a standard Golang package
-    private func installGolangPackage(_ source: PackageSource) async throws {
         let packagePath = installationDirectory.appending(path: source.name)
         print("Installing Go package \(source.name)@\(source.version) in \(packagePath.path)")
 
         try await initialize(in: packagePath)
 
         do {
-            // Check if this is a Git-based package
             if let gitRef = source.gitReference, let repoUrl = source.repositoryUrl {
+                // Check if this is a Git-based package
                 var packageName = source.name
                 if !packageName.contains("github.com") && !packageName.contains("golang.org") {
                     packageName = repoUrl.replacingOccurrences(of: "https://", with: "")
                 }
 
-                // Format the git reference
                 var gitVersion: String
                 switch gitRef {
                 case .tag(let tag):
                     gitVersion = tag
                 case .revision(let rev):
                     gitVersion = rev
-                case .branch(let branch):
-                    gitVersion = branch
                 }
 
                 let versionedPackage = "\(packageName)@\(gitVersion)"
@@ -85,7 +76,7 @@ class GolangPackageManager: PackageManagerProtocol {
             }
 
             // If there's a subpath, build the binary
-            if let subpath = source.subpath {
+            if let subpath = source.options["subpath"] {
                 let binPath = packagePath.appendingPathComponent("bin")
                 if !FileManager.default.fileExists(atPath: binPath.path) {
                     try FileManager.default.createDirectory(at: binPath, withIntermediateDirectories: true)
@@ -113,66 +104,7 @@ class GolangPackageManager: PackageManagerProtocol {
         } catch {
             print("Installation failed: \(error)")
             try? cleanupFailedInstallation(packagePath: packagePath)
-            throw error
-        }
-    }
-
-    /// Build a package from source
-    private func buildFromSource(_ source: PackageSource, _ instructions: [BuildInstructions]) async throws {
-        let packagePath = installationDirectory.appending(path: source.name)
-        print("Building \(source.name) from source in \(packagePath.path)")
-
-        do {
-            if let repoUrl = source.repositoryUrl {
-                try createDirectoryStructure(for: packagePath)
-
-                if FileManager.default.fileExists(atPath: packagePath.appendingPathComponent(".git").path) {
-                    _ = try await executeInDirectory(
-                        in: packagePath.path, ["git fetch --all"]
-                    )
-                } else {
-                    _ = try await executeInDirectory(
-                        in: packagePath.path, ["git clone \(repoUrl) ."]
-                    )
-                }
-
-                _ = try await executeInDirectory(
-                    in: packagePath.path, ["git checkout \(source.version)"]
-                )
-
-                let targetInstructions = instructions.first {
-                    $0.target == "darwin" || $0.target == "unix"
-                } ?? instructions.first
-
-                guard let buildInstructions = targetInstructions else {
-                    throw PackageManagerError.invalidConfiguration
-                }
-
-                for command in buildInstructions.commands {
-                    _ = try await executeInDirectory(in: packagePath.path, [command])
-                }
-
-                let binPath = packagePath.appendingPathComponent("bin")
-                if !FileManager.default.fileExists(atPath: binPath.path) {
-                    try FileManager.default.createDirectory(at: binPath, withIntermediateDirectories: true)
-                }
-
-                let builtBinaryPath = packagePath.appendingPathComponent(buildInstructions.binaryPath)
-                let targetBinaryPath = binPath.appendingPathComponent(source.name)
-                if builtBinaryPath.path != targetBinaryPath.path &&
-                   FileManager.default.fileExists(atPath: builtBinaryPath.path) {
-                    try FileManager.default.copyItem(at: builtBinaryPath, to: targetBinaryPath)
-                    _ = try await runCommand("chmod +x \"\(targetBinaryPath.path)\"")
-                }
-
-                print("Successfully built \(source.name) from source")
-            } else {
-                throw PackageManagerError.invalidConfiguration
-            }
-        } catch {
-            print("Build failed: \(error)")
-            try? cleanupFailedInstallation(packagePath: packagePath)
-            throw error
+            throw PackageManagerError.installationFailed(error.localizedDescription)
         }
     }
 

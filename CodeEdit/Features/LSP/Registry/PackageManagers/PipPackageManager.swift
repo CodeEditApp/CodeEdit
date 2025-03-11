@@ -22,32 +22,26 @@ class PipPackageManager: PackageManagerProtocol {
             throw PackageManagerError.packageManagerNotInstalled
         }
 
-        try createDirectoryStructure(for: packagePath)
-        _ = try await executeInDirectory(
-            in: packagePath.path, ["python -m venv venv"]
-        )
+        do {
+            try createDirectoryStructure(for: packagePath)
+            _ = try await executeInDirectory(
+                in: packagePath.path, ["python -m venv venv"]
+            )
 
-        let requirementsPath = packagePath.appendingPathComponent("requirements.txt")
-        if !FileManager.default.fileExists(atPath: requirementsPath.path) {
-            try "# Package requirements\n".write(to: requirementsPath, atomically: true, encoding: .utf8)
+            let requirementsPath = packagePath.appendingPathComponent("requirements.txt")
+            if !FileManager.default.fileExists(atPath: requirementsPath.path) {
+                try "# Package requirements\n".write(to: requirementsPath, atomically: true, encoding: .utf8)
+            }
+        } catch {
+            throw PackageManagerError.initializationFailed(error.localizedDescription)
         }
     }
 
     func install(method: InstallationMethod) async throws {
-        switch method {
-        case .standardPackage(let source):
-            try await installPythonPackage(source)
-        case let .sourceBuild(source, instructions):
-            try await buildFromSource(source, instructions)
-        case .binaryDownload:
-            throw PackageManagerError.invalidConfiguration
-        case .unknown:
+        guard case .standardPackage(let source) = method else {
             throw PackageManagerError.invalidConfiguration
         }
-    }
 
-    /// Install a standard Python package using pip
-    private func installPythonPackage(_ source: PackageSource) async throws {
         let packagePath = installationDirectory.appending(path: source.name)
         print("Installing \(source.name)@\(source.version) in \(packagePath.path)")
 
@@ -55,117 +49,33 @@ class PipPackageManager: PackageManagerProtocol {
 
         do {
             let pipCommand = getPipCommand(in: packagePath)
+            var installArgs = [pipCommand, "install"]
 
-            if let gitRef = source.gitReference, let repoUrl = source.repositoryUrl {
-                // Format the git URL based on the reference type
-                var gitUrl = "git+\(repoUrl)"
-                switch gitRef {
-                case .tag(let tag):
-                    gitUrl += "@\(tag)"
-                case .revision(let rev):
-                    gitUrl += "@\(rev)"
-                case .branch(let branch):
-                    gitUrl += "@\(branch)"
-                }
-                gitUrl += "#egg=\(source.name)"
-
-                let installArgs = [pipCommand, "install", gitUrl]
-                _ = try await executeInDirectory(in: packagePath.path, installArgs)
-
-                try updateRequirements(packagePath: packagePath, gitUrl: gitUrl)
-                try await verifyInstallation(packagePath: packagePath, package: source.name)
-
-                print("Successfully installed \(source.name) from git")
+            if source.version.lowercased() != "latest" {
+                installArgs.append("\(source.name)==\(source.version)")
             } else {
-                var installArgs = [pipCommand, "install"]
-                if source.version.lowercased() != "latest" {
-                    installArgs.append("\(source.name)==\(source.version)")
-                } else {
-                    installArgs.append(source.name)
-                }
-
-                if let extraIndex = source.options["extra-index-url"] {
-                    installArgs.append(contentsOf: ["--extra-index-url", extraIndex])
-                }
-                if source.options["no-deps"] == "true" {
-                    installArgs.append("--no-deps")
-                }
-
-                _ = try await executeInDirectory(in: packagePath.path, installArgs)
-                try updateRequirements(packagePath: packagePath, package: source.name, version: source.version)
-                try await verifyInstallation(packagePath: packagePath, package: source.name)
-
-                print("Successfully installed \(source.name)@\(source.version)")
+                installArgs.append(source.name)
             }
+
+            let extras = source.options["extra"]
+            if let extras = extras {
+                if let lastIndex = installArgs.indices.last {
+                    installArgs[lastIndex] += "[\(extras)]"
+                }
+            }
+
+            _ = try await executeInDirectory(in: packagePath.path, installArgs)
+            try updateRequirements(
+                packagePath: packagePath,
+                package: source.name,
+                version: source.version,
+                extras: extras
+            )
+            try await verifyInstallation(packagePath: packagePath, package: source.name)
+
+            print("Successfully installed \(source.name)@\(source.version)")
         } catch {
             print("Installation failed: \(error)")
-            throw error
-        }
-    }
-
-    /// Build a Python package from source
-    private func buildFromSource(_ source: PackageSource, _ instructions: [BuildInstructions]) async throws {
-        let packagePath = installationDirectory.appending(path: source.name)
-        print("Building \(source.name) from source in \(packagePath.path)")
-
-        do {
-            if let repoUrl = source.repositoryUrl {
-                try createDirectoryStructure(for: packagePath)
-
-                if FileManager.default.fileExists(atPath: packagePath.appendingPathComponent(".git").path) {
-                    _ = try await executeInDirectory(
-                        in: packagePath.path, ["git fetch --all"]
-                    )
-                } else {
-                    _ = try await executeInDirectory(
-                        in: packagePath.path, ["git clone \(repoUrl) ."]
-                    )
-                }
-
-                _ = try await executeInDirectory(
-                    in: packagePath.path, ["git checkout \(source.version)"]
-                )
-                let targetInstructions = instructions.first {
-                    $0.target == "darwin" || $0.target == "unix"
-                } ?? instructions.first
-
-                guard let buildInstructions = targetInstructions else {
-                    throw PackageManagerError.invalidConfiguration
-                }
-
-                if !FileManager.default.fileExists(atPath: packagePath.appendingPathComponent("venv").path) {
-                    _ = try await executeInDirectory(
-                        in: packagePath.path, ["python -m venv venv"]
-                    )
-                }
-
-                // Execute each build command
-                for command in buildInstructions.commands {
-                    _ = try await executeInDirectory(in: packagePath.path, [command])
-                }
-
-                // Create bin directory if it doesn't exist
-                let binPath = packagePath.appendingPathComponent("bin")
-                if !FileManager.default.fileExists(atPath: binPath.path) {
-                    try FileManager.default.createDirectory(at: binPath, withIntermediateDirectories: true)
-                }
-
-                // Copy the built binary to the bin directory if it's not already there
-                let builtBinaryPath = packagePath.appendingPathComponent(buildInstructions.binaryPath)
-                let targetBinaryPath = binPath.appendingPathComponent(source.name)
-
-                if builtBinaryPath.path != targetBinaryPath.path &&
-                   FileManager.default.fileExists(atPath: builtBinaryPath.path) {
-                    try FileManager.default.copyItem(at: builtBinaryPath, to: targetBinaryPath)
-                    _ = try await runCommand("chmod +x \"\(targetBinaryPath.path)\"")
-                }
-
-                print("Successfully built \(source.name) from source")
-            } else {
-                throw PackageManagerError.invalidConfiguration
-            }
-        } catch {
-            print("Build failed: \(error)")
             throw error
         }
     }
@@ -208,8 +118,8 @@ class PipPackageManager: PackageManagerProtocol {
             : "python -m pip"
     }
 
-    /// Update the requirements.txt file with the installed package
-    private func updateRequirements(packagePath: URL, package: String, version: String) throws {
+    /// Update the requirements.txt file with the installed package and extras
+    private func updateRequirements(packagePath: URL, package: String, version: String, extras: String? = nil) throws {
         let requirementsPath = packagePath.appendingPathComponent("requirements.txt")
         var requirementsContent = ""
 
@@ -218,9 +128,13 @@ class PipPackageManager: PackageManagerProtocol {
             requirementsContent = existingContent
         }
 
-        let packageLine = "\(package)==\(version)"
-        let packagePattern = "^\\s*\(package)\\s*==.*$"
+        var packageLine = "\(package)"
+        if let extras = extras {
+            packageLine += "[\(extras)]"
+        }
+        packageLine += "==\(version)"
 
+        let packagePattern = "^\\s*\(package)(\\[.*\\])?\\s*==.*$"
         if let range = requirementsContent.range(of: packagePattern, options: .regularExpression) {
             // Replace existing version
             requirementsContent.replaceSubrange(range, with: packageLine)
@@ -230,27 +144,6 @@ class PipPackageManager: PackageManagerProtocol {
                 requirementsContent += "\n"
             }
             requirementsContent += "\(packageLine)\n"
-        }
-
-        try requirementsContent.write(to: requirementsPath, atomically: true, encoding: .utf8)
-    }
-
-    /// Update the requirements.txt file with a git URL
-    private func updateRequirements(packagePath: URL, gitUrl: String) throws {
-        let requirementsPath = packagePath.appendingPathComponent("requirements.txt")
-        var requirementsContent = ""
-
-        if FileManager.default.fileExists(atPath: requirementsPath.path),
-           let existingContent = try? String(contentsOf: requirementsPath, encoding: .utf8) {
-            requirementsContent = existingContent
-        }
-
-        // Check if git URL is already in requirements
-        if !requirementsContent.contains(gitUrl) {
-            if !requirementsContent.isEmpty && !requirementsContent.hasSuffix("\n") {
-                requirementsContent += "\n"
-            }
-            requirementsContent += "\(gitUrl)\n"
         }
 
         try requirementsContent.write(to: requirementsPath, atomically: true, encoding: .utf8)

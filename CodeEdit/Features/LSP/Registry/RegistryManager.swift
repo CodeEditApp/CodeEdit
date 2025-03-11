@@ -9,10 +9,18 @@ import Combine
 import Foundation
 import ZIPFoundation
 
+let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
+let installPath = homeDirectory
+    .appendingPathComponent("Library")
+    .appendingPathComponent("Application Support")
+    .appendingPathComponent("CodeEdit")
+    .appendingPathComponent("extensions")
+
+
 final class RegistryManager {
     static let shared: RegistryManager = .init()
 
-    private let saveLocation = Settings.shared.baseURL.appending(path: "extensions")
+    private let saveLocation = installPath
     private let registryURL = URL(
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/registry.json.zip"
     )!
@@ -107,9 +115,11 @@ final class RegistryManager {
         }
     }
 
-//    func installPackage(package entry: RegistryItem) {
-//        PackageManagerFactory.init(installationDirectory: saveLocation).installFromRegistryEntry(entry)
-//    }
+    func installPackage(package entry: RegistryItem) async throws {
+        try await PackageManagerFactory.init(
+            installationDirectory: saveLocation
+        ).installFromRegistryEntry(entry)
+    }
 
     /// Attempts downloading from `url`, with error handling and a retry policy
     private func download(from url: URL, attempt: Int = 1) async throws -> Data {

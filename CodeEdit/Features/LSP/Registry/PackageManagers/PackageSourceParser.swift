@@ -9,29 +9,10 @@ import Foundation
 
 /// Parser for package source IDs
 enum PackageSourceParser {
-    static func parse(_ sourceId: String, buildInstructions: [[String: Any]]? = nil) -> InstallationMethod {
-        if sourceId.hasPrefix("pkg:cargo/") {
-            return parseCargoPackage(sourceId)
-        } else if sourceId.hasPrefix("pkg:npm/") {
-            return parseNpmPackage(sourceId)
-        } else if sourceId.hasPrefix("pkg:pypi/") {
-            return parsePythonPackage(sourceId)
-        } else if sourceId.hasPrefix("pkg:gem/") {
-            return parseRubyGem(sourceId)
-        } else if sourceId.hasPrefix("pkg:golang/") {
-            return parseGolangPackage(sourceId)
-        } else if sourceId.hasPrefix("pkg:github/") {
-            return parseGithubPackage(sourceId, buildInstructions: buildInstructions)
-        } else {
-            return .unknown
-        }
-    }
-
-    // MARK: - Private parsing methods for each package manager type
-
-    private static func parseCargoPackage(_ sourceId: String) -> InstallationMethod {
+    static func parseCargoPackage(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:cargo/PACKAGE@VERSION?PARAMS
         let pkgPrefix = "pkg:cargo/"
+        let sourceId = entry.source.id
         guard sourceId.hasPrefix(pkgPrefix) else { return .unknown }
 
         let pkgString = sourceId.dropFirst(pkgPrefix.count)
@@ -47,7 +28,7 @@ enum PackageSourceParser {
         let version = packageVersionParts.count > 1 ? String(packageVersionParts[1]) : "latest"
 
         // Parse parameters as options
-        var options: [String: String] = [:]
+        var options: [String: String] = ["buildTool": "cargo"]
         var repositoryUrl: String?
         var gitReference: GitReference?
 
@@ -65,8 +46,6 @@ enum PackageSourceParser {
                 gitReference = .revision(version)
             } else if key == "tag" && value.lowercased() == "true" {
                 gitReference = .tag(version)
-            } else if key == "branch" && value.lowercased() == "true" {
-                gitReference = .branch(version)
             } else {
                 options[key] = value
             }
@@ -94,9 +73,10 @@ enum PackageSourceParser {
         return .standardPackage(source: source)
     }
 
-    private static func parseNpmPackage(_ sourceId: String) -> InstallationMethod {
+    static func parseNpmPackage(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:npm/PACKAGE@VERSION?PARAMS
         let pkgPrefix = "pkg:npm/"
+        let sourceId = entry.source.id
         guard sourceId.hasPrefix(pkgPrefix) else { return .unknown }
 
         let pkgString = sourceId.dropFirst(pkgPrefix.count)
@@ -131,7 +111,7 @@ enum PackageSourceParser {
         }
 
         // Parse parameters as options
-        var options: [String: String] = [:]
+        var options: [String: String] = ["buildTool": "npm"]
         var repositoryUrl: String?
         var gitReference: GitReference?
 
@@ -149,8 +129,6 @@ enum PackageSourceParser {
                 gitReference = .revision(version)
             } else if key == "tag" && value.lowercased() == "true" {
                 gitReference = .tag(version)
-            } else if key == "branch" && value.lowercased() == "true" {
-                gitReference = .branch(version)
             } else {
                 options[key] = value
             }
@@ -168,9 +146,10 @@ enum PackageSourceParser {
         return .standardPackage(source: source)
     }
 
-    private static func parsePythonPackage(_ sourceId: String) -> InstallationMethod {
+    static func parsePythonPackage(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:pypi/PACKAGE@VERSION?PARAMS
         let pkgPrefix = "pkg:pypi/"
+        let sourceId = entry.source.id
         guard sourceId.hasPrefix(pkgPrefix) else { return .unknown }
 
         let pkgString = sourceId.dropFirst(pkgPrefix.count)
@@ -186,7 +165,7 @@ enum PackageSourceParser {
         let version = packageVersionParts.count > 1 ? String(packageVersionParts[1]) : "latest"
 
         // Parse parameters as options
-        var options: [String: String] = [:]
+        var options: [String: String] = ["buildTool": "pip"]
         var repositoryUrl: String?
         var gitReference: GitReference?
 
@@ -204,8 +183,6 @@ enum PackageSourceParser {
                 gitReference = .revision(version)
             } else if key == "tag" && value.lowercased() == "true" {
                 gitReference = .tag(version)
-            } else if key == "branch" && value.lowercased() == "true" {
-                gitReference = .branch(version)
             } else {
                 options[key] = value
             }
@@ -223,9 +200,10 @@ enum PackageSourceParser {
         return .standardPackage(source: source)
     }
 
-    private static func parseRubyGem(_ sourceId: String) -> InstallationMethod {
+    static func parseRubyGem(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:gem/PACKAGE@VERSION?PARAMS
         let pkgPrefix = "pkg:gem/"
+        let sourceId = entry.source.id
         guard sourceId.hasPrefix(pkgPrefix) else { return .unknown }
 
         let pkgString = sourceId.dropFirst(pkgPrefix.count)
@@ -241,7 +219,7 @@ enum PackageSourceParser {
         let version = packageVersionParts.count > 1 ? String(packageVersionParts[1]) : "latest"
 
         // Parse parameters as options
-        var options: [String: String] = [:]
+        var options: [String: String] = ["buildTool": "gem"]
         var repositoryUrl: String?
         var gitReference: GitReference?
 
@@ -259,8 +237,6 @@ enum PackageSourceParser {
                 gitReference = .revision(version)
             } else if key == "tag" && value.lowercased() == "true" {
                 gitReference = .tag(version)
-            } else if key == "branch" && value.lowercased() == "true" {
-                gitReference = .branch(version)
             } else {
                 options[key] = value
             }
@@ -278,9 +254,10 @@ enum PackageSourceParser {
         return .standardPackage(source: source)
     }
 
-    private static func parseGolangPackage(_ sourceId: String) -> InstallationMethod {
+    static func parseGolangPackage(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:golang/PACKAGE@VERSION#SUBPATH?PARAMS
         let pkgPrefix = "pkg:golang/"
+        let sourceId = entry.source.id
         guard sourceId.hasPrefix(pkgPrefix) else { return .unknown }
 
         let pkgString = sourceId.dropFirst(pkgPrefix.count)
@@ -302,7 +279,8 @@ enum PackageSourceParser {
         let version = packageVersionParts.count > 1 ? String(packageVersionParts[1]) : "latest"
 
         // Parse parameters as options
-        var options: [String: String] = [:]
+        var options: [String: String] = ["buildTool": "golang"]
+        options["subpath"] = subpath
         var repositoryUrl: String?
         var gitReference: GitReference?
 
@@ -320,8 +298,6 @@ enum PackageSourceParser {
                 gitReference = .revision(version)
             } else if key == "tag" && value.lowercased() == "true" {
                 gitReference = .tag(version)
-            } else if key == "branch" && value.lowercased() == "true" {
-                gitReference = .branch(version)
             } else {
                 options[key] = value
             }
@@ -337,7 +313,6 @@ enum PackageSourceParser {
             type: .golang,
             name: packageName,
             version: version,
-            subpath: subpath,
             repositoryUrl: repositoryUrl,
             gitReference: gitReference,
             options: options
@@ -345,15 +320,13 @@ enum PackageSourceParser {
         return .standardPackage(source: source)
     }
 
-    private static func parseGithubPackage(
-        _ sourceId: String, buildInstructions: [[String: Any]]?
-    ) -> InstallationMethod {
+    static func parseGithubPackage(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:github/OWNER/REPO@COMMIT_HASH
         let pkgPrefix = "pkg:github/"
+        let sourceId = entry.source.id
         guard sourceId.hasPrefix(pkgPrefix) else { return .unknown }
 
         let pkgString = sourceId.dropFirst(pkgPrefix.count)
-
         let packagePathVersion = pkgString.split(separator: "@", maxSplits: 1)
         guard packagePathVersion.count >= 1 else { return .unknown }
 
@@ -371,63 +344,65 @@ enum PackageSourceParser {
         let isCommitHash = version.range(of: "^[0-9a-f]{40}$", options: .regularExpression) != nil
         let gitReference: GitReference = isCommitHash ? .revision(version) : .tag(version)
 
-        var options: [String: String] = [:]
-
-        if let buildInstructions = buildInstructions, !buildInstructions.isEmpty {
-            // Look at the build commands to determine the build tool
-            if let firstInstruction = buildInstructions.first,
-               let runCommands = firstInstruction["run"] as? String {
-
-                if runCommands.contains("cargo ") {
-                    options["buildTool"] = "cargo"
-                } else if runCommands.contains("npm ") {
-                    options["buildTool"] = "npm"
-                } else if runCommands.contains("pip ") || runCommands.contains("python ") {
-                    options["buildTool"] = "pip"
-                } else if runCommands.contains("go ") {
-                    options["buildTool"] = "golang"
-                } else if runCommands.contains("gem ") {
-                    options["buildTool"] = "gem"
-                }
-            }
-
-            let source = PackageSource(
-                sourceId: sourceId,
-                type: .github,
-                name: packageName,
-                version: version,
-                repositoryUrl: repositoryUrl,
-                gitReference: gitReference,
-                options: options
-            )
-
-            // Convert build instructions
-            var instructions: [BuildInstructions] = []
-            for instruction in buildInstructions {
-                guard let target = instruction["target"] as? String,
-                      let runCommands = instruction["run"] as? String,
-                      let bin = instruction["bin"] as? String else {
-                    continue
-                }
-
-                let commands = runCommands.split(separator: "\n").map { String($0) }
-                instructions.append(BuildInstructions(
-                    target: target,
-                    commands: commands,
-                    binaryPath: bin
-                ))
-            }
-            return .sourceBuild(source: source, buildInstructions: instructions)
+        // Is this going to be built from source or downloaded
+        let isSourceBuild = if case .none? = entry.source.asset {
+            true
+        } else {
+            false
         }
 
         let source = PackageSource(
             sourceId: sourceId,
-            type: .github,
+            type: isSourceBuild ? .sourceBuild : .github,
             name: packageName,
             version: version,
             repositoryUrl: repositoryUrl,
-            gitReference: gitReference
+            gitReference: gitReference,
+            options: [:]
         )
-        return .standardPackage(source: source)
+        if isSourceBuild {
+            return parseGithubSourceBuild(source, entry)
+        } else {
+            return parseGithubBinaryDownload(source, entry)
+        }
+    }
+
+    private static func parseGithubBinaryDownload(
+        _ pkgSource: PackageSource,
+        _ entry: RegistryItem
+    ) -> InstallationMethod {
+        guard let assetContainer = entry.source.asset,
+              let repoURL = pkgSource.repositoryUrl,
+              case .tag(let gitTag) = pkgSource.gitReference,
+              var fileName = assetContainer.getDarwinFileName(),
+              !fileName.isEmpty
+        else {
+            return .unknown
+        }
+
+        do {
+            var registryInfo = try entry.toDictionary()
+            registryInfo["version"] = pkgSource.version
+            fileName = try RegistryItemTemplateParser.process(
+                template: fileName, with: registryInfo
+            )
+        } catch {
+            return .unknown
+        }
+
+        let downloadURL = "\(repoURL)/releases/download/\(gitTag)/\(fileName)"
+        return .binaryDownload(source: pkgSource, url: downloadURL)
+    }
+
+    private static func parseGithubSourceBuild(
+        _ pkgSource: PackageSource,
+        _ entry: RegistryItem
+    ) -> InstallationMethod {
+        guard let build = entry.source.build,
+              var command = build.getUnixBuildCommand()
+        else {
+            return .unknown
+        }
+        return .sourceBuild(source: pkgSource, command: command)
     }
 }

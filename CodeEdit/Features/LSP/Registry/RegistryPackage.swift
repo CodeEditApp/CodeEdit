@@ -62,6 +62,29 @@ struct RegistryItem: Codable {
                     try container.encodeNil()
                 }
             }
+            
+            func getDarwinFileName() -> String? {
+                switch self {
+                case .single(let asset):
+                    if asset.target.isDarwinTarget() {
+                        return asset.file
+                    }
+
+                case .multiple(let assets):
+                    for asset in assets {
+                        if asset.target.isDarwinTarget() {
+                            return asset.file
+                        }
+                    }
+
+                case .simpleFile(let fileName):
+                    return fileName
+
+                case .none:
+                    return nil
+                }
+                return nil
+            }
         }
 
         enum BuildContainer: Codable {
@@ -92,6 +115,22 @@ struct RegistryItem: Codable {
                 case .none:
                     try container.encodeNil()
                 }
+            }
+
+            func getUnixBuildCommand() -> String? {
+                switch self {
+                case .single(let build):
+                    return build.run
+                case .multiple(let builds):
+                    for build in builds {
+                        if build.target == "unix" {
+                            return build.run
+                        }
+                    }
+                case .none:
+                    return nil
+                }
+                return nil
             }
         }
 
@@ -169,6 +208,23 @@ struct RegistryItem: Codable {
                         try container.encode(values)
                     }
                 }
+
+                func isDarwinTarget() -> Bool {
+                    switch self {
+                    case .single(let value):
+#if arch(arm64)
+                        return value == "darwin" || value == "darwin_arm64"
+#else
+                        return value == "darwin" || value == "darwin_x64"
+#endif
+                    case .multiple(let values):
+#if arch(arm64)
+                        return values.contains("darwin") || values.contains("darwin_arm64")
+#else
+                        return values.contains("darwin") || values.contains("darwin_x64")
+#endif
+                    }
+                }
             }
 
             init(from decoder: Decoder) throws {
@@ -184,5 +240,15 @@ struct RegistryItem: Codable {
             let id: String
             let asset: AssetContainer?
         }
+    }
+
+    /// Serializes back to JSON format
+    func toDictionary() throws -> [String: Any] {
+        let data = try JSONEncoder().encode(self)
+        let jsonObject = try JSONSerialization.jsonObject(with: data)
+        guard let dictionary = jsonObject as? [String: Any] else {
+            throw NSError(domain: "ConversionError", code: 1)
+        }
+        return dictionary
     }
 }
