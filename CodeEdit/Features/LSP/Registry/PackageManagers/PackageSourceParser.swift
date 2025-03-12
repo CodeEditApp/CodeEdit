@@ -345,7 +345,7 @@ enum PackageSourceParser {
         let gitReference: GitReference = isCommitHash ? .revision(version) : .tag(version)
 
         // Is this going to be built from source or downloaded
-        let isSourceBuild = if case .none? = entry.source.asset {
+        let isSourceBuild = if entry.source.asset == nil {
             true
         } else {
             false
@@ -390,7 +390,7 @@ enum PackageSourceParser {
             return .unknown
         }
 
-        let downloadURL = "\(repoURL)/releases/download/\(gitTag)/\(fileName)"
+        let downloadURL = URL(string: "\(repoURL)/releases/download/\(gitTag)/\(fileName)")!
         return .binaryDownload(source: pkgSource, url: downloadURL)
     }
 
@@ -399,7 +399,7 @@ enum PackageSourceParser {
         _ entry: RegistryItem
     ) -> InstallationMethod {
         guard let build = entry.source.build,
-              var command = build.getUnixBuildCommand()
+              let command = build.getUnixBuildCommand()
         else {
             return .unknown
         }

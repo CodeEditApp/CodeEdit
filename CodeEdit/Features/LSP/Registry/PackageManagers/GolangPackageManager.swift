@@ -25,7 +25,7 @@ class GolangPackageManager: PackageManagerProtocol {
             try createDirectoryStructure(for: packagePath)
 
             // For Go, we need to set up a proper module structure
-            let goModPath = packagePath.appendingPathComponent("go.mod")
+            let goModPath = packagePath.appending(path: "go.mod")
             if !FileManager.default.fileExists(atPath: goModPath.path) {
                 let moduleName = "codeedit.temp/placeholder"
                 _ = try await executeInDirectory(
@@ -48,6 +48,9 @@ class GolangPackageManager: PackageManagerProtocol {
         try await initialize(in: packagePath)
 
         do {
+            let gobinPath = packagePath.appending(path: "bin", directoryHint: .isDirectory).path
+            var goInstallCommand = ["env", "GOBIN=\(gobinPath)", "go", "install"]
+
             if let gitRef = source.gitReference, let repoUrl = source.repositoryUrl {
                 // Check if this is a Git-based package
                 var packageName = source.name
@@ -63,17 +66,11 @@ class GolangPackageManager: PackageManagerProtocol {
                     gitVersion = rev
                 }
 
-                let versionedPackage = "\(packageName)@\(gitVersion)"
-                _ = try await executeInDirectory(
-                    in: packagePath.path, ["go get \(versionedPackage)"]
-                )
+                goInstallCommand.append("\(packageName)@\(gitVersion)")
             } else {
-                // Standard package installation
-                let versionedPackage = "\(source.name)@\(source.version)"
-                _ = try await executeInDirectory(
-                    in: packagePath.path, ["go get \(versionedPackage)"]
-                )
+                goInstallCommand.append("\(source.name)@\(source.version)")
             }
+            _ = try await executeInDirectory(in: packagePath.path, goInstallCommand)
 
             // If there's a subpath, build the binary
             if let subpath = source.options["subpath"] {

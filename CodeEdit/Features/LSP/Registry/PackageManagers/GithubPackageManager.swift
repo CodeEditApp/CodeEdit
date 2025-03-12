@@ -17,15 +17,32 @@ class GithubPackageManager: PackageManagerProtocol {
         self.shellClient = .live()
     }
 
-    func initialize(in packagePath: URL) async throws { }
+    func initialize(in packagePath: URL) async throws {
+        guard await isInstalled() else {
+            throw PackageManagerError.packageManagerNotInstalled
+        }
+
+        do {
+            try createDirectoryStructure(for: packagePath)
+        } catch {
+            throw PackageManagerError.initializationFailed(error.localizedDescription)
+        }
+    }
 
     func install(method: InstallationMethod) async throws {
+        guard case .standardPackage(let source) = method else {
+            throw PackageManagerError.invalidConfiguration
+        }
+
+        let packagePath = installationDirectory.appending(path: source.name)
+        try await initialize(in: packagePath)
+
         switch method {
         case let .binaryDownload(source, url):
-            downloadBinary(source, url)
+            try await downloadBinary(source, url)
             break
         case let .sourceBuild(source, command):
-            installFromSource(source, command)
+            try await installFromSource(source, command)
             break
         case .standardPackage(_), .unknown:
             throw PackageManagerError.invalidConfiguration
@@ -48,12 +65,34 @@ class GithubPackageManager: PackageManagerProtocol {
             return false
         }
     }
-    
-    private func downloadBinary(_ source: PackageSource, _ url: String) {
-        
+
+    private func downloadBinary(_ source: PackageSource, _ url: URL) async throws {
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let fileName = url.lastPathComponent
+        let downloadPath = installationDirectory.appending(path: source.name)
+        let packagePath = downloadPath.appending(path: fileName)
+
+        if !FileManager.default.fileExists(atPath: packagePath.path) {
+            throw RegistryManagerError.downloadFailed(
+                url: url,
+                error: NSError(domain: "Coould not download package", code: -1)
+            )
+        }
+
+        if fileName.hasSuffix(".tar") || fileName.hasSuffix(".zip") {
+            try FileManager.default.unzipItem(at: packagePath, to: downloadPath)
+        }
     }
-    
-    private func installFromSource(_ source: PackageSource, _ command: String) {
-        
+
+    private func installFromSource(_ source: PackageSource, _ command: String) async throws {
+        let installPath = installationDirectory.appending(path: source.name, directoryHint: .isDirectory)
+        do {
+            _ = try await executeInDirectory(in: installPath.path, ["git", "clone", source.repositoryUrl!])
+            let repoPath = installPath.appending(path: source.name, directoryHint: .isDirectory)
+            _ = try await executeInDirectory(in: repoPath.path, [command])
+        } catch {
+            print("Failed to build from source: \(error)")
+            throw PackageManagerError.installationFailed("Source build failed.")
+        }
     }
 }

@@ -32,7 +32,7 @@ struct ExtensionsSettingsView: View {
                             onCancel: { },
                             onInstall: {
                                 do {
-                                    try await RegistryManager.shared.installPackage(package: item)
+                                    try await RegistryManager.installPackage(package: item)
                                 } catch {
                                     installationFailure = InstallationFailure(error: error.localizedDescription)
                                 }

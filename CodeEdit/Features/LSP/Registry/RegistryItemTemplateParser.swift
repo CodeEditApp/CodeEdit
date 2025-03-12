@@ -54,7 +54,11 @@ enum RegistryItemTemplateParser {
         // Find all {{ ... }} patterns
         let pattern = "\\{\\{([^\\}]+)\\}\\}"
         let regex = try NSRegularExpression(pattern: pattern, options: [])
-        let matches = regex.matches(in: template, options: [], range: NSRange(location: 0, length: template.utf16.count))
+        let matches = regex.matches(
+            in: template,
+            options: [],
+            range: NSRange(location: 0, length: template.utf16.count)
+        )
 
         // Process matches in reverse order to not invalidate ranges
         for match in matches.reversed() {
@@ -72,8 +76,8 @@ enum RegistryItemTemplateParser {
             // Apply filters
             var processedValue = value
             if components.count > 1 {
-                for i in 1..<components.count {
-                    let filterString = components[i].trimmingCharacters(in: .whitespaces)
+                for item in 1..<components.count {
+                    let filterString = components[item].trimmingCharacters(in: .whitespaces)
                     let filter = try Filter.parse(filterString)
                     processedValue = filter.apply(to: processedValue)
                 }

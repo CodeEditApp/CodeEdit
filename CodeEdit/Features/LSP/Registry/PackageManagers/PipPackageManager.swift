@@ -65,12 +65,7 @@ class PipPackageManager: PackageManagerProtocol {
             }
 
             _ = try await executeInDirectory(in: packagePath.path, installArgs)
-            try updateRequirements(
-                packagePath: packagePath,
-                package: source.name,
-                version: source.version,
-                extras: extras
-            )
+            try await updateRequirements(packagePath: packagePath)
             try await verifyInstallation(packagePath: packagePath, package: source.name)
 
             print("Successfully installed \(source.name)@\(source.version)")
@@ -119,46 +114,35 @@ class PipPackageManager: PackageManagerProtocol {
     }
 
     /// Update the requirements.txt file with the installed package and extras
-    private func updateRequirements(packagePath: URL, package: String, version: String, extras: String? = nil) throws {
+    private func updateRequirements(packagePath: URL) async throws {
+        let pipCommand = getPipCommand(in: packagePath)
         let requirementsPath = packagePath.appendingPathComponent("requirements.txt")
-        var requirementsContent = ""
 
-        if FileManager.default.fileExists(atPath: requirementsPath.path),
-           let existingContent = try? String(contentsOf: requirementsPath, encoding: .utf8) {
-            requirementsContent = existingContent
-        }
+        let freezeOutput = try await executeInDirectory(
+            in: packagePath.path,
+            ["\(pipCommand)", "freeze"]
+        )
 
-        var packageLine = "\(package)"
-        if let extras = extras {
-            packageLine += "[\(extras)]"
-        }
-        packageLine += "==\(version)"
-
-        let packagePattern = "^\\s*\(package)(\\[.*\\])?\\s*==.*$"
-        if let range = requirementsContent.range(of: packagePattern, options: .regularExpression) {
-            // Replace existing version
-            requirementsContent.replaceSubrange(range, with: packageLine)
-        } else {
-            // Add package to requirements
-            if !requirementsContent.isEmpty && !requirementsContent.hasSuffix("\n") {
-                requirementsContent += "\n"
-            }
-            requirementsContent += "\(packageLine)\n"
-        }
-
+        let requirementsContent = freezeOutput.joined(separator: "\n") + "\n"
         try requirementsContent.write(to: requirementsPath, atomically: true, encoding: .utf8)
     }
 
     private func verifyInstallation(packagePath: URL, package: String) async throws {
         let pipCommand = getPipCommand(in: packagePath)
         let output = try await executeInDirectory(
-            in: packagePath.path, ["\(pipCommand) list"]
+            in: packagePath.path, ["\(pipCommand)", "list", "--format=freeze"]
         )
 
-        // Check if the package appears in pip list
-        let packagePattern = "^\(package)\\s+.*$"
-        let packageFound = output.contains { line in
-            line.range(of: packagePattern, options: .regularExpression) != nil
+        // Normalize package names for comparison
+        let normalizedPackageHyphen = package.replacingOccurrences(of: "_", with: "-").lowercased()
+        let normalizedPackageUnderscore = package.replacingOccurrences(of: "-", with: "_").lowercased()
+
+        // Check if the package name appears in requirements.txt
+        let installedPackages = output.map { line in
+            line.lowercased().split(separator: "=").first?.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        let packageFound = installedPackages.contains { installedPackage in
+            installedPackage == normalizedPackageHyphen || installedPackage == normalizedPackageUnderscore
         }
 
         guard packageFound else {

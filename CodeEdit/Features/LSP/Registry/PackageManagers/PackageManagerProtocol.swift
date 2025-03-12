@@ -130,7 +130,7 @@ enum InstallationMethod: Equatable {
     /// For packages that need to be built from source with custom build steps
     case sourceBuild(source: PackageSource, command: String)
     /// For direct binary downloads
-    case binaryDownload(source: PackageSource, url: String)
+    case binaryDownload(source: PackageSource, url: URL)
     /// For installations that aren't recognized
     case unknown
 

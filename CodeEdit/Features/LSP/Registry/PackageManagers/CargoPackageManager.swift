@@ -37,6 +37,8 @@ class CargoPackageManager: PackageManagerProtocol {
         let packagePath = installationDirectory.appending(path: source.name)
         print("Installing \(source.name)@\(source.version) in \(packagePath.path)")
 
+        try await initialize(in: packagePath)
+
         do {
             var cargoArgs = ["cargo", "install", "--root", "."]
 
@@ -50,7 +52,7 @@ class CargoPackageManager: PackageManagerProtocol {
                     cargoArgs.append(contentsOf: ["--rev", rev])
                 }
             } else {
-                cargoArgs.append(contentsOf: ["--version", source.version])
+                cargoArgs.append("\(source.name)@\(source.version)")
             }
 
             if let features = source.options["features"] {
@@ -59,7 +61,6 @@ class CargoPackageManager: PackageManagerProtocol {
             if source.options["locked"] == "true" {
                 cargoArgs.append("--locked")
             }
-            cargoArgs.append(source.name)
 
             _ = try await executeInDirectory(in: packagePath.path, cargoArgs)
             print("Successfully installed \(source.name)@\(source.version)")
