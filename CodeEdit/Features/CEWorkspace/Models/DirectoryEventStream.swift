@@ -138,43 +138,58 @@ class DirectoryEventStream {
 
         for (index, dictionary) in eventDictionaries.enumerated() {
             // Get get file id use dictionary[kFSEventStreamEventExtendedFileIDKey] as? UInt64
-            guard let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as? String,
-                  let event = getEventFromFlags(eventFlags[index])
+            guard let path = dictionary[kFSEventStreamEventExtendedDataPathKey] as? String
             else {
                 continue
             }
 
-            events.append(.init(path: path, eventType: event))
+            let fsEvents = getEventsFromFlags(eventFlags[index])
+
+            for event in fsEvents {
+                events.append(.init(path: path, eventType: event))
+            }
         }
 
         callback(events)
     }
 
-    /// Parses an ``FSEvent`` from the raw flag value.
+    /// Parses ``FSEvent`` from the raw flag value.
     ///
-    /// Often returns ``FSEvent/changeInDirectory`` as `FSEventStream` returns
+    /// There can be multiple events in the raw flag value,
+    /// bacause of how OS processes almost simlutaneous actions – thus this functions returns a `Set` of `FSEvent`.
+    ///
+    /// Often returns ``[FSEvent/changeInDirectory]`` as `FSEventStream` returns
     /// `kFSEventStreamEventFlagNone (0x00000000)` frequently without more information.
     /// - Parameter raw: The int value received from the FSEventStream
-    /// - Returns: An ``FSEvent`` if a valid one was found, or `nil` otherwise.
-    func getEventFromFlags(_ raw: FSEventStreamEventFlags) -> FSEvent? {
+    /// - Returns: A `Set` of ``FSEvent``'s if at least one valid was found, or `[]` otherwise.
+    private func getEventsFromFlags(_ raw: FSEventStreamEventFlags) -> Set<FSEvent> {
+        var events: Set<FSEvent> = []
+
         if raw == 0 {
-            return .changeInDirectory
-        } else if raw & UInt32(kFSEventStreamEventFlagRootChanged) > 0 {
-            return .rootChanged
-        } else if raw & UInt32(kFSEventStreamEventFlagItemChangeOwner) > 0 {
-            return .itemChangedOwner
-        } else if raw & UInt32(kFSEventStreamEventFlagItemCreated) > 0 {
-            return .itemCreated
-        } else if raw & UInt32(kFSEventStreamEventFlagItemCloned) > 0 {
-            return .itemCloned
-        } else if raw & UInt32(kFSEventStreamEventFlagItemModified) > 0 {
-            return .itemModified
-        } else if raw & UInt32(kFSEventStreamEventFlagItemRemoved) > 0 {
-            return .itemRemoved
-        } else if raw & UInt32(kFSEventStreamEventFlagItemRenamed) > 0 {
-            return .itemRenamed
-        } else {
-            return nil
+            events.insert(.changeInDirectory)
         }
+        if raw & UInt32(kFSEventStreamEventFlagRootChanged) > 0 {
+            events.insert(.rootChanged)
+        }
+        if raw & UInt32(kFSEventStreamEventFlagItemChangeOwner) > 0 {
+            events.insert(.itemChangedOwner)
+        }
+        if raw & UInt32(kFSEventStreamEventFlagItemCreated) > 0 {
+            events.insert(.itemCreated)
+        }
+        if raw & UInt32(kFSEventStreamEventFlagItemCloned) > 0 {
+            events.insert(.itemCloned)
+        }
+        if raw & UInt32(kFSEventStreamEventFlagItemModified) > 0 {
+            events.insert(.itemModified)
+        }
+        if raw & UInt32(kFSEventStreamEventFlagItemRemoved) > 0 {
+            events.insert(.itemRemoved)
+        }
+        if raw & UInt32(kFSEventStreamEventFlagItemRenamed) > 0 {
+            events.insert(.itemRenamed)
+        }
+
+        return events
     }
 }
