@@ -51,25 +51,7 @@ class GolangPackageManager: PackageManagerProtocol {
             let gobinPath = packagePath.appending(path: "bin", directoryHint: .isDirectory).path
             var goInstallCommand = ["env", "GOBIN=\(gobinPath)", "go", "install"]
 
-            if let gitRef = source.gitReference, let repoUrl = source.repositoryUrl {
-                // Check if this is a Git-based package
-                var packageName = source.name
-                if !packageName.contains("github.com") && !packageName.contains("golang.org") {
-                    packageName = repoUrl.replacingOccurrences(of: "https://", with: "")
-                }
-
-                var gitVersion: String
-                switch gitRef {
-                case .tag(let tag):
-                    gitVersion = tag
-                case .revision(let rev):
-                    gitVersion = rev
-                }
-
-                goInstallCommand.append("\(packageName)@\(gitVersion)")
-            } else {
-                goInstallCommand.append("\(source.name)@\(source.version)")
-            }
+            goInstallCommand.append(getGoInstallCommand(source))
             _ = try await executeInDirectory(in: packagePath.path, goInstallCommand)
 
             // If there's a subpath, build the binary
@@ -150,6 +132,28 @@ class GolangPackageManager: PackageManagerProtocol {
         // Check if the dependency appears in the module list
         return output.contains { line in
             line.contains(dependencyPath)
+        }
+    }
+
+    private func getGoInstallCommand(_ source: PackageSource) -> String {
+        if let gitRef = source.gitReference, let repoUrl = source.repositoryUrl {
+            // Check if this is a Git-based package
+            var packageName = source.name
+            if !packageName.contains("github.com") && !packageName.contains("golang.org") {
+                packageName = repoUrl.replacingOccurrences(of: "https://", with: "")
+            }
+
+            var gitVersion: String
+            switch gitRef {
+            case .tag(let tag):
+                gitVersion = tag
+            case .revision(let rev):
+                gitVersion = rev
+            }
+
+            return "\(packageName)@\(gitVersion)"
+        } else {
+            return "\(source.name)@\(source.version)"
         }
     }
 }

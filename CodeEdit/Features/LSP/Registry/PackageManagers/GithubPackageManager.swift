@@ -40,11 +40,9 @@ class GithubPackageManager: PackageManagerProtocol {
         switch method {
         case let .binaryDownload(source, url):
             try await downloadBinary(source, url)
-            break
         case let .sourceBuild(source, command):
             try await installFromSource(source, command)
-            break
-        case .standardPackage(_), .unknown:
+        case .standardPackage, .unknown:
             throw PackageManagerError.invalidConfiguration
         }
     }
@@ -67,7 +65,7 @@ class GithubPackageManager: PackageManagerProtocol {
     }
 
     private func downloadBinary(_ source: PackageSource, _ url: URL) async throws {
-        let (data, _) = try await URLSession.shared.data(from: url)
+        _ = try await URLSession.shared.data(from: url)
         let fileName = url.lastPathComponent
         let downloadPath = installationDirectory.appending(path: source.name)
         let packagePath = downloadPath.appending(path: fileName)

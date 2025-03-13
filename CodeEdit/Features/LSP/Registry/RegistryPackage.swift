@@ -62,7 +62,7 @@ struct RegistryItem: Codable {
                     try container.encodeNil()
                 }
             }
-            
+
             func getDarwinFileName() -> String? {
                 switch self {
                 case .single(let asset):
@@ -71,10 +71,8 @@ struct RegistryItem: Codable {
                     }
 
                 case .multiple(let assets):
-                    for asset in assets {
-                        if asset.target.isDarwinTarget() {
-                            return asset.file
-                        }
+                    for asset in assets where asset.target.isDarwinTarget() {
+                        return asset.file
                     }
 
                 case .simpleFile(let fileName):
