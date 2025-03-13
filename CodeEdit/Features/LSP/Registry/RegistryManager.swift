@@ -11,10 +11,10 @@ import ZIPFoundation
 
 let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
 let installPath = homeDirectory
-    .appendingPathComponent("Library")
-    .appendingPathComponent("Application Support")
-    .appendingPathComponent("CodeEdit")
-    .appendingPathComponent("extensions")
+    .appending(path: "Library")
+    .appending(path: "Application Support")
+    .appending(path: "CodeEdit")
+    .appending(path: "extensions")
 
 final class RegistryManager {
     static let shared: RegistryManager = .init()
@@ -55,6 +55,9 @@ final class RegistryManager {
 
         return []
     }
+
+    @AppSettings(\.extensions.installedLanguageServers)
+    var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
 
     deinit {
         cleanupTimer?.invalidate()
@@ -114,12 +117,18 @@ final class RegistryManager {
         }
     }
 
-    static func installPackage(package entry: RegistryItem) async throws {
+    func installPackage(package entry: RegistryItem) async throws {
         let method = Self.parseRegistryEntry(entry)
         guard let manager = Self.createPackageManager(for: method) else {
             throw PackageManagerError.invalidConfiguration
         }
         try await manager.install(method: method)
+
+        installedLanguageServers[entry.name] = .init(
+            packageName: entry.name,
+            isEnabled: true,
+            version: method.version ?? ""
+        )
     }
 
     /// Attempts downloading from `url`, with error handling and a retry policy

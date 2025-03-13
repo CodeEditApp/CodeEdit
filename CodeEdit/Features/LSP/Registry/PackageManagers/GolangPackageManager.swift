@@ -56,7 +56,7 @@ class GolangPackageManager: PackageManagerProtocol {
 
             // If there's a subpath, build the binary
             if let subpath = source.options["subpath"] {
-                let binPath = packagePath.appendingPathComponent("bin")
+                let binPath = packagePath.appending(path: "bin")
                 if !FileManager.default.fileExists(atPath: binPath.path) {
                     try FileManager.default.createDirectory(at: binPath, withIntermediateDirectories: true)
                 }
@@ -91,7 +91,7 @@ class GolangPackageManager: PackageManagerProtocol {
     func getBinaryPath(for package: String) -> String {
         let binPath = installationDirectory.appending(path: package).appending(path: "bin")
         let binaryName = package.components(separatedBy: "/").last ?? package
-        let specificBinPath = binPath.appendingPathComponent(binaryName).path
+        let specificBinPath = binPath.appending(path: binaryName).path
         if FileManager.default.fileExists(atPath: specificBinPath) {
             return specificBinPath
         }
@@ -117,7 +117,7 @@ class GolangPackageManager: PackageManagerProtocol {
 
     /// Clean up after a failed installation
     private func cleanupFailedInstallation(packagePath: URL) throws {
-        let goSumPath = packagePath.appendingPathComponent("go.sum")
+        let goSumPath = packagePath.appending(path: "go.sum")
         if FileManager.default.fileExists(atPath: goSumPath.path) {
             try FileManager.default.removeItem(at: goSumPath)
         }

@@ -19,7 +19,8 @@ protocol PackageManagerProtocol {
 extension PackageManagerProtocol {
     /// Creates the directory for the language server to be installed in
     internal func createDirectoryStructure(for packagePath: URL) throws {
-        if !FileManager.default.fileExists(atPath: packagePath.path) {
+        let decodedPath = packagePath.path.removingPercentEncoding ?? packagePath.path
+        if !FileManager.default.fileExists(atPath: decodedPath) {
             try FileManager.default.createDirectory(
                 at: packagePath,
                 withIntermediateDirectories: true,
@@ -140,6 +141,17 @@ enum InstallationMethod: Equatable {
              .sourceBuild(let source, _),
              .binaryDownload(let source, _):
             return source.name
+        case .unknown:
+            return nil
+        }
+    }
+
+    var version: String? {
+        switch self {
+        case .standardPackage(let source),
+             .sourceBuild(let source, _),
+             .binaryDownload(let source, _):
+            return source.version
         case .unknown:
             return nil
         }

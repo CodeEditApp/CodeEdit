@@ -28,7 +28,7 @@ class PipPackageManager: PackageManagerProtocol {
                 in: packagePath.path, ["python -m venv venv"]
             )
 
-            let requirementsPath = packagePath.appendingPathComponent("requirements.txt")
+            let requirementsPath = packagePath.appending(path: "requirements.txt")
             if !FileManager.default.fileExists(atPath: requirementsPath.path) {
                 try "# Package requirements\n".write(to: requirementsPath, atomically: true, encoding: .utf8)
             }
@@ -108,7 +108,7 @@ class PipPackageManager: PackageManagerProtocol {
 
     private func getPipCommand(in packagePath: URL) -> String {
         let venvPip = "venv/bin/pip"
-        return FileManager.default.fileExists(atPath: packagePath.appendingPathComponent(venvPip).path)
+        return FileManager.default.fileExists(atPath: packagePath.appending(path: venvPip).path)
             ? venvPip
             : "python -m pip"
     }
@@ -116,7 +116,7 @@ class PipPackageManager: PackageManagerProtocol {
     /// Update the requirements.txt file with the installed package and extras
     private func updateRequirements(packagePath: URL) async throws {
         let pipCommand = getPipCommand(in: packagePath)
-        let requirementsPath = packagePath.appendingPathComponent("requirements.txt")
+        let requirementsPath = packagePath.appending(path: "requirements.txt")
 
         let freezeOutput = try await executeInDirectory(
             in: packagePath.path,

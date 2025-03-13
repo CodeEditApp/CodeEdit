@@ -9,7 +9,7 @@ extension PackageSourceParser {
     static func parseRubyGem(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:gem/PACKAGE@VERSION?PARAMS
         let pkgPrefix = "pkg:gem/"
-        let sourceId = entry.source.id
+        let sourceId = entry.source.id.removingPercentEncoding ?? entry.source.id
         guard sourceId.hasPrefix(pkgPrefix) else { return .unknown }
 
         let pkgString = sourceId.dropFirst(pkgPrefix.count)

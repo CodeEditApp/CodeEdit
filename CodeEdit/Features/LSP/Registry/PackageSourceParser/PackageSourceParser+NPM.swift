@@ -9,7 +9,7 @@ extension PackageSourceParser {
     static func parseNpmPackage(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:npm/PACKAGE@VERSION?PARAMS
         let pkgPrefix = "pkg:npm/"
-        let sourceId = entry.source.id
+        let sourceId = entry.source.id.removingPercentEncoding ?? entry.source.id
         guard sourceId.hasPrefix(pkgPrefix) else { return .unknown }
 
         let pkgString = sourceId.dropFirst(pkgPrefix.count)

@@ -1,5 +1,5 @@
 //
-//  ExtensionsSettingsRowView.swift
+//  LanguageServerRowView.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/2/25.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct ExtensionsSettingsRowView: View, Equatable {
-    let title: String
+struct LanguageServerRowView: View, Equatable {
+    let packageName: String
     let subtitle: String
     let icon: String
     let onCancel: (() -> Void)
@@ -24,19 +24,23 @@ struct ExtensionsSettingsRowView: View, Equatable {
     @State private var installProgress: Double = 0.0
 
     init(
-        title: String,
+        packageName: String,
         subtitle: String,
         icon: String,
+        isInstalled: Bool = false,
+        isEnabled: Bool = false,
         onCancel: @escaping (() -> Void),
         onInstall: @escaping () async -> Void
     ) {
-        self.title = title
+        self.packageName = packageName
         self.subtitle = subtitle
         self.icon = icon
+        self.isInstalled = isInstalled
+        self.isEnabled = isEnabled
         self.onCancel = onCancel
         self.onInstall = onInstall
 
-        self.cleanedTitle = title
+        self.cleanedTitle = packageName
             .replacingOccurrences(of: "-", with: " ")
             .replacingOccurrences(of: "_", with: " ")
             .split(separator: " ")
@@ -46,8 +50,7 @@ struct ExtensionsSettingsRowView: View, Equatable {
                 if str == "ls" || str == "lsp" || str == "ci" || str == "cli" {
                     return str.uppercased()
                 }
-                // Normal capitalization for other words
-                return str.prefix(1).uppercased() + str.dropFirst()
+                return str.capitalized
             }
             .joined(separator: " ")
         self.cleanedSubtitle = subtitle.replacingOccurrences(of: "\n", with: " ")
@@ -88,57 +91,75 @@ struct ExtensionsSettingsRowView: View, Equatable {
     @ViewBuilder
     private func installationButton() -> some View {
         if isInstalled {
-            HStack {
-                if isHovering {
-                    Button {
-                        isInstalling = false
-                        isInstalled = false
-                    } label: {
-                        Text("Remove")
-                    }
-                }
-                Toggle("", isOn: $isEnabled)
-                    .toggleStyle(.switch)
-                    .controlSize(.small)
-                    .labelsHidden()
-            }
+            installedRow()
         } else if isInstalling {
-            ZStack {
-                CECircularProgressView(progress: installProgress)
-                    .frame(width: 20, height: 20)
-                Button {
-                    isInstalling = false
-                    onCancel()
-                } label: {
-                    Image(systemName: "stop.fill")
-                        .font(.system(size: 8))
-                        .foregroundColor(.blue)
-                }
-                .buttonStyle(.plain)
-                .contentShape(Rectangle())
-            }
+            isInstallingRow()
         } else if isHovering {
-            Button {
-                isInstalling = true
-                withAnimation(.linear(duration: 3)) {
-                    installProgress = 0.75
-                }
-                Task {
-                    await onInstall()
-                    withAnimation(.linear(duration: 1)) {
-                        installProgress = 1.0
-                    }
-                    isInstalling = false
-                    isInstalled = true
-                    isEnabled = true
-                }
-            } label: {
-                Text("Install")
-            }
+            isHoveringRow()
         }
     }
 
-    static func == (lhs: ExtensionsSettingsRowView, rhs: ExtensionsSettingsRowView) -> Bool {
-        lhs.title == rhs.title && lhs.subtitle == rhs.subtitle
+    @ViewBuilder
+    private func installedRow() -> some View {
+        HStack {
+            if isHovering {
+                Button {
+                    isInstalling = false
+                    isInstalled = false
+                } label: {
+                    Text("Remove")
+                }
+            }
+            Toggle("", isOn: $isEnabled)
+                .onChange(of: isEnabled) { newValue in
+                    RegistryManager.shared.installedLanguageServers[packageName]?.isEnabled = newValue
+                }
+                .toggleStyle(.switch)
+                .controlSize(.small)
+                .labelsHidden()
+        }
+    }
+
+    @ViewBuilder
+    private func isInstallingRow() -> some View {
+        ZStack {
+            CECircularProgressView(progress: installProgress)
+                .frame(width: 20, height: 20)
+            Button {
+                isInstalling = false
+                onCancel()
+            } label: {
+                Image(systemName: "stop.fill")
+                    .font(.system(size: 8))
+                    .foregroundColor(.blue)
+            }
+            .buttonStyle(.plain)
+            .contentShape(Rectangle())
+        }
+    }
+
+    @ViewBuilder
+    private func isHoveringRow() -> some View {
+        Button {
+            isInstalling = true
+            withAnimation(.linear(duration: 3)) {
+                installProgress = 0.75
+            }
+            Task {
+                await onInstall()
+                withAnimation(.linear(duration: 1)) {
+                    installProgress = 1.0
+                }
+                isInstalling = false
+                isInstalled = true
+                isEnabled = true
+            }
+        } label: {
+            Text("Install")
+        }
+    }
+
+    static func == (lhs: LanguageServerRowView, rhs: LanguageServerRowView) -> Bool {
+        lhs.packageName == rhs.packageName && lhs.subtitle == rhs.subtitle
     }
 }

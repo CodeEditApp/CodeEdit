@@ -185,7 +185,7 @@ struct SettingsView: View {
                 case .location:
                     LocationsSettingsView()
                 case .extensions:
-                    ExtensionsSettingsView()
+                    LanguageServersView()
                 case .developer:
                     DeveloperSettingsView()
                 default:

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ExtensionsSettingsView: View {
+struct LanguageServersView: View {
     @State private var didError = false
     @State private var installationFailure: InstallationFailure?
     @State private var registryItems: [RegistryItem] = []
@@ -25,14 +25,16 @@ struct ExtensionsSettingsView: View {
             } else {
                 Section {
                     List(registryItems, id: \.name) { item in
-                        ExtensionsSettingsRowView(
-                            title: item.name,
+                        LanguageServerRowView(
+                            packageName: item.name,
                             subtitle: item.description,
                             icon: "GitHubIcon",
+                            isInstalled: RegistryManager.shared.installedLanguageServers[item.name] != nil,
+                            isEnabled: RegistryManager.shared.installedLanguageServers[item.name]?.isEnabled ?? false,
                             onCancel: { },
                             onInstall: {
                                 do {
-                                    try await RegistryManager.installPackage(package: item)
+                                    try await RegistryManager.shared.installPackage(package: item)
                                 } catch {
                                     installationFailure = InstallationFailure(error: error.localizedDescription)
                                 }

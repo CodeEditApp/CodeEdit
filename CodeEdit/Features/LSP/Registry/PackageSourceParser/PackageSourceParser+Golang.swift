@@ -9,7 +9,7 @@ extension PackageSourceParser {
     static func parseGolangPackage(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:golang/PACKAGE@VERSION#SUBPATH?PARAMS
         let pkgPrefix = "pkg:golang/"
-        let sourceId = entry.source.id
+        let sourceId = entry.source.id.removingPercentEncoding ?? entry.source.id
         guard sourceId.hasPrefix(pkgPrefix) else { return .unknown }
 
         let pkgString = sourceId.dropFirst(pkgPrefix.count)

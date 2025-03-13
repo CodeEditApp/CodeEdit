@@ -40,7 +40,7 @@ class NPMPackageManager: PackageManagerProtocol {
                 in: packagePath.path, ["npm init --yes --scope=codeedit"]
             )
 
-            let npmrcPath = packagePath.appendingPathComponent(".npmrc")
+            let npmrcPath = packagePath.appending(path: ".npmrc")
             if !FileManager.default.fileExists(atPath: npmrcPath.path) {
                 try "install-strategy=shallow".write(to: npmrcPath, atomically: true, encoding: .utf8)
             }
@@ -77,7 +77,7 @@ class NPMPackageManager: PackageManagerProtocol {
             print("Successfully installed \(source.name)@\(source.version)")
         } catch {
             print("Installation failed: \(error)")
-            let nodeModulesPath = packagePath.appendingPathComponent("node_modules").path
+            let nodeModulesPath = packagePath.appending(path: "node_modules").path
             try? FileManager.default.removeItem(atPath: nodeModulesPath)
             throw error
         }
@@ -89,7 +89,7 @@ class NPMPackageManager: PackageManagerProtocol {
             .appending(path: package)
             .appending(path: "node_modules")
             .appending(path: ".bin")
-        return binDirectory.appendingPathComponent(package).path
+        return binDirectory.appending(path: package).path
     }
 
     /// Checks if npm is installed
@@ -109,7 +109,7 @@ class NPMPackageManager: PackageManagerProtocol {
     /// Verify the installation was successful
     private func verifyInstallation(package: String, version: String) throws {
         let packagePath = installationDirectory.appending(path: package)
-        let packageJsonPath = packagePath.appendingPathComponent("package.json").path
+        let packageJsonPath = packagePath.appending(path: "package.json").path
 
         // Verify package.json contains the installed package
         guard let packageJsonData = FileManager.default.contents(atPath: packageJsonPath),
@@ -132,8 +132,8 @@ class NPMPackageManager: PackageManagerProtocol {
 
         // Verify the package exists in node_modules
         let packageDirectory = packagePath
-            .appendingPathComponent("node_modules")
-            .appendingPathComponent(package)
+            .appending(path: "node_modules")
+            .appending(path: package)
         guard FileManager.default.fileExists(atPath: packageDirectory.path) else {
             throw PackageManagerError.installationFailed("Package not found in node_modules")
         }
