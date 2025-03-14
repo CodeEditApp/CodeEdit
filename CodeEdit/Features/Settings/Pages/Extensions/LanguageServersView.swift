@@ -35,6 +35,7 @@ struct LanguageServersView: View {
                                 do {
                                     try await RegistryManager.shared.installPackage(package: item)
                                 } catch {
+                                    didError = true
                                     installationFailure = InstallationFailure(error: error.localizedDescription)
                                 }
                             }

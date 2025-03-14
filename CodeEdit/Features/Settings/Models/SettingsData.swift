@@ -109,7 +109,9 @@ struct SettingsData: Codable, Hashable {
         case .location:
             LocationsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .languageServers:
-            LanguageServerSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            LanguageServerSettings().searchKeys.forEach {
+                settings.append(.init(name, isSetting: true, settingName: $0))
+            }
         case .developer:
             developerSettings.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .behavior: return [.init(name, settingName: "Error")]

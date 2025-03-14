@@ -14,7 +14,7 @@ private let installPath = homeDirectory
     .appending(path: "Library")
     .appending(path: "Application Support")
     .appending(path: "CodeEdit")
-    .appending(path: "extensions")
+    .appending(path: "language-servers")
 
 final class RegistryManager {
     static let shared: RegistryManager = .init()
@@ -122,13 +122,34 @@ final class RegistryManager {
         guard let manager = Self.createPackageManager(for: method) else {
             throw PackageManagerError.invalidConfiguration
         }
-        try await manager.install(method: method)
 
+        // Add to activity viewer
+        let activityTitle = "\(entry.name)\("@" + (method.version ?? "latest"))"
+        NotificationCenter.default.post(
+            name: .taskNotification,
+            object: nil,
+            userInfo: [
+                "id": entry.name,
+                "action": "create",
+                "title": "Installing \(activityTitle)"
+            ]
+        )
+
+        do {
+            try await manager.install(method: method)
+        } catch {
+            Self.updateActivityViewer(entry.name, activityTitle, fail: true)
+            // Throw error again so the UI can catch it
+            throw error
+        }
+
+        // Save to settings
         installedLanguageServers[entry.name] = .init(
             packageName: entry.name,
             isEnabled: true,
             version: method.version ?? ""
         )
+        Self.updateActivityViewer(entry.name, activityTitle, fail: false)
     }
 
     /// Attempts downloading from `url`, with error handling and a retry policy
@@ -225,6 +246,55 @@ final class RegistryManager {
             return nil
         case .none:
             return nil
+        }
+    }
+
+    /// Updates the activity viewer with the status of the language server installation
+    private static func updateActivityViewer(
+        _ id: String,
+        _ activityName: String,
+        fail failed: Bool
+    ) {
+        if failed {
+            NotificationCenter.default.post(
+                name: .taskNotification,
+                object: nil,
+                userInfo: [
+                    "id": id,
+                    "action": "update",
+                    "title": "Could not install \(activityName)",
+                    "isLoading": false
+                ]
+            )
+            NotificationCenter.default.post(
+                name: .taskNotification,
+                object: nil,
+                userInfo: [
+                    "id": id,
+                    "action": "deleteWithDelay",
+                    "delay": 5.0,
+                ]
+            )
+        } else {
+            NotificationCenter.default.post(
+                name: .taskNotification,
+                object: nil,
+                userInfo: [
+                    "id": id,
+                    "action": "update",
+                    "title": "Successfully installed \(activityName)",
+                    "isLoading": false
+                ]
+            )
+            NotificationCenter.default.post(
+                name: .taskNotification,
+                object: nil,
+                userInfo: [
+                    "id": id,
+                    "action": "deleteWithDelay",
+                    "delay": 5.0,
+                ]
+            )
         }
     }
 }

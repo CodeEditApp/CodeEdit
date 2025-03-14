@@ -22,7 +22,6 @@ struct LanguageServerRowView: View, Equatable {
     @State private var isInstalling: Bool = false
     @State private var isInstalled: Bool = false
     @State private var isEnabled = false
-    @State private var installProgress: Double = 0.0
 
     init(
         packageName: String,
@@ -115,7 +114,7 @@ struct LanguageServerRowView: View, Equatable {
     @ViewBuilder
     private func isInstallingRow() -> some View {
         ZStack {
-            CECircularProgressView(progress: installProgress)
+            CECircularProgressView()
                 .frame(width: 20, height: 20)
             Button {
                 isInstalling = false
@@ -134,14 +133,9 @@ struct LanguageServerRowView: View, Equatable {
     private func isHoveringRow() -> some View {
         Button {
             isInstalling = true
-            withAnimation(.linear(duration: 3)) {
-                installProgress = 0.75
-            }
+
             Task {
                 await onInstall()
-                withAnimation(.linear(duration: 1)) {
-                    installProgress = 1.0
-                }
                 isInstalling = false
                 isInstalled = true
                 isEnabled = true
