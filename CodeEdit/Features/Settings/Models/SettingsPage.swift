@@ -32,7 +32,7 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
         case components = "Components"
         case location = "Locations"
         case advanced = "Advanced"
-        case extensions = "Language Servers"  // TODO: CHANGE NAME TO "Extensions" WHEN EXTENSIONS ARE IMPLEMENTED
+        case languageServers = "Language Servers"
         case developer = "Developer"
     }
 

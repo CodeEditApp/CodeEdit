@@ -9,8 +9,8 @@ import Combine
 import Foundation
 import ZIPFoundation
 
-let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
-let installPath = homeDirectory
+private let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
+private let installPath = homeDirectory
     .appending(path: "Library")
     .appending(path: "Application Support")
     .appending(path: "CodeEdit")
@@ -56,7 +56,7 @@ final class RegistryManager {
         return []
     }
 
-    @AppSettings(\.extensions.installedLanguageServers)
+    @AppSettings(\.languageServers.installedLanguageServers)
     var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
 
     deinit {
@@ -169,7 +169,7 @@ final class RegistryManager {
                 return true
             }
             let hoursSinceLastUpdate = Date().timeIntervalSince(modificationDate) / 3600
-            return hoursSinceLastUpdate > 24
+            return hoursSinceLastUpdate >= 24
         }()
 
         if needsUpdate {

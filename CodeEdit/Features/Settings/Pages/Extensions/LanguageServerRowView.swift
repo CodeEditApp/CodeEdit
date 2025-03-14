@@ -7,10 +7,11 @@
 
 import SwiftUI
 
+private let iconSize: CGFloat = 26
+
 struct LanguageServerRowView: View, Equatable {
     let packageName: String
     let subtitle: String
-    let icon: String
     let onCancel: (() -> Void)
     let onInstall: (() async -> Void)
 
@@ -26,7 +27,6 @@ struct LanguageServerRowView: View, Equatable {
     init(
         packageName: String,
         subtitle: String,
-        icon: String,
         isInstalled: Bool = false,
         isEnabled: Bool = false,
         onCancel: @escaping (() -> Void),
@@ -34,7 +34,6 @@ struct LanguageServerRowView: View, Equatable {
     ) {
         self.packageName = packageName
         self.subtitle = subtitle
-        self.icon = icon
         self.isInstalled = isInstalled
         self.isEnabled = isEnabled
         self.onCancel = onCancel
@@ -68,14 +67,7 @@ struct LanguageServerRowView: View, Equatable {
                         .truncationMode(.tail)
                 }
             } icon: {
-                Image(icon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
-                    .frame(width: 26, height: 26)
-                    .padding(.top, 2)
-                    .padding(.bottom, 2)
-                    .padding(.leading, 2)
+                letterIcon()
             }
             .opacity(isInstalled && !isEnabled ? 0.5 : 1.0)
 
@@ -157,6 +149,32 @@ struct LanguageServerRowView: View, Equatable {
         } label: {
             Text("Install")
         }
+    }
+
+    @ViewBuilder
+    private func letterIcon() -> some View {
+        RoundedRectangle(cornerRadius: iconSize / 4, style: .continuous)
+            .fill(background)
+            .overlay {
+                Text(String(cleanedTitle.first ?? Character("")))
+                    .font(.system(size: iconSize * 0.65))
+                    .foregroundColor(.primary)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: iconSize / 4, style: .continuous))
+            .shadow(
+                color: Color(NSColor.black).opacity(0.25),
+                radius: iconSize / 40,
+                y: iconSize / 40
+            )
+            .frame(width: iconSize, height: iconSize)
+    }
+
+    private var background: AnyShapeStyle {
+        let colors: [Color] = [
+            .blue, .green, .orange, .red, .purple, .pink, .teal, .yellow, .indigo, .cyan
+        ]
+        let hashValue = abs(cleanedTitle.hashValue) % colors.count
+        return AnyShapeStyle(colors[hashValue].gradient)
     }
 
     static func == (lhs: LanguageServerRowView, rhs: LanguageServerRowView) -> Bool {

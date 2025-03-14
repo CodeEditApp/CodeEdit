@@ -28,7 +28,6 @@ struct LanguageServersView: View {
                         LanguageServerRowView(
                             packageName: item.name,
                             subtitle: item.description,
-                            icon: "GitHubIcon",
                             isInstalled: RegistryManager.shared.installedLanguageServers[item.name] != nil,
                             isEnabled: RegistryManager.shared.installedLanguageServers[item.name]?.isEnabled ?? false,
                             onCancel: { },

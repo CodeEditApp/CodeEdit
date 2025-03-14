@@ -87,7 +87,7 @@ struct SettingsView: View {
         ),
         .init(
             SettingsPage(
-                .extensions,
+                .languageServers,
                 baseColor: Color(hex: "#6A69DC"), // Purple
                 icon: .system("cube.box.fill")
             )
@@ -184,7 +184,7 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
-                case .extensions:
+                case .languageServers:
                     LanguageServersView()
                 case .developer:
                     DeveloperSettingsView()

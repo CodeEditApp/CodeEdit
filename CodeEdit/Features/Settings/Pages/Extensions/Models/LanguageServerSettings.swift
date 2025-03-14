@@ -1,5 +1,5 @@
 //
-//  ExtensionSettings.swift
+//  LanguageServerSettings.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/2/25.
@@ -8,13 +8,12 @@
 import Foundation
 
 extension SettingsData {
-    struct ExtensionSettings: Codable, Hashable, SearchableSettingsPage {
+    struct LanguageServerSettings: Codable, Hashable, SearchableSettingsPage {
 
         /// The search keys
         var searchKeys: [String] {
             [
-                "Extensions",
-                "Language Server",
+                "Language Servers",
                 "LSP Binaries",
                 "Linters",
                 "Formatters",
