@@ -12,8 +12,6 @@ struct LanguageServersView: View {
     @State private var installationFailure: InstallationFailure?
     @State private var registryItems: [RegistryItem] = []
     @State private var isLoading = true
-    @State private var didRemoveError = false
-    @State private var removalFailure: InstallationFailure?
 
     var body: some View {
         SettingsForm {
@@ -58,6 +56,9 @@ struct LanguageServersView: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .RegistryUpdatedNotification)) { _ in
             loadRegistryItems()
+        }
+        .onDisappear {
+            InstallationQueueManager.shared.cleanUpInstallationStatus()
         }
         .alert(
             "Installation Failed",

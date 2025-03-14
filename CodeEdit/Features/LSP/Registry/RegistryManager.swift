@@ -5,7 +5,6 @@
 //  Created by Abe Malla on 1/29/25.
 //
 
-import Combine
 import Foundation
 import ZIPFoundation
 
@@ -113,7 +112,6 @@ final class RegistryManager {
     func removeLanguageServer(packageName: String) async throws {
         let packageName = packageName.removingPercentEncoding ?? packageName
         let packageDirectory = installPath.appending(path: packageName)
-        print("Removing \(packageDirectory)")
 
         guard FileManager.default.fileExists(atPath: packageDirectory.path) else {
             installedLanguageServers.removeValue(forKey: packageName)

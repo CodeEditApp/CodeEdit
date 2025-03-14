@@ -16,74 +16,85 @@ class InstallationQueueManager {
     /// Queue of pending installations
     private var installationQueue: [(RegistryItem, (Result<Void, Error>) -> Void)] = []
     /// Currently running installations
-    private var runningInstallations: Int = 0
+    private var runningInstallations: Set<String> = []
     /// Installation status dictionary
     private var installationStatus: [String: PackageInstallationStatus] = [:]
 
-    private init() {}
-
     /// Add a package to the installation queue
     func queueInstallation(package: RegistryItem, completion: @escaping (Result<Void, Error>) -> Void) {
-        installationStatus[package.name] = .queued
-        installationQueue.append((package, completion))
-        processNextInstallations()
+        // If we're already at max capacity and this isn't already running, mark as queued
+        if runningInstallations.count >= maxConcurrentInstallations && !runningInstallations.contains(package.name) {
+            installationStatus[package.name] = .queued
+            installationQueue.append((package, completion))
 
-        // Notify UI that package is queued
+            // Notify UI that package is queued
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(
+                    name: .installationStatusChanged,
+                    object: nil,
+                    userInfo: ["packageName": package.name, "status": PackageInstallationStatus.queued]
+                )
+            }
+        } else {
+            startInstallation(package: package, completion: completion)
+        }
+    }
+
+    /// Starts the actual installation process for a package
+    private func startInstallation(package: RegistryItem, completion: @escaping (Result<Void, Error>) -> Void) {
+        installationStatus[package.name] = .installing
+        runningInstallations.insert(package.name)
+
+        // Notify UI that installation is now in progress
         DispatchQueue.main.async {
             NotificationCenter.default.post(
                 name: .installationStatusChanged,
                 object: nil,
-                userInfo: ["packageName": package.name, "status": PackageInstallationStatus.queued]
+                userInfo: ["packageName": package.name, "status": PackageInstallationStatus.installing]
             )
+        }
+
+        Task {
+            do {
+                try await RegistryManager.shared.installPackage(package: package)
+
+                // Notify UI that installation is complete
+                installationStatus[package.name] = .installed
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .installationStatusChanged,
+                        object: nil,
+                        userInfo: ["packageName": package.name, "status": PackageInstallationStatus.installed]
+                    )
+                    completion(.success(()))
+                }
+            } catch {
+                // Notify UI that installation failed
+                installationStatus[package.name] = .failed(error)
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(
+                        name: .installationStatusChanged,
+                        object: nil,
+                        userInfo: ["packageName": package.name, "status": PackageInstallationStatus.failed(error)]
+                    )
+                    completion(.failure(error))
+                }
+            }
+
+            runningInstallations.remove(package.name)
+            processNextInstallations()
         }
     }
 
     /// Process next installations from the queue if possible
     private func processNextInstallations() {
-        while runningInstallations < maxConcurrentInstallations && !installationQueue.isEmpty {
+        while runningInstallations.count < maxConcurrentInstallations && !installationQueue.isEmpty {
             let (package, completion) = installationQueue.removeFirst()
-            runningInstallations += 1
-            installationStatus[package.name] = .installing
-
-            // Notify UI that installation is now in progress
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(
-                    name: .installationStatusChanged,
-                    object: nil,
-                    userInfo: ["packageName": package.name, "status": PackageInstallationStatus.installing]
-                )
+            if runningInstallations.contains(package.name) {
+                continue
             }
 
-            Task {
-                do {
-                    try await RegistryManager.shared.installPackage(package: package)
-
-                    // Notify UI that installation is complete
-                    installationStatus[package.name] = .installed
-                    DispatchQueue.main.async {
-                        NotificationCenter.default.post(
-                            name: .installationStatusChanged,
-                            object: nil,
-                            userInfo: ["packageName": package.name, "status": PackageInstallationStatus.installed]
-                        )
-                        completion(.success(()))
-                    }
-                } catch {
-                    // Notify UI that installation failed
-                    installationStatus[package.name] = .failed(error)
-                    DispatchQueue.main.async {
-                        NotificationCenter.default.post(
-                            name: .installationStatusChanged,
-                            object: nil,
-                            userInfo: ["packageName": package.name, "status": PackageInstallationStatus.failed(error)]
-                        )
-                        completion(.failure(error))
-                    }
-                }
-
-                runningInstallations -= 1
-                processNextInstallations()
-            }
+            startInstallation(package: package, completion: completion)
         }
     }
 
@@ -91,6 +102,7 @@ class InstallationQueueManager {
     func cancelInstallation(packageName: String) {
         installationQueue.removeAll { $0.0.name == packageName }
         installationStatus[packageName] = .cancelled
+        runningInstallations.remove(packageName)
 
         // Notify UI that installation was cancelled
         DispatchQueue.main.async {
@@ -100,11 +112,42 @@ class InstallationQueueManager {
                 userInfo: ["packageName": packageName, "status": PackageInstallationStatus.cancelled]
             )
         }
+        processNextInstallations()
     }
 
     /// Get the current status of an installation
     func getInstallationStatus(packageName: String) -> PackageInstallationStatus {
         return installationStatus[packageName] ?? .notQueued
+    }
+
+    /// Cleans up installation status by removing completed or failed installations
+    func cleanUpInstallationStatus() {
+        let statusKeys = installationStatus.keys.map { $0 }
+        for packageName in statusKeys {
+            if let status = installationStatus[packageName] {
+                switch status {
+                case .installed, .failed, .cancelled:
+                    installationStatus.removeValue(forKey: packageName)
+                case .queued, .installing, .notQueued:
+                    break
+                }
+            }
+        }
+
+        // If an item is in runningInstallations but not in an active state in the status dictionary,
+        // it might be a stale reference
+        let currentRunning = runningInstallations.map { $0 }
+        for packageName in currentRunning {
+            let status = installationStatus[packageName]
+            if status != .installing {
+                runningInstallations.remove(packageName)
+            }
+        }
+
+        // Check for orphaned queue items
+        installationQueue = installationQueue.filter { item, _ in
+            return installationStatus[item.name] == .queued
+        }
     }
 }
 
