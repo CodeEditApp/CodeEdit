@@ -34,8 +34,8 @@ class CargoPackageManager: PackageManagerProtocol {
             throw PackageManagerError.invalidConfiguration
         }
 
-        let packagePath = installationDirectory.appending(path: source.name)
-        print("Installing \(source.name)@\(source.version) in \(packagePath.path)")
+        let packagePath = installationDirectory.appending(path: source.entryName)
+        print("Installing \(source.entryName)@\(source.version) in \(packagePath.path)")
 
         try await initialize(in: packagePath)
 
@@ -52,7 +52,7 @@ class CargoPackageManager: PackageManagerProtocol {
                     cargoArgs.append(contentsOf: ["--rev", rev])
                 }
             } else {
-                cargoArgs.append("\(source.name)@\(source.version)")
+                cargoArgs.append("\(source.pkgName)@\(source.version)")
             }
 
             if let features = source.options["features"] {
@@ -63,7 +63,7 @@ class CargoPackageManager: PackageManagerProtocol {
             }
 
             _ = try await executeInDirectory(in: packagePath.path, cargoArgs)
-            print("Successfully installed \(source.name)@\(source.version)")
+            print("Successfully installed \(source.entryName)@\(source.version)")
         } catch {
             print("Installation failed: \(error)")
             throw error

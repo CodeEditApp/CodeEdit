@@ -95,7 +95,9 @@ struct PackageSource: Equatable, Codable {
     /// The type of the package manager
     let type: PackageManagerType
     /// Package name
-    let name: String
+    let pkgName: String
+    /// The name in the registry.json file. Used for the folder name when saved.
+    let entryName: String
     /// Package version
     let version: String
     /// URL for repository or download link
@@ -108,7 +110,8 @@ struct PackageSource: Equatable, Codable {
     init(
         sourceId: String,
         type: PackageManagerType,
-        name: String,
+        pkgName: String,
+        entryName: String,
         version: String,
         repositoryUrl: String? = nil,
         gitReference: GitReference? = nil,
@@ -116,7 +119,8 @@ struct PackageSource: Equatable, Codable {
     ) {
         self.sourceId = sourceId
         self.type = type
-        self.name = name
+        self.pkgName = pkgName
+        self.entryName = entryName
         self.version = version
         self.repositoryUrl = repositoryUrl
         self.gitReference = gitReference
@@ -140,7 +144,7 @@ enum InstallationMethod: Equatable {
         case .standardPackage(let source),
              .sourceBuild(let source, _),
              .binaryDownload(let source, _):
-            return source.name
+            return source.pkgName
         case .unknown:
             return nil
         }

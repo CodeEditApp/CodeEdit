@@ -34,7 +34,7 @@ class GithubPackageManager: PackageManagerProtocol {
             throw PackageManagerError.invalidConfiguration
         }
 
-        let packagePath = installationDirectory.appending(path: source.name)
+        let packagePath = installationDirectory.appending(path: source.entryName)
         try await initialize(in: packagePath)
 
         switch method {
@@ -67,7 +67,7 @@ class GithubPackageManager: PackageManagerProtocol {
     private func downloadBinary(_ source: PackageSource, _ url: URL) async throws {
         _ = try await URLSession.shared.data(from: url)
         let fileName = url.lastPathComponent
-        let downloadPath = installationDirectory.appending(path: source.name)
+        let downloadPath = installationDirectory.appending(path: source.entryName)
         let packagePath = downloadPath.appending(path: fileName)
 
         if !FileManager.default.fileExists(atPath: packagePath.path) {
@@ -83,10 +83,10 @@ class GithubPackageManager: PackageManagerProtocol {
     }
 
     private func installFromSource(_ source: PackageSource, _ command: String) async throws {
-        let installPath = installationDirectory.appending(path: source.name, directoryHint: .isDirectory)
+        let installPath = installationDirectory.appending(path: source.entryName, directoryHint: .isDirectory)
         do {
             _ = try await executeInDirectory(in: installPath.path, ["git", "clone", source.repositoryUrl!])
-            let repoPath = installPath.appending(path: source.name, directoryHint: .isDirectory)
+            let repoPath = installPath.appending(path: source.pkgName, directoryHint: .isDirectory)
             _ = try await executeInDirectory(in: repoPath.path, [command])
         } catch {
             print("Failed to build from source: \(error)")

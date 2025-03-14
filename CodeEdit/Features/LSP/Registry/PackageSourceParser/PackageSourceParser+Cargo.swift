@@ -61,7 +61,8 @@ extension PackageSourceParser {
         let source = PackageSource(
             sourceId: sourceId,
             type: .cargo,
-            name: packageName,
+            pkgName: packageName,
+            entryName: entry.name,
             version: version,
             repositoryUrl: repositoryUrl,
             gitReference: gitReference,

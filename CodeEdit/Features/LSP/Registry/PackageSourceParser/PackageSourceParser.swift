@@ -43,7 +43,8 @@ enum PackageSourceParser {
         let source = PackageSource(
             sourceId: sourceId,
             type: isSourceBuild ? .sourceBuild : .github,
-            name: packageName,
+            pkgName: packageName,
+            entryName: entry.name,
             version: version,
             repositoryUrl: repositoryUrl,
             gitReference: gitReference,

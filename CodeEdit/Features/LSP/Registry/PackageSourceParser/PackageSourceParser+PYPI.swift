@@ -51,7 +51,8 @@ extension PackageSourceParser {
         let source = PackageSource(
             sourceId: sourceId,
             type: .pip,
-            name: packageName,
+            pkgName: packageName,
+            entryName: entry.name,
             version: version,
             repositoryUrl: repositoryUrl,
             gitReference: gitReference,

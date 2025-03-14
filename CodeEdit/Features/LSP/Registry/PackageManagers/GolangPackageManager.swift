@@ -42,8 +42,8 @@ class GolangPackageManager: PackageManagerProtocol {
             throw PackageManagerError.invalidConfiguration
         }
 
-        let packagePath = installationDirectory.appending(path: source.name)
-        print("Installing Go package \(source.name)@\(source.version) in \(packagePath.path)")
+        let packagePath = installationDirectory.appending(path: source.entryName)
+        print("Installing Go package \(source.entryName)@\(source.version) in \(packagePath.path)")
 
         try await initialize(in: packagePath)
 
@@ -62,13 +62,13 @@ class GolangPackageManager: PackageManagerProtocol {
                 }
 
                 let binaryName = subpath.components(separatedBy: "/").last ??
-                    source.name.components(separatedBy: "/").last ?? source.name
+                    source.pkgName.components(separatedBy: "/").last ?? source.pkgName
                 let buildArgs = ["go", "build", "-o", "bin/\(binaryName)"]
 
-                // If source.name includes the full import path (like github.com/owner/repo)
-                if source.name.contains("/") {
+                // If source.pkgName includes the full import path (like github.com/owner/repo)
+                if source.pkgName.contains("/") {
                     _ = try await executeInDirectory(
-                        in: packagePath.path, buildArgs + ["\(source.name)/\(subpath)"]
+                        in: packagePath.path, buildArgs + ["\(source.pkgName)/\(subpath)"]
                     )
                 } else {
                     _ = try await executeInDirectory(
@@ -79,7 +79,7 @@ class GolangPackageManager: PackageManagerProtocol {
                 _ = try await runCommand("chmod +x \"\(execPath)\"")
             }
 
-            print("Successfully installed \(source.name)@\(source.version)")
+            print("Successfully installed \(source.entryName)@\(source.version)")
         } catch {
             print("Installation failed: \(error)")
             try? cleanupFailedInstallation(packagePath: packagePath)
@@ -138,7 +138,7 @@ class GolangPackageManager: PackageManagerProtocol {
     private func getGoInstallCommand(_ source: PackageSource) -> String {
         if let gitRef = source.gitReference, let repoUrl = source.repositoryUrl {
             // Check if this is a Git-based package
-            var packageName = source.name
+            var packageName = source.pkgName
             if !packageName.contains("github.com") && !packageName.contains("golang.org") {
                 packageName = repoUrl.replacingOccurrences(of: "https://", with: "")
             }
@@ -153,7 +153,7 @@ class GolangPackageManager: PackageManagerProtocol {
 
             return "\(packageName)@\(gitVersion)"
         } else {
-            return "\(source.name)@\(source.version)"
+            return "\(source.pkgName)@\(source.version)"
         }
     }
 }

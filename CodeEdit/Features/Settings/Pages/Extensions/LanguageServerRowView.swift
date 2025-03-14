@@ -22,6 +22,10 @@ struct LanguageServerRowView: View, Equatable {
     @State private var installationStatus: PackageInstallationStatus = .notQueued
     @State private var isInstalled: Bool = false
     @State private var isEnabled = false
+    @State private var showingRemovalConfirmation = false
+    @State private var isRemoving = false
+    @State private var removalError: Error?
+    @State private var showingRemovalError = false
 
     init(
         packageName: String,
@@ -92,6 +96,19 @@ struct LanguageServerRowView: View, Equatable {
                 }
             }
         }
+        .alert("Remove \(cleanedTitle)?", isPresented: $showingRemovalConfirmation) {
+            Button("Cancel", role: .cancel) { }
+            Button("Remove", role: .destructive) {
+                removeLanguageServer()
+            }
+        } message: {
+            Text("Are you sure you want to remove this language server? This action cannot be undone.")
+        }
+        .alert("Removal Failed", isPresented: $showingRemovalError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(removalError?.localizedDescription ?? "An unknown error occurred")
+        }
     }
 
     @ViewBuilder
@@ -115,9 +132,12 @@ struct LanguageServerRowView: View, Equatable {
     @ViewBuilder
     private func installedRow() -> some View {
         HStack {
-            if isHovering {
+            if isRemoving {
+                ProgressView()
+                    .controlSize(.small)
+            } else if isHovering {
                 Button {
-                    isInstalled = false
+                    showingRemovalConfirmation = true
                 } label: {
                     Text("Remove")
                 }
@@ -199,6 +219,26 @@ struct LanguageServerRowView: View, Equatable {
                 y: iconSize / 40
             )
             .frame(width: iconSize, height: iconSize)
+    }
+
+    private func removeLanguageServer() {
+        isRemoving = true
+        Task {
+            do {
+                try await RegistryManager.shared.removeLanguageServer(packageName: packageName)
+                await MainActor.run {
+                    isRemoving = false
+                    isInstalled = false
+                    isEnabled = false
+                }
+            } catch {
+                await MainActor.run {
+                    isRemoving = false
+                    removalError = error
+                    showingRemovalError = true
+                }
+            }
+        }
     }
 
     private var background: AnyShapeStyle {

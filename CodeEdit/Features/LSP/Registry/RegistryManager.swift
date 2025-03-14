@@ -9,23 +9,22 @@ import Combine
 import Foundation
 import ZIPFoundation
 
-private let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
-private let installPath = homeDirectory
-    .appending(path: "Library")
-    .appending(path: "Application Support")
-    .appending(path: "CodeEdit")
-    .appending(path: "language-servers")
-
 @MainActor
 final class RegistryManager {
     static let shared: RegistryManager = .init()
 
+    internal let installPath = FileManager.default.homeDirectoryForCurrentUser
+        .appending(path: "Library")
+        .appending(path: "Application Support")
+        .appending(path: "CodeEdit")
+        .appending(path: "language-servers")
+
     /// The URL of where the registry.json file will be downloaded from
-    private let registryURL = URL(
+    internal let registryURL = URL(
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/registry.json.zip"
     )!
     /// The URL of where the checksums.txt file will be downloaded from
-    private let checksumURL = URL(
+    internal let checksumURL = URL(
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/checksums.txt"
     )!
 
@@ -67,83 +66,10 @@ final class RegistryManager {
         cleanupTimer?.invalidate()
     }
 
-    /// Downloads the latest registry and saves to "~/Library/Application Support/CodeEdit/extensions"
-    func update() async {
-        // swiftlint:disable:next large_tuple
-        let result = await Task.detached(priority: .userInitiated) { () -> (
-            registryData: Data?, checksumData: Data?, error: Error?
-        ) in
-            do {
-                async let zipDataTask = Self.download(from: self.registryURL)
-                async let checksumsTask = Self.download(from: self.checksumURL)
-
-                let (registryData, checksumData) = try await (zipDataTask, checksumsTask)
-                return (registryData, checksumData, nil)
-            } catch {
-                return (nil, nil, error)
-            }
-        }.value
-
-        if let error = result.error {
-            handleUpdateError(error)
-            return
-        }
-
-        guard let registryData = result.registryData, let checksumData = result.checksumData else {
-            return
-        }
-
-        do {
-            // Make sure the extensions folder exists first
-            try FileManager.default.createDirectory(at: installPath, withIntermediateDirectories: true)
-
-            let tempZipURL = installPath.appending(path: "temp.zip")
-            let checksumDestination = installPath.appending(path: "checksums.txt")
-
-            // Delete existing zip data if it exists
-            if FileManager.default.fileExists(atPath: tempZipURL.path) {
-                try FileManager.default.removeItem(at: tempZipURL)
-            }
-            let registryJsonPath = installPath.appending(path: "registry.json").path
-            if FileManager.default.fileExists(atPath: registryJsonPath) {
-                try FileManager.default.removeItem(atPath: registryJsonPath)
-            }
-
-            // Write the zip data to a temporary file, then unzip
-            try registryData.write(to: tempZipURL)
-            try FileManager.default.unzipItem(at: tempZipURL, to: installPath)
-            try FileManager.default.removeItem(at: tempZipURL)
-
-            try checksumData.write(to: checksumDestination)
-
-            NotificationCenter.default.post(name: .RegistryUpdatedNotification, object: nil)
-        } catch {
-            print("Error details: \(error)")
-            handleUpdateError(RegistryManagerError.writeFailed(error: error))
-        }
-    }
-
-    private func handleUpdateError(_ error: Error) {
-        if let regError = error as? RegistryManagerError {
-            switch regError {
-            case .invalidResponse(let statusCode):
-                print("Invalid response received: \(statusCode)")
-            case let .downloadFailed(url, error):
-                print("Download failed for \(url.absoluteString): \(error.localizedDescription)")
-            case let .maxRetriesExceeded(url, error):
-                print("Max retries exceeded for \(url.absoluteString): \(error.localizedDescription)")
-            case let .writeFailed(error):
-                print("Failed to write files to disk: \(error.localizedDescription)")
-            }
-        } else {
-            print("Unexpected registry error: \(error.localizedDescription)")
-        }
-    }
-
     func installPackage(package entry: RegistryItem) async throws {
         return try await Task.detached(priority: .userInitiated) { () in
             let method = await Self.parseRegistryEntry(entry)
-            guard let manager = await Self.createPackageManager(for: method, installPath) else {
+            guard let manager = await self.createPackageManager(for: method) else {
                 throw PackageManagerError.invalidConfiguration
             }
 
@@ -183,59 +109,35 @@ final class RegistryManager {
         }.value
     }
 
-    /// Attempts downloading from `url`, with error handling and a retry policy
-    private static func download(from url: URL, attempt: Int = 1) async throws -> Data {
-        do {
-            let (data, response) = try await URLSession.shared.data(from: url)
+    @MainActor
+    func removeLanguageServer(packageName: String) async throws {
+        let packageName = packageName.removingPercentEncoding ?? packageName
+        let packageDirectory = installPath.appending(path: packageName)
+        print("Removing \(packageDirectory)")
 
-            guard let httpResponse = response as? HTTPURLResponse else {
-                throw RegistryManagerError.downloadFailed(
-                    url: url, error: NSError(domain: "Invalid response type", code: -1)
-                )
-            }
-            guard (200...299).contains(httpResponse.statusCode) else {
-                throw RegistryManagerError.invalidResponse(statusCode: httpResponse.statusCode)
-            }
-
-            return data
-        } catch {
-            if attempt <= 3 {
-                let delay = pow(2.0, Double(attempt))
-                try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
-                return try await download(from: url, attempt: attempt + 1)
-            } else {
-                throw RegistryManagerError.maxRetriesExceeded(url: url, lastError: error)
-            }
-        }
-    }
-
-    /// Loads registry items from disk
-    private func loadItemsFromDisk() -> [RegistryItem]? {
-        let registryPath = installPath.appending(path: "registry.json")
-        let fileManager = FileManager.default
-
-        // Update the file every 24 hours
-        let needsUpdate = !fileManager.fileExists(atPath: registryPath.path) || {
-            guard let attributes = try? fileManager.attributesOfItem(atPath: registryPath.path),
-                  let modificationDate = attributes[.modificationDate] as? Date else {
-                return true
-            }
-            let hoursSinceLastUpdate = Date().timeIntervalSince(modificationDate) / 3600
-            return hoursSinceLastUpdate >= 24
-        }()
-
-        if needsUpdate {
-            Task { await update() }
-            return nil
+        guard FileManager.default.fileExists(atPath: packageDirectory.path) else {
+            installedLanguageServers.removeValue(forKey: packageName)
+            return
         }
 
+        // Add to activity viewer
+        NotificationCenter.default.post(
+            name: .taskNotification,
+            object: nil,
+            userInfo: [
+                "id": packageName,
+                "action": "create",
+                "title": "Removing \(packageName)"
+            ]
+        )
+
         do {
-            let registryData = try Data(contentsOf: registryPath)
-            let items = try JSONDecoder().decode([RegistryItem].self, from: registryData)
-            return items.filter { $0.categories.contains("LSP") }
+            try await Task.detached(priority: .userInitiated) {
+                try FileManager.default.removeItem(at: packageDirectory)
+            }.value
+            installedLanguageServers.removeValue(forKey: packageName)
         } catch {
-            Task { await update() }
-            return nil
+            throw error
         }
     }
 
@@ -286,6 +188,27 @@ final class RegistryManager {
                     "delay": 5.0,
                 ]
             )
+        }
+    }
+
+    /// Create the appropriate package manager for the given installation method
+    internal func createPackageManager(for method: InstallationMethod) -> PackageManagerProtocol? {
+        switch method.packageManagerType {
+        case .npm:
+            return NPMPackageManager(installationDirectory: installPath)
+        case .cargo:
+            return CargoPackageManager(installationDirectory: installPath)
+        case .pip:
+            return PipPackageManager(installationDirectory: installPath)
+        case .golang:
+            return GolangPackageManager(installationDirectory: installPath)
+        case .github, .sourceBuild:
+            return GithubPackageManager(installationDirectory: installPath)
+        case .nuget, .opam, .gem, .composer:
+            // TODO: IMPLEMENT OTHER PACKAGE MANAGERS
+            return nil
+        case .none:
+            return nil
         }
     }
 }

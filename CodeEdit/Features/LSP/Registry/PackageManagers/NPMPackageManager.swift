@@ -55,13 +55,13 @@ class NPMPackageManager: PackageManagerProtocol {
             throw PackageManagerError.invalidConfiguration
         }
 
-        let packagePath = installationDirectory.appending(path: source.name)
-        print("Installing \(source.name)@\(source.version) in \(packagePath.path)")
+        let packagePath = installationDirectory.appending(path: source.entryName)
+        print("Installing \(source.entryName)@\(source.version) in \(packagePath.path)")
 
         try await initialize(in: packagePath)
 
         do {
-            var installArgs = ["npm", "install", "\(source.name)@\(source.version)"]
+            var installArgs = ["npm", "install", "\(source.pkgName)@\(source.version)"]
             if let dev = source.options["dev"], dev.lowercased() == "true" {
                 installArgs.append("--save-dev")
             }
@@ -72,9 +72,9 @@ class NPMPackageManager: PackageManagerProtocol {
             }
 
             _ = try await executeInDirectory(in: packagePath.path, installArgs)
-            try verifyInstallation(package: source.name, version: source.version)
+            try verifyInstallation(folderName: source.entryName, package: source.pkgName, version: source.version)
 
-            print("Successfully installed \(source.name)@\(source.version)")
+            print("Successfully installed \(source.entryName)@\(source.version)")
         } catch {
             print("Installation failed: \(error)")
             let nodeModulesPath = packagePath.appending(path: "node_modules").path
@@ -107,8 +107,8 @@ class NPMPackageManager: PackageManagerProtocol {
     }
 
     /// Verify the installation was successful
-    private func verifyInstallation(package: String, version: String) throws {
-        let packagePath = installationDirectory.appending(path: package)
+    private func verifyInstallation(folderName: String, package: String, version: String) throws {
+        let packagePath = installationDirectory.appending(path: folderName)
         let packageJsonPath = packagePath.appending(path: "package.json").path
 
         // Verify package.json contains the installed package

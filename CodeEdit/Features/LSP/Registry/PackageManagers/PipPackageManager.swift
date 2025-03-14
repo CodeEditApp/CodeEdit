@@ -42,8 +42,8 @@ class PipPackageManager: PackageManagerProtocol {
             throw PackageManagerError.invalidConfiguration
         }
 
-        let packagePath = installationDirectory.appending(path: source.name)
-        print("Installing \(source.name)@\(source.version) in \(packagePath.path)")
+        let packagePath = installationDirectory.appending(path: source.entryName)
+        print("Installing \(source.entryName)@\(source.version) in \(packagePath.path)")
 
         try await initialize(in: packagePath)
 
@@ -52,9 +52,9 @@ class PipPackageManager: PackageManagerProtocol {
             var installArgs = [pipCommand, "install"]
 
             if source.version.lowercased() != "latest" {
-                installArgs.append("\(source.name)==\(source.version)")
+                installArgs.append("\(source.pkgName)==\(source.version)")
             } else {
-                installArgs.append(source.name)
+                installArgs.append(source.pkgName)
             }
 
             let extras = source.options["extra"]
@@ -66,9 +66,9 @@ class PipPackageManager: PackageManagerProtocol {
 
             _ = try await executeInDirectory(in: packagePath.path, installArgs)
             try await updateRequirements(packagePath: packagePath)
-            try await verifyInstallation(packagePath: packagePath, package: source.name)
+            try await verifyInstallation(packagePath: packagePath, package: source.pkgName)
 
-            print("Successfully installed \(source.name)@\(source.version)")
+            print("Successfully installed \(source.entryName)@\(source.version)")
         } catch {
             print("Installation failed: \(error)")
             throw error

@@ -19,7 +19,7 @@ extension PackageSourceParser {
         let packageVersion = String(components[0])
         let parameters = components.count > 1 ? String(components[1]) : ""
 
-        let (packageName, version) = parseNPMPackageVersion(packageVersion)
+        let (packageName, version) = parseNPMPackageNameAndVersion(packageVersion)
 
         // Parse parameters as options
         var options: [String: String] = ["buildTool": "npm"]
@@ -48,7 +48,8 @@ extension PackageSourceParser {
         let source = PackageSource(
             sourceId: sourceId,
             type: .npm,
-            name: packageName,
+            pkgName: packageName,
+            entryName: entry.name,
             version: version,
             repositoryUrl: repositoryUrl,
             gitReference: gitReference,
@@ -57,7 +58,7 @@ extension PackageSourceParser {
         return .standardPackage(source: source)
     }
 
-    private static func parseNPMPackageVersion(_ packageVersion: String) -> (String, String) {
+    private static func parseNPMPackageNameAndVersion(_ packageVersion: String) -> (String, String) {
         var packageName: String
         var version: String = "latest"
 

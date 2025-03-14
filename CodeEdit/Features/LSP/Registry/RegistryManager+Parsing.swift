@@ -27,28 +27,4 @@ extension RegistryManager {
             return .unknown
         }
     }
-
-    /// Create the appropriate package manager for the given installation method
-    internal static func createPackageManager(
-        for method: InstallationMethod,
-        _ installPath: URL
-    ) -> PackageManagerProtocol? {
-        switch method.packageManagerType {
-        case .npm:
-            return NPMPackageManager(installationDirectory: installPath)
-        case .cargo:
-            return CargoPackageManager(installationDirectory: installPath)
-        case .pip:
-            return PipPackageManager(installationDirectory: installPath)
-        case .golang:
-            return GolangPackageManager(installationDirectory: installPath)
-        case .github, .sourceBuild:
-            return GithubPackageManager(installationDirectory: installPath)
-        case .nuget, .opam, .gem, .composer:
-            // TODO: IMPLEMENT OTHER PACKAGE MANAGERS
-            return nil
-        case .none:
-            return nil
-        }
-    }
 }
