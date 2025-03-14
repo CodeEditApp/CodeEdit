@@ -19,7 +19,7 @@ struct LanguageServerRowView: View, Equatable {
     private let cleanedSubtitle: String
 
     @State private var isHovering: Bool = false
-    @State private var isInstalling: Bool = false
+    @State private var installationStatus: PackageInstallationStatus = .notQueued
     @State private var isInstalled: Bool = false
     @State private var isEnabled = false
 
@@ -77,16 +77,38 @@ struct LanguageServerRowView: View, Equatable {
         .onHover { hovering in
             isHovering = hovering
         }
+        .onAppear {
+            // Check if this package is already in the installation queue
+            installationStatus = InstallationQueueManager.shared.getInstallationStatus(packageName: packageName)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .installationStatusChanged)) { notification in
+            if let notificationPackageName = notification.userInfo?["packageName"] as? String,
+               notificationPackageName == packageName,
+               let status = notification.userInfo?["status"] as? PackageInstallationStatus {
+                installationStatus = status
+                if case .installed = status {
+                    isInstalled = true
+                    isEnabled = true
+                }
+            }
+        }
     }
 
     @ViewBuilder
     private func installationButton() -> some View {
         if isInstalled {
             installedRow()
-        } else if isInstalling {
-            isInstallingRow()
-        } else if isHovering {
-            isHoveringRow()
+        } else {
+            switch installationStatus {
+            case .installing, .queued:
+                isInstallingRow()
+            case .failed:
+                failedRow()
+            default:
+                if isHovering {
+                    isHoveringRow()
+                }
+            }
         }
     }
 
@@ -95,7 +117,6 @@ struct LanguageServerRowView: View, Equatable {
         HStack {
             if isHovering {
                 Button {
-                    isInstalling = false
                     isInstalled = false
                 } label: {
                     Text("Remove")
@@ -113,32 +134,49 @@ struct LanguageServerRowView: View, Equatable {
 
     @ViewBuilder
     private func isInstallingRow() -> some View {
-        ZStack {
-            CECircularProgressView()
-                .frame(width: 20, height: 20)
-            Button {
-                isInstalling = false
-                onCancel()
-            } label: {
-                Image(systemName: "stop.fill")
-                    .font(.system(size: 8))
-                    .foregroundColor(.blue)
+        HStack {
+            if case .queued = installationStatus {
+                Text("Queued")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
-            .buttonStyle(.plain)
-            .contentShape(Rectangle())
+
+            ZStack {
+                CECircularProgressView()
+                    .frame(width: 20, height: 20)
+                Button {
+                    InstallationQueueManager.shared.cancelInstallation(packageName: packageName)
+                    onCancel()
+                } label: {
+                    Image(systemName: "stop.fill")
+                        .font(.system(size: 8))
+                        .foregroundColor(.blue)
+                }
+                .buttonStyle(.plain)
+                .contentShape(Rectangle())
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func failedRow() -> some View {
+        Button {
+            // Reset status and retry installation
+            installationStatus = .notQueued
+            Task {
+                await onInstall()
+            }
+        } label: {
+            Text("Retry")
+                .foregroundColor(.red)
         }
     }
 
     @ViewBuilder
     private func isHoveringRow() -> some View {
         Button {
-            isInstalling = true
-
             Task {
                 await onInstall()
-                isInstalling = false
-                isInstalled = true
-                isEnabled = true
             }
         } label: {
             Text("Install")

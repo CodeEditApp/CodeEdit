@@ -27,10 +27,6 @@ final class RegistryManager {
     private let checksumURL = URL(
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/checksums.txt"
     )!
-    /// A queue for installing packages concurrently
-    private let installQueue: OperationQueue
-    /// The max amount of package concurrent installs
-    private let maxConcurrentInstallations: Int = 2
 
     /// Rreference to cached registry data. Will be removed from memory after a certain amount of time.
     private var cachedRegistry: CachedRegistry?
@@ -62,11 +58,6 @@ final class RegistryManager {
 
     @AppSettings(\.languageServers.installedLanguageServers)
     var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
-
-    private init() {
-        installQueue = OperationQueue()
-        installQueue.maxConcurrentOperationCount = maxConcurrentInstallations
-    }
 
     deinit {
         cleanupTimer?.invalidate()
@@ -153,11 +144,13 @@ final class RegistryManager {
         }
 
         // Save to settings
-        installedLanguageServers[entry.name] = .init(
-            packageName: entry.name,
-            isEnabled: true,
-            version: method.version ?? ""
-        )
+        DispatchQueue.main.async { [weak self] in
+            self?.installedLanguageServers[entry.name] = .init(
+                packageName: entry.name,
+                isEnabled: true,
+                version: method.version ?? ""
+            )
+        }
         Self.updateActivityViewer(entry.name, activityTitle, fail: false)
     }
 

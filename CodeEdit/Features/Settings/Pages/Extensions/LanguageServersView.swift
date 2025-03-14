@@ -30,13 +30,19 @@ struct LanguageServersView: View {
                             subtitle: item.description,
                             isInstalled: RegistryManager.shared.installedLanguageServers[item.name] != nil,
                             isEnabled: RegistryManager.shared.installedLanguageServers[item.name]?.isEnabled ?? false,
-                            onCancel: { },
+                            onCancel: {
+                                InstallationQueueManager.shared.cancelInstallation(packageName: item.name)
+                            },
                             onInstall: {
-                                do {
-                                    try await RegistryManager.shared.installPackage(package: item)
-                                } catch {
-                                    didError = true
-                                    installationFailure = InstallationFailure(error: error.localizedDescription)
+                                let item = item // Capture for closure
+                                InstallationQueueManager.shared.queueInstallation(package: item) { result in
+                                    switch result {
+                                    case .success:
+                                        break
+                                    case .failure(let error):
+                                        didError = true
+                                        installationFailure = InstallationFailure(error: error.localizedDescription)
+                                    }
                                 }
                             }
                         )
