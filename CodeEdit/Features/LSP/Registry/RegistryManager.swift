@@ -19,14 +19,18 @@ private let installPath = homeDirectory
 final class RegistryManager {
     static let shared: RegistryManager = .init()
 
-    private let saveLocation = installPath
+    /// The URL of where the registry.json file will be downloaded from
     private let registryURL = URL(
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/registry.json.zip"
     )!
+    /// The URL of where the checksums.txt file will be downloaded from
     private let checksumURL = URL(
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/checksums.txt"
     )!
-    private var cancellables: Set<AnyCancellable> = []
+    /// A queue for installing packages concurrently
+    private let installQueue: OperationQueue
+    /// The max amount of package concurrent installs
+    private let maxConcurrentInstallations: Int = 2
 
     /// Rreference to cached registry data. Will be removed from memory after a certain amount of time.
     private var cachedRegistry: CachedRegistry?
@@ -59,6 +63,11 @@ final class RegistryManager {
     @AppSettings(\.languageServers.installedLanguageServers)
     var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
 
+    private init() {
+        installQueue = OperationQueue()
+        installQueue.maxConcurrentOperationCount = maxConcurrentInstallations
+    }
+
     deinit {
         cleanupTimer?.invalidate()
     }
@@ -70,26 +79,26 @@ final class RegistryManager {
 
         do {
             // Make sure the extensions folder exists first
-            try FileManager.default.createDirectory(at: saveLocation, withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(at: installPath, withIntermediateDirectories: true)
 
             let (registryData, checksumData) = try await (zipDataTask, checksumsTask)
 
-            let tempZipURL = saveLocation.appending(path: "temp.zip")
-            let checksumDestination = saveLocation.appending(path: "checksums.txt")
+            let tempZipURL = installPath.appending(path: "temp.zip")
+            let checksumDestination = installPath.appending(path: "checksums.txt")
 
             do {
                 // Delete existing zip data if it exists
                 if FileManager.default.fileExists(atPath: tempZipURL.path) {
                     try FileManager.default.removeItem(at: tempZipURL)
                 }
-                let registryJsonPath = saveLocation.appending(path: "registry.json").path
+                let registryJsonPath = installPath.appending(path: "registry.json").path
                 if FileManager.default.fileExists(atPath: registryJsonPath) {
                     try FileManager.default.removeItem(atPath: registryJsonPath)
                 }
 
                 // Write the zip data to a temporary file, then unzip
                 try registryData.write(to: tempZipURL)
-                try FileManager.default.unzipItem(at: tempZipURL, to: saveLocation)
+                try FileManager.default.unzipItem(at: tempZipURL, to: installPath)
                 try FileManager.default.removeItem(at: tempZipURL)
 
                 try checksumData.write(to: checksumDestination)
@@ -180,7 +189,7 @@ final class RegistryManager {
 
     /// Loads registry items from disk
     private func loadItemsFromDisk() -> [RegistryItem]? {
-        let registryPath = saveLocation.appending(path: "registry.json")
+        let registryPath = installPath.appending(path: "registry.json")
         let fileManager = FileManager.default
 
         // Update the file every 24 hours
