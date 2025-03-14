@@ -16,6 +16,7 @@ private let installPath = homeDirectory
     .appending(path: "CodeEdit")
     .appending(path: "language-servers")
 
+@MainActor
 final class RegistryManager {
     static let shared: RegistryManager = .init()
 
@@ -47,8 +48,11 @@ final class RegistryManager {
             cleanupTimer = Timer.scheduledTimer(
                 withTimeInterval: CachedRegistry.expirationInterval, repeats: false
             ) { [weak self] _ in
-                self?.cachedRegistry = nil
-                self?.cleanupTimer = nil
+                Task { @MainActor in
+                    guard let self = self else { return }
+                    self.cachedRegistry = nil
+                    self.cleanupTimer = nil
+                }
             }
             return items
         }
@@ -65,44 +69,63 @@ final class RegistryManager {
 
     /// Downloads the latest registry and saves to "~/Library/Application Support/CodeEdit/extensions"
     func update() async {
-        async let zipDataTask = download(from: registryURL)
-        async let checksumsTask = download(from: checksumURL)
+        // swiftlint:disable:next large_tuple
+        let result = await Task.detached(priority: .userInitiated) { () -> (
+            registryData: Data?, checksumData: Data?, error: Error?
+        ) in
+            do {
+                async let zipDataTask = Self.download(from: self.registryURL)
+                async let checksumsTask = Self.download(from: self.checksumURL)
+
+                let (registryData, checksumData) = try await (zipDataTask, checksumsTask)
+                return (registryData, checksumData, nil)
+            } catch {
+                return (nil, nil, error)
+            }
+        }.value
+
+        if let error = result.error {
+            handleUpdateError(error)
+            return
+        }
+
+        guard let registryData = result.registryData, let checksumData = result.checksumData else {
+            return
+        }
 
         do {
             // Make sure the extensions folder exists first
             try FileManager.default.createDirectory(at: installPath, withIntermediateDirectories: true)
 
-            let (registryData, checksumData) = try await (zipDataTask, checksumsTask)
-
             let tempZipURL = installPath.appending(path: "temp.zip")
             let checksumDestination = installPath.appending(path: "checksums.txt")
 
-            do {
-                // Delete existing zip data if it exists
-                if FileManager.default.fileExists(atPath: tempZipURL.path) {
-                    try FileManager.default.removeItem(at: tempZipURL)
-                }
-                let registryJsonPath = installPath.appending(path: "registry.json").path
-                if FileManager.default.fileExists(atPath: registryJsonPath) {
-                    try FileManager.default.removeItem(atPath: registryJsonPath)
-                }
-
-                // Write the zip data to a temporary file, then unzip
-                try registryData.write(to: tempZipURL)
-                try FileManager.default.unzipItem(at: tempZipURL, to: installPath)
+            // Delete existing zip data if it exists
+            if FileManager.default.fileExists(atPath: tempZipURL.path) {
                 try FileManager.default.removeItem(at: tempZipURL)
-
-                try checksumData.write(to: checksumDestination)
-
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: .RegistryUpdatedNotification, object: nil)
-                }
-            } catch {
-                print("Error details: \(error)")
-                throw RegistryManagerError.writeFailed(error: error)
             }
-        } catch let error as RegistryManagerError {
-            switch error {
+            let registryJsonPath = installPath.appending(path: "registry.json").path
+            if FileManager.default.fileExists(atPath: registryJsonPath) {
+                try FileManager.default.removeItem(atPath: registryJsonPath)
+            }
+
+            // Write the zip data to a temporary file, then unzip
+            try registryData.write(to: tempZipURL)
+            try FileManager.default.unzipItem(at: tempZipURL, to: installPath)
+            try FileManager.default.removeItem(at: tempZipURL)
+
+            try checksumData.write(to: checksumDestination)
+
+            NotificationCenter.default.post(name: .RegistryUpdatedNotification, object: nil)
+        } catch {
+            print("Error details: \(error)")
+            handleUpdateError(RegistryManagerError.writeFailed(error: error))
+        }
+    }
+
+    private func handleUpdateError(_ error: Error) {
+        if let regError = error as? RegistryManagerError {
+            switch regError {
             case .invalidResponse(let statusCode):
                 print("Invalid response received: \(statusCode)")
             case let .downloadFailed(url, error):
@@ -112,50 +135,56 @@ final class RegistryManager {
             case let .writeFailed(error):
                 print("Failed to write files to disk: \(error.localizedDescription)")
             }
-        } catch {
+        } else {
             print("Unexpected registry error: \(error.localizedDescription)")
         }
     }
 
     func installPackage(package entry: RegistryItem) async throws {
-        let method = Self.parseRegistryEntry(entry)
-        guard let manager = Self.createPackageManager(for: method) else {
-            throw PackageManagerError.invalidConfiguration
-        }
+        return try await Task.detached(priority: .userInitiated) { () in
+            let method = await Self.parseRegistryEntry(entry)
+            guard let manager = await Self.createPackageManager(for: method, installPath) else {
+                throw PackageManagerError.invalidConfiguration
+            }
 
-        // Add to activity viewer
-        let activityTitle = "\(entry.name)\("@" + (method.version ?? "latest"))"
-        NotificationCenter.default.post(
-            name: .taskNotification,
-            object: nil,
-            userInfo: [
-                "id": entry.name,
-                "action": "create",
-                "title": "Installing \(activityTitle)"
-            ]
-        )
+            // Add to activity viewer
+            let activityTitle = "\(entry.name)\("@" + (method.version ?? "latest"))"
+            await MainActor.run {
+                NotificationCenter.default.post(
+                    name: .taskNotification,
+                    object: nil,
+                    userInfo: [
+                        "id": entry.name,
+                        "action": "create",
+                        "title": "Installing \(activityTitle)"
+                    ]
+                )
+            }
 
-        do {
-            try await manager.install(method: method)
-        } catch {
-            Self.updateActivityViewer(entry.name, activityTitle, fail: true)
-            // Throw error again so the UI can catch it
-            throw error
-        }
+            do {
+                try await manager.install(method: method)
+            } catch {
+                await MainActor.run {
+                    Self.updateActivityViewer(entry.name, activityTitle, fail: true)
+                }
+                // Throw error again so the UI can catch it
+                throw error
+            }
 
-        // Save to settings
-        DispatchQueue.main.async { [weak self] in
-            self?.installedLanguageServers[entry.name] = .init(
-                packageName: entry.name,
-                isEnabled: true,
-                version: method.version ?? ""
-            )
-        }
-        Self.updateActivityViewer(entry.name, activityTitle, fail: false)
+            // Update settings on the main thread
+            await MainActor.run {
+                self.installedLanguageServers[entry.name] = .init(
+                    packageName: entry.name,
+                    isEnabled: true,
+                    version: method.version ?? ""
+                )
+                Self.updateActivityViewer(entry.name, activityTitle, fail: false)
+            }
+        }.value
     }
 
     /// Attempts downloading from `url`, with error handling and a retry policy
-    private func download(from url: URL, attempt: Int = 1) async throws -> Data {
+    private static func download(from url: URL, attempt: Int = 1) async throws -> Data {
         do {
             let (data, response) = try await URLSession.shared.data(from: url)
 
@@ -210,48 +239,8 @@ final class RegistryManager {
         }
     }
 
-    /// Parse a registry entry and create the appropriate installation method
-    private static func parseRegistryEntry(_ entry: RegistryItem) -> InstallationMethod {
-        let sourceId = entry.source.id
-        if sourceId.hasPrefix("pkg:cargo/") {
-            return PackageSourceParser.parseCargoPackage(entry)
-        } else if sourceId.hasPrefix("pkg:npm/") {
-            return PackageSourceParser.parseNpmPackage(entry)
-        } else if sourceId.hasPrefix("pkg:pypi/") {
-            return PackageSourceParser.parsePythonPackage(entry)
-        } else if sourceId.hasPrefix("pkg:gem/") {
-            return PackageSourceParser.parseRubyGem(entry)
-        } else if sourceId.hasPrefix("pkg:golang/") {
-            return PackageSourceParser.parseGolangPackage(entry)
-        } else if sourceId.hasPrefix("pkg:github/") {
-            return PackageSourceParser.parseGithubPackage(entry)
-        } else {
-            return .unknown
-        }
-    }
-
-    /// Create the appropriate package manager for the given installation method
-    private static func createPackageManager(for method: InstallationMethod) -> PackageManagerProtocol? {
-        switch method.packageManagerType {
-        case .npm:
-            return NPMPackageManager(installationDirectory: installPath)
-        case .cargo:
-            return CargoPackageManager(installationDirectory: installPath)
-        case .pip:
-            return PipPackageManager(installationDirectory: installPath)
-        case .golang:
-            return GolangPackageManager(installationDirectory: installPath)
-        case .github, .sourceBuild:
-            return GithubPackageManager(installationDirectory: installPath)
-        case .nuget, .opam, .gem, .composer:
-            // TODO: IMPLEMENT OTHER PACKAGE MANAGERS
-            return nil
-        case .none:
-            return nil
-        }
-    }
-
     /// Updates the activity viewer with the status of the language server installation
+    @MainActor
     private static func updateActivityViewer(
         _ id: String,
         _ activityName: String,
