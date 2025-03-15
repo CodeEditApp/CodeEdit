@@ -19,7 +19,7 @@ struct NavigatorAreaView: View {
         self.workspace = workspace
         self.viewModel = viewModel
 
-        viewModel.tabItems = [.project, .sourceControl, .search] +
+        viewModel.tabItems = [.project, .sourceControl, .search, .issues] +
             extensionManager
                 .extensions
                 .map { ext in
