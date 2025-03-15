@@ -66,7 +66,7 @@ final class SemanticTokenHighlightProvider<
             return
         }
 
-        guard storage.hasTokens else {
+        guard storage.hasReceivedData else {
             // We have no semantic token info, request it!
             try await requestTokens(languageServer: languageServer, textView: textView)
             await MainActor.run {
@@ -154,7 +154,7 @@ final class SemanticTokenHighlightProvider<
     }
 
     func queryHighlightsFor(textView: TextView, range: NSRange, completion: @escaping HighlightCallback) {
-        guard storage.hasTokens else {
+        guard storage.hasReceivedData else {
             pendingHighlightCallbacks.append(completion)
             return
         }

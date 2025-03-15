@@ -15,7 +15,7 @@ import CodeEditSourceEditor
 /// See ``SemanticTokenStorage``.
 protocol GenericSemanticTokenStorage: AnyObject {
     var lastResultId: String? { get }
-    var hasTokens: Bool { get }
+    var hasReceivedData: Bool { get }
 
     init()
 

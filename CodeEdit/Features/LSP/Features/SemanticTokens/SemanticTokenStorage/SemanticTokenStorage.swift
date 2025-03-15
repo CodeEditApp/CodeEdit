@@ -24,11 +24,15 @@ final class SemanticTokenStorage: GenericSemanticTokenStorage {
         let tokens: [SemanticToken]
     }
 
+    /// The last received result identifier.
     var lastResultId: String? {
         state?.resultId
     }
 
-    var hasTokens: Bool {
+    /// Indicates if the storage object has received any data.
+    /// Once `setData` has been called, this returns `true`.
+    /// Other operations will fail without any data in the storage object.
+    var hasReceivedData: Bool {
         state != nil
     }
 
@@ -108,19 +112,9 @@ final class SemanticTokenStorage: GenericSemanticTokenStorage {
             }
         }
 
-        // Set the current state and decode the new token data
-        var decodedTokens: [SemanticToken] = []
-        for idx in stride(from: 0, to: tokenData.count, by: 5) {
-            decodedTokens.append(SemanticToken(
-                line: tokenData[idx],
-                char: tokenData[idx + 1],
-                length: tokenData[idx + 2],
-                type: tokenData[idx + 3],
-                modifiers: tokenData[idx + 4]
-            ))
-        }
+        // Re-decode the updated token data and set the updated state
+        let decodedTokens = SemanticTokens(data: tokenData).decode()
         state = CurrentState(resultId: deltas.resultId, tokenData: tokenData, tokens: decodedTokens)
-
         return invalidatedSet
     }
 
