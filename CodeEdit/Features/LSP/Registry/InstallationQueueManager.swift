@@ -8,7 +8,7 @@
 import Foundation
 
 /// A class to manage queued installations of language servers
-class InstallationQueueManager {
+final class InstallationQueueManager {
     static let shared: InstallationQueueManager = .init()
 
     /// The maximum number of concurrent installations allowed

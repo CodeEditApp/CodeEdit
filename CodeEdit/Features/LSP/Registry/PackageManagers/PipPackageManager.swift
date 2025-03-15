@@ -7,7 +7,7 @@
 
 import Foundation
 
-class PipPackageManager: PackageManagerProtocol {
+final class PipPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL
 
     internal let shellClient: ShellClient

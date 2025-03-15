@@ -10,9 +10,14 @@ import Foundation
 protocol PackageManagerProtocol {
     var shellClient: ShellClient { get }
 
+    /// Performs any initialization steps for installing a package, such as creating the directory
+    /// and virtual environments.
     func initialize(in packagePath: URL) async throws
+    /// Calls the shell commands to install a package
     func install(method installationMethod: InstallationMethod) async throws
+    /// Gets the location of the binary that was installed
     func getBinaryPath(for package: String) -> String
+    /// Checks if the shell commands for the package manager are available or not
     func isInstalled() async -> Bool
 }
 

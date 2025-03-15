@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CargoPackageManager: PackageManagerProtocol {
+final class CargoPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL
 
     internal let shellClient: ShellClient
@@ -80,7 +80,7 @@ class CargoPackageManager: PackageManagerProtocol {
             let output = versionOutput.reduce(into: "") {
                 $0 += $1.trimmingCharacters(in: .whitespacesAndNewlines)
             }
-            return output.contains("cargo")
+            return output.starts(with: "cargo")
         } catch {
             print("Cargo version check failed: \(error)")
             return false

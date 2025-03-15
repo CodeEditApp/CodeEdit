@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GithubPackageManager: PackageManagerProtocol {
+final class GithubPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL
 
     internal let shellClient: ShellClient

@@ -245,7 +245,7 @@ struct LanguageServerRowView: View, Equatable {
         let colors: [Color] = [
             .blue, .green, .orange, .red, .purple, .pink, .teal, .yellow, .indigo, .cyan
         ]
-        let hashValue = abs(cleanedTitle.hashValue) % colors.count
+        let hashValue = abs(cleanedTitle.hash) % colors.count
         return AnyShapeStyle(colors[hashValue].gradient)
     }
 

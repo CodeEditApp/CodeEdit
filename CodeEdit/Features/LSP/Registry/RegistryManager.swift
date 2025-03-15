@@ -12,11 +12,7 @@ import ZIPFoundation
 final class RegistryManager {
     static let shared: RegistryManager = .init()
 
-    internal let installPath = FileManager.default.homeDirectoryForCurrentUser
-        .appending(path: "Library")
-        .appending(path: "Application Support")
-        .appending(path: "CodeEdit")
-        .appending(path: "language-servers")
+    internal let installPath = Settings.shared.baseURL.appending(path: "language-servers")
 
     /// The URL of where the registry.json file will be downloaded from
     internal let registryURL = URL(

@@ -7,7 +7,7 @@
 
 import Foundation
 
-class NPMPackageManager: PackageManagerProtocol {
+final class NPMPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL
 
     internal let shellClient: ShellClient

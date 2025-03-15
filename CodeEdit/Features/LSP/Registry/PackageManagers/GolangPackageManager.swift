@@ -7,7 +7,7 @@
 
 import Foundation
 
-class GolangPackageManager: PackageManagerProtocol {
+final class GolangPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL
     internal let shellClient: ShellClient
 
