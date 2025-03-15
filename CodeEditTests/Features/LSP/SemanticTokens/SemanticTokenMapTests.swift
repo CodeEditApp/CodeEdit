@@ -10,7 +10,7 @@ import CodeEditSourceEditor
 import LanguageServerProtocol
 @testable import CodeEdit
 
-final class SemanticTokenMapTestsTests: XCTestCase {
+final class SemanticTokenMapTests: XCTestCase {
     // Ignores the line parameter and just returns a range from the char and length for testing
     struct MockRangeProvider: SemanticTokenMapRangeProvider {
         func nsRangeFrom(line: UInt32, char: UInt32, length: UInt32) -> NSRange? {
