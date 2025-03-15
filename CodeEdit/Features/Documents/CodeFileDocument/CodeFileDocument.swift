@@ -188,6 +188,23 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         NotificationCenter.default.post(name: Self.didCloseNotification, object: fileURL)
     }
 
+    override func save(_ sender: Any?) {
+        guard let fileURL else {
+            super.save(sender)
+            return
+        }
+
+        do {
+            // Get parent directory for cases when entire folders were deleted – and recreate them as needed
+            let directory = fileURL.deletingLastPathComponent()
+            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
+
+            try data(ofType: fileType ?? "").write(to: fileURL, options: .atomic)
+        } catch {
+            presentError(error)
+        }
+    }
+
     /// Determines the code language of the document.
     /// Use ``CodeFileDocument/language`` for the default value before using this. That property is used to override
     /// the file's language.
