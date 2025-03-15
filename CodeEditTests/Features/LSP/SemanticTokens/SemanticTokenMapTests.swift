@@ -10,7 +10,7 @@ import CodeEditSourceEditor
 import LanguageServerProtocol
 @testable import CodeEdit
 
-final class SemanticTokenMapTestsTests: XCTestCase {
+final class SemanticTokenMapTests: XCTestCase {
     // Ignores the line parameter and just returns a range from the char and length for testing
     struct MockRangeProvider: SemanticTokenMapRangeProvider {
         func nsRangeFrom(line: UInt32, char: UInt32, length: UInt32) -> NSRange? {
@@ -53,10 +53,10 @@ final class SemanticTokenMapTestsTests: XCTestCase {
 
         // Test decode tokens
         let tokens = SemanticTokens(tokens: [
-            SemanticToken(line: 0, char: 0, length: 1, type: 0, modifiers: 0b11),     // First two indices set
+            SemanticToken(line: 0, char: 0, length: 1, type: 1000000, modifiers: 0b11), // First two indices set
             SemanticToken(line: 0, char: 1, length: 2, type: 0, modifiers: 0b100100), // 6th and 3rd indices set
-            SemanticToken(line: 0, char: 4, length: 1, type: 0b1, modifiers: 0b101),
-            SemanticToken(line: 0, char: 5, length: 1, type: 0b100, modifiers: 0b1010),
+            SemanticToken(line: 0, char: 4, length: 1, type: 1, modifiers: 0b101),
+            SemanticToken(line: 0, char: 5, length: 1, type: 4, modifiers: 0b1010),
             SemanticToken(line: 0, char: 7, length: 10, type: 0, modifiers: 0)
         ])
         let decoded = map.decode(tokens: tokens, using: mockProvider)
@@ -69,10 +69,10 @@ final class SemanticTokenMapTestsTests: XCTestCase {
         XCTAssertEqual(decoded[4].range, NSRange(location: 7, length: 10), "Decoded range")
 
         XCTAssertEqual(decoded[0].capture, nil, "No Decoded Capture")
-        XCTAssertEqual(decoded[1].capture, nil, "No Decoded Capture")
-        XCTAssertEqual(decoded[2].capture, .include, "Decoded Capture")
-        XCTAssertEqual(decoded[3].capture, .keyword, "Decoded Capture")
-        XCTAssertEqual(decoded[4].capture, nil, "No Decoded Capture")
+        XCTAssertEqual(decoded[1].capture, .include, "No Decoded Capture")
+        XCTAssertEqual(decoded[2].capture, .constructor, "Decoded Capture")
+        XCTAssertEqual(decoded[3].capture, .comment, "Decoded Capture")
+        XCTAssertEqual(decoded[4].capture, .include, "No Decoded Capture")
 
         XCTAssertEqual(decoded[0].modifiers, [.declaration, .definition], "Decoded Modifiers")
         XCTAssertEqual(decoded[1].modifiers, [.readonly, .defaultLibrary], "Decoded Modifiers")
@@ -92,10 +92,10 @@ final class SemanticTokenMapTestsTests: XCTestCase {
 
         // Test decode tokens
         let tokens = SemanticTokens(tokens: [
-            SemanticToken(line: 0, char: 0, length: 1, type: 0, modifiers: 0b11),     // First two indices set
+            SemanticToken(line: 0, char: 0, length: 1, type: 100, modifiers: 0b11),     // First two indices set
             SemanticToken(line: 0, char: 1, length: 2, type: 0, modifiers: 0b100100), // 6th and 3rd indices set
-            SemanticToken(line: 0, char: 4, length: 1, type: 0b1, modifiers: 0b101),
-            SemanticToken(line: 0, char: 5, length: 1, type: 0b100, modifiers: 0b1010),
+            SemanticToken(line: 0, char: 4, length: 1, type: 1, modifiers: 0b101),
+            SemanticToken(line: 0, char: 5, length: 1, type: 4, modifiers: 0b1010),
             SemanticToken(line: 0, char: 7, length: 10, type: 0, modifiers: 0)
         ])
         let decoded = map.decode(tokens: tokens, using: mockProvider)
@@ -108,10 +108,10 @@ final class SemanticTokenMapTestsTests: XCTestCase {
         XCTAssertEqual(decoded[4].range, NSRange(location: 7, length: 10), "Decoded range")
 
         XCTAssertEqual(decoded[0].capture, nil, "No Decoded Capture")
-        XCTAssertEqual(decoded[1].capture, nil, "No Decoded Capture")
-        XCTAssertEqual(decoded[2].capture, .include, "Decoded Capture")
-        XCTAssertEqual(decoded[3].capture, .keyword, "Decoded Capture")
-        XCTAssertEqual(decoded[4].capture, nil, "No Decoded Capture")
+        XCTAssertEqual(decoded[1].capture, .include, "No Decoded Capture")
+        XCTAssertEqual(decoded[2].capture, .constructor, "Decoded Capture")
+        XCTAssertEqual(decoded[3].capture, .comment, "Decoded Capture")
+        XCTAssertEqual(decoded[4].capture, .include, "No Decoded Capture")
 
         XCTAssertEqual(decoded[0].modifiers, [.declaration, .definition], "Decoded Modifiers")
         XCTAssertEqual(decoded[1].modifiers, [.readonly, .defaultLibrary], "Decoded Modifiers")
