@@ -34,7 +34,7 @@ extension PackageSourceParser {
         var options: [String: String] = ["buildTool": "golang"]
         options["subpath"] = subpath
         var repositoryUrl: String?
-        var gitReference: GitReference?
+        var gitReference: PackageSource.GitReference?
 
         let paramPairs = parameters.split(separator: "&")
         for pair in paramPairs {

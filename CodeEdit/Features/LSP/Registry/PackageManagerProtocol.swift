@@ -87,11 +87,6 @@ enum PackageManagerType: String, Codable {
     case github
 }
 
-enum GitReference: Equatable, Codable {
-    case tag(String)
-    case revision(String)
-}
-
 /// Generic package source information that applies to all installation methods.
 /// Takes all the necessary information from `RegistryItem`.
 struct PackageSource: Equatable, Codable {
@@ -130,6 +125,11 @@ struct PackageSource: Equatable, Codable {
         self.repositoryUrl = repositoryUrl
         self.gitReference = gitReference
         self.options = options
+    }
+
+    enum GitReference: Equatable, Codable {
+        case tag(String)
+        case revision(String)
     }
 }
 

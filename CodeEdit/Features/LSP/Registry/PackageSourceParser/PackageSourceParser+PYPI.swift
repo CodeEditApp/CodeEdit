@@ -27,7 +27,7 @@ extension PackageSourceParser {
         // Parse parameters as options
         var options: [String: String] = ["buildTool": "pip"]
         var repositoryUrl: String?
-        var gitReference: GitReference?
+        var gitReference: PackageSource.GitReference?
 
         let paramPairs = parameters.split(separator: "&")
         for pair in paramPairs {

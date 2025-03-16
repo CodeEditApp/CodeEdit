@@ -31,7 +31,7 @@ enum PackageSourceParser {
         let repositoryUrl = "https://github.com/\(owner)/\(repo)"
 
         let isCommitHash = version.range(of: "^[0-9a-f]{40}$", options: .regularExpression) != nil
-        let gitReference: GitReference = isCommitHash ? .revision(version) : .tag(version)
+        let gitReference: PackageSource.GitReference = isCommitHash ? .revision(version) : .tag(version)
 
         // Is this going to be built from source or downloaded
         let isSourceBuild = if entry.source.asset == nil {
