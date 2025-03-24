@@ -13,6 +13,10 @@ import LanguageServerProtocol
 
 @testable import CodeEdit
 
+/// This is an integration test for notifications relating to the ``CodeFileDocument`` class.
+/// 
+/// For *unit* tests with the language server class, add tests to the `LanguageServer+DocumentObjects` test class as
+/// it's cleaner and makes correct use of the mock document type.
 final class LanguageServerCodeFileDocumentTests: XCTestCase {
     // Test opening documents in CodeEdit triggers creating a language server,
     // further opened documents don't create new servers
@@ -97,8 +101,11 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         // This is usually sent from the LSPService
         try await server.openDocument(codeFile)
 
-        await waitForClientEventCount(
-            3,
+        await waitForClientState(
+            (
+                [.initialize],
+                [.initialized, .textDocumentDidOpen]
+            ),
             connection: connection,
             description: "Initialized (2) and opened (1) notification count"
         )
@@ -110,21 +117,26 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         return codeFile
     }
 
-    func waitForClientEventCount(_ count: Int, connection: BufferingServerConnection, description: String) async {
+    func waitForClientState(
+        _ expectedValue: ([ClientRequest.Method], [ClientNotification.Method]),
+        connection: BufferingServerConnection,
+        description: String
+    ) async {
         let expectation = expectation(description: description)
 
         await withTaskGroup(of: Void.self) { group in
+            group.addTask { await self.fulfillment(of: [expectation], timeout: 2) }
             group.addTask {
-                await self.fulfillment(of: [expectation], timeout: 2)
-            }
-            group.addTask {
-                for await events in connection.clientEventSequence where events.0.count + events.1.count == count {
+                for await events in connection.clientEventSequence
+                where events.0.map(\.method) == expectedValue.0 && events.1.map(\.method) == expectedValue.1 {
                     expectation.fulfill()
                     return
                 }
             }
         }
     }
+
+    // MARK: - Open Close
 
     @MainActor
     func testOpenCloseFileNotifications() async throws {
@@ -155,29 +167,29 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         file.fileDocument = codeFile
         CodeEditDocumentController.shared.addDocument(codeFile)
 
-        await waitForClientEventCount(3, connection: connection, description: "Pre-close event count")
+        await waitForClientState(
+            (
+                [.initialize],
+                [.initialized, .textDocumentDidOpen]
+            ),
+            connection: connection,
+            description: "Pre-close event count"
+        )
 
         // This should then trigger a documentDidClose event
         codeFile.close()
 
-        await waitForClientEventCount(4, connection: connection, description: "Post-close event count")
-
-        XCTAssertEqual(
-            connection.clientRequests.map { $0.method },
-            [
-                ClientRequest.Method.initialize,
-            ]
-        )
-
-        XCTAssertEqual(
-            connection.clientNotifications.map { $0.method },
-            [
-                ClientNotification.Method.initialized,
-                ClientNotification.Method.textDocumentDidOpen,
-                ClientNotification.Method.textDocumentDidClose
-            ]
+        await waitForClientState(
+            (
+                [.initialize],
+                [.initialized, .textDocumentDidOpen, .textDocumentDidClose]
+            ),
+            connection: connection,
+            description: "Post-close event count"
         )
     }
+
+    // MARK: - Test Document Edit
 
     /// Assert the changed contents received by the buffered connection
     func assertExpectedContentChanges(connection: BufferingServerConnection, changes: [String]) {
@@ -186,9 +198,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         for notification in connection.clientNotifications {
             switch notification {
             case let .textDocumentDidChange(params):
-                foundChangeContents.append(contentsOf: params.contentChanges.map { event in
-                    event.text
-                })
+                foundChangeContents.append(contentsOf: params.contentChanges.map(\.text))
             default:
                 continue
             }
@@ -233,18 +243,17 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "World")
 
             // Added one notification
-            await waitForClientEventCount(4, connection: connection, description: "Edited notification count")
+            await waitForClientState(
+                (
+                    [.initialize],
+                    [.initialized, .textDocumentDidOpen, .textDocumentDidChange]
+                ),
+                connection: connection,
+                description: "Edited notification count"
+            )
 
             // Make sure our text view is intact
             XCTAssertEqual(textView.string, #"func testFunction() -> String { "Hello World" }"#)
-            XCTAssertEqual(
-                [
-                    ClientNotification.Method.initialized,
-                    ClientNotification.Method.textDocumentDidOpen,
-                    ClientNotification.Method.textDocumentDidChange
-                ],
-                connection.clientNotifications.map { $0.method }
-            )
 
             // Expect only one change due to throttling.
             assertExpectedContentChanges(
@@ -291,18 +300,17 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "World")
 
             // Throttling means we should receive one edited notification + init notification + didOpen + init request
-            await waitForClientEventCount(4, connection: connection, description: "Edited notification count")
+            await waitForClientState(
+                (
+                    [.initialize],
+                    [.initialized, .textDocumentDidOpen, .textDocumentDidChange]
+                ),
+                connection: connection,
+                description: "Edited notification count"
+            )
 
             // Make sure our text view is intact
             XCTAssertEqual(textView.string, #"func testFunction() -> String { "Hello World" }"#)
-            XCTAssertEqual(
-                [
-                    ClientNotification.Method.initialized,
-                    ClientNotification.Method.textDocumentDidOpen,
-                    ClientNotification.Method.textDocumentDidChange
-                ],
-                connection.clientNotifications.map { $0.method }
-            )
 
             // Expect three content changes.
             assertExpectedContentChanges(

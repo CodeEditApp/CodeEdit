@@ -42,7 +42,7 @@ import CodeEditLanguages
 ///     do {
 ///         guard var languageClient = self.languageClient(for: .python) else {
 ///             print("Failed to get client")
-///             throw ServerManagerError.languageClientNotFound
+///             throw LSPServiceError.languageClientNotFound
 ///         }
 ///
 ///         let testFilePathStr = ""
@@ -54,7 +54,7 @@ import CodeEditLanguages
 ///         // Completion example
 ///         let textPosition = Position(line: 32, character: 18)  // Lines and characters start at 0
 ///         let completions = try await languageClient.requestCompletion(
-///             document: testFileURL.absoluteString,
+///             document: testFileURL.lspURI,
 ///             position: textPosition
 ///         )
 ///         switch completions {
@@ -168,6 +168,12 @@ final class LSPService: ObservableObject {
         return languageClients[ClientKey(languageId, workspacePath)]
     }
 
+    func languageClient(forDocument url: URL) -> LanguageServerType? {
+        languageClients.values.first(where: { $0.openFiles.document(for: url.lspURI) != nil })
+    }
+
+    // MARK: - Start Server
+
     /// Given a language and workspace path, will attempt to start the language server
     /// - Parameters:
     ///   - languageId: The ID of the language server to start.
@@ -194,6 +200,8 @@ final class LSPService: ObservableObject {
         self.startListeningToEvents(for: ClientKey(languageId, workspacePath))
         return server
     }
+
+    // MARK: - Document Management
 
     /// Notify all relevant language clients that a document was opened.
     /// - Note: Must be invoked after the contents of the file are available.
@@ -230,20 +238,18 @@ final class LSPService: ObservableObject {
     /// Notify all relevant language clients that a document was closed.
     /// - Parameter url: The url of the document that was closed
     func closeDocument(_ url: URL) {
-        guard let languageClient = languageClients.first(where: {
-                  $0.value.openFiles.document(for: url.absolutePath) != nil
-              })?.value else {
-            return
-        }
+        guard let languageClient = languageClient(forDocument: url) else { return }
         Task {
             do {
-                try await languageClient.closeDocument(url.absolutePath)
+                try await languageClient.closeDocument(url.lspURI)
             } catch {
                 // swiftlint:disable:next line_length
-                logger.error("Failed to close document: \(url.absolutePath, privacy: .private), language: \(languageClient.languageId.rawValue). Error \(error)")
+                logger.error("Failed to close document: \(url.lspURI, privacy: .private), language: \(languageClient.languageId.rawValue). Error \(error)")
             }
         }
     }
+
+    // MARK: - Close Workspace
 
     /// Close all language clients for a workspace.
     ///
@@ -268,6 +274,8 @@ final class LSPService: ObservableObject {
         }
     }
 
+    // MARK: - Stop Servers
+
     /// Attempts to stop a running language server. Throws an error if the server is not found
     /// or if the language server throws an error while trying to shutdown.
     /// - Parameters:
@@ -276,7 +284,7 @@ final class LSPService: ObservableObject {
     func stopServer(forLanguage languageId: LanguageIdentifier, workspacePath: String) async throws {
         guard let server = server(for: languageId, workspacePath: workspacePath) else {
             logger.error("Server not found for language \(languageId.rawValue) during stop operation")
-            throw ServerManagerError.serverNotFound
+            throw LSPServiceError.serverNotFound
         }
         do {
             try await server.shutdownAndExit()
@@ -310,13 +318,4 @@ final class LSPService: ObservableObject {
         }
         eventListeningTasks.removeAll()
     }
-}
-
-// MARK: - Errors
-
-enum ServerManagerError: Error {
-    case serverNotFound
-    case serverStartFailed
-    case serverStopFailed
-    case languageClientNotFound
 }
