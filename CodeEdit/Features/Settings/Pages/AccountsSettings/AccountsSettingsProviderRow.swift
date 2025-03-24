@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AccountsSettingsProviderRow: View {
     var name: String
-    var iconName: String
+    var iconResource: ImageResource
     var action: () -> Void
 
     @State private var hovering = false
@@ -17,7 +17,7 @@ struct AccountsSettingsProviderRow: View {
 
     var body: some View {
         HStack {
-            FeatureIcon(image: Image(iconName), size: 28)
+            FeatureIcon(image: Image(iconResource), size: 28)
             Text(name)
             Spacer()
             if hovering {

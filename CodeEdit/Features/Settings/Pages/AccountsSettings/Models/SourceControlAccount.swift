@@ -101,20 +101,14 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
             }
         }
 
-        var iconName: String {
+        var iconResource: ImageResource {
             switch self {
-            case .bitbucketCloud:
-                return "BitBucketIcon"
-            case .bitbucketServer:
-                return "BitBucketIcon"
-            case .github:
-                return "GitHubIcon"
-            case .githubEnterprise:
-                return "GitHubIcon"
-            case .gitlab:
-                return "GitLabIcon"
-            case .gitlabSelfHosted:
-                return "GitLabIcon"
+            case .bitbucketCloud, .bitbucketServer:
+                return .bitBucketIcon
+            case .github, .githubEnterprise:
+                return .gitHubIcon
+            case .gitlab, .gitlabSelfHosted:
+                return .gitLabIcon
             }
         }
 
