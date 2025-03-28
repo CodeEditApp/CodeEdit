@@ -85,6 +85,13 @@ struct SettingsView: View {
                 icon: .system("externaldrive.fill")
             )
         ),
+//        .init(
+//            SettingsPage(
+//                .languageServers,
+//                baseColor: Color(hex: "#6A69DC"), // Purple
+//                icon: .system("cube.box.fill")
+//            )
+//        ),
         .init(
             SettingsPage(
                 .developer,
@@ -177,6 +184,8 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
+                case .languageServers:
+                    LanguageServersView()
                 case .developer:
                     DeveloperSettingsView()
                 default:
