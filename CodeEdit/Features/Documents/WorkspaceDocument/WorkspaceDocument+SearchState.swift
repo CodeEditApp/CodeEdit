@@ -47,7 +47,9 @@ extension WorkspaceDocument {
         init(_ workspace: WorkspaceDocument) {
             self.workspace = workspace
             self.indexer = SearchIndexer.Memory.create()
-            addProjectToIndex()
+            Task {
+                await addProjectToIndex()
+            }
         }
 
         /// Represents the compare options to be used for find and replace.

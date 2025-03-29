@@ -1,5 +1,5 @@
 //
-//  TaskNotificationsDetailView.swift
+//  ActivitiesDetailView.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 21.06.24.
@@ -7,22 +7,23 @@
 
 import SwiftUI
 
-struct TaskNotificationsDetailView: View {
-    @ObservedObject var taskNotificationHandler: TaskNotificationHandler
-    @State private var selectedTaskNotificationIndex: Int = 0
+struct ActivitiesDetailView: View {
+    @ObservedObject var activityManager: ActivityManager
+    @State private var selectedActivityIndex: Int = 0
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 15) {
-                ForEach(taskNotificationHandler.notifications, id: \.id) { notification in
+                ForEach(activityManager.activities, id: \.id) { activity in
                     HStack(alignment: .center, spacing: 8) {
-                        CECircularProgressView(progress: notification.percentage)
+                        CECircularProgressView(progress: activity.percentage)
                             .frame(width: 16, height: 16)
                         VStack(alignment: .leading) {
-                            Text(notification.title)
+                            Text(activity.title)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .transition(.identity)
 
-                            if let message = notification.message, !message.isEmpty {
+                            if let message = activity.message, !message.isEmpty {
                                 Text(message)
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
@@ -35,14 +36,14 @@ struct TaskNotificationsDetailView: View {
         }
         .padding(15)
         .frame(minWidth: 320)
-        .onChange(of: taskNotificationHandler.notifications) { newValue in
-            if selectedTaskNotificationIndex >= newValue.count {
-                selectedTaskNotificationIndex = 0
+        .onChange(of: activityManager.activities) { newValue in
+            if selectedActivityIndex >= newValue.count {
+                selectedActivityIndex = 0
             }
         }
     }
 }
 
 #Preview {
-    TaskNotificationsDetailView(taskNotificationHandler: TaskNotificationHandler())
+    ActivitiesDetailView(activityManager: ActivityManager())
 }
