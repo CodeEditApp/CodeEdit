@@ -12,7 +12,7 @@ extension LanguageServer {
     /// Tells the language server we've opened a document and would like to begin working with it.
     /// - Parameter document: The code document to open.
     /// - Throws: Throws errors produced by the language server connection.
-    func openDocument(_ document: CodeFileDocument) async throws {
+    func openDocument(_ document: DocumentType) async throws {
         do {
             guard resolveOpenCloseSupport(), let content = await getIsolatedDocumentContent(document) else {
                 return
@@ -29,7 +29,7 @@ extension LanguageServer {
             )
             try await lspInstance.textDocumentDidOpen(DidOpenTextDocumentParams(textDocument: textDocument))
 
-            await updateIsolatedDocument(document, coordinator: openFiles.contentCoordinator(for: document))
+            await updateIsolatedDocument(document)
         } catch {
             logger.warning("addDocument: Error \(error)")
             throw error
@@ -41,9 +41,12 @@ extension LanguageServer {
     /// - Throws: Throws errors produced by the language server connection.
     func closeDocument(_ uri: String) async throws {
         do {
-            guard resolveOpenCloseSupport() && openFiles.document(for: uri) != nil else { return }
+            guard resolveOpenCloseSupport(), let document = openFiles.document(for: uri) else { return }
             logger.debug("Closing document \(uri, privacy: .private)")
+
             openFiles.removeDocument(for: uri)
+            await clearIsolatedDocument(document)
+
             let params = DidCloseTextDocumentParams(textDocument: TextDocumentIdentifier(uri: uri))
             try await lspInstance.textDocumentDidClose(params)
         } catch {
@@ -78,10 +81,11 @@ extension LanguageServer {
     func documentChanged(uri: String, changes: [DocumentChange]) async throws {
         do {
             logger.debug("Document updated, \(uri, privacy: .private)")
+            guard let document = openFiles.document(for: uri) else { return }
+
             switch resolveDocumentSyncKind() {
             case .full:
-                guard let document = openFiles.document(for: uri),
-                      let content = await getIsolatedDocumentContent(document) else {
+                guard let content = await getIsolatedDocumentContent(document) else {
                     return
                 }
                 let changeEvent = TextDocumentContentChangeEvent(range: nil, rangeLength: nil, text: content.string)
@@ -100,6 +104,10 @@ extension LanguageServer {
             case .none:
                 return
             }
+
+            // Let the semantic token provider know about the update.
+            // Note for future: If a related LSP object need notifying about document changes, do it here.
+            try await document.languageServerObjects.highlightProvider?.documentDidChange()
         } catch {
             logger.warning("closeDocument: Error \(error)")
             throw error
@@ -110,18 +118,25 @@ extension LanguageServer {
 
     /// Helper function for grabbing a document's content from the main actor.
     @MainActor
-    private func getIsolatedDocumentContent(_ document: CodeFileDocument) -> DocumentContent? {
+    private func getIsolatedDocumentContent(_ document: DocumentType) -> DocumentContent? {
         guard let uri = document.languageServerURI,
-              let language = document.getLanguage().lspLanguage,
               let content = document.content?.string else {
             return nil
         }
-        return DocumentContent(uri: uri, language: language, string: content)
+        return DocumentContent(uri: uri, language: document.getLanguage().id.rawValue, string: content)
     }
 
     @MainActor
-    private func updateIsolatedDocument(_ document: CodeFileDocument, coordinator: LSPContentCoordinator?) {
-        document.lspCoordinator = coordinator
+    private func updateIsolatedDocument(_ document: DocumentType) {
+        document.languageServerObjects = LanguageServerDocumentObjects(
+            textCoordinator: openFiles.contentCoordinator(for: document),
+            highlightProvider: openFiles.semanticHighlighter(for: document)
+        )
+    }
+
+    @MainActor
+    private func clearIsolatedDocument(_ document: DocumentType) {
+        document.languageServerObjects = LanguageServerDocumentObjects()
     }
 
     // swiftlint:disable line_length
@@ -156,7 +171,7 @@ extension LanguageServer {
     // Used to avoid a lint error (`large_tuple`) for the return type of `getIsolatedDocumentContent`
     fileprivate struct DocumentContent {
         let uri: String
-        let language: LanguageIdentifier
+        let language: String
         let string: String
     }
 }
