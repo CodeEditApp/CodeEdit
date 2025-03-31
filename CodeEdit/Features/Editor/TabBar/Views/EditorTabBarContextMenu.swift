@@ -5,8 +5,8 @@
 //  Created by Khan Winter on 6/4/22.
 //
 
-import Foundation
 import SwiftUI
+import Foundation
 
 extension View {
     func tabBarContextMenu(item: CEWorkspaceFile, isTemporary: Bool) -> some View {
@@ -149,24 +149,21 @@ struct EditorTabBarContextMenu: ViewModifier {
         guard let rootPath = workspace.workspaceFileManager?.folderUrl else {
             return
         }
-        // Calculate the relative path
-        var rootComponents = rootPath.standardizedFileURL.pathComponents
-        var destinationComponents = item.url.standardizedFileURL.pathComponents
+        let destinationComponents = item.url.standardizedFileURL.pathComponents
+        let baseComponents = rootPath.standardizedFileURL.pathComponents
 
-        // Remove any same path components
-        while !rootComponents.isEmpty && !destinationComponents.isEmpty
-                && rootComponents.first == destinationComponents.first {
-            rootComponents.remove(at: 0)
-            destinationComponents.remove(at: 0)
+        // Find common prefix length
+        var prefixCount = 0
+        while prefixCount < min(destinationComponents.count, baseComponents.count)
+                && destinationComponents[prefixCount] == baseComponents[prefixCount] {
+            prefixCount += 1
         }
-
-        // Make a "../" for each remaining component in the root URL
-        var relativePath: String = String(repeating: "../", count: rootComponents.count)
-        // Add the remaining components for the destination url.
-        relativePath += destinationComponents.joined(separator: "/")
+        // Build the relative path
+        let upPath = String(repeating: "../", count: baseComponents.count - prefixCount)
+        let downPath = destinationComponents[prefixCount...].joined(separator: "/")
 
         // Copy it to the clipboard
         NSPasteboard.general.clearContents()
-        NSPasteboard.general.setString(relativePath, forType: .string)
+        NSPasteboard.general.setString(upPath + downPath, forType: .string)
     }
 }
