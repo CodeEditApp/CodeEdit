@@ -28,7 +28,6 @@
 		6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 6C81916A29B41DD300B75C92 /* DequeModule */; };
 		6C85BB402C2105ED00EB5DEF /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C85BB3F2C2105ED00EB5DEF /* CodeEditKit */; };
 		6C85BB442C210EFD00EB5DEF /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 6C85BB432C210EFD00EB5DEF /* SwiftUIIntrospect */; };
-		6C9DB9E42D55656300ACD86E /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6C9DB9E32D55656300ACD86E /* CodeEditSourceEditor */; };
 		6CAAF68A29BC9C2300A1F48A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		6CAAF69229BCC71C00A1F48A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		6CAAF69429BCD78600A1F48A /* (null) in Sources */ = {isa = PBXBuildFile; };
@@ -185,7 +184,6 @@
 				6C0824A12C5C0C9700A0751E /* SwiftTerm in Frameworks */,
 				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 				6CB94D032CA1205100E8651C /* AsyncAlgorithms in Frameworks */,
-				6C9DB9E42D55656300ACD86E /* CodeEditSourceEditor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,7 +317,6 @@
 				6CB94D022CA1205100E8651C /* AsyncAlgorithms */,
 				6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */,
 				6C73A6D22D4F1E550012D95C /* CodeEditSourceEditor */,
-				6C9DB9E32D55656300ACD86E /* CodeEditSourceEditor */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -422,7 +419,7 @@
 				303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 				6C4E37FA2C73E00700AEE7B5 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
-				6C9DB9E22D55656300ACD86E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
+				30E4D51A2D9A2F3B00B94EB6 /* XCLocalSwiftPackageReference "../CodeEditSourceEditorOverscroll" */,
 			);
 			preferredProjectObjectVersion = 55;
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
@@ -1619,6 +1616,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		30E4D51A2D9A2F3B00B94EB6 /* XCLocalSwiftPackageReference "../CodeEditSourceEditorOverscroll" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../CodeEditSourceEditorOverscroll;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1740,14 +1744,6 @@
 				minimumVersion = 1.2.0;
 			};
 		};
-		6C9DB9E22D55656300ACD86E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.10.0;
-			};
-		};
 		6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-async-algorithms.git";
@@ -1840,11 +1836,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6C85BB422C210EFD00EB5DEF /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = SwiftUIIntrospect;
-		};
-		6C9DB9E32D55656300ACD86E /* CodeEditSourceEditor */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 6C9DB9E22D55656300ACD86E /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */;
-			productName = CodeEditSourceEditor;
 		};
 		6CB4463F2B6DFF3A00539ED0 /* CodeEditSourceEditor */ = {
 			isa = XCSwiftPackageProductDependency;
