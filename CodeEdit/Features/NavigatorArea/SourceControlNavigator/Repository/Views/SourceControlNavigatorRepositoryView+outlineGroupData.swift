@@ -13,14 +13,14 @@ extension SourceControlNavigatorRepositoryView {
             .init(
                 id: "BranchesGroup",
                 label: "Branches",
-                systemImage: "externaldrive.fill",
+                image: .system(name: "externaldrive.fill"),
                 imageColor: Color(nsColor: .secondaryLabelColor),
                 children: sourceControlManager.orderedLocalBranches.map { branch in
                         .init(
                             id: "Branch\(branch.name)",
                             label: branch.name,
                             description: branch == sourceControlManager.currentBranch ? "(current)" : nil,
-                            symbolImage: "branch",
+                            image: .symbol(name: "branch"),
                             imageColor: .blue,
                             branch: branch
                         )
@@ -29,7 +29,7 @@ extension SourceControlNavigatorRepositoryView {
             .init(
                 id: "StashedChangesGroup",
                 label: "Stashed Changes",
-                systemImage: "tray.2.fill",
+                image: .system(name: "tray.2.fill"),
                 imageColor: Color(nsColor: .secondaryLabelColor),
                 children: sourceControlManager.stashEntries.map { stashEntry in
                         .init(
@@ -43,7 +43,7 @@ extension SourceControlNavigatorRepositoryView {
                                     .hour(.defaultDigits(amPM: .abbreviated))
                                     .minute(.twoDigits)
                             ),
-                            systemImage: "tray",
+                            image: .system(name: "tray"),
                             imageColor: .orange,
                             stashEntry: stashEntry
                         )
@@ -52,19 +52,19 @@ extension SourceControlNavigatorRepositoryView {
             .init(
                 id: "RemotesGroup",
                 label: "Remotes",
-                systemImage: "network",
+                image: .system(name: "network"),
                 imageColor: Color(nsColor: .secondaryLabelColor),
                 children: sourceControlManager.remotes.map { remote in
                         .init(
                             id: "Remote\(remote.hashValue)",
                             label: remote.name,
-                            symbolImage: "vault",
+                            image: .symbol(name: "vault"),
                             imageColor: .teal,
                             children: remote.branches.map { branch in
                                 .init(
                                     id: "Remote\(remote.name)-Branch\(branch.name)",
                                     label: branch.name,
-                                    symbolImage: "branch",
+                                    image: .symbol(name: "branch"),
                                     imageColor: .blue,
                                     branch: branch
                                 )

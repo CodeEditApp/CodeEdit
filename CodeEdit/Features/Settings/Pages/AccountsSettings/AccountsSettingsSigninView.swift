@@ -64,7 +64,7 @@ struct AccountsSettingsSigninView: View {
                     },
                     header: {
                         VStack(alignment: .center, spacing: 10) {
-                            FeatureIcon(image: Image(provider.iconName), size: 52)
+                            FeatureIcon(image: Image(provider.iconResource), size: 52)
                                 .padding(.top, 5)
                             Text("Sign in to \(provider.name)")
                                 .multilineTextAlignment(.center)

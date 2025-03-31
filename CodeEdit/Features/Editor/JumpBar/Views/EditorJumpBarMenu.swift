@@ -76,10 +76,10 @@ final class JumpBarMenuItem: NSMenuItem {
         if fileItem.isFolder {
             let subMenu = NSMenu()
             submenu = subMenu
-            color = NSColor(named: "FolderBlue") ?? NSColor(.secondary)
+            color = NSColor.folderBlue
         }
         if generalSettings.fileIconStyle == .monochrome {
-            color = NSColor(named: "CoolGray") ?? NSColor(.gray)
+            color = NSColor.coolGray
         }
         let image = fileItem.nsIcon.withSymbolConfiguration(.init(paletteColors: [color]))
         self.image = image
