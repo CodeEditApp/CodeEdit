@@ -1,5 +1,5 @@
 {
-  "originHash" : "607a8a782c013ecf6759bcf5703402a8f5d27e05189503e36b44278bf778bd39",
+  "originHash" : "3d134b350244fc51aaff618575f0cb6d754dbbef6fb05b12964d922d42ce960e",
   "pins" : [
     {
       "identity" : "anycodable",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "331d5dbc5fc8513be5848fce8a2a312908f36a11",
         "version" : "0.1.20"
+      }
+    },
+    {
+      "identity" : "codeeditsourceeditor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
+      "state" : {
+        "revision" : "6b2c945501f0a5c15d8aa6d159fb2550c391bdd0",
+        "version" : "0.10.0"
       }
     },
     {
