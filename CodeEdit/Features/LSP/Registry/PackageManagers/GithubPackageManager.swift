@@ -59,7 +59,6 @@ final class GithubPackageManager: PackageManagerProtocol {
             }
             return output.contains("git version")
         } catch {
-            print("Git version check failed: \(error)")
             return false
         }
     }
@@ -73,7 +72,7 @@ final class GithubPackageManager: PackageManagerProtocol {
         if !FileManager.default.fileExists(atPath: packagePath.path) {
             throw RegistryManagerError.downloadFailed(
                 url: url,
-                error: NSError(domain: "Coould not download package", code: -1)
+                error: NSError(domain: "Could not download package", code: -1)
             )
         }
 
@@ -89,7 +88,6 @@ final class GithubPackageManager: PackageManagerProtocol {
             let repoPath = installPath.appending(path: source.pkgName, directoryHint: .isDirectory)
             _ = try await executeInDirectory(in: repoPath.path, [command])
         } catch {
-            print("Failed to build from source: \(error)")
             throw PackageManagerError.installationFailed("Source build failed.")
         }
     }

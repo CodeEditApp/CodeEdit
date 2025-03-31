@@ -43,8 +43,6 @@ final class PipPackageManager: PackageManagerProtocol {
         }
 
         let packagePath = installationDirectory.appending(path: source.entryName)
-        print("Installing \(source.entryName)@\(source.version) in \(packagePath.path)")
-
         try await initialize(in: packagePath)
 
         do {
@@ -58,7 +56,7 @@ final class PipPackageManager: PackageManagerProtocol {
             }
 
             let extras = source.options["extra"]
-            if let extras = extras {
+            if let extras {
                 if let lastIndex = installArgs.indices.last {
                     installArgs[lastIndex] += "[\(extras)]"
                 }
@@ -67,10 +65,7 @@ final class PipPackageManager: PackageManagerProtocol {
             _ = try await executeInDirectory(in: packagePath.path, installArgs)
             try await updateRequirements(packagePath: packagePath)
             try await verifyInstallation(packagePath: packagePath, package: source.pkgName)
-
-            print("Successfully installed \(source.entryName)@\(source.version)")
         } catch {
-            print("Installation failed: \(error)")
             throw error
         }
     }

@@ -56,8 +56,6 @@ final class NPMPackageManager: PackageManagerProtocol {
         }
 
         let packagePath = installationDirectory.appending(path: source.entryName)
-        print("Installing \(source.entryName)@\(source.version) in \(packagePath.path)")
-
         try await initialize(in: packagePath)
 
         do {
@@ -73,10 +71,7 @@ final class NPMPackageManager: PackageManagerProtocol {
 
             _ = try await executeInDirectory(in: packagePath.path, installArgs)
             try verifyInstallation(folderName: source.entryName, package: source.pkgName, version: source.version)
-
-            print("Successfully installed \(source.entryName)@\(source.version)")
         } catch {
-            print("Installation failed: \(error)")
             let nodeModulesPath = packagePath.appending(path: "node_modules").path
             try? FileManager.default.removeItem(atPath: nodeModulesPath)
             throw error

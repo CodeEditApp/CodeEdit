@@ -43,8 +43,6 @@ final class GolangPackageManager: PackageManagerProtocol {
         }
 
         let packagePath = installationDirectory.appending(path: source.entryName)
-        print("Installing Go package \(source.entryName)@\(source.version) in \(packagePath.path)")
-
         try await initialize(in: packagePath)
 
         do {
@@ -78,10 +76,7 @@ final class GolangPackageManager: PackageManagerProtocol {
                 let execPath = packagePath.appending(path: "bin").appending(path: binaryName).path
                 _ = try await runCommand("chmod +x \"\(execPath)\"")
             }
-
-            print("Successfully installed \(source.entryName)@\(source.version)")
         } catch {
-            print("Installation failed: \(error)")
             try? cleanupFailedInstallation(packagePath: packagePath)
             throw PackageManagerError.installationFailed(error.localizedDescription)
         }
@@ -108,7 +103,6 @@ final class GolangPackageManager: PackageManagerProtocol {
             }
             return output.range(of: versionPattern, options: .regularExpression) != nil
         } catch {
-            print("Go version check failed: \(error)")
             return false
         }
     }

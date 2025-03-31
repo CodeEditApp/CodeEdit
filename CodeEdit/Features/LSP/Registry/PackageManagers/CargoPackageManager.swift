@@ -35,8 +35,6 @@ final class CargoPackageManager: PackageManagerProtocol {
         }
 
         let packagePath = installationDirectory.appending(path: source.entryName)
-        print("Installing \(source.entryName)@\(source.version) in \(packagePath.path)")
-
         try await initialize(in: packagePath)
 
         do {
@@ -63,9 +61,7 @@ final class CargoPackageManager: PackageManagerProtocol {
             }
 
             _ = try await executeInDirectory(in: packagePath.path, cargoArgs)
-            print("Successfully installed \(source.entryName)@\(source.version)")
         } catch {
-            print("Installation failed: \(error)")
             throw error
         }
     }
@@ -82,7 +78,6 @@ final class CargoPackageManager: PackageManagerProtocol {
             }
             return output.starts(with: "cargo")
         } catch {
-            print("Cargo version check failed: \(error)")
             return false
         }
     }
