@@ -33,6 +33,10 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var editorManager: EditorManager? = EditorManager()
     var statusBarViewModel: StatusBarViewModel? = StatusBarViewModel()
     var utilityAreaModel: UtilityAreaViewModel? = UtilityAreaViewModel()
+    // TODO: GRAB PROJECT NAME FROM ROOT FOLDER
+    var issueNavigatorViewModel: IssueNavigatorViewModel? = IssueNavigatorViewModel(
+        projectName: "Test"
+    )
     var searchState: SearchState?
     var openQuicklyViewModel: OpenQuicklyViewModel?
     var commandsPaletteState: QuickActionsViewModel?

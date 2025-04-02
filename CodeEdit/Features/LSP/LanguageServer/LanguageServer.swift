@@ -21,6 +21,8 @@ class LanguageServer {
     let binary: LanguageServerBinary
     /// A cache to hold responses from the server, to minimize duplicate server requests
     let lspCache = LSPCache()
+    /// The workspace document that this server is associated with
+    let workspace: WorkspaceDocument
 
     /// Tracks documents and their associated objects.
     /// Use this property when adding new objects that need to track file data, or have a state associated with the
@@ -41,12 +43,14 @@ class LanguageServer {
     init(
         languageId: LanguageIdentifier,
         binary: LanguageServerBinary,
+        workspace: WorkspaceDocument,
         lspInstance: InitializingServer,
         serverCapabilities: ServerCapabilities,
         rootPath: URL
     ) {
         self.languageId = languageId
         self.binary = binary
+        self.workspace = workspace
         self.lspInstance = lspInstance
         self.serverCapabilities = serverCapabilities
         self.rootPath = rootPath
@@ -71,6 +75,7 @@ class LanguageServer {
     static func createServer(
         for languageId: LanguageIdentifier,
         with binary: LanguageServerBinary,
+        workspace: WorkspaceDocument,
         workspacePath: String
     ) async throws -> LanguageServer {
         let executionParams = Process.ExecutionParameters(
@@ -87,6 +92,7 @@ class LanguageServer {
         return LanguageServer(
             languageId: languageId,
             binary: binary,
+            workspace: workspace,
             lspInstance: server,
             serverCapabilities: capabilities,
             rootPath: URL(filePath: workspacePath)

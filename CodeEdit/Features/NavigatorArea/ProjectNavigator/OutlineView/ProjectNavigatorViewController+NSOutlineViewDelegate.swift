@@ -97,8 +97,8 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
     /// Finds and selects an ``Item`` from an array of ``Item`` and their `children` based on the `id`.
     /// - Parameters:
-    ///   - id: the id of the item item
-    ///   - collection: the array to search for
+    ///   - id: The id of the item.
+    ///   - collection: The array to search for.
     ///   - forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
     func select(by id: EditorTabID, forcesReveal: Bool) {
         guard case .codeEditor(let path) = id,
