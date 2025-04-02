@@ -10,13 +10,13 @@ import Foundation
 import LanguageServerProtocol
 
 class IssueNavigatorViewModel: ObservableObject {
-    @Published var rootNode: ProjectIssueNode
+    @Published var rootNode: ProjectIssueNode?
     @Published var filterOptions = IssueFilterOptions()
-    @Published private(set) var filteredRootNode: ProjectIssueNode
+    @Published private(set) var filteredRootNode: ProjectIssueNode?
 
     private var diagnosticsByFile: [DocumentUri: [Diagnostic]] = [:]
 
-    init(projectName: String) {
+    func initialize(projectName: String) {
         self.rootNode = ProjectIssueNode(name: projectName)
         self.filteredRootNode = ProjectIssueNode(name: projectName)
     }
@@ -50,6 +50,7 @@ class IssueNavigatorViewModel: ObservableObject {
     }
 
     private func applyFilter() {
+        guard let rootNode else { return }
         let filteredRoot = ProjectIssueNode(name: rootNode.name)
 
         // Filter files and diagnostics
@@ -75,6 +76,7 @@ class IssueNavigatorViewModel: ObservableObject {
 
     /// Rebuilds the tree structure based on current diagnostics
     private func rebuildTree() {
+        guard let rootNode else { return }
         // Keep track of expanded states for files
         let expandedFileUris = Set(rootNode.files
             .filter { $0.isExpanded }

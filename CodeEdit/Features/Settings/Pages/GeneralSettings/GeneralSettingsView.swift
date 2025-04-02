@@ -215,14 +215,12 @@ private extension GeneralSettingsView {
         }
     }
 
-    // TODO: Implement reflecting Issue Navigator Detail preference and remove disabled modifier
     var issueNavigatorDetail: some View {
         Picker("Issue Navigator Detail", selection: $settings.issueNavigatorDetail) {
             ForEach(SettingsData.NavigatorDetail.allCases, id: \.self) { tag in
                 Text(tag.label).tag(tag)
             }
         }
-        .disabled(true)
     }
 
     // TODO: Implement reset for Don't Ask Me warnings Button and remove disabled modifier
