@@ -49,7 +49,6 @@ class StandardTableViewCell: NSTableCellView {
         // Create the icon
         let icon = createIcon()
         configIcon(icon: icon)
-        addSubview(icon)
         imageView = icon
 
         // add constraints

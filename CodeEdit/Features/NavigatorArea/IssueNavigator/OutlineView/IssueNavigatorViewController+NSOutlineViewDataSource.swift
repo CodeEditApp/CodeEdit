@@ -10,8 +10,11 @@ import AppKit
 extension IssueNavigatorViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if item == nil {
-            // Always show the project node
-            return 1
+            // If there are no issues, don't show the project node
+            if let rootNode = workspace?.issueNavigatorViewModel?.filteredRootNode {
+                return rootNode.files.isEmpty ? 0 : 1
+            }
+            return 0
         }
         if let node = item as? ProjectIssueNode {
             return node.files.count

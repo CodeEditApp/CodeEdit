@@ -175,7 +175,7 @@ class ProjectIssueNode: IssueNode, ObservableObject {
     @Published var isExpanded: Bool
 
     var nsIcon: NSImage {
-        return NSImage(systemSymbolName: "folder.fill.badge.gearshape", accessibilityDescription: "Root folder")!
+        return NSImage(systemSymbolName: "folder.fill", accessibilityDescription: "Root folder")!
     }
 
     var isExpandable: Bool {
@@ -282,7 +282,7 @@ class DiagnosticIssueNode: IssueNode, ObservableObject {
     let fileUri: DocumentUri
 
     var name: String {
-        diagnostic.message
+        diagnostic.message.trimmingCharacters(in: .newlines)
     }
 
     var isExpandable: Bool {
