@@ -24,13 +24,13 @@ extension IssueNavigatorViewController: NSOutlineViewDelegate {
         guard let tableColumn else { return nil }
 
         let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: rowHeight)
-        let cell = StandardTableViewCell(frame: frameRect)
+
         if let node = item as? (any IssueNode) {
-            cell.configLabel(
-                    label: NSTextField(string: node.name),
-                    isEditable: false
-                )
+            let cell = IssueTableViewCell(frame: frameRect, node: node)
+            return cell
         }
+
+        let cell = TextTableViewCell(frame: frameRect, startingText: "Unknown item")
         return cell
     }
 

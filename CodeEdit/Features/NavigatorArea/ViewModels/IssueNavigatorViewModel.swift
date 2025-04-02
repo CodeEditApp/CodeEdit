@@ -162,7 +162,6 @@ class IssueNavigatorViewModel: ObservableObject {
 protocol IssueNode: Identifiable, Hashable {
     var id: UUID { get }
     var name: String { get }
-    var icon: Image { get }
     var isExpandable: Bool { get }
 }
 
@@ -216,29 +215,32 @@ class FileIssueNode: IssueNode, ObservableObject {
     @Published var diagnostics: [DiagnosticIssueNode]
     @Published var isExpanded: Bool
 
-    // TODO: REPLACE WITH EXISTING CODE
-    var icon: Image {
-        // Determine icon based on file extension
-        let fileExtension = (name as NSString).pathExtension.lowercased()
+    /// Returns the extension of the file or an empty string if no extension is present.
+    var type: FileIcon.FileType {
+        let filename = (uri as NSString).pathExtension
+        let fileExtension = (filename as NSString).pathExtension.lowercased()
 
-        switch fileExtension {
-        case "swift":
-            return Image(systemName: "swift")
-        case "js", "javascript":
-            return Image(systemName: "j.square")
-        case "html":
-            return Image(systemName: "h.square")
-        case "css":
-            return Image(systemName: "c.square")
-        case "md", "markdown":
-            return Image(systemName: "doc.text")
-        case "json":
-            return Image(systemName: "curlybraces")
-        case "txt":
-            return Image(systemName: "doc.text")
-        default:
-            return Image(systemName: "doc")
+        if !fileExtension.isEmpty {
+            if let type = FileIcon.FileType(rawValue: fileExtension) {
+                return type
+            }
         }
+        if let type = FileIcon.FileType(rawValue: filename.lowercased()) {
+            return type
+        }
+        return .txt
+    }
+
+    /// Return the icon of the file as `Image`
+    var icon: Image {
+        return Image(systemName: FileIcon.fileIcon(fileType: type))
+    }
+
+    /// Return the icon of the file as `NSImage`
+    var nsIcon: NSImage {
+        let systemImage = FileIcon.fileIcon(fileType: type)
+        return NSImage(systemSymbolName: systemImage, accessibilityDescription: systemImage)
+        ?? NSImage(systemSymbolName: "doc", accessibilityDescription: "doc")!
     }
 
     var isExpandable: Bool {
@@ -283,18 +285,18 @@ class DiagnosticIssueNode: IssueNode, ObservableObject {
         false
     }
 
-    var icon: Image {
+    var icon: NSImage {
         switch diagnostic.severity {
         case .error:
-            return Image(systemName: "exclamationmark.circle.fill")
+            return NSImage(systemSymbolName: "exclamationmark.octagon.fill", accessibilityDescription: "")!
         case .warning:
-            return Image(systemName: "exclamationmark.triangle.fill")
+            return NSImage(systemSymbolName: "exclamationmark.triangle.fill", accessibilityDescription: "")!
         case .information:
-            return Image(systemName: "info.circle.fill")
+            return NSImage(systemSymbolName: "exclamationmark.triangle.fill", accessibilityDescription: "")!
         case .hint:
-            return Image(systemName: "lightbulb.fill")
+            return NSImage(systemSymbolName: "lightbulb.fill", accessibilityDescription: "")!
         case nil:
-            return Image(systemName: "circle.fill")
+            return NSImage(systemSymbolName: "circle.fill", accessibilityDescription: "")!
         }
     }
 

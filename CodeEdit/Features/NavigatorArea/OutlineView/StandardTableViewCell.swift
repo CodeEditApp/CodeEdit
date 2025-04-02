@@ -27,7 +27,6 @@ class StandardTableViewCell: NSTableCellView {
     init(frame frameRect: NSRect, isEditable: Bool = true) {
         super.init(frame: frameRect)
         setupViews(frame: frameRect, isEditable: isEditable)
-
     }
 
     // Default init, assumes isEditable to be false
