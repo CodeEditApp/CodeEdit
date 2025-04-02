@@ -180,13 +180,13 @@ enum FileIcon {
         case .css:
             return .teal
         case .js, .mjs, .py, .entitlements, .LICENSE:
-            return Color("Amber")
+            return Color.amber
         case .json, .resolved, .rb, .strings, .yml:
-            return Color("Scarlet")
+            return Color.scarlet
         case .jsx, .tsx:
             return .cyan
         case .plist, .xcconfig, .sh:
-            return Color("Steel")
+            return Color.steel
         case .c, .cetheme:
             return .purple
         case .vue:
@@ -204,7 +204,7 @@ enum FileIcon {
         case .rs:
             return .orange
         default:
-            return Color("Steel")
+            return Color.steel
         }
     }
 }

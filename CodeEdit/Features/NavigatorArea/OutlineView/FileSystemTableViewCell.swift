@@ -138,10 +138,10 @@ class FileSystemTableViewCell: StandardTableViewCell {
             if !item.isFolder {
                 return NSColor(item.iconColor)
             } else {
-                return NSColor(named: "FolderBlue") ?? NSColor(.cyan)
+                return NSColor.folderBlue
             }
         } else {
-            return NSColor(named: "CoolGray") ?? NSColor(.gray)
+            return NSColor.coolGray
         }
     }
 

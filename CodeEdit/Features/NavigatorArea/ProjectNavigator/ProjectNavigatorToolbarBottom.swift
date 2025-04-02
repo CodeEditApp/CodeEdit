@@ -168,10 +168,10 @@ struct FilterDropDownIconButton<MenuView: View>: View {
         Menu { menu() } label: {}
             .background {
                 if isOn == true {
-                    Image("line.3.horizontal.decrease.chevron.filled")
+                    Image(ImageResource.line3HorizontalDecreaseChevronFilled)
                         .foregroundStyle(.tint)
                 } else {
-                    Image("line.3.horizontal.decrease.chevron")
+                    Image(ImageResource.line3HorizontalDecreaseChevron)
                 }
             }
             .menuStyle(.borderlessButton)
