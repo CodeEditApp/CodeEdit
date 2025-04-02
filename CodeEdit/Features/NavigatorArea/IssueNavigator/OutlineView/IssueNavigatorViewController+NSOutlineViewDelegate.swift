@@ -36,6 +36,7 @@ extension IssueNavigatorViewController: NSOutlineViewDelegate {
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
         if item is DiagnosticIssueNode {
+            // TODO: DIAGNOSTIC CELLS SHOULD MIGHT SPAN MULTIPLE ROWS, SO SHOW MULTIPLE LINES
             let lines = Double(Settings.shared.preferences.general.issueNavigatorDetail.rawValue)
             return rowHeight * lines
         }

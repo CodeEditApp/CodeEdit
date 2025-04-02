@@ -163,17 +163,19 @@ protocol IssueNode: Identifiable, Hashable {
     var id: UUID { get }
     var name: String { get }
     var isExpandable: Bool { get }
+    var nsIcon: NSImage { get }
 }
 
 /// Represents the project (root) node in the issue navigator
 class ProjectIssueNode: IssueNode, ObservableObject {
     let id: UUID = UUID()
     let name: String
+
     @Published var files: [FileIssueNode]
     @Published var isExpanded: Bool
 
-    var icon: Image {
-        Image(systemName: "folder")
+    var nsIcon: NSImage {
+        return NSImage(systemSymbolName: "folder.fill.badge.gearshape", accessibilityDescription: "Root folder")!
     }
 
     var isExpandable: Bool {
@@ -212,35 +214,37 @@ class FileIssueNode: IssueNode, ObservableObject {
     let id: UUID = UUID()
     let uri: DocumentUri
     let name: String
+
     @Published var diagnostics: [DiagnosticIssueNode]
     @Published var isExpanded: Bool
 
     /// Returns the extension of the file or an empty string if no extension is present.
     var type: FileIcon.FileType {
-        let filename = (uri as NSString).pathExtension
-        let fileExtension = (filename as NSString).pathExtension.lowercased()
-
+        let fileExtension = (uri as NSString).pathExtension.lowercased()
         if !fileExtension.isEmpty {
             if let type = FileIcon.FileType(rawValue: fileExtension) {
                 return type
             }
         }
-        if let type = FileIcon.FileType(rawValue: filename.lowercased()) {
-            return type
-        }
         return .txt
     }
 
-    /// Return the icon of the file as `Image`
-    var icon: Image {
-        return Image(systemName: FileIcon.fileIcon(fileType: type))
+    /// Returns a `Color` for a specific `fileType`
+    ///
+    /// If not specified otherwise this will return `Color.accentColor`
+    var iconColor: SwiftUI.Color {
+        FileIcon.iconColor(fileType: type)
     }
 
     /// Return the icon of the file as `NSImage`
     var nsIcon: NSImage {
         let systemImage = FileIcon.fileIcon(fileType: type)
-        return NSImage(systemSymbolName: systemImage, accessibilityDescription: systemImage)
-        ?? NSImage(systemSymbolName: "doc", accessibilityDescription: "doc")!
+        if let customImage = NSImage.symbol(named: systemImage) {
+            return customImage
+        } else {
+            return NSImage(systemSymbolName: systemImage, accessibilityDescription: systemImage)
+                ?? NSImage(systemSymbolName: "doc", accessibilityDescription: "doc")!
+        }
     }
 
     var isExpandable: Bool {
@@ -285,7 +289,7 @@ class DiagnosticIssueNode: IssueNode, ObservableObject {
         false
     }
 
-    var icon: NSImage {
+    var nsIcon: NSImage {
         switch diagnostic.severity {
         case .error:
             return NSImage(systemSymbolName: "exclamationmark.octagon.fill", accessibilityDescription: "")!
