@@ -210,25 +210,37 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
         if let item = item as? SearchResultMatchModel {
+            let columnWidth = outlineView.tableColumns.first?.width ?? outlineView.frame.width
+            let indentationLevel = outlineView.level(forItem: item)
+            let indentationSpace = CGFloat(indentationLevel) * outlineView.indentationPerLevel
+            let availableWidth = columnWidth - indentationSpace - 24
+
+            // Create a temporary text field for measurement
             let tempView = NSTextField(wrappingLabelWithString: item.attributedLabel().string)
             tempView.allowsDefaultTighteningForTruncation = false
             tempView.cell?.truncatesLastVisibleLine = true
             tempView.cell?.wraps = true
-            tempView.maximumNumberOfLines = 3
-            tempView.attributedStringValue = item.attributedLabel()
-            tempView.layout()
-            let width = outlineView.frame.width - outlineView.indentationPerLevel*2 - 24
-            return tempView.sizeThatFits(
-                NSSize(width: width, height: CGFloat.greatestFiniteMagnitude)
-            ).height + 8
-        } else {
-            return rowHeight
+            tempView.maximumNumberOfLines = Settings.shared.preferences.general.findNavigatorDetail.rawValue
+            tempView.preferredMaxLayoutWidth = availableWidth
+
+            let height = tempView.sizeThatFits(
+                NSSize(width: availableWidth, height: CGFloat.greatestFiniteMagnitude)
+            ).height
+            return max(height + 8, rowHeight)
         }
+        return rowHeight
     }
 
     func outlineViewColumnDidResize(_ notification: Notification) {
+        // Disable animations temporarily
+        NSAnimationContext.beginGrouping()
+        NSAnimationContext.current.duration = 0
+
         let indexes = IndexSet(integersIn: 0..<searchItems.count)
         outlineView.noteHeightOfRows(withIndexesChanged: indexes)
+
+        NSAnimationContext.endGrouping()
+        outlineView.layoutSubtreeIfNeeded()
     }
 }
 
