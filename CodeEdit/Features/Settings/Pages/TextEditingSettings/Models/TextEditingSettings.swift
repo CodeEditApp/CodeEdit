@@ -18,7 +18,7 @@ extension SettingsData {
                 "Prefer Indent Using",
                 "Tab Width",
                 "Wrap lines to editor width",
-                "Overscroll",
+                "Editor Overscroll",
                 "Font",
                 "Font Size",
                 "Font Weight",
