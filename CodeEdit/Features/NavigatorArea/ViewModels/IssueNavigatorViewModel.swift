@@ -5,6 +5,7 @@
 //  Created by Abe Malla on 3/15/25.
 //
 
+import Combine
 import SwiftUI
 import Foundation
 import LanguageServerProtocol
@@ -13,6 +14,8 @@ class IssueNavigatorViewModel: ObservableObject {
     @Published var rootNode: ProjectIssueNode?
     @Published var filterOptions = IssueFilterOptions()
     @Published private(set) var filteredRootNode: ProjectIssueNode?
+
+    let diagnosticsDidChangePublisher = PassthroughSubject<Void, Never>()
 
     private var diagnosticsByFile: [DocumentUri: [Diagnostic]] = [:]
 
@@ -32,21 +35,25 @@ class IssueNavigatorViewModel: ObservableObject {
         }
 
         rebuildTree()
+        diagnosticsDidChangePublisher.send()
     }
 
     func clearDiagnostics() {
         diagnosticsByFile.removeAll()
         rebuildTree()
+        diagnosticsDidChangePublisher.send()
     }
 
     func removeDiagnostics(uri: DocumentUri) {
         diagnosticsByFile.removeValue(forKey: uri)
         rebuildTree()
+        diagnosticsDidChangePublisher.send()
     }
 
     func updateFilter(options: IssueFilterOptions) {
         self.filterOptions = options
         applyFilter()
+        diagnosticsDidChangePublisher.send()
     }
 
     private func applyFilter() {
@@ -148,7 +155,6 @@ class IssueNavigatorViewModel: ObservableObject {
             if line < range.start.line || line > range.end.line {
                 return false
             }
-
             if line == range.start.line && character < range.start.character {
                 return false
             }
@@ -294,24 +300,27 @@ class DiagnosticIssueNode: IssueNode, ObservableObject {
     var nsIcon: NSImage {
         switch diagnostic.severity {
         case .error:
-            return NSImage(systemSymbolName: "exclamationmark.octagon.fill", accessibilityDescription: "")!
+            return NSImage(
+                systemSymbolName: "xmark.octagon.fill",
+                accessibilityDescription: "Error"
+            )!
         case .warning:
-            return NSImage(systemSymbolName: "exclamationmark.triangle.fill", accessibilityDescription: "")!
+            return NSImage(systemSymbolName: "exclamationmark.triangle.fill", accessibilityDescription: "Warning")!
         case .information:
-            return NSImage(systemSymbolName: "exclamationmark.triangle.fill", accessibilityDescription: "")!
+            return NSImage(systemSymbolName: "exclamationmark.triangle.fill", accessibilityDescription: "Information")!
         case .hint:
-            return NSImage(systemSymbolName: "lightbulb.fill", accessibilityDescription: "")!
+            return NSImage(systemSymbolName: "lightbulb.fill", accessibilityDescription: "Hint")!
         case nil:
-            return NSImage(systemSymbolName: "circle.fill", accessibilityDescription: "")!
+            return NSImage(systemSymbolName: "circle.fill", accessibilityDescription: "Unknown Issue Type")!
         }
     }
 
     var severityColor: NSColor {
         switch diagnostic.severity {
         case .error:
-            return .red
+            return .errorRed
         case .warning:
-            return .yellow
+            return .warningYellow
         case .information:
             return .blue
         case .hint:

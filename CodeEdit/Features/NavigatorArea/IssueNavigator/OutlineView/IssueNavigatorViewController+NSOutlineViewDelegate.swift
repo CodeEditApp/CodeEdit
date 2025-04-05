@@ -31,6 +31,29 @@ extension IssueNavigatorViewController: NSOutlineViewDelegate {
         return TextTableViewCell(frame: frameRect, startingText: "Unknown item")
     }
 
+    func outlineViewSelectionDidChange(_ notification: Notification) {
+        guard let outlineView = notification.object as? NSOutlineView else { return }
+
+        // If multiple rows are selected, do not open any file.
+        guard outlineView.selectedRowIndexes.count == 1 else { return }
+        guard shouldSendSelectionUpdate else { return }
+
+        let selectedItem = outlineView.item(atRow: outlineView.selectedRow)
+
+        // Get the file and open it if not already opened
+        if let fileURL = URL(
+            string: (selectedItem as? FileIssueNode)?.uri ??
+            (selectedItem as? DiagnosticIssueNode)?.fileUri ?? ""
+        ), !fileURL.path.isEmpty {
+            shouldSendSelectionUpdate = false
+            if let file = workspace?.workspaceFileManager?.getFile(fileURL.path),
+               workspace?.editorManager?.activeEditor.selectedTab?.file != file {
+                workspace?.editorManager?.activeEditor.openTab(file: file, asTemporary: true)
+            }
+            shouldSendSelectionUpdate = true
+        }
+    }
+
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
         if let diagnosticNode = item as? DiagnosticIssueNode {
             let columnWidth = outlineView.tableColumns.first?.width ?? outlineView.frame.width

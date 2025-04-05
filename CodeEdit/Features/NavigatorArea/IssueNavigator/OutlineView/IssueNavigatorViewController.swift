@@ -36,6 +36,11 @@ final class IssueNavigatorViewController: NSViewController {
         }
     }
 
+    /// This helps determine whether or not to send an `openTab` when the selection changes.
+    /// Used b/c the state may update when the selection changes, but we don't necessarily want
+    /// to open the file a second time.
+    var shouldSendSelectionUpdate: Bool = true
+
     /// Setup the ``scrollView`` and ``outlineView``
     override func loadView() {
         self.scrollView = NSScrollView()
@@ -47,6 +52,9 @@ final class IssueNavigatorViewController: NSViewController {
         self.outlineView.delegate = self
         self.outlineView.autosaveExpandedItems = false
         self.outlineView.headerView = nil
+        self.outlineView.menu = IssueNavigatorMenu(self)
+        self.outlineView.menu?.delegate = self
+        self.outlineView.doubleAction = #selector(onItemDoubleClicked)
         self.outlineView.allowsMultipleSelection = true
 
         self.outlineView.setAccessibilityIdentifier("IssueNavigator")
@@ -87,5 +95,30 @@ final class IssueNavigatorViewController: NSViewController {
 
     required init?(coder: NSCoder) {
         fatalError()
+    }
+
+    /// Expand or collapse the folder on double click
+    @objc
+    private func onItemDoubleClicked() {
+        // If there are multiples items selected, don't do anything, just like in Xcode.
+        guard outlineView.selectedRowIndexes.count == 1 else { return }
+
+        guard let item = outlineView.item(atRow: outlineView.clickedRow) as? (any IssueNode) else { return }
+
+        if let projectNode = item as? ProjectIssueNode {
+            toggleExpansion(of: projectNode)
+        } else if let fileNode = item as? FileIssueNode {
+            toggleExpansion(of: fileNode)
+        }
+    }
+
+    /// Toggles the expansion state of an item
+    @inline(__always)
+    private func toggleExpansion(of item: Any) {
+        if outlineView.isItemExpanded(item) {
+            outlineView.collapseItem(item)
+        } else {
+            outlineView.expandItem(item)
+        }
     }
 }
