@@ -45,6 +45,7 @@ extension LSPService {
 //        case let .error(error):
 //            print("Error from EventStream for \(languageClient.languageId.rawValue): \(error)")
         default:
+            // TODO: REMOVE THIS DEFAULT WHEN THE REST ARE IMPLEMENTED
             return
         }
     }
@@ -77,6 +78,7 @@ extension LSPService {
 //            print("windowWorkDoneProgressCreate: \(params)")
 //
 //        default:
+//            // TODO: REMOVE THIS DEFAULT WHEN THE REST ARE IMPLEMENTED
 //            print()
 //        }
     }
@@ -92,7 +94,6 @@ extension LSPService {
 //        case let .windowShowMessage(params):
 //            print("windowShowMessage \(params.type)\n```\n\(params.message)\n```\n")
         case let .textDocumentPublishDiagnostics(params):
-            print("textDocumentPublishDiagnostics: \(params.diagnostics)")
             languageClient.workspace.issueNavigatorViewModel?
                 .updateDiagnostics(params: params)
 //        case let .telemetryEvent(params):
@@ -104,6 +105,7 @@ extension LSPService {
 //        case let .protocolLogTrace(params):
 //            print("protocolLogTrace: \(params)")
         default:
+            // TODO: REMOVE THIS DEFAULT WHEN THE REST ARE IMPLEMENTED
             return
         }
     }

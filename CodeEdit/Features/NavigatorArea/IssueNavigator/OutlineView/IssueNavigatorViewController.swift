@@ -109,6 +109,9 @@ final class IssueNavigatorViewController: NSViewController {
             toggleExpansion(of: projectNode)
         } else if let fileNode = item as? FileIssueNode {
             toggleExpansion(of: fileNode)
+            openFileTab(fileUri: fileNode.uri)
+        } else if let diagnosticNode = item as? DiagnosticIssueNode {
+            openFileTab(fileUri: diagnosticNode.fileUri)
         }
     }
 
@@ -120,5 +123,15 @@ final class IssueNavigatorViewController: NSViewController {
         } else {
             outlineView.expandItem(item)
         }
+    }
+
+    /// Opens a file as a permanent tab
+    @inline(__always)
+    private func openFileTab(fileUri: String) {
+        guard let fileURL = URL(string: fileUri),
+              let file = workspace?.workspaceFileManager?.getFile(fileURL.path) else {
+            return
+        }
+        workspace?.editorManager?.activeEditor.openTab(file: file, asTemporary: false)
     }
 }
