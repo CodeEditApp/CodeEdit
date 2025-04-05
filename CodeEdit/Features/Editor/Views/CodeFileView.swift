@@ -19,8 +19,12 @@ struct CodeFileView: View {
     /// The current cursor positions in the view
     @State private var cursorPositions: [CursorPosition] = []
 
+    @State private var treeSitterClient: TreeSitterClient = TreeSitterClient()
+
     /// Any coordinators passed to the view.
     private var textViewCoordinators: [TextViewCoordinator]
+
+    @State private var highlightProviders: [any HighlightProviding] = []
 
     @AppSettings(\.textEditing.defaultTabWidth)
     var defaultTabWidth
@@ -58,15 +62,18 @@ struct CodeFileView: View {
 
     init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
         self._codeFile = .init(wrappedValue: codeFile)
+
         self.textViewCoordinators = textViewCoordinators
             + [codeFile.contentCoordinator]
-            + [codeFile.lspCoordinator].compactMap({ $0 })
+            + [codeFile.languageServerObjects.textCoordinator].compactMap({ $0 })
         self.isEditable = isEditable
 
         if let openOptions = codeFile.openOptions {
             codeFile.openOptions = nil
             self.cursorPositions = openOptions.cursorPositions
         }
+
+        updateHighlightProviders()
 
         codeFile
             .contentCoordinator
@@ -132,6 +139,7 @@ struct CodeFileView: View {
             editorOverscroll: overscroll.overscrollPercentage,
             cursorPositions: $cursorPositions,
             useThemeBackground: useThemeBackground,
+            highlightProviders: highlightProviders,
             contentInsets: edgeInsets.nsEdgeInsets,
             isEditable: isEditable,
             letterSpacing: letterSpacing,
@@ -157,6 +165,10 @@ struct CodeFileView: View {
         .onChange(of: bracketHighlight) { _ in
             bracketPairHighlight = getBracketPairHighlight()
         }
+        .onReceive(codeFile.$languageServerObjects) { languageServerObjects in
+            // This will not be called in single-file views (for now) but is safe to listen to either way
+            updateHighlightProviders(lspHighlightProvider: languageServerObjects.highlightProvider)
+        }
     }
 
     private func getBracketPairHighlight() -> BracketPairHighlight? {
@@ -176,6 +188,12 @@ struct CodeFileView: View {
         case .underline:
             return .underline(color: color)
         }
+    }
+
+    /// Updates the highlight providers array.
+    /// - Parameter lspHighlightProvider: The language server provider, if available.
+    private func updateHighlightProviders(lspHighlightProvider: HighlightProviding? = nil) {
+        highlightProviders = [lspHighlightProvider].compactMap({ $0 }) + [treeSitterClient]
     }
 }
 
