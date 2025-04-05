@@ -13,6 +13,7 @@ enum NavigatorTab: WorkspacePanelTab {
     case project
     case sourceControl
     case search
+    case issues
     case uiExtension(endpoint: AppExtensionIdentity, data: ResolvedSidebar.SidebarStore)
 
     var systemImage: String {
@@ -23,6 +24,8 @@ enum NavigatorTab: WorkspacePanelTab {
             return "vault"
         case .search:
             return "magnifyingglass"
+        case .issues:
+            return "exclamationmark.triangle"
         case .uiExtension(_, let data):
             return data.icon ?? "e.square"
         }
@@ -43,6 +46,8 @@ enum NavigatorTab: WorkspacePanelTab {
             return "Source Control"
         case .search:
             return "Search"
+        case .issues:
+            return "Issues"
         case .uiExtension(_, let data):
             return data.help ?? data.sceneID
         }
@@ -56,6 +61,8 @@ enum NavigatorTab: WorkspacePanelTab {
             SourceControlNavigatorView()
         case .search:
             FindNavigatorView()
+        case .issues:
+            IssueNavigatorView()
         case let .uiExtension(endpoint, data):
             ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
         }

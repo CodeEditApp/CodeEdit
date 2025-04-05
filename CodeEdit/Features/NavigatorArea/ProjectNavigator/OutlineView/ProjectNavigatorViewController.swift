@@ -159,7 +159,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Expand or collapse the folder on double click
     @objc
     private func onItemDoubleClicked() {
-        /// If there are multiples items selected, don't do anything, just like in Xcode.
+        // If there are multiples items selected, don't do anything, just like in Xcode.
         guard outlineView.selectedRowIndexes.count == 1 else { return }
 
         guard let item = outlineView.item(atRow: outlineView.clickedRow) as? CEWorkspaceFile else { return }
