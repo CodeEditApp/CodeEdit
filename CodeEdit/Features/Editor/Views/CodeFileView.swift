@@ -30,6 +30,8 @@ struct CodeFileView: View {
     var lineHeightMultiple
     @AppSettings(\.textEditing.wrapLinesToEditorWidth)
     var wrapLinesToEditorWidth
+    @AppSettings(\.textEditing.overscroll)
+    var overscroll
     @AppSettings(\.textEditing.font)
     var settingsFont
     @AppSettings(\.theme.useThemeBackground)
@@ -127,6 +129,7 @@ struct CodeFileView: View {
             indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
             lineHeight: lineHeightMultiple,
             wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
+            editorOverscroll: overscroll.overscrollPercentage,
             cursorPositions: $cursorPositions,
             useThemeBackground: useThemeBackground,
             contentInsets: edgeInsets.nsEdgeInsets,
