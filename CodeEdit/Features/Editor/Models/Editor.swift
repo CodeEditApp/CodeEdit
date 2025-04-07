@@ -186,6 +186,8 @@ final class Editor: ObservableObject, Identifiable {
 
         case (.some(let tab), false) where tab == item:
             temporaryTab = nil
+        case (.some(let tab), false) where tab != item:
+            openTab(file: item.file)
 
         case (.none, true):
             openTab(file: item.file)

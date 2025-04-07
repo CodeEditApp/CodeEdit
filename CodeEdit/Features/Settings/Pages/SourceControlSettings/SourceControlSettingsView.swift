@@ -53,7 +53,7 @@ struct SourceControlSettingsView: View {
                  """)
                 .font(.callout)
              } icon: {
-                FeatureIcon(symbol: Image(symbol: "vault"), color: Color(.systemBlue), size: 26)
+                FeatureIcon(symbol: "vault", color: Color(.systemBlue), size: 26)
             }
         }
         .controlSize(.large)

@@ -87,14 +87,15 @@ extension ProjectNavigatorMenu {
     func newFile() {
         guard let item else { return }
         do {
-            try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item)
+            if let newFile = try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item) {
+                workspace?.listenerModel.highlightedFileItem = newFile
+                workspace?.editorManager?.openTab(item: newFile)
+            }
         } catch {
             let alert = NSAlert(error: error)
             alert.addButton(withTitle: "Dismiss")
             alert.runModal()
         }
-        reloadData()
-        sender.outlineView.expandItem(item.isFolder ? item : item.parent)
     }
 
     // TODO: allow custom folder names
@@ -102,10 +103,15 @@ extension ProjectNavigatorMenu {
     @objc
     func newFolder() {
         guard let item else { return }
-        workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item)
-        reloadData()
-        sender.outlineView.expandItem(item)
-        sender.outlineView.expandItem(item.isFolder ? item : item.parent)
+        do {
+            if let newFolder = try workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item) {
+                workspace?.listenerModel.highlightedFileItem = newFolder
+            }
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
+        }
     }
 
     /// Creates a new folder with the items selected.
@@ -121,11 +127,17 @@ extension ProjectNavigatorMenu {
         var folderNumber = 0
         while workspaceFileManager.fileManager.fileExists(atPath: newFolderURL.path) {
             folderNumber += 1
-            newFolderURL = parent.url.appendingPathComponent("New Folder With Items \(folderNumber)")
+            newFolderURL = parent.url.appending(path: "New Folder With Items \(folderNumber)")
         }
 
-        for selectedItem in selectedItems where selectedItem.url != newFolderURL {
-            workspaceFileManager.move(file: selectedItem, to: newFolderURL.appending(path: selectedItem.name))
+        do {
+            for selectedItem in selectedItems where selectedItem.url != newFolderURL {
+                try workspaceFileManager.move(file: selectedItem, to: newFolderURL.appending(path: selectedItem.name))
+            }
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
         }
 
         reloadData()
@@ -149,43 +161,101 @@ extension ProjectNavigatorMenu {
     /// Action that moves the item to trash.
     @objc
     func trash() {
-        selectedItems().forEach { item in
-            workspace?.workspaceFileManager?.trash(file: item)
-            withAnimation {
-                sender.editor?.closeTab(file: item)
+        do {
+            try selectedItems().forEach { item in
+                withAnimation {
+                    sender.editor?.closeTab(file: item)
+                }
+                guard FileManager.default.fileExists(atPath: item.url.path) else {
+                    // Was likely already trashed (eg selecting files in a folder and deleting the folder and files)
+                    return
+                }
+                try workspace?.workspaceFileManager?.trash(file: item)
             }
+            reloadData()
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
         }
-        reloadData()
     }
 
     /// Action that deletes the item immediately.
     @objc
     func delete() {
-        let selectedItems = selectedItems()
-        if selectedItems.count == 1 {
-            selectedItems.forEach { item in
-                workspace?.workspaceFileManager?.delete(file: item)
+        do {
+            let selectedItems = selectedItems()
+            if selectedItems.count == 1 {
+                try selectedItems.forEach { item in
+                    try workspace?.workspaceFileManager?.delete(file: item)
+                }
+            } else {
+                try workspace?.workspaceFileManager?.batchDelete(files: selectedItems)
             }
-        } else {
-            workspace?.workspaceFileManager?.batchDelete(files: selectedItems)
-        }
 
-        withAnimation {
-            selectedItems.forEach { item in
-                sender.editor?.closeTab(file: item)
+            withAnimation {
+                selectedItems.forEach { item in
+                    sender.editor?.closeTab(file: item)
+                }
             }
-        }
 
-        reloadData()
+            reloadData()
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
+        }
     }
 
     /// Action that duplicates the item
     @objc
     func duplicate() {
-        selectedItems().forEach { item in
-            workspace?.workspaceFileManager?.duplicate(file: item)
+        do {
+            try selectedItems().forEach { item in
+                try workspace?.workspaceFileManager?.duplicate(file: item)
+            }
+            reloadData()
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
         }
-        reloadData()
+    }
+
+    /// Copies the absolute path of the selected files
+    @objc
+    func copyPath() {
+        let paths = selectedItems().map {
+            $0.url.standardizedFileURL.path
+        }.sorted().joined(separator: "\n")
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(paths, forType: .string)
+    }
+
+    /// Copies the relative path of the selected files
+    @objc
+    func copyRelativePath() {
+        guard let rootPath = workspace?.workspaceFileManager?.folderUrl else {
+            return
+        }
+        let paths = selectedItems().map {
+            let destinationComponents = $0.url.standardizedFileURL.pathComponents
+            let baseComponents = rootPath.standardizedFileURL.pathComponents
+
+            // Find common prefix length
+            var prefixCount = 0
+            while prefixCount < min(destinationComponents.count, baseComponents.count)
+                    && destinationComponents[prefixCount] == baseComponents[prefixCount] {
+                prefixCount += 1
+            }
+            // Build the relative path
+            let upPath = String(repeating: "../", count: baseComponents.count - prefixCount)
+            let downPath = destinationComponents[prefixCount...].joined(separator: "/")
+            return upPath + downPath
+        }.sorted().joined(separator: "\n")
+
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(paths, forType: .string)
     }
 
     private func reloadData() {

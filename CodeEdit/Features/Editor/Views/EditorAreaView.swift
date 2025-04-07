@@ -7,11 +7,11 @@
 
 import SwiftUI
 import CodeEditTextView
-import CodeEditSourceEditor
+import UniformTypeIdentifiers
 
 struct EditorAreaView: View {
-    @AppSettings(\.general.showEditorPathBar)
-    var showEditorPathBar
+    @AppSettings(\.general.showEditorJumpBar)
+    var showEditorJumpBar
 
     @AppSettings(\.navigation.navigationStyle)
     var navigationStyle
@@ -26,6 +26,9 @@ struct EditorAreaView: View {
     @EnvironmentObject private var editorManager: EditorManager
 
     @State var codeFile: CodeFileDocument?
+
+    @Environment(\.window.value)
+    private var window: NSWindow?
 
     init(editor: Editor, focus: FocusState<Editor?>.Binding) {
         self.editor = editor
@@ -44,8 +47,8 @@ struct EditorAreaView: View {
 
         var editorInsetAmount: Double {
             let tabBarHeight = shouldShowTabBar ? (EditorTabBarView.height + 1) : 0
-            let pathBarHeight = showEditorPathBar ? (EditorPathBarView.height + 1) : 0
-            return tabBarHeight + pathBarHeight
+            let jumpBarHeight = showEditorJumpBar ? (EditorJumpBarView.height + 1) : 0
+            return tabBarHeight + jumpBarHeight
         }
 
         VStack {
@@ -63,6 +66,10 @@ struct EditorAreaView: View {
                         insets.top += editorInsetAmount
                     }
                     .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
+                    .onDrop(of: [.fileURL], isTargeted: nil) { providers in
+                        _ = handleDrop(providers: providers)
+                        return true
+                    }
                 } else {
                     LoadingFileView(selected.file.name)
                         .onAppear {
@@ -81,34 +88,47 @@ struct EditorAreaView: View {
                     .onTapGesture {
                         editorManager.activeEditor = editor
                     }
+                    .onDrop(of: [.fileURL], isTargeted: nil) { providers in
+                        _ = handleDrop(providers: providers)
+                        return true
+                    }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea(.all)
         .safeAreaInset(edge: .top, spacing: 0) {
-            VStack(spacing: 0) {
-                if shouldShowTabBar {
-                    EditorTabBarView()
-                        .id("TabBarView" + editor.id.uuidString)
-                        .environmentObject(editor)
-                    Divider()
-                }
-                if showEditorPathBar {
-                    EditorPathBarView(
-                        file: editor.selectedTab?.file,
-                        shouldShowTabBar: shouldShowTabBar
-                    ) { [weak editor] newFile in
-                        if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
-                            editor?.openTab(file: newFile, at: index)
-                        }
+            GeometryReader { geometry in
+                let topSafeArea = geometry.safeAreaInsets.top
+                VStack(spacing: 0) {
+                    if topSafeArea > 0 {
+                        Rectangle()
+                            .fill(.clear)
+                            .frame(height: 1)
+                            .background(.clear)
                     }
-                    .environmentObject(editor)
-                    .padding(.top, shouldShowTabBar ? -1 : 0)
-                    Divider()
+                    if shouldShowTabBar {
+                        EditorTabBarView(hasTopInsets: topSafeArea > 0)
+                            .id("TabBarView" + editor.id.uuidString)
+                            .environmentObject(editor)
+                        Divider()
+                    }
+                    if showEditorJumpBar {
+                        EditorJumpBarView(
+                            file: editor.selectedTab?.file,
+                            shouldShowTabBar: shouldShowTabBar
+                        ) { [weak editor] newFile in
+                            if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
+                                editor?.openTab(file: newFile, at: index)
+                            }
+                        }
+                        .environmentObject(editor)
+                        .padding(.top, shouldShowTabBar ? -1 : 0)
+                        Divider()
+                    }
                 }
+                .environment(\.isActiveEditor, editor == editorManager.activeEditor)
+                .background(EffectView(.headerView))
             }
-            .environment(\.isActiveEditor, editor == editorManager.activeEditor)
-            .background(EffectView(.headerView))
         }
         .focused($focus, equals: editor)
         // Fixing this is causing a malloc exception when a file is edited & closed. See #1886
@@ -125,5 +145,24 @@ struct EditorAreaView: View {
         .onChange(of: editor.selectedTab) { newValue in
             codeFile = newValue?.file.fileDocument
         }
+    }
+
+    private func handleDrop(providers: [NSItemProvider]) -> Bool {
+        for provider in providers {
+            provider.loadItem(forTypeIdentifier: UTType.fileURL.identifier, options: nil) { item, _ in
+                guard let data = item as? Data,
+                      let url = URL(dataRepresentation: data, relativeTo: nil) else {
+                    return
+                }
+
+                DispatchQueue.main.async {
+                    let file = CEWorkspaceFile(url: url)
+                    editor.openTab(file: file)
+                    editorManager.activeEditor = editor
+                    focus = editor
+                }
+            }
+        }
+        return true
     }
 }

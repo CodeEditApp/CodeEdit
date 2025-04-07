@@ -98,26 +98,47 @@ struct ProjectNavigatorToolbarBottom: View {
                 let filePathURL = activeTabURL()
                 guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
                 do {
-                    try workspace.workspaceFileManager?.addFile(fileName: "untitled", toFile: rootFile)
+                    if let newFile = try workspace.workspaceFileManager?.addFile(
+                        fileName: "untitled",
+                        toFile: rootFile
+                    ) {
+                        workspace.listenerModel.highlightedFileItem = newFile
+                        workspace.editorManager?.openTab(item: newFile)
+                    }
                 } catch {
                     let alert = NSAlert(error: error)
                     alert.addButton(withTitle: "Dismiss")
                     alert.runModal()
                 }
             }
+
             Button("Add Folder") {
                 let filePathURL = activeTabURL()
                 guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
-                workspace.workspaceFileManager?.addFolder(folderName: "untitled", toFile: rootFile)
+                do {
+                    if let newFolder = try workspace.workspaceFileManager?.addFolder(
+                        folderName: "untitled",
+                        toFile: rootFile
+                    ) {
+                        workspace.listenerModel.highlightedFileItem = newFolder
+                    }
+                } catch {
+                    let alert = NSAlert(error: error)
+                    alert.addButton(withTitle: "Dismiss")
+                    alert.runModal()
+                }
             }
         } label: {}
         .background {
             Image(systemName: "plus")
+                .accessibilityHidden(true)
         }
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
         .frame(maxWidth: 18, alignment: .center)
         .opacity(activeState == .inactive ? 0.45 : 1)
+        .accessibilityLabel("Add Folder or File")
+        .accessibilityIdentifier("addButton")
     }
 
     /// We clear the text and remove the first responder which removes the cursor
@@ -147,10 +168,10 @@ struct FilterDropDownIconButton<MenuView: View>: View {
         Menu { menu() } label: {}
             .background {
                 if isOn == true {
-                    Image("line.3.horizontal.decrease.chevron.filled")
+                    Image(ImageResource.line3HorizontalDecreaseChevronFilled)
                         .foregroundStyle(.tint)
                 } else {
-                    Image("line.3.horizontal.decrease.chevron")
+                    Image(ImageResource.line3HorizontalDecreaseChevron)
                 }
             }
             .menuStyle(.borderlessButton)

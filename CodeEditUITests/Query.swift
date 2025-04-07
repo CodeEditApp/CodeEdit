@@ -42,9 +42,16 @@ enum Query {
     }
 
     enum Navigator {
+        static func getRows(_ navigator: XCUIElement) -> XCUIElementQuery {
+            navigator.descendants(matching: .outlineRow)
+        }
+
+        static func getSelectedRows(_ navigator: XCUIElement) -> XCUIElementQuery {
+            getRows(navigator).matching(NSPredicate(format: "selected = true"))
+        }
+
         static func getProjectNavigatorRow(fileTitle: String, index: Int = 0, _ navigator: XCUIElement) -> XCUIElement {
-            return navigator
-                .descendants(matching: .outlineRow)
+            return getRows(navigator)
                 .containing(.textField, identifier: "ProjectNavigatorTableViewCell-\(fileTitle)")
                 .element(boundBy: index)
         }

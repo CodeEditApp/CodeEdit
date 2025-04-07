@@ -123,14 +123,14 @@ struct WelcomeView: View {
                 }
             )
         }
-        .sheet(item: $showCheckoutBranchItem, content: { repoPath in
+        .sheet(item: $showCheckoutBranchItem) { url in
             GitCheckoutBranchView(
-                repoLocalPath: repoPath,
+                repoLocalPath: url,
                 openDocument: { url in
                     openDocument(url, dismissWindow)
                 }
             )
-        })
+        }
     }
 
     private var mainContent: some View {

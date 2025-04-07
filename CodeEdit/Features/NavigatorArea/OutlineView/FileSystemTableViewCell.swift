@@ -138,10 +138,10 @@ class FileSystemTableViewCell: StandardTableViewCell {
             if !item.isFolder {
                 return NSColor(item.iconColor)
             } else {
-                return NSColor(named: "FolderBlue") ?? NSColor(.cyan)
+                return NSColor.folderBlue
             }
         } else {
-            return NSColor(named: "CoolGray") ?? NSColor(.gray)
+            return NSColor.coolGray
         }
     }
 
@@ -159,20 +159,20 @@ extension FileSystemTableViewCell: NSTextFieldDelegate {
 
     func controlTextDidEndEditing(_ obj: Notification) {
         guard let fileItem else { return }
-        textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
-        if fileItem.validateFileName(for: textField?.stringValue ?? "") {
-            let newURL = fileItem.url.deletingLastPathComponent().appendingPathComponent(textField?.stringValue ?? "")
-            workspace?.workspaceFileManager?.move(file: fileItem, to: newURL)
-        } else {
-            textField?.stringValue = fileItem.labelFileName()
+        do {
+            textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
+            if fileItem.validateFileName(for: textField?.stringValue ?? "") {
+                let newURL = fileItem.url
+                    .deletingLastPathComponent()
+                    .appending(path: textField?.stringValue ?? "")
+                try workspace?.workspaceFileManager?.move(file: fileItem, to: newURL)
+            } else {
+                textField?.stringValue = fileItem.labelFileName()
+            }
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
         }
-    }
-}
-
-extension String {
-    var isValidFilename: Bool {
-        let regex = "[^:]"
-        let testString = NSPredicate(format: "SELF MATCHES %@", regex)
-        return !testString.evaluate(with: self)
     }
 }

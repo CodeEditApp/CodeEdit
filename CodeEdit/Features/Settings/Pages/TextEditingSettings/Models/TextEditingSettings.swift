@@ -14,10 +14,11 @@ extension SettingsData {
     struct TextEditingSettings: Codable, Hashable, SearchableSettingsPage {
 
         var searchKeys: [String] {
-            [
+            var keys = [
                 "Prefer Indent Using",
                 "Tab Width",
                 "Wrap lines to editor width",
+                "Editor Overscroll",
                 "Font",
                 "Font Size",
                 "Font Weight",
@@ -27,7 +28,10 @@ extension SettingsData {
                 "Enable type-over completion",
                 "Bracket Pair Highlight"
             ]
-            .map { NSLocalizedString($0, comment: "") }
+            if #available(macOS 14.0, *) {
+                keys.append("System Cursor")
+            }
+            return keys.map { NSLocalizedString($0, comment: "") }
         }
 
         /// An integer indicating how many spaces a `tab` will appear as visually.
@@ -48,6 +52,9 @@ extension SettingsData {
 
         /// A flag indicating whether to wrap lines to editor width
         var wrapLinesToEditorWidth: Bool = true
+
+        /// The percentage of overscroll to apply to the text view
+        var overscroll: OverscrollOption = .medium
 
         /// A multiplier for setting the line height. Defaults to `1.2`
         var lineHeightMultiple: Double = 1.2
@@ -88,6 +95,10 @@ extension SettingsData {
                 Bool.self,
                 forKey: .wrapLinesToEditorWidth
             ) ?? true
+            self.overscroll = try container.decodeIfPresent(
+                OverscrollOption.self,
+                forKey: .overscroll
+            ) ?? .medium
             self.lineHeightMultiple = try container.decodeIfPresent(
                 Double.self,
                 forKey: .lineHeightMultiple
@@ -165,6 +176,22 @@ extension SettingsData {
                 case bordered
                 case flash
                 case underline
+            }
+        }
+
+        enum OverscrollOption: String, Codable {
+            case none
+            case small
+            case medium
+            case large
+
+            var overscrollPercentage: CGFloat {
+                switch self {
+                case .none: return 0
+                case .small: return 0.25
+                case .medium: return 0.5
+                case .large: return 0.75
+                }
             }
         }
     }

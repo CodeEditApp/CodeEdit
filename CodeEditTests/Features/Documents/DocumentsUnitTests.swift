@@ -12,7 +12,7 @@ final class DocumentsUnitTests: XCTestCase {
     // Properties
     private var splitViewController: CodeEditSplitViewController!
     private var hapticFeedbackPerformerMock: NSHapticFeedbackPerformerMock!
-    private var navigatorViewModel: NavigatorSidebarViewModel!
+    private var navigatorViewModel: NavigatorAreaViewModel!
     private var window: NSWindow!
     private var workspace = WorkspaceDocument()
 

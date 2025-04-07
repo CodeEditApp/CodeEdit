@@ -40,7 +40,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             // Because: CETask only contains information about the relative path.
             let fullCommand: String
             if let workspaceURL = workspaceURL {
-                fullCommand = "cd \(workspaceURL.relativePath) && \(task.fullCommand)"
+                fullCommand = "cd \(workspaceURL.relativePath.escapedDirectory()) && \(task.fullCommand)"
             } else {
                 fullCommand = task.fullCommand
             }
@@ -58,8 +58,8 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             }
 
             outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
-                let data = String(decoding: fileHandle.availableData, as: UTF8.self)
-                if !data.isEmpty {
+                if let data = String(bytes: fileHandle.availableData, encoding: .utf8),
+                   !data.isEmpty {
                     Task {
                         await self.updateOutput(data)
                     }

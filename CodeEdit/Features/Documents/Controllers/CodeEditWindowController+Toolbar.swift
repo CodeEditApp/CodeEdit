@@ -31,6 +31,7 @@ extension CodeEditWindowController {
             .branchPicker,
             .flexibleSpace,
             .activityViewer,
+            .notificationItem,
             .flexibleSpace,
             .itemListTrackingSeparator,
             .flexibleSpace,
@@ -47,6 +48,7 @@ extension CodeEditWindowController {
             .toggleLastSidebarItem,
             .branchPicker,
             .activityViewer,
+            .notificationItem,
             .startTaskSidebarItem,
             .stopTaskSidebarItem
         ]
@@ -173,6 +175,15 @@ extension CodeEditWindowController {
                 strongWidth
             ])
 
+            toolbarItem.view = view
+            return toolbarItem
+        case .notificationItem:
+            let toolbarItem = NSToolbarItem(itemIdentifier: .notificationItem)
+            guard let workspace = workspace else { return nil }
+            let view = NSHostingView(
+                rootView: NotificationToolbarItem()
+                    .environmentObject(workspace)
+            )
             toolbarItem.view = view
             return toolbarItem
         default:

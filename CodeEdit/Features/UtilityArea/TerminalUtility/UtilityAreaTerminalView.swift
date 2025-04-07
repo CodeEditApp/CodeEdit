@@ -138,7 +138,7 @@ struct UtilityAreaTerminalView: View {
                         guard let terminal = getSelectedTerminal() else {
                             return
                         }
-                        utilityAreaViewModel.addTerminal(shell: nil, workspace: workspace, replacing: terminal.id)
+                        utilityAreaViewModel.replaceTerminal(terminal.id)
                     } label: {
                         Image(systemName: "trash")
                     }
@@ -161,7 +161,11 @@ struct UtilityAreaTerminalView: View {
             UtilityAreaTerminalSidebar()
         }
         .onAppear {
-            utilityAreaViewModel.initializeTerminals(workspace)
+            guard let workspaceURL = workspace.fileURL else {
+                assertionFailure("Workspace does not have a file URL.")
+                return
+            }
+            utilityAreaViewModel.initializeTerminals(workspaceURL: workspaceURL)
         }
     }
 
@@ -177,35 +181,5 @@ struct UtilityAreaTerminalView: View {
                 EffectView(.contentBackground)
             }
         }
-    }
-}
-
-struct UtilityAreaTerminalPicker: View {
-    @Binding var selectedIDs: Set<UUID>
-    var terminals: [UtilityAreaTerminal]
-
-    var selectedID: Binding<UUID?> {
-        Binding<UUID?>(
-            get: {
-                selectedIDs.first
-            },
-            set: { newValue in
-                if let selectedID = newValue {
-                    selectedIDs = [selectedID]
-                }
-            }
-        )
-    }
-
-    var body: some View {
-        Picker("Terminal Tab", selection: selectedID) {
-            ForEach(terminals, id: \.self.id) { terminal in
-                Text(terminal.title)
-                    .tag(terminal.id as UUID?)
-            }
-        }
-        .labelsHidden()
-        .controlSize(.small)
-        .buttonStyle(.borderless)
     }
 }

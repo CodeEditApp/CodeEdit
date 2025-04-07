@@ -125,6 +125,7 @@ extension CodeEditWindowController {
             settingsWindow.contentView = NSHostingView(rootView: contentView)
             settingsWindow.titlebarAppearsTransparent = true
             settingsWindow.setContentSize(NSSize(width: 515, height: 515))
+            settingsWindow.setAccessibilityTitle("Workspace Settings")
 
             window.beginSheet(settingsWindow, completionHandler: nil)
         }
@@ -139,4 +140,5 @@ extension NSToolbarItem.Identifier {
     static let itemListTrackingSeparator = NSToolbarItem.Identifier("ItemListTrackingSeparator")
     static let branchPicker: NSToolbarItem.Identifier = NSToolbarItem.Identifier("BranchPicker")
     static let activityViewer: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ActivityViewer")
+    static let notificationItem = NSToolbarItem.Identifier("notificationItem")
 }

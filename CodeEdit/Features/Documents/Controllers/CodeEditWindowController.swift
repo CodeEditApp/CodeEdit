@@ -22,7 +22,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     var workspaceSettingsWindow: NSWindow?
     var quickOpenPanel: SearchPanel?
     var commandPalettePanel: SearchPanel?
-    var navigatorSidebarViewModel: NavigatorSidebarViewModel?
+    var navigatorSidebarViewModel: NavigatorAreaViewModel?
 
     internal var cancellables = [AnyCancellable]()
 
@@ -86,7 +86,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             return nil
         }
 
-        let navigatorModel = NavigatorSidebarViewModel()
+        let navigatorModel = NavigatorAreaViewModel()
         navigatorSidebarViewModel = navigatorModel
         self.listenToDocumentEdited(workspace: workspace)
         return CodeEditSplitViewController(

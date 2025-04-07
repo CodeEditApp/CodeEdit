@@ -90,14 +90,14 @@ extension MonospacedFontPicker {
     private func getFonts() async {
         await withTaskGroup(of: Void.self) { group in
             group.addTask {
-                let monospacedFontFamilyNames = getMonospacedFamilyNames()
+                let monospacedFontFamilyNames = await getMonospacedFamilyNames()
                 await MainActor.run {
                     self.monospacedFontFamilyNames = monospacedFontFamilyNames
                 }
             }
 
             group.addTask {
-                let otherFontFamilyNames = getOtherFontFamilyNames()
+                let otherFontFamilyNames = await getOtherFontFamilyNames()
                 await MainActor.run {
                     self.otherFontFamilyNames = otherFontFamilyNames
                 }

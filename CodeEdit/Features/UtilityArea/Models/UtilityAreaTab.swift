@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum UtilityAreaTab: AreaTab, CaseIterable {
+enum UtilityAreaTab: WorkspacePanelTab, CaseIterable {
     var id: Self { self }
 
     case terminal

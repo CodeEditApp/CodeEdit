@@ -32,8 +32,8 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
             appropriateFor: nil,
             create: true
         )
-        .appendingPathComponent("CodeEdit", isDirectory: true)
-        .appendingPathComponent("WorkspaceClientTests", isDirectory: true)
+        .appending(path: "CodeEdit", directoryHint: .isDirectory)
+        .appending(path: "WorkspaceClientTests", directoryHint: .isDirectory)
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
     }
@@ -48,7 +48,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         try files.forEach {
             let fakeData = Data("fake string".utf8)
             let fileUrl = directory
-                .appendingPathComponent($0)
+                .appending(path: $0)
             try fakeData.write(to: fileUrl)
         }
         let client = CEWorkspaceFileManager(
@@ -85,11 +85,11 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         try files.forEach {
             let fakeData = Data("fake string".utf8)
             let fileUrl = directory
-                .appendingPathComponent($0)
+                .appending(path: $0)
             try fakeData.write(to: fileUrl)
         }
 
-        wait(for: [expectation])
+        wait(for: [expectation], timeout: 2.0)
         XCTAssertEqual(files.count, client.flattenedFileItems.count - 1)
         try FileManager.default.removeItem(at: directory)
         client.removeObserver(observer)
@@ -115,48 +115,87 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         try FileManager.default.createDirectory(at: testDirectoryURL, withIntermediateDirectories: true)
         try "".write(to: testFileURL, atomically: true, encoding: .utf8)
 
-        let fileManger = CEWorkspaceFileManager(
+        let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
             sourceControlManager: nil
         )
 
-        XCTAssert(fileManger.getFile(testFileURL.path()) == nil)
-        XCTAssert(fileManger.childrenOfFile(CEWorkspaceFile(url: testFileURL)) == nil)
-        XCTAssert(fileManger.getFile(testFileURL.path(), createIfNotFound: true) != nil)
-        XCTAssert(fileManger.childrenOfFile(CEWorkspaceFile(url: testDirectoryURL)) != nil)
+        XCTAssert(fileManager.getFile(testFileURL.path()) == nil)
+        XCTAssert(fileManager.childrenOfFile(CEWorkspaceFile(url: testFileURL)) == nil)
+        XCTAssert(fileManager.getFile(testFileURL.path(), createIfNotFound: true) != nil)
+        XCTAssert(fileManager.childrenOfFile(CEWorkspaceFile(url: testDirectoryURL)) != nil)
     }
 
     func testDeleteFile() throws {
         let testFileURL = directory.appending(path: "file.txt")
         try "".write(to: testFileURL, atomically: true, encoding: .utf8)
 
-        let fileManger = CEWorkspaceFileManager(
+        let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
             sourceControlManager: nil
         )
-        XCTAssert(fileManger.getFile(testFileURL.path()) != nil)
+        XCTAssert(fileManager.getFile(testFileURL.path()) != nil)
         XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == true)
-        fileManger.delete(file: CEWorkspaceFile(url: testFileURL), confirmDelete: false)
+        try fileManager.delete(file: CEWorkspaceFile(url: testFileURL), confirmDelete: false)
         XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == false)
     }
 
     func testDuplicateFile() throws {
         let testFileURL = directory.appending(path: "file.txt")
-        let testDuplicatedFileURL = directory.appendingPathComponent("file copy.txt")
+        let testDuplicatedFileURL = directory.appending(path: "file copy.txt")
         try "😄".write(to: testFileURL, atomically: true, encoding: .utf8)
 
-        let fileManger = CEWorkspaceFileManager(
+        let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
             sourceControlManager: nil
         )
-        XCTAssert(fileManger.getFile(testFileURL.path()) != nil)
+        XCTAssert(fileManager.getFile(testFileURL.path()) != nil)
         XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == true)
-        fileManger.duplicate(file: CEWorkspaceFile(url: testFileURL))
+        try fileManager.duplicate(file: CEWorkspaceFile(url: testFileURL))
         XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == true)
         XCTAssert(FileManager.default.fileExists(atPath: testDuplicatedFileURL.path(percentEncoded: false)) == true)
         XCTAssert(try String(contentsOf: testDuplicatedFileURL) == "😄")
+    }
+
+    func testAddFile() throws {
+        let fileManager = CEWorkspaceFileManager(
+            folderUrl: directory,
+            ignoredFilesAndFolders: [],
+            sourceControlManager: nil
+        )
+
+        // This will throw if unsuccessful.
+        var file = try fileManager.addFile(fileName: "Test File.txt", toFile: fileManager.workspaceItem)
+
+        // Should not add a new file extension, it already has one. This adds a '.' at the end if incorrect.
+        // See #1966
+        XCTAssertEqual(file.name, "Test File.txt")
+
+        // Test the automatic file extension stuff
+        file = try fileManager.addFile(
+            fileName: "Test File Extension",
+            toFile: fileManager.workspaceItem,
+            useExtension: nil
+        )
+
+        // Should detect '.txt' with the previous file in the same directory.
+        XCTAssertEqual(file.name, "Test File Extension.txt")
+
+        // Test explicit file extension with both . and no period at the beginning of the given extension.
+        file = try fileManager.addFile(
+            fileName: "Explicit File Extension",
+            toFile: fileManager.workspaceItem,
+            useExtension: "xlsx"
+        )
+        XCTAssertEqual(file.name, "Explicit File Extension.xlsx")
+        file = try fileManager.addFile(
+            fileName: "PDF",
+            toFile: fileManager.workspaceItem,
+            useExtension: ".pdf"
+        )
+        XCTAssertEqual(file.name, "PDF.pdf")
     }
 }

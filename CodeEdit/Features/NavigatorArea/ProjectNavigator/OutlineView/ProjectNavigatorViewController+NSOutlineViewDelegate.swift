@@ -45,13 +45,11 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         guard let item = outlineView.item(atRow: selectedIndex) as? CEWorkspaceFile else { return }
 
         if !item.isFolder && shouldSendSelectionUpdate {
-            DispatchQueue.main.async { [weak self] in
-                self?.shouldSendSelectionUpdate = false
-                if self?.workspace?.editorManager?.activeEditor.selectedTab?.file != item {
-                    self?.workspace?.editorManager?.activeEditor.openTab(file: item, asTemporary: true)
-                }
-                self?.shouldSendSelectionUpdate = true
+            shouldSendSelectionUpdate = false
+            if workspace?.editorManager?.activeEditor.selectedTab?.file != item {
+                workspace?.editorManager?.activeEditor.openTab(file: item, asTemporary: true)
             }
+            shouldSendSelectionUpdate = true
         }
     }
 

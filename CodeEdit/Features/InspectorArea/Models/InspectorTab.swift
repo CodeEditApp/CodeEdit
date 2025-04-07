@@ -9,9 +9,10 @@ import SwiftUI
 import CodeEditKit
 import ExtensionFoundation
 
-enum InspectorTab: AreaTab {
+enum InspectorTab: WorkspacePanelTab {
     case file
     case gitHistory
+    case internalDevelopment
     case uiExtension(endpoint: AppExtensionIdentity, data: ResolvedSidebar.SidebarStore)
 
     var systemImage: String {
@@ -20,6 +21,8 @@ enum InspectorTab: AreaTab {
             return "doc"
         case .gitHistory:
             return "clock"
+        case .internalDevelopment:
+            return "hammer"
         case .uiExtension(_, let data):
             return data.icon ?? "e.square"
         }
@@ -38,6 +41,8 @@ enum InspectorTab: AreaTab {
             return "File Inspector"
         case .gitHistory:
             return "History Inspector"
+        case .internalDevelopment:
+            return "Internal Development"
         case .uiExtension(_, let data):
             return data.help ?? data.sceneID
         }
@@ -49,6 +54,8 @@ enum InspectorTab: AreaTab {
             FileInspectorView()
         case .gitHistory:
             HistoryInspectorView()
+        case .internalDevelopment:
+            InternalDevelopmentInspectorView()
         case let .uiExtension(endpoint, data):
             ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
         }

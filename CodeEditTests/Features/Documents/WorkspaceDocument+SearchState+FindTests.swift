@@ -25,8 +25,8 @@ final class FindTests: XCTestCase {
             appropriateFor: nil,
             create: true
         )
-        .appendingPathComponent("CodeEdit", isDirectory: true)
-        .appendingPathComponent("WorkspaceClientTests", isDirectory: true)
+        .appending(path: "CodeEdit", directoryHint: .isDirectory)
+        .appending(path: "WorkspaceClientTests", directoryHint: .isDirectory)
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
@@ -55,8 +55,10 @@ final class FindTests: XCTestCase {
 
         files = fileURLs.map { CEWorkspaceFile(url: $0) }
 
-        files[1].parent = CEWorkspaceFile(url: folder1)
-        files[2].parent = CEWorkspaceFile(url: folder2)
+        let parent1 = CEWorkspaceFile(url: folder1)
+        let parent2 = CEWorkspaceFile(url: folder2)
+        files[1].parent = parent1
+        files[2].parent = parent2
 
         await mockWorkspace.searchState?.addProjectToIndex()
 

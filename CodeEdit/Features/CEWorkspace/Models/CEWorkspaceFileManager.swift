@@ -120,7 +120,16 @@ final class CEWorkspaceFileManager {
                 }
             }
 
-            return flattenedFileItems[url.relativePath]
+            if let file = flattenedFileItems[url.relativePath] {
+                return file
+            } else if let parent = getFile(currentURL.deletingLastPathComponent().path) {
+                // This catches the case where each parent dir has been loaded, their children cached, and this is a new
+                // file, so we still need to create it and add it to the cache.
+                let newFileItem = createChild(url, forParent: parent)
+                flattenedFileItems[newFileItem.id] = newFileItem
+                childrenMap[parent.id]?.append(newFileItem.id)
+                return newFileItem
+            }
         }
 
         return nil
@@ -189,7 +198,7 @@ final class CEWorkspaceFileManager {
     /// - Parameter file: The parent element.
     /// - Returns: A child element with an associated parent.
     func createChild(_ url: URL, forParent file: CEWorkspaceFile) -> CEWorkspaceFile {
-        let relativeURL = URL(filePath: file.id).appendingPathComponent(url.lastPathComponent)
+        let relativeURL = URL(filePath: file.id).appending(path: url.lastPathComponent)
         let childId = relativeURL.relativePath
         let newFileItem = CEWorkspaceFile(id: childId, url: relativeURL)
         newFileItem.parent = file

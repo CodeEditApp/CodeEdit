@@ -11,6 +11,9 @@ struct TaskDropDownView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @Environment(\.controlActiveState)
+    private var activeState
+
     @ObservedObject var taskManager: TaskManager
 
     @State private var isTaskPopOverPresented: Bool = false
@@ -28,8 +31,10 @@ struct TaskDropDownView: View {
                 }
             } else {
                 Text("Create Tasks")
+                    .frame(minWidth: 0)
             }
         }
+        .opacity(activeState == .inactive ? 0.4 : 1.0)
         .font(.subheadline)
         .padding(.trailing, 11.5)
         .padding(.horizontal, 2.5)
@@ -38,11 +43,20 @@ struct TaskDropDownView: View {
         .onHover { hovering in
             self.isHoveringTasks = hovering
         }
-        .instantPopover(isPresented: $isTaskPopOverPresented, arrowEdge: .bottom) {
+        .instantPopover(isPresented: $isTaskPopOverPresented, arrowEdge: .top) {
             taskPopoverContent
         }
         .onTapGesture {
             self.isTaskPopOverPresented.toggle()
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityIdentifier("TaskDropdown")
+        .accessibilityValue(taskManager.selectedTask?.name ?? "Create Tasks")
+        .accessibilityLabel("Active Task")
+        .accessibilityHint("Open the active task menu")
+        .accessibilityAction {
+            isTaskPopOverPresented = true
         }
     }
 
@@ -71,7 +85,9 @@ struct TaskDropDownView: View {
         VStack(alignment: .leading, spacing: 0) {
             if !taskManager.availableTasks.isEmpty {
                 ForEach(taskManager.availableTasks, id: \.id) { task in
-                    TasksPopoverMenuItem(taskManager: taskManager, task: task)
+                    TasksPopoverMenuItem(taskManager: taskManager, task: task) {
+                        isTaskPopOverPresented = false
+                    }
                 }
                 Divider()
                     .padding(.vertical, 5)

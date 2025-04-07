@@ -19,6 +19,7 @@ struct TextEditingSettingsView: View {
                 defaultTabWidth
                 wrapLinesToEditorWidth
                 useSystemCursor
+                overscroll
             }
             Section {
                 fontSelector
@@ -77,6 +78,31 @@ private extension TextEditingSettingsView {
             Toggle("Use System Cursor", isOn: $textEditing.useSystemCursor)
         } else {
             EmptyView()
+        }
+    }
+
+    @ViewBuilder private var overscroll: some View {
+        Group {
+            Picker(
+                "Editor Overscroll",
+                selection: $textEditing.overscroll
+            ) {
+                Text("None")
+                    .tag(SettingsData.TextEditingSettings.OverscrollOption.none)
+                Divider()
+                Text("Small")
+                    .tag(
+                        SettingsData.TextEditingSettings.OverscrollOption.small
+                    )
+                Text("Medium")
+                    .tag(
+                        SettingsData.TextEditingSettings.OverscrollOption.medium
+                    )
+                Text("Large")
+                    .tag(
+                        SettingsData.TextEditingSettings.OverscrollOption.large
+                    )
+            }
         }
     }
 
