@@ -50,6 +50,8 @@ struct CodeFileView: View {
 
     @ObservedObject private var themeModel: ThemeModel = .shared
 
+    @State private var treeSitter = TreeSitterClient()
+
     private var cancellables = Set<AnyCancellable>()
 
     private let isEditable: Bool
@@ -115,7 +117,9 @@ struct CodeFileView: View {
             editorOverscroll: overscroll.overscrollPercentage,
             cursorPositions: $cursorPositions,
             useThemeBackground: useThemeBackground,
+            highlightProviders: [treeSitter],
             contentInsets: edgeInsets.nsEdgeInsets,
+            additionalTextInsets: NSEdgeInsets(top: 2, left: 0, bottom: 0, right: 0),
             isEditable: isEditable,
             letterSpacing: letterSpacing,
             bracketPairEmphasis: getBracketPairEmphasis(),
