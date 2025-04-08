@@ -46,8 +46,8 @@ struct EditorAreaView: View {
         }
 
         var editorInsetAmount: Double {
-            let tabBarHeight = shouldShowTabBar ? (EditorTabBarView.height + 1) : 0
-            let jumpBarHeight = showEditorJumpBar ? (EditorJumpBarView.height + 1) : 0
+            let tabBarHeight = shouldShowTabBar ? (EditorTabBarView.height) : 0
+            let jumpBarHeight = showEditorJumpBar ? (EditorJumpBarView.height) : 0
             return tabBarHeight + jumpBarHeight
         }
 

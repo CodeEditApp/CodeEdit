@@ -40,8 +40,8 @@ struct CodeFileView: View {
     var matchAppearance
     @AppSettings(\.textEditing.letterSpacing)
     var letterSpacing
-    @AppSettings(\.textEditing.bracketHighlight)
-    var bracketHighlight
+    @AppSettings(\.textEditing.bracketEmphasis)
+    var bracketEmphasis
     @AppSettings(\.textEditing.useSystemCursor)
     var useSystemCursor
 
@@ -49,6 +49,8 @@ struct CodeFileView: View {
     private var colorScheme
 
     @ObservedObject private var themeModel: ThemeModel = .shared
+
+    @State private var treeSitter = TreeSitterClient()
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -99,23 +101,6 @@ struct CodeFileView: View {
 
     @State private var font: NSFont = Settings[\.textEditing].font.current
 
-    @State private var bracketPairHighlight: BracketPairHighlight? = {
-        let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
-        let color = Settings[\.textEditing].bracketHighlight.useCustomColor
-        ? Settings[\.textEditing].bracketHighlight.color.nsColor
-        : theme.editor.text.nsColor.withAlphaComponent(0.8)
-        switch Settings[\.textEditing].bracketHighlight.highlightType {
-        case .disabled:
-            return nil
-        case .flash:
-            return .flash
-        case .bordered:
-            return .bordered(color: color)
-        case .underline:
-            return .underline(color: color)
-        }
-    }()
-
     @Environment(\.edgeInsets)
     private var edgeInsets
 
@@ -132,10 +117,12 @@ struct CodeFileView: View {
             editorOverscroll: overscroll.overscrollPercentage,
             cursorPositions: $cursorPositions,
             useThemeBackground: useThemeBackground,
+            highlightProviders: [treeSitter],
             contentInsets: edgeInsets.nsEdgeInsets,
+            additionalTextInsets: NSEdgeInsets(top: 2, left: 0, bottom: 0, right: 0),
             isEditable: isEditable,
             letterSpacing: letterSpacing,
-            bracketPairHighlight: bracketPairHighlight,
+            bracketPairEmphasis: getBracketPairEmphasis(),
             useSystemCursor: useSystemCursor,
             undoManager: undoManager,
             coordinators: textViewCoordinators
@@ -154,19 +141,18 @@ struct CodeFileView: View {
         .onChange(of: settingsFont) { newFontSetting in
             font = newFontSetting.current
         }
-        .onChange(of: bracketHighlight) { _ in
-            bracketPairHighlight = getBracketPairHighlight()
-        }
     }
 
-    private func getBracketPairHighlight() -> BracketPairHighlight? {
-        let color = if Settings[\.textEditing].bracketHighlight.useCustomColor {
-            Settings[\.textEditing].bracketHighlight.color.nsColor
+    /// Determines the style of bracket emphasis based on the `bracketEmphasis` setting and the current theme.
+    /// - Returns: The emphasis style to use for bracket pair emphasis.
+    private func getBracketPairEmphasis() -> BracketPairEmphasis? {
+        let color = if Settings[\.textEditing].bracketEmphasis.useCustomColor {
+            Settings[\.textEditing].bracketEmphasis.color.nsColor
         } else {
             currentTheme.editor.text.nsColor.withAlphaComponent(0.8)
         }
 
-        switch Settings[\.textEditing].bracketHighlight.highlightType {
+        switch Settings[\.textEditing].bracketEmphasis.highlightType {
         case .disabled:
             return nil
         case .flash:

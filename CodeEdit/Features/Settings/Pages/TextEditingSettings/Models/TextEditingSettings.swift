@@ -26,6 +26,7 @@ extension SettingsData {
                 "Letter Spacing",
                 "Autocomplete braces",
                 "Enable type-over completion",
+                "Bracket Pair Emphasis",
                 "Bracket Pair Highlight"
             ]
             if #available(macOS 14.0, *) {
@@ -64,7 +65,7 @@ extension SettingsData {
         var letterSpacing: Double = 1.0
 
         /// The behavior of bracket pair highlights.
-        var bracketHighlight: BracketPairHighlight = BracketPairHighlight()
+        var bracketEmphasis: BracketPairEmphasis = BracketPairEmphasis()
 
         /// Use the system cursor for the source editor.
         var useSystemCursor: Bool = true
@@ -107,10 +108,10 @@ extension SettingsData {
                 Double.self,
                 forKey: .letterSpacing
             ) ?? 1
-            self.bracketHighlight = try container.decodeIfPresent(
-                BracketPairHighlight.self,
-                forKey: .bracketHighlight
-            ) ?? BracketPairHighlight()
+            self.bracketEmphasis = try container.decodeIfPresent(
+                BracketPairEmphasis.self,
+                forKey: .bracketEmphasis
+            ) ?? BracketPairEmphasis()
             if #available(macOS 14, *) {
                 self.useSystemCursor = try container.decodeIfPresent(Bool.self, forKey: .useSystemCursor) ?? true
             } else {
@@ -164,7 +165,7 @@ extension SettingsData {
             }
         }
 
-        struct BracketPairHighlight: Codable, Hashable {
+        struct BracketPairEmphasis: Codable, Hashable {
             /// The type of highlight to use
             var highlightType: HighlightType = .flash
             var useCustomColor: Bool = false
