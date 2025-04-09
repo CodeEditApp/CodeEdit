@@ -19,6 +19,7 @@ struct TextEditingSettingsView: View {
                 defaultTabWidth
                 wrapLinesToEditorWidth
                 useSystemCursor
+                overscroll
             }
             Section {
                 fontSelector
@@ -77,6 +78,31 @@ private extension TextEditingSettingsView {
             Toggle("Use System Cursor", isOn: $textEditing.useSystemCursor)
         } else {
             EmptyView()
+        }
+    }
+
+    @ViewBuilder private var overscroll: some View {
+        Group {
+            Picker(
+                "Editor Overscroll",
+                selection: $textEditing.overscroll
+            ) {
+                Text("None")
+                    .tag(SettingsData.TextEditingSettings.OverscrollOption.none)
+                Divider()
+                Text("Small")
+                    .tag(
+                        SettingsData.TextEditingSettings.OverscrollOption.small
+                    )
+                Text("Medium")
+                    .tag(
+                        SettingsData.TextEditingSettings.OverscrollOption.medium
+                    )
+                Text("Large")
+                    .tag(
+                        SettingsData.TextEditingSettings.OverscrollOption.large
+                    )
+            }
         }
     }
 
@@ -150,26 +176,26 @@ private extension TextEditingSettingsView {
         Group {
             Picker(
                 "Bracket Pair Highlight",
-                selection: $textEditing.bracketHighlight.highlightType
+                selection: $textEditing.bracketEmphasis.highlightType
             ) {
-                Text("Disabled").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.disabled)
+                Text("Disabled").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.disabled)
                 Divider()
-                Text("Bordered").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.bordered)
-                Text("Flash").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.flash)
-                Text("Underline").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.underline)
+                Text("Bordered").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.bordered)
+                Text("Flash").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.flash)
+                Text("Underline").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.underline)
             }
-            if [.bordered, .underline].contains(textEditing.bracketHighlight.highlightType) {
-                Toggle("Use Custom Color", isOn: $textEditing.bracketHighlight.useCustomColor)
+            if [.bordered, .underline].contains(textEditing.bracketEmphasis.highlightType) {
+                Toggle("Use Custom Color", isOn: $textEditing.bracketEmphasis.useCustomColor)
                 SettingsColorPicker(
                     "Bracket Pair Highlight Color",
-                    color: $textEditing.bracketHighlight.color.swiftColor
+                    color: $textEditing.bracketEmphasis.color.swiftColor
                 )
                 .foregroundColor(
-                    textEditing.bracketHighlight.useCustomColor
+                    textEditing.bracketEmphasis.useCustomColor
                         ? Color(.labelColor)
                         : Color(.secondaryLabelColor)
                 )
-                .disabled(!textEditing.bracketHighlight.useCustomColor)
+                .disabled(!textEditing.bracketEmphasis.useCustomColor)
             }
         }
     }
