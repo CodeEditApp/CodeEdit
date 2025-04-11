@@ -65,7 +65,7 @@ final class ProjectNavigatorViewController: NSViewController {
     var shouldSendSelectionUpdate: Bool = true
 
     var filterIsEmpty: Bool {
-        workspace?.navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        workspace?.navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true
     }
 
     /// Setup the ``scrollView`` and ``outlineView``
