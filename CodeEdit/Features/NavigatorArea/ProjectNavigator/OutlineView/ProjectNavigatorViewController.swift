@@ -65,7 +65,7 @@ final class ProjectNavigatorViewController: NSViewController {
     var shouldSendSelectionUpdate: Bool = true
 
     var filterIsEmpty: Bool {
-        workspace?.navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true
+        workspace?.navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     /// Setup the ``scrollView`` and ``outlineView``
@@ -218,7 +218,7 @@ final class ProjectNavigatorViewController: NSViewController {
 
     /// Checks if the given filter matches the name of the item or any of its children.
     func fileSearchMatches(_ filter: String, for item: CEWorkspaceFile, sourceControlFilter: Bool) -> Bool {
-        guard !(filterIsEmpty && !sourceControlFilter) else {
+        guard !filterIsEmpty || sourceControlFilter else {
             return true
         }
 
