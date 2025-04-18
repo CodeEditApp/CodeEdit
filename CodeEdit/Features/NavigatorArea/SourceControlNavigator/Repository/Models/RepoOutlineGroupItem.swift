@@ -8,12 +8,16 @@
 import SwiftUI
 
 struct RepoOutlineGroupItem: Hashable, Identifiable {
+    enum ImageType: Hashable {
+        case system(name: String)
+        case symbol(name: String)
+    }
+
     var id: String
     var label: String
     var description: String?
-    var systemImage: String?
-    var symbolImage: String?
-    var imageColor: Color?
+    var image: ImageType
+    var imageColor: Color
     var children: [RepoOutlineGroupItem]?
     var branch: GitBranch?
     var stashEntry: GitStashEntry?

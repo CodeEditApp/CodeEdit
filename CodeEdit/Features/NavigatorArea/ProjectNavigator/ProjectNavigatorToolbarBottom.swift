@@ -18,7 +18,6 @@ struct ProjectNavigatorToolbarBottom: View {
     @EnvironmentObject var editorManager: EditorManager
 
     @State var recentsFilter: Bool = false
-    @State var sourceControlFilter: Bool = false
 
     var body: some View {
         HStack(spacing: 5) {
@@ -48,7 +47,7 @@ struct ProjectNavigatorToolbarBottom: View {
                             Image(systemName: "clock")
                         }
                         .help("Show only recent files")
-                        Toggle(isOn: $sourceControlFilter) {
+                        Toggle(isOn: $workspace.sourceControlFilter) {
                             Image(systemName: "plusminus.circle")
                         }
                         .help("Show only files with source-control status")
@@ -57,7 +56,7 @@ struct ProjectNavigatorToolbarBottom: View {
                     .padding(.trailing, 2.5)
                 },
                 clearable: true,
-                hasValue: !workspace.navigatorFilter.isEmpty || recentsFilter || sourceControlFilter
+                hasValue: !workspace.navigatorFilter.isEmpty || recentsFilter || workspace.sourceControlFilter
             )
         }
         .padding(.horizontal, 5)
@@ -168,10 +167,10 @@ struct FilterDropDownIconButton<MenuView: View>: View {
         Menu { menu() } label: {}
             .background {
                 if isOn == true {
-                    Image("line.3.horizontal.decrease.chevron.filled")
+                    Image(ImageResource.line3HorizontalDecreaseChevronFilled)
                         .foregroundStyle(.tint)
                 } else {
-                    Image("line.3.horizontal.decrease.chevron")
+                    Image(ImageResource.line3HorizontalDecreaseChevron)
                 }
             }
             .menuStyle(.borderlessButton)

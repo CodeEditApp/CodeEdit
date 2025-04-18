@@ -23,7 +23,7 @@ struct AccountSelectionView: View {
                         ForEach(gitProviders, id: \.self) { provider in
                             AccountsSettingsProviderRow(
                                 name: provider.name,
-                                iconName: provider.iconName,
+                                iconResource: provider.iconResource,
                                 action: {
                                     selectedProvider = provider
                                     dismiss()
