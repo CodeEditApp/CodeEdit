@@ -26,14 +26,12 @@ struct EditorTabBarTrailingAccessories: View {
 
     @EnvironmentObject private var editor: Editor
 
-    /// Because this view isn't invalidated with the `editor.selectedTab?.file.fileDocument` changes, this allows us
-    /// to refresh relevant views when settings change.
-    @State private var refreshToggleBool: Bool = false
+    @Binding var codeFile: CodeFileDocument?
 
     var body: some View {
         HStack(spacing: 6) {
             // Once more options are implemented that are available for non-code documents, remove this if statement
-            if let codeFile = editor.selectedTab?.file.fileDocument {
+            if let codeFile {
                 editorOptionsMenu(codeFile: codeFile)
                 Divider()
                     .padding(.vertical, 10)
@@ -62,17 +60,12 @@ struct EditorTabBarTrailingAccessories: View {
                             get: { codeFile.wrapLines ?? wrapLinesToEditorWidth },
                             set: {
                                 codeFile.wrapLines = $0
-                                refreshToggleBool.toggle()
                             }
                         )
                     )
-                    .tag(refreshToggleBool)
                 } label: {}
                     .menuStyle(.borderlessButton)
                     .menuIndicator(.hidden)
-            }
-            .onReceive(codeFile.$wrapLines) { _ in // This is annoying but it works
-                refreshToggleBool.toggle()
             }
     }
 
@@ -116,6 +109,6 @@ struct EditorTabBarTrailingAccessories: View {
 
 struct TabBarTrailingAccessories_Previews: PreviewProvider {
     static var previews: some View {
-        EditorTabBarTrailingAccessories()
+        EditorTabBarTrailingAccessories(codeFile: .constant(nil))
     }
 }
