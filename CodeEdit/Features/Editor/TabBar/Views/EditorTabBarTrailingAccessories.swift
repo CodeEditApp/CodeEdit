@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct EditorTabBarTrailingAccessories: View {
+    @AppSettings(\.textEditing.wrapLinesToEditorWidth)
+    var wrapLinesToEditorWidth
+    @AppSettings(\.textEditing.showMinimap)
+    var showMinimap
+
     @Environment(\.splitEditor)
     var splitEditor
 
@@ -21,13 +26,54 @@ struct EditorTabBarTrailingAccessories: View {
 
     @EnvironmentObject private var editor: Editor
 
+    /// Because this view isn't invalidated with the `editor.selectedTab?.file.fileDocument` changes, this allows us
+    /// to refresh relevant views when settings change.
+    @State private var refreshToggleBool: Bool = false
+
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 6) {
+            // Once more options are implemented that are available for non-code documents, remove this if statement
+            if let codeFile = editor.selectedTab?.file.fileDocument {
+                editorOptionsMenu(codeFile: codeFile)
+                Divider()
+                    .padding(.vertical, 10)
+            }
             splitviewButton
         }
+        .buttonStyle(.icon)
+        .disabled(editorManager.isFocusingActiveEditor)
+        .opacity(editorManager.isFocusingActiveEditor ? 0.5 : 1)
         .padding(.horizontal, 7)
         .opacity(activeState != .inactive ? 1.0 : 0.5)
         .frame(maxHeight: .infinity) // Fill out vertical spaces.
+    }
+
+    func editorOptionsMenu(codeFile: CodeFileDocument) -> some View {
+        // This is a button so it gets the same styling from the Group in `body`.
+        Button(action: {}, label: { Image(systemName: "slider.horizontal.3") })
+            .overlay {
+                Menu {
+                    Toggle("Show Minimap", isOn: $showMinimap)
+                        .keyboardShortcut("M", modifiers: [.command, .shift, .control])
+                    Divider()
+                    Toggle(
+                        "Wrap Lines",
+                        isOn: Binding(
+                            get: { codeFile.wrapLines ?? wrapLinesToEditorWidth },
+                            set: {
+                                codeFile.wrapLines = $0
+                                refreshToggleBool.toggle()
+                            }
+                        )
+                    )
+                    .tag(refreshToggleBool)
+                } label: {}
+                    .menuStyle(.borderlessButton)
+                    .menuIndicator(.hidden)
+            }
+            .onReceive(codeFile.$wrapLines) { _ in // This is annoying but it works
+                refreshToggleBool.toggle()
+            }
     }
 
     var splitviewButton: some View {
@@ -53,9 +99,6 @@ struct EditorTabBarTrailingAccessories: View {
                 EmptyView()
             }
         }
-        .buttonStyle(.icon)
-        .disabled(editorManager.isFocusingActiveEditor)
-        .opacity(editorManager.isFocusingActiveEditor ? 0.5 : 1)
     }
 
     func split(edge: Edge) {
