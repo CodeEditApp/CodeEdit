@@ -20,6 +20,7 @@ struct TextEditingSettingsView: View {
                 wrapLinesToEditorWidth
                 useSystemCursor
                 overscroll
+                showMinimap
             }
             Section {
                 fontSelector
@@ -198,5 +199,11 @@ private extension TextEditingSettingsView {
                 .disabled(!textEditing.bracketEmphasis.useCustomColor)
             }
         }
+    }
+
+    @ViewBuilder private var showMinimap: some View {
+        Toggle("Show Minimap", isOn: $textEditing.showMinimap)
+            // swiftlint:disable:next line_length
+            .help("The minimap gives you a high-level summary of your source code, with controls to quickly navigate your document.")
     }
 }

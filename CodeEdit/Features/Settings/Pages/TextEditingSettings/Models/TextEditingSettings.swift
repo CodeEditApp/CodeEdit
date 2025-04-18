@@ -27,7 +27,8 @@ extension SettingsData {
                 "Autocomplete braces",
                 "Enable type-over completion",
                 "Bracket Pair Emphasis",
-                "Bracket Pair Highlight"
+                "Bracket Pair Highlight",
+                "Show Minimap",
             ]
             if #available(macOS 14.0, *) {
                 keys.append("System Cursor")
@@ -69,6 +70,9 @@ extension SettingsData {
 
         /// Use the system cursor for the source editor.
         var useSystemCursor: Bool = true
+
+        /// Toggle the minimap in the editor.
+        var showMinimap: Bool = true
 
         /// Default initializer
         init() {
@@ -118,6 +122,8 @@ extension SettingsData {
                 self.useSystemCursor = false
             }
 
+            self.showMinimap = try container.decodeIfPresent(Bool.self, forKey: .showMinimap) ?? true
+
             self.populateCommands()
         }
 
@@ -130,7 +136,7 @@ extension SettingsData {
                 title: "Toggle Type-Over Completion",
                 id: "prefs.text_editing.type_over_completion",
                 command: {
-                    Settings.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
+                    Settings[\.textEditing].enableTypeOverCompletion.toggle()
                 }
             )
 
@@ -139,7 +145,7 @@ extension SettingsData {
                 title: "Toggle Autocomplete Braces",
                 id: "prefs.text_editing.autocomplete_braces",
                 command: {
-                    Settings.shared.preferences.textEditing.autocompleteBraces.toggle()
+                    Settings[\.textEditing].autocompleteBraces.toggle()
                 }
             )
 
@@ -151,6 +157,14 @@ extension SettingsData {
                     Settings[\.textEditing].wrapLinesToEditorWidth.toggle()
                 }
             )
+
+            mgr.addCommand(
+                name: "Toggle Minimap",
+                title: "Toggle Minimap",
+                id: "prefs.text_editing.toggle_minimap"
+            ) {
+                Settings[\.textEditing].showMinimap.toggle()
+            }
         }
 
         struct IndentOption: Codable, Hashable {
