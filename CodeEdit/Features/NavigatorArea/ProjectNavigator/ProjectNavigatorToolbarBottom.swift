@@ -27,10 +27,15 @@ struct ProjectNavigatorToolbarBottom: View {
                 text: $workspace.navigatorFilter,
                 leadingAccessories: {
                     FilterDropDownIconButton(menu: {
-                        Button {
-                            workspace.sortFoldersOnTop.toggle()
-                        } label: {
-                            Text(workspace.sortFoldersOnTop ? "Alphabetically" : "Folders on top")
+                        ForEach([(true, "Folders on top"), (false, "Alphabetically")], id: \.0) { value, title in
+                            Toggle(title, isOn: Binding(get: {
+                                workspace.sortFoldersOnTop == value
+                            }, set: { _ in
+                                // Avoid calling the handleFilterChange method
+                                if workspace.sortFoldersOnTop != value {
+                                    workspace.sortFoldersOnTop = value
+                                }
+                            }))
                         }
                     }, isOn: !workspace.navigatorFilter.isEmpty)
                     .padding(.leading, 4)
