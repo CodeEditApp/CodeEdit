@@ -8,6 +8,9 @@
   <a aria-label="Follow CodeEdit on X" href="https://x.com/CodeEditApp" target="_blank">
     <img alt="" src="https://img.shields.io/badge/Follow%20@CodeEditApp-black.svg?style=for-the-badge&logo=X">
   </a>
+  <a aria-label="Follow CodeEdit on BlueSky" href="https://bsky.app/profile/codeedit.app" target="_blank">
+    <img alt="" src="https://img.shields.io/badge/Follow%20@codeedit.app-black.svg?style=for-the-badge&logo=bluesky">
+  </a>
   <a aria-label="Join the community on Discord" href="https://discord.gg/vChUXVf9Em" target="_blank">
     <img alt="" src="https://img.shields.io/badge/Join%20the%20community-black.svg?style=for-the-badge&logo=Discord">
   </a>
