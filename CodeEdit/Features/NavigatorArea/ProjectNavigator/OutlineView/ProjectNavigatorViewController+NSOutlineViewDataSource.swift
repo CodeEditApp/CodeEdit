@@ -12,19 +12,29 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
     private func getOutlineViewItems(for item: CEWorkspaceFile) -> [CEWorkspaceFile] {
         if let cachedChildren = filteredContentChildren[item] {
             return cachedChildren
+                .sorted { lhs, rhs in
+                    workspace?.sortFoldersOnTop == true ? lhs.isFolder && !rhs.isFolder : lhs.name < rhs.name
+                }
         }
 
-        if let children = workspace?.workspaceFileManager?.childrenOfFile(item) {
-            if let filter = workspace?.navigatorFilter, let sourceControlFilter = workspace?.sourceControlFilter,
-                !filter.isEmpty || sourceControlFilter {
+        if let workspace, let children = workspace.workspaceFileManager?.childrenOfFile(item) {
+            if !workspace.navigatorFilter.isEmpty || workspace.sourceControlFilter {
                 let filteredChildren = children.filter {
-                    fileSearchMatches(filter, for: $0, sourceControlFilter: sourceControlFilter)
+                    fileSearchMatches(
+                        workspace.navigatorFilter,
+                        for: $0,
+                        sourceControlFilter: workspace.sourceControlFilter
+                    )
                 }
+
                 filteredContentChildren[item] = filteredChildren
                 return filteredChildren
             }
 
             return children
+                .sorted { lhs, rhs in
+                    workspace.sortFoldersOnTop ? lhs.isFolder && !rhs.isFolder : lhs.name < rhs.name
+                }
         }
 
         return []
