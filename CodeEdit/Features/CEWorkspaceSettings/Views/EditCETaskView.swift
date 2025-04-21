@@ -23,12 +23,16 @@ struct EditCETaskView: View {
             Divider()
             HStack {
                 Button(role: .destructive) {
-                    workspaceSettingsManager.settings.tasks.removeAll(where: {
-                        $0.id == task.id
-                    })
-                    try? workspaceSettingsManager.savePreferences()
-                    taskManager.deleteTask(taskID: task.id)
-                    self.dismiss()
+                    do {
+                        workspaceSettingsManager.settings.tasks.removeAll(where: {
+                            $0.id == task.id
+                        })
+                        try workspaceSettingsManager.savePreferences()
+                        taskManager.deleteTask(taskID: task.id)
+                        self.dismiss()
+                    } catch {
+                        NSAlert(error: error).runModal()
+                    }
                 } label: {
                     Text("Delete")
                         .foregroundStyle(.red)
@@ -38,8 +42,12 @@ struct EditCETaskView: View {
                 Spacer()
 
                 Button {
-                    try? workspaceSettingsManager.savePreferences()
-                    self.dismiss()
+                    do {
+                        try workspaceSettingsManager.savePreferences()
+                        self.dismiss()
+                    } catch {
+                        NSAlert(error: error).runModal()
+                    }
                 } label: {
                     Text("Done")
                         .frame(minWidth: 56)
