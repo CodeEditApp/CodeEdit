@@ -110,6 +110,20 @@ jobs:
           echo "APP_BUILD=$APP_BUILD" >> $GITHUB_ENV
 
       ############################
+      # Upload dSYMs Artifact
+      ############################
+      - name: Upload dSYMs Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "CodeEdit-${{ env.APP_BUILD }}-dSYMs"
+          path: "${{ RUNNER.TEMP }}/CodeEdit.xcarchive/dSYMs"
+          if-no-files-found: error
+          # overwrite files for the same build number
+          overwrite: true
+          # these can be big, use maximum compression
+          compression-level: 9
+
+      ############################
       # Sparkle Appcast
       ############################
       - name: Update Sparkle appcast
