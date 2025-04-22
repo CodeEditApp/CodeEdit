@@ -8,14 +8,12 @@
 import Foundation
 
 /// A forwared port for the UtilityArea
-final class UtilityAreaPort: ObservableObject {
-    let id: UUID
-    let port: String
-    @Published var label: String
+struct UtilityAreaPort: Identifiable, Hashable {
+    let id = UUID()
+    let address: String
+    var label = ""
 
-    init(id: UUID = UUID(), port: String) {
-        self.id = id
-        self.port = port
-        self.label = ""
+    var url: URL? {
+        URL(string: address)
     }
 }

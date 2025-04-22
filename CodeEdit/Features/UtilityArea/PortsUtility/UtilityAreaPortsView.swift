@@ -12,6 +12,14 @@ struct UtilityAreaPortsView: View {
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
     @State private var forwardedPorts = [UtilityAreaPort]()
+    var ports: [UtilityAreaPort] {
+        filterText.isEmpty ? forwardedPorts : forwardedPorts.filter { port in
+            port.address.localizedCaseInsensitiveContains(filterText) ||
+            port.label.localizedCaseInsensitiveContains(filterText)
+        }
+    }
+
+    @State private var selectedPort: UtilityAreaPort.ID?
 
     @State private var filterText = ""
 
@@ -19,7 +27,16 @@ struct UtilityAreaPortsView: View {
         UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { _ in
             Group {
                 if !forwardedPorts.isEmpty {
-                    Text("Ports")
+                    Table(ports, selection: $selectedPort) {
+                        TableColumn("Port", value: \.label)
+                    }
+                    .contextMenu(forSelectionType: UtilityAreaPort.ID.self) { items in
+                        if let port = ports.first(where: { $0.id == items.first }) {
+                            Link("Open in browser", destination: port.url!)
+                        } else {
+                            Text("?")
+                        }
+                    }
                 } else {
                     CEContentUnavailableView(
                         "No Forwarded Ports",
@@ -35,11 +52,12 @@ struct UtilityAreaPortsView: View {
                 Button("Remove Port", systemImage: "minus", action: {})
                 Spacer()
                 UtilityAreaFilterTextField(title: "Filter", text: $filterText)
+                    .frame(maxWidth: 175)
             }
         }
     }
 
     func forwardPort() {
-
+        forwardedPorts.append(UtilityAreaPort(address: "localhost", label: "Port \(forwardedPorts.count + 1)"))
     }
 }
