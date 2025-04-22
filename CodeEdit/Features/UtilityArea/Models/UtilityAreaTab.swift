@@ -13,26 +13,31 @@ enum UtilityAreaTab: WorkspacePanelTab, CaseIterable {
     case terminal
     case debugConsole
     case output
+    case ports
 
     var title: String {
         switch self {
         case .terminal:
-            return "Terminal"
+            "Terminal"
         case .debugConsole:
-            return "Debug Console"
+            "Debug Console"
         case .output:
-            return "Output"
+            "Output"
+        case .ports:
+            "Ports"
         }
     }
 
     var systemImage: String {
         switch self {
         case .terminal:
-            return "terminal"
+            "terminal"
         case .debugConsole:
-            return "ladybug"
+            "ladybug"
         case .output:
-            return "list.bullet.indent"
+            "list.bullet.indent"
+        case .ports:
+            "powerplug"
         }
     }
 
@@ -44,6 +49,8 @@ enum UtilityAreaTab: WorkspacePanelTab, CaseIterable {
             UtilityAreaDebugView()
         case .output:
             UtilityAreaOutputView()
+        case .ports:
+            UtilityAreaPortsView()
         }
     }
 }
