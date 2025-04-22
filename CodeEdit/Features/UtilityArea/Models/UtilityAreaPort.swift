@@ -19,10 +19,10 @@ final class UtilityAreaPort: Identifiable, ObservableObject {
     @Published var origin = Origin.userForwarded
     @Published var portProtocol = PortProtocol.https
 
-    init(address: String, label: String = "") {
+    init(address: String) {
         self.id = UUID()
         self.address = address
-        self.label = label
+        self.label = address
     }
 
     enum Visibility: String, CaseIterable {

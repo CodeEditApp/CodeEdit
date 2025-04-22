@@ -10,6 +10,7 @@ import SwiftUI
 struct UtilityAreaPortsContextMenu: View {
 
     @Binding var port: UtilityAreaPort
+    @ObservedObject var portsManager: PortsManager
 
     var body: some View {
         Group {
@@ -37,8 +38,11 @@ struct UtilityAreaPortsContextMenu: View {
             }
             Divider()
 
-            Button("Stop Forwarding Port", action: {})
-            Button("Forward a Port", action: {})
+            Button("Stop Forwarding Port") {
+                portsManager.stopForwarding(port: port)
+            }
+            .keyboardShortcut(.delete, modifiers: [.command])
+            Button("Forward a Port", action: portsManager.addForwardedPort)
         }
     }
 }
