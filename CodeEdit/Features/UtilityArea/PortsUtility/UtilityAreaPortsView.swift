@@ -28,13 +28,14 @@ struct UtilityAreaPortsView: View {
             Group {
                 if !forwardedPorts.isEmpty {
                     Table(ports, selection: $selectedPort) {
-                        TableColumn("Port", value: \.label)
+                        TableColumn("Label", value: \.label)
+                        TableColumn("Forwarded Address", value: \.forwaredAddress)
+                        TableColumn("Visibility", value: \.visibility.rawValue)
+                        TableColumn("Origin", value: \.origin.rawValue)
                     }
                     .contextMenu(forSelectionType: UtilityAreaPort.ID.self) { items in
-                        if let port = ports.first(where: { $0.id == items.first }) {
-                            Link("Open in browser", destination: port.url!)
-                        } else {
-                            Text("?")
+                        if let id = items.first, let index = forwardedPorts.firstIndex(where: { $0.id == id }) {
+                            UtilityAreaPortsContextMenu(port: $forwardedPorts[index])
                         }
                     }
                 } else {
