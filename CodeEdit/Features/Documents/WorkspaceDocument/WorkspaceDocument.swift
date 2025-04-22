@@ -45,6 +45,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceSettingsManager: CEWorkspaceSettings?
     var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
 
+    var portsManager: PortsManager?
+
     @Published var notificationPanel = NotificationPanelViewModel()
     private var cancellables = Set<AnyCancellable>()
 
@@ -161,6 +163,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 workspaceURL: url
             )
         }
+        self.portsManager = PortsManager()
 
         editorManager?.restoreFromState(self)
         utilityAreaModel?.restoreFromState(self)

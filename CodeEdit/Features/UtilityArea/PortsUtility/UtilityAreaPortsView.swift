@@ -11,31 +11,31 @@ struct UtilityAreaPortsView: View {
 
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
-    @State private var forwardedPorts = [UtilityAreaPort]()
+    @EnvironmentObject private var portsManager: PortsManager
+
     var ports: [UtilityAreaPort] {
-        filterText.isEmpty ? forwardedPorts : forwardedPorts.filter { port in
+        filterText.isEmpty ? portsManager.forwardedPorts : portsManager.forwardedPorts.filter { port in
             port.address.localizedCaseInsensitiveContains(filterText) ||
             port.label.localizedCaseInsensitiveContains(filterText)
         }
     }
-
-    @State private var selectedPort: UtilityAreaPort.ID?
 
     @State private var filterText = ""
 
     var body: some View {
         UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { _ in
             Group {
-                if !forwardedPorts.isEmpty {
-                    Table(ports, selection: $selectedPort) {
+                if !portsManager.forwardedPorts.isEmpty {
+                    Table(ports, selection: $portsManager.selectedPort) {
                         TableColumn("Label", value: \.label)
                         TableColumn("Forwarded Address", value: \.forwaredAddress)
                         TableColumn("Visibility", value: \.visibility.rawValue)
                         TableColumn("Origin", value: \.origin.rawValue)
                     }
                     .contextMenu(forSelectionType: UtilityAreaPort.ID.self) { items in
-                        if let id = items.first, let index = forwardedPorts.firstIndex(where: { $0.id == id }) {
-                            UtilityAreaPortsContextMenu(port: $forwardedPorts[index])
+                        if let id = items.first,
+                            let index = portsManager.forwardedPorts.firstIndex(where: { $0.id == id }) {
+                            UtilityAreaPortsContextMenu(port: $portsManager.forwardedPorts[index])
                         }
                     }
                 } else {
@@ -59,6 +59,6 @@ struct UtilityAreaPortsView: View {
     }
 
     func forwardPort() {
-        forwardedPorts.append(UtilityAreaPort(address: "localhost", label: "Port \(forwardedPorts.count + 1)"))
+        portsManager.forwardedPorts.append(UtilityAreaPort(address: "localhost", label: "Port \(portsManager.forwardedPorts.count + 1)"))
     }
 }

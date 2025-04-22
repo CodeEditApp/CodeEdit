@@ -104,7 +104,8 @@ extension CodeEditWindowController {
         guard let window = window,
               let workspace = workspace,
               let workspaceSettingsManager = workspace.workspaceSettingsManager,
-              let taskManager = workspace.taskManager
+              let taskManager = workspace.taskManager,
+              let portsManager = workspace.portsManager
         else { return }
 
         if let workspaceSettingsWindow, workspaceSettingsWindow.isVisible {
@@ -121,6 +122,7 @@ extension CodeEditWindowController {
             .environmentObject(workspaceSettingsManager)
             .environmentObject(workspace)
             .environmentObject(taskManager)
+            .environmentObject(portsManager)
 
             settingsWindow.contentView = NSHostingView(rootView: contentView)
             settingsWindow.titlebarAppearsTransparent = true
