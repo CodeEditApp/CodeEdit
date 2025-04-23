@@ -65,7 +65,9 @@ struct InlineEditRow: View {
 
     func submitText() {
         // Only update the text if the user has finished editing
-        text = editedText
+        if !editedText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            text = editedText
+        }
         isEditing = false
         onSubmit?()
     }

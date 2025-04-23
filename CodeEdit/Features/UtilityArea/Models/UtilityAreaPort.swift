@@ -5,7 +5,7 @@
 //  Created by Leonardo Larrañaga on 4/21/25.
 //
 
-import Foundation
+import AppKit
 
 /// A forwared port for the UtilityArea
 final class UtilityAreaPort: Identifiable, ObservableObject {
@@ -63,5 +63,12 @@ final class UtilityAreaPort: Identifiable, ObservableObject {
 
     var url: URL? {
         URL(string: address)
+    }
+
+    func copyForwadedAddress() {
+        guard let url = url else { return }
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(url.absoluteString, forType: .string)
     }
 }

@@ -17,6 +17,7 @@ struct UtilityAreaPortsContextMenu: View {
             Link("Open in Browser", destination: URL(string: port.forwaredAddress) ??
                  URL(string: "https://localhost:3000")!)
             Button("Preview in Editor", action: {})
+                .disabled(true)
             Divider()
 
             Button("Set Port Label") {
@@ -26,7 +27,7 @@ struct UtilityAreaPortsContextMenu: View {
             }
             Divider()
 
-            Button("Copy Local Address", action: {})
+            Button("Copy Forwaded Address", action: port.copyForwadedAddress)
                 .keyboardShortcut("c", modifiers: [.command])
             Picker("Port Visiblity", selection: $port.visibility) {
                 ForEach(UtilityAreaPort.Visibility.allCases, id: \.self) { visibility in
