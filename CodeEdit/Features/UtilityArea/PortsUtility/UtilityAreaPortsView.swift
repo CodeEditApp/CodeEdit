@@ -24,7 +24,7 @@ struct UtilityAreaPortsView: View {
     @State private var newPortAddress = ""
     var isValidPort: Bool {
         do {
-            //swiftlint:disable:next line_length
+            // swiftlint:disable:next line_length
             return try Regex(#"^(?:\d{1,5}|(?:[a-zA-Z0-9.-]+|\[[^\]]+\]):\d{1,5})$"#).wholeMatch(in: newPortAddress) != nil
         } catch {
             return false
@@ -36,7 +36,20 @@ struct UtilityAreaPortsView: View {
             Group {
                 if !portsManager.forwardedPorts.isEmpty {
                     Table(ports, selection: $portsManager.selectedPort) {
-                        TableColumn("Label", value: \.label)
+                        TableColumn("Port") { port in
+                            if let index = portsManager.getIndex(for: port.id) {
+                                    InlineEditRow(
+                                        title: "Port Label",
+                                        text: $portsManager.forwardedPorts[index].label,
+                                        isEditing: $portsManager.forwardedPorts[index].isEditingLabel,
+                                        onSubmit: {
+                                            // Reselect the port after editing the label
+                                            portsManager.selectedPort = port.id
+                                        }
+                                    )
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                        }
                         TableColumn("Forwarded Address", value: \.forwaredAddress)
                         TableColumn("Visibility", value: \.visibility.rawValue)
                         TableColumn("Origin", value: \.origin.rawValue)
@@ -48,6 +61,12 @@ struct UtilityAreaPortsView: View {
                                 port: $portsManager.forwardedPorts[index],
                                 portsManager: portsManager
                             )
+                        }
+                    } primaryAction: { items in
+                        if let index = portsManager.getIndex(for: items.first) {
+                            portsManager.forwardedPorts[index].isEditingLabel = true
+                            // Workaround: unselect the row to trigger the focus change
+                            portsManager.selectedPort = nil
                         }
                     }
                 } else {

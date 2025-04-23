@@ -14,6 +14,10 @@ class PortsManager: ObservableObject {
 
     @Published var showAddPortAlert = false
 
+    func getIndex(for id: UtilityAreaPort.ID?) -> Int? {
+        forwardedPorts.firstIndex { $0.id == id }
+    }
+
     func getSelectedPort() -> UtilityAreaPort? {
         forwardedPorts.first { $0.id == selectedPort }
     }

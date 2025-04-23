@@ -19,6 +19,8 @@ final class UtilityAreaPort: Identifiable, ObservableObject {
     @Published var origin = Origin.userForwarded
     @Published var portProtocol = PortProtocol.https
 
+    @Published var isEditingLabel = false
+
     init(address: String) {
         self.id = UUID()
         self.address = address
