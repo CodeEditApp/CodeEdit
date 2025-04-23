@@ -37,7 +37,8 @@ struct UtilityAreaPortsView: View {
                 if !portsManager.forwardedPorts.isEmpty {
                     Table(ports, selection: $portsManager.selectedPort) {
                         TableColumn("Port") { port in
-                            if let index = portsManager.getIndex(for: port.id) {
+                            HStack {
+                                if let index = portsManager.getIndex(for: port.id) {
                                     InlineEditRow(
                                         title: "Port Label",
                                         text: $portsManager.forwardedPorts[index].label,
@@ -49,6 +50,12 @@ struct UtilityAreaPortsView: View {
                                     )
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 }
+
+                                if port.isLoading {
+                                    ProgressView()
+                                        .controlSize(.small)
+                                }
+                            }
                         }
 
                         TableColumn("Forwarded Address") { port in

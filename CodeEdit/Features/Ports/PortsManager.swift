@@ -31,6 +31,13 @@ class PortsManager: ObservableObject {
         newPort.forwaredAddress = address
         forwardedPorts.append(newPort)
         selectedPort = newPort.id
+        newPort.isLoading = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            DispatchQueue.main.async {
+                newPort.isLoading = false
+                newPort.notifyConnection()
+            }
+        }
     }
 
     func stopForwarding(port: UtilityAreaPort) {

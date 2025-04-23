@@ -20,6 +20,7 @@ final class UtilityAreaPort: Identifiable, ObservableObject {
     @Published var portProtocol = PortProtocol.https
 
     @Published var isEditingLabel = false
+    @Published var isLoading = false
 
     init(address: String) {
         self.id = UUID()
@@ -70,5 +71,20 @@ final class UtilityAreaPort: Identifiable, ObservableObject {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.setString(url.absoluteString, forType: .string)
+    }
+
+    // MARK: Notifications
+
+    func notifyConnection() {
+        NotificationManager.shared.post(
+            iconSymbol: "globe",
+            title: "Port Forwarded",
+            description: "Port \(address) is now available.",
+            actionButtonTitle: "Open"
+        ) {
+            if let url = self.url {
+                NSWorkspace.shared.open(url)
+            }
+        }
     }
 }
