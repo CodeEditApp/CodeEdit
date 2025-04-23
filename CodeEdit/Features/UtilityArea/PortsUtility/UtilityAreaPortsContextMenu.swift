@@ -19,7 +19,11 @@ struct UtilityAreaPortsContextMenu: View {
             Button("Preview in Editor", action: {})
             Divider()
 
-            Button("Set Port Label", action: {})
+            Button("Set Port Label") {
+                port.isEditingLabel = true
+                // Workaround: unselect the row to trigger the focus change
+                portsManager.selectedPort = nil
+            }
             Divider()
 
             Button("Copy Local Address", action: {})
