@@ -25,7 +25,7 @@ struct UtilityAreaPortsView: View {
     var isValidPort: Bool {
         do {
             // swiftlint:disable:next line_length
-            return try Regex(#"^(?:\d{1,5}|(?:[a-zA-Z0-9.-]+|\[[^\]]+\]):\d{1,5})$"#).wholeMatch(in: newPortAddress) != nil
+            return try Regex(#"^(?:(https?:\/\/)?(?:[a-zA-Z0-9.-]+|\[[^\]]+\]):\d{1,5}|\d{1,5})$"#).wholeMatch(in: newPortAddress) != nil
         } catch {
             return false
         }
@@ -50,7 +50,13 @@ struct UtilityAreaPortsView: View {
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 }
                         }
-                        TableColumn("Forwarded Address", value: \.forwaredAddress)
+
+                        TableColumn("Forwarded Address") { port in
+                            if let url = port.url {
+                                Link(url.absoluteString, destination: url)
+                            }
+                        }
+
                         TableColumn("Visibility", value: \.visibility.rawValue)
                         TableColumn("Origin", value: \.origin.rawValue)
                     }

@@ -28,6 +28,7 @@ class PortsManager: ObservableObject {
 
     func forwardPort(with address: String) {
         let newPort = UtilityAreaPort(address: address)
+        newPort.forwaredAddress = address
         forwardedPorts.append(newPort)
         selectedPort = newPort.id
     }
