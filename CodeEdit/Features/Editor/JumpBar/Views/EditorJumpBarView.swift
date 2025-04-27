@@ -21,15 +21,19 @@ struct EditorJumpBarView: View {
     @Environment(\.controlActiveState)
     private var activeState
 
+    @Binding var codeFile: CodeFileDocument?
+
     static let height = 28.0
 
     init(
         file: CEWorkspaceFile?,
         shouldShowTabBar: Bool,
+        codeFile: Binding<CodeFileDocument?>,
         tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.file = file ?? nil
         self.shouldShowTabBar = shouldShowTabBar
+        self._codeFile = codeFile
         self.tappedOpenFile = tappedOpenFile
     }
 
@@ -75,7 +79,7 @@ struct EditorJumpBarView: View {
         }
         .safeAreaInset(edge: .trailing, spacing: 0) {
             if !shouldShowTabBar {
-                EditorTabBarTrailingAccessories()
+                EditorTabBarTrailingAccessories(codeFile: $codeFile)
             }
         }
         .frame(height: Self.height, alignment: .center)
