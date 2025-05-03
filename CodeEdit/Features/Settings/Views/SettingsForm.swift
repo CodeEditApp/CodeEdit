@@ -17,39 +17,41 @@ struct SettingsForm<Content: View>: View {
     @ViewBuilder var content: Content
 
     var body: some View {
-        Form {
-            Section {
-                EmptyView()
-            } footer: {
-                Rectangle()
-                    .frame(height: 0)
-                    .background(
-                        GeometryReader {
-                            Color.clear.preference(
-                                key: ViewOffsetKey.self,
-                                value: -$0.frame(in: .named("scroll")).origin.y
-                            )
-                        }
-                    )
-                    .onPreferenceChange(ViewOffsetKey.self) {
-                        if $0 <= -20.0 && !model.scrolledToTop {
-                            withAnimation {
-                                model.scrolledToTop = true
+        NavigationStack {
+            Form {
+                Section {
+                    EmptyView()
+                } footer: {
+                    Rectangle()
+                        .frame(height: 0)
+                        .background(
+                            GeometryReader {
+                                Color.clear.preference(
+                                    key: ViewOffsetKey.self,
+                                    value: -$0.frame(in: .named("scroll")).origin.y
+                                )
                             }
-                        } else if $0 > -20.0 && model.scrolledToTop {
-                            withAnimation {
-                                model.scrolledToTop = false
+                        )
+                        .onPreferenceChange(ViewOffsetKey.self) {
+                            if $0 <= -20.0 && !model.scrolledToTop {
+                                withAnimation {
+                                    model.scrolledToTop = true
+                                }
+                            } else if $0 > -20.0 && model.scrolledToTop {
+                                withAnimation {
+                                    model.scrolledToTop = false
+                                }
                             }
                         }
-                    }
+                }
+                content
             }
-            content
+            .introspect(.scrollView, on: .macOS(.v10_15, .v11, .v12, .v13, .v14, .v15)) {
+                $0.scrollerInsets.top = 50
+            }
+            .formStyle(.grouped)
+            .coordinateSpace(name: "scroll")
         }
-        .introspect(.scrollView, on: .macOS(.v10_15, .v11, .v12, .v13, .v14, .v15)) {
-            $0.scrollerInsets.top = 50
-        }
-        .formStyle(.grouped)
-        .coordinateSpace(name: "scroll")
         .safeAreaInset(edge: .top, spacing: -50) {
             EffectView(.menu)
                 .opacity(!model.scrolledToTop ? 1 : 0)
