@@ -82,7 +82,7 @@ enum RecentProjectsStore {
 
         let urlToString = url.absoluteString
 
-// if file portion of local URL has "/" at the end then it is a folder , files and folders go in two separate lists
+        // if file portion of local URL has "/" at the end then it is a folder , files and folders go in two separate lists
 
         if  urlToString.hasSuffix("/") {
             if let containedIndex = projPaths.firstIndex(where: { $0.componentCompare(url) }) {
@@ -113,7 +113,6 @@ enum RecentProjectsStore {
     /// Remove all folder paths in the set.
     /// - Parameter paths: The paths to remove.
     /// - Returns: The remaining urls in the recent projects list.
-
     static func removeRecentFiles(_ paths: Set<URL>) -> [URL] {
         var recentFilePaths = recentFileURLs()
         recentFilePaths.removeAll(where: { paths.contains($0) })
@@ -126,9 +125,7 @@ enum RecentProjectsStore {
         setFilePaths([])
         NotificationCenter.default.post(name: Self.didUpdateNotification, object: nil)
     }
-// TODO    do we need to setdocument controller for Projects AND Files????
-// doesn't seem like it clears in teh finder anyway
-// ...more testing whcn Cleairng list required.
+
     /// Syncs AppKit's recent documents list with ours, keeping the dock menu and other lists up-to-date.
     private static func setDocumentControllerRecents() {
         CodeEditDocumentController.shared.clearRecentDocuments(nil)
