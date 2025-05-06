@@ -193,11 +193,11 @@ struct SettingsView: View {
                 }
             }
             .navigationSplitViewColumnWidth(500)
-            .hideSidebarToggle()
             .onAppear {
                 model.backButtonVisible = false
             }
         }
+        .hideSidebarToggle()
         .navigationTitle(selectedPage.name.rawValue)
         .toolbar {
             ToolbarItem(placement: .navigation) {
