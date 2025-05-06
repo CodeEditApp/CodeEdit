@@ -14,6 +14,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     @Published var inspectorCollapsed = false
     @Published var toolbarCollapsed = false
 
+    // These variables store the state of the windows when using "Hide interface"
+    @Published var prevNavigatorCollapsed: Bool?
+    @Published var prevInspectorCollapsed: Bool?
+    @Published var prevUtilityAreaCollapsed: Bool?
+    @Published var prevToolbarCollapsed: Bool?
+
     private var panelOpen = false
 
     var observers: [NSKeyValueObservation] = []

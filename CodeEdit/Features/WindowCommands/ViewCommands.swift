@@ -111,6 +111,44 @@ extension ViewCommands {
             windowController?.toolbarCollapsed ?? true
         }
 
+        var isAnythingVisible: Bool {
+            !navigatorCollapsed || !inspectorCollapsed || !utilityAreaCollapsed || !toolbarCollapsed
+        }
+
+        func toggleInterface(shouldHide: Bool) {
+            // When hiding, store how the interface looks now
+            if shouldHide {
+                storeInterfaceVisibilityState()
+            }
+
+            // Check what each elemtent state should be
+            let navigatorTargetState = shouldHide ? true : (windowController?.prevNavigatorCollapsed ?? false)
+            let inspectorTargetState = shouldHide ? true : (windowController?.prevInspectorCollapsed ?? false)
+            let utilityAreaTargetState = shouldHide ? true : (windowController?.prevUtilityAreaCollapsed ?? false)
+            let toolbarTargetState = shouldHide ? true : (windowController?.prevToolbarCollapsed ?? true)
+
+            // Toggle only the parts that need to change
+            if navigatorCollapsed != navigatorTargetState {
+                windowController?.toggleFirstPanel()
+            }
+            if inspectorCollapsed != inspectorTargetState {
+                windowController?.toggleLastPanel()
+            }
+            if utilityAreaCollapsed != utilityAreaTargetState {
+                CommandManager.shared.executeCommand("open.drawer")
+            }
+            if toolbarCollapsed != toolbarTargetState {
+                windowController?.toggleToolbar()
+            }
+        }
+
+        func storeInterfaceVisibilityState() {
+            windowController?.prevNavigatorCollapsed = navigatorCollapsed
+            windowController?.prevInspectorCollapsed = inspectorCollapsed
+            windowController?.prevUtilityAreaCollapsed = utilityAreaCollapsed
+            windowController?.prevToolbarCollapsed = toolbarCollapsed
+        }
+
         var body: some View {
             Button("\(navigatorCollapsed ? "Show" : "Hide") Navigator") {
                 windowController?.toggleFirstPanel()
@@ -135,6 +173,12 @@ extension ViewCommands {
             }
             .disabled(windowController == nil)
             .keyboardShortcut("t", modifiers: [.option, .command])
+
+            Button("\(isAnythingVisible ? "Hide" : "Show") Interface") {
+                toggleInterface(shouldHide: isAnythingVisible)
+            }
+            .disabled(windowController == nil)
+            .keyboardShortcut("i", modifiers: [.option, .command])
         }
     }
 }
