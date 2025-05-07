@@ -11,8 +11,21 @@ import Combine
 extension CodeEditWindowController {
     @objc
     func toggleFirstPanel() {
+        toggleFirstPanel(shouldAnimate: true)
+    }
+
+    /// Toggles the navigator pane, optionally without animation.
+    func toggleFirstPanel(shouldAnimate: Bool = true) {
         guard let firstSplitView = splitViewController?.splitViewItems.first else { return }
-        firstSplitView.animator().isCollapsed.toggle()
+
+        if shouldAnimate {
+            // Standard animated toggle
+            firstSplitView.animator().isCollapsed.toggle()
+        } else {
+            // Instant toggle (no animation)
+            firstSplitView.isCollapsed.toggle()
+        }
+
         splitViewController?.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
     }
 

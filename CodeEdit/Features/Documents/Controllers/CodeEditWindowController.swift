@@ -10,9 +10,10 @@ import SwiftUI
 import Combine
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, ObservableObject, NSWindowDelegate {
-    @Published var navigatorCollapsed = false
-    @Published var inspectorCollapsed = false
-    @Published var toolbarCollapsed = false
+    @Published var navigatorCollapsed: Bool = false
+    @Published var inspectorCollapsed: Bool = false
+    @Published var toolbarCollapsed: Bool = false
+    @Published var interfaceHidden: Bool = false
 
     // These variables store the state of the windows when using "Hide interface"
     @Published var prevNavigatorCollapsed: Bool?
@@ -208,5 +209,95 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         navigatorSidebarViewModel = nil
         workspace = nil
         return true
+    }
+
+    /// Function for toggling the interface elements on or off
+    ///
+    /// - Parameter shouldHide: Pass `true` to hide all interface panels (and remember their current states),
+    /// or `false` to restore them to how they were before hiding.
+    func toggleInterface(shouldHide: Bool) {
+        interfaceHidden = shouldHide
+
+        // When hiding, store how the interface looks now
+        if shouldHide {
+            storeInterfaceCollapseState()
+        }
+
+        // Determine the desired collapsed/visible state for every interface element
+        let navigatorTargetState = determineDesiredCollapseState(
+            shouldHide: shouldHide,
+            currentlyCollapsed: navigatorCollapsed,
+            previouslyCollapsed: prevNavigatorCollapsed,
+        )
+        let inspectorTargetState = determineDesiredCollapseState(
+            shouldHide: shouldHide,
+            currentlyCollapsed: inspectorCollapsed,
+            previouslyCollapsed: prevInspectorCollapsed,
+        )
+        let utilityAreaTargetState = determineDesiredCollapseState(
+            shouldHide: shouldHide,
+            currentlyCollapsed: workspace?.utilityAreaModel?.isCollapsed ?? true,
+            previouslyCollapsed: prevUtilityAreaCollapsed,
+        )
+        let toolbarTargetState = determineDesiredCollapseState(
+            shouldHide: shouldHide,
+            currentlyCollapsed: toolbarCollapsed,
+            previouslyCollapsed: prevToolbarCollapsed,
+        )
+
+        // Toggle only the parts that need to change
+        if navigatorCollapsed != navigatorTargetState {
+            toggleFirstPanel(shouldAnimate: false)
+        }
+        if inspectorCollapsed != inspectorTargetState {
+            toggleLastPanel()
+        }
+        if workspace?.utilityAreaModel?.isCollapsed != utilityAreaTargetState {
+            CommandManager.shared.executeCommand("open.drawer")
+        }
+        if toolbarCollapsed != toolbarTargetState {
+            toggleToolbar()
+        }
+
+        // If enabling interface, reset the visibility states
+        if !shouldHide {
+            resetStoredInterfaceCollapseState()
+        }
+    }
+
+    /// Calculates the collapse state an interface element should have after a hide / show toggle.
+    /// - Parameters:
+    ///   - shouldHide: `true` when we’re hiding the whole interface.
+    ///   - currentlyCollapsed: The panels current state
+    ///   - previouslyCollapsed: The state we saved the last time we hid the UI, if any.
+    /// - Returns: `true` for visible element, `false` for collapsed element
+    func determineDesiredCollapseState(shouldHide: Bool, currentlyCollapsed: Bool, previouslyCollapsed: Bool?) -> Bool {
+        // If ShouldHide, everything should close
+        if shouldHide { return true }
+
+        // If currently visible and !shouldHide, it should not collapse
+        if !currentlyCollapsed && !shouldHide { return false }
+
+        // If we have a previous state, return that one.
+        if let remembered = previouslyCollapsed { return remembered }
+
+        // If there is no stored state, return the current state.
+        return currentlyCollapsed
+    }
+
+    /// Function for storing the current interface visibility states
+    func storeInterfaceCollapseState() {
+        prevNavigatorCollapsed = navigatorCollapsed
+        prevInspectorCollapsed = inspectorCollapsed
+        prevUtilityAreaCollapsed = workspace?.utilityAreaModel?.isCollapsed
+        prevToolbarCollapsed = toolbarCollapsed
+    }
+
+    /// Function for resetting the stored interface visibility states
+    func resetStoredInterfaceCollapseState() {
+        prevNavigatorCollapsed = nil
+        prevInspectorCollapsed = nil
+        prevUtilityAreaCollapsed = nil
+        prevToolbarCollapsed = nil
     }
 }
