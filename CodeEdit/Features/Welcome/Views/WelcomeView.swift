@@ -173,7 +173,6 @@ struct WelcomeView: View {
                 copyInformation()
             }
             .help("Copy System Information to Clipboard")
-
             Spacer().frame(height: 40)
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
@@ -207,12 +206,16 @@ struct WelcomeView: View {
         .padding(.horizontal, 56)
         .padding(.bottom, 16)
         .frame(width: 460)
-        .background(
-            colorScheme == .dark
-            ? Color(.black).opacity(0.2)
-            : Color(.white).opacity(controlActiveState == .inactive ? 1.0 : 0.5)
-        )
-        .background(EffectView(.underWindowBackground, blendingMode: .behindWindow))
+        .frame(maxHeight: .infinity)
+        .background {
+            if self.colorScheme == .dark {
+                Color(.black).opacity(0.275)
+                    .background(.ultraThickMaterial)
+            } else {
+                Color(.white)
+                    .background(.regularMaterial)
+            }
+        }
     }
 
     private var dismissButton: some View {

@@ -30,8 +30,13 @@ struct WelcomeWindowView: View {
                 dismissWindow: dismissWindow
             )
             RecentProjectsListView(openDocument: openDocument, dismissWindow: dismissWindow)
-                .frame(width: 280)
         }
+        .clipShape(.rect(cornerRadius: 8))
+        .onAppear {
+            NSApplication.shared.windows.first?.isMovableByWindowBackground = true
+            NSApplication.shared.windows.first?.hasShadow = true
+        }
+        .cursor(.current)
         .edgesIgnoringSafeArea(.top)
         .onDrop(of: [.fileURL], isTargeted: .constant(true)) { providers in
             NSApp.activate(ignoringOtherApps: true)
