@@ -60,7 +60,7 @@ struct RecentProjectsListView: View {
                 }
 
                 Button("Remove from Recents") {
-                    removeRecentProjects()
+                    removeRecentProjects(items)
                 }
             }
         } primaryAction: { items in
@@ -70,7 +70,7 @@ struct RecentProjectsListView: View {
             selection.map { NSItemProvider(object: $0.path(percentEncoded: false) as NSString) }
         }
         .onDeleteCommand {
-            removeRecentProjects()
+            removeRecentProjects(selection)
         }
         .background {
             if self.colorScheme == .dark {
@@ -116,12 +116,15 @@ struct RecentProjectsListView: View {
         }
     }
 
-    func removeRecentProjects() {
-        recentProjects = RecentProjectsStore.removeRecentProjects(selection)
+    func removeRecentProjects(_ items: Set<URL>) {
+        recentProjects = RecentProjectsStore.removeRecentProjects(items)
     }
 
     func updateRecentProjects() {
         recentProjects = RecentProjectsStore.recentProjectURLs()
+        if !recentProjects.isEmpty {
+            selection = Set(recentProjects.prefix(1))
+        }
     }
 
     // MARK: - Key Handling
