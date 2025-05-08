@@ -112,8 +112,7 @@ extension ViewCommands {
         }
 
         var isInterfaceHidden: Bool {
-            return windowController?.interfaceHidden ?? false
-            //navigatorCollapsed && inspectorCollapsed && utilityAreaCollapsed && toolbarCollapsed
+            return windowController?.isInterfaceStillHidden() ?? false
         }
 
         var body: some View {
