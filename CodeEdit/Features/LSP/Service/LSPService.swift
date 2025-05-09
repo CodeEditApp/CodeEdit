@@ -43,7 +43,7 @@ import SwiftUICore
 ///     do {
 ///         guard var languageClient = self.languageClient(for: .python) else {
 ///             print("Failed to get client")
-///             throw ServerManagerError.languageClientNotFound
+///             throw LSPServiceError.languageClientNotFound
 ///         }
 ///
 ///         let testFilePathStr = ""
@@ -55,7 +55,7 @@ import SwiftUICore
 ///         // Completion example
 ///         let textPosition = Position(line: 32, character: 18)  // Lines and characters start at 0
 ///         let completions = try await languageClient.requestCompletion(
-///             document: testFileURL.absoluteString,
+///             document: testFileURL.lspURI,
 ///             position: textPosition
 ///         )
 ///         switch completions {
@@ -100,6 +100,8 @@ import SwiftUICore
 /// ```
 @MainActor
 final class LSPService: ObservableObject {
+    typealias LanguageServerType = LanguageServer<CodeFileDocument>
+
     let logger: Logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
 
     struct ClientKey: Hashable, Equatable {
@@ -113,7 +115,7 @@ final class LSPService: ObservableObject {
     }
 
     /// Holds the active language clients
-    var languageClients: [ClientKey: LanguageServer] = [:]
+    var languageClients: [ClientKey: LanguageServerType] = [:]
     /// Holds the language server configurations for all the installed language servers
     var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
     /// Holds all the event listeners for each active language client
@@ -166,9 +168,15 @@ final class LSPService: ObservableObject {
     }
 
     /// Gets the language client for the specified language
-    func languageClient(for languageId: LanguageIdentifier, workspacePath: String) -> LanguageServer? {
+    func languageClient(for languageId: LanguageIdentifier, workspacePath: String) -> LanguageServerType? {
         return languageClients[ClientKey(languageId, workspacePath)]
     }
+
+    func languageClient(forDocument url: URL) -> LanguageServerType? {
+        languageClients.values.first(where: { $0.openFiles.document(for: url.lspURI) != nil })
+    }
+
+    // MARK: - Start Server
 
     /// Given a language and workspace path, will attempt to start the language server
     /// - Parameters:
@@ -178,14 +186,14 @@ final class LSPService: ObservableObject {
     func startServer(
         for languageId: LanguageIdentifier,
         workspacePath: String
-    ) async throws -> LanguageServer {
+    ) async throws -> LanguageServerType {
         guard let serverBinary = languageConfigs[languageId] else {
             logger.error("Couldn't find language sever binary for \(languageId.rawValue)")
             throw LSPError.binaryNotFound
         }
 
         logger.info("Starting \(languageId.rawValue) language server")
-        let server = try await LanguageServer.createServer(
+        let server = try await LanguageServerType.createServer(
             for: languageId,
             with: serverBinary,
             workspacePath: workspacePath
@@ -197,6 +205,8 @@ final class LSPService: ObservableObject {
         return server
     }
 
+    // MARK: - Document Management
+
     /// Notify all relevant language clients that a document was opened.
     /// - Note: Must be invoked after the contents of the file are available.
     /// - Parameter document: The code document that was opened.
@@ -207,7 +217,7 @@ final class LSPService: ObservableObject {
             return
         }
         Task {
-            let languageServer: LanguageServer
+            let languageServer: LanguageServerType
             do {
                 if let server = self.languageClients[ClientKey(lspLanguage, workspacePath)] {
                     languageServer = server
@@ -233,20 +243,18 @@ final class LSPService: ObservableObject {
     /// Notify all relevant language clients that a document was closed.
     /// - Parameter url: The url of the document that was closed
     func closeDocument(_ url: URL) {
-        guard let languageClient = languageClients.first(where: {
-                  $0.value.openFiles.document(for: url.absolutePath) != nil
-              })?.value else {
-            return
-        }
+        guard let languageClient = languageClient(forDocument: url) else { return }
         Task {
             do {
-                try await languageClient.closeDocument(url.absolutePath)
+                try await languageClient.closeDocument(url.lspURI)
             } catch {
                 // swiftlint:disable:next line_length
-                logger.error("Failed to close document: \(url.absolutePath, privacy: .private), language: \(languageClient.languageId.rawValue). Error \(error)")
+                logger.error("Failed to close document: \(url.lspURI, privacy: .private), language: \(languageClient.languageId.rawValue). Error \(error)")
             }
         }
     }
+
+    // MARK: - Close Workspace
 
     /// Close all language clients for a workspace.
     ///
@@ -271,6 +279,8 @@ final class LSPService: ObservableObject {
         }
     }
 
+    // MARK: - Stop Servers
+
     /// Attempts to stop a running language server. Throws an error if the server is not found
     /// or if the language server throws an error while trying to shutdown.
     /// - Parameters:
@@ -279,7 +289,7 @@ final class LSPService: ObservableObject {
     func stopServer(forLanguage languageId: LanguageIdentifier, workspacePath: String) async throws {
         guard let server = server(for: languageId, workspacePath: workspacePath) else {
             logger.error("Server not found for language \(languageId.rawValue) during stop operation")
-            throw ServerManagerError.serverNotFound
+            throw LSPServiceError.serverNotFound
         }
         do {
             try await server.shutdownAndExit()
