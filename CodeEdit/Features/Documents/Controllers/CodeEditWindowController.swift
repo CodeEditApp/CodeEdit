@@ -221,13 +221,19 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
               let prevInsp = prevInspectorCollapsed,
               let prevUtil = prevUtilityAreaCollapsed,
               let prevTool = prevToolbarCollapsed
-        else { return false }
+        else {
+            return navigatorCollapsed && navigatorCollapsed && toolbarCollapsed && utilityAreaCollapsed
+        }
+
+        let stillHidden = (!prevNav && navigatorCollapsed)  ||
+            (!prevInsp && inspectorCollapsed) ||
+            (!prevUtil && utilityAreaCollapsed) ||
+            (!prevTool && toolbarCollapsed)
+
+        if !stillHidden { resetStoredInterfaceCollapseState() }
 
         // True when any panel that was previously visible is collapsed
-        return (!prevNav  && navigatorCollapsed)  ||
-               (!prevInsp && inspectorCollapsed) ||
-               (!prevUtil && utilityAreaCollapsed) ||
-               (!prevTool && toolbarCollapsed)
+        return stillHidden
     }
 
     /// Function for toggling the interface elements on or off
@@ -287,7 +293,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         // If ShouldHide, everything should close
         if shouldHide { return true }
 
-        // If currently visible and !shouldHide, it should not collapse
+        // If currently collapsed, and there is no previous state, show it.
+        if previouslyCollapsed == nil && currentlyCollapsed { return false }
+
+        // If currently visible and !shouldHide, it should not collapse.
         if !currentlyCollapsed && !shouldHide { return false }
 
         // If we have a previous state, return that one.
@@ -303,5 +312,13 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         prevInspectorCollapsed = inspectorCollapsed
         prevUtilityAreaCollapsed = workspace?.utilityAreaModel?.isCollapsed
         prevToolbarCollapsed = toolbarCollapsed
+    }
+
+    /// Function for resetting the stored interface visibility states
+    func resetStoredInterfaceCollapseState() {
+        prevNavigatorCollapsed = nil
+        prevInspectorCollapsed = nil
+        prevUtilityAreaCollapsed = nil
+        prevToolbarCollapsed = nil
     }
 }

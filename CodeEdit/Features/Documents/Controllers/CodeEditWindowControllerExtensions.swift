@@ -10,7 +10,7 @@ import Combine
 
 extension CodeEditWindowController {
     @objc
-    func toggleFirstPanel() {
+    func objcToggleFirstPanel() {
         toggleFirstPanel(shouldAnimate: true)
     }
 
@@ -30,7 +30,7 @@ extension CodeEditWindowController {
     }
 
     @objc
-    func toggleLastPanel() {
+    func objcToggleLastPanel() {
         toggleLastPanel(shouldAnimate: true)
     }
 
