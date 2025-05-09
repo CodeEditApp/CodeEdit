@@ -8,24 +8,46 @@
 import SwiftUI
 
 struct WelcomeWindow: Scene {
-
     @ObservedObject var settings = Settings.shared
 
-    var body: some Scene {
-        Window("Welcome To CodeEdit", id: SceneID.welcome.rawValue) {
-            ContentView()
-                .frame(width: 740, height: 432)
-                .task {
-                    if let window = NSApp.findWindow(.welcome) {
-                        window.standardWindowButton(.closeButton)?.isHidden = true
-                        window.standardWindowButton(.miniaturizeButton)?.isHidden = true
-                        window.standardWindowButton(.zoomButton)?.isHidden = true
-                        window.isMovableByWindowBackground = true
-                    }
+    var windowContent: some View {
+        ContentView()
+            .task {
+                if let window = NSApp.findWindow(.welcome) {
+                    window.standardWindowButton(.closeButton)?.isHidden = true
+                    window.standardWindowButton(.miniaturizeButton)?.isHidden = true
+                    window.standardWindowButton(.zoomButton)?.isHidden = true
+                    window.isMovableByWindowBackground = true
                 }
+            }
+    }
+
+    var body: some Scene {
+        #if swift(>=5.9) // Needed to safely use availability in Scene builder
+        if #available(macOS 15, *) {
+            return Window("Welcome To CodeEdit", id: SceneID.welcome.rawValue) {
+                windowContent
+                    .frame(width: 740, height: 460)
+            }
+            .windowStyle(.plain)
+            .windowResizability(.contentSize)
+            .defaultLaunchBehavior(.presented)
+        } else {
+            return Window("Welcome To CodeEdit", id: SceneID.welcome.rawValue) {
+                windowContent
+                    .frame(width: 740, height: 432)
+            }
+            .windowStyle(.hiddenTitleBar)
+            .windowResizability(.contentSize)
+        }
+        #else
+        return Window("Welcome To CodeEdit", id: SceneID.welcome.rawValue) {
+            windowContent
+                .frame(width: 740, height: 432)
         }
         .windowStyle(.hiddenTitleBar)
         .windowResizability(.contentSize)
+        #endif
     }
 
     struct ContentView: View {
