@@ -80,7 +80,7 @@ final class CodeEditDocumentController: NSDocumentController {
     /// - Parameter url: The file URL to open.
     /// - Returns: True, if the document was opened in a workspace.
     private func openFileInExistingWorkspace(url: URL) -> Bool {
-        guard url.isFileURL else { return false }
+        guard !url.isFolder else { return false }
         let workspaces = documents.compactMap({ $0 as? WorkspaceDocument })
 
         // Check open workspaces for the file being opened. Sorted by shared components with the url so we
@@ -91,6 +91,7 @@ final class CodeEditDocumentController: NSDocumentController {
             // createIfNotFound will still return `nil` if the files don't share a common ancestor.
             if let newFile = workspace.workspaceFileManager?.getFile(url.absolutePath, createIfNotFound: true) {
                 workspace.editorManager?.openTab(item: newFile)
+                workspace.showWindows()
                 return true
             }
         }
