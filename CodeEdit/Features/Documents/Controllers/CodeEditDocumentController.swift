@@ -59,8 +59,11 @@ final class CodeEditDocumentController: NSDocumentController {
         display displayDocument: Bool,
         completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void
     ) {
-        super.openDocument(withContentsOf: url, display: displayDocument) { document, documentWasAlreadyOpen, error in
+        guard !openFileInExistingWorkspace(url: url) else {
+            return
+        }
 
+        super.openDocument(withContentsOf: url, display: displayDocument) { document, documentWasAlreadyOpen, error in
             if let document {
                 self.addDocument(document)
             } else {
@@ -71,6 +74,27 @@ final class CodeEditDocumentController: NSDocumentController {
             RecentProjectsStore.documentOpened(at: url)
             completionHandler(document, documentWasAlreadyOpen, error)
         }
+    }
+    
+    /// Attempt to open the file URL in an open workspace, finding the nearest workspace to open it in if possible.
+    /// - Parameter url: The file URL to open.
+    /// - Returns: True, if the document was opened in a workspace.
+    private func openFileInExistingWorkspace(url: URL) -> Bool {
+        guard url.isFileURL else { return false }
+        let workspaces = documents.compactMap({ $0 as? WorkspaceDocument })
+
+        // Check open workspaces for the file being opened. Sorted by shared components with the url so we
+        // open the nearest workspace possible.
+        for workspace in workspaces.sorted(by: {
+            ($0.fileURL?.sharedComponents(url) ?? 0) > ($1.fileURL?.sharedComponents(url) ?? 0)
+        }) {
+            // createIfNotFound will still return `nil` if the files don't share a common ancestor.
+            if let newFile = workspace.workspaceFileManager?.getFile(url.absolutePath, createIfNotFound: true) {
+                workspace.editorManager?.openTab(item: newFile)
+                return true
+            }
+        }
+        return false
     }
 
     override func removeDocument(_ document: NSDocument) {
