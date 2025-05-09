@@ -48,6 +48,8 @@ struct CodeFileView: View {
     var bracketEmphasis
     @AppSettings(\.textEditing.useSystemCursor)
     var useSystemCursor
+    @AppSettings(\.textEditing.showMinimap)
+    var showMinimap
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -132,7 +134,8 @@ struct CodeFileView: View {
             bracketPairEmphasis: getBracketPairEmphasis(),
             useSystemCursor: useSystemCursor,
             undoManager: undoManager,
-            coordinators: textViewCoordinators
+            coordinators: textViewCoordinators,
+            showMinimap: showMinimap
         )
         .id(codeFile.fileURL)
         .background {
