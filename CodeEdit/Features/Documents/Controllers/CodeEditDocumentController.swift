@@ -75,7 +75,7 @@ final class CodeEditDocumentController: NSDocumentController {
             completionHandler(document, documentWasAlreadyOpen, error)
         }
     }
-    
+
     /// Attempt to open the file URL in an open workspace, finding the nearest workspace to open it in if possible.
     /// - Parameter url: The file URL to open.
     /// - Returns: True, if the document was opened in a workspace.
