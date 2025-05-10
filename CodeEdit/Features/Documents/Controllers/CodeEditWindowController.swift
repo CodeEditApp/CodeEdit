@@ -276,7 +276,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             toggleLastPanel(shouldAnimate: false)
         }
         if workspace?.utilityAreaModel?.isCollapsed != utilityAreaTargetState {
-            CommandManager.shared.executeCommand("open.drawer")
+            CommandManager.shared.executeCommand("open.drawer.no.animation")
         }
         if toolbarCollapsed != toolbarTargetState {
             toggleToolbar()
