@@ -16,7 +16,6 @@ extension WorkspaceDocument.SearchState {
 
         indexStatus = .indexing(progress: 0.0)
 
-        // Create activity using new API
         let activity = await MainActor.run {
             workspace.activityManager.post(
                 title: "Indexing | Processing files",
