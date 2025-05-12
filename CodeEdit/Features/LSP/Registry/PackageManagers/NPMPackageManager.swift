@@ -10,7 +10,7 @@ import Foundation
 final class NPMPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL
 
-    internal let shellClient: ShellClient
+    let shellClient: ShellClient
 
     init(installationDirectory: URL) {
         self.installationDirectory = installationDirectory

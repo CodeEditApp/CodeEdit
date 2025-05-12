@@ -7,11 +7,11 @@
 
 import os.log
 import JSONRPC
+import SwiftUI
 import Foundation
 import LanguageClient
 import LanguageServerProtocol
 import CodeEditLanguages
-import SwiftUICore
 
 /// `LSPService` is a service class responsible for managing the lifecycle and event handling
 /// of Language Server Protocol (LSP) clients within the CodeEdit application. It handles the initialization,

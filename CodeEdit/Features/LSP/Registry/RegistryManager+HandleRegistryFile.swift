@@ -64,7 +64,7 @@ extension RegistryManager {
         }
     }
 
-    internal func handleUpdateError(_ error: Error) {
+    func handleUpdateError(_ error: Error) {
         if let regError = error as? RegistryManagerError {
             switch regError {
             case .invalidResponse(let statusCode):
@@ -82,7 +82,7 @@ extension RegistryManager {
     }
 
     /// Attempts downloading from `url`, with error handling and a retry policy
-    internal static func download(from url: URL, attempt: Int = 1) async throws -> Data {
+    static func download(from url: URL, attempt: Int = 1) async throws -> Data {
         do {
             let (data, response) = try await URLSession.shared.data(from: url)
 
@@ -108,7 +108,7 @@ extension RegistryManager {
     }
 
     /// Loads registry items from disk
-    internal func loadItemsFromDisk() -> [RegistryItem]? {
+    func loadItemsFromDisk() -> [RegistryItem]? {
         let registryPath = installPath.appending(path: "registry.json")
         let fileManager = FileManager.default
 

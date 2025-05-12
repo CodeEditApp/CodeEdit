@@ -424,6 +424,7 @@
 				6C4E37FA2C73E00700AEE7B5 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
 				6CF368562DBBD274006A77FD /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
+				30ED7B722DD299E600ACC922 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			preferredProjectObjectVersion = 55;
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
@@ -1661,14 +1662,6 @@
 				minimumVersion = 0.9.19;
 			};
 		};
-		30C549D82D77BDF8008DDEF8 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.11.0;
-			};
-		};
 		30CB648F2C16CA8100CC8A9E /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChimeHQ/LanguageServerProtocol";
@@ -1683,6 +1676,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.8.0;
+			};
+		};
+		30ED7B722DD299E600ACC922 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
 			};
 		};
 		583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {

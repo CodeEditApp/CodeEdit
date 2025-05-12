@@ -85,13 +85,13 @@ struct SettingsView: View {
                 icon: .system("externaldrive.fill")
             )
         ),
-//        .init(
-//            SettingsPage(
-//                .languageServers,
-//                baseColor: Color(hex: "#6A69DC"), // Purple
-//                icon: .system("cube.box.fill")
-//            )
-//        ),
+        .init(
+            SettingsPage(
+                .languageServers,
+                baseColor: Color(hex: "#6A69DC"), // Purple
+                icon: .system("cube.box.fill")
+            )
+        ),
         .init(
             SettingsPage(
                 .developer,

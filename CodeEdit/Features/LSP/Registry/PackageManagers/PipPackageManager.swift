@@ -10,7 +10,7 @@ import Foundation
 final class PipPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL
 
-    internal let shellClient: ShellClient
+    let shellClient: ShellClient
 
     init(installationDirectory: URL) {
         self.installationDirectory = installationDirectory
@@ -81,7 +81,7 @@ final class PipPackageManager: PackageManagerProtocol {
     }
 
     func isInstalled() async -> Bool {
-        let pipCommands = ["pip --version", "pip3 --version", "python -m pip --version"]
+        let pipCommands = ["pip3 --version", "python3 -m pip --version"]
         for command in pipCommands {
             do {
                 let versionOutput = try await runCommand(command)

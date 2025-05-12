@@ -12,18 +12,18 @@ import ZIPFoundation
 final class RegistryManager {
     static let shared: RegistryManager = .init()
 
-    internal let installPath = Settings.shared.baseURL.appending(path: "Language Servers")
+    let installPath = Settings.shared.baseURL.appending(path: "Language Servers")
 
     /// The URL of where the registry.json file will be downloaded from
-    internal let registryURL = URL(
+    let registryURL = URL(
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/registry.json.zip"
     )!
     /// The URL of where the checksums.txt file will be downloaded from
-    internal let checksumURL = URL(
+    let checksumURL = URL(
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/checksums.txt"
     )!
 
-    /// Rreference to cached registry data. Will be removed from memory after a certain amount of time.
+    /// Reference to cached registry data. Will be removed from memory after a certain amount of time.
     private var cachedRegistry: CachedRegistry?
     /// Timer to clear expired cache
     private var cleanupTimer: Timer?
@@ -186,7 +186,7 @@ final class RegistryManager {
     }
 
     /// Create the appropriate package manager for the given installation method
-    internal func createPackageManager(for method: InstallationMethod) -> PackageManagerProtocol? {
+    func createPackageManager(for method: InstallationMethod) -> PackageManagerProtocol? {
         switch method.packageManagerType {
         case .npm:
             return NPMPackageManager(installationDirectory: installPath)
