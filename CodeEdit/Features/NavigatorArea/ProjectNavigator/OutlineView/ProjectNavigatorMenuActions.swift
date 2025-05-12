@@ -222,6 +222,42 @@ extension ProjectNavigatorMenu {
         }
     }
 
+    /// Copies the absolute path of the selected files
+    @objc
+    func copyPath() {
+        let paths = selectedItems().map {
+            $0.url.standardizedFileURL.path
+        }.sorted().joined(separator: "\n")
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(paths, forType: .string)
+    }
+
+    /// Copies the relative path of the selected files
+    @objc
+    func copyRelativePath() {
+        guard let rootPath = workspace?.workspaceFileManager?.folderUrl else {
+            return
+        }
+        let paths = selectedItems().map {
+            let destinationComponents = $0.url.standardizedFileURL.pathComponents
+            let baseComponents = rootPath.standardizedFileURL.pathComponents
+
+            // Find common prefix length
+            var prefixCount = 0
+            while prefixCount < min(destinationComponents.count, baseComponents.count)
+                    && destinationComponents[prefixCount] == baseComponents[prefixCount] {
+                prefixCount += 1
+            }
+            // Build the relative path
+            let upPath = String(repeating: "../", count: baseComponents.count - prefixCount)
+            let downPath = destinationComponents[prefixCount...].joined(separator: "/")
+            return upPath + downPath
+        }.sorted().joined(separator: "\n")
+
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(paths, forType: .string)
+    }
+
     private func reloadData() {
         sender.outlineView.reloadData()
         sender.filteredContentChildren.removeAll()

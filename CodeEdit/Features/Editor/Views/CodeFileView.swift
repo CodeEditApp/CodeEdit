@@ -19,8 +19,12 @@ struct CodeFileView: View {
     /// The current cursor positions in the view
     @State private var cursorPositions: [CursorPosition] = []
 
+    @State private var treeSitterClient: TreeSitterClient = TreeSitterClient()
+
     /// Any coordinators passed to the view.
     private var textViewCoordinators: [TextViewCoordinator]
+
+    @State private var highlightProviders: [any HighlightProviding] = []
 
     @AppSettings(\.textEditing.defaultTabWidth)
     var defaultTabWidth
@@ -30,6 +34,8 @@ struct CodeFileView: View {
     var lineHeightMultiple
     @AppSettings(\.textEditing.wrapLinesToEditorWidth)
     var wrapLinesToEditorWidth
+    @AppSettings(\.textEditing.overscroll)
+    var overscroll
     @AppSettings(\.textEditing.font)
     var settingsFont
     @AppSettings(\.theme.useThemeBackground)
@@ -38,15 +44,19 @@ struct CodeFileView: View {
     var matchAppearance
     @AppSettings(\.textEditing.letterSpacing)
     var letterSpacing
-    @AppSettings(\.textEditing.bracketHighlight)
-    var bracketHighlight
+    @AppSettings(\.textEditing.bracketEmphasis)
+    var bracketEmphasis
     @AppSettings(\.textEditing.useSystemCursor)
     var useSystemCursor
+    @AppSettings(\.textEditing.showMinimap)
+    var showMinimap
 
     @Environment(\.colorScheme)
     private var colorScheme
 
     @ObservedObject private var themeModel: ThemeModel = .shared
+
+    @State private var treeSitter = TreeSitterClient()
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -56,15 +66,18 @@ struct CodeFileView: View {
 
     init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
         self._codeFile = .init(wrappedValue: codeFile)
+
         self.textViewCoordinators = textViewCoordinators
             + [codeFile.contentCoordinator]
-            + [codeFile.lspCoordinator].compactMap({ $0 })
+            + [codeFile.languageServerObjects.textCoordinator].compactMap({ $0 })
         self.isEditable = isEditable
 
         if let openOptions = codeFile.openOptions {
             codeFile.openOptions = nil
             self.cursorPositions = openOptions.cursorPositions
         }
+
+        updateHighlightProviders()
 
         codeFile
             .contentCoordinator
@@ -97,23 +110,6 @@ struct CodeFileView: View {
 
     @State private var font: NSFont = Settings[\.textEditing].font.current
 
-    @State private var bracketPairHighlight: BracketPairHighlight? = {
-        let theme = ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!
-        let color = Settings[\.textEditing].bracketHighlight.useCustomColor
-        ? Settings[\.textEditing].bracketHighlight.color.nsColor
-        : theme.editor.text.nsColor.withAlphaComponent(0.8)
-        switch Settings[\.textEditing].bracketHighlight.highlightType {
-        case .disabled:
-            return nil
-        case .flash:
-            return .flash
-        case .bordered:
-            return .bordered(color: color)
-        case .underline:
-            return .underline(color: color)
-        }
-    }()
-
     @Environment(\.edgeInsets)
     private var edgeInsets
 
@@ -127,15 +123,19 @@ struct CodeFileView: View {
             indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
             lineHeight: lineHeightMultiple,
             wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
+            editorOverscroll: overscroll.overscrollPercentage,
             cursorPositions: $cursorPositions,
             useThemeBackground: useThemeBackground,
+            highlightProviders: highlightProviders,
             contentInsets: edgeInsets.nsEdgeInsets,
+            additionalTextInsets: NSEdgeInsets(top: 2, left: 0, bottom: 0, right: 0),
             isEditable: isEditable,
             letterSpacing: letterSpacing,
-            bracketPairHighlight: bracketPairHighlight,
+            bracketPairEmphasis: getBracketPairEmphasis(),
             useSystemCursor: useSystemCursor,
             undoManager: undoManager,
-            coordinators: textViewCoordinators
+            coordinators: textViewCoordinators,
+            showMinimap: showMinimap
         )
         .id(codeFile.fileURL)
         .background {
@@ -151,19 +151,22 @@ struct CodeFileView: View {
         .onChange(of: settingsFont) { newFontSetting in
             font = newFontSetting.current
         }
-        .onChange(of: bracketHighlight) { _ in
-            bracketPairHighlight = getBracketPairHighlight()
+        .onReceive(codeFile.$languageServerObjects) { languageServerObjects in
+            // This will not be called in single-file views (for now) but is safe to listen to either way
+            updateHighlightProviders(lspHighlightProvider: languageServerObjects.highlightProvider)
         }
     }
 
-    private func getBracketPairHighlight() -> BracketPairHighlight? {
-        let color = if Settings[\.textEditing].bracketHighlight.useCustomColor {
-            Settings[\.textEditing].bracketHighlight.color.nsColor
+    /// Determines the style of bracket emphasis based on the `bracketEmphasis` setting and the current theme.
+    /// - Returns: The emphasis style to use for bracket pair emphasis.
+    private func getBracketPairEmphasis() -> BracketPairEmphasis? {
+        let color = if Settings[\.textEditing].bracketEmphasis.useCustomColor {
+            Settings[\.textEditing].bracketEmphasis.color.nsColor
         } else {
             currentTheme.editor.text.nsColor.withAlphaComponent(0.8)
         }
 
-        switch Settings[\.textEditing].bracketHighlight.highlightType {
+        switch Settings[\.textEditing].bracketEmphasis.highlightType {
         case .disabled:
             return nil
         case .flash:
@@ -173,6 +176,12 @@ struct CodeFileView: View {
         case .underline:
             return .underline(color: color)
         }
+    }
+
+    /// Updates the highlight providers array.
+    /// - Parameter lspHighlightProvider: The language server provider, if available.
+    private func updateHighlightProviders(lspHighlightProvider: HighlightProviding? = nil) {
+        highlightProviders = [lspHighlightProvider].compactMap({ $0 }) + [treeSitterClient]
     }
 }
 

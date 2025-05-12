@@ -65,7 +65,15 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
                 .store(in: &cancellables)
             workspace.$navigatorFilter
                 .throttle(for: 0.1, scheduler: RunLoop.main, latest: true)
-                .sink { [weak self] _ in self?.controller?.handleFilterChange() }
+                .sink { [weak self] _ in
+                    self?.controller?.handleFilterChange()
+                }
+                .store(in: &cancellables)
+            Publishers.Merge(workspace.$sourceControlFilter, workspace.$sortFoldersOnTop)
+                .throttle(for: 0.1, scheduler: RunLoop.main, latest: true)
+                .sink { [weak self] _ in
+                    self?.controller?.handleFilterChange()
+                }
                 .store(in: &cancellables)
         }
 

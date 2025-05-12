@@ -22,7 +22,7 @@ struct AccountsSettingsAccountLink: View {
                     .font(.footnote)
                     .foregroundColor(.secondary)
             } icon: {
-                FeatureIcon(image: Image(account.provider.iconName), size: 26)
+                FeatureIcon(image: Image(account.provider.iconResource), size: 26)
                     .padding(.vertical, 2)
                     .padding(.leading, 2)
             }

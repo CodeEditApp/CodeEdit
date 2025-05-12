@@ -55,6 +55,9 @@ final class ProjectNavigatorMenu: NSMenu {
         let openExternalEditor = menuItem("Open with External Editor", action: #selector(openWithExternalEditor))
         let openAs = menuItem("Open As", action: nil)
 
+        let copyPath = menuItem("Copy Path", action: #selector(copyPath))
+        let copyRelativePath = menuItem("Copy Relative Path", action: #selector(copyRelativePath))
+
         let showFileInspector = menuItem("Show File Inspector", action: nil)
 
         let newFile = menuItem("New File...", action: #selector(newFile))
@@ -90,6 +93,9 @@ final class ProjectNavigatorMenu: NSMenu {
             openInNewWindow,
             openExternalEditor,
             openAs,
+            NSMenuItem.separator(),
+            copyPath,
+            copyRelativePath,
             NSMenuItem.separator(),
             showFileInspector,
             NSMenuItem.separator(),

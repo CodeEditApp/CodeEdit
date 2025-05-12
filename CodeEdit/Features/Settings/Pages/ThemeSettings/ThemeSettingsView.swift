@@ -53,6 +53,7 @@ struct ThemeSettingsView: View {
                                 } label: {
                                     Text("Export All Custom Themes...")
                                 }
+                                .disabled(themeModel.themes.filter { !$0.isBundled }.isEmpty)
                             }
                         })
                         .padding(.horizontal, 5)

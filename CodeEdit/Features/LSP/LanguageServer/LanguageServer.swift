@@ -11,8 +11,11 @@ import LanguageClient
 import LanguageServerProtocol
 import OSLog
 
-class LanguageServer {
-    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LanguageServer")
+/// A client for language servers.
+class LanguageServer<DocumentType: LanguageServerDocument> {
+    static var logger: Logger { // types with associated types cannot have constant static properties
+        Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LanguageServer")
+    }
     let logger: Logger
 
     /// Identifies which language the server belongs to
@@ -25,7 +28,7 @@ class LanguageServer {
     /// Tracks documents and their associated objects.
     /// Use this property when adding new objects that need to track file data, or have a state associated with the
     /// language server and a document. For example, the content coordinator.
-    let openFiles: LanguageServerFileMap
+    let openFiles: LanguageServerFileMap<DocumentType>
 
     /// Maps the language server's highlight config to one CodeEdit can read. See ``SemanticTokenMap``.
     let highlightMap: SemanticTokenMap?
@@ -152,13 +155,13 @@ class LanguageServer {
                 // https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#semanticTokensClientCapabilities
                 semanticTokens: SemanticTokensClientCapabilities(
                     dynamicRegistration: false,
-                    requests: .init(range: true, delta: true),
+                    requests: .init(range: false, delta: true),
                     tokenTypes: SemanticTokenTypes.allStrings,
                     tokenModifiers: SemanticTokenModifiers.allStrings,
                     formats: [.relative],
                     overlappingTokenSupport: true,
                     multilineTokenSupport: true,
-                    serverCancelSupport: true,
+                    serverCancelSupport: false,
                     augmentsSyntaxTokens: true
                 )
             )
@@ -218,7 +221,7 @@ class LanguageServer {
                 processId: nil,
                 locale: nil,
                 rootPath: nil,
-                rootUri: workspacePath,
+                rootUri: "file://" + workspacePath, // Make it a URI
                 initializationOptions: [],
                 capabilities: capabilities,
                 trace: nil,
