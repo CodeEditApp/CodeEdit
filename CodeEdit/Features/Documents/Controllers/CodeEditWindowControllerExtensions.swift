@@ -9,49 +9,6 @@ import SwiftUI
 import Combine
 
 extension CodeEditWindowController {
-    @objc
-    func objcToggleFirstPanel() {
-        toggleFirstPanel(shouldAnimate: true)
-    }
-
-    /// Toggles the navigator pane, optionally without animation.
-    func toggleFirstPanel(shouldAnimate: Bool = true) {
-        guard let firstSplitView = splitViewController?.splitViewItems.first else { return }
-
-        if shouldAnimate {
-            // Standard animated toggle
-            firstSplitView.animator().isCollapsed.toggle()
-        } else {
-            // Instant toggle (no animation)
-            firstSplitView.isCollapsed.toggle()
-        }
-
-        splitViewController?.saveNavigatorCollapsedState(isCollapsed: firstSplitView.isCollapsed)
-    }
-
-    @objc
-    func objcToggleLastPanel() {
-        toggleLastPanel(shouldAnimate: true)
-    }
-
-    func toggleLastPanel(shouldAnimate: Bool = true) {
-        guard let lastSplitView = splitViewController?.splitViewItems.last else {
-            return
-        }
-
-        if shouldAnimate {
-            // Standard animated toggle
-            NSAnimationContext.runAnimationGroup { _ in
-                lastSplitView.animator().isCollapsed.toggle()
-            }
-        } else {
-            // Instant toggle (no animation)
-            lastSplitView.isCollapsed.toggle()
-        }
-
-        splitViewController?.saveInspectorCollapsedState(isCollapsed: lastSplitView.isCollapsed)
-    }
-
     /// These are example items that added as commands to command palette
     func registerCommands() {
         CommandManager.shared.addCommand(
