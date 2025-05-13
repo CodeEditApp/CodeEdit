@@ -109,7 +109,9 @@ extension CodeEditWindowController {
 
         // If the interface has been restored, reset the remembered states
         if !stillHidden {
-            resetStoredInterfaceCollapseState()
+            DispatchQueue.main.async { [weak self] in
+                self?.resetStoredInterfaceCollapseState()
+            }
         }
 
         return stillHidden
