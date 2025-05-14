@@ -25,8 +25,11 @@ extension WorkspaceDocument.SearchState {
         }
 
         let (progressStream, continuation) = AsyncStream<Double>.makeStream()
+        
         // Dispatch this now, we want to continue after starting to monitor
-        Task { await self.monitorProgressStream(progressStream, activityId: activity.id) }
+        let monitorTask = Task {
+            await self.monitorProgressStream(progressStream, activityId: activity.id)
+        }
 
         Task.detached {
             let filePaths = self.getFileURLs(at: url)
@@ -53,6 +56,8 @@ extension WorkspaceDocument.SearchState {
                 }
             }
 
+            continuation.finish()
+            await monitorTask.value // Await monitor to finish draining the stream
             asyncController.index.flush()
 
             await MainActor.run {
