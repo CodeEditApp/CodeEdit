@@ -25,7 +25,6 @@ extension WorkspaceDocument.SearchState {
         }
 
         let (progressStream, continuation) = AsyncStream<Double>.makeStream()
-        
         // Dispatch this now, we want to continue after starting to monitor
         let monitorTask = Task {
             await self.monitorProgressStream(progressStream, activityId: activity.id)
