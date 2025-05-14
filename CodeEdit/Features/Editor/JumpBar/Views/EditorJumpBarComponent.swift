@@ -65,6 +65,11 @@ struct EditorJumpBarComponent: View {
 
             return button
         }
+        .frame(
+            maxWidth: isHovering || isLastItem ? nil : 20,
+            alignment: .leading
+        )
+        .clipped()
         .padding(.trailing, 11)
         .background {
             Color(nsColor: colorScheme == .dark ? .white : .black)
