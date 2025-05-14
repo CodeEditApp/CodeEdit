@@ -26,16 +26,19 @@ struct EditorJumpBarComponent: View {
     @State var selection: CEWorkspaceFile
     @State var isHovering: Bool = false
     @State var button = NSPopUpButton()
+    @Binding var truncatedCrumbWidth: CGFloat?
 
     init(
         fileItem: CEWorkspaceFile,
         tappedOpenFile: @escaping (CEWorkspaceFile) -> Void,
-        isLastItem: Bool
+        isLastItem: Bool,
+        isTruncated: Binding<CGFloat?>
     ) {
         self.fileItem = fileItem
         self._selection = .init(wrappedValue: fileItem)
         self.tappedOpenFile = tappedOpenFile
         self.isLastItem = isLastItem
+        self._truncatedCrumbWidth = isTruncated
     }
 
     var siblings: [CEWorkspaceFile] {
@@ -66,7 +69,7 @@ struct EditorJumpBarComponent: View {
             return button
         }
         .frame(
-            maxWidth: isHovering || isLastItem ? nil : 20,
+            maxWidth: isHovering || isLastItem ? nil : truncatedCrumbWidth,
             alignment: .leading
         )
         .clipped()
