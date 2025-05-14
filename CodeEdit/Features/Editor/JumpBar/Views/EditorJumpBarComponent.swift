@@ -88,7 +88,9 @@ struct EditorJumpBarComponent: View {
         }
         .padding(.vertical, 3)
         .onHover { hover in
-            isHovering = hover
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isHovering = hover
+            }
         }
         .onLongPressGesture(minimumDuration: 0) {
             button.performClick(nil)
