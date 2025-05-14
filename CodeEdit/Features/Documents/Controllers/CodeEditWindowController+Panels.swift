@@ -132,7 +132,7 @@ extension CodeEditWindowController {
             let targetState = determineDesiredCollapseState(
                 shouldHide: shouldHide,
                 currentlyCollapsed: panel.isCollapsed(),
-                previouslyCollapsed: panel.getPrevCollapsed(),
+                previouslyCollapsed: panel.getPrevCollapsed()
             )
             if panel.isCollapsed() != targetState {
                 panel.toggle()
