@@ -68,6 +68,7 @@ struct WorkspaceView: View {
                         Rectangle()
                             .collapsable()
                             .collapsed($utilityAreaViewModel.isCollapsed)
+                            .splitViewCanAnimate($utilityAreaViewModel.animateCollapse)
                             .opacity(0)
                             .frame(idealHeight: 260)
                             .frame(minHeight: 100)

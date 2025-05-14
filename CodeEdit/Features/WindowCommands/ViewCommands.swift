@@ -111,6 +111,10 @@ extension ViewCommands {
             windowController?.toolbarCollapsed ?? true
         }
 
+        var isInterfaceHidden: Bool {
+            return windowController?.isInterfaceStillHidden() ?? false
+        }
+
         var body: some View {
             Button("\(navigatorCollapsed ? "Show" : "Hide") Navigator") {
                 windowController?.toggleFirstPanel()
@@ -135,6 +139,12 @@ extension ViewCommands {
             }
             .disabled(windowController == nil)
             .keyboardShortcut("t", modifiers: [.option, .command])
+
+            Button("\(isInterfaceHidden ? "Show" : "Hide") Interface") {
+                windowController?.toggleInterface(shouldHide: !isInterfaceHidden)
+            }
+            .disabled(windowController == nil)
+            .keyboardShortcut(".", modifiers: .command)
         }
     }
 }

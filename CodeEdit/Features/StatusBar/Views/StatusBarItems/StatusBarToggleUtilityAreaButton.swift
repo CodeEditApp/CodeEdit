@@ -31,6 +31,12 @@ internal struct StatusBarToggleUtilityAreaButton: View {
                     id: "open.drawer",
                     command: { [weak utilityAreaViewModel] in utilityAreaViewModel?.togglePanel() }
                 )
+                CommandManager.shared.addCommand(
+                    name: "Toggle Utility Area Without Animation",
+                    title: "Toggle Utility Area Without Animation",
+                    id: "open.drawer.no.animation",
+                    command: { [weak utilityAreaViewModel] in utilityAreaViewModel?.togglePanel(animation: false) }
+                )
             }
         }
         .onAppear {
@@ -39,6 +45,12 @@ internal struct StatusBarToggleUtilityAreaButton: View {
                 title: "Toggle Utility Area",
                 id: "open.drawer",
                 command: { [weak utilityAreaViewModel] in utilityAreaViewModel?.togglePanel() }
+            )
+            CommandManager.shared.addCommand(
+                name: "Toggle Utility Area Without Animation",
+                title: "Toggle Utility Area Without Animation",
+                id: "open.drawer.no.animation",
+                command: { [weak utilityAreaViewModel] in utilityAreaViewModel?.togglePanel(animation: false) }
             )
         }
     }

@@ -45,9 +45,15 @@ class SplitViewItem: ObservableObject {
     /// - Parameter child: the view corresponding to the SplitViewItem.
     func update(child: _VariadicView.Children.Element) {
         self.item.canCollapse = child[SplitViewItemCanCollapseViewTraitKey.self]
+        let canAnimate = child[SplitViewItemCanAnimateViewTraitKey.self]
         DispatchQueue.main.async {
             self.observers = []
-            self.item.animator().isCollapsed = child[SplitViewItemCollapsedViewTraitKey.self].wrappedValue
+            let collapsed = child[SplitViewItemCollapsedViewTraitKey.self].wrappedValue
+            if canAnimate {
+                self.item.animator().isCollapsed = collapsed
+            } else {
+                self.item.isCollapsed = collapsed
+            }
             self.item.holdingPriority = child[SplitViewHoldingPriorityTraitKey.self]
             self.observers = self.createObservers()
         }

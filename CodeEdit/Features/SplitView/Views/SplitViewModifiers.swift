@@ -23,6 +23,10 @@ struct SplitViewHoldingPriorityTraitKey: _ViewTraitKey {
     static var defaultValue: NSLayoutConstraint.Priority = .defaultLow
 }
 
+struct SplitViewItemCanAnimateViewTraitKey: _ViewTraitKey {
+    static var defaultValue: Bool { true }
+}
+
 extension View {
     func collapsed(_ value: Binding<Bool>) -> some View {
         self
@@ -42,5 +46,9 @@ extension View {
     func holdingPriority(_ priority: NSLayoutConstraint.Priority) -> some View {
         self
             ._trait(SplitViewHoldingPriorityTraitKey.self, priority)
+    }
+
+    func splitViewCanAnimate(_ enabled: Binding<Bool>) -> some View {
+        self._trait(SplitViewItemCanAnimateViewTraitKey.self, enabled.wrappedValue)
     }
 }
