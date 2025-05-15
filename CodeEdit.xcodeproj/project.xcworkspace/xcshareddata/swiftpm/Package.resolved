@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
       "state" : {
-        "revision" : "412b0a26cbeb3f3148a1933dd598c976defe92a6",
-        "version" : "0.12.0"
+        "revision" : "b96f270ab58bdbe0406de31d4c983d75732fccf5",
+        "version" : "0.13.0"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSymbols",
       "state" : {
-        "revision" : "a794528172314f9be5d838f8579c4435895e0988",
-        "version" : "0.2.2"
+        "revision" : "ae69712b08571c4469c2ed5cd38ad9f19439793e",
+        "version" : "0.2.3"
       }
     },
     {

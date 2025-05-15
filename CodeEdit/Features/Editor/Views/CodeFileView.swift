@@ -50,6 +50,10 @@ struct CodeFileView: View {
     var useSystemCursor
     @AppSettings(\.textEditing.showMinimap)
     var showMinimap
+    @AppSettings(\.textEditing.reformatAtColumn)
+    var reformatAtColumn
+    @AppSettings(\.textEditing.showReformattingGuide)
+    var showReformattingGuide
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -135,7 +139,9 @@ struct CodeFileView: View {
             useSystemCursor: useSystemCursor,
             undoManager: undoManager,
             coordinators: textViewCoordinators,
-            showMinimap: showMinimap
+            showMinimap: showMinimap,
+            reformatAtColumn: reformatAtColumn,
+            showReformattingGuide: showReformattingGuide
         )
         .id(codeFile.fileURL)
         .background {

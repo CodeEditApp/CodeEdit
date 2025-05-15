@@ -29,6 +29,8 @@ extension SettingsData {
                 "Bracket Pair Emphasis",
                 "Bracket Pair Highlight",
                 "Show Minimap",
+                "Reformat at Column",
+                "Show Reformatting Guide",
             ]
             if #available(macOS 14.0, *) {
                 keys.append("System Cursor")
@@ -73,6 +75,12 @@ extension SettingsData {
 
         /// Toggle the minimap in the editor.
         var showMinimap: Bool = true
+
+        /// The column at which to reformat text
+        var reformatAtColumn: Int = 80
+
+        /// Show the reformatting guide in the editor
+        var showReformattingGuide: Bool = false
 
         /// Default initializer
         init() {
@@ -123,6 +131,11 @@ extension SettingsData {
             }
 
             self.showMinimap = try container.decodeIfPresent(Bool.self, forKey: .showMinimap) ?? true
+            self.reformatAtColumn = try container.decodeIfPresent(Int.self, forKey: .reformatAtColumn) ?? 80
+            self.showReformattingGuide = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .showReformattingGuide
+            ) ?? false
 
             self.populateCommands()
         }
