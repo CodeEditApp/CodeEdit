@@ -59,7 +59,7 @@ extension RegistryManager {
 
             NotificationCenter.default.post(name: .RegistryUpdatedNotification, object: nil)
         } catch {
-            print("Error details: \(error)")
+            logger.error("Error updating: \(error)")
             handleUpdateError(RegistryManagerError.writeFailed(error: error))
         }
     }
@@ -68,16 +68,16 @@ extension RegistryManager {
         if let regError = error as? RegistryManagerError {
             switch regError {
             case .invalidResponse(let statusCode):
-                print("Invalid response received: \(statusCode)")
+                logger.error("Invalid response received: \(statusCode)")
             case let .downloadFailed(url, error):
-                print("Download failed for \(url.absoluteString): \(error.localizedDescription)")
+                logger.error("Download failed for \(url.absoluteString): \(error.localizedDescription)")
             case let .maxRetriesExceeded(url, error):
-                print("Max retries exceeded for \(url.absoluteString): \(error.localizedDescription)")
+                logger.error("Max retries exceeded for \(url.absoluteString): \(error.localizedDescription)")
             case let .writeFailed(error):
-                print("Failed to write files to disk: \(error.localizedDescription)")
+                logger.error("Failed to write files to disk: \(error.localizedDescription)")
             }
         } else {
-            print("Unexpected registry error: \(error.localizedDescription)")
+            logger.error("Unexpected registry error: \(error.localizedDescription)")
         }
     }
 

@@ -5,12 +5,15 @@
 //  Created by Abe Malla on 1/29/25.
 //
 
+import OSLog
 import Foundation
 import ZIPFoundation
 
 @MainActor
 final class RegistryManager {
     static let shared: RegistryManager = .init()
+
+    let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "RegistryManager")
 
     let installPath = Settings.shared.baseURL.appending(path: "Language Servers")
 
@@ -143,24 +146,13 @@ final class RegistryManager {
         fail failed: Bool
     ) {
         if failed {
-            NotificationCenter.default.post(
-                name: .taskNotification,
-                object: nil,
-                userInfo: [
-                    "id": id,
-                    "action": "update",
-                    "title": "Could not install \(activityName)",
-                    "isLoading": false
-                ]
-            )
-            NotificationCenter.default.post(
-                name: .taskNotification,
-                object: nil,
-                userInfo: [
-                    "id": id,
-                    "action": "deleteWithDelay",
-                    "delay": 5.0,
-                ]
+            NotificationManager.shared.post(
+                iconSymbol: "xmark.circle",
+                iconColor: .clear,
+                title: "Could not install \(activityName)",
+                description: "There was a problem during installation.",
+                actionButtonTitle: "Done",
+                action: {},
             )
         } else {
             NotificationCenter.default.post(
