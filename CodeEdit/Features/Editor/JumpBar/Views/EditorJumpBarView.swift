@@ -28,7 +28,7 @@ struct EditorJumpBarView: View {
     @State private var textWidth: CGFloat = 0
     @State private var containerWidth: CGFloat = 0
     @State private var isTruncated: Bool = false
-    @State private var crumbWidth: CGFloat? = nil
+    @State private var crumbWidth: CGFloat?
 
     init(
         file: CEWorkspaceFile?,
@@ -78,6 +78,23 @@ struct EditorJumpBarView: View {
 
                     }
                 }
+                .mask(
+                    LinearGradient(
+                        gradient: Gradient(
+                            stops: crumbWidth != nil ?
+                            [
+                                .init(color: .black, location: 0),
+                                .init(color: .black, location: 0.8),
+                                .init(color: .clear, location: 1)
+                            ] : [
+                                .init(color: .black, location: 0),
+                                .init(color: .black, location: 1)
+                            ]
+                        ),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
                 .background(
                     GeometryReader { proxy in
                         Color.clear
