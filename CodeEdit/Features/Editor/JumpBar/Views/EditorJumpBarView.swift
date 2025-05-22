@@ -29,6 +29,7 @@ struct EditorJumpBarView: View {
     @State private var containerWidth: CGFloat = 0
     @State private var isTruncated: Bool = false
     @State private var crumbWidth: CGFloat?
+    @State private var firstCrumbWidth: CGFloat?
 
     init(
         file: CEWorkspaceFile?,
@@ -72,7 +73,7 @@ struct EditorJumpBarView: View {
                                 fileItem: fileItem,
                                 tappedOpenFile: tappedOpenFile,
                                 isLastItem: fileItems.last == fileItem,
-                                isTruncated: $crumbWidth
+                                isTruncated: fileItems.first == fileItem ? $firstCrumbWidth : $crumbWidth
                             )
                         }
 
@@ -149,16 +150,34 @@ struct EditorJumpBarView: View {
         let snapThreshold: CGFloat = 30
         let maxWidth: CGFloat = textWidth / CGFloat(fileItems.count)
         let exponent: CGFloat = 5.0
+        var betweenWidth: CGFloat = 0.0
 
         if textWidth >= containerWidth {
             let scale = max(0, min(1, containerWidth / textWidth))
-            var width = floor((minWidth + (maxWidth - minWidth) * pow(scale, exponent)))
-            if width < snapThreshold {
-                width = minWidth
+            betweenWidth = floor((minWidth + (maxWidth - minWidth) * pow(scale, exponent)))
+            if betweenWidth < snapThreshold {
+                betweenWidth = minWidth
             }
-            crumbWidth = width
+            crumbWidth = betweenWidth
         } else {
             crumbWidth = nil
+        }
+
+        if betweenWidth > snapThreshold {
+            firstCrumbWidth = nil
+        } else {
+            let otherCrumbs = CGFloat(max(fileItems.count - 1, 1))
+            let usedWidth = otherCrumbs * snapThreshold
+
+            // Multiplier to reserve extra space for other crumbs in the jump bar.
+            // Increasing this value causes the first crumb to truncate sooner.
+            let crumbSpacingMultiplier: CGFloat = 1.5
+            let availableForFirst = containerWidth - usedWidth * crumbSpacingMultiplier
+            if availableForFirst < snapThreshold {
+                firstCrumbWidth = minWidth
+            } else {
+                firstCrumbWidth = availableForFirst
+            }
         }
     }
 }
