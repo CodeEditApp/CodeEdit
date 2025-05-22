@@ -72,6 +72,23 @@ struct EditorJumpBarComponent: View {
             maxWidth: isHovering || isLastItem ? nil : truncatedCrumbWidth,
             alignment: .leading
         )
+        .mask(
+            LinearGradient(
+                gradient: Gradient(
+                    stops: truncatedCrumbWidth == nil ?
+                    [
+                        .init(color: .black, location: 0),
+                        .init(color: .black, location: 1)
+                    ] : [
+                        .init(color: .black, location: 0),
+                        .init(color: .black, location: 0.8),
+                        .init(color: .clear, location: 1)
+                    ]
+                ),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
         .clipped()
         .padding(.trailing, 11)
         .background {

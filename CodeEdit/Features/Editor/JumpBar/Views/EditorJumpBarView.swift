@@ -79,23 +79,6 @@ struct EditorJumpBarView: View {
 
                     }
                 }
-                .mask(
-                    LinearGradient(
-                        gradient: Gradient(
-                            stops: crumbWidth != nil ?
-                            [
-                                .init(color: .black, location: 0),
-                                .init(color: .black, location: 0.8),
-                                .init(color: .clear, location: 1)
-                            ] : [
-                                .init(color: .black, location: 0),
-                                .init(color: .black, location: 1)
-                            ]
-                        ),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
                 .background(
                     GeometryReader { proxy in
                         Color.clear
