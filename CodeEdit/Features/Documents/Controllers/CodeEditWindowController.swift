@@ -10,9 +10,15 @@ import SwiftUI
 import Combine
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, ObservableObject, NSWindowDelegate {
-    @Published var navigatorCollapsed = false
-    @Published var inspectorCollapsed = false
-    @Published var toolbarCollapsed = false
+    @Published var navigatorCollapsed: Bool = false
+    @Published var inspectorCollapsed: Bool = false
+    @Published var toolbarCollapsed: Bool = false
+
+    // These variables store the state of the windows when using "Hide interface"
+    @Published var prevNavigatorCollapsed: Bool?
+    @Published var prevInspectorCollapsed: Bool?
+    @Published var prevUtilityAreaCollapsed: Bool?
+    @Published var prevToolbarCollapsed: Bool?
 
     private var panelOpen = false
 

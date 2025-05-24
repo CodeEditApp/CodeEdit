@@ -92,7 +92,7 @@ extension CodeEditWindowController {
             toolbarItem.toolTip = "Hide or show the Navigator"
             toolbarItem.isBordered = true
             toolbarItem.target = self
-            toolbarItem.action = #selector(self.toggleFirstPanel)
+            toolbarItem.action = #selector(self.objcToggleFirstPanel)
             toolbarItem.image = NSImage(
                 systemSymbolName: "sidebar.leading",
                 accessibilityDescription: nil
@@ -106,7 +106,7 @@ extension CodeEditWindowController {
             toolbarItem.toolTip = "Hide or show the Inspectors"
             toolbarItem.isBordered = true
             toolbarItem.target = self
-            toolbarItem.action = #selector(self.toggleLastPanel)
+            toolbarItem.action = #selector(self.objcToggleLastPanel)
             toolbarItem.image = NSImage(
                 systemSymbolName: "sidebar.trailing",
                 accessibilityDescription: nil

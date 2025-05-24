@@ -21,6 +21,9 @@ class UtilityAreaViewModel: ObservableObject {
     /// Indicates whether debugger is collapse or not
     @Published var isCollapsed: Bool = false
 
+    /// Indicates whether collapse animation should be enabled when utility area is toggled
+    @Published var animateCollapse: Bool = true
+
     /// Returns true when the drawer is visible
     @Published var isMaximized: Bool = false
 
@@ -47,7 +50,8 @@ class UtilityAreaViewModel: ObservableObject {
         workspace.addToWorkspaceState(key: .utilityAreaMaximized, value: isMaximized)
     }
 
-    func togglePanel() {
+    func togglePanel(animation: Bool = true) {
+        self.animateCollapse = animation
         self.isMaximized = false
         self.isCollapsed.toggle()
     }
