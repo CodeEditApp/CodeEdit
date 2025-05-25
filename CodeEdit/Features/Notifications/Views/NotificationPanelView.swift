@@ -12,7 +12,6 @@ struct NotificationPanelView: View {
     @Environment(\.controlActiveState)
     private var controlActiveState
 
-    @ObservedObject private var notificationManager = NotificationManager.shared
     @FocusState private var isFocused: Bool
 
     // ID for the top anchor
