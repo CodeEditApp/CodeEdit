@@ -258,7 +258,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
                 !newName.isEmpty &&
                 newName.isValidFilename &&
                 !FileManager.default.fileExists(
-                    atPath: self.url.deletingLastPathComponent().appendingPathComponent(newName).path
+                    atPath: self.url.deletingLastPathComponent().appending(path: newName).path
                 ) else {
             return false
         }

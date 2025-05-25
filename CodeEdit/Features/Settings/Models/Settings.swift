@@ -80,7 +80,7 @@ final class Settings: ObservableObject {
     internal var baseURL: URL {
         filemanager
             .homeDirectoryForCurrentUser
-            .appendingPathComponent("Library/Application Support/CodeEdit", isDirectory: true)
+            .appending(path: "Library/Application Support/CodeEdit", directoryHint: .isDirectory)
     }
 
     /// The URL of the `settings.json` settings file.
@@ -88,7 +88,7 @@ final class Settings: ObservableObject {
     /// Points to `~/Library/Application Support/CodeEdit/settings.json`
     private var settingsURL: URL {
         baseURL
-            .appendingPathComponent("settings")
+            .appending(path: "settings")
             .appendingPathExtension("json")
     }
 }

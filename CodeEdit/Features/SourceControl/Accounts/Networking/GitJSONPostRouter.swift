@@ -70,7 +70,6 @@ extension GitJSONPostRouter {
                         options: .mutableContainers
                     ) as? [String: Any] {
                         userInfo[gitErrorKey] = json as Any?
-                        // swiftlint:disable:next non_optional_string_data_conversion
                     } else if let data, let string = String(data: data, encoding: .utf8) {
                         userInfo[gitErrorKey] = string as Any?
                     }
@@ -124,7 +123,6 @@ extension GitJSONPostRouter {
                     options: .mutableContainers
                 ) as? [String: Any] {
                     userInfo[gitErrorKey] = json as Any?
-                // swiftlint:disable:next non_optional_string_data_conversion
                 } else if let string = String(data: responseTuple.0, encoding: .utf8) {
                     userInfo[gitErrorKey] = string as Any?
                 }
@@ -163,7 +161,6 @@ extension GitJSONPostRouter {
                     options: .mutableContainers
                 ) as? [String: Any] {
                     userInfo[gitErrorKey] = json as Any?
-                    // swiftlint:disable:next non_optional_string_data_conversion
                 } else if let data, let string = String(data: data, encoding: String.Encoding.utf8) {
                     userInfo[gitErrorKey] = string as Any?
                 }
@@ -216,7 +213,6 @@ extension GitJSONPostRouter {
                 options: .mutableContainers
             ) as? [String: Any] {
                 userInfo[gitErrorKey] = json as Any?
-                // swiftlint:disable:next non_optional_string_data_conversion
             } else if let string = String(data: responseTuple.0, encoding: String.Encoding.utf8) {
                 userInfo[gitErrorKey] = string as Any?
             }

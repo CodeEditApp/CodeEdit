@@ -155,7 +155,7 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
         shouldShowCellExpansionFor tableColumn: NSTableColumn?,
         item: Any
     ) -> Bool {
-        return item as? SearchResultModel != nil
+        item is SearchResultModel
     }
 
     func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool {
@@ -209,26 +209,69 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
     }
 
     func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
-        if let item = item as? SearchResultMatchModel {
-            let tempView = NSTextField(wrappingLabelWithString: item.attributedLabel().string)
-            tempView.allowsDefaultTighteningForTruncation = false
-            tempView.cell?.truncatesLastVisibleLine = true
+        if let matchItem = item as? SearchResultMatchModel {
+            guard let column = outlineView.tableColumns.first else {
+                return rowHeight
+            }
+            let columnWidth = column.width
+            let indentationLevel = outlineView.level(forItem: item)
+            let indentationSpace = CGFloat(indentationLevel) * outlineView.indentationPerLevel
+            let horizontalPaddingAndFixedElements: CGFloat = 24.0
+
+            let availableWidth = columnWidth - indentationSpace - horizontalPaddingAndFixedElements
+
+            guard availableWidth > 0 else {
+                // Not enough space to display anything, return minimum height
+                return max(rowHeight, Settings.shared.preferences.general.projectNavigatorSize.rowHeight)
+            }
+
+            let attributedString = matchItem.attributedLabel()
+
+            let tempView = NSTextField()
+            tempView.allowsEditingTextAttributes = true
+            tempView.attributedStringValue = attributedString
+
+            tempView.isEditable = false
+            tempView.isBordered = false
+            tempView.drawsBackground = false
+            tempView.alignment = .natural
+
             tempView.cell?.wraps = true
-            tempView.maximumNumberOfLines = 3
-            tempView.attributedStringValue = item.attributedLabel()
-            tempView.layout()
-            let width = outlineView.frame.width - outlineView.indentationPerLevel*2 - 24
-            return tempView.sizeThatFits(
-                NSSize(width: width, height: CGFloat.greatestFiniteMagnitude)
-            ).height + 8
-        } else {
-            return rowHeight
+            tempView.cell?.usesSingleLineMode = false
+            tempView.lineBreakMode = .byWordWrapping
+            tempView.maximumNumberOfLines = Settings.shared.preferences.general.findNavigatorDetail.rawValue
+            tempView.preferredMaxLayoutWidth = availableWidth
+
+            var calculatedHeight = tempView.sizeThatFits(
+                NSSize(width: availableWidth, height: .greatestFiniteMagnitude)
+            ).height
+
+            // Total vertical padding (top + bottom) within the cell around the text
+            let verticalPaddingInCell: CGFloat = 8.0
+            calculatedHeight += verticalPaddingInCell
+            return max(calculatedHeight, self.rowHeight)
         }
+        // For parent items
+        return prefs.general.projectNavigatorSize.rowHeight
     }
 
     func outlineViewColumnDidResize(_ notification: Notification) {
-        let indexes = IndexSet(integersIn: 0..<searchItems.count)
-        outlineView.noteHeightOfRows(withIndexesChanged: indexes)
+        // Disable animations temporarily
+        NSAnimationContext.beginGrouping()
+        NSAnimationContext.current.duration = 0
+
+        var rowsToUpdate = IndexSet()
+        for row in 0..<outlineView.numberOfRows {
+            if let item = outlineView.item(atRow: row), item is SearchResultMatchModel {
+                rowsToUpdate.insert(row)
+            }
+        }
+        if !rowsToUpdate.isEmpty {
+            outlineView.noteHeightOfRows(withIndexesChanged: rowsToUpdate)
+        }
+
+        NSAnimationContext.endGrouping()
+        outlineView.layoutSubtreeIfNeeded()
     }
 }
 

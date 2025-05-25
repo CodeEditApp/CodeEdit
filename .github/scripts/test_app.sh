@@ -8,6 +8,7 @@ elif [ $1 = "arm" ]; then
     ARCH="arm64"
 fi
 
+echo "Building with Xcode: $(xcodebuild -version)"
 echo "Building with arch: ${ARCH}"
 echo "SwiftLint Version: $(swiftlint --version)"
 

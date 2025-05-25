@@ -21,7 +21,10 @@ struct EditorTabView: View {
     @Environment(\.isFullscreen)
     private var isFullscreen
 
+    @EnvironmentObject var workspace: WorkspaceDocument
     @EnvironmentObject private var editorManager: EditorManager
+
+    @StateObject private var fileObserver: EditorTabFileObserver
 
     @AppSettings(\.general.fileIconStyle)
     var fileIconStyle
@@ -54,25 +57,25 @@ struct EditorTabView: View {
 
     @EnvironmentObject private var editor: Editor
 
-    /// The item associated with the current tab.
+    /// The file item associated with the current tab.
     ///
     /// You can get tab-related information from here, like `label`, `icon`, etc.
-    private var item: CEWorkspaceFile
+    private let tabFile: CEWorkspaceFile
 
     var index: Int
 
     private var isTemporary: Bool {
-        editor.temporaryTab?.file == item
+        editor.temporaryTab?.file == tabFile
     }
 
     /// Is the current tab the active tab.
     private var isActive: Bool {
-        item == editor.selectedTab?.file
+        tabFile == editor.selectedTab?.file
     }
 
     /// Is the current tab being dragged.
     private var isDragging: Bool {
-        draggingTabId == item.id
+        draggingTabId == tabFile.id
     }
 
     /// Is the current tab being held (by click and hold, not drag).
@@ -86,9 +89,9 @@ struct EditorTabView: View {
     private func switchAction() {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
         editorManager.activeEditor = editor
-        if editor.selectedTab?.file != item {
-            let tabItem = EditorInstance(file: item)
-            editor.setSelectedTab(item)
+        if editor.selectedTab?.file != tabFile {
+            let tabItem = EditorInstance(file: tabFile)
+            editor.setSelectedTab(tabFile)
             editor.clearFuture()
             editor.addToHistory(tabItem)
         }
@@ -97,21 +100,22 @@ struct EditorTabView: View {
     /// Close the current tab.
     func closeAction() {
         isAppeared = false
-        editor.closeTab(file: item)
+        editor.closeTab(file: tabFile)
     }
 
     init(
-        item: CEWorkspaceFile,
+        file: CEWorkspaceFile,
         index: Int,
         draggingTabId: CEWorkspaceFile.ID?,
         onDragTabId: CEWorkspaceFile.ID?,
         closeButtonGestureActive: Binding<Bool>
     ) {
-        self.item = item
+        self.tabFile = file
         self.index = index
         self.draggingTabId = draggingTabId
         self.onDragTabId = onDragTabId
         self._closeButtonGestureActive = closeButtonGestureActive
+        self._fileObserver = StateObject(wrappedValue: EditorTabFileObserver(file: file))
     }
 
     @ViewBuilder var content: some View {
@@ -122,26 +126,27 @@ struct EditorTabView: View {
                 )
             // Tab content (icon and text).
             HStack(alignment: .center, spacing: 3) {
-                Image(nsImage: item.nsIcon)
+                Image(nsImage: tabFile.nsIcon)
                     .frame(width: 16, height: 16)
                     .foregroundColor(
                         fileIconStyle == .color
                         && activeState != .inactive && isActiveEditor
-                        ? item.iconColor
+                        ? tabFile.iconColor
                         : .secondary
                     )
-                Text(item.name)
+                Text(tabFile.name)
                     .font(
                         isTemporary
                         ? .system(size: 11.0).italic()
                         : .system(size: 11.0)
                     )
                     .lineLimit(1)
+                    .strikethrough(fileObserver.isDeleted, color: .primary)
             }
             .frame(maxHeight: .infinity) // To max-out the parent (tab bar) area.
             .accessibilityElement(children: .ignore)
             .accessibilityAddTraits(.isStaticText)
-            .accessibilityLabel(item.name)
+            .accessibilityLabel(tabFile.name)
             .padding(.horizontal, 20)
             .overlay {
                 ZStack {
@@ -152,7 +157,7 @@ struct EditorTabView: View {
                         isDragging: draggingTabId != nil || onDragTabId != nil,
                         closeAction: closeAction,
                         closeButtonGestureActive: $closeButtonGestureActive,
-                        item: item,
+                        item: tabFile,
                         isHoveringClose: $isHoveringClose
                     )
                 }
@@ -226,11 +231,15 @@ struct EditorTabView: View {
                         }
                     }
             )
-            // This padding is to avoid background color overlapping with top divider.
-            .padding(.top, 1)
             .zIndex(isActive ? 2 : (isDragging ? 3 : (isPressing ? 1 : 0)))
-            .id(item.id)
-            .tabBarContextMenu(item: item, isTemporary: isTemporary)
+            .id(tabFile.id)
+            .tabBarContextMenu(item: tabFile, isTemporary: isTemporary)
             .accessibilityElement(children: .contain)
+            .onAppear {
+                workspace.workspaceFileManager?.addObserver(fileObserver)
+            }
+            .onDisappear {
+                workspace.workspaceFileManager?.removeObserver(fileObserver)
+            }
     }
 }

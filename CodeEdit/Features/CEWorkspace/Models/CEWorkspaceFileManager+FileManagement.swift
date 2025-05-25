@@ -18,15 +18,15 @@ extension CEWorkspaceFileManager {
     func addFolder(folderName: String, toFile file: CEWorkspaceFile) throws -> CEWorkspaceFile {
         // Check if folder, if it is create folder under self, else create on same level.
         var folderUrl = (
-            file.isFolder ? file.url.appendingPathComponent(folderName)
-            : file.url.deletingLastPathComponent().appendingPathComponent(folderName)
+            file.isFolder ? file.url.appending(path: folderName)
+            : file.url.deletingLastPathComponent().appending(path: folderName)
         )
 
         // If a file/folder with the same name exists, add a number to the end.
         var fileNumber = 0
         while fileManager.fileExists(atPath: folderUrl.path) {
             fileNumber += 1
-            folderUrl = folderUrl.deletingLastPathComponent().appendingPathComponent("\(folderName)\(fileNumber)")
+            folderUrl = folderUrl.deletingLastPathComponent().appending(path: "\(folderName)\(fileNumber)")
         }
 
         // Create the folder
@@ -80,13 +80,13 @@ extension CEWorkspaceFileManager {
                 }
             }
 
-            var fileUrl = file.nearestFolder.appendingPathComponent("\(fileName)\(fileExtension)")
+            var fileUrl = file.nearestFolder.appending(path: "\(fileName)\(fileExtension)")
             // If a file/folder with the same name exists, add a number to the end.
             var fileNumber = 0
             while fileManager.fileExists(atPath: fileUrl.path) {
                 fileNumber += 1
                 fileUrl = fileUrl.deletingLastPathComponent()
-                    .appendingPathComponent("\(fileName)\(fileNumber)\(fileExtension)")
+                    .appending(path: "\(fileName)\(fileNumber)\(fileExtension)")
             }
 
             guard fileUrl.fileName.isValidFilename else {
@@ -228,7 +228,7 @@ extension CEWorkspaceFileManager {
             let fileExtension = fileUrl.pathExtension.isEmpty ? "" : ".\(fileUrl.pathExtension)"
             let fileName = fileExtension.isEmpty ? previousName :
             previousName.replacingOccurrences(of: fileExtension, with: "")
-            fileUrl = fileUrl.deletingLastPathComponent().appendingPathComponent("\(fileName) copy\(fileExtension)")
+            fileUrl = fileUrl.deletingLastPathComponent().appending(path: "\(fileName) copy\(fileExtension)")
         }
 
         if fileManager.fileExists(atPath: file.url.path) {

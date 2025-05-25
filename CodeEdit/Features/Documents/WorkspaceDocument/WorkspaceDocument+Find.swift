@@ -7,6 +7,8 @@
 
 import Foundation
 
+extension WorkspaceDocument.SearchState: @unchecked Sendable {}
+
 extension WorkspaceDocument.SearchState {
     /// Creates a search term based on the given query and search mode.
     ///
@@ -94,9 +96,6 @@ extension WorkspaceDocument.SearchState {
         }
 
         let searchQuery = getSearchTerm(query)
-
-        // The regexPattern is only used for the evaluateFile function
-        // to ensure that the search terms are highlighted correctly
         let regexPattern = getRegexPattern(query)
 
         guard let indexer = indexer else {
@@ -105,24 +104,32 @@ extension WorkspaceDocument.SearchState {
         }
 
         let asyncController = SearchIndexer.AsyncManager(index: indexer)
-
         let evaluateResultGroup = DispatchGroup()
         let evaluateSearchQueue = DispatchQueue(label: "app.codeedit.CodeEdit.EvaluateSearch")
 
         let searchStream = await asyncController.search(query: searchQuery, 20)
         for try await result in searchStream {
             for file in result.results {
+                let fileURL = file.url
+                let fileScore = file.score
+                let capturedRegexPattern = regexPattern
+
                 evaluateSearchQueue.async(group: evaluateResultGroup) {
                     evaluateResultGroup.enter()
-                    Task {
-                        var newResult = SearchResultModel(file: CEWorkspaceFile(url: file.url), score: file.score)
-                        await self.evaluateFile(query: regexPattern, searchResult: &newResult)
+                    Task { [weak self] in
+                        guard let self else {
+                            evaluateResultGroup.leave()
+                            return
+                        }
 
-                        // Check if the new result has any line matches.
-                        if !newResult.lineMatches.isEmpty {
-                            // The function needs to be called because,
-                            // we are trying to modify the array from within a concurrent context.
-                            self.appendNewResultsToTempResults(newResult: newResult)
+                        let result = await self.evaluateSearchResult(
+                            fileURL: fileURL,
+                            fileScore: fileScore,
+                            regexPattern: capturedRegexPattern
+                        )
+
+                        if let result = result {
+                            await self.appendNewResultsToTempResults(newResult: result)
                         }
                         evaluateResultGroup.leave()
                     }
@@ -131,7 +138,9 @@ extension WorkspaceDocument.SearchState {
         }
 
         evaluateResultGroup.notify(queue: evaluateSearchQueue) {
-            self.setSearchResults()
+            Task { @MainActor [weak self] in
+                self?.setSearchResults()
+            }
         }
     }
 
@@ -139,10 +148,9 @@ extension WorkspaceDocument.SearchState {
     ///
     /// - Parameters:
     ///   - newResult: The `SearchResultModel` to be appended to the temporary search results.
+    @MainActor
     func appendNewResultsToTempResults(newResult: SearchResultModel) {
-        DispatchQueue.main.async {
-            self.tempSearchResults.append(newResult)
-        }
+        self.tempSearchResults.append(newResult)
     }
 
     /// Sets the search results by updating various properties on the main thread.
@@ -150,14 +158,13 @@ extension WorkspaceDocument.SearchState {
     /// and sets the `tempSearchResults` to an empty array.
     /// - Important: Call this function when you are ready to
     /// display or use the final search results.
+    @MainActor
     func setSearchResults() {
-        DispatchQueue.main.async {
-            self.searchResult = self.tempSearchResults.sorted { $0.score > $1.score }
-            self.searchResultsCount = self.tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
-            self.searchResultsFileCount = self.tempSearchResults.count
-            self.findNavigatorStatus = .found
-            self.tempSearchResults = []
-        }
+        self.searchResult = self.tempSearchResults.sorted { $0.score > $1.score }
+        self.searchResultsCount = self.tempSearchResults.map { $0.lineMatches.count }.reduce(0, +)
+        self.searchResultsFileCount = self.tempSearchResults.count
+        self.findNavigatorStatus = .found
+        self.tempSearchResults = []
     }
 
     /// Evaluates a search query within the content of a file and updates
@@ -183,7 +190,10 @@ extension WorkspaceDocument.SearchState {
         guard let data = try? Data(contentsOf: searchResult.file.url) else {
             return
         }
-        let fileContent = String(decoding: data, as: UTF8.self)
+        guard let fileContent = String(bytes: data, encoding: .utf8) else {
+            await setStatus(.failed(errorMessage: "Failed to decode file content."))
+            return
+        }
 
         // Attempt to create a regular expression from the provided query
         guard let regex = try? NSRegularExpression(
@@ -342,5 +352,30 @@ extension WorkspaceDocument.SearchState {
             self.searchResultsFileCount = 0
             self.findNavigatorStatus = .none
         }
+    }
+
+    /// Evaluates a matched file to determine if it contains any search matches.
+    /// Requires a file score from the search model.
+    ///
+    /// Evaluates the file's contents asynchronously.
+    ///
+    /// - Parameters:
+    ///   - fileURL: The `URL` of the file to evaluate.
+    ///   - fileScore:  The file's score from a ``SearchIndexer``
+    ///   - regexPattern: The pattern to evaluate against the file's contents.
+    /// - Returns: `nil` if there are no relevant search matches, or a search result if matches are found.
+    private func evaluateSearchResult(
+        fileURL: URL,
+        fileScore: Float,
+        regexPattern: String
+    ) async -> SearchResultModel? {
+        var newResult = SearchResultModel(
+            file: CEWorkspaceFile(url: fileURL),
+            score: fileScore
+        )
+
+        await evaluateFile(query: regexPattern, searchResult: &newResult)
+
+        return newResult.lineMatches.isEmpty ? nil : newResult
     }
 }

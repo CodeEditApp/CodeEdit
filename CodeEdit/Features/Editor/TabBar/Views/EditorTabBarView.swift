@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct EditorTabBarView: View {
+    let hasTopInsets: Bool
+    @Binding var codeFile: CodeFileDocument?
     /// The height of tab bar.
     /// I am not making it a private variable because it may need to be used in outside views.
     static let height = 28.0
@@ -15,13 +17,16 @@ struct EditorTabBarView: View {
     var body: some View {
         HStack(alignment: .center, spacing: 0) {
             EditorTabBarLeadingAccessories()
+                .padding(.top, hasTopInsets ? -1 : 0)
             EditorTabs()
                 .accessibilityElement(children: .contain)
                 .accessibilityLabel("Tab Bar")
                 .accessibilityIdentifier("TabBar")
-            EditorTabBarTrailingAccessories()
+            EditorTabBarTrailingAccessories(codeFile: $codeFile)
+                .padding(.top, hasTopInsets ? -1 : 0)
         }
-        .frame(height: EditorTabBarView.height)
+        .frame(height: EditorTabBarView.height - (hasTopInsets ? 1 : 0))
+        .clipped()
         .padding(.leading, -1)
     }
 }

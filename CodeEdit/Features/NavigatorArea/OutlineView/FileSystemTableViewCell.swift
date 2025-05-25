@@ -138,10 +138,10 @@ class FileSystemTableViewCell: StandardTableViewCell {
             if !item.isFolder {
                 return NSColor(item.iconColor)
             } else {
-                return NSColor(named: "FolderBlue") ?? NSColor(.cyan)
+                return NSColor.folderBlue
             }
         } else {
-            return NSColor(named: "CoolGray") ?? NSColor(.gray)
+            return NSColor.coolGray
         }
     }
 
@@ -164,7 +164,7 @@ extension FileSystemTableViewCell: NSTextFieldDelegate {
             if fileItem.validateFileName(for: textField?.stringValue ?? "") {
                 let newURL = fileItem.url
                     .deletingLastPathComponent()
-                    .appendingPathComponent(textField?.stringValue ?? "")
+                    .appending(path: textField?.stringValue ?? "")
                 try workspace?.workspaceFileManager?.move(file: fileItem, to: newURL)
             } else {
                 textField?.stringValue = fileItem.labelFileName()

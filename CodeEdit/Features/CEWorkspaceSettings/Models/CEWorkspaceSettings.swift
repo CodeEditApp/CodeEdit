@@ -17,12 +17,12 @@ final class CEWorkspaceSettings: ObservableObject {
 
     private(set) var folderURL: URL
 
-    private var settingsURL: URL {
-        folderURL.appendingPathComponent("settings").appendingPathExtension("json")
+    var settingsURL: URL {
+        folderURL.appending(path: "settings").appendingPathExtension("json")
     }
 
     init(workspaceURL: URL) {
-        folderURL = workspaceURL.appendingPathComponent(".codeedit", isDirectory: true)
+        folderURL = workspaceURL.appending(path: ".codeedit", directoryHint: .isDirectory)
         loadSettings()
 
         storeTask = $settings
@@ -54,7 +54,17 @@ final class CEWorkspaceSettings: ObservableObject {
     /// Save``CEWorkspaceSettingsManager`` model to `.codeedit/settings.json`
     func savePreferences() throws {
         // If the user doesn't have any settings to save, don't save them.
-        guard !settings.isEmpty() else { return }
+        guard !settings.isEmpty() else {
+            // Settings is empty, remove the file & directory if it's empty.
+            if fileManager.fileExists(atPath: settingsURL.path()) {
+                try fileManager.removeItem(at: settingsURL)
+
+                if try fileManager.contentsOfDirectory(atPath: folderURL.path()).isEmpty {
+                    try fileManager.removeItem(at: folderURL)
+                }
+            }
+            return
+        }
 
         if !fileManager.fileExists(atPath: folderURL.path()) {
             try fileManager.createDirectory(at: folderURL, withIntermediateDirectories: true)

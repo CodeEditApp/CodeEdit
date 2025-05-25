@@ -17,7 +17,6 @@ struct NavigationBarBackButtonVisible: ViewModifier {
         .toolbar {
             ToolbarItem(placement: .navigation) {
                 Button {
-                    print(self.presentationMode.wrappedValue)
                     self.presentationMode.wrappedValue.dismiss()
                 } label: {
                     Image(systemName: "chevron.left")
@@ -25,9 +24,12 @@ struct NavigationBarBackButtonVisible: ViewModifier {
                 }
             }
         }
-        .hideSidebarToggle()
+        .navigationBarBackButtonHidden()
         .onAppear {
             model.backButtonVisible = true
+        }
+        .onDisappear {
+            model.backButtonVisible = false
         }
     }
 }

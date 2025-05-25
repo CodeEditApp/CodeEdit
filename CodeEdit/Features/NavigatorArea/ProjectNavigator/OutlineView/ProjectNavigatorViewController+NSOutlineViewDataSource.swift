@@ -12,16 +12,29 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
     private func getOutlineViewItems(for item: CEWorkspaceFile) -> [CEWorkspaceFile] {
         if let cachedChildren = filteredContentChildren[item] {
             return cachedChildren
+                .sorted { lhs, rhs in
+                    workspace?.sortFoldersOnTop == true ? lhs.isFolder && !rhs.isFolder : lhs.name < rhs.name
+                }
         }
 
-        if let children = workspace?.workspaceFileManager?.childrenOfFile(item) {
-            if let filter = workspace?.navigatorFilter, !filter.isEmpty {
-                let filteredChildren = children.filter { fileSearchMatches(filter, for: $0) }
+        if let workspace, let children = workspace.workspaceFileManager?.childrenOfFile(item) {
+            if !workspace.navigatorFilter.isEmpty || workspace.sourceControlFilter {
+                let filteredChildren = children.filter {
+                    fileSearchMatches(
+                        workspace.navigatorFilter,
+                        for: $0,
+                        sourceControlFilter: workspace.sourceControlFilter
+                    )
+                }
+
                 filteredContentChildren[item] = filteredChildren
                 return filteredChildren
             }
 
             return children
+                .sorted { lhs, rhs in
+                    workspace.sortFoldersOnTop ? lhs.isFolder && !rhs.isFolder : lhs.name < rhs.name
+                }
         }
 
         return []
@@ -86,7 +99,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
         let destParentURL = fileItemDestination.url
 
         for fileItemURL in fileItemURLS {
-            let destURL = destParentURL.appendingPathComponent(fileItemURL.lastPathComponent)
+            let destURL = destParentURL.appending(path: fileItemURL.lastPathComponent)
             // cancel dropping file item on self or in parent directory
             if fileItemURL == destURL || fileItemURL == destParentURL {
                 return false

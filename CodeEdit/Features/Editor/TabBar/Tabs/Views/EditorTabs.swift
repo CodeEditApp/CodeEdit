@@ -261,7 +261,7 @@ struct EditorTabs: View {
                         ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
                             if let item = editor.tabs.first(where: { $0.file.id == id }) {
                                 EditorTabView(
-                                    item: item.file,
+                                    file: item.file,
                                     index: index,
                                     draggingTabId: draggingTabId,
                                     onDragTabId: onDragTabId,
