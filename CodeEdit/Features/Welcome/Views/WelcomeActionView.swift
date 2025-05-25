@@ -24,7 +24,7 @@ struct WelcomeActionView: View {
                 Image(systemName: iconName)
                     .aspectRatio(contentMode: .fit)
                     .foregroundColor(.secondary)
-                    .font(.system(size: 20))
+                    .font(.system(size: 17, weight: .medium))
                     .frame(width: 24)
                 Text(title)
                     .font(.system(size: 13, weight: .semibold))
