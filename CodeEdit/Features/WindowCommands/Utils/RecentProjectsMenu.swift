@@ -8,14 +8,20 @@
 import AppKit
 
 class RecentProjectsMenu: NSObject {
+    let projectsStore: RecentProjectsStore
+
+    init(projectsStore: RecentProjectsStore = .default) {
+        self.projectsStore = projectsStore
+    }
+
     func makeMenu() -> NSMenu {
         let menu = NSMenu(title: NSLocalizedString("Open Recent", comment: "Open Recent menu title"))
 
-        projectItems(menu: menu)
+        addFileURLs(to: menu, fileURLs: projectsStore.recentProjectURLs().prefix(10))
         menu.addItem(NSMenuItem.separator())
-        fileItems(menu: menu)
+        addFileURLs(to: menu, fileURLs: projectsStore.recentFileURLs().prefix(10))
+        menu.addItem(NSMenuItem.separator())
 
-        menu.addItem(NSMenuItem.separator())
         let clearMenuItem = NSMenuItem(
             title: NSLocalizedString("Clear Menu", comment: "Recent project menu clear button"),
             action: #selector(clearMenuItemClicked(_:)),
@@ -27,25 +33,23 @@ class RecentProjectsMenu: NSObject {
         return menu
     }
 
-    private func projectItems( menu: NSMenu) {
-        let projectPaths = RecentProjectsStore.recentProjectURLs().prefix(10)
-
-        for projectPath in projectPaths {
-            let icon = NSWorkspace.shared.icon(forFile: projectPath.path())
+    private func addFileURLs(to menu: NSMenu, fileURLs: ArraySlice<URL>) {
+        for url in fileURLs {
+            let icon = NSWorkspace.shared.icon(forFile: url.path())
             icon.size = NSSize(width: 16, height: 16)
-            let alternateTitle = alternateTitle(for: projectPath)
+            let alternateTitle = alternateTitle(for: url)
 
             let primaryItem = NSMenuItem(
-                title: projectPath.lastPathComponent,
+                title: url.lastPathComponent,
                 action: #selector(recentProjectItemClicked(_:)),
                 keyEquivalent: ""
             )
             primaryItem.target = self
             primaryItem.image = icon
-            primaryItem.representedObject = projectPath
+            primaryItem.representedObject = url
 
-            let containsDuplicate = projectPaths.contains { url in
-                url != projectPath && url.lastPathComponent == projectPath.lastPathComponent
+            let containsDuplicate = fileURLs.contains { otherURL in
+                url != otherURL && url.lastPathComponent == otherURL.lastPathComponent
             }
 
             // If there's a duplicate, add the path.
@@ -61,49 +65,7 @@ class RecentProjectsMenu: NSObject {
             alternateItem.attributedTitle = alternateTitle
             alternateItem.target = self
             alternateItem.image = icon
-            alternateItem.representedObject = projectPath
-            alternateItem.isAlternate = true
-            alternateItem.keyEquivalentModifierMask = [.option]
-
-            menu.addItem(primaryItem)
-            menu.addItem(alternateItem)
-        }
-    }
-
-    private func fileItems( menu: NSMenu) {
-        let filePaths = RecentProjectsStore.recentFileURLs().prefix(10)
-        for filePath in filePaths {
-            let icon = NSWorkspace.shared.icon(forFile: filePath.path())
-            icon.size = NSSize(width: 16, height: 16)
-            let alternateTitle = alternateTitle(for: filePath)
-
-            let primaryItem = NSMenuItem(
-                title: filePath.lastPathComponent,
-                action: #selector(recentProjectItemClicked(_:)),
-                keyEquivalent: ""
-            )
-            primaryItem.target = self
-            primaryItem.image = icon
-            primaryItem.representedObject = filePath
-
-            let containsDuplicate = filePaths.contains { url in
-                url != filePath && url.lastPathComponent == filePath.lastPathComponent
-            }
-
-            // If there's a duplicate, add the path.
-            if containsDuplicate {
-                primaryItem.attributedTitle = alternateTitle
-            }
-
-            let alternateItem = NSMenuItem(
-                title: "",
-                action: #selector(recentProjectItemClicked(_:)),
-                keyEquivalent: ""
-            )
-            alternateItem.attributedTitle = alternateTitle
-            alternateItem.target = self
-            alternateItem.image = icon
-            alternateItem.representedObject = filePath
+            alternateItem.representedObject = url
             alternateItem.isAlternate = true
             alternateItem.keyEquivalentModifierMask = [.option]
 
@@ -141,6 +103,6 @@ class RecentProjectsMenu: NSObject {
 
     @objc
     func clearMenuItemClicked(_ sender: NSMenuItem) {
-        RecentProjectsStore.clearList()
+        projectsStore.clearList()
     }
 }
