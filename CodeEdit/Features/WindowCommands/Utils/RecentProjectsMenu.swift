@@ -35,7 +35,7 @@ class RecentProjectsMenu: NSObject {
 
     private func addFileURLs(to menu: NSMenu, fileURLs: ArraySlice<URL>) {
         for url in fileURLs {
-            let icon = NSWorkspace.shared.icon(forFile: url.path())
+            let icon = NSWorkspace.shared.icon(forFile: url.path(percentEncoded: false))
             icon.size = NSSize(width: 16, height: 16)
             let alternateTitle = alternateTitle(for: url)
 

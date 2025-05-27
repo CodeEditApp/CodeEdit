@@ -21,7 +21,7 @@ class RecentProjectsStore {
     private static let projectsdDefaultsKey = "recentProjectPaths"
     static let didUpdateNotification = Notification.Name("RecentProjectsStore.didUpdate")
 
-    /// The storage location for recent projeects
+    /// The storage location for recent projects
     let defaults: UserDefaults
 
     /// Create a new store with a `UserDefaults` storage location.
