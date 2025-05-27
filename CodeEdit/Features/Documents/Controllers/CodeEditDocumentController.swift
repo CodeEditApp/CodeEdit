@@ -68,7 +68,7 @@ final class CodeEditDocumentController: NSDocumentController {
                 print("Unable to open document '\(url)': \(errorMessage)")
             }
 
-            RecentProjectsStore.documentOpened(at: url)
+            RecentProjectsStore.default.documentOpened(at: url)
             completionHandler(document, documentWasAlreadyOpen, error)
         }
     }
