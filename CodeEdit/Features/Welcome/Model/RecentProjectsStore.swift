@@ -14,29 +14,50 @@ import CoreSpotlight
 ///
 /// If a UI element needs to listen to changes in this list, listen for the
 /// ``RecentProjectsStore/didUpdateNotification`` notification.
-enum RecentProjectsStore {
+class RecentProjectsStore {
+    /// The default projects store, uses the `UserDefaults.standard` storage location.
+    static let `default` = RecentProjectsStore()
+
     private static let projectsdDefaultsKey = "recentProjectPaths"
-    private static let fileDefaultsKey = "recentFilePaths"
     static let didUpdateNotification = Notification.Name("RecentProjectsStore.didUpdate")
 
-    static func recentProjectPaths() -> [String] {
-        UserDefaults.standard.array(forKey: projectsdDefaultsKey) as? [String] ?? []
+    /// The storage location for recent projeects
+    let defaults: UserDefaults
+
+    /// Create a new store with a `UserDefaults` storage location.
+    init(defaults: UserDefaults = UserDefaults.standard) {
+        self.defaults = defaults
     }
 
-    static func recentProjectURLs() -> [URL] {
-        return recentProjectPaths().map { URL(filePath: $0) }
+    /// Gets the recent paths array from `UserDefaults`.
+    private func recentPaths() -> [String] {
+        defaults.array(forKey: Self.projectsdDefaultsKey) as? [String] ?? []
     }
 
-    static func recentFilePaths() -> [String] {
-        UserDefaults.standard.array(forKey: fileDefaultsKey) as? [String] ?? []
+    /// Gets all recent paths from `UserDefaults` as an array of `URL`s. Includes both **projects** and
+    /// **single files**.
+    /// To filter for either projects or single files, use ``recentProjectURLs()`` or ``recentFileURLs``, respectively.
+    func recentURLs() -> [URL] {
+        recentPaths().map { URL(filePath: $0) }
     }
 
-    static func recentFileURLs() -> [URL] {
-        return recentFilePaths().map { URL(filePath: $0) }
+    /// Gets the recent **Project** `URL`s from `UserDefaults`.
+    /// To get both single files and projects, use ``recentURLs()``.
+    func recentProjectURLs() -> [URL] {
+        recentURLs().filter { $0.isFolder }
     }
 
-    private static func setProjectPaths(_ paths: [String]) {
+    /// Gets the recent **Single File** `URL`s from `UserDefaults`.
+    /// To get both single files and projects, use ``recentURLs()``.
+    func recentFileURLs() -> [URL] {
+        recentURLs().filter { !$0.isFolder }
+    }
+
+    /// Save a new paths array to defaults. Automatically limits the list to the most recent `100` items, donates
+    /// search items to Spotlight, and notifies observers.
+    private func setPaths(_ paths: [String]) {
         var paths = paths
+
         // Remove duplicates
         var foundPaths = Set<String>()
         for (idx, path) in paths.enumerated().reversed() {
@@ -48,25 +69,7 @@ enum RecentProjectsStore {
         }
 
         // Limit list to to 100 items after de-duplication
-        UserDefaults.standard.setValue(Array(paths.prefix(100)), forKey: projectsdDefaultsKey)
-        setDocumentControllerRecents()
-        donateSearchableItems()
-        NotificationCenter.default.post(name: Self.didUpdateNotification, object: nil)
-    }
-    private static func setFilePaths(_ paths: [String]) {
-        var paths = paths
-        // Remove duplicates
-        var foundPaths = Set<String>()
-        for (idx, path) in paths.enumerated().reversed() {
-            if foundPaths.contains(path) {
-                paths.remove(at: idx)
-            } else {
-                foundPaths.insert(path)
-            }
-        }
-
-        // Limit list to to 100 items after de-duplication
-        UserDefaults.standard.setValue(Array(paths.prefix(100)), forKey: fileDefaultsKey )
+        defaults.setValue(Array(paths.prefix(100)), forKey: Self.projectsdDefaultsKey)
         setDocumentControllerRecents()
         donateSearchableItems()
         NotificationCenter.default.post(name: Self.didUpdateNotification, object: nil)
@@ -76,58 +79,35 @@ enum RecentProjectsStore {
     /// Moves the path to the front if it was in the list already, or prepends it.
     /// Saves the list to defaults when called.
     /// - Parameter url: The url that was opened. Any url is accepted. File, directory, https.
-    static func documentOpened(at url: URL) {
-        var projPaths = recentProjectURLs()
-        var filePaths = recentFileURLs()
+    func documentOpened(at url: URL) {
+        var projectURLs = recentURLs()
 
-        let urlToString = url.absoluteString
-
-        // if file portion of local URL has "/" at the end then it is a folder , files and folders go in two separate lists
-
-        if  urlToString.hasSuffix("/") {
-            if let containedIndex = projPaths.firstIndex(where: { $0.componentCompare(url) }) {
-                projPaths.move(fromOffsets: IndexSet(integer: containedIndex), toOffset: 0)
-            } else {
-                projPaths.insert(url, at: 0)
-            }
-            setProjectPaths(projPaths.map { $0.path(percentEncoded: false) })
+        if let containedIndex = projectURLs.firstIndex(where: { $0.componentCompare(url) }) {
+            projectURLs.move(fromOffsets: IndexSet(integer: containedIndex), toOffset: 0)
         } else {
-            if let containedIndex = filePaths.firstIndex(where: { $0.componentCompare(url) }) {
-                filePaths.move(fromOffsets: IndexSet(integer: containedIndex), toOffset: 0)
-            } else {
-                filePaths.insert(url, at: 0)
-            }
-            setFilePaths(filePaths.map { $0.path(percentEncoded: false) })
+            projectURLs.insert(url, at: 0)
         }
+
+        setPaths(projectURLs.map { $0.path(percentEncoded: false) })
     }
 
     /// Remove all project paths in the set.
     /// - Parameter paths: The paths to remove.
     /// - Returns: The remaining urls in the recent projects list.
-    static func removeRecentProjects(_ paths: Set<URL>) -> [URL] {
+    func removeRecentProjects(_ paths: Set<URL>) -> [URL] {
         var recentProjectPaths = recentProjectURLs()
         recentProjectPaths.removeAll(where: { paths.contains($0) })
-        setProjectPaths(recentProjectPaths.map { $0.path(percentEncoded: false) })
+        setPaths(recentProjectPaths.map { $0.path(percentEncoded: false) })
         return recentProjectURLs()
     }
-    /// Remove all folder paths in the set.
-    /// - Parameter paths: The paths to remove.
-    /// - Returns: The remaining urls in the recent projects list.
-    static func removeRecentFiles(_ paths: Set<URL>) -> [URL] {
-        var recentFilePaths = recentFileURLs()
-        recentFilePaths.removeAll(where: { paths.contains($0) })
-        setFilePaths(recentFilePaths.map { $0.path(percentEncoded: false) })
-        return recentFileURLs()
-    }
 
-    static func clearList() {
-        setProjectPaths([])
-        setFilePaths([])
+    func clearList() {
+        setPaths([])
         NotificationCenter.default.post(name: Self.didUpdateNotification, object: nil)
     }
 
     /// Syncs AppKit's recent documents list with ours, keeping the dock menu and other lists up-to-date.
-    private static func setDocumentControllerRecents() {
+    private func setDocumentControllerRecents() {
         CodeEditDocumentController.shared.clearRecentDocuments(nil)
         for path in recentProjectURLs().prefix(10) {
             CodeEditDocumentController.shared.noteNewRecentDocumentURL(path)
@@ -135,7 +115,7 @@ enum RecentProjectsStore {
     }
 
     /// Donates all recent URLs to Core Search, making them searchable in Spotlight
-    private static func donateSearchableItems() {
+    private func donateSearchableItems() {
         let searchableItems = recentProjectURLs().map { entity in
             let attributeSet = CSSearchableItemAttributeSet(contentType: .content)
             attributeSet.title = entity.lastPathComponent
