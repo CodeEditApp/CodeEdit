@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct AboutDefaultView: View {
     private var appVersion: String {
@@ -64,6 +65,15 @@ struct AboutDefaultView: View {
                     )
                     .blur(radius: aboutMode == .about ? 0 : 10)
                     .opacity(aboutMode == .about ? 1 : 0)
+                    .onTapGesture {
+                        // Create a string suitable for pasting into a bug report
+                        let macOSVersion = ProcessInfo.processInfo.operatingSystemVersion.semverString
+                        NSPasteboard.general.clearContents()
+                        NSPasteboard.general.setString(
+                            "CodeEdit: \(appVersion) (\(appBuild))\nmacOS: \(macOSVersion)",
+                            forType: .string
+                        )
+                    }
             }
             .padding(.horizontal)
         }
@@ -96,7 +106,6 @@ struct AboutDefaultView: View {
                     Link(destination: Self.licenseURL) {
                         Text("MIT License")
                             .underline()
-
                     }
                     Text(Bundle.copyrightString ?? "")
                 }
