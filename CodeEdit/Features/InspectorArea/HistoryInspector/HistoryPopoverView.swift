@@ -18,10 +18,8 @@ struct HistoryPopoverView: View {
     var body: some View {
         VStack {
             CommitDetailsHeaderView(commit: commit)
-                .padding(.horizontal)
 
             Divider()
-                .padding(.horizontal)
 
             VStack(alignment: .leading, spacing: 0) {
                 // TODO: Implementation Needed
@@ -71,6 +69,8 @@ struct HistoryPopoverView: View {
                 }, icon: {
                     Image(systemName: image)
                         .frame(width: 16, alignment: .center)
+                        .padding(.leading, -2.5)
+                        .padding(.trailing, 2.5)
                 })
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(isHovering && isEnabled ? .white : .primary)

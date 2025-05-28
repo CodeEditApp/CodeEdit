@@ -45,20 +45,31 @@ struct SemanticTokenMap: Sendable { // swiftlint:enable line_length
     /// Decodes the compressed semantic token data into a `HighlightRange` type for use in an editor.
     /// This is marked main actor to prevent runtime errors, due to the use of the actor-isolated `rangeProvider`.
     /// - Parameters:
-    ///   - tokens: Semantic tokens from a language server.
+    ///   - tokens: Encoded semantic tokens type from a language server.
     ///   - rangeProvider: The provider to use to translate token ranges to text view ranges.
     /// - Returns: An array of decoded highlight ranges.
     @MainActor
     func decode(tokens: SemanticTokens, using rangeProvider: SemanticTokenMapRangeProvider) -> [HighlightRange] {
-        tokens.decode().compactMap { token in
+        return decode(tokens: tokens.decode(), using: rangeProvider)
+    }
+
+    /// Decodes the compressed semantic token data into a `HighlightRange` type for use in an editor.
+    /// This is marked main actor to prevent runtime errors, due to the use of the actor-isolated `rangeProvider`.
+    /// - Parameters:
+    ///   - tokens: Decoded semantic tokens from a language server.
+    ///   - rangeProvider: The provider to use to translate token ranges to text view ranges.
+    /// - Returns: An array of decoded highlight ranges.
+    @MainActor
+    func decode(tokens: [SemanticToken], using rangeProvider: SemanticTokenMapRangeProvider) -> [HighlightRange] {
+        tokens.compactMap { token in
             guard let range = rangeProvider.nsRangeFrom(line: token.line, char: token.char, length: token.length) else {
                 return nil
             }
 
+            // Only modifiers are bit packed, capture types are given as a simple index into the ``tokenTypeMap``
             let modifiers = decodeModifier(token.modifiers)
 
-            // Capture types are indicated by the index of the set bit.
-            let type = token.type > 0 ? Int(token.type.trailingZeroBitCount) : -1 // Don't try to decode 0
+            let type = Int(token.type)
             let capture = tokenTypeMap.indices.contains(type) ? tokenTypeMap[type] : nil
 
             return HighlightRange(
