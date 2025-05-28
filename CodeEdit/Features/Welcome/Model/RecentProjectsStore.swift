@@ -27,10 +27,17 @@ class RecentProjectsStore {
     /// The storage location for recent projects
     let defaults: UserDefaults
 
+    #if DEBUG
     /// Create a new store with a `UserDefaults` storage location.
     init(defaults: UserDefaults = UserDefaults.standard) {
         self.defaults = defaults
     }
+    #else
+    /// Create a new store with a `UserDefaults` storage location.
+    private init(defaults: UserDefaults = UserDefaults.standard) {
+        self.defaults = defaults
+    }
+    #endif
 
     /// Gets the recent paths array from `UserDefaults`.
     private func recentPaths() -> [String] {
