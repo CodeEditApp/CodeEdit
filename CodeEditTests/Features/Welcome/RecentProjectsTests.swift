@@ -9,11 +9,14 @@ import Testing
 import Foundation
 @testable import CodeEdit
 
+// This suite needs to be serial due to the use of `UserDefaults` and sharing one testing storage location.
+@Suite(.serialized)
 class RecentProjectsTests {
     let store: RecentProjectsStore
 
     init() {
         let defaults = UserDefaults(suiteName: #file)!
+        defaults.removeSuite(named: #file)
         store = RecentProjectsStore(defaults: defaults)
     }
 
@@ -31,9 +34,52 @@ class RecentProjectsTests {
         store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
         store.documentOpened(at: URL(filePath: "Directory/file.txt", directoryHint: .notDirectory))
 
+        let recentURLs = store.recentURLs()
+        #expect(recentURLs.count == 2)
+        #expect(recentURLs[0].path(percentEncoded: false) == "Directory/file.txt")
+        #expect(recentURLs[1].path(percentEncoded: false) == "Directory/")
+    }
+
+    @Test
+    func clearURLs() {
+        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
+        store.documentOpened(at: URL(filePath: "Directory/file.txt", directoryHint: .notDirectory))
+
         #expect(store.recentURLs().count == 2)
-        #expect(store.recentURLs()[0].path(percentEncoded: false) == "Directory/")
-        #expect(store.recentURLs()[1].path(percentEncoded: false) == "Directory/file.txt")
+
+        store.clearList()
+
+        #expect(store.recentURLs().isEmpty)
+    }
+
+    @Test
+    func duplicatesAreMovedToFront() {
+        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
+        store.documentOpened(at: URL(filePath: "Directory/file.txt", directoryHint: .notDirectory))
+        // Move to front
+        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
+        // Remove duplicate
+        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
+
+        let recentURLs = store.recentURLs()
+        #expect(recentURLs.count == 2)
+
+        // Should be moved to the front of the list because it was 'opened' again.
+        #expect(recentURLs[0].path(percentEncoded: false) == "Directory/")
+        #expect(recentURLs[1].path(percentEncoded: false) == "Directory/file.txt")
+    }
+
+    @Test
+    func removeSubset() {
+        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
+        store.documentOpened(at: URL(filePath: "Directory/file.txt", directoryHint: .notDirectory))
+
+        let remaining = store.removeRecentProjects(Set([URL(filePath: "Directory/", directoryHint: .isDirectory)]))
+
+        #expect(remaining == [URL(filePath: "Directory/file.txt")])
+        let recentURLs = store.recentURLs()
+        #expect(recentURLs.count == 1)
+        #expect(recentURLs[0].path(percentEncoded: false) == "Directory/file.txt")
     }
 
     @Test

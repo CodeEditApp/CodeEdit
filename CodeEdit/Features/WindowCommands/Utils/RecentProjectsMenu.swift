@@ -10,7 +10,7 @@ import AppKit
 class RecentProjectsMenu: NSObject {
     let projectsStore: RecentProjectsStore
 
-    init(projectsStore: RecentProjectsStore = .default) {
+    init(projectsStore: RecentProjectsStore = .shared) {
         self.projectsStore = projectsStore
     }
 

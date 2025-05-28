@@ -7,6 +7,7 @@
 
 import AppKit
 import CoreSpotlight
+import OSLog
 
 /// Helper methods for managing the recent projects list and donating list items to CoreSpotlight.
 ///
@@ -15,6 +16,8 @@ import CoreSpotlight
 /// If a UI element needs to listen to changes in this list, listen for the
 /// ``RecentProjectsStore/didUpdateNotification`` notification.
 class RecentProjectsStore {
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "RecentProjectsStore")
+
     /// The default projects store, uses the `UserDefaults.standard` storage location.
     static let shared = RecentProjectsStore()
 
@@ -56,19 +59,6 @@ class RecentProjectsStore {
     /// Save a new paths array to defaults. Automatically limits the list to the most recent `100` items, donates
     /// search items to Spotlight, and notifies observers.
     private func setPaths(_ paths: [String]) {
-        var paths = paths
-
-        // Remove duplicates
-        var foundPaths = Set<String>()
-        for (idx, path) in paths.enumerated().reversed() {
-            if foundPaths.contains(path) {
-                paths.remove(at: idx)
-            } else {
-                foundPaths.insert(path)
-            }
-        }
-
-        // Limit list to to 100 items after de-duplication
         defaults.setValue(Array(paths.prefix(100)), forKey: Self.projectsdDefaultsKey)
         setDocumentControllerRecents()
         donateSearchableItems()
@@ -95,10 +85,11 @@ class RecentProjectsStore {
     /// - Parameter paths: The paths to remove.
     /// - Returns: The remaining urls in the recent projects list.
     func removeRecentProjects(_ paths: Set<URL>) -> [URL] {
-        var recentProjectPaths = recentProjectURLs()
+        let paths = Set(paths.map { $0.path(percentEncoded: false) })
+        var recentProjectPaths = recentPaths()
         recentProjectPaths.removeAll(where: { paths.contains($0) })
-        setPaths(recentProjectPaths.map { $0.path(percentEncoded: false) })
-        return recentProjectURLs()
+        setPaths(recentProjectPaths)
+        return recentURLs()
     }
 
     func clearList() {
@@ -109,14 +100,14 @@ class RecentProjectsStore {
     /// Syncs AppKit's recent documents list with ours, keeping the dock menu and other lists up-to-date.
     private func setDocumentControllerRecents() {
         CodeEditDocumentController.shared.clearRecentDocuments(nil)
-        for path in recentProjectURLs().prefix(10) {
+        for path in recentURLs().prefix(10) {
             CodeEditDocumentController.shared.noteNewRecentDocumentURL(path)
         }
     }
 
     /// Donates all recent URLs to Core Search, making them searchable in Spotlight
     private func donateSearchableItems() {
-        let searchableItems = recentProjectURLs().map { entity in
+        let searchableItems = recentURLs().map { entity in
             let attributeSet = CSSearchableItemAttributeSet(contentType: .content)
             attributeSet.title = entity.lastPathComponent
             attributeSet.relatedUniqueIdentifier = entity.path()
@@ -126,9 +117,9 @@ class RecentProjectsStore {
                 attributeSet: attributeSet
             )
         }
-        CSSearchableIndex.default().indexSearchableItems(searchableItems) { error in
+        CSSearchableIndex.default().indexSearchableItems(searchableItems) { [weak self] error in
             if let error = error {
-                print(error)
+                self?.logger.debug("Failed to donate recent projects, error: \(error, privacy: .auto)")
             }
         }
     }
