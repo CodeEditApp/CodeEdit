@@ -16,7 +16,7 @@ import CoreSpotlight
 /// ``RecentProjectsStore/didUpdateNotification`` notification.
 class RecentProjectsStore {
     /// The default projects store, uses the `UserDefaults.standard` storage location.
-    static let `default` = RecentProjectsStore()
+    static let shared = RecentProjectsStore()
 
     private static let projectsdDefaultsKey = "recentProjectPaths"
     static let didUpdateNotification = Notification.Name("RecentProjectsStore.didUpdate")

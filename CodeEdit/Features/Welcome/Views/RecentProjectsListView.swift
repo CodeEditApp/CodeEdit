@@ -19,8 +19,8 @@ struct RecentProjectsListView: View {
     init(openDocument: @escaping (URL?, @escaping () -> Void) -> Void, dismissWindow: @escaping () -> Void) {
         self.openDocument = openDocument
         self.dismissWindow = dismissWindow
-        self._recentProjects = .init(initialValue: RecentProjectsStore.default.recentURLs())
-        self._selection = .init(initialValue: Set(RecentProjectsStore.default.recentURLs().prefix(1)))
+        self._recentProjects = .init(initialValue: RecentProjectsStore.shared.recentURLs())
+        self._selection = .init(initialValue: Set(RecentProjectsStore.shared.recentURLs().prefix(1)))
     }
 
     var listEmptyView: some View {
@@ -91,10 +91,10 @@ struct RecentProjectsListView: View {
     }
 
     func removeRecentProjects() {
-        recentProjects = RecentProjectsStore.default.removeRecentProjects(selection)
+        recentProjects = RecentProjectsStore.shared.removeRecentProjects(selection)
     }
 
     func updateRecentProjects() {
-        recentProjects = RecentProjectsStore.default.recentURLs()
+        recentProjects = RecentProjectsStore.shared.recentURLs()
     }
 }

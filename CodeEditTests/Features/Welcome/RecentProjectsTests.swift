@@ -32,11 +32,13 @@ class RecentProjectsTests {
         store.documentOpened(at: URL(filePath: "Directory/file.txt", directoryHint: .notDirectory))
 
         #expect(store.recentURLs().count == 2)
+        #expect(store.recentURLs()[0].path(percentEncoded: false) == "Directory/")
+        #expect(store.recentURLs()[1].path(percentEncoded: false) == "Directory/file.txt")
     }
 
     @Test
     func maxesOutAt100Items() {
-        for idx in 0..<200 {
+        for idx in 0..<101 {
             store.documentOpened(
                 at: URL(
                     filePath: "file\(idx).txt",
