@@ -48,7 +48,6 @@ struct EditorLayoutView: View {
 
     struct SubEditorLayoutView: View {
         @ObservedObject var data: SplitViewData
-
         @FocusState.Binding var focus: Editor?
 
         var body: some View {
@@ -58,8 +57,10 @@ struct EditorLayoutView: View {
             .edgesIgnoringSafeArea([.top, .bottom])
         }
 
-        var splitView: some View {
-            ForEach(Array(data.editorLayouts.enumerated()), id: \.offset) { index, item in
+        func stackContentsView(index: Int, item: EditorLayout) -> some View {
+            Group {
+                // Add a divider before the editor if it's not the first
+                if index != 0 { PanelDivider() }
                 EditorLayoutView(layout: item, focus: $focus)
                     .transformEnvironment(\.isAtEdge) { belowToolbar in
                         calcIsAtEdge(current: &belowToolbar, index: index)
@@ -67,6 +68,22 @@ struct EditorLayoutView: View {
                     .environment(\.splitEditor) { [weak data] edge, newEditor in
                         data?.split(edge, at: index, new: newEditor)
                     }
+                // Add a divider after the editor if it's not the last
+                if index != data.editorLayouts.count - 1 { PanelDivider() }
+            }
+        }
+
+        var splitView: some View {
+            ForEach(Array(data.editorLayouts.enumerated()), id: \.offset) { index, item in
+                if data.axis == .horizontal {
+                    HStack(spacing: 0) {
+                        stackContentsView(index: index, item: item)
+                    }
+                } else {
+                    VStack(spacing: 0) {
+                        stackContentsView(index: index, item: item)
+                    }
+                }
             }
         }
 
