@@ -56,10 +56,11 @@ extension CodeEditWindowController {
 
     func toggleToolbar() {
         toolbarCollapsed.toggle()
+        workspace?.addToWorkspaceState(key: .toolbarCollapsed, value: toolbarCollapsed)
         updateToolbarVisibility()
     }
 
-    private func updateToolbarVisibility() {
+    func updateToolbarVisibility() {
         if toolbarCollapsed {
             window?.titleVisibility = .visible
             window?.title = workspace?.workspaceFileManager?.folderUrl.lastPathComponent ?? "Empty"
@@ -92,7 +93,7 @@ extension CodeEditWindowController {
             toolbarItem.toolTip = "Hide or show the Navigator"
             toolbarItem.isBordered = true
             toolbarItem.target = self
-            toolbarItem.action = #selector(self.toggleFirstPanel)
+            toolbarItem.action = #selector(self.objcToggleFirstPanel)
             toolbarItem.image = NSImage(
                 systemSymbolName: "sidebar.leading",
                 accessibilityDescription: nil
@@ -106,7 +107,7 @@ extension CodeEditWindowController {
             toolbarItem.toolTip = "Hide or show the Inspectors"
             toolbarItem.isBordered = true
             toolbarItem.target = self
-            toolbarItem.action = #selector(self.toggleLastPanel)
+            toolbarItem.action = #selector(self.objcToggleLastPanel)
             toolbarItem.image = NSImage(
                 systemSymbolName: "sidebar.trailing",
                 accessibilityDescription: nil
