@@ -56,10 +56,11 @@ extension CodeEditWindowController {
 
     func toggleToolbar() {
         toolbarCollapsed.toggle()
+        workspace?.addToWorkspaceState(key: .toolbarCollapsed, value: toolbarCollapsed)
         updateToolbarVisibility()
     }
 
-    private func updateToolbarVisibility() {
+    func updateToolbarVisibility() {
         if toolbarCollapsed {
             window?.titleVisibility = .visible
             window?.title = workspace?.workspaceFileManager?.folderUrl.lastPathComponent ?? "Empty"

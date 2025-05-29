@@ -44,6 +44,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         window?.delegate = self
         guard let workspace else { return }
         self.workspace = workspace
+        self.toolbarCollapsed = workspace.getFromWorkspaceState(.toolbarCollapsed) as? Bool ?? false
         guard let splitViewController = setupSplitView(with: workspace) else {
             fatalError("Failed to set up content view.")
         }
@@ -73,6 +74,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         ]
 
         setupToolbar()
+        updateToolbarVisibility()
         registerCommands()
     }
 
