@@ -61,8 +61,8 @@ class GitCloneViewModel: ObservableObject {
     func cloneRepository(completionHandler: @escaping (URL) -> Void) {
         if !isGitInstalled() {
             showAlert(
-                alertMsg: "Git installation not found",
-                infoText: "Ensure Git is installed on your system and try again"
+                alertMsg: "Git installation not found.",
+                infoText: "Ensure Git is installed on your system and try again."
             )
             return
         }
