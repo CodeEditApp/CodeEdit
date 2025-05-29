@@ -31,6 +31,22 @@ class GitCloneViewModel: ObservableObject {
         }
         return false
     }
+    /// Check if Git is installed
+    /// - Returns: True if Git is found by running "which git" command
+    func isGitInstalled() -> Bool {
+        let process = Process()
+        process.executableURL = URL(fileURLWithPath: "/usr/bin/which")
+        process.arguments = ["git"]
+        let pipe = Pipe()
+        process.standardOutput = pipe
+        do {
+            try process.run()
+            process.waitUntilExit()
+            return process.terminationStatus == 0
+        } catch {
+            return false
+        }
+    }
 
     /// Check if clipboard contains git url
     func checkClipboard() {
@@ -43,6 +59,13 @@ class GitCloneViewModel: ObservableObject {
 
     /// Clone repository
     func cloneRepository(completionHandler: @escaping (URL) -> Void) {
+        if !isGitInstalled() {
+            showAlert(
+                alertMsg: "Git installation not found.",
+                infoText: "Ensure Git is installed on your system and try again."
+            )
+            return
+        }
         if repoUrlStr == "" {
             showAlert(
                 alertMsg: "Url cannot be empty",
