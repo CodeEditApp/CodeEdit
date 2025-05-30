@@ -27,6 +27,9 @@ struct AboutDefaultView: View {
     @Environment(\.colorScheme)
     var colorScheme
 
+    @State private var didCopyVersion = false
+    @State private var isHoveringVersion = false
+
     private static var licenseURL = URL(string: "https://github.com/CodeEditApp/CodeEdit/blob/main/LICENSE.md")!
 
     let smallTitlebarHeight: CGFloat = 28
@@ -52,9 +55,39 @@ struct AboutDefaultView: View {
                         weight: .bold
                     ))
                 Text("Version \(appVersion)\(appVersionPostfix) (\(appBuild))")
-                    .textSelection(.enabled)
-                    .foregroundColor(Color(.tertiaryLabelColor))
+                    .textSelection(.disabled)
                     .font(.body)
+                    .onTapGesture {
+                        // Create a string suitable for pasting into a bug report
+                        let macOSVersion = ProcessInfo.processInfo.operatingSystemVersion.semverString
+                        NSPasteboard.general.clearContents()
+                        NSPasteboard.general.setString(
+                            "CodeEdit: \(appVersion) (\(appBuild))\nmacOS: \(macOSVersion)",
+                            forType: .string
+                        )
+                        didCopyVersion.toggle()
+                    }
+                    .background(alignment: .leading) {
+                        if isHoveringVersion {
+                            if #available(macOS 14.0, *) {
+                                Image(systemName: "document.on.document.fill")
+                                    .font(.caption)
+                                    .offset(x: -16, y: 0)
+                                    .transition(.opacity)
+                                    .symbolEffect(
+                                        .bounce.down.wholeSymbol,
+                                        options: .nonRepeating.speed(1.8),
+                                        value: didCopyVersion
+                                    )
+                            } else {
+                                Image(systemName: "document.on.document.fill")
+                                    .font(.caption)
+                                    .offset(x: -16, y: 0)
+                                    .transition(.opacity)
+                            }
+                        }
+                    }
+                    .foregroundColor(Color(.tertiaryLabelColor))
                     .blendMode(colorScheme == .dark ? .plusLighter : .plusDarker)
                     .padding(.top, 4)
                     .matchedGeometryEffect(
@@ -65,14 +98,10 @@ struct AboutDefaultView: View {
                     )
                     .blur(radius: aboutMode == .about ? 0 : 10)
                     .opacity(aboutMode == .about ? 1 : 0)
-                    .onTapGesture {
-                        // Create a string suitable for pasting into a bug report
-                        let macOSVersion = ProcessInfo.processInfo.operatingSystemVersion.semverString
-                        NSPasteboard.general.clearContents()
-                        NSPasteboard.general.setString(
-                            "CodeEdit: \(appVersion) (\(appBuild))\nmacOS: \(macOSVersion)",
-                            forType: .string
-                        )
+                    .onHover { hovering in
+                        withAnimation(.easeInOut(duration: 0.1)) {
+                            isHoveringVersion = hovering
+                        }
                     }
             }
             .padding(.horizontal)
