@@ -21,6 +21,7 @@ struct TextEditingSettingsView: View {
                 useSystemCursor
                 overscroll
                 showMinimap
+                reformatSettings
             }
             Section {
                 fontSelector
@@ -205,5 +206,22 @@ private extension TextEditingSettingsView {
         Toggle("Show Minimap", isOn: $textEditing.showMinimap)
             // swiftlint:disable:next line_length
             .help("The minimap gives you a high-level summary of your source code, with controls to quickly navigate your document.")
+    }
+
+    @ViewBuilder private var reformatSettings: some View {
+        Stepper(
+            "Reformat at Column",
+            value: Binding<Double>(
+                get: { Double(textEditing.reformatAtColumn) },
+                set: { textEditing.reformatAtColumn = Int($0) }
+            ),
+            in: 40...200,
+            step: 1,
+            format: .number
+        )
+        .help("The column at which text should be reformatted")
+
+        Toggle("Show Reformatting Guide", isOn: $textEditing.showReformattingGuide)
+            .help("Shows a vertical guide at the reformat column")
     }
 }
