@@ -67,6 +67,7 @@ struct EditorJumpBarView: View {
                                 ? isActiveEditor ? .primary : .secondary
                                 : Color(nsColor: .tertiaryLabelColor)
                             )
+                            .frame(maxHeight: .infinity)
                     } else {
                         ForEach(fileItems, id: \.self) { fileItem in
                             EditorJumpBarComponent(
@@ -146,7 +147,7 @@ struct EditorJumpBarView: View {
             crumbWidth = nil
         }
 
-        if betweenWidth > snapThreshold {
+        if betweenWidth > snapThreshold || crumbWidth == nil {
             firstCrumbWidth = nil
         } else {
             let otherCrumbs = CGFloat(max(fileItems.count - 1, 1))

@@ -75,7 +75,7 @@ struct EditorJumpBarComponent: View {
         .mask(
             LinearGradient(
                 gradient: Gradient(
-                    stops: truncatedCrumbWidth == nil ?
+                    stops: truncatedCrumbWidth == nil || isHovering ?
                     [
                         .init(color: .black, location: 0),
                         .init(color: .black, location: 1)
