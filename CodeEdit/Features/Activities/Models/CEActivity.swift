@@ -1,5 +1,5 @@
 //
-//  TaskNotificationModel.swift
+//  CEActivity.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 21.06.24.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-/// Represents a notifications or tasks, that are displayed in the activity viewer
-struct TaskNotificationModel: Equatable {
+/// Represents an activity, that is displayed in the activity viewer
+struct CEActivity: Equatable {
     var id: String
     var title: String
     var message: String?
