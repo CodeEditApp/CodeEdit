@@ -139,6 +139,8 @@ final class SplitViewController: NSSplitViewController {
     }
 
     override func splitView(_ splitView: NSSplitView, shouldHideDividerAt dividerIndex: Int) -> Bool {
+        // For some reason, AppKit _really_ wants to hide dividers when there's only one item (and no dividers)
+        // so we do this check for them.
         guard items.count > 1 else { return false }
         return super.splitView(splitView, shouldHideDividerAt: dividerIndex)
     }
