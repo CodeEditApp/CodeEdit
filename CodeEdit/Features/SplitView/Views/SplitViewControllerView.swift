@@ -10,15 +10,19 @@ import SwiftUI
 struct SplitViewControllerView: NSViewControllerRepresentable {
 
     var axis: Axis
+    var dividerStyle: CodeEditDividerStyle
     var children: _VariadicView.Children
     @Binding var viewController: () -> SplitViewController?
 
     func makeNSViewController(context: Context) -> SplitViewController {
-        context.coordinator
+        let controller = SplitViewController(axis: axis)
+        updateItems(controller: controller)
+        return controller
     }
 
     func updateNSViewController(_ controller: SplitViewController, context: Context) {
         updateItems(controller: controller)
+        controller.setDividerStyle(dividerStyle)
     }
 
     private func updateItems(controller: SplitViewController) {
@@ -61,19 +65,62 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
     }
 
     func makeCoordinator() -> SplitViewController {
-        SplitViewController(parent: self, axis: axis)
+        SplitViewController(axis: axis)
     }
 }
 
 final class SplitViewController: NSSplitViewController {
+    final class CustomSplitView: NSSplitView {
+        @Invalidating(.display)
+        var customDividerStyle: CodeEditDividerStyle = .system(.thin) {
+            didSet {
+                switch customDividerStyle {
+                case .system(let dividerStyle, _):
+                    self.dividerStyle = dividerStyle
+                case .thick:
+                    return
+                }
+            }
+        }
+
+        init() {
+            super.init(frame: .zero)
+            dividerStyle = .thin
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        override var dividerColor: NSColor {
+            if let customColor = customDividerStyle.color {
+                return customColor
+            }
+            
+            switch customDividerStyle {
+            case .system:
+                return super.dividerColor
+            case .thick:
+                return NSColor.separatorColor
+            }
+        }
+
+        override var dividerThickness: CGFloat {
+            switch customDividerStyle {
+            case .system:
+                return super.dividerThickness
+            case .thick:
+                return 3.0
+            }
+        }
+    }
 
     var items: [SplitViewItem] = []
     var axis: Axis
-    var parentView: SplitViewControllerView
+    var parentView: SplitViewControllerView?
 
-    init(parent: SplitViewControllerView, axis: Axis = .horizontal) {
+    init(axis: Axis) {
         self.axis = axis
-        self.parentView = parent
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -81,18 +128,30 @@ final class SplitViewController: NSSplitViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func loadView() {
+        splitView = CustomSplitView()
+        super.loadView()
+    }
+
     override func viewDidLoad() {
+        super.viewDidLoad()
         splitView.isVertical = axis != .vertical
-        splitView.dividerStyle = .thin
         DispatchQueue.main.async { [weak self] in
-            self?.parentView.viewController = { [weak self] in
+            self?.parentView?.viewController = { [weak self] in
                 self
             }
         }
     }
 
-    override func splitView(_ splitView: NSSplitView, shouldHideDividerAt dividerIndex: Int) -> Bool {
+    override func splitView(_ splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
         false
+    }
+
+    func setDividerStyle(_ dividerStyle: CodeEditDividerStyle) {
+        guard let splitView = splitView as? CustomSplitView else {
+            return
+        }
+        splitView.customDividerStyle = dividerStyle
     }
 
     func collapse(for id: AnyHashable, enabled: Bool) {

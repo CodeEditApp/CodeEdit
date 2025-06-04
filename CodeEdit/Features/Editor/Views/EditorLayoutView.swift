@@ -47,43 +47,49 @@ struct EditorLayoutView: View {
     }
 
     struct SubEditorLayoutView: View {
+        @Environment(\.colorScheme)
+        private var colorScheme
+
         @ObservedObject var data: SplitViewData
         @FocusState.Binding var focus: Editor?
 
+        @State private var dividerColor: NSColor = .blue
+
         var body: some View {
-            SplitView(axis: data.axis) {
+            SplitView(
+                axis: data.axis,
+                dividerStyle: .thick(color: dividerColor)
+            ) {
                 splitView
             }
             .edgesIgnoringSafeArea([.top, .bottom])
-        }
-
-        func stackContentsView(index: Int, item: EditorLayout) -> some View {
-            Group {
-                // Add a divider before the editor if it's not the first
-                if index != 0 { PanelDivider() }
-                EditorLayoutView(layout: item, focus: $focus)
-                    .transformEnvironment(\.isAtEdge) { belowToolbar in
-                        calcIsAtEdge(current: &belowToolbar, index: index)
-                    }
-                    .environment(\.splitEditor) { [weak data] edge, newEditor in
-                        data?.split(edge, at: index, new: newEditor)
-                    }
-                // Add a divider after the editor if it's not the last
-                if index != data.editorLayouts.count - 1 { PanelDivider() }
+            .onChange(of: colorScheme) { newValue in
+                print("ColorScheme changed to: \(newValue == .dark ? "dark" : "light")")
+                if newValue == .dark {
+                    dividerColor = .red
+                } else {
+                    dividerColor = .blue
+                }
+            }
+            .onAppear {
+                print("SubEditorLayoutView appeared with colorScheme: \(colorScheme == .dark ? "dark" : "light")")
+                if colorScheme == .dark {
+                    dividerColor = .red
+                } else {
+                    dividerColor = .blue
+                }
             }
         }
 
         var splitView: some View {
             ForEach(Array(data.editorLayouts.enumerated()), id: \.offset) { index, item in
-                if data.axis == .horizontal {
-                    HStack(spacing: 0) {
-                        stackContentsView(index: index, item: item)
-                    }
-                } else {
-                    VStack(spacing: 0) {
-                        stackContentsView(index: index, item: item)
-                    }
-                }
+                EditorLayoutView(layout: item, focus: $focus)
+                   .transformEnvironment(\.isAtEdge) { belowToolbar in
+                       calcIsAtEdge(current: &belowToolbar, index: index)
+                   }
+                   .environment(\.splitEditor) { [weak data] edge, newEditor in
+                       data?.split(edge, at: index, new: newEditor)
+                   }
             }
         }
 
