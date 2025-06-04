@@ -53,32 +53,11 @@ struct EditorLayoutView: View {
         @ObservedObject var data: SplitViewData
         @FocusState.Binding var focus: Editor?
 
-        @State private var dividerColor: NSColor = .blue
-
         var body: some View {
-            SplitView(
-                axis: data.axis,
-                dividerStyle: .thick(color: dividerColor)
-            ) {
+            SplitView(axis: data.axis, dividerStyle: .editorDivider) {
                 splitView
             }
             .edgesIgnoringSafeArea([.top, .bottom])
-            .onChange(of: colorScheme) { newValue in
-                print("ColorScheme changed to: \(newValue == .dark ? "dark" : "light")")
-                if newValue == .dark {
-                    dividerColor = .red
-                } else {
-                    dividerColor = .blue
-                }
-            }
-            .onAppear {
-                print("SubEditorLayoutView appeared with colorScheme: \(colorScheme == .dark ? "dark" : "light")")
-                if colorScheme == .dark {
-                    dividerColor = .red
-                } else {
-                    dividerColor = .blue
-                }
-            }
         }
 
         var splitView: some View {

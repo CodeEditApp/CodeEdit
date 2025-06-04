@@ -15,8 +15,9 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
     @Binding var viewController: () -> SplitViewController?
 
     func makeNSViewController(context: Context) -> SplitViewController {
-        let controller = SplitViewController(axis: axis)
-        updateItems(controller: controller)
+        let controller = SplitViewController(axis: axis) { controller in
+            updateItems(controller: controller)
+        }
         return controller
     }
 
@@ -65,7 +66,7 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
     }
 
     func makeCoordinator() -> SplitViewController {
-        SplitViewController(axis: axis)
+        SplitViewController(axis: axis, setUpItems: nil)
     }
 }
 
@@ -75,9 +76,9 @@ final class SplitViewController: NSSplitViewController {
         var customDividerStyle: CodeEditDividerStyle = .system(.thin) {
             didSet {
                 switch customDividerStyle {
-                case .system(let dividerStyle, _):
+                case .system(let dividerStyle):
                     self.dividerStyle = dividerStyle
-                case .thick:
+                case .editorDivider:
                     return
                 }
             }
@@ -93,25 +94,11 @@ final class SplitViewController: NSSplitViewController {
         }
 
         override var dividerColor: NSColor {
-            if let customColor = customDividerStyle.color {
-                return customColor
-            }
-            
-            switch customDividerStyle {
-            case .system:
-                return super.dividerColor
-            case .thick:
-                return NSColor.separatorColor
-            }
+            customDividerStyle.customColor ?? super.dividerColor
         }
 
         override var dividerThickness: CGFloat {
-            switch customDividerStyle {
-            case .system:
-                return super.dividerThickness
-            case .thick:
-                return 3.0
-            }
+            customDividerStyle.customThickness ?? super.dividerThickness
         }
     }
 
@@ -119,8 +106,11 @@ final class SplitViewController: NSSplitViewController {
     var axis: Axis
     var parentView: SplitViewControllerView?
 
-    init(axis: Axis) {
+    var setUpItems: ((SplitViewController) -> Void)?
+
+    init(axis: Axis, setUpItems: ((SplitViewController) -> Void)?) {
         self.axis = axis
+        self.setUpItems = setUpItems
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -136,6 +126,7 @@ final class SplitViewController: NSSplitViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         splitView.isVertical = axis != .vertical
+        setUpItems?(self)
         DispatchQueue.main.async { [weak self] in
             self?.parentView?.viewController = { [weak self] in
                 self
@@ -145,6 +136,11 @@ final class SplitViewController: NSSplitViewController {
 
     override func splitView(_ splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
         false
+    }
+
+    override func splitView(_ splitView: NSSplitView, shouldHideDividerAt dividerIndex: Int) -> Bool {
+        guard items.count > 1 else { return false }
+        return super.splitView(splitView, shouldHideDividerAt: dividerIndex)
     }
 
     func setDividerStyle(_ dividerStyle: CodeEditDividerStyle) {
