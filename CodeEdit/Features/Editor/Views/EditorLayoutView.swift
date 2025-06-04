@@ -47,12 +47,14 @@ struct EditorLayoutView: View {
     }
 
     struct SubEditorLayoutView: View {
-        @ObservedObject var data: SplitViewData
+        @Environment(\.colorScheme)
+        private var colorScheme
 
+        @ObservedObject var data: SplitViewData
         @FocusState.Binding var focus: Editor?
 
         var body: some View {
-            SplitView(axis: data.axis) {
+            SplitView(axis: data.axis, dividerStyle: .editorDivider) {
                 splitView
             }
             .edgesIgnoringSafeArea([.top, .bottom])
@@ -61,12 +63,12 @@ struct EditorLayoutView: View {
         var splitView: some View {
             ForEach(Array(data.editorLayouts.enumerated()), id: \.offset) { index, item in
                 EditorLayoutView(layout: item, focus: $focus)
-                    .transformEnvironment(\.isAtEdge) { belowToolbar in
-                        calcIsAtEdge(current: &belowToolbar, index: index)
-                    }
-                    .environment(\.splitEditor) { [weak data] edge, newEditor in
-                        data?.split(edge, at: index, new: newEditor)
-                    }
+                   .transformEnvironment(\.isAtEdge) { belowToolbar in
+                       calcIsAtEdge(current: &belowToolbar, index: index)
+                   }
+                   .environment(\.splitEditor) { [weak data] edge, newEditor in
+                       data?.split(edge, at: index, new: newEditor)
+                   }
             }
         }
 
