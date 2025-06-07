@@ -794,6 +794,25 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "rustemd02",
+      "name": "rustemd02",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11714456?v=4",
+      "profile": "https://github.com/rustemd02",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "SimonKudsk",
+      "name": "Simon Kudsk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10168417?v=4",
+      "profile": "https://github.com/SimonKudsk",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
