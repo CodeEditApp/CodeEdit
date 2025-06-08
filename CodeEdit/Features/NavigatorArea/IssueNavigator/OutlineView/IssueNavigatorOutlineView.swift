@@ -31,6 +31,13 @@ struct IssueNavigatorOutlineView: NSViewControllerRepresentable {
 
     func updateNSViewController(_ nsViewController: IssueNavigatorViewController, context: Context) {
         nsViewController.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
+
+        // Update the controller reference if needed
+        if nsViewController.workspace !== workspace {
+            nsViewController.workspace = workspace
+            context.coordinator.workspace = workspace
+            context.coordinator.setupObservers()
+        }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -48,15 +55,48 @@ struct IssueNavigatorOutlineView: NSViewControllerRepresentable {
         }
 
         func setupObservers() {
+            // Cancel existing subscriptions
+            cancellables.removeAll()
+
             guard let viewModel = workspace?.issueNavigatorViewModel else { return }
 
+            // Listen for diagnostic changes
             viewModel.diagnosticsDidChangePublisher
+                .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
                 .sink { [weak self] _ in
-                    DispatchQueue.main.async {
-                        self?.controller?.outlineView.reloadData()
+                    guard let controller = self?.controller else { return }
+
+                    // Save current selection
+                    let selectedRows = controller.outlineView.selectedRowIndexes
+
+                    // Reload data
+                    controller.outlineView.reloadData()
+
+                    // Restore expansion state after reload
+                    controller.restoreExpandedState()
+
+                    // Restore selection if possible
+                    if !selectedRows.isEmpty {
+                        controller.outlineView.selectRowIndexes(selectedRows, byExtendingSelection: false)
                     }
                 }
                 .store(in: &cancellables)
+
+            // Listen for filter changes
+            viewModel.$filterOptions
+                .dropFirst() // Skip initial value
+                .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
+                .sink { [weak self] _ in
+                    guard let controller = self?.controller else { return }
+
+                    controller.outlineView.reloadData()
+                    controller.restoreExpandedState()
+                }
+                .store(in: &cancellables)
+        }
+
+        deinit {
+            cancellables.removeAll()
         }
     }
 }

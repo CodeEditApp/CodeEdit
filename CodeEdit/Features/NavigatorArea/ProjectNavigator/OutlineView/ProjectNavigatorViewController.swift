@@ -101,7 +101,7 @@ final class ProjectNavigatorViewController: NSViewController {
 
         outlineView.expandItem(outlineView.item(atRow: 0))
 
-        /// Get autosave expanded items.
+        // Get autosave expanded items.
         for row in 0..<outlineView.numberOfRows {
             if let item = outlineView.item(atRow: row) as? CEWorkspaceFile {
                 if outlineView.isItemExpanded(item) {
@@ -110,7 +110,7 @@ final class ProjectNavigatorViewController: NSViewController {
             }
         }
 
-        /// "No Filter Results" label.
+        // "No Filter Results" label.
         noResultsLabel = NSTextField(labelWithString: "No Filter Results")
         noResultsLabel.isHidden = true
         noResultsLabel.font = NSFont.systemFont(ofSize: 16)

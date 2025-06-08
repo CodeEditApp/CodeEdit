@@ -41,6 +41,14 @@ final class IssueNavigatorViewController: NSViewController {
     /// to open the file a second time.
     var shouldSendSelectionUpdate: Bool = true
 
+    /// Key for storing expansion state in UserDefaults
+    private var expansionStateKey: String {
+        guard let workspaceURL = workspace?.workspaceFileManager?.folderUrl else {
+            return "IssueNavigatorExpansionState"
+        }
+        return "IssueNavigatorExpansionState_\(workspaceURL.path.hashValue)"
+    }
+
     /// Setup the ``scrollView`` and ``outlineView``
     override func loadView() {
         self.scrollView = NSScrollView()
@@ -50,7 +58,8 @@ final class IssueNavigatorViewController: NSViewController {
         self.outlineView = NSOutlineView()
         self.outlineView.dataSource = self
         self.outlineView.delegate = self
-        self.outlineView.autosaveExpandedItems = false
+        self.outlineView.autosaveExpandedItems = true
+        self.outlineView.autosaveName = workspace?.workspaceFileManager?.folderUrl.path ?? ""
         self.outlineView.headerView = nil
         self.outlineView.menu = IssueNavigatorMenu(self)
         self.outlineView.menu?.delegate = self
@@ -72,15 +81,14 @@ final class IssueNavigatorViewController: NSViewController {
         scrollView.hasHorizontalScroller = false
         scrollView.autohidesScrollers = true
 
-        outlineView.expandItem(outlineView.item(atRow: 0))
+        loadExpansionState()
 
-        /// Get autosave expanded items.
-        for row in 0..<outlineView.numberOfRows {
-            if let item = outlineView.item(atRow: row) as? FileIssueNode {
-                if outlineView.isItemExpanded(item) {
-                    expandedItems.insert(item)
-                }
+        // Expand the project node by default
+        DispatchQueue.main.async { [weak self] in
+            if let rootItem = self?.outlineView.item(atRow: 0) {
+                self?.outlineView.expandItem(rootItem)
             }
+            self?.restoreExpandedState()
         }
     }
 
@@ -89,12 +97,52 @@ final class IssueNavigatorViewController: NSViewController {
     }
 
     deinit {
+        saveExpansionState()
         outlineView?.removeFromSuperview()
         scrollView?.removeFromSuperview()
     }
 
     required init?(coder: NSCoder) {
         fatalError()
+    }
+
+    /// Saves the current expansion state to UserDefaults
+    private func saveExpansionState() {
+        guard let viewModel = workspace?.issueNavigatorViewModel else { return }
+
+        let expandedUris = viewModel.getExpandedFileUris()
+        let urisArray = Array(expandedUris)
+
+        UserDefaults.standard.set(urisArray, forKey: expansionStateKey)
+    }
+
+    /// Loads the expansion state from UserDefaults
+    private func loadExpansionState() {
+        guard let viewModel = workspace?.issueNavigatorViewModel else { return }
+
+        if let urisArray = UserDefaults.standard.stringArray(forKey: expansionStateKey) {
+            let expandedUris = Set(urisArray)
+            viewModel.restoreExpandedFileUris(expandedUris)
+        }
+    }
+
+    /// Restores the expanded state of items based on their model state
+    public func restoreExpandedState() {
+        // Expand root if it should be expanded
+        if let rootItem = outlineView.item(atRow: 0) as? ProjectIssueNode,
+           rootItem.isExpanded {
+            outlineView.expandItem(rootItem)
+        }
+
+        // Expand file nodes based on their expansion state
+        for row in 0..<outlineView.numberOfRows {
+            if let fileItem = outlineView.item(atRow: row) as? FileIssueNode {
+                if fileItem.isExpanded {
+                    outlineView.expandItem(fileItem)
+                    expandedItems.insert(fileItem)
+                }
+            }
+        }
     }
 
     /// Expand or collapse the folder on double click
@@ -111,7 +159,9 @@ final class IssueNavigatorViewController: NSViewController {
             toggleExpansion(of: fileNode)
             openFileTab(fileUri: fileNode.uri)
         } else if let diagnosticNode = item as? DiagnosticIssueNode {
-            openFileTab(fileUri: diagnosticNode.fileUri)
+            openFileTab(fileUri: diagnosticNode.fileUri,
+                        line: diagnosticNode.diagnostic.range.start.line,
+                        column: diagnosticNode.diagnostic.range.start.character)
         }
     }
 
@@ -125,13 +175,20 @@ final class IssueNavigatorViewController: NSViewController {
         }
     }
 
-    /// Opens a file as a permanent tab
+    /// Opens a file as a permanent tab, optionally at a specific line and column
     @inline(__always)
-    private func openFileTab(fileUri: String) {
+    private func openFileTab(fileUri: String, line: Int? = nil, column: Int? = nil) {
         guard let fileURL = URL(string: fileUri),
               let file = workspace?.workspaceFileManager?.getFile(fileURL.path) else {
             return
         }
+
         workspace?.editorManager?.activeEditor.openTab(file: file, asTemporary: false)
+    }
+
+    /// Called when view will disappear - save state
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        saveExpansionState()
     }
 }

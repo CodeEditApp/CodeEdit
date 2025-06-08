@@ -89,6 +89,54 @@ extension IssueNavigatorViewController: NSOutlineViewDelegate {
         outlineView.layoutSubtreeIfNeeded()
     }
 
+    func outlineViewItemDidExpand(_ notification: Notification) {
+        if let node = notification.userInfo?["NSObject"] as? (any IssueNode) {
+            if let fileNode = node as? FileIssueNode {
+                fileNode.isExpanded = true
+                expandedItems.insert(fileNode)
+                workspace?.issueNavigatorViewModel?.setFileExpanded(fileNode.uri, isExpanded: true)
+            } else if let projectNode = node as? ProjectIssueNode {
+                projectNode.isExpanded = true
+            }
+        }
+    }
+
+    func outlineViewItemDidCollapse(_ notification: Notification) {
+        if let node = notification.userInfo?["NSObject"] as? (any IssueNode) {
+            if let fileNode = node as? FileIssueNode {
+                fileNode.isExpanded = false
+                expandedItems.remove(fileNode)
+                workspace?.issueNavigatorViewModel?.setFileExpanded(fileNode.uri, isExpanded: false)
+            } else if let projectNode = node as? ProjectIssueNode {
+                projectNode.isExpanded = false
+            }
+        }
+    }
+
+    func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
+        guard let uri = object as? String else { return nil }
+
+        if let fileNode = workspace?.issueNavigatorViewModel?.getFileNode(for: uri) {
+            return fileNode
+        }
+
+        if let rootNode = workspace?.issueNavigatorViewModel?.filteredRootNode,
+           rootNode.id.uuidString == uri {
+            return rootNode
+        }
+
+        return nil
+    }
+
+    func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
+        if let fileNode = item as? FileIssueNode {
+            return fileNode.uri
+        } else if let projectNode = item as? ProjectIssueNode {
+            return projectNode.id.uuidString
+        }
+        return nil
+    }
+
     /// Adds a tooltip to the issue row.
     func outlineView( // swiftlint:disable:this function_parameter_count
         _ outlineView: NSOutlineView,

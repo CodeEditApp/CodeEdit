@@ -17,7 +17,11 @@ class IssueNavigatorViewModel: ObservableObject {
 
     let diagnosticsDidChangePublisher = PassthroughSubject<Void, Never>()
 
-    private var diagnosticsByFile: [DocumentUri: [Diagnostic]] = [:]
+    // Store file nodes by URI for efficient lookup and to avoid duplication
+    private var fileNodesByUri: [DocumentUri: FileIssueNode] = [:]
+
+    // Track expansion state separately to persist it
+    private var expandedFileUris: Set<DocumentUri> = []
 
     func initialize(projectName: String) {
         self.rootNode = ProjectIssueNode(name: projectName)
@@ -29,9 +33,47 @@ class IssueNavigatorViewModel: ObservableObject {
         let diagnostics = params.diagnostics
 
         if diagnostics.isEmpty {
-            diagnosticsByFile.removeValue(forKey: uri)
+            // Remove the file node if no diagnostics
+            fileNodesByUri.removeValue(forKey: uri)
+            expandedFileUris.remove(uri)
         } else {
-            diagnosticsByFile[uri] = diagnostics
+            // Get or create file node
+            let fileNode: FileIssueNode
+            if let existingNode = fileNodesByUri[uri] {
+                fileNode = existingNode
+                // Clear existing diagnostics
+                fileNode.diagnostics.removeAll(keepingCapacity: true)
+            } else {
+                // Create new file node
+                let fileName = getFileName(from: uri)
+                fileNode = FileIssueNode(uri: uri, name: fileName)
+                fileNodesByUri[uri] = fileNode
+            }
+
+            // Convert diagnostics to diagnostic nodes and add to file node
+            let diagnosticNodes = diagnostics.map { diagnostic in
+                DiagnosticIssueNode(diagnostic: diagnostic, fileUri: uri)
+            }
+
+            // Sort diagnostics by severity and line number
+            let sortedDiagnosticNodes = diagnosticNodes.sorted { node1, node2 in
+                let severity1 = node1.diagnostic.severity?.rawValue ?? Int.max
+                let severity2 = node2.diagnostic.severity?.rawValue ?? Int.max
+
+                if severity1 == severity2 {
+                    // If same severity, sort by line number
+                    return node1.diagnostic.range.start.line < node2.diagnostic.range.start.line
+                }
+
+                return severity1 < severity2
+            }
+
+            fileNode.diagnostics = sortedDiagnosticNodes
+
+            // Restore expansion state if it was previously expanded
+            if expandedFileUris.contains(uri) {
+                fileNode.isExpanded = true
+            }
         }
 
         rebuildTree()
@@ -39,13 +81,15 @@ class IssueNavigatorViewModel: ObservableObject {
     }
 
     func clearDiagnostics() {
-        diagnosticsByFile.removeAll()
+        fileNodesByUri.removeAll()
+        expandedFileUris.removeAll()
         rebuildTree()
         diagnosticsDidChangePublisher.send()
     }
 
     func removeDiagnostics(uri: DocumentUri) {
-        diagnosticsByFile.removeValue(forKey: uri)
+        fileNodesByUri.removeValue(forKey: uri)
+        expandedFileUris.remove(uri)
         rebuildTree()
         diagnosticsDidChangePublisher.send()
     }
@@ -56,9 +100,40 @@ class IssueNavigatorViewModel: ObservableObject {
         diagnosticsDidChangePublisher.send()
     }
 
+    /// Save expansion state for a file
+    func setFileExpanded(_ uri: DocumentUri, isExpanded: Bool) {
+        if isExpanded {
+            expandedFileUris.insert(uri)
+        } else {
+            expandedFileUris.remove(uri)
+        }
+
+        if let fileNode = fileNodesByUri[uri] {
+            fileNode.isExpanded = isExpanded
+        }
+    }
+
+    /// Get all expanded file URIs for persistence
+    func getExpandedFileUris() -> Set<DocumentUri> {
+        return expandedFileUris
+    }
+
+    /// Restore expansion state from persisted data
+    func restoreExpandedFileUris(_ uris: Set<DocumentUri>) {
+        expandedFileUris = uris
+
+        // Apply to existing file nodes
+        for uri in uris {
+            if let fileNode = fileNodesByUri[uri] {
+                fileNode.isExpanded = true
+            }
+        }
+    }
+
     private func applyFilter() {
         guard let rootNode else { return }
         let filteredRoot = ProjectIssueNode(name: rootNode.name)
+        filteredRoot.isExpanded = rootNode.isExpanded
 
         // Filter files and diagnostics
         for fileNode in rootNode.files {
@@ -84,38 +159,14 @@ class IssueNavigatorViewModel: ObservableObject {
     /// Rebuilds the tree structure based on current diagnostics
     private func rebuildTree() {
         guard let rootNode else { return }
-        // Keep track of expanded states for files
-        let expandedFileUris = Set(rootNode.files
-            .filter { $0.isExpanded }
-            .map { $0.uri })
 
-        // Create file nodes with diagnostics
-        let fileNodes = diagnosticsByFile.compactMap { (uri, diagnostics) -> FileIssueNode? in
-            guard !diagnostics.isEmpty else { return nil }
+        let projectExpanded = rootNode.isExpanded
+        let sortedFileNodes = fileNodesByUri.values
+            .sorted { $0.name < $1.name }
 
-            let fileName = getFileName(from: uri)
-            let diagnosticNodes = diagnostics.map { DiagnosticIssueNode(diagnostic: $0, fileUri: uri) }
-
-            // Sort diagnostics by severity
-            let sortedDiagnosticNodes = diagnosticNodes.sorted { node1, node2 in
-                let severity1 = node1.diagnostic.severity?.rawValue ?? Int.max
-                let severity2 = node2.diagnostic.severity?.rawValue ?? Int.max
-
-                if severity1 == severity2 {
-                    // If same severity, sort by line number
-                    return node1.diagnostic.range.start.line < node2.diagnostic.range.start.line
-                }
-
-                return severity1 < severity2
-            }
-
-            let fileNode = FileIssueNode(uri: uri, name: fileName, diagnostics: sortedDiagnosticNodes)
-            fileNode.isExpanded = expandedFileUris.contains(uri)
-            return fileNode
-        }
-
-        let sortedFileNodes = fileNodes.sorted { $0.name < $1.name }
         rootNode.files = sortedFileNodes
+        rootNode.isExpanded = projectExpanded
+
         applyFilter()
     }
 
@@ -126,11 +177,21 @@ class IssueNavigatorViewModel: ObservableObject {
         }
 
         let components = uri.split(separator: "/")
-        return String(components.last ?? "")
+        return String(components.last ?? "Unknown")
     }
 
     func getAllDiagnostics() -> [Diagnostic] {
-        return diagnosticsByFile.values.flatMap { $0 }
+        return fileNodesByUri.values.flatMap { fileNode in
+            fileNode.diagnostics.map { $0.diagnostic }
+        }
+    }
+
+    func getDiagnostics(for uri: DocumentUri) -> [Diagnostic]? {
+        return fileNodesByUri[uri]?.diagnostics.map { $0.diagnostic }
+    }
+
+    func getFileNode(for uri: DocumentUri) -> FileIssueNode? {
+        return fileNodesByUri[uri]
     }
 
     func getDiagnosticCountBySeverity() -> [DiagnosticSeverity?: Int] {
@@ -146,10 +207,10 @@ class IssueNavigatorViewModel: ObservableObject {
     }
 
     func getDiagnosticAt(uri: DocumentUri, line: Int, character: Int) -> Diagnostic? {
-        guard let diagnostics = diagnosticsByFile[uri] else { return nil }
+        guard let fileNode = fileNodesByUri[uri] else { return nil }
 
-        return diagnostics.first { diagnostic in
-            let range = diagnostic.range
+        return fileNode.diagnostics.first { diagnosticNode in
+            let range = diagnosticNode.diagnostic.range
 
             // Check if position is within the diagnostic range
             if line < range.start.line || line > range.end.line {
@@ -162,7 +223,7 @@ class IssueNavigatorViewModel: ObservableObject {
                 return false
             }
             return true
-        }
+        }?.diagnostic
     }
 }
 
@@ -175,7 +236,7 @@ protocol IssueNode: Identifiable, Hashable {
 }
 
 /// Represents the project (root) node in the issue navigator
-class ProjectIssueNode: IssueNode, ObservableObject {
+class ProjectIssueNode: IssueNode, ObservableObject, Equatable {
     let id: UUID = UUID()
     let name: String
 
@@ -218,7 +279,7 @@ class ProjectIssueNode: IssueNode, ObservableObject {
 }
 
 /// Represents a file node in the issue navigator
-class FileIssueNode: IssueNode, ObservableObject {
+class FileIssueNode: IssueNode, ObservableObject, Equatable {
     let id: UUID = UUID()
     let uri: DocumentUri
     let name: String
@@ -267,9 +328,9 @@ class FileIssueNode: IssueNode, ObservableObject {
         diagnostics.filter { $0.diagnostic.severity == .warning }.count
     }
 
-    init(uri: DocumentUri, name: String, diagnostics: [DiagnosticIssueNode] = [], isExpanded: Bool = true) {
+    init(uri: DocumentUri, name: String? = nil, diagnostics: [DiagnosticIssueNode] = [], isExpanded: Bool = false) {
         self.uri = uri
-        self.name = name
+        self.name = name ?? (URL(string: uri)?.lastPathComponent ?? "Unknown")
         self.diagnostics = diagnostics
         self.isExpanded = isExpanded
     }
@@ -284,7 +345,7 @@ class FileIssueNode: IssueNode, ObservableObject {
 }
 
 /// Represents a diagnostic node in the issue navigator
-class DiagnosticIssueNode: IssueNode, ObservableObject {
+class DiagnosticIssueNode: IssueNode, ObservableObject, Equatable {
     let id: UUID = UUID()
     let diagnostic: Diagnostic
     let fileUri: DocumentUri
