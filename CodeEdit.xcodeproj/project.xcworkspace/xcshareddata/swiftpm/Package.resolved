@@ -1,5 +1,5 @@
 {
-  "originHash" : "a58ed6d88b87ec331f72f4c598965f46c2e253af80e220d5810483b903cf11d6",
+  "originHash" : "d2fb154bcae6930206686830e061ba429d8f987fd11340e94a6d0b526b000a20",
   "pins" : [
     {
       "identity" : "aboutwindow",
@@ -7,7 +7,7 @@
       "location" : "https://github.com/CodeEditApp/AboutWindow",
       "state" : {
         "branch" : "main",
-        "revision" : "f24aabcb52a6f9b6b502ad77b311ef9e83b51aff"
+        "revision" : "8c7e4a799d451fea48cd9275b4a2ad08a5f9d813"
       }
     },
     {
