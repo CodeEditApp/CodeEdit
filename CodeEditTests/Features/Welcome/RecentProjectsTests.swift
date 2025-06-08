@@ -85,7 +85,7 @@ class RecentsStoreTests {
 
     @Test
     func savesURLs() throws {
-        let dir  = URL.temp(named: "Directory",        directory: true)
+        let dir  = URL.temp(named: "Directory", directory: true)
         let file = URL.temp(named: "Directory/file.txt", directory: false)
 
         try dir.materialise(directory: true)
@@ -102,7 +102,7 @@ class RecentsStoreTests {
 
     @Test
     func clearURLs() throws {
-        let dir  = URL.temp(named: "Directory",        directory: true)
+        let dir  = URL.temp(named: "Directory", directory: true)
         let file = URL.temp(named: "Directory/file.txt", directory: false)
 
         try dir.materialise(directory: true)
@@ -118,7 +118,7 @@ class RecentsStoreTests {
 
     @Test
     func duplicatesAreMovedToFront() throws {
-        let dir  = URL.temp(named: "Directory",        directory: true)
+        let dir  = URL.temp(named: "Directory", directory: true)
         let file = URL.temp(named: "Directory/file.txt", directory: false)
 
         try dir.materialise(directory: true)
@@ -140,7 +140,7 @@ class RecentsStoreTests {
 
     @Test
     func removeSubset() throws {
-        let dir  = URL.temp(named: "Directory",        directory: true)
+        let dir  = URL.temp(named: "Directory", directory: true)
         let file = URL.temp(named: "Directory/file.txt", directory: false)
 
         try dir.materialise(directory: true)
@@ -160,8 +160,8 @@ class RecentsStoreTests {
     func maxesOutAt100Items() throws {
         for idx in 0..<101 {
             let isDir = Bool.random()
-            let name  = "entry_\(idx)" + (isDir ? "" : ".txt")
-            let url   = URL.temp(named: name, directory: isDir)
+            let name = "entry_\(idx)" + (isDir ? "" : ".txt")
+            let url = URL.temp(named: name, directory: isDir)
             try url.materialise(directory: isDir)
             RecentsStore.documentOpened(at: url)
         }
