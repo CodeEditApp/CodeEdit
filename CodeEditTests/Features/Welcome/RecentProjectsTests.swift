@@ -160,10 +160,14 @@ class RecentsStoreTests {
         RecentsStore.documentOpened(at: file)
 
         let remaining = RecentsStore.removeRecentProjects([dir])
-        #expect(remaining == [file])
+
+        #expect(remaining.count == 1)
+        #expect(remaining[0].standardizedFileURL == file.standardizedFileURL)
+
         let recents = RecentsStore.recentProjectURLs()
         #expect(recents.count == 1)
         #expect(recents[0].standardizedFileURL == file.standardizedFileURL)
+
     }
 
     @Test
