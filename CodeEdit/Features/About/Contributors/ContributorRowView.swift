@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSymbols
 
 struct ContributorRowView: View {
 

@@ -1,6 +1,15 @@
 {
-  "originHash" : "ac57a6899925c3e4ac6d43aed791c845c6fc24a4441b6a10297a207d951b7836",
+  "originHash" : "a58ed6d88b87ec331f72f4c598965f46c2e253af80e220d5810483b903cf11d6",
   "pins" : [
+    {
+      "identity" : "aboutwindow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/AboutWindow",
+      "state" : {
+        "branch" : "main",
+        "revision" : "f24aabcb52a6f9b6b502ad77b311ef9e83b51aff"
+      }
+    },
     {
       "identity" : "anycodable",
       "kind" : "remoteSourceControl",
