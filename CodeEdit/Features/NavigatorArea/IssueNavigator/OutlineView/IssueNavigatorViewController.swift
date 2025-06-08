@@ -159,9 +159,11 @@ final class IssueNavigatorViewController: NSViewController {
             toggleExpansion(of: fileNode)
             openFileTab(fileUri: fileNode.uri)
         } else if let diagnosticNode = item as? DiagnosticIssueNode {
-            openFileTab(fileUri: diagnosticNode.fileUri,
-                        line: diagnosticNode.diagnostic.range.start.line,
-                        column: diagnosticNode.diagnostic.range.start.character)
+            openFileTab(
+                fileUri: diagnosticNode.fileUri,
+                line: diagnosticNode.diagnostic.range.start.line,
+                column: diagnosticNode.diagnostic.range.start.character
+            )
         }
     }
 
