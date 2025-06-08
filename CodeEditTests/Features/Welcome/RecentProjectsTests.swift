@@ -37,6 +37,11 @@ private extension URL {
     }
 }
 
+private func clear() {
+    RecentsStore.clearList()
+    UserDefaults.standard.removeObject(forKey: "recentProjectBookmarks")
+}
+
 /// A container for values that need to remain alive for the whole test-suite.
 private enum TestContext {
     /// Every run gets its own random temp folder that is cleaned up
@@ -80,11 +85,13 @@ class RecentsStoreTests {
 
     @Test
     func newStoreEmpty() {
+        clear()
         #expect(RecentsStore.recentProjectURLs().isEmpty)
     }
 
     @Test
     func savesURLs() throws {
+        clear()
         let dir  = URL.temp(named: "Directory", directory: true)
         let file = URL.temp(named: "Directory/file.txt", directory: false)
 
@@ -102,6 +109,7 @@ class RecentsStoreTests {
 
     @Test
     func clearURLs() throws {
+        clear()
         let dir  = URL.temp(named: "Directory", directory: true)
         let file = URL.temp(named: "Directory/file.txt", directory: false)
 
@@ -118,6 +126,7 @@ class RecentsStoreTests {
 
     @Test
     func duplicatesAreMovedToFront() throws {
+        clear()
         let dir  = URL.temp(named: "Directory", directory: true)
         let file = URL.temp(named: "Directory/file.txt", directory: false)
 
@@ -140,6 +149,7 @@ class RecentsStoreTests {
 
     @Test
     func removeSubset() throws {
+        clear()
         let dir  = URL.temp(named: "Directory", directory: true)
         let file = URL.temp(named: "Directory/file.txt", directory: false)
 
@@ -158,6 +168,7 @@ class RecentsStoreTests {
 
     @Test
     func maxesOutAt100Items() throws {
+        clear()
         for idx in 0..<101 {
             let isDir = Bool.random()
             let name = "entry_\(idx)" + (isDir ? "" : ".txt")
