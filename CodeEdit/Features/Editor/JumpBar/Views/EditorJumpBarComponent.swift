@@ -26,16 +26,19 @@ struct EditorJumpBarComponent: View {
     @State var selection: CEWorkspaceFile
     @State var isHovering: Bool = false
     @State var button = NSPopUpButton()
+    @Binding var truncatedCrumbWidth: CGFloat?
 
     init(
         fileItem: CEWorkspaceFile,
         tappedOpenFile: @escaping (CEWorkspaceFile) -> Void,
-        isLastItem: Bool
+        isLastItem: Bool,
+        isTruncated: Binding<CGFloat?>
     ) {
         self.fileItem = fileItem
         self._selection = .init(wrappedValue: fileItem)
         self.tappedOpenFile = tappedOpenFile
         self.isLastItem = isLastItem
+        self._truncatedCrumbWidth = isTruncated
     }
 
     var siblings: [CEWorkspaceFile] {
@@ -65,6 +68,28 @@ struct EditorJumpBarComponent: View {
 
             return button
         }
+        .frame(
+            maxWidth: isHovering || isLastItem ? nil : truncatedCrumbWidth,
+            alignment: .leading
+        )
+        .mask(
+            LinearGradient(
+                gradient: Gradient(
+                    stops: truncatedCrumbWidth == nil || isHovering ?
+                    [
+                        .init(color: .black, location: 0),
+                        .init(color: .black, location: 1)
+                    ] : [
+                        .init(color: .black, location: 0),
+                        .init(color: .black, location: 0.8),
+                        .init(color: .clear, location: 1)
+                    ]
+                ),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
+        .clipped()
         .padding(.trailing, 11)
         .background {
             Color(nsColor: colorScheme == .dark ? .white : .black)
@@ -83,7 +108,9 @@ struct EditorJumpBarComponent: View {
         }
         .padding(.vertical, 3)
         .onHover { hover in
-            isHovering = hover
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isHovering = hover
+            }
         }
         .onLongPressGesture(minimumDuration: 0) {
             button.performClick(nil)
