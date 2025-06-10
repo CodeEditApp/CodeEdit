@@ -66,7 +66,7 @@ final class ProjectNavigatorMenu: NSMenu {
             action: #selector(newFileFromClipboard),
             key: "v"
         )
-        newFileFromClipboard.keyEquivalentModifierMask = [.command, .control]
+        newFileFromClipboard.keyEquivalentModifierMask = [.command]
         let newFolder = menuItem("New Folder", action: #selector(newFolder))
 
         let rename = menuItem("Rename", action: #selector(renameFile))

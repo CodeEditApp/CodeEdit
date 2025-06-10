@@ -121,20 +121,16 @@ extension ProjectNavigatorMenu {
         guard let item else { return }
         do {
             let clipBoardContent = NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
-            if let newFile = try workspace?
+            if let clipBoardContent, !clipBoardContent.isEmpty, let newFile = try workspace?
                 .workspaceFileManager?
                 .addFile(
                     fileName: "untitled",
                     toFile: item,
-                    useExtension: "",
                     contents: clipBoardContent
                 ) {
                 workspace?.listenerModel.highlightedFileItem = newFile
                 workspace?.editorManager?.openTab(item: newFile)
-            }
-            /// To resolve racing condition
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.renameFile()
+                renameFile()
             }
         } catch {
             let alert = NSAlert(error: error)
