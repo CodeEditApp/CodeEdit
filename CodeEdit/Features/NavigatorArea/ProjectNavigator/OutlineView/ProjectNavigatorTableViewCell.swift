@@ -10,6 +10,7 @@ import SwiftUI
 protocol OutlineTableViewCellDelegate: AnyObject {
     func moveFile(file: CEWorkspaceFile, to destination: URL)
     func copyFile(file: CEWorkspaceFile, to destination: URL)
+    func cellDidFinishEditing()
 }
 
 /// A `NSTableCellView` showing an ``icon`` and a ``label``
@@ -64,5 +65,6 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         } else {
             textField?.stringValue = fileItem.labelFileName()
         }
+        delegate?.cellDidFinishEditing()
     }
 }
