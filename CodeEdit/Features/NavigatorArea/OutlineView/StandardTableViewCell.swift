@@ -27,7 +27,6 @@ class StandardTableViewCell: NSTableCellView {
     init(frame frameRect: NSRect, isEditable: Bool = true) {
         super.init(frame: frameRect)
         setupViews(frame: frameRect, isEditable: isEditable)
-
     }
 
     // Default init, assumes isEditable to be false
@@ -50,17 +49,16 @@ class StandardTableViewCell: NSTableCellView {
         // Create the icon
         let icon = createIcon()
         configIcon(icon: icon)
-        addSubview(icon)
         imageView = icon
 
-        // add constraints
-        createConstraints(frame: frameRect)
         addSubview(label)
         addSubview(secondaryLabel)
         addSubview(icon)
+        createConstraints(frame: frameRect)
     }
 
     // MARK: Create and config stuff
+
     func createLabel() -> NSTextField {
         return SpecialSelectTextField(frame: .zero)
     }
@@ -124,7 +122,7 @@ class StandardTableViewCell: NSTableCellView {
             width: iconWidth,
             height: frame.height
         )
-        // center align the image
+        // Center align the image
         if let alignmentRect = imageView.image?.alignmentRect {
             imageView.frame = NSRect(
                 x: (iconWidth - alignmentRect.width) / 2,
@@ -134,11 +132,11 @@ class StandardTableViewCell: NSTableCellView {
             )
         }
 
-        // right align the secondary label
+        // Right align the secondary label
         if secondaryLabelRightAligned {
             rightAlignSecondary()
         } else {
-            // put the secondary label right after the primary label
+            // Put the secondary label right after the primary label
             leftAlignSecondary()
         }
     }
@@ -149,7 +147,7 @@ class StandardTableViewCell: NSTableCellView {
         let newSize = secondaryLabel.sizeThatFits(
             CGSize(width: secondLabelWidth, height: CGFloat.greatestFiniteMagnitude)
         )
-        // somehow, a width of 0 makes it resize properly.
+        // Somehow, a width of 0 makes it resize properly.
         secondaryLabel.frame = NSRect(
             x: frame.width - newSize.width,
             y: 3.5,
