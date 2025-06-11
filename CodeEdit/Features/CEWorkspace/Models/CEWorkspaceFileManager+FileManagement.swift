@@ -251,11 +251,11 @@ extension CEWorkspaceFileManager {
     @discardableResult
     public func move(file: CEWorkspaceFile, to newLocation: URL) throws -> CEWorkspaceFile? {
         do {
-            guard fileManager.fileExists(atPath: file.url.path()) else {
+            guard fileManager.fileExists(atPath: file.url.path(percentEncoded: false)) else {
                 throw FileManagerError.originFileNotFound
             }
 
-            guard !fileManager.fileExists(atPath: newLocation.path) else {
+            guard !fileManager.fileExists(atPath: newLocation.path(percentEncoded: false)) else {
                 throw FileManagerError.destinationFileExists
             }
 
@@ -305,7 +305,9 @@ extension CEWorkspaceFileManager {
     ///   - newLocation: The location to copy to.
     public func copy(file: CEWorkspaceFile, to newLocation: URL) throws {
         do {
-            guard file.url != newLocation && !fileManager.fileExists(atPath: newLocation.absoluteString) else {
+            guard file.url != newLocation && !fileManager.fileExists(
+                atPath: newLocation.absoluteURL.path(percentEncoded: false)
+            ) else {
                 throw FileManagerError.originFileNotFound
             }
             try fileManager.copyItem(at: file.url, to: newLocation)

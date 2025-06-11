@@ -15,7 +15,7 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
     @Binding var viewController: () -> SplitViewController?
 
     func makeNSViewController(context: Context) -> SplitViewController {
-        let controller = SplitViewController(axis: axis) { controller in
+        let controller = SplitViewController(axis: axis, parentView: self) { controller in
             updateItems(controller: controller)
         }
         return controller
@@ -64,10 +64,6 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
             }
         }
     }
-
-    func makeCoordinator() -> SplitViewController {
-        SplitViewController(axis: axis, setUpItems: nil)
-    }
 }
 
 final class SplitViewController: NSSplitViewController {
@@ -108,8 +104,9 @@ final class SplitViewController: NSSplitViewController {
 
     var setUpItems: ((SplitViewController) -> Void)?
 
-    init(axis: Axis, setUpItems: ((SplitViewController) -> Void)?) {
+    init(axis: Axis, parentView: SplitViewControllerView?, setUpItems: ((SplitViewController) -> Void)?) {
         self.axis = axis
+        self.parentView = parentView
         self.setUpItems = setUpItems
         super.init(nibName: nil, bundle: nil)
     }
