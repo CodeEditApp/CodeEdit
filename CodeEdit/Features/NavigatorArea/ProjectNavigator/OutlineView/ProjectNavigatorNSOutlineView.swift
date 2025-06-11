@@ -9,6 +9,10 @@ import AppKit
 
 final class ProjectNavigatorNSOutlineView: NSOutlineView, NSMenuItemValidation {
     override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        guard event.window === window && window?.firstResponder === self else {
+            return super.performKeyEquivalent(with: event)
+        }
+
         if event.charactersIgnoringModifiers == "v"
             && event.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command {
             guard let menu = menu as? ProjectNavigatorMenu else {
