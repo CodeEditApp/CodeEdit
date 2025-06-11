@@ -1,98 +1,196 @@
 //
-//  RecentProjectsTests.swift
+//  RecentsStoreTests.swift
 //  CodeEditTests
 //
 //  Created by Khan Winter on 5/27/25.
+//  Updated for the new RecentsStore on 6/08/25
 //
 
 import Testing
 import Foundation
-@testable import CodeEdit
+@testable import WelcomeWindow   // <- contains RecentsStore
 
-// This suite needs to be serial due to the use of `UserDefaults` and sharing one testing storage location.
+// -----------------------------------------------------------------------------
+// MARK: - helpers
+// -----------------------------------------------------------------------------
+
+private let testDefaults: UserDefaults = {
+    let name = "RecentsStoreTests.\(UUID())"
+    let userDefaults   = UserDefaults(suiteName: name)!
+    userDefaults.removePersistentDomain(forName: name)   // start clean
+    return userDefaults
+}()
+
+private extension URL {
+    /// Creates an empty file (or directory) on disk, so we can successfully
+    /// generate security-scoped bookmarks for it.
+    ///
+    /// - parameter directory: Pass `true` to create a directory, `false`
+    ///                        to create a regular file.
+    func materialise(directory: Bool) throws {
+        let fileManager = FileManager.default
+        if directory {
+            try fileManager.createDirectory(at: self, withIntermediateDirectories: true)
+        } else {
+            fileManager.createFile(atPath: path, contents: Data())
+        }
+    }
+
+    /// Convenience that returns a fresh URL inside the per-suite temp dir.
+    static func temp(named name: String, directory: Bool) -> URL {
+        TestContext.tempRoot.appendingPathComponent(
+            name,
+            isDirectory: directory
+        )
+    }
+}
+
+@MainActor
+private func clear() {
+    RecentsStore.clearList()
+    testDefaults.removeObject(forKey: "recentProjectBookmarks")
+}
+
+/// A container for values that need to remain alive for the whole test-suite.
+private enum TestContext {
+    /// Every run gets its own random temp folder that is cleaned up
+    /// when the process exits.
+    static let tempRoot: URL = {
+        let root = FileManager.default.temporaryDirectory
+            .appendingPathComponent("RecentsStoreTests_\(UUID())", isDirectory: true)
+        try? FileManager.default.createDirectory(
+            at: root,
+            withIntermediateDirectories: true
+        )
+        atexit_b {
+            try? FileManager.default.removeItem(at: root)
+        }
+        return root
+    }()
+}
+
+// -----------------------------------------------------------------------------
+// MARK: - Test-suite
+// -----------------------------------------------------------------------------
+
+// Needs to be serial – everything writes to `UserDefaults.standard`.
 @Suite(.serialized)
-class RecentProjectsTests {
-    let store: RecentProjectsStore
+@MainActor
+class RecentsStoreTests {
 
     init() {
-        let defaults = UserDefaults(suiteName: #file)!
-        defaults.removeSuite(named: #file)
-        store = RecentProjectsStore(defaults: defaults)
+        // Redirect the store to the throw-away suite.
+        RecentsStore.defaults = testDefaults
+        clear()
     }
 
     deinit {
-        try? FileManager.default.removeItem(atPath: #file + ".plist")
+        Task { @MainActor in
+            clear()
+        }
     }
+
+    // -------------------------------------------------------------------------
+    // MARK: - Tests mirroring the old suite
+    // -------------------------------------------------------------------------
 
     @Test
     func newStoreEmpty() {
-        #expect(store.recentURLs().isEmpty)
+        clear()
+        #expect(RecentsStore.recentProjectURLs().isEmpty)
     }
 
     @Test
-    func savesURLs() {
-        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
-        store.documentOpened(at: URL(filePath: "Directory/file.txt", directoryHint: .notDirectory))
+    func savesURLs() throws {
+        clear()
+        let dir  = URL.temp(named: "Directory", directory: true)
+        let file = URL.temp(named: "Directory/file.txt", directory: false)
 
-        let recentURLs = store.recentURLs()
-        #expect(recentURLs.count == 2)
-        #expect(recentURLs[0].path(percentEncoded: false) == "Directory/file.txt")
-        #expect(recentURLs[1].path(percentEncoded: false) == "Directory/")
+        try dir.materialise(directory: true)
+        try file.materialise(directory: false)
+
+        RecentsStore.documentOpened(at: dir)
+        RecentsStore.documentOpened(at: file)
+
+        let recents = RecentsStore.recentProjectURLs()
+        #expect(recents.count == 2)
+        #expect(recents[0].standardizedFileURL == file.standardizedFileURL)
+        #expect(recents[1].standardizedFileURL == dir.standardizedFileURL)
     }
 
     @Test
-    func clearURLs() {
-        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
-        store.documentOpened(at: URL(filePath: "Directory/file.txt", directoryHint: .notDirectory))
+    func clearURLs() throws {
+        clear()
+        let dir  = URL.temp(named: "Directory", directory: true)
+        let file = URL.temp(named: "Directory/file.txt", directory: false)
 
-        #expect(store.recentURLs().count == 2)
+        try dir.materialise(directory: true)
+        try file.materialise(directory: false)
 
-        store.clearList()
+        RecentsStore.documentOpened(at: dir)
+        RecentsStore.documentOpened(at: file)
+        #expect(!RecentsStore.recentProjectURLs().isEmpty)
 
-        #expect(store.recentURLs().isEmpty)
+        RecentsStore.clearList()
+        #expect(RecentsStore.recentProjectURLs().isEmpty)
     }
 
     @Test
-    func duplicatesAreMovedToFront() {
-        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
-        store.documentOpened(at: URL(filePath: "Directory/file.txt", directoryHint: .notDirectory))
-        // Move to front
-        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
-        // Remove duplicate
-        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
+    func duplicatesAreMovedToFront() throws {
+        clear()
+        let dir  = URL.temp(named: "Directory", directory: true)
+        let file = URL.temp(named: "Directory/file.txt", directory: false)
 
-        let recentURLs = store.recentURLs()
-        #expect(recentURLs.count == 2)
+        try dir.materialise(directory: true)
+        try file.materialise(directory: false)
 
-        // Should be moved to the front of the list because it was 'opened' again.
-        #expect(recentURLs[0].path(percentEncoded: false) == "Directory/")
-        #expect(recentURLs[1].path(percentEncoded: false) == "Directory/file.txt")
+        RecentsStore.documentOpened(at: dir)
+        RecentsStore.documentOpened(at: file)
+
+        // Open `dir` again → should move to front
+        RecentsStore.documentOpened(at: dir)
+        // Open duplicate again (no change in order, still unique)
+        RecentsStore.documentOpened(at: dir)
+
+        let recents = RecentsStore.recentProjectURLs()
+        #expect(recents.count == 2)
+        #expect(recents[0].standardizedFileURL == dir.standardizedFileURL)
+        #expect(recents[1].standardizedFileURL == file.standardizedFileURL)
     }
 
     @Test
-    func removeSubset() {
-        store.documentOpened(at: URL(filePath: "Directory/", directoryHint: .isDirectory))
-        store.documentOpened(at: URL(filePath: "Directory/file.txt", directoryHint: .notDirectory))
+    func removeSubset() throws {
+        clear()
+        let dir  = URL.temp(named: "Directory", directory: true)
+        let file = URL.temp(named: "Directory/file.txt", directory: false)
 
-        let remaining = store.removeRecentProjects(Set([URL(filePath: "Directory/", directoryHint: .isDirectory)]))
+        try dir.materialise(directory: true)
+        try file.materialise(directory: false)
 
-        #expect(remaining == [URL(filePath: "Directory/file.txt")])
-        let recentURLs = store.recentURLs()
-        #expect(recentURLs.count == 1)
-        #expect(recentURLs[0].path(percentEncoded: false) == "Directory/file.txt")
+        RecentsStore.documentOpened(at: dir)
+        RecentsStore.documentOpened(at: file)
+
+        let remaining = RecentsStore.removeRecentProjects([dir])
+
+        #expect(remaining.count == 1)
+        #expect(remaining[0].standardizedFileURL == file.standardizedFileURL)
+
+        let recents = RecentsStore.recentProjectURLs()
+        #expect(recents.count == 1)
+        #expect(recents[0].standardizedFileURL == file.standardizedFileURL)
+
     }
 
     @Test
-    func maxesOutAt100Items() {
+    func maxesOutAt100Items() throws {
+        clear()
         for idx in 0..<101 {
-            store.documentOpened(
-                at: URL(
-                    filePath: "file\(idx).txt",
-                    directoryHint: Bool.random() ? .isDirectory : .notDirectory
-                )
-            )
+            let isDir = Bool.random()
+            let name = "entry_\(idx)" + (isDir ? "" : ".txt")
+            let url = URL.temp(named: name, directory: isDir)
+            try url.materialise(directory: isDir)
+            RecentsStore.documentOpened(at: url)
         }
-
-        #expect(store.recentURLs().count == 100)
+        #expect(RecentsStore.recentProjectURLs().count == 100)
     }
 }

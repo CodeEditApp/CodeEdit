@@ -12,6 +12,7 @@ extension EventModifiers {
 }
 
 extension NSMenuItem {
+    @MainActor
     @objc
     fileprivate func fixAlternate(_ newValue: NSEvent.ModifierFlags) {
         if newValue.contains(.numericPad) {

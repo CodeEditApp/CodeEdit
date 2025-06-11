@@ -9,6 +9,16 @@ import Foundation
 
 extension Bundle {
 
+    static var appName: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String ?? "Unknown App"
+    }
+
+    static var displayName: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
+        ?? Bundle.main.object(forInfoDictionaryKey: "CFBundleName") as? String
+        ?? "Unknown App"
+    }
+
     static var copyrightString: String? {
         Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String
     }
