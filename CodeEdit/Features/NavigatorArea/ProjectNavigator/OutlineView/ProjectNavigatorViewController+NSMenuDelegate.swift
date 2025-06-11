@@ -18,12 +18,12 @@ extension ProjectNavigatorViewController: NSMenuDelegate {
         let row = outlineView.clickedRow
         guard let menu = menu as? ProjectNavigatorMenu else { return }
 
+        menu.workspace = workspace
         if row == -1 {
             menu.item = nil
         } else {
             if let item = outlineView.item(atRow: row) as? CEWorkspaceFile {
                 menu.item = item
-                menu.workspace = workspace
             } else {
                 menu.item = nil
             }
