@@ -13,6 +13,14 @@ import Foundation
 // -----------------------------------------------------------------------------
 // MARK: - helpers
 // -----------------------------------------------------------------------------
+
+private let testDefaults: UserDefaults = {
+    let name = "RecentsStoreTests.\(UUID())"
+    let userDefaults   = UserDefaults(suiteName: name)!
+    userDefaults.removePersistentDomain(forName: name)   // start clean
+    return userDefaults
+}()
+
 private extension URL {
     /// Creates an empty file (or directory) on disk, so we can successfully
     /// generate security-scoped bookmarks for it.
@@ -37,9 +45,10 @@ private extension URL {
     }
 }
 
+@MainActor
 private func clear() {
     RecentsStore.clearList()
-    UserDefaults.standard.removeObject(forKey: "recentProjectBookmarks")
+    testDefaults.removeObject(forKey: "recentProjectBookmarks")
 }
 
 /// A container for values that need to remain alive for the whole test-suite.
@@ -66,17 +75,19 @@ private enum TestContext {
 
 // Needs to be serial – everything writes to `UserDefaults.standard`.
 @Suite(.serialized)
+@MainActor
 class RecentsStoreTests {
 
     init() {
-        // Start every suite run with a clean slate.
-        RecentsStore.clearList()
-        UserDefaults.standard.removeObject(forKey: "recentProjectBookmarks")
+        // Redirect the store to the throw-away suite.
+        RecentsStore.defaults = testDefaults
+        clear()
     }
 
     deinit {
-        RecentsStore.clearList()
-        UserDefaults.standard.removeObject(forKey: "recentProjectBookmarks")
+        Task { @MainActor in
+            clear()
+        }
     }
 
     // -------------------------------------------------------------------------

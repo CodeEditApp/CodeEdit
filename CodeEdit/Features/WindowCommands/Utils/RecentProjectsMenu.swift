@@ -8,6 +8,7 @@
 import AppKit
 import WelcomeWindow
 
+@MainActor
 final class RecentProjectsMenu: NSObject, NSMenuDelegate {
 
     // MARK: - Menu construction
