@@ -13,7 +13,7 @@ struct KeyValueItem: Identifiable, Equatable {
     let value: String
 }
 
-private struct NewListTableItemView: View {
+private struct NewListTableItemView<HeaderView: View>: View {
     @Environment(\.dismiss)
     var dismiss
 
@@ -24,17 +24,21 @@ private struct NewListTableItemView: View {
     let valueColumnName: String
     let newItemInstruction: String
     let validKeys: [String]
-    let headerView: AnyView?
+    let headerView: HeaderView?
     var completion: (String, String) -> Void
 
     init(
+        key: String? = nil,
+        value: String? = nil,
         _ keyColumnName: String,
         _ valueColumnName: String,
         _ newItemInstruction: String,
         validKeys: [String],
-        headerView: AnyView? = nil,
+        headerView: HeaderView? = nil,
         completion: @escaping (String, String) -> Void
     ) {
+        self.key = key ?? ""
+        self.value = value ?? ""
         self.keyColumnName = keyColumnName
         self.valueColumnName = valueColumnName
         self.newItemInstruction = newItemInstruction
@@ -62,7 +66,11 @@ private struct NewListTableItemView: View {
                     TextField(valueColumnName, text: $value)
                         .textFieldStyle(.plain)
                 } header: {
-                    headerView
+                    if HeaderView.self == EmptyView.self {
+                        Text(newItemInstruction)
+                    } else {
+                        headerView
+                    }
                 }
             }
             .formStyle(.grouped)
@@ -94,17 +102,18 @@ private struct NewListTableItemView: View {
     }
 }
 
-struct KeyValueTable<Header: View>: View {
+struct KeyValueTable<Header: View, ActionBarView: View>: View {
     @Binding var items: [String: String]
 
     let validKeys: [String]
     let keyColumnName: String
     let valueColumnName: String
     let newItemInstruction: String
-    let header: () -> Header
+    let newItemHeader: () -> Header
+    let actionBarTrailing: () -> ActionBarView
 
-    @State private var showingModal = false
-    @State private var selection: UUID?
+    @State private var editingItem: KeyValueItem?
+    @State private var selection: Set<UUID> = []
     @State private var tableItems: [KeyValueItem] = []
 
     init(
@@ -113,14 +122,16 @@ struct KeyValueTable<Header: View>: View {
         keyColumnName: String,
         valueColumnName: String,
         newItemInstruction: String,
-        @ViewBuilder header: @escaping () -> Header = { EmptyView() }
+        @ViewBuilder newItemHeader: @escaping () -> Header = { EmptyView() },
+        @ViewBuilder actionBarTrailing: @escaping () -> ActionBarView = { EmptyView() }
     ) {
         self._items = items
         self.validKeys = validKeys
         self.keyColumnName = keyColumnName
         self.valueColumnName = valueColumnName
         self.newItemInstruction = newItemInstruction
-        self.header = header
+        self.newItemHeader = newItemHeader
+        self.actionBarTrailing = actionBarTrailing
     }
 
     var body: some View {
@@ -132,11 +143,24 @@ struct KeyValueTable<Header: View>: View {
                 Text(item.value)
             }
         }
-        .frame(height: 200)
+        .contextMenu(
+            forSelectionType: UUID.self,
+            menu: { selectedItems in
+                Button("Edit") {
+                    editItem(id: selectedItems.first)
+                }
+                Button("Remove") {
+                    removeItem(selectedItems)
+                }
+            },
+            primaryAction: { selectedItems in
+                editItem(id: selectedItems.first)
+            }
+        )
         .actionBar {
             HStack(spacing: 2) {
                 Button {
-                    showingModal = true
+                    editingItem = KeyValueItem(key: "", value: "")
                 } label: {
                     Image(systemName: "plus")
                 }
@@ -149,38 +173,64 @@ struct KeyValueTable<Header: View>: View {
                 } label: {
                     Image(systemName: "minus")
                 }
-                .disabled(selection == nil)
-                .opacity(selection == nil ? 0.5 : 1)
+                .disabled(selection.isEmpty)
+                .opacity(selection.isEmpty ? 0.5 : 1)
+
+                Spacer()
+
+                actionBarTrailing()
             }
-            Spacer()
         }
-        .sheet(isPresented: $showingModal) {
+        .sheet(item: $editingItem) { item in
             NewListTableItemView(
+                key: item.key,
+                value: item.value,
                 keyColumnName,
                 valueColumnName,
                 newItemInstruction,
                 validKeys: validKeys,
-                headerView: AnyView(header())
+                headerView: newItemHeader()
             ) { key, value in
                 items[key] = value
-                updateTableItems()
-                showingModal = false
+                editingItem = nil
             }
         }
         .cornerRadius(6)
-        .onAppear(perform: updateTableItems)
+        .onAppear {
+            updateTableItems(items)
+            if let first = tableItems.first?.id {
+                selection = [first]
+            }
+            selection = []
+        }
+        .onChange(of: items) { newValue in
+            updateTableItems(newValue)
+        }
     }
 
-    private func updateTableItems() {
-        tableItems = items.map { KeyValueItem(key: $0.key, value: $0.value) }
+    private func updateTableItems(_ newValue: [String: String]) {
+        tableItems = items
+            .sorted { $0.key < $1.key }
+            .map { KeyValueItem(key: $0.key, value: $0.value) }
     }
 
     private func removeItem() {
-        guard let selectedId = selection else { return }
-        if let selectedItem = tableItems.first(where: { $0.id == selectedId }) {
-            items.removeValue(forKey: selectedItem.key)
-            updateTableItems()
+        removeItem(selection)
+        self.selection.removeAll()
+    }
+
+    private func removeItem(_ selection: Set<UUID>) {
+        for selectedId in selection {
+            if let selectedItem = tableItems.first(where: { $0.id == selectedId }) {
+                items.removeValue(forKey: selectedItem.key)
+            }
         }
-        selection = nil
+    }
+
+    private func editItem(id: UUID?) {
+        guard let id, let item = tableItems.first(where: { $0.id == id }) else {
+            return
+        }
+        editingItem = item
     }
 }

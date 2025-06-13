@@ -12,6 +12,8 @@ struct TextEditingSettingsView: View {
     @AppSettings(\.textEditing)
     var textEditing
 
+    @State private var isShowingInvisibleCharacterSettings = false
+
     var body: some View {
         SettingsForm {
             Section {
@@ -36,6 +38,20 @@ struct TextEditingSettingsView: View {
             }
             Section {
                 bracketPairHighlight
+            }
+            Section {
+                HStack {
+                    Text("Invisible Characters")
+                    Spacer()
+                    _DisclosureIndicator()
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    isShowingInvisibleCharacterSettings = true
+                }
+                .sheet(isPresented: $isShowingInvisibleCharacterSettings) {
+                    InvisiblesSettingsView()
+                }
             }
         }
     }

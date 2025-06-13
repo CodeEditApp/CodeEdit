@@ -54,6 +54,8 @@ struct CodeFileView: View {
     var reformatAtColumn
     @AppSettings(\.textEditing.showReformattingGuide)
     var showReformattingGuide
+    @AppSettings(\.textEditing.invisibleCharacters)
+    var invisibleCharactersConfig
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -141,7 +143,13 @@ struct CodeFileView: View {
             coordinators: textViewCoordinators,
             showMinimap: showMinimap,
             reformatAtColumn: reformatAtColumn,
-            showReformattingGuide: showReformattingGuide
+            showReformattingGuide: showReformattingGuide,
+            invisibleCharactersConfig: .init(
+                showSpaces: invisibleCharactersConfig.showSpaces,
+                showTabs: invisibleCharactersConfig.showTabs,
+                showLineEndings: invisibleCharactersConfig.showLineEndings,
+                warningCharacters: Set(invisibleCharactersConfig.warningCharacters.keys)
+            )
         )
         .id(codeFile.fileURL)
         .background {
