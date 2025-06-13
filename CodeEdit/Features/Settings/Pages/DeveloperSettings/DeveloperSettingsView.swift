@@ -34,7 +34,10 @@ struct DeveloperSettingsView: View {
                     Text(
                         "Specify the absolute path to your LSP binary and its associated language."
                     )
+                } actionBarTrailing: {
+                    EmptyView()
                 }
+                .frame(minHeight: 96)
             } header: {
                 Text("LSP Binaries")
                 Text("Specify the language and the absolute path to the language server binary.")

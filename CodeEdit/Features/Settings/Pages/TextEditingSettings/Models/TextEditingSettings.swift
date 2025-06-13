@@ -31,6 +31,8 @@ extension SettingsData {
                 "Show Minimap",
                 "Reformat at Column",
                 "Show Reformatting Guide",
+                "Invisibles",
+                "Show whitespace",
             ]
             if #available(macOS 14.0, *) {
                 keys.append("System Cursor")
@@ -82,13 +84,15 @@ extension SettingsData {
         /// Show the reformatting guide in the editor
         var showReformattingGuide: Bool = false
 
+        var invisibleCharacters: InvisibleCharactersConfig = .default
+
         /// Default initializer
         init() {
             self.populateCommands()
         }
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
+        init(from decoder: Decoder) throws { // swiftlint:disable:this function_body_length
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.defaultTabWidth = try container.decodeIfPresent(Int.self, forKey: .defaultTabWidth) ?? 4
             self.indentOption = try container.decodeIfPresent(
@@ -136,6 +140,10 @@ extension SettingsData {
                 Bool.self,
                 forKey: .showReformattingGuide
             ) ?? false
+            self.invisibleCharacters = try container.decodeIfPresent(
+                InvisibleCharactersConfig.self,
+                forKey: .invisibleCharacters
+            ) ?? .default
 
             self.populateCommands()
         }
@@ -221,6 +229,39 @@ extension SettingsData {
                 case .large: return 0.75
                 }
             }
+        }
+
+        struct InvisibleCharactersConfig: Equatable, Hashable, Codable {
+            static var `default`: InvisibleCharactersConfig = {
+                InvisibleCharactersConfig(
+                    showSpaces: false,
+                    showTabs: false,
+                    showLineEndings: false,
+                    warningCharacters: [
+                        0x0003: "End of text",
+
+                        0x00A0: "Non-breaking space",
+                        0x202F: "Narrow non-breaking space",
+                        0x200B: "Zero-width space",
+                        0x200C: "Zero-width non-joiner",
+                        0x2029: "Paragraph separator",
+
+                        0x2013: "Em-dash",
+                        0x00AD: "Soft hyphen",
+
+                        0x2018: "Left single quote",
+                        0x2019: "Right single quote",
+                        0x201C: "Left double quote",
+                        0x201D: "Right double quote",
+                    ]
+                )
+            }()
+
+            var showSpaces: Bool
+            var showTabs: Bool
+            var showLineEndings: Bool
+            // Map of unicode character codes to a note about them
+            var warningCharacters: [UInt16: String]
         }
     }
 
