@@ -92,7 +92,7 @@ extension SettingsData {
         }
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
+        init(from decoder: Decoder) throws { // swiftlint:disable:this function_body_length
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.defaultTabWidth = try container.decodeIfPresent(Int.self, forKey: .defaultTabWidth) ?? 4
             self.indentOption = try container.decodeIfPresent(
