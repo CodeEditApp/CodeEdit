@@ -32,7 +32,7 @@ extension SettingsData {
                 "Reformat at Column",
                 "Show Reformatting Guide",
                 "Invisibles",
-                "Show whitespace",
+                "Warning Characters"
             ]
             if #available(macOS 14.0, *) {
                 keys.append("System Cursor")
@@ -85,6 +85,9 @@ extension SettingsData {
         var showReformattingGuide: Bool = false
 
         var invisibleCharacters: InvisibleCharactersConfig = .default
+
+        /// Map of unicode character codes to a note about them
+        var warningCharacters: WarningCharacters = .default
 
         /// Default initializer
         init() {
@@ -143,6 +146,10 @@ extension SettingsData {
             self.invisibleCharacters = try container.decodeIfPresent(
                 InvisibleCharactersConfig.self,
                 forKey: .invisibleCharacters
+            ) ?? .default
+            self.warningCharacters = try container.decodeIfPresent(
+                WarningCharacters.self,
+                forKey: .warningCharacters
             ) ?? .default
 
             self.populateCommands()
@@ -237,24 +244,7 @@ extension SettingsData {
                     enabled: false,
                     showSpaces: true,
                     showTabs: true,
-                    showLineEndings: true,
-                    warningCharacters: [
-                        0x0003: "End of text",
-
-                        0x00A0: "Non-breaking space",
-                        0x202F: "Narrow non-breaking space",
-                        0x200B: "Zero-width space",
-                        0x200C: "Zero-width non-joiner",
-                        0x2029: "Paragraph separator",
-
-                        0x2013: "Em-dash",
-                        0x00AD: "Soft hyphen",
-
-                        0x2018: "Left single quote",
-                        0x2019: "Right single quote",
-                        0x201C: "Left double quote",
-                        0x201D: "Right double quote",
-                    ]
+                    showLineEndings: true
                 )
             }()
 
@@ -272,9 +262,29 @@ extension SettingsData {
             var lineFeedReplacement: String = "¬"
             var paragraphSeparatorReplacement: String = "¶"
             var lineSeparatorReplacement: String = "⏎"
+        }
 
-            // Map of unicode character codes to a note about them
-            var warningCharacters: [UInt16: String]
+        struct WarningCharacters: Equatable, Hashable, Codable {
+            static let `default`: WarningCharacters = WarningCharacters(enabled: true, characters: [
+                0x0003: "End of text",
+
+                0x00A0: "Non-breaking space",
+                0x202F: "Narrow non-breaking space",
+                0x200B: "Zero-width space",
+                0x200C: "Zero-width non-joiner",
+                0x2029: "Paragraph separator",
+
+                0x2013: "Em-dash",
+                0x00AD: "Soft hyphen",
+
+                0x2018: "Left single quote",
+                0x2019: "Right single quote",
+                0x201C: "Left double quote",
+                0x201D: "Right double quote",
+            ])
+
+            var enabled: Bool
+            var characters: [UInt16: String]
         }
     }
 

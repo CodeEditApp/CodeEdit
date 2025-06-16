@@ -56,6 +56,8 @@ struct CodeFileView: View {
     var showReformattingGuide
     @AppSettings(\.textEditing.invisibleCharacters)
     var invisibleCharactersConfig
+    @AppSettings(\.textEditing.warningCharacters)
+    var warningCharacters
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -144,7 +146,8 @@ struct CodeFileView: View {
             showMinimap: showMinimap,
             reformatAtColumn: reformatAtColumn,
             showReformattingGuide: showReformattingGuide,
-            invisibleCharactersConfig: invisibleCharactersConfig.textViewOption()
+            invisibleCharactersConfig: invisibleCharactersConfig.textViewOption(),
+            warningCharacters: warningCharacters.textViewOption()
         )
         .id(codeFile.fileURL)
         .background {
@@ -216,8 +219,7 @@ private extension SettingsData.TextEditingSettings.InvisibleCharactersConfig {
         var config = InvisibleCharactersConfig(
             showSpaces: self.showSpaces,
             showTabs: self.showTabs,
-            showLineEndings: self.showLineEndings,
-            warningCharacters: Set(self.warningCharacters.keys)
+            showLineEndings: self.showLineEndings
         )
         config.spaceReplacement = self.spaceReplacement
         config.tabReplacement = self.tabReplacement
@@ -226,5 +228,12 @@ private extension SettingsData.TextEditingSettings.InvisibleCharactersConfig {
         config.paragraphSeparatorReplacement = self.paragraphSeparatorReplacement
         config.lineSeparatorReplacement = self.lineSeparatorReplacement
         return config
+    }
+}
+
+private extension SettingsData.TextEditingSettings.WarningCharacters {
+    func textViewOption() -> Set<UInt16> {
+        guard self.enabled else { return [] }
+        return Set(self.characters.keys)
     }
 }

@@ -13,6 +13,7 @@ struct TextEditingSettingsView: View {
     var textEditing
 
     @State private var isShowingInvisibleCharacterSettings = false
+    @State private var isShowingWarningCharactersSettings = false
 
     var body: some View {
         SettingsForm {
@@ -41,6 +42,7 @@ struct TextEditingSettingsView: View {
             }
             Section {
                 invisibles
+                warningCharacters
             }
         }
     }
@@ -250,6 +252,29 @@ private extension TextEditingSettingsView {
         }
         .sheet(isPresented: $isShowingInvisibleCharacterSettings) {
             InvisiblesSettingsView(invisibleCharacters: $textEditing.invisibleCharacters)
+        }
+    }
+
+    @ViewBuilder private var warningCharacters: some View {
+        HStack {
+            Text("Show Warning Characters")
+            Spacer()
+            Toggle(isOn: $textEditing.warningCharacters.enabled, label: { EmptyView() })
+            Button {
+                isShowingWarningCharactersSettings = true
+            } label: {
+                Text("Configure...")
+            }
+            .disabled(textEditing.warningCharacters.enabled == false)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if textEditing.warningCharacters.enabled {
+                isShowingWarningCharactersSettings = true
+            }
+        }
+        .sheet(isPresented: $isShowingWarningCharactersSettings) {
+            WarningCharactersView(warningCharacters: $textEditing.warningCharacters)
         }
     }
 }

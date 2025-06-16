@@ -16,115 +16,102 @@ struct InvisiblesSettingsView: View {
     private var dismiss
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                Form {
-                    Section {
-                        VStack {
-                            Toggle(isOn: $invisibleCharacters.showSpaces) { Text("Show Spaces") }
-                            if invisibleCharacters.showSpaces {
-                                TextField(
-                                    text: $invisibleCharacters.spaceReplacement,
-                                    prompt: Text("Default: \(Config.default.spaceReplacement)")
-                                ) {
-                                    Text("Character used to render spaces")
-                                        .foregroundStyle(.secondary)
-                                        .font(.caption)
-                                }
-                                .autocorrectionDisabled()
+        VStack(spacing: 0) {
+            Form {
+                Section {
+                    VStack {
+                        Toggle(isOn: $invisibleCharacters.showSpaces) { Text("Show Spaces") }
+                        if invisibleCharacters.showSpaces {
+                            TextField(
+                                text: $invisibleCharacters.spaceReplacement,
+                                prompt: Text("Default: \(Config.default.spaceReplacement)")
+                            ) {
+                                Text("Character used to render spaces")
+                                    .foregroundStyle(.secondary)
+                                    .font(.caption)
                             }
+                            .autocorrectionDisabled()
                         }
-
-                        VStack {
-                            Toggle(isOn: $invisibleCharacters.showTabs) { Text("Show Tabs") }
-                            if invisibleCharacters.showTabs {
-                                TextField(
-                                    text: $invisibleCharacters.tabReplacement,
-                                    prompt: Text("Default: \(Config.default.tabReplacement)")
-                                ) {
-                                    Text("Character used to render tabs")
-                                        .foregroundStyle(.secondary)
-                                        .font(.caption)
-                                }
-                                .autocorrectionDisabled()
-                            }
-                        }
-
-                        VStack {
-                            Toggle(isOn: $invisibleCharacters.showLineEndings) { Text("Show Line Endings") }
-                            if invisibleCharacters.showLineEndings {
-                                TextField(
-                                    text: $invisibleCharacters.lineFeedReplacement,
-                                    prompt: Text("Default: \(Config.default.lineFeedReplacement)")
-                                ) {
-                                    Text("Character used to render line feeds (\\n)")
-                                        .foregroundStyle(.secondary)
-                                        .font(.caption)
-                                }
-                                .autocorrectionDisabled()
-
-                                TextField(
-                                    text: $invisibleCharacters.carriageReturnReplacement,
-                                    prompt: Text("Default: \(Config.default.carriageReturnReplacement)")
-                                ) {
-                                    Text("Character used to render carriage returns (Microsoft-style line endings)")
-                                        .foregroundStyle(.secondary)
-                                        .font(.caption)
-                                }
-                                .autocorrectionDisabled()
-
-                                TextField(
-                                    text: $invisibleCharacters.paragraphSeparatorReplacement,
-                                    prompt: Text("Default: \(Config.default.paragraphSeparatorReplacement)")
-                                ) {
-                                    Text("Character used to render paragraph separators")
-                                        .foregroundStyle(.secondary)
-                                        .font(.caption)
-                                }
-                                .autocorrectionDisabled()
-
-                                TextField(
-                                    text: $invisibleCharacters.lineSeparatorReplacement,
-                                    prompt: Text("Default: \(Config.default.lineSeparatorReplacement)")
-                                ) {
-                                    Text("Character used to render line separators")
-                                        .foregroundStyle(.secondary)
-                                        .font(.caption)
-                                }
-                                .autocorrectionDisabled()
-                            }
-                        }
-                    } header: {
-                        Text("Invisible Characters")
-                        Text("Toggle whitespace symbols CodeEdit will render with replacement characters.")
                     }
-                    .textFieldStyle(.roundedBorder)
-                    Section {
-                        InvisibleCharacterWarningList(items: $invisibleCharacters.warningCharacters)
-                    } header: {
-                        Text("Warning Characters")
-                        Text(
-                            "CodeEdit can help identify invisible or ambiguous characters, such as zero-width spaces," +
-                            " directional quotes, and more. These will appear with a red block highlighting them." +
-                            "You can disable characters or add more here."
-                        )
+
+                    VStack {
+                        Toggle(isOn: $invisibleCharacters.showTabs) { Text("Show Tabs") }
+                        if invisibleCharacters.showTabs {
+                            TextField(
+                                text: $invisibleCharacters.tabReplacement,
+                                prompt: Text("Default: \(Config.default.tabReplacement)")
+                            ) {
+                                Text("Character used to render tabs")
+                                    .foregroundStyle(.secondary)
+                                    .font(.caption)
+                            }
+                            .autocorrectionDisabled()
+                        }
                     }
+
+                    VStack {
+                        Toggle(isOn: $invisibleCharacters.showLineEndings) { Text("Show Line Endings") }
+                        if invisibleCharacters.showLineEndings {
+                            TextField(
+                                text: $invisibleCharacters.lineFeedReplacement,
+                                prompt: Text("Default: \(Config.default.lineFeedReplacement)")
+                            ) {
+                                Text("Character used to render line feeds (\\n)")
+                                    .foregroundStyle(.secondary)
+                                    .font(.caption)
+                            }
+                            .autocorrectionDisabled()
+
+                            TextField(
+                                text: $invisibleCharacters.carriageReturnReplacement,
+                                prompt: Text("Default: \(Config.default.carriageReturnReplacement)")
+                            ) {
+                                Text("Character used to render carriage returns (Microsoft-style line endings)")
+                                    .foregroundStyle(.secondary)
+                                    .font(.caption)
+                            }
+                            .autocorrectionDisabled()
+
+                            TextField(
+                                text: $invisibleCharacters.paragraphSeparatorReplacement,
+                                prompt: Text("Default: \(Config.default.paragraphSeparatorReplacement)")
+                            ) {
+                                Text("Character used to render paragraph separators")
+                                    .foregroundStyle(.secondary)
+                                    .font(.caption)
+                            }
+                            .autocorrectionDisabled()
+
+                            TextField(
+                                text: $invisibleCharacters.lineSeparatorReplacement,
+                                prompt: Text("Default: \(Config.default.lineSeparatorReplacement)")
+                            ) {
+                                Text("Character used to render line separators")
+                                    .foregroundStyle(.secondary)
+                                    .font(.caption)
+                            }
+                            .autocorrectionDisabled()
+                        }
+                    }
+                } header: {
+                    Text("Invisible Characters")
+                    Text("Toggle whitespace symbols CodeEdit will render with replacement characters.")
                 }
-                .formStyle(.grouped)
-                Divider()
-                HStack {
-                    Spacer()
-                    Button {
-                        dismiss()
-                    } label: {
-                        Text("Done")
-                            .frame(minWidth: 56)
-                    }
-                    .buttonStyle(.borderedProminent)
-                }
-                .padding()
+                .textFieldStyle(.roundedBorder)
             }
-            .navigationTitle("Invisible Characters")
+            .formStyle(.grouped)
+            Divider()
+            HStack {
+                Spacer()
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Done")
+                        .frame(minWidth: 56)
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            .padding()
         }
     }
 }
