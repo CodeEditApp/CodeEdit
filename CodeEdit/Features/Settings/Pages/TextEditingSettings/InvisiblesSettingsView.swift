@@ -8,8 +8,9 @@
 import SwiftUI
 
 struct InvisiblesSettingsView: View {
-    @AppSettings(\.textEditing)
-    var textEditing
+    typealias Config = SettingsData.TextEditingSettings.InvisibleCharactersConfig
+
+    @Binding var invisibleCharacters: Config
 
     @Environment(\.dismiss)
     private var dismiss
@@ -19,18 +20,87 @@ struct InvisiblesSettingsView: View {
             VStack(spacing: 0) {
                 Form {
                     Section {
-                        Toggle(isOn: $textEditing.invisibleCharacters.showSpaces) {
-                            Text("Show Spaces")
+                        VStack {
+                            Toggle(isOn: $invisibleCharacters.showSpaces) { Text("Show Spaces") }
+                            if invisibleCharacters.showSpaces {
+                                TextField(
+                                    text: $invisibleCharacters.spaceReplacement,
+                                    prompt: Text("Default: \(Config.default.spaceReplacement)")
+                                ) {
+                                    Text("Character used to render spaces")
+                                        .foregroundStyle(.secondary)
+                                        .font(.caption)
+                                }
+                                .autocorrectionDisabled()
+                            }
                         }
-                        Toggle(isOn: $textEditing.invisibleCharacters.showTabs) {
-                            Text("Show Tabs")
+
+                        VStack {
+                            Toggle(isOn: $invisibleCharacters.showTabs) { Text("Show Tabs") }
+                            if invisibleCharacters.showTabs {
+                                TextField(
+                                    text: $invisibleCharacters.tabReplacement,
+                                    prompt: Text("Default: \(Config.default.tabReplacement)")
+                                ) {
+                                    Text("Character used to render tabs")
+                                        .foregroundStyle(.secondary)
+                                        .font(.caption)
+                                }
+                                .autocorrectionDisabled()
+                            }
                         }
-                        Toggle(isOn: $textEditing.invisibleCharacters.showLineEndings) {
-                            Text("Show Line Endings")
+
+                        VStack {
+                            Toggle(isOn: $invisibleCharacters.showLineEndings) { Text("Show Line Endings") }
+                            if invisibleCharacters.showLineEndings {
+                                TextField(
+                                    text: $invisibleCharacters.lineFeedReplacement,
+                                    prompt: Text("Default: \(Config.default.lineFeedReplacement)")
+                                ) {
+                                    Text("Character used to render line feeds (\\n)")
+                                        .foregroundStyle(.secondary)
+                                        .font(.caption)
+                                }
+                                .autocorrectionDisabled()
+
+                                TextField(
+                                    text: $invisibleCharacters.carriageReturnReplacement,
+                                    prompt: Text("Default: \(Config.default.carriageReturnReplacement)")
+                                ) {
+                                    Text("Character used to render carriage returns (Microsoft-style line endings)")
+                                        .foregroundStyle(.secondary)
+                                        .font(.caption)
+                                }
+                                .autocorrectionDisabled()
+
+                                TextField(
+                                    text: $invisibleCharacters.paragraphSeparatorReplacement,
+                                    prompt: Text("Default: \(Config.default.paragraphSeparatorReplacement)")
+                                ) {
+                                    Text("Character used to render paragraph separators")
+                                        .foregroundStyle(.secondary)
+                                        .font(.caption)
+                                }
+                                .autocorrectionDisabled()
+
+                                TextField(
+                                    text: $invisibleCharacters.lineSeparatorReplacement,
+                                    prompt: Text("Default: \(Config.default.lineSeparatorReplacement)")
+                                ) {
+                                    Text("Character used to render line separators")
+                                        .foregroundStyle(.secondary)
+                                        .font(.caption)
+                                }
+                                .autocorrectionDisabled()
+                            }
                         }
+                    } header: {
+                        Text("Invisible Characters")
+                        Text("Toggle whitespace symbols CodeEdit will render with replacement characters.")
                     }
+                    .textFieldStyle(.roundedBorder)
                     Section {
-                        InvisibleCharacterWarningList(items: $textEditing.invisibleCharacters.warningCharacters)
+                        InvisibleCharacterWarningList(items: $invisibleCharacters.warningCharacters)
                     } header: {
                         Text("Warning Characters")
                         Text(

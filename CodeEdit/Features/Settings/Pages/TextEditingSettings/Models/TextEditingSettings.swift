@@ -234,9 +234,10 @@ extension SettingsData {
         struct InvisibleCharactersConfig: Equatable, Hashable, Codable {
             static var `default`: InvisibleCharactersConfig = {
                 InvisibleCharactersConfig(
-                    showSpaces: false,
-                    showTabs: false,
-                    showLineEndings: false,
+                    enabled: false,
+                    showSpaces: true,
+                    showTabs: true,
+                    showLineEndings: true,
                     warningCharacters: [
                         0x0003: "End of text",
 
@@ -257,9 +258,21 @@ extension SettingsData {
                 )
             }()
 
+            var enabled: Bool
+
             var showSpaces: Bool
             var showTabs: Bool
             var showLineEndings: Bool
+
+            var spaceReplacement: String = "·"
+            var tabReplacement: String = "→"
+
+            // Controlled by `showLineEndings`
+            var carriageReturnReplacement: String = "↵"
+            var lineFeedReplacement: String = "¬"
+            var paragraphSeparatorReplacement: String = "¶"
+            var lineSeparatorReplacement: String = "⏎"
+
             // Map of unicode character codes to a note about them
             var warningCharacters: [UInt16: String]
         }

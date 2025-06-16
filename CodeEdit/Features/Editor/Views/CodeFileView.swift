@@ -144,12 +144,7 @@ struct CodeFileView: View {
             showMinimap: showMinimap,
             reformatAtColumn: reformatAtColumn,
             showReformattingGuide: showReformattingGuide,
-            invisibleCharactersConfig: .init(
-                showSpaces: invisibleCharactersConfig.showSpaces,
-                showTabs: invisibleCharactersConfig.showTabs,
-                showLineEndings: invisibleCharactersConfig.showLineEndings,
-                warningCharacters: Set(invisibleCharactersConfig.warningCharacters.keys)
-            )
+            invisibleCharactersConfig: invisibleCharactersConfig.textViewOption()
         )
         .id(codeFile.fileURL)
         .background {
@@ -209,5 +204,27 @@ private extension SettingsData.TextEditingSettings.IndentOption {
         case .tab:
             return IndentOption.tab
         }
+    }
+}
+
+private extension SettingsData.TextEditingSettings.InvisibleCharactersConfig {
+    func textViewOption() -> InvisibleCharactersConfig {
+        guard self.enabled else {
+            return .empty
+        }
+
+        var config = InvisibleCharactersConfig(
+            showSpaces: self.showSpaces,
+            showTabs: self.showTabs,
+            showLineEndings: self.showLineEndings,
+            warningCharacters: Set(self.warningCharacters.keys)
+        )
+        config.spaceReplacement = self.spaceReplacement
+        config.tabReplacement = self.tabReplacement
+        config.lineFeedReplacement = self.lineFeedReplacement
+        config.carriageReturnReplacement = self.carriageReturnReplacement
+        config.paragraphSeparatorReplacement = self.paragraphSeparatorReplacement
+        config.lineSeparatorReplacement = self.lineSeparatorReplacement
+        return config
     }
 }

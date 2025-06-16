@@ -40,18 +40,7 @@ struct TextEditingSettingsView: View {
                 bracketPairHighlight
             }
             Section {
-                HStack {
-                    Text("Invisible Characters")
-                    Spacer()
-                    _DisclosureIndicator()
-                }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    isShowingInvisibleCharacterSettings = true
-                }
-                .sheet(isPresented: $isShowingInvisibleCharacterSettings) {
-                    InvisiblesSettingsView()
-                }
+                invisibles
             }
         }
     }
@@ -239,5 +228,28 @@ private extension TextEditingSettingsView {
 
         Toggle("Show Reformatting Guide", isOn: $textEditing.showReformattingGuide)
             .help("Shows a vertical guide at the reformat column")
+    }
+
+    @ViewBuilder private var invisibles: some View {
+        HStack {
+            Text("Show Invisible Characters")
+            Spacer()
+            Toggle(isOn: $textEditing.invisibleCharacters.enabled, label: { EmptyView() })
+            Button {
+                isShowingInvisibleCharacterSettings = true
+            } label: {
+                Text("Configure...")
+            }
+            .disabled(textEditing.invisibleCharacters.enabled == false)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if textEditing.invisibleCharacters.enabled {
+                isShowingInvisibleCharacterSettings = true
+            }
+        }
+        .sheet(isPresented: $isShowingInvisibleCharacterSettings) {
+            InvisiblesSettingsView(invisibleCharacters: $textEditing.invisibleCharacters)
+        }
     }
 }
