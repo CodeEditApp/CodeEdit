@@ -54,6 +54,10 @@ struct CodeFileView: View {
     var reformatAtColumn
     @AppSettings(\.textEditing.showReformattingGuide)
     var showReformattingGuide
+    @AppSettings(\.textEditing.invisibleCharacters)
+    var invisibleCharactersConfig
+    @AppSettings(\.textEditing.warningCharacters)
+    var warningCharacters
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -141,7 +145,9 @@ struct CodeFileView: View {
             coordinators: textViewCoordinators,
             showMinimap: showMinimap,
             reformatAtColumn: reformatAtColumn,
-            showReformattingGuide: showReformattingGuide
+            showReformattingGuide: showReformattingGuide,
+            invisibleCharactersConfig: invisibleCharactersConfig.textViewOption(),
+            warningCharacters: warningCharacters.textViewOption()
         )
         .id(codeFile.fileURL)
         .background {
@@ -201,5 +207,33 @@ private extension SettingsData.TextEditingSettings.IndentOption {
         case .tab:
             return IndentOption.tab
         }
+    }
+}
+
+private extension SettingsData.TextEditingSettings.InvisibleCharactersConfig {
+    func textViewOption() -> InvisibleCharactersConfig {
+        guard self.enabled else {
+            return .empty
+        }
+
+        var config = InvisibleCharactersConfig(
+            showSpaces: self.showSpaces,
+            showTabs: self.showTabs,
+            showLineEndings: self.showLineEndings
+        )
+        config.spaceReplacement = self.spaceReplacement
+        config.tabReplacement = self.tabReplacement
+        config.lineFeedReplacement = self.lineFeedReplacement
+        config.carriageReturnReplacement = self.carriageReturnReplacement
+        config.paragraphSeparatorReplacement = self.paragraphSeparatorReplacement
+        config.lineSeparatorReplacement = self.lineSeparatorReplacement
+        return config
+    }
+}
+
+private extension SettingsData.TextEditingSettings.WarningCharacters {
+    func textViewOption() -> Set<UInt16> {
+        guard self.enabled else { return [] }
+        return Set(self.characters.keys)
     }
 }
