@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AboutWindow
 
 @main
 struct CodeEditApp: App {
@@ -31,7 +32,18 @@ struct CodeEditApp: App {
 
             ExtensionManagerWindow()
 
-            AboutWindow()
+            AboutWindow(
+                subtitleView: { AboutSubtitleView() },
+                actions: {
+                    AboutButton(title: "Contributors", destination: {
+                        ContributorsView()
+                    })
+                    AboutButton(title: "Acknowledgements", destination: {
+                        AcknowledgementsView()
+                    })
+                },
+                footer: { AboutFooterView() }
+            )
 
             SettingsWindow()
                 .commands {
