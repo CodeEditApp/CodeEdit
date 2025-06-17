@@ -1,13 +1,13 @@
 {
-  "originHash" : "d2fb154bcae6930206686830e061ba429d8f987fd11340e94a6d0b526b000a20",
+  "originHash" : "caf7678c3c52812febb80907a6a451d5e91a20058bbe45d250d7234c51299e91",
   "pins" : [
     {
       "identity" : "aboutwindow",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/AboutWindow",
       "state" : {
-        "branch" : "main",
-        "revision" : "729e958450a639d517ea780a1884c5a48dd9ec80"
+        "revision" : "79c7c01fb739d024a3ca07fe153a068339213baf",
+        "version" : "1.0.0"
       }
     },
     {
@@ -286,6 +286,15 @@
       "state" : {
         "revision" : "d97db6d63507eb62c536bcb2c4ac7d70c8ec665e",
         "version" : "0.23.2"
+      }
+    },
+    {
+      "identity" : "welcomewindow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/WelcomeWindow",
+      "state" : {
+        "revision" : "5168cf1ce9579b35ad00706fafef441418d8011f",
+        "version" : "1.0.0"
       }
     }
   ],

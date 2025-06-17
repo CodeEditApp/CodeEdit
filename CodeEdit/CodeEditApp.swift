@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WelcomeWindow
 import AboutWindow
 
 @main
@@ -28,7 +29,17 @@ struct CodeEditApp: App {
 
     var body: some Scene {
         Group {
-            WelcomeWindow()
+            WelcomeWindow(
+                subtitleView: { WelcomeSubtitleView() },
+                actions: { dismissWindow in
+                    NewFileButton(dismissWindow: dismissWindow)
+                    GitCloneButton(dismissWindow: dismissWindow)
+                    OpenFileOrFolderButton(dismissWindow: dismissWindow)
+                },
+                onDrop: { url, dismissWindow in
+                    Task { CodeEditDocumentController.shared.openDocument(at: url, onCompletion: { dismissWindow() }) }
+                }
+            )
 
             ExtensionManagerWindow()
 
