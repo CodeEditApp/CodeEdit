@@ -17,6 +17,7 @@
 		58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACE292FB2B0004A9BDE /* Documentation.docc */; };
 		58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB1D292FB954004A9BDE /* Sparkle */; };
 		5EACE6222DF4BF08005E08B8 /* WelcomeWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 5EACE6212DF4BF08005E08B8 /* WelcomeWindow */; };
+		5E4485612DF600D9008BBE69 /* AboutWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 5E4485602DF600D9008BBE69 /* AboutWindow */; };
 		6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0617D52BDB4432008C9C42 /* LogStream */; };
 		6C0824A12C5C0C9700A0751E /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0824A02C5C0C9700A0751E /* SwiftTerm */; };
 		6C147C4529A329350089B630 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 6C147C4429A329350089B630 /* OrderedCollections */; };
@@ -174,6 +175,7 @@
 				6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */,
 				6CC17B4F2C432AE000834E2C /* CodeEditSourceEditor in Frameworks */,
 				30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */,
+				5E4485612DF600D9008BBE69 /* AboutWindow in Frameworks */,
 				6C4E37FC2C73E00700AEE7B5 /* SwiftTerm in Frameworks */,
 				6C6BD6F429CD142C00235D17 /* CollectionConcurrencyKit in Frameworks */,
 				6C85BB442C210EFD00EB5DEF /* SwiftUIIntrospect in Frameworks */,
@@ -320,6 +322,7 @@
 				6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */,
 				6C73A6D22D4F1E550012D95C /* CodeEditSourceEditor */,
 				5EACE6212DF4BF08005E08B8 /* WelcomeWindow */,
+				5E4485602DF600D9008BBE69 /* AboutWindow */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -380,7 +383,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1330;
-				LastUpgradeCheck = 1620;
+				LastUpgradeCheck = 1640;
 				TargetAttributes = {
 					2BE487EB28245162003F3F64 = {
 						CreatedOnToolsVersion = 13.3.1;
@@ -424,6 +427,7 @@
 				6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
 				6CF368562DBBD274006A77FD /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 				5EACE6202DF4BF08005E08B8 /* XCRemoteSwiftPackageReference "WelcomeWindow" */,
+				5E44855F2DF600D9008BBE69 /* XCRemoteSwiftPackageReference "AboutWindow" */,
 			);
 			preferredProjectObjectVersion = 55;
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
@@ -670,6 +674,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = YES;
 				RUN_DOCUMENTATION_COMPILER = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -761,6 +766,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit.OpenWithCodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -865,6 +871,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = YES;
 				RUN_DOCUMENTATION_COMPILER = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -956,6 +963,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit.OpenWithCodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -990,6 +998,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit.OpenWithCodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1024,6 +1033,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit.OpenWithCodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1130,6 +1140,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = YES;
 				RUN_DOCUMENTATION_COMPILER = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -1221,6 +1232,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit.OpenWithCodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1396,6 +1408,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = YES;
 				RUN_DOCUMENTATION_COMPILER = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -1436,6 +1449,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.codeedit.CodeEdit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				REGISTER_APP_GROUPS = YES;
 				RUN_DOCUMENTATION_COMPILER = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -1688,6 +1702,15 @@
 		5EACE6202DF4BF08005E08B8 /* XCRemoteSwiftPackageReference "WelcomeWindow" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CodeEditApp/WelcomeWindow";
+
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+    };
+		5E44855F2DF600D9008BBE69 /* XCRemoteSwiftPackageReference "AboutWindow" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeEditApp/AboutWindow";
 			requirement = {
 				branch = main;
 				kind = branch;
@@ -1797,6 +1820,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5EACE6202DF4BF08005E08B8 /* XCRemoteSwiftPackageReference "WelcomeWindow" */;
 			productName = WelcomeWindow;
+    };
+		5E4485602DF600D9008BBE69 /* AboutWindow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5E44855F2DF600D9008BBE69 /* XCRemoteSwiftPackageReference "AboutWindow" */;
+			productName = AboutWindow;
 		};
 		6C0617D52BDB4432008C9C42 /* LogStream */ = {
 			isa = XCSwiftPackageProductDependency;

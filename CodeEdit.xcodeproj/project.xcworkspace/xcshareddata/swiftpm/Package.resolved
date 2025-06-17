@@ -2,6 +2,15 @@
   "originHash" : "e883f14676cf68737c5305afacd217060d96990373138ea8204f28d8806699f1",
   "pins" : [
     {
+      "identity" : "aboutwindow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/AboutWindow",
+      "state" : {
+        "branch" : "main",
+        "revision" : "729e958450a639d517ea780a1884c5a48dd9ec80"
+      }
+    },
+    {
       "identity" : "anycodable",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Flight-School/AnyCodable",
@@ -222,8 +231,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
       "state" : {
-        "revision" : "3825ebf8d55bb877c91bc897e8e3d0c001f16fba",
-        "version" : "0.58.2"
+        "revision" : "3780efccceaa87f17ec39638a9d263d0e742b71c",
+        "version" : "0.59.1"
       }
     },
     {
