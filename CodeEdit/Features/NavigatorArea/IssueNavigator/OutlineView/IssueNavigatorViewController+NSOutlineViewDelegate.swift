@@ -94,7 +94,7 @@ extension IssueNavigatorViewController: NSOutlineViewDelegate {
             if let fileNode = node as? FileIssueNode {
                 fileNode.isExpanded = true
                 expandedItems.insert(fileNode)
-                workspace?.issueNavigatorViewModel?.setFileExpanded(fileNode.uri, isExpanded: true)
+                workspace?.diagnosticsManager?.setFileExpanded(fileNode.uri, isExpanded: true)
             } else if let projectNode = node as? ProjectIssueNode {
                 projectNode.isExpanded = true
             }
@@ -106,7 +106,7 @@ extension IssueNavigatorViewController: NSOutlineViewDelegate {
             if let fileNode = node as? FileIssueNode {
                 fileNode.isExpanded = false
                 expandedItems.remove(fileNode)
-                workspace?.issueNavigatorViewModel?.setFileExpanded(fileNode.uri, isExpanded: false)
+                workspace?.diagnosticsManager?.setFileExpanded(fileNode.uri, isExpanded: false)
             } else if let projectNode = node as? ProjectIssueNode {
                 projectNode.isExpanded = false
             }
@@ -116,11 +116,11 @@ extension IssueNavigatorViewController: NSOutlineViewDelegate {
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
         guard let uri = object as? String else { return nil }
 
-        if let fileNode = workspace?.issueNavigatorViewModel?.getFileNode(for: uri) {
+        if let fileNode = workspace?.diagnosticsManager?.getFileNode(for: uri) {
             return fileNode
         }
 
-        if let rootNode = workspace?.issueNavigatorViewModel?.filteredRootNode,
+        if let rootNode = workspace?.diagnosticsManager?.filteredRootNode,
            rootNode.id.uuidString == uri {
             return rootNode
         }

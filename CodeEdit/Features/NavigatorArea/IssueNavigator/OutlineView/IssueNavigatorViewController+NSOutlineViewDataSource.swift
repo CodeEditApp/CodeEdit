@@ -11,7 +11,7 @@ extension IssueNavigatorViewController: NSOutlineViewDataSource {
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if item == nil {
             // If there are no issues, don't show the project node
-            if let rootNode = workspace?.issueNavigatorViewModel?.filteredRootNode {
+            if let rootNode = workspace?.diagnosticsManager?.filteredRootNode {
                 return rootNode.files.isEmpty ? 0 : 1
             }
             return 0
@@ -27,7 +27,7 @@ extension IssueNavigatorViewController: NSOutlineViewDataSource {
 
     func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
         if item == nil {
-            return workspace?.issueNavigatorViewModel?.filteredRootNode as Any
+            return workspace?.diagnosticsManager?.filteredRootNode as Any
         }
         if let node = item as? ProjectIssueNode {
             return node.files[index]

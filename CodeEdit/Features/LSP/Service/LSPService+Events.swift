@@ -94,7 +94,7 @@ extension LSPService {
 //        case let .windowShowMessage(params):
 //            print("windowShowMessage \(params.type)\n```\n\(params.message)\n```\n")
         case let .textDocumentPublishDiagnostics(params):
-            languageClient.workspace.issueNavigatorViewModel?
+            languageClient.workspace.diagnosticsManager?
                 .updateDiagnostics(params: params)
 //        case let .telemetryEvent(params):
 //            print("telemetryEvent: \(params)")

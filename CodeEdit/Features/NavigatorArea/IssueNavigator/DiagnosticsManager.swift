@@ -1,5 +1,5 @@
 //
-//  IssueNavigatorViewModel.swift
+//  DiagnosticsManager.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 3/15/25.
@@ -10,17 +10,14 @@ import SwiftUI
 import Foundation
 import LanguageServerProtocol
 
-class IssueNavigatorViewModel: ObservableObject {
+class DiagnosticsManager: ObservableObject {
     @Published var rootNode: ProjectIssueNode?
     @Published var filterOptions = IssueFilterOptions()
     @Published private(set) var filteredRootNode: ProjectIssueNode?
 
     let diagnosticsDidChangePublisher = PassthroughSubject<Void, Never>()
 
-    // Store file nodes by URI for efficient lookup and to avoid duplication
     private var fileNodesByUri: [DocumentUri: FileIssueNode] = [:]
-
-    // Track expansion state separately to persist it
     private var expandedFileUris: Set<DocumentUri> = []
 
     func initialize(projectName: String) {
@@ -41,7 +38,6 @@ class IssueNavigatorViewModel: ObservableObject {
             let fileNode: FileIssueNode
             if let existingNode = fileNodesByUri[uri] {
                 fileNode = existingNode
-                // Clear existing diagnostics
                 fileNode.diagnostics.removeAll(keepingCapacity: true)
             } else {
                 // Create new file node

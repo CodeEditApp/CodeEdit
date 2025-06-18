@@ -108,7 +108,7 @@ final class IssueNavigatorViewController: NSViewController {
 
     /// Saves the current expansion state to UserDefaults
     private func saveExpansionState() {
-        guard let viewModel = workspace?.issueNavigatorViewModel else { return }
+        guard let viewModel = workspace?.diagnosticsManager else { return }
 
         let expandedUris = viewModel.getExpandedFileUris()
         let urisArray = Array(expandedUris)
@@ -118,7 +118,7 @@ final class IssueNavigatorViewController: NSViewController {
 
     /// Loads the expansion state from UserDefaults
     private func loadExpansionState() {
-        guard let viewModel = workspace?.issueNavigatorViewModel else { return }
+        guard let viewModel = workspace?.diagnosticsManager else { return }
 
         if let urisArray = UserDefaults.standard.stringArray(forKey: expansionStateKey) {
             let expandedUris = Set(urisArray)

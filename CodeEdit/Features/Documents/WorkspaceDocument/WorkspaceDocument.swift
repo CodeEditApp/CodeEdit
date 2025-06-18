@@ -33,7 +33,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var editorManager: EditorManager? = EditorManager()
     var statusBarViewModel: StatusBarViewModel? = StatusBarViewModel()
     var utilityAreaModel: UtilityAreaViewModel? = UtilityAreaViewModel()
-    var issueNavigatorViewModel: IssueNavigatorViewModel? = IssueNavigatorViewModel()
+    var diagnosticsManager: DiagnosticsManager? = DiagnosticsManager()
     var searchState: SearchState?
     var openQuicklyViewModel: OpenQuicklyViewModel?
     var commandsPaletteState: QuickActionsViewModel?
@@ -164,7 +164,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         editorManager?.restoreFromState(self)
         utilityAreaModel?.restoreFromState(self)
 
-        issueNavigatorViewModel?.initialize(projectName: displayName)
+        diagnosticsManager?.initialize(projectName: displayName)
     }
 
     override func read(from url: URL, ofType typeName: String) throws {

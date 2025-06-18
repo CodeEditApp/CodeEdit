@@ -58,7 +58,7 @@ struct IssueNavigatorOutlineView: NSViewControllerRepresentable {
             // Cancel existing subscriptions
             cancellables.removeAll()
 
-            guard let viewModel = workspace?.issueNavigatorViewModel else { return }
+            guard let viewModel = workspace?.diagnosticsManager else { return }
 
             // Listen for diagnostic changes
             viewModel.diagnosticsDidChangePublisher
