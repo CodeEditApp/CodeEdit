@@ -168,7 +168,6 @@ final class IssueNavigatorViewController: NSViewController {
     }
 
     /// Toggles the expansion state of an item
-    @inline(__always)
     private func toggleExpansion(of item: Any) {
         if outlineView.isItemExpanded(item) {
             outlineView.collapseItem(item)
@@ -178,7 +177,6 @@ final class IssueNavigatorViewController: NSViewController {
     }
 
     /// Opens a file as a permanent tab, optionally at a specific line and column
-    @inline(__always)
     private func openFileTab(fileUri: String, line: Int? = nil, column: Int? = nil) {
         guard let fileURL = URL(string: fileUri),
               let file = workspace?.workspaceFileManager?.getFile(fileURL.path) else {

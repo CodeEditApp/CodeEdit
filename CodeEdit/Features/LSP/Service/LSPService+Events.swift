@@ -33,7 +33,7 @@ extension LSPService {
 
     private func handleEvent(
         _ event: ServerEvent,
-        for languageClient: LanguageServer
+        for languageClient: LanguageServer<CodeFileDocument>
     ) {
         // TODO: Handle Events
         switch event {
@@ -52,7 +52,7 @@ extension LSPService {
 
     private func handleRequest(
         _ request: ServerRequest,
-        _ languageClient: LanguageServer
+        _ languageClient: LanguageServer<CodeFileDocument>
     ) {
         // TODO: Handle Requests
 //        switch request {
@@ -85,7 +85,7 @@ extension LSPService {
 
     private func handleNotification(
         _ notification: ServerNotification,
-        _ languageClient: LanguageServer
+        _ languageClient: LanguageServer<CodeFileDocument>
     ) {
         // TODO: Handle Notifications
         switch notification {
