@@ -64,6 +64,8 @@ final class ProjectNavigatorViewController: NSViewController {
     /// to open the file a second time.
     var shouldSendSelectionUpdate: Bool = true
 
+    var shouldReloadAfterDoneEditing: Bool = false
+
     var filterIsEmpty: Bool {
         workspace?.navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true
     }
