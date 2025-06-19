@@ -82,14 +82,6 @@ final class IssueNavigatorViewController: NSViewController {
         scrollView.autohidesScrollers = true
 
         loadExpansionState()
-
-        // Expand the project node by default
-        DispatchQueue.main.async { [weak self] in
-            if let rootItem = self?.outlineView.item(atRow: 0) {
-                self?.outlineView.expandItem(rootItem)
-            }
-            self?.restoreExpandedState()
-        }
     }
 
     init() {
@@ -184,6 +176,14 @@ final class IssueNavigatorViewController: NSViewController {
         }
 
         workspace?.editorManager?.activeEditor.openTab(file: file, asTemporary: false)
+    }
+
+    override func viewWillAppear() {
+        // Expand the project node by default
+        if let rootItem = self.outlineView.item(atRow: 0) {
+            self.outlineView.expandItem(rootItem)
+        }
+        self.restoreExpandedState()
     }
 
     /// Called when view will disappear - save state
