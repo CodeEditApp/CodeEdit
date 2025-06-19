@@ -18,7 +18,6 @@ struct ProjectNavigatorToolbarBottom: View {
     @EnvironmentObject var editorManager: EditorManager
 
     @State var recentsFilter: Bool = false
-    @State var sourceControlFilter: Bool = false
 
     var body: some View {
         HStack(spacing: 5) {
@@ -28,10 +27,15 @@ struct ProjectNavigatorToolbarBottom: View {
                 text: $workspace.navigatorFilter,
                 leadingAccessories: {
                     FilterDropDownIconButton(menu: {
-                        Button {
-                            workspace.sortFoldersOnTop.toggle()
-                        } label: {
-                            Text(workspace.sortFoldersOnTop ? "Alphabetically" : "Folders on top")
+                        ForEach([(true, "Folders on top"), (false, "Alphabetically")], id: \.0) { value, title in
+                            Toggle(title, isOn: Binding(get: {
+                                workspace.sortFoldersOnTop == value
+                            }, set: { _ in
+                                // Avoid calling the handleFilterChange method
+                                if workspace.sortFoldersOnTop != value {
+                                    workspace.sortFoldersOnTop = value
+                                }
+                            }))
                         }
                     }, isOn: !workspace.navigatorFilter.isEmpty)
                     .padding(.leading, 4)
@@ -48,7 +52,7 @@ struct ProjectNavigatorToolbarBottom: View {
                             Image(systemName: "clock")
                         }
                         .help("Show only recent files")
-                        Toggle(isOn: $sourceControlFilter) {
+                        Toggle(isOn: $workspace.sourceControlFilter) {
                             Image(systemName: "plusminus.circle")
                         }
                         .help("Show only files with source-control status")
@@ -57,7 +61,7 @@ struct ProjectNavigatorToolbarBottom: View {
                     .padding(.trailing, 2.5)
                 },
                 clearable: true,
-                hasValue: !workspace.navigatorFilter.isEmpty || recentsFilter || sourceControlFilter
+                hasValue: !workspace.navigatorFilter.isEmpty || recentsFilter || workspace.sourceControlFilter
             )
         }
         .padding(.horizontal, 5)

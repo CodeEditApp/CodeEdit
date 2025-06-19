@@ -19,7 +19,7 @@ import LanguageServerProtocol
 /// Language servers expect edits to be sent in chunks (and it helps reduce processing overhead). To do this, this class
 /// keeps an async stream around for the duration of its lifetime. The stream is sent edit notifications, which are then
 /// chunked into 250ms timed groups before being sent to the ``LanguageServer``.
-class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
+class LSPContentCoordinator<DocumentType: LanguageServerDocument>: TextViewCoordinator, TextViewDelegate {
     // Required to avoid a large_tuple lint error
     private struct SequenceElement: Sendable {
         let uri: String
@@ -28,25 +28,27 @@ class LSPContentCoordinator: TextViewCoordinator, TextViewDelegate {
     }
 
     private var editedRange: LSPRange?
-    private var stream: AsyncStream<SequenceElement>?
     private var sequenceContinuation: AsyncStream<SequenceElement>.Continuation?
     private var task: Task<Void, Never>?
 
-    weak var languageServer: LanguageServer?
+    weak var languageServer: LanguageServer<DocumentType>?
     var documentURI: String
 
     /// Initializes a content coordinator, and begins an async stream of updates
-    init(documentURI: String, languageServer: LanguageServer) {
+    init(documentURI: String, languageServer: LanguageServer<DocumentType>) {
         self.documentURI = documentURI
         self.languageServer = languageServer
-        self.stream = AsyncStream { continuation in
-            self.sequenceContinuation = continuation
-        }
+
+        setUpUpdatesTask()
     }
 
     func setUpUpdatesTask() {
         task?.cancel()
-        guard let stream else { return }
+        // Create this stream here so it's always set up when the text view is set up, rather than only once on init.
+        let stream = AsyncStream { continuation in
+            self.sequenceContinuation = continuation
+        }
+
         task = Task.detached { [weak self] in
             // Send edit events every 250ms
             for await events in stream.chunked(by: .repeating(every: .milliseconds(250), clock: .continuous)) {

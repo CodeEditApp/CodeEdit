@@ -64,13 +64,19 @@ final class ProjectNavigatorViewController: NSViewController {
     /// to open the file a second time.
     var shouldSendSelectionUpdate: Bool = true
 
+    var shouldReloadAfterDoneEditing: Bool = false
+
+    var filterIsEmpty: Bool {
+        workspace?.navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true
+    }
+
     /// Setup the ``scrollView`` and ``outlineView``
     override func loadView() {
         self.scrollView = NSScrollView()
         self.scrollView.hasVerticalScroller = true
         self.view = scrollView
 
-        self.outlineView = NSOutlineView()
+        self.outlineView = ProjectNavigatorNSOutlineView()
         self.outlineView.dataSource = self
         self.outlineView.delegate = self
         self.outlineView.autosaveExpandedItems = true
@@ -193,13 +199,13 @@ final class ProjectNavigatorViewController: NSViewController {
         guard let workspace else { return }
 
         /// If the filter is empty, show all items and restore the expanded state.
-        if workspace.navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            restoreExpandedState()
-            outlineView.autosaveExpandedItems = true
-        } else {
+        if workspace.sourceControlFilter || !filterIsEmpty {
             outlineView.autosaveExpandedItems = false
             /// Expand all items for search.
             outlineView.expandItem(outlineView.item(atRow: 0), expandChildren: true)
+        } else {
+            restoreExpandedState()
+            outlineView.autosaveExpandedItems = true
         }
 
         if let root = content.first(where: { $0.isRoot }), let children = filteredContentChildren[root] {
@@ -213,16 +219,24 @@ final class ProjectNavigatorViewController: NSViewController {
     }
 
     /// Checks if the given filter matches the name of the item or any of its children.
-    func fileSearchMatches(_ filter: String, for item: CEWorkspaceFile) -> Bool {
-        guard !filter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return true }
+    func fileSearchMatches(_ filter: String, for item: CEWorkspaceFile, sourceControlFilter: Bool) -> Bool {
+        guard !filterIsEmpty || sourceControlFilter else {
+            return true
+        }
 
-        if item.name.localizedLowercase.contains(filter.localizedLowercase) {
+        if sourceControlFilter {
+            if item.gitStatus != nil && item.gitStatus != GitStatus.none &&
+                (filterIsEmpty || item.name.localizedCaseInsensitiveContains(filter)) {
+                saveAllContentChildren(for: item)
+                return true
+            }
+        } else if item.name.localizedCaseInsensitiveContains(filter) {
             saveAllContentChildren(for: item)
             return true
         }
 
         if let children = workspace?.workspaceFileManager?.childrenOfFile(item) {
-            return children.contains { fileSearchMatches(filter, for: $0) }
+            return children.contains { fileSearchMatches(filter, for: $0, sourceControlFilter: sourceControlFilter) }
         }
 
         return false

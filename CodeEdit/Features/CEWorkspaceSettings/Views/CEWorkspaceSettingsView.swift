@@ -13,8 +13,6 @@ struct CEWorkspaceSettingsView: View {
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @EnvironmentObject var workspace: WorkspaceDocument
 
-    @StateObject var settingsViewModel = SettingsViewModel()
-
     @State var selectedTaskID: UUID?
     @State var showAddTaskSheet: Bool = false
 
@@ -68,7 +66,6 @@ struct CEWorkspaceSettingsView: View {
             }
             .padding()
         }
-        .environmentObject(settingsViewModel)
         .sheet(isPresented: $showAddTaskSheet) {
             if let selectedTaskIndex = workspaceSettingsManager.settings.tasks.firstIndex(where: {
                 $0.id == selectedTaskID

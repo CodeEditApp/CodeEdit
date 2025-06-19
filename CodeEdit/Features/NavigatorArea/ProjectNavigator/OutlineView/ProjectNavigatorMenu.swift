@@ -55,9 +55,18 @@ final class ProjectNavigatorMenu: NSMenu {
         let openExternalEditor = menuItem("Open with External Editor", action: #selector(openWithExternalEditor))
         let openAs = menuItem("Open As", action: nil)
 
+        let copyPath = menuItem("Copy Path", action: #selector(copyPath))
+        let copyRelativePath = menuItem("Copy Relative Path", action: #selector(copyRelativePath))
+
         let showFileInspector = menuItem("Show File Inspector", action: nil)
 
         let newFile = menuItem("New File...", action: #selector(newFile))
+        let newFileFromClipboard = menuItem(
+            "New File from Clipboard",
+            action: #selector(newFileFromClipboard),
+            key: "v"
+        )
+        newFileFromClipboard.keyEquivalentModifierMask = [.command]
         let newFolder = menuItem("New Folder", action: #selector(newFolder))
 
         let rename = menuItem("Rename", action: #selector(renameFile))
@@ -91,9 +100,13 @@ final class ProjectNavigatorMenu: NSMenu {
             openExternalEditor,
             openAs,
             NSMenuItem.separator(),
+            copyPath,
+            copyRelativePath,
+            NSMenuItem.separator(),
             showFileInspector,
             NSMenuItem.separator(),
             newFile,
+            newFileFromClipboard,
             newFolder
         ]
 

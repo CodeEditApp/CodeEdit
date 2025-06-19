@@ -144,18 +144,32 @@ struct SettingsView: View {
 
     var body: some View {
         NavigationSplitView {
-            List { }
-                .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
-                .scrollDisabled(true)
-                .frame(height: 30)
-            List(selection: $selectedPage) {
-                Section {
-                    ForEach(Self.pages) { pageAndSettings in
-                        results(pageAndSettings.page, pageAndSettings.settings)
+            /// Remove the extra List workaround; macOS 26's sidebar .searchable now matches System Settings
+            if #unavailable(macOS 26.0) {
+                List { }
+                    .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
+                    .scrollDisabled(true)
+                    .frame(height: 30)
+                List(selection: $selectedPage) {
+                    Section {
+                        ForEach(Self.pages) { pageAndSettings in
+                            results(pageAndSettings.page, pageAndSettings.settings)
+                        }
                     }
                 }
+                .navigationSplitViewColumnWidth(215)
+            } else {
+                List(selection: $selectedPage) {
+                    Section {
+                        ForEach(Self.pages) { pageAndSettings in
+                            results(pageAndSettings.page, pageAndSettings.settings)
+                        }
+                    }
+                }
+                .toolbar(removing: .sidebarToggle)
+                .searchable(text: $searchText, placement: .sidebar, prompt: "Search")
+                .navigationSplitViewColumnWidth(215)
             }
-            .navigationSplitViewColumnWidth(215)
         } detail: {
             Group {
                 switch selectedPage.name {
@@ -184,20 +198,23 @@ struct SettingsView: View {
                 }
             }
             .navigationSplitViewColumnWidth(500)
-            .hideSidebarToggle()
             .onAppear {
                 model.backButtonVisible = false
             }
         }
+        .hideSidebarToggle()
         .navigationTitle(selectedPage.name.rawValue)
         .toolbar {
-            ToolbarItem(placement: .navigation) {
-                if !model.backButtonVisible {
-                    Rectangle()
-                        .frame(width: 10)
-                        .opacity(0)
-                } else {
-                    EmptyView()
+            /// macOS 26 automatically adjusts the leading padding for navigationTitle
+            if #unavailable(macOS 26.0) {
+                ToolbarItem(placement: .navigation) {
+                    if !model.backButtonVisible {
+                        Rectangle()
+                            .frame(width: 10)
+                            .opacity(0)
+                    } else {
+                        EmptyView()
+                    }
                 }
             }
         }

@@ -98,6 +98,47 @@ extension ProjectNavigatorMenu {
         }
     }
 
+    /// Opens the rename file dialogue on the cell this was presented from.
+    @objc
+    func renameFile() {
+        guard let newFile = workspace?.listenerModel.highlightedFileItem else { return }
+        let row = sender.outlineView.row(forItem: newFile)
+        guard row > 0,
+              let cell = sender.outlineView.view(
+                atColumn: 0,
+                row: row,
+                makeIfNecessary: false
+              ) as? ProjectNavigatorTableViewCell else {
+            return
+        }
+        sender.outlineView.window?.makeFirstResponder(cell.textField)
+    }
+
+    // TODO: Automatically identified the file type
+    /// Action that creates a new file with clipboard content
+    @objc
+    func newFileFromClipboard() {
+        guard let item else { return }
+        do {
+            let clipBoardContent = NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
+            if let clipBoardContent, !clipBoardContent.isEmpty, let newFile = try workspace?
+                .workspaceFileManager?
+                .addFile(
+                    fileName: "untitled",
+                    toFile: item,
+                    contents: clipBoardContent
+                ) {
+                workspace?.listenerModel.highlightedFileItem = newFile
+                workspace?.editorManager?.openTab(item: newFile)
+                renameFile()
+            }
+        } catch {
+            let alert = NSAlert(error: error)
+            alert.addButton(withTitle: "Dismiss")
+            alert.runModal()
+        }
+    }
+
     // TODO: allow custom folder names
     /// Action that creates a new untitled folder
     @objc
@@ -141,21 +182,6 @@ extension ProjectNavigatorMenu {
         }
 
         reloadData()
-    }
-
-    /// Opens the rename file dialogue on the cell this was presented from.
-    @objc
-    func renameFile() {
-        let row = sender.outlineView.row(forItem: item)
-        guard row > 0,
-              let cell = sender.outlineView.view(
-                atColumn: 0,
-                row: row,
-                makeIfNecessary: false
-              ) as? ProjectNavigatorTableViewCell else {
-            return
-        }
-        sender.outlineView.window?.makeFirstResponder(cell.textField)
     }
 
     /// Action that moves the item to trash.
@@ -220,6 +246,42 @@ extension ProjectNavigatorMenu {
             alert.addButton(withTitle: "Dismiss")
             alert.runModal()
         }
+    }
+
+    /// Copies the absolute path of the selected files
+    @objc
+    func copyPath() {
+        let paths = selectedItems().map {
+            $0.url.standardizedFileURL.path
+        }.sorted().joined(separator: "\n")
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(paths, forType: .string)
+    }
+
+    /// Copies the relative path of the selected files
+    @objc
+    func copyRelativePath() {
+        guard let rootPath = workspace?.workspaceFileManager?.folderUrl else {
+            return
+        }
+        let paths = selectedItems().map {
+            let destinationComponents = $0.url.standardizedFileURL.pathComponents
+            let baseComponents = rootPath.standardizedFileURL.pathComponents
+
+            // Find common prefix length
+            var prefixCount = 0
+            while prefixCount < min(destinationComponents.count, baseComponents.count)
+                    && destinationComponents[prefixCount] == baseComponents[prefixCount] {
+                prefixCount += 1
+            }
+            // Build the relative path
+            let upPath = String(repeating: "../", count: baseComponents.count - prefixCount)
+            let downPath = destinationComponents[prefixCount...].joined(separator: "/")
+            return upPath + downPath
+        }.sorted().joined(separator: "\n")
+
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(paths, forType: .string)
     }
 
     private func reloadData() {

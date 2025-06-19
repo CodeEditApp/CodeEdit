@@ -10,15 +10,20 @@ import SwiftUI
 struct SplitViewControllerView: NSViewControllerRepresentable {
 
     var axis: Axis
+    var dividerStyle: CodeEditDividerStyle
     var children: _VariadicView.Children
     @Binding var viewController: () -> SplitViewController?
 
     func makeNSViewController(context: Context) -> SplitViewController {
-        context.coordinator
+        let controller = SplitViewController(axis: axis, parentView: self) { controller in
+            updateItems(controller: controller)
+        }
+        return controller
     }
 
     func updateNSViewController(_ controller: SplitViewController, context: Context) {
         updateItems(controller: controller)
+        controller.setDividerStyle(dividerStyle)
     }
 
     private func updateItems(controller: SplitViewController) {
@@ -59,21 +64,50 @@ struct SplitViewControllerView: NSViewControllerRepresentable {
             }
         }
     }
-
-    func makeCoordinator() -> SplitViewController {
-        SplitViewController(parent: self, axis: axis)
-    }
 }
 
 final class SplitViewController: NSSplitViewController {
+    final class CustomSplitView: NSSplitView {
+        @Invalidating(.display)
+        var customDividerStyle: CodeEditDividerStyle = .system(.thin) {
+            didSet {
+                switch customDividerStyle {
+                case .system(let dividerStyle):
+                    self.dividerStyle = dividerStyle
+                case .editorDivider:
+                    return
+                }
+            }
+        }
+
+        init() {
+            super.init(frame: .zero)
+            dividerStyle = .thin
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        override var dividerColor: NSColor {
+            customDividerStyle.customColor ?? super.dividerColor
+        }
+
+        override var dividerThickness: CGFloat {
+            customDividerStyle.customThickness ?? super.dividerThickness
+        }
+    }
 
     var items: [SplitViewItem] = []
     var axis: Axis
-    var parentView: SplitViewControllerView
+    var parentView: SplitViewControllerView?
 
-    init(parent: SplitViewControllerView, axis: Axis = .horizontal) {
+    var setUpItems: ((SplitViewController) -> Void)?
+
+    init(axis: Axis, parentView: SplitViewControllerView?, setUpItems: ((SplitViewController) -> Void)?) {
         self.axis = axis
-        self.parentView = parent
+        self.parentView = parentView
+        self.setUpItems = setUpItems
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -81,18 +115,38 @@ final class SplitViewController: NSSplitViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func loadView() {
+        splitView = CustomSplitView()
+        super.loadView()
+    }
+
     override func viewDidLoad() {
+        super.viewDidLoad()
         splitView.isVertical = axis != .vertical
-        splitView.dividerStyle = .thin
+        setUpItems?(self)
         DispatchQueue.main.async { [weak self] in
-            self?.parentView.viewController = { [weak self] in
+            self?.parentView?.viewController = { [weak self] in
                 self
             }
         }
     }
 
-    override func splitView(_ splitView: NSSplitView, shouldHideDividerAt dividerIndex: Int) -> Bool {
+    override func splitView(_ splitView: NSSplitView, canCollapseSubview subview: NSView) -> Bool {
         false
+    }
+
+    override func splitView(_ splitView: NSSplitView, shouldHideDividerAt dividerIndex: Int) -> Bool {
+        // For some reason, AppKit _really_ wants to hide dividers when there's only one item (and no dividers)
+        // so we do this check for them.
+        guard items.count > 1 else { return false }
+        return super.splitView(splitView, shouldHideDividerAt: dividerIndex)
+    }
+
+    func setDividerStyle(_ dividerStyle: CodeEditDividerStyle) {
+        guard let splitView = splitView as? CustomSplitView else {
+            return
+        }
+        splitView.customDividerStyle = dividerStyle
     }
 
     func collapse(for id: AnyHashable, enabled: Bool) {

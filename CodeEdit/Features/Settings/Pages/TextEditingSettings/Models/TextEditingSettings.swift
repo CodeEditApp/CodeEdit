@@ -14,10 +14,11 @@ extension SettingsData {
     struct TextEditingSettings: Codable, Hashable, SearchableSettingsPage {
 
         var searchKeys: [String] {
-            [
+            var keys = [
                 "Prefer Indent Using",
                 "Tab Width",
                 "Wrap lines to editor width",
+                "Editor Overscroll",
                 "Font",
                 "Font Size",
                 "Font Weight",
@@ -25,9 +26,16 @@ extension SettingsData {
                 "Letter Spacing",
                 "Autocomplete braces",
                 "Enable type-over completion",
-                "Bracket Pair Highlight"
+                "Bracket Pair Emphasis",
+                "Bracket Pair Highlight",
+                "Show Minimap",
+                "Reformat at Column",
+                "Show Reformatting Guide",
             ]
-            .map { NSLocalizedString($0, comment: "") }
+            if #available(macOS 14.0, *) {
+                keys.append("System Cursor")
+            }
+            return keys.map { NSLocalizedString($0, comment: "") }
         }
 
         /// An integer indicating how many spaces a `tab` will appear as visually.
@@ -49,6 +57,9 @@ extension SettingsData {
         /// A flag indicating whether to wrap lines to editor width
         var wrapLinesToEditorWidth: Bool = true
 
+        /// The percentage of overscroll to apply to the text view
+        var overscroll: OverscrollOption = .medium
+
         /// A multiplier for setting the line height. Defaults to `1.2`
         var lineHeightMultiple: Double = 1.2
 
@@ -57,10 +68,19 @@ extension SettingsData {
         var letterSpacing: Double = 1.0
 
         /// The behavior of bracket pair highlights.
-        var bracketHighlight: BracketPairHighlight = BracketPairHighlight()
+        var bracketEmphasis: BracketPairEmphasis = BracketPairEmphasis()
 
         /// Use the system cursor for the source editor.
         var useSystemCursor: Bool = true
+
+        /// Toggle the minimap in the editor.
+        var showMinimap: Bool = true
+
+        /// The column at which to reformat text
+        var reformatAtColumn: Int = 80
+
+        /// Show the reformatting guide in the editor
+        var showReformattingGuide: Bool = false
 
         /// Default initializer
         init() {
@@ -88,6 +108,10 @@ extension SettingsData {
                 Bool.self,
                 forKey: .wrapLinesToEditorWidth
             ) ?? true
+            self.overscroll = try container.decodeIfPresent(
+                OverscrollOption.self,
+                forKey: .overscroll
+            ) ?? .medium
             self.lineHeightMultiple = try container.decodeIfPresent(
                 Double.self,
                 forKey: .lineHeightMultiple
@@ -96,15 +120,22 @@ extension SettingsData {
                 Double.self,
                 forKey: .letterSpacing
             ) ?? 1
-            self.bracketHighlight = try container.decodeIfPresent(
-                BracketPairHighlight.self,
-                forKey: .bracketHighlight
-            ) ?? BracketPairHighlight()
+            self.bracketEmphasis = try container.decodeIfPresent(
+                BracketPairEmphasis.self,
+                forKey: .bracketEmphasis
+            ) ?? BracketPairEmphasis()
             if #available(macOS 14, *) {
                 self.useSystemCursor = try container.decodeIfPresent(Bool.self, forKey: .useSystemCursor) ?? true
             } else {
                 self.useSystemCursor = false
             }
+
+            self.showMinimap = try container.decodeIfPresent(Bool.self, forKey: .showMinimap) ?? true
+            self.reformatAtColumn = try container.decodeIfPresent(Int.self, forKey: .reformatAtColumn) ?? 80
+            self.showReformattingGuide = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .showReformattingGuide
+            ) ?? false
 
             self.populateCommands()
         }
@@ -118,7 +149,7 @@ extension SettingsData {
                 title: "Toggle Type-Over Completion",
                 id: "prefs.text_editing.type_over_completion",
                 command: {
-                    Settings.shared.preferences.textEditing.enableTypeOverCompletion.toggle()
+                    Settings[\.textEditing].enableTypeOverCompletion.toggle()
                 }
             )
 
@@ -127,7 +158,7 @@ extension SettingsData {
                 title: "Toggle Autocomplete Braces",
                 id: "prefs.text_editing.autocomplete_braces",
                 command: {
-                    Settings.shared.preferences.textEditing.autocompleteBraces.toggle()
+                    Settings[\.textEditing].autocompleteBraces.toggle()
                 }
             )
 
@@ -139,6 +170,14 @@ extension SettingsData {
                     Settings[\.textEditing].wrapLinesToEditorWidth.toggle()
                 }
             )
+
+            mgr.addCommand(
+                name: "Toggle Minimap",
+                title: "Toggle Minimap",
+                id: "prefs.text_editing.toggle_minimap"
+            ) {
+                Settings[\.textEditing].showMinimap.toggle()
+            }
         }
 
         struct IndentOption: Codable, Hashable {
@@ -153,7 +192,7 @@ extension SettingsData {
             }
         }
 
-        struct BracketPairHighlight: Codable, Hashable {
+        struct BracketPairEmphasis: Codable, Hashable {
             /// The type of highlight to use
             var highlightType: HighlightType = .flash
             var useCustomColor: Bool = false
@@ -165,6 +204,22 @@ extension SettingsData {
                 case bordered
                 case flash
                 case underline
+            }
+        }
+
+        enum OverscrollOption: String, Codable {
+            case none
+            case small
+            case medium
+            case large
+
+            var overscrollPercentage: CGFloat {
+                switch self {
+                case .none: return 0
+                case .small: return 0.25
+                case .medium: return 0.5
+                case .large: return 0.75
+                }
             }
         }
     }

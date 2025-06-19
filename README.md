@@ -8,6 +8,9 @@
   <a aria-label="Follow CodeEdit on X" href="https://x.com/CodeEditApp" target="_blank">
     <img alt="" src="https://img.shields.io/badge/Follow%20@CodeEditApp-black.svg?style=for-the-badge&logo=X">
   </a>
+  <a aria-label="Follow CodeEdit on BlueSky" href="https://bsky.app/profile/codeedit.app" target="_blank">
+    <img alt="" src="https://img.shields.io/badge/Follow%20@codeedit.app-black.svg?style=for-the-badge&logo=bluesky">
+  </a>
   <a aria-label="Join the community on Discord" href="https://discord.gg/vChUXVf9Em" target="_blank">
     <img alt="" src="https://img.shields.io/badge/Join%20the%20community-black.svg?style=for-the-badge&logo=Discord">
   </a>
@@ -192,6 +195,14 @@ For issues we want to focus on that are most relevant at any given time, please 
       <td align="center" valign="top" width="14.28%"><a href="https://nobelliu.github.com"><img src="https://avatars.githubusercontent.com/u/10796646?v=4?s=100" width="100px;" alt="Nobel"/><br /><sub><b>Nobel</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=NobelLiu" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/SavelyUkuren"><img src="https://avatars.githubusercontent.com/u/125015568?v=4?s=100" width="100px;" alt="Savely"/><br /><sub><b>Savely</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=SavelyUkuren" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Kihron"><img src="https://avatars.githubusercontent.com/u/30128800?v=4?s=100" width="100px;" alt="Kihron"/><br /><sub><b>Kihron</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3AKihron" title="Bug reports">🐛</a></td>
+    </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/pro100filipp"><img src="https://avatars.githubusercontent.com/u/12880697?v=4?s=100" width="100px;" alt="Filipp Kuznetsov"/><br /><sub><b>Filipp Kuznetsov</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=pro100filipp" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/rustemd02"><img src="https://avatars.githubusercontent.com/u/11714456?v=4?s=100" width="100px;" alt="rustemd02"/><br /><sub><b>rustemd02</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/issues?q=author%3Arustemd02" title="Bug reports">🐛</a> <a href="https://github.com/CodeEditApp/CodeEdit/commits?author=rustemd02" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/SimonKudsk"><img src="https://avatars.githubusercontent.com/u/10168417?v=4?s=100" width="100px;" alt="Simon Kudsk"/><br /><sub><b>Simon Kudsk</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=SimonKudsk" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Syrux64"><img src="https://avatars.githubusercontent.com/u/118998822?v=4?s=100" width="100px;" alt="Surya"/><br /><sub><b>Surya</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=Syrux64" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/georgetchelidze"><img src="https://avatars.githubusercontent.com/u/96194129?v=4?s=100" width="100px;" alt="George Tchelidze"/><br /><sub><b>George Tchelidze</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=georgetchelidze" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="http://zhr.is"><img src="https://avatars.githubusercontent.com/u/148818634?v=4?s=100" width="100px;" alt="Chris Pineda"/><br /><sub><b>Chris Pineda</b></sub></a><br /><a href="https://github.com/CodeEditApp/CodeEdit/commits?author=zhrispineda" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
