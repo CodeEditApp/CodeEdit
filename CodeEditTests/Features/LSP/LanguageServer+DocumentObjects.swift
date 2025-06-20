@@ -42,9 +42,10 @@ final class LanguageServerDocumentObjectsTests: XCTestCase {
         var capabilities = ServerCapabilities()
         capabilities.textDocumentSync = .optionA(.init(openClose: true, change: .full))
         capabilities.semanticTokensProvider = .optionA(.init(legend: .init(tokenTypes: [], tokenModifiers: [])))
-        server = LanguageServerType(
+        server = await LanguageServerType(
             languageId: .swift,
             binary: .init(execPath: "", args: [], env: nil),
+            workspace: WorkspaceDocument(),
             lspInstance: InitializingServer(
                 server: BufferingServerConnection(),
                 initializeParamsProvider: LanguageServerType.getInitParams(workspacePath: "/")

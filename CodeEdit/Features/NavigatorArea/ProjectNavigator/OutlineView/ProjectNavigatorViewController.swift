@@ -107,7 +107,7 @@ final class ProjectNavigatorViewController: NSViewController {
 
         outlineView.expandItem(outlineView.item(atRow: 0))
 
-        /// Get autosave expanded items.
+        // Get autosave expanded items.
         for row in 0..<outlineView.numberOfRows {
             if let item = outlineView.item(atRow: row) as? CEWorkspaceFile {
                 if outlineView.isItemExpanded(item) {
@@ -116,7 +116,7 @@ final class ProjectNavigatorViewController: NSViewController {
             }
         }
 
-        /// "No Filter Results" label.
+        // "No Filter Results" label.
         noResultsLabel = NSTextField(labelWithString: "No Filter Results")
         noResultsLabel.isHidden = true
         noResultsLabel.font = NSFont.systemFont(ofSize: 16)
@@ -165,7 +165,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Expand or collapse the folder on double click
     @objc
     private func onItemDoubleClicked() {
-        /// If there are multiples items selected, don't do anything, just like in Xcode.
+        // If there are multiples items selected, don't do anything, just like in Xcode.
         guard outlineView.selectedRowIndexes.count == 1 else { return }
 
         guard let item = outlineView.item(atRow: outlineView.clickedRow) as? CEWorkspaceFile else { return }
