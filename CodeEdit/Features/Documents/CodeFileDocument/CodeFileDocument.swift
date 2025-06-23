@@ -94,6 +94,11 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         isDocumentEditedSubject.eraseToAnyPublisher()
     }
 
+    /// A lock that ensures autosave scheduling happens correctly.
+    private var autosaveTimerLock: NSLock = NSLock()
+    /// Timer used to schedule autosave intervals.
+    private var autosaveTimer: Timer?
+
     // MARK: - NSDocument
 
     override static var autosavesInPlace: Bool {
@@ -130,6 +135,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         }
     }
 
+    // MARK: - Data
+
     override func data(ofType _: String) throws -> Data {
         guard let sourceEncoding, let data = (content?.string as NSString?)?.data(using: sourceEncoding.nsValue) else {
             Self.logger.error("Failed to encode contents to \(self.sourceEncoding.debugDescription)")
@@ -137,6 +144,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         }
         return data
     }
+
+    // MARK: - Read
 
     /// This function is used for decoding files.
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
@@ -161,6 +170,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         NotificationCenter.default.post(name: Self.didOpenNotification, object: self)
     }
 
+    // MARK: - Autosave
+
     /// Triggered when change occurred
     override func updateChangeCount(_ change: NSDocument.ChangeType) {
         super.updateChangeCount(change)
@@ -183,6 +194,31 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         self.isDocumentEditedSubject.send(self.isDocumentEdited)
     }
 
+    /// If ``hasUnautosavedChanges`` is `true` and an autosave has not already been scheduled, schedules a new autosave.
+    /// If ``hasUnautosavedChanges`` is `false`, cancels any scheduled timers and returns.
+    ///
+    /// All operations are done with the ``autosaveTimerLock`` acquired (including the scheduled autosave) to ensure
+    /// correct timing when scheduling or cancelling timers.
+    override func scheduleAutosaving() {
+        autosaveTimerLock.withLock {
+            if self.hasUnautosavedChanges {
+                guard autosaveTimer == nil else { return }
+                autosaveTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                    self?.autosaveTimerLock.withLock {
+                        guard timer.isValid else { return }
+                        self?.autosaveTimer = nil
+                        self?.autosave(withDelegate: nil, didAutosave: nil, contextInfo: nil)
+                    }
+                }
+            } else {
+                autosaveTimer?.invalidate()
+                autosaveTimer = nil
+            }
+        }
+    }
+
+    // MARK: - Close
+
     override func close() {
         super.close()
         NotificationCenter.default.post(name: Self.didCloseNotification, object: fileURL)
@@ -199,7 +235,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
             let directory = fileURL.deletingLastPathComponent()
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
 
-            try data(ofType: fileType ?? "").write(to: fileURL, options: .atomic)
+            super.save(sender)
         } catch {
             presentError(error)
         }
