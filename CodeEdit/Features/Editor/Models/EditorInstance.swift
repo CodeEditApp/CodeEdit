@@ -18,7 +18,7 @@ class EditorInstance: ObservableObject, Hashable {
     let file: CEWorkspaceFile
 
     /// A publisher for the user's current location in a file.
-    @Published var cursorPositions: [CursorPosition] = []
+    @Published var cursorPositions: [CursorPosition]
     @Published var scrollPosition: CGPoint?
     @Published var findText: String?
 
@@ -33,7 +33,9 @@ class EditorInstance: ObservableObject, Hashable {
         let url = file.url
         let editorState = EditorStateRestoration.shared?.restorationState(for: url)
 
-        self.cursorPositions = cursorPositions ?? editorState?.editorCursorPositions ?? []
+        self.cursorPositions = (
+            cursorPositions ?? editorState?.editorCursorPositions ?? [CursorPosition(line: 1, column: 1)]
+        )
         self.scrollPosition = editorState?.scrollPosition
 
         // Setup listeners
@@ -41,7 +43,7 @@ class EditorInstance: ObservableObject, Hashable {
         Publishers.CombineLatest(
             $cursorPositions.removeDuplicates(),
             $scrollPosition
-                .debounce(for: .seconds(0.5), scheduler: RunLoop.main) // This can trigger *very* often
+                .debounce(for: .seconds(0.1), scheduler: RunLoop.main) // This can trigger *very* often
                 .removeDuplicates()
         )
         .sink { (cursorPositions, scrollPosition) in

@@ -17,7 +17,6 @@ struct CodeFileView: View {
     @ObservedObject private var editorInstance: EditorInstance
     @ObservedObject private var codeFile: CodeFileDocument
 
-    @State private var editorState: SourceEditorState = .init(cursorPositions: [.init(line: 1, column: 1)])
     @State private var treeSitterClient: TreeSitterClient = TreeSitterClient()
 
     /// Any coordinators passed to the view.
@@ -86,7 +85,7 @@ struct CodeFileView: View {
 
         if let openOptions = codeFile.openOptions {
             codeFile.openOptions = nil
-            self.editorState.cursorPositions = openOptions.cursorPositions
+            editorInstance.cursorPositions = openOptions.cursorPositions
         }
 
         updateHighlightProviders()
