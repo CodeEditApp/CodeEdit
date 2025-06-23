@@ -25,7 +25,7 @@ struct EditorAreaView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
-    @State var codeFile: CodeFileDocument?
+    @State var codeFile: (() -> CodeFileDocument?)?
 
     @Environment(\.window.value)
     private var window: NSWindow?
@@ -33,7 +33,9 @@ struct EditorAreaView: View {
     init(editor: Editor, focus: FocusState<Editor?>.Binding) {
         self.editor = editor
         self._focus = focus
-        self.codeFile = editor.selectedTab?.file.fileDocument
+        if let file = editor.selectedTab?.file.fileDocument {
+            self.codeFile = { [weak file] in file }
+        }
     }
 
     var body: some View {
@@ -53,7 +55,7 @@ struct EditorAreaView: View {
 
         VStack {
             if let selected = editor.selectedTab {
-                if let codeFile = codeFile {
+                if let codeFile = codeFile?() {
                     EditorAreaFileView(editorInstance: selected, codeFile: codeFile)
                         .focusedObject(editor)
                         .transformEnvironment(\.edgeInsets) { insets in
@@ -68,11 +70,11 @@ struct EditorAreaView: View {
                     LoadingFileView(selected.file.name)
                         .onAppear {
                             if let file = selected.file.fileDocument {
-                                self.codeFile = file
+                                self.codeFile = { [weak file] in file }
                             }
                         }
                         .onReceive(selected.file.fileDocumentPublisher) { latestValue in
-                            self.codeFile = latestValue
+                            self.codeFile = { [weak latestValue] in latestValue }
                         }
                 }
 
@@ -93,6 +95,12 @@ struct EditorAreaView: View {
         .safeAreaInset(edge: .top, spacing: 0) {
             GeometryReader { geometry in
                 let topSafeArea = geometry.safeAreaInsets.top
+                let fileBinding = Binding {
+                    codeFile?()
+                } set: { newFile in
+                    codeFile = { [weak newFile] in newFile }
+                }
+
                 VStack(spacing: 0) {
                     if topSafeArea > 0 {
                         Rectangle()
@@ -138,7 +146,9 @@ struct EditorAreaView: View {
             }
         }
         .onChange(of: editor.selectedTab) { newValue in
-            codeFile = newValue?.file.fileDocument
+            if let file = newValue?.file.fileDocument {
+                codeFile = { [weak file] in file }
+            }
         }
     }
 
@@ -152,9 +162,8 @@ struct EditorAreaView: View {
 
                 DispatchQueue.main.async {
                     let file = CEWorkspaceFile(url: url)
-                    editor.openTab(file: file)
                     editorManager.activeEditor = editor
-                    focus = editor
+                    editor.openTab(file: file)
                 }
             }
         }

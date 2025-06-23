@@ -75,6 +75,12 @@ class EditorInstance: ObservableObject, Hashable {
             self.textViewController = controller
         }
 
+        func controllerDidAppear(controller: TextViewController) {
+            if controller.isEditable && controller.isSelectable {
+                controller.view.window?.makeFirstResponder(controller.textView)
+            }
+        }
+
         func destroy() {
             self.textViewController = nil
         }
