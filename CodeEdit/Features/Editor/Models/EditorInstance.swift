@@ -13,31 +13,44 @@ import CodeEditSourceEditor
 
 /// A single instance of an editor in a group with a published ``EditorInstance/cursorPositions`` variable to publish
 /// the user's current location in a file.
-class EditorInstance: Hashable {
-    // Public
-
+class EditorInstance: ObservableObject, Hashable {
     /// The file presented in this editor instance.
     let file: CEWorkspaceFile
 
     /// A publisher for the user's current location in a file.
-    var cursorPositions: AnyPublisher<[CursorPosition], Never> {
-        cursorSubject.eraseToAnyPublisher()
-    }
+    @Published var cursorPositions: [CursorPosition] = []
+    @Published var scrollPosition: CGPoint?
+    @Published var findText: String?
 
-    // Public TextViewCoordinator APIs
+    var rangeTranslator: RangeTranslator = RangeTranslator()
 
-    var rangeTranslator: RangeTranslator?
-
-    // Internal Combine subjects
-
-    private let cursorSubject = CurrentValueSubject<[CursorPosition], Never>([])
+    private var cancellables: Set<AnyCancellable> = []
 
     // MARK: - Init, Hashable, Equatable
 
-    init(file: CEWorkspaceFile, cursorPositions: [CursorPosition] = []) {
+    init(file: CEWorkspaceFile, cursorPositions: [CursorPosition]? = nil) {
         self.file = file
-        self.cursorSubject.send(cursorPositions)
-        self.rangeTranslator = RangeTranslator(cursorSubject: cursorSubject)
+        let url = file.url
+        let editorState = EditorStateRestoration.shared?.restorationState(for: url)
+
+        self.cursorPositions = cursorPositions ?? editorState?.editorCursorPositions ?? []
+        self.scrollPosition = editorState?.scrollPosition
+
+        // Setup listeners
+
+        Publishers.CombineLatest(
+            $cursorPositions.removeDuplicates(),
+            $scrollPosition
+                .debounce(for: .seconds(0.5), scheduler: RunLoop.main) // This can trigger *very* often
+                .removeDuplicates()
+        )
+        .sink { (cursorPositions, scrollPosition) in
+            EditorStateRestoration.shared?.updateRestorationState(
+                for: url,
+                data: .init(cursorPositions: cursorPositions, scrollPosition: scrollPosition ?? .zero)
+            )
+        }
+        .store(in: &cancellables)
     }
 
     func hash(into hasher: inout Hasher) {
@@ -53,19 +66,11 @@ class EditorInstance: Hashable {
     /// Translates ranges (eg: from a cursor position) to other information like the number of lines in a range.
     class RangeTranslator: TextViewCoordinator {
         private weak var textViewController: TextViewController?
-        private var cursorSubject: CurrentValueSubject<[CursorPosition], Never>
 
-        init(cursorSubject: CurrentValueSubject<[CursorPosition], Never>) {
-            self.cursorSubject = cursorSubject
-        }
-
-        func textViewDidChangeSelection(controller: TextViewController, newPositions: [CursorPosition]) {
-            self.cursorSubject.send(controller.cursorPositions)
-        }
+        init() { }
 
         func prepareCoordinator(controller: TextViewController) {
             self.textViewController = controller
-            self.cursorSubject.send(controller.cursorPositions)
         }
 
         func destroy() {

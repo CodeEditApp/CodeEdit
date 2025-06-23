@@ -54,19 +54,16 @@ struct EditorAreaView: View {
         VStack {
             if let selected = editor.selectedTab {
                 if let codeFile = codeFile {
-                    EditorAreaFileView(
-                        codeFile: codeFile,
-                        textViewCoordinators: [selected.rangeTranslator].compactMap({ $0 })
-                    )
-                    .focusedObject(editor)
-                    .transformEnvironment(\.edgeInsets) { insets in
-                        insets.top += editorInsetAmount
-                    }
-                    .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
-                    .onDrop(of: [.fileURL], isTargeted: nil) { providers in
-                        _ = handleDrop(providers: providers)
-                        return true
-                    }
+                    EditorAreaFileView(editorInstance: selected, codeFile: codeFile)
+                        .focusedObject(editor)
+                        .transformEnvironment(\.edgeInsets) { insets in
+                            insets.top += editorInsetAmount
+                        }
+                        .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
+                        .onDrop(of: [.fileURL], isTargeted: nil) { providers in
+                            _ = handleDrop(providers: providers)
+                            return true
+                        }
                 } else {
                     LoadingFileView(selected.file.name)
                         .onAppear {
