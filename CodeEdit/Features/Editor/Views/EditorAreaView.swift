@@ -109,7 +109,7 @@ struct EditorAreaView: View {
                             .background(.clear)
                     }
                     if shouldShowTabBar {
-                        EditorTabBarView(hasTopInsets: topSafeArea > 0, codeFile: $codeFile)
+                        EditorTabBarView(hasTopInsets: topSafeArea > 0, codeFile: fileBinding)
                             .id("TabBarView" + editor.id.uuidString)
                             .environmentObject(editor)
                         Divider()
@@ -118,7 +118,7 @@ struct EditorAreaView: View {
                         EditorJumpBarView(
                             file: editor.selectedTab?.file,
                             shouldShowTabBar: shouldShowTabBar,
-                            codeFile: $codeFile
+                            codeFile: fileBinding
                         ) { [weak editor] newFile in
                             if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
                                 editor?.openTab(file: newFile, at: index)

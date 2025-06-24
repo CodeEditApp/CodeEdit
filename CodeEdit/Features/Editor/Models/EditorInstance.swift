@@ -20,18 +20,28 @@ class EditorInstance: ObservableObject, Hashable {
     /// A publisher for the user's current location in a file.
     @Published var cursorPositions: [CursorPosition]
     @Published var scrollPosition: CGPoint?
+
     @Published var findText: String?
+    var findTextSubject: PassthroughSubject<String?, Never>
+
+    @Published var replaceText: String?
+    var replaceTextSubject: PassthroughSubject<String?, Never>
 
     var rangeTranslator: RangeTranslator = RangeTranslator()
 
     private var cancellables: Set<AnyCancellable> = []
 
-    // MARK: - Init, Hashable, Equatable
+    // MARK: - Init
 
-    init(file: CEWorkspaceFile, cursorPositions: [CursorPosition]? = nil) {
+    init(workspace: WorkspaceDocument?, file: CEWorkspaceFile, cursorPositions: [CursorPosition]? = nil) {
         self.file = file
         let url = file.url
         let editorState = EditorStateRestoration.shared?.restorationState(for: url)
+
+        findText = workspace?.searchState?.searchQuery
+        findTextSubject = PassthroughSubject()
+        replaceText = workspace?.searchState?.replaceText
+        replaceTextSubject = PassthroughSubject()
 
         self.cursorPositions = (
             cursorPositions ?? editorState?.editorCursorPositions ?? [CursorPosition(line: 1, column: 1)]
@@ -53,7 +63,54 @@ class EditorInstance: ObservableObject, Hashable {
             )
         }
         .store(in: &cancellables)
+
+        listenToFindText(workspace: workspace)
+        listenToReplaceText(workspace: workspace)
     }
+
+    // MARK: - Find/Replace Listeners
+
+    func listenToFindText(workspace: WorkspaceDocument?) {
+        workspace?.searchState?.$searchQuery
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newQuery in
+                if self?.findText != newQuery {
+                    self?.findText = newQuery
+                }
+            }
+            .store(in: &cancellables)
+        findTextSubject
+            .receive(on: RunLoop.main)
+            .sink { [weak workspace, weak self] newFindText in
+                if let newFindText, workspace?.searchState?.searchQuery != newFindText {
+                    workspace?.searchState?.searchQuery = newFindText
+                }
+                self?.findText = workspace?.searchState?.searchQuery
+            }
+            .store(in: &cancellables)
+    }
+
+    func listenToReplaceText(workspace: WorkspaceDocument?) {
+        workspace?.searchState?.$replaceText
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newText in
+                if self?.replaceText != newText {
+                    self?.replaceText = newText
+                }
+            }
+            .store(in: &cancellables)
+        replaceTextSubject
+            .receive(on: RunLoop.main)
+            .sink { [weak workspace, weak self] newReplaceText in
+                if let newReplaceText, workspace?.searchState?.replaceText != newReplaceText {
+                    workspace?.searchState?.replaceText = newReplaceText
+                }
+                self?.replaceText = workspace?.searchState?.replaceText
+            }
+            .store(in: &cancellables)
+    }
+
+    // MARK: - Hashable, Equatable
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(file)

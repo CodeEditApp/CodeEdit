@@ -17,6 +17,7 @@ struct WindowCodeFileView: View {
     init(codeFile: CodeFileDocument) {
         self._editorInstance = .init(
             wrappedValue: EditorInstance(
+                workspace: nil,
                 file: CEWorkspaceFile(url: codeFile.fileURL ?? URL(fileURLWithPath: ""))
             )
         )

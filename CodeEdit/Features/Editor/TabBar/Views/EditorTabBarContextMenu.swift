@@ -137,7 +137,7 @@ struct EditorTabBarContextMenu: ViewModifier {
     }
 
     func moveToNewSplit(_ edge: Edge) {
-        let newEditor = Editor(files: [item])
+        let newEditor = Editor(files: [item], workspace: workspace)
         splitEditor(edge, newEditor)
         tabs.closeTab(file: item)
         workspace.editorManager?.activeEditor = newEditor

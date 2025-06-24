@@ -163,13 +163,17 @@ struct CodeFileView: View {
                     SourceEditorState(
                         cursorPositions: editorInstance.cursorPositions,
                         scrollPosition: editorInstance.scrollPosition,
-                        findText: editorInstance.findText
+                        findText: editorInstance.findText,
+                        replaceText: editorInstance.replaceText
                     )
                 },
                 set: { newState in
                     editorInstance.cursorPositions = newState.cursorPositions ?? []
                     editorInstance.scrollPosition = newState.scrollPosition
                     editorInstance.findText = newState.findText
+                    editorInstance.findTextSubject.send(newState.findText)
+                    editorInstance.replaceText = newState.replaceText
+                    editorInstance.replaceTextSubject.send(newState.replaceText)
                 }
             ),
             highlightProviders: highlightProviders,
