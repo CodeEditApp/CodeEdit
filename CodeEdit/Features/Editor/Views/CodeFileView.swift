@@ -66,7 +66,7 @@ struct CodeFileView: View {
 
     private let isEditable: Bool
 
-    private let undoManager = CEUndoManager()
+    private let undoManager: CEUndoManager
 
     init(
         editorInstance: EditorInstance,
@@ -88,6 +88,15 @@ struct CodeFileView: View {
             editorInstance.cursorPositions = openOptions.cursorPositions
         }
 
+        // Share the undo manager for the document between editors
+        if let undoManager = codeFile.undoManager as? CEUndoManager {
+            self.undoManager = undoManager
+        } else {
+            let undoManager = CEUndoManager()
+            codeFile.undoManager = undoManager
+            self.undoManager = undoManager
+        }
+
         updateHighlightProviders()
 
         codeFile
@@ -97,8 +106,6 @@ struct CodeFileView: View {
                 codeFile.updateChangeCount(.changeDone)
             }
             .store(in: &cancellables)
-
-        codeFile.undoManager = self.undoManager.manager
     }
 
     private var currentTheme: Theme {
