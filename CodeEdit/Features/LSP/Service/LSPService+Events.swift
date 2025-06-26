@@ -18,7 +18,7 @@ extension LSPService {
         // Create a new Task to listen to the events
         let task = Task.detached { [weak self] in
             for await event in languageClient.lspInstance.eventSequence {
-                await self?.handleEvent(event, for: key)
+                await self?.handleEvent(event, for: languageClient)
             }
         }
         eventListeningTasks[key] = task
@@ -31,20 +31,29 @@ extension LSPService {
         }
     }
 
-    private func handleEvent(_ event: ServerEvent, for key: ClientKey) {
+    private func handleEvent(
+        _ event: ServerEvent,
+        for languageClient: LanguageServer<CodeFileDocument>
+    ) {
         // TODO: Handle Events
-//        switch event {
+        switch event {
 //        case let .request(id, request):
-//            print("Request ID: \(id) for \(key.languageId.rawValue)")
-//            handleRequest(request)
-//        case let .notification(notification):
-//            handleNotification(notification)
+//            print("Request ID: \(id) for \(languageClient.languageId.rawValue)")
+//            handleRequest(request, languageClient)
+        case let .notification(notification):
+            handleNotification(notification, languageClient)
 //        case let .error(error):
-//            print("Error from EventStream for \(key.languageId.rawValue): \(error)")
-//        }
+//            print("Error from EventStream for \(languageClient.languageId.rawValue): \(error)")
+        default:
+            // TODO: REMOVE THIS DEFAULT WHEN THE REST ARE IMPLEMENTED
+            return
+        }
     }
 
-    private func handleRequest(_ request: ServerRequest) {
+    private func handleRequest(
+        _ request: ServerRequest,
+        _ languageClient: LanguageServer<CodeFileDocument>
+    ) {
         // TODO: Handle Requests
 //        switch request {
 //        case let .workspaceConfiguration(params, _):
@@ -69,19 +78,24 @@ extension LSPService {
 //            print("windowWorkDoneProgressCreate: \(params)")
 //
 //        default:
+//            // TODO: REMOVE THIS DEFAULT WHEN THE REST ARE IMPLEMENTED
 //            print()
 //        }
     }
 
-    private func handleNotification(_ notification: ServerNotification) {
+    private func handleNotification(
+        _ notification: ServerNotification,
+        _ languageClient: LanguageServer<CodeFileDocument>
+    ) {
         // TODO: Handle Notifications
-//        switch notification {
+        switch notification {
 //        case let .windowLogMessage(params):
 //            print("windowLogMessage \(params.type)\n```\n\(params.message)\n```\n")
 //        case let .windowShowMessage(params):
 //            print("windowShowMessage \(params.type)\n```\n\(params.message)\n```\n")
-//        case let .textDocumentPublishDiagnostics(params):
-//            print("textDocumentPublishDiagnostics: \(params)")
+        case let .textDocumentPublishDiagnostics(params):
+            languageClient.workspace.diagnosticsManager?
+                .updateDiagnostics(params: params)
 //        case let .telemetryEvent(params):
 //            print("telemetryEvent: \(params)")
 //        case let .protocolCancelRequest(params):
@@ -90,6 +104,9 @@ extension LSPService {
 //            print("protocolProgress: \(params)")
 //        case let .protocolLogTrace(params):
 //            print("protocolLogTrace: \(params)")
-//        }
+        default:
+            // TODO: REMOVE THIS DEFAULT WHEN THE REST ARE IMPLEMENTED
+            return
+        }
     }
 }
