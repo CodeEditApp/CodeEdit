@@ -58,6 +58,9 @@ struct CodeFileView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @EnvironmentObject
+    var undoRegistration: UndoManagerRegistration
+
     @ObservedObject private var themeModel: ThemeModel = .shared
 
     @State private var treeSitter = TreeSitterClient()
@@ -65,8 +68,6 @@ struct CodeFileView: View {
     private var cancellables = Set<AnyCancellable>()
 
     private let isEditable: Bool
-
-    private let undoManager: CEUndoManager
 
     init(
         editorInstance: EditorInstance,
@@ -86,15 +87,6 @@ struct CodeFileView: View {
         if let openOptions = codeFile.openOptions {
             codeFile.openOptions = nil
             editorInstance.cursorPositions = openOptions.cursorPositions
-        }
-
-        // Share the undo manager for the document between editors
-        if let undoManager = codeFile.undoManager as? CEUndoManager {
-            self.undoManager = undoManager
-        } else {
-            let undoManager = CEUndoManager()
-            codeFile.undoManager = undoManager
-            self.undoManager = undoManager
         }
 
         updateHighlightProviders()
@@ -170,7 +162,7 @@ struct CodeFileView: View {
                 }
             ),
             highlightProviders: highlightProviders,
-            undoManager: undoManager,
+            undoManager: undoRegistration.manager(forFile: editorInstance.file),
             coordinators: textViewCoordinators
         )
         .id(codeFile.fileURL)
