@@ -163,7 +163,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         )
         if let validEncoding = FileEncoding(rawEncoding), let nsString {
             self.sourceEncoding = validEncoding
-            self.content = NSTextStorage(string: nsString as String)
             if let content {
                 content.mutableString.setString(nsString as String)
             } else {
