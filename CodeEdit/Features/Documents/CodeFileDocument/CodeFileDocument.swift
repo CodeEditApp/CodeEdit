@@ -164,6 +164,11 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         if let validEncoding = FileEncoding(rawEncoding), let nsString {
             self.sourceEncoding = validEncoding
             self.content = NSTextStorage(string: nsString as String)
+            if let content {
+                content.mutableString.setString(nsString as String)
+            } else {
+                self.content = NSTextStorage(string: nsString as String)
+            }
         } else {
             Self.logger.error("Failed to read file from data using encoding: \(rawEncoding)")
         }
@@ -215,6 +220,32 @@ final class CodeFileDocument: NSDocument, ObservableObject {
                 autosaveTimer = nil
             }
         }
+    }
+
+    // MARK: - External Changes
+
+    /// Handle the notification that the represented file item changed.
+    override func presentedItemDidChange() {
+        // Grab the file saved date
+        if fileModificationDate != getModificationDate() {
+            Self.logger.debug("Detected outside change to file")
+            guard isDocumentEdited else {
+                fileModificationDate = getModificationDate()
+                if let fileURL, let fileType {
+                    DispatchQueue.main.asyncAndWait {
+                        try? self.read(from: fileURL, ofType: fileType)
+                    }
+                }
+                return
+            }
+        }
+
+        super.presentedItemDidChange()
+    }
+
+    private func getModificationDate() -> Date? {
+        guard let path = fileURL?.absolutePath else { return nil }
+        return try? FileManager.default.attributesOfItem(atPath: path)[.modificationDate] as? Date
     }
 
     // MARK: - Close
