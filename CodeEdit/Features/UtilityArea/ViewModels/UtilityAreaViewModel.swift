@@ -1,40 +1,131 @@
-//
-//  UtilityAreaViewModel.swift
-//  CodeEdit
-//
-//  Created by Lukas Pistrol on 20.03.22.
-//
+// UtilityAreaViewModel.swift
+// Atualizado para suportar drag-and-drop com reordenação visual e final com ScrollView + VStack
 
 import SwiftUI
+import UniformTypeIdentifiers
+
+extension Shell {
+    var iconName: String {
+        switch self {
+        case .bash: return "terminal"
+        case .zsh: return "circle.lefthalf.filled"
+        }
+    }
+}
+
+struct UtilityAreaTerminalGroup: Identifiable, Hashable {
+    var id = UUID()
+    var name: String = "Grupo"
+    var terminals: [UtilityAreaTerminal] = []
+    var isCollapsed: Bool = false
+
+    static func == (lhs: UtilityAreaTerminalGroup, rhs: UtilityAreaTerminalGroup) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
 
 /// # UtilityAreaViewModel
-///
 /// A model class to host and manage data for the Utility area.
 class UtilityAreaViewModel: ObservableObject {
 
     @Published var selectedTab: UtilityAreaTab? = .terminal
 
     @Published var terminals: [UtilityAreaTerminal] = []
+    @Published var terminalGroups: [UtilityAreaTerminalGroup] = [] {
+        didSet {
+            self.terminals = terminalGroups.flatMap { $0.terminals }
+        }
+    }
 
-    @Published var selectedTerminals: Set<UtilityAreaTerminal.ID> = []
+    @Published var selectedTerminals: Set<UUID> = []
+    @Published var dragOverTerminalID: UUID? = nil
+    @Published var draggedTerminalID: UUID? = nil
 
-    /// Indicates whether debugger is collapse or not
     @Published var isCollapsed: Bool = false
-
-    /// Indicates whether collapse animation should be enabled when utility area is toggled
     @Published var animateCollapse: Bool = true
-
-    /// Returns true when the drawer is visible
     @Published var isMaximized: Bool = false
-
-    /// The current height of the drawer. Zero if hidden
     @Published var currentHeight: Double = 0
+    
+    @Published var editingTerminalID: UUID? = nil
 
-    /// The tab bar items for the UtilityAreaView
     @Published var tabItems: [UtilityAreaTab] = UtilityAreaTab.allCases
-
-    /// The tab bar view model for UtilityAreaTabView
     @Published var tabViewModel = UtilityAreaTabViewModel()
+    
+    @Published var editingGroupID: UUID? = nil
+
+    // MARK: - Drag Support
+
+    func previewMoveTerminal(_ terminalID: UUID, toGroup groupID: UUID, before destinationID: UUID?) {
+        guard let currentGroupIndex = terminalGroups.firstIndex(where: { $0.terminals.contains(where: { $0.id == terminalID }) }),
+              let currentTerminalIndex = terminalGroups[currentGroupIndex].terminals.firstIndex(where: { $0.id == terminalID }) else {
+            return
+        }
+
+        let currentGroupID = terminalGroups[currentGroupIndex].id
+        if currentGroupID == groupID,
+           let destID = destinationID,
+           terminalGroups[currentGroupIndex].terminals.firstIndex(where: { $0.id == destID }) == currentTerminalIndex {
+            return
+        }
+
+        let terminal = terminalGroups[currentGroupIndex].terminals[currentTerminalIndex]
+        terminalGroups[currentGroupIndex].terminals.remove(at: currentTerminalIndex)
+        terminalGroups[currentGroupIndex].terminals = terminalGroups[currentGroupIndex].terminals
+
+        if let targetIndex = terminalGroups.firstIndex(where: { $0.id == groupID }) {
+            var group = terminalGroups[targetIndex]
+
+            if let destID = destinationID,
+               let destIndex = group.terminals.firstIndex(where: { $0.id == destID }) {
+                group.terminals.insert(terminal, at: destIndex)
+            } else {
+                group.terminals.append(terminal)
+            }
+
+            terminalGroups[targetIndex] = group
+        }
+    }
+
+    func finalizeMoveTerminal(_ terminal: UtilityAreaTerminal, toGroup groupID: UUID, before destinationID: UUID?) {
+        // Remove de qualquer grupo atual
+        for index in terminalGroups.indices {
+            terminalGroups[index].terminals.removeAll { $0.id == terminal.id }
+        }
+
+        // Remove grupos vazios após a remoção
+        terminalGroups.removeAll { $0.terminals.isEmpty }
+
+        // Adiciona ao grupo destino
+        guard let groupIndex = terminalGroups.firstIndex(where: { $0.id == groupID }) else {
+            print("⚠️ Grupo não encontrado para o drop.")
+            return
+        }
+
+        if let destinationID,
+           let destinationIndex = terminalGroups[groupIndex].terminals.firstIndex(where: { $0.id == destinationID }) {
+            terminalGroups[groupIndex].terminals.insert(terminal, at: destinationIndex)
+        } else {
+            terminalGroups[groupIndex].terminals.append(terminal)
+        }
+
+        // Atualiza seleção
+        if !selectedTerminals.contains(terminal.id) {
+            selectedTerminals = [terminal.id]
+        }
+    }
+
+    private func removeTerminal(withID id: UUID) -> UtilityAreaTerminal? {
+        for index in terminalGroups.indices {
+            if let terminalIndex = terminalGroups[index].terminals.firstIndex(where: { $0.id == id }) {
+                return terminalGroups[index].terminals.remove(at: terminalIndex)
+            }
+        }
+        return nil
+    }
 
     // MARK: - State Restoration
 
@@ -58,103 +149,183 @@ class UtilityAreaViewModel: ObservableObject {
 
     // MARK: - Terminal Management
 
-    /// Removes all terminals included in the given set and selects a new terminal if the selection was modified.
-    /// The new selection is either the same selection minus the ids removed, or if that's empty the last terminal.
-    /// - Parameter ids: A set of all terminal ids to remove.
     func removeTerminals(_ ids: Set<UUID>) {
-        for (idx, terminal) in terminals.enumerated().reversed()
-        where ids.contains(terminal.id) {
-            TerminalCache.shared.removeCachedView(terminal.id)
-            terminals.remove(at: idx)
+        for index in terminalGroups.indices {
+            terminalGroups[index].terminals.removeAll { ids.contains($0.id) }
         }
 
-        var newSelection = selectedTerminals.subtracting(ids)
+        // Remove grupos vazios
+        terminalGroups.removeAll { $0.terminals.isEmpty }
 
-        if newSelection.isEmpty, let terminal = terminals.last {
-            newSelection = [terminal.id]
+        // Atualiza seleção
+        selectedTerminals.subtract(ids)
+        if selectedTerminals.isEmpty,
+           let last = terminalGroups.last?.terminals.last {
+            selectedTerminals = [last.id]
         }
-
-        selectedTerminals = newSelection
     }
 
-    /// Update a terminal's title.
-    /// - Parameters:
-    ///   - id: The id of the terminal to update.
-    ///   - title: The title to set. If left `nil`, will set the terminal's
-    ///            ``UtilityAreaTerminal/customTitle`` to `false`.
     func updateTerminal(_ id: UUID, title: String?) {
-        guard let terminal = terminals.first(where: { $0.id == id }) else { return }
-        if let newTitle = title {
-            if !terminal.customTitle {
-                terminal.title = newTitle
+        for index in terminalGroups.indices {
+            if let terminalIndex = terminalGroups[index].terminals.firstIndex(where: { $0.id == id }) {
+                if let newTitle = title {
+                    terminalGroups[index].terminals[terminalIndex].title = newTitle
+                    terminalGroups[index].terminals[terminalIndex].terminalTitle = newTitle
+                } else {
+                    terminalGroups[index].terminals[terminalIndex].customTitle = false
+                }
+                break
             }
-            terminal.terminalTitle = newTitle
-        } else {
-            terminal.customTitle = false
         }
     }
 
-    /// Create a new terminal if there are no existing terminals.
-    /// Will not perform any action if terminals exist in the ``terminals`` array.
-    /// - Parameter workspaceURL: The base url of the workspace, to initialize terminals.l
     func initializeTerminals(workspaceURL: URL) {
-        guard terminals.isEmpty else { return }
+        guard terminalGroups.flatMap({ $0.terminals }).isEmpty else { return }
         addTerminal(rootURL: workspaceURL)
     }
 
-    /// Add a new terminal to the workspace and selects it.
-    /// - Parameters:
-    ///   - shell: The shell to use, `nil` if auto-detect the default shell.
-    ///   - rootURL: The url to start the new terminal at. If left `nil` defaults to the user's home directory.
-    func addTerminal(shell: Shell? = nil, rootURL: URL?) {
-        let id = UUID()
-
-        terminals.append(
-            UtilityAreaTerminal(
-                id: id,
-                url: rootURL ?? URL(filePath: "~/"),
-                title: shell?.rawValue ?? "terminal",
-                shell: shell
-            )
-        )
-
-        selectedTerminals = [id]
-    }
-
-    /// Replaces the terminal with a given ID, killing the shell and restarting it at the same directory.
-    ///
-    /// Terminals being replaced will have the `SIGKILL` signal sent to the running shell. The new terminal will
-    /// inherit the same `url` and `shell` parameters from the old one.
-    /// - Parameter replacing: The ID of a terminal to replace with a new terminal.
-    func replaceTerminal(_ replacing: UUID) {
-        guard let index = terminals.firstIndex(where: { $0.id == replacing }) else {
-            return
-        }
-
-        let id = UUID()
-        let url = terminals[index].url
-        let shell = terminals[index].shell
-        if let shellPid = TerminalCache.shared.getTerminalView(replacing)?.process.shellPid {
-            kill(shellPid, SIGKILL)
-        }
-
-        terminals[index] = UtilityAreaTerminal(
-            id: id,
-            url: url,
+    func addTerminal(to groupID: UUID? = nil, shell: Shell? = nil, rootURL: URL?) {
+        let newTerminal = UtilityAreaTerminal(
+            id: UUID(),
+            url: rootURL ?? URL(filePath: "~/"),
             title: shell?.rawValue ?? "terminal",
             shell: shell
         )
-        TerminalCache.shared.removeCachedView(replacing)
 
-        selectedTerminals = [id]
-        return
+        if let groupID, let index = terminalGroups.firstIndex(where: { $0.id == groupID }) {
+            terminalGroups[index].terminals.append(newTerminal)
+        } else {
+            terminalGroups.append(.init(name: "New Group", terminals: [newTerminal]))
+        }
+
+        selectedTerminals = [newTerminal.id]
     }
 
-    /// Reorders terminals in the ``utilityAreaViewModel``.
-    /// - Parameters:
-    ///   - source: The source indices.
-    ///   - destination: The destination indices.
+    func replaceTerminal(_ replacing: UUID) {
+        for index in terminalGroups.indices {
+            if let idx = terminalGroups[index].terminals.firstIndex(where: { $0.id == replacing }) {
+                let url = terminalGroups[index].terminals[idx].url
+                let shell = terminalGroups[index].terminals[idx].shell
+                if let shellPid = TerminalCache.shared.getTerminalView(replacing)?.process.shellPid {
+                    kill(shellPid, SIGKILL)
+                }
+                let newTerminal = UtilityAreaTerminal(
+                    id: UUID(),
+                    url: url,
+                    title: shell?.rawValue ?? "terminal",
+                    shell: shell
+                )
+                terminalGroups[index].terminals[idx] = newTerminal
+                TerminalCache.shared.removeCachedView(replacing)
+                selectedTerminals = [newTerminal.id]
+                break
+            }
+        }
+    }
+
     func reorderTerminals(from source: IndexSet, to destination: Int) {
         terminals.move(fromOffsets: source, toOffset: destination)
+    }
+
+    func moveTerminal(_ terminal: UtilityAreaTerminal, toGroup targetGroupID: UUID, at index: Int) {
+        for index in terminalGroups.indices {
+            terminalGroups[index].terminals.removeAll { $0.id == terminal.id }
+        }
+        if let idx = terminalGroups.firstIndex(where: { $0.id == targetGroupID }) {
+            terminalGroups[idx].terminals.insert(terminal, at: index)
+        }
+    }
+
+    func createGroup(with terminals: [UtilityAreaTerminal]) {
+        terminalGroups.append(.init(name: "Group", terminals: terminals))
+    }
+}
+
+struct TerminalDropDelegate: DropDelegate {
+    let groupID: UUID
+    let viewModel: UtilityAreaViewModel
+    let destinationTerminalID: UUID?
+
+    func validateDrop(info: DropInfo) -> Bool {
+        info.hasItemsConforming(to: [UTType.terminal.identifier])
+    }
+
+    func dropEntered(info: DropInfo) {
+        guard let item = info.itemProviders(for: [UTType.terminal.identifier]).first else { return }
+
+        item.loadDataRepresentation(forTypeIdentifier: UTType.terminal.identifier) { data, _ in
+            guard let data = data,
+                  let dragInfo = try? JSONDecoder().decode(TerminalDragInfo.self, from: data) else { return }
+
+            DispatchQueue.main.async {
+                withAnimation {
+                    viewModel.draggedTerminalID = dragInfo.terminalID
+                    viewModel.dragOverTerminalID = destinationTerminalID
+                }
+            }
+        }
+    }
+
+    func dropUpdated(info: DropInfo) -> DropProposal? {
+        DispatchQueue.main.async {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                viewModel.dragOverTerminalID = destinationTerminalID
+            }
+        }
+
+        return .init(operation: .move)
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        guard let item = info.itemProviders(for: [UTType.terminal.identifier]).first else { return false }
+
+        item.loadDataRepresentation(forTypeIdentifier: UTType.terminal.identifier) { data, _ in
+            guard let data = data,
+                  let dragInfo = try? JSONDecoder().decode(TerminalDragInfo.self, from: data),
+                  let terminal = viewModel.terminalGroups.flatMap({
+                      $0.terminals
+                  }).first( where: {
+                        $0.id == dragInfo.terminalID
+                  }) else { return }
+
+            DispatchQueue.main.async {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    viewModel.finalizeMoveTerminal(terminal, toGroup: groupID, before: destinationTerminalID)
+                    viewModel.dragOverTerminalID = nil
+                    viewModel.draggedTerminalID = nil
+                }
+            }
+        }
+        return true
+    }
+}
+
+struct NewGroupDropDelegate: DropDelegate {
+    let viewModel: UtilityAreaViewModel
+
+    func validateDrop(info: DropInfo) -> Bool {
+        info.hasItemsConforming(to: [UTType.terminal.identifier])
+    }
+
+    func performDrop(info: DropInfo) -> Bool {
+        guard let item = info.itemProviders(for: [UTType.terminal.identifier]).first else { return false }
+
+        item.loadDataRepresentation(forTypeIdentifier: UTType.terminal.identifier) { data, _ in
+            guard let data = data,
+                  let dragInfo = try? JSONDecoder().decode(TerminalDragInfo.self, from: data),
+                  let terminal = viewModel.terminalGroups.flatMap({ $0.terminals }).first(where: { $0.id == dragInfo.terminalID }) else {
+                return
+            }
+
+            DispatchQueue.main.async {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    viewModel.finalizeMoveTerminal(terminal, toGroup: UUID(), before: nil)
+                    viewModel.createGroup(with: [terminal])
+                    viewModel.dragOverTerminalID = nil
+                    viewModel.draggedTerminalID = nil
+                }
+            }
+        }
+        return true
     }
 }

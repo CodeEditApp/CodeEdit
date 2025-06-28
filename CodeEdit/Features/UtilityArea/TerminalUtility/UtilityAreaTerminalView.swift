@@ -158,7 +158,7 @@ struct UtilityAreaTerminalView: View {
             }
             .colorScheme(terminalColorScheme)
         } leadingSidebar: { _ in
-            UtilityAreaTerminalSidebar()
+            UtilityAreaTerminalSidebarWrapper(viewModel: utilityAreaViewModel)
         }
         .onAppear {
             guard let workspaceURL = workspace.fileURL else {
@@ -181,5 +181,15 @@ struct UtilityAreaTerminalView: View {
                 EffectView(.contentBackground)
             }
         }
+    }
+}
+
+struct UtilityAreaTerminalSidebarWrapper: View {
+    @ObservedObject var viewModel: UtilityAreaViewModel
+
+    var body: some View {
+
+
+        return UtilityAreaTerminalSidebar()
     }
 }
