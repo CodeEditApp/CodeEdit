@@ -34,86 +34,121 @@ struct UtilityAreaTerminalSidebar: View {
                     let isEditing = utilityAreaViewModel.editingGroupID == group.id
                     let isGroupSelected = group.terminals.contains { utilityAreaViewModel.selectedTerminals.contains($0.id) }
                     let groupID = group.id
-                    VStack(alignment: .leading, spacing: 0) {
-                        HStack(spacing: 4) {
-                            Image(systemName: group.isCollapsed ? "chevron.right" : "chevron.down")
-                                .font(.system(size: 11, weight: .medium))
-                                .foregroundColor(.secondary)
+                    if group.terminals.count == 1 {
+                        let terminal = group.terminals[0]
+                        UtilityAreaTerminalTab(
+                            terminal: terminal,
+                            removeTerminals: utilityAreaViewModel.removeTerminals,
+                            focusedTerminalID: $focusedTerminalID
+                        )
+                        .onDrag {
+                            utilityAreaViewModel.draggedTerminalID = terminal.id
 
-                            GroupTitleEditor(
-                                index: index,
-                                group: group,
-                                isEditing: isEditing,
-                                viewModel: utilityAreaViewModel
-                            )
-
-                            Spacer()
-                        }
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 6)
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                utilityAreaViewModel.terminalGroups[index].isCollapsed.toggle()
+                            let dragInfo = TerminalDragInfo(terminalID: terminal.id)
+                            let provider = NSItemProvider()
+                            do {
+                                let data = try JSONEncoder().encode(dragInfo)
+                                provider.registerDataRepresentation(
+                                    forTypeIdentifier: UTType.terminal.identifier,
+                                    visibility: .all
+                                ) { completion in
+                                    completion(data, nil)
+                                    return nil
+                                }
+                            } catch {
+                                print("❌ Erro ao codificar dragInfo: \(error)")
                             }
+                            return provider
                         }
+                        .onDrop(of: [UTType.terminal.identifier], delegate: TerminalDropDelegate(
+                            groupID: group.id,
+                            viewModel: utilityAreaViewModel,
+                            destinationTerminalID: terminal.id
+                        ))
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                        .animation(.easeInOut(duration: 0.2), value: group.isCollapsed)
+                    } else {
+                        VStack(alignment: .leading, spacing: 0) {
+                            HStack(spacing: 4) {
+                                Image(systemName: group.isCollapsed ? "chevron.right" : "chevron.down")
+                                    .font(.system(size: 11, weight: .medium))
+                                    .foregroundColor(.secondary)
 
-                        if !group.isCollapsed {
-                            VStack(spacing: 0) {
-                                ForEach(group.terminals, id: \.id) { terminal in
-                                    VStack(spacing: 0) {
-                                        if utilityAreaViewModel.dragOverTerminalID == terminal.id {
-                                            InsertionIndicator()
-                                        }
+                                GroupTitleEditor(
+                                    index: index,
+                                    group: group,
+                                    isEditing: isEditing,
+                                    viewModel: utilityAreaViewModel
+                                )
 
-                                        UtilityAreaTerminalTab(
-                                            terminal: terminal,
-                                            removeTerminals: utilityAreaViewModel.removeTerminals,
-                                            focusedTerminalID: $focusedTerminalID
-                                        )
-                                        .onDrag {
-                                            utilityAreaViewModel.draggedTerminalID = terminal.id
-
-                                            let dragInfo = TerminalDragInfo(terminalID: terminal.id)
-                                            let provider = NSItemProvider()
-                                            do {
-                                                let data = try JSONEncoder().encode(dragInfo)
-                                                provider.registerDataRepresentation(
-                                                    forTypeIdentifier: UTType.terminal.identifier,
-                                                    visibility: .all
-                                                ) { completion in
-                                                    completion(data, nil)
-                                                    return nil
-                                                }
-                                            } catch {
-                                                print("❌ Erro ao codificar dragInfo: \(error)")
-                                            }
-                                            return provider
-                                        }
-                                        .onDrop(of: [UTType.terminal.identifier], delegate: TerminalDropDelegate(
-                                            groupID: group.id,
-                                            viewModel: utilityAreaViewModel,
-                                            destinationTerminalID: terminal.id
-                                        ))
-                                        .transition(.opacity.combined(with: .move(edge: .top)))
-                                        .animation(.easeInOut(duration: 0.2), value: group.isCollapsed)
-                                    }
+                                Spacer()
+                            }
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 6)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.25)) {
+                                    utilityAreaViewModel.terminalGroups[index].isCollapsed.toggle()
                                 }
                             }
-                            .padding(.bottom, 8)
-                            .onDrop(of: [UTType.terminal.identifier], delegate: TerminalDropDelegate(
-                                groupID: group.id,
-                                viewModel: utilityAreaViewModel,
-                                destinationTerminalID: nil
-                            ))
+
+                            if !group.isCollapsed {
+                                VStack(spacing: 0) {
+                                    ForEach(group.terminals, id: \.id) { terminal in
+                                        VStack(spacing: 0) {
+                                            if utilityAreaViewModel.dragOverTerminalID == terminal.id {
+                                                InsertionIndicator()
+                                            }
+
+                                            UtilityAreaTerminalTab(
+                                                terminal: terminal,
+                                                removeTerminals: utilityAreaViewModel.removeTerminals,
+                                                focusedTerminalID: $focusedTerminalID
+                                            )
+                                            .onDrag {
+                                                utilityAreaViewModel.draggedTerminalID = terminal.id
+
+                                                let dragInfo = TerminalDragInfo(terminalID: terminal.id)
+                                                let provider = NSItemProvider()
+                                                do {
+                                                    let data = try JSONEncoder().encode(dragInfo)
+                                                    provider.registerDataRepresentation(
+                                                        forTypeIdentifier: UTType.terminal.identifier,
+                                                        visibility: .all
+                                                    ) { completion in
+                                                        completion(data, nil)
+                                                        return nil
+                                                    }
+                                                } catch {
+                                                    print("❌ Erro ao codificar dragInfo: \(error)")
+                                                }
+                                                return provider
+                                            }
+                                            .onDrop(of: [UTType.terminal.identifier], delegate: TerminalDropDelegate(
+                                                groupID: group.id,
+                                                viewModel: utilityAreaViewModel,
+                                                destinationTerminalID: terminal.id
+                                            ))
+                                            .transition(.opacity.combined(with: .move(edge: .top)))
+                                            .animation(.easeInOut(duration: 0.2), value: group.isCollapsed)
+                                        }
+                                    }
+                                }
+                                .padding(.bottom, 8)
+                                .onDrop(of: [UTType.terminal.identifier], delegate: TerminalDropDelegate(
+                                    groupID: group.id,
+                                    viewModel: utilityAreaViewModel,
+                                    destinationTerminalID: nil
+                                ))
+                            }
                         }
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(isGroupSelected ? Color.accentColor.opacity(0.12) : Color.clear)
+                        )
+                        .cornerRadius(8)
+                        .padding(.horizontal)
                     }
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(isGroupSelected ? Color.accentColor.opacity(0.12) : Color.clear)
-                    )
-                    .cornerRadius(8)
-                    .padding(.horizontal)
                 }
             }
             .padding(.top)
