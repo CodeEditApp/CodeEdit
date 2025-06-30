@@ -55,16 +55,11 @@ struct GroupTitleEditor: View {
                 }
             }
         } else {
-            Text(group.name.isEmpty ? "Grupo sem nome" : group.name)
-                .font(.caption)
-                .foregroundColor(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            Text(group.name)
+                .foregroundStyle(.primary.opacity(0.7))
+                .lineLimit(1)
+                .font(.headline)
                 .contentShape(Rectangle())
-                .simultaneousGesture(
-                    TapGesture(count: 2).onEnded {
-                        utilityAreaViewModel.editingGroupID = group.id
-                    }
-                )
         }
     }
 }

@@ -20,9 +20,10 @@ struct UtilityAreaTerminalGroupView: View {
 
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 4) {
-                Image(systemName: group.isCollapsed ? "chevron.right" : "chevron.down")
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.secondary)
+
+                Image(systemName: "square.on.square")
+                    .font(.system(size: 14, weight: .medium))
+                    .frame(width: 20, height: 20)
 
                 GroupTitleEditor(
                     index: index,
@@ -31,6 +32,10 @@ struct UtilityAreaTerminalGroupView: View {
                 )
 
                 Spacer()
+
+                Image(systemName: group.isCollapsed ? "chevron.right" : "chevron.down")
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(.secondary)
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 6)
@@ -82,6 +87,7 @@ struct UtilityAreaTerminalGroupView: View {
                     }
                 }
                 .padding(.bottom, 8)
+                .padding(.leading, 16)
 //                .onDrop(of: [UTType.terminal.identifier], delegate: TerminalDropDelegate(
 //                    groupID: group.id,
 //                    viewModel: utilityAreaViewModel,
@@ -89,12 +95,7 @@ struct UtilityAreaTerminalGroupView: View {
 //                ))
             }
         }
-        .background(
-            RoundedRectangle(cornerRadius: 8)
-                .fill(isGroupSelected ? Color.accentColor.opacity(0.12) : Color.clear)
-        )
         .cornerRadius(8)
-        .padding(.horizontal)
     }
 }
 
