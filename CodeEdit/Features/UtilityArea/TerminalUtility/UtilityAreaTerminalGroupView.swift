@@ -25,12 +25,47 @@ struct UtilityAreaTerminalGroupView: View {
                     .frame(width: 20, height: 20)
                     .foregroundStyle(.primary.opacity(0.6))
 
-                Text(group.name)
-                    .foregroundStyle(.primary.opacity(0.6))
-                    .contentShape(Rectangle())
-                    .lineLimit(1)
-                    .truncationMode(.middle)
-                    .font(.system(size: 13))
+                if utilityAreaViewModel.editingGroupID == group.id {
+                    TextField("", text: Binding(
+                        get: { group.name },
+                        set: { newTitle in
+                            guard !newTitle.trimmingCharacters(in: .whitespaces).isEmpty else { return }
+//                            utilityAreaViewModel.updateTerminal(terminal.id, title: newTitle)
+                        }
+                    ))
+                    .textFieldStyle(.plain)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.black)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 2)
+                    .background(Color.white)
+                    .cornerRadius(4)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 4)
+                            .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                    )
+//                    .focused($focusedTerminalID, equals: terminal.id)
+                    .onAppear {
+//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+//                            focusedTerminalID = terminal.id
+//                        }
+                    }
+                    .onSubmit {
+                        utilityAreaViewModel.editingGroupID = nil
+                    }
+//                    .onChange(of: focusedTerminalID) { newValue in
+//                        if newValue != terminal.id {
+//                            utilityAreaViewModel.editingTerminalID = nil
+//                        }
+//                    }
+                } else {
+                    DoubleClickableText(
+                        text: group.name,
+                        isSelected: isGroupSelected
+                    ) {
+                        utilityAreaViewModel.editingGroupID = group.id
+                    }
+                }
 
                 Spacer()
 
@@ -107,7 +142,7 @@ struct TerminalGroupViewPreviews: PreviewProvider {
             title: "Terminal Preview",
             shell: .zsh
         )
-        
+
         let terminal2 = UtilityAreaTerminal(
             id: UUID(),
             url: URL(fileURLWithPath: "/mock"),
