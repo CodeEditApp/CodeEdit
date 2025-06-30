@@ -4,22 +4,6 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct UtilityAreaTerminalGroup: Identifiable, Hashable {
-    var id = UUID()
-    var name: String = "Grupo"
-    var terminals: [UtilityAreaTerminal] = []
-    var isCollapsed: Bool = false
-    var userName: Bool = false
-
-    static func == (lhs: UtilityAreaTerminalGroup, rhs: UtilityAreaTerminalGroup) -> Bool {
-        lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
-
 /// # UtilityAreaViewModel
 /// A model class to host and manage data for the Utility area.
 class UtilityAreaViewModel: ObservableObject {
@@ -80,8 +64,6 @@ class UtilityAreaViewModel: ObservableObject {
 
     func finalizeMoveTerminal(_ terminal: UtilityAreaTerminal, toGroup groupID: UUID, before destinationID: UUID?) {
 
-        print("finalizeMoveTerminal")
-
         let alreadyInGroup = terminalGroups.contains { group in
             group.id == groupID &&
             group.terminals.count == 1 &&
@@ -99,7 +81,6 @@ class UtilityAreaViewModel: ObservableObject {
 
         // Adiciona ao grupo destino
         guard let groupIndex = terminalGroups.firstIndex(where: { $0.id == groupID }) else {
-            print("⚠️ Grupo não encontrado para o drop.")
             return
         }
 
