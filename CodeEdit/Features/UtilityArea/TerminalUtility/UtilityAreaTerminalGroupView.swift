@@ -23,12 +23,14 @@ struct UtilityAreaTerminalGroupView: View {
                 Image(systemName: "square.on.square")
                     .font(.system(size: 14, weight: .medium))
                     .frame(width: 20, height: 20)
+                    .foregroundStyle(.primary.opacity(0.6))
 
                 Text(group.name)
-                    .foregroundStyle(.primary.opacity(0.7))
-                    .lineLimit(1)
-                    .font(.headline)
+                    .foregroundStyle(.primary.opacity(0.6))
                     .contentShape(Rectangle())
+                    .lineLimit(1)
+                    .truncationMode(.middle)
+                    .font(.system(size: 13))
 
                 Spacer()
 
