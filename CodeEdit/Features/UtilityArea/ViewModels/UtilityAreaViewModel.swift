@@ -174,7 +174,6 @@ class UtilityAreaViewModel: ObservableObject {
             if let terminalIndex = terminalGroups[index].terminals.firstIndex(where: { $0.id == id }) {
                 if let newTitle = title {
                     terminalGroups[index].terminals[terminalIndex].title = newTitle
-                    terminalGroups[index].terminals[terminalIndex].terminalTitle = newTitle
                 } else {
                     terminalGroups[index].terminals[terminalIndex].customTitle = false
                 }

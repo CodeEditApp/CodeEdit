@@ -64,55 +64,12 @@ struct UtilityAreaTerminalRowView: View {
 
     @ViewBuilder
     private func terminalTitleView() -> some View {
-        if utilityAreaViewModel.editingTerminalID == terminal.id {
-            TextField("", text: Binding(
-                get: { terminal.title },
-                set: { newTitle in
-                    guard !newTitle.trimmingCharacters(in: .whitespaces).isEmpty else { return }
-                    utilityAreaViewModel.updateTerminal(terminal.id, title: newTitle)
-                }
-            ))
-            .textFieldStyle(.plain)
-            .font(.system(size: 13, weight: .semibold))
-            .foregroundColor(.black)
-            .padding(.horizontal, 4)
-            .padding(.vertical, 2)
-            .background(Color.white)
-            .cornerRadius(4)
-            .overlay(
-                RoundedRectangle(cornerRadius: 4)
-                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-            )
-            .focused($focusedTerminalID, equals: terminal.id)
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    focusedTerminalID = terminal.id
-                }
-            }
-            .onSubmit {
-                utilityAreaViewModel.editingTerminalID = nil
-                focusedTerminalID = nil
-            }
-            .onChange(of: focusedTerminalID) { newValue in
-                if newValue != terminal.id {
-                    utilityAreaViewModel.editingTerminalID = nil
-                }
-            }
-        } else {
-            Text(terminal.title.isEmpty ? "Terminal" : terminal.title)
-                .lineLimit(1)
-                .truncationMode(.middle)
-                .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
-                .foregroundColor(isSelected ? .white : .secondary)
-                .contentShape(Rectangle())
-                .simultaneousGesture(
-                    TapGesture(count: 2)
-                        .onEnded {
-                            utilityAreaViewModel.editingTerminalID = terminal.id
-                            focusedTerminalID = terminal.id
-                        }
-                )
-        }
+        Text(terminal.title.isEmpty ? "Terminal" : terminal.title)
+            .lineLimit(1)
+            .truncationMode(.middle)
+            .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
+            .foregroundColor(isSelected ? .white : .secondary)
+            .contentShape(Rectangle())
     }
 }
 
