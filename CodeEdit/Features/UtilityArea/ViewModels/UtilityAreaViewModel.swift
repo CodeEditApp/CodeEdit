@@ -189,8 +189,9 @@ class UtilityAreaViewModel: ObservableObject {
 
         if let groupID, let index = terminalGroups.firstIndex(where: { $0.id == groupID }) {
             terminalGroups[index].terminals.append(newTerminal)
+            terminalGroups[index].name = "\(terminalGroups[index].terminals.count) Terminals"
         } else {
-            terminalGroups.append(.init(name: "New Group", terminals: [newTerminal]))
+            terminalGroups.append(.init(name: "2 Terminals", terminals: [newTerminal]))
         }
 
         selectedTerminals = [newTerminal.id]
@@ -232,7 +233,7 @@ class UtilityAreaViewModel: ObservableObject {
     }
 
     func createGroup(with terminals: [UtilityAreaTerminal]) {
-        terminalGroups.append(.init(name: "Group", terminals: terminals))
+        terminalGroups.append(.init(name: "\(terminalGroups.count) Terminals", terminals: terminals))
     }
 }
 

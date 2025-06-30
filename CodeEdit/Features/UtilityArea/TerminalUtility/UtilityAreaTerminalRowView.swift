@@ -8,25 +8,6 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct DoubleClickableText: View {
-    let text: String
-    let isSelected: Bool
-    let onDoubleClick: () -> Void
-
-    var body: some View {
-        Text(text.isEmpty ? "Terminal sem nome" : text)
-            .lineLimit(1)
-            .truncationMode(.middle)
-            .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
-            .foregroundColor(isSelected ? .white : .secondary)
-            .contentShape(Rectangle())
-            .simultaneousGesture(
-                TapGesture(count: 2)
-                    .onEnded { onDoubleClick() }
-            )
-    }
-}
-
 struct UtilityAreaTerminalRowView: View {
     let terminal: UtilityAreaTerminal
     @FocusState.Binding var focusedTerminalID: UUID?
@@ -118,13 +99,19 @@ struct UtilityAreaTerminalRowView: View {
                 }
             }
         } else {
-            DoubleClickableText(
-                text: terminal.title,
-                isSelected: isSelected
-            ) {
-                utilityAreaViewModel.editingTerminalID = terminal.id
-                focusedTerminalID = terminal.id
-            }
+            Text(terminal.title.isEmpty ? "Terminal" : terminal.title)
+                .lineLimit(1)
+                .truncationMode(.middle)
+                .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
+                .foregroundColor(isSelected ? .white : .secondary)
+                .contentShape(Rectangle())
+                .simultaneousGesture(
+                    TapGesture(count: 2)
+                        .onEnded {
+                            utilityAreaViewModel.editingTerminalID = terminal.id
+                            focusedTerminalID = terminal.id
+                        }
+                )
         }
     }
 }

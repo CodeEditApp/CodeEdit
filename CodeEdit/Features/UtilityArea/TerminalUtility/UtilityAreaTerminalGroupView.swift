@@ -15,8 +15,6 @@ struct UtilityAreaTerminalGroupView: View {
     @FocusState private var focusedTerminalID: UUID?
 
     var body: some View {
-        let group = utilityAreaViewModel.terminalGroups[index]
-        let isEditing = utilityAreaViewModel.editingGroupID == group.id
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 4) {
 
@@ -25,12 +23,12 @@ struct UtilityAreaTerminalGroupView: View {
                     .frame(width: 20, height: 20)
                     .foregroundStyle(.primary.opacity(0.6))
 
-                if utilityAreaViewModel.editingGroupID == group.id {
+                if utilityAreaViewModel.editingGroupID == utilityAreaViewModel.terminalGroups[index].id {
                     TextField("", text: Binding(
-                        get: { group.name },
+                        get: { utilityAreaViewModel.terminalGroups[index].name },
                         set: { newTitle in
                             guard !newTitle.trimmingCharacters(in: .whitespaces).isEmpty else { return }
-//                            utilityAreaViewModel.updateTerminal(terminal.id, title: newTitle)
+                            utilityAreaViewModel.terminalGroups[index].name = newTitle
                         }
                     ))
                     .textFieldStyle(.plain)
@@ -44,32 +42,27 @@ struct UtilityAreaTerminalGroupView: View {
                         RoundedRectangle(cornerRadius: 4)
                             .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                     )
-//                    .focused($focusedTerminalID, equals: terminal.id)
-                    .onAppear {
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-//                            focusedTerminalID = terminal.id
-//                        }
-                    }
                     .onSubmit {
                         utilityAreaViewModel.editingGroupID = nil
                     }
-//                    .onChange(of: focusedTerminalID) { newValue in
-//                        if newValue != terminal.id {
-//                            utilityAreaViewModel.editingTerminalID = nil
-//                        }
-//                    }
                 } else {
-                    DoubleClickableText(
-                        text: group.name,
-                        isSelected: isGroupSelected
-                    ) {
-                        utilityAreaViewModel.editingGroupID = group.id
-                    }
+                    Text(utilityAreaViewModel.terminalGroups[index].name.isEmpty ? "terminals" : utilityAreaViewModel.terminalGroups[index].name)
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                        .font(.system(size: 13, weight: .regular))
+                        .foregroundColor(.secondary)
+                        .contentShape(Rectangle())
+                        .simultaneousGesture(
+                            TapGesture(count: 2)
+                                .onEnded {
+                                    utilityAreaViewModel.editingGroupID = utilityAreaViewModel.terminalGroups[index].id
+                                }
+                        )
                 }
 
                 Spacer()
 
-                Image(systemName: group.isCollapsed ? "chevron.right" : "chevron.down")
+                Image(systemName: utilityAreaViewModel.terminalGroups[index].isCollapsed ? "chevron.right" : "chevron.down")
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(.secondary)
             }
@@ -81,9 +74,9 @@ struct UtilityAreaTerminalGroupView: View {
                     utilityAreaViewModel.terminalGroups[index].isCollapsed.toggle()
                 }
             }
-            if !group.isCollapsed {
+            if !utilityAreaViewModel.terminalGroups[index].isCollapsed {
                 VStack(spacing: 0) {
-                    ForEach(group.terminals, id: \.id) { terminal in
+                    ForEach(utilityAreaViewModel.terminalGroups[index].terminals, id: \.id) { terminal in
                         VStack(spacing: 0) {
                             UtilityAreaTerminalRowView(
                                 terminal: terminal,
@@ -124,7 +117,7 @@ struct UtilityAreaTerminalGroupView: View {
                 .padding(.bottom, 8)
                 .padding(.leading, 16)
                 .onDrop(of: [UTType.terminal.identifier], delegate: TerminalDropDelegate(
-                    groupID: group.id,
+                    groupID: utilityAreaViewModel.terminalGroups[index].id,
                     viewModel: utilityAreaViewModel,
                     destinationTerminalID: focusedTerminalID
                 ))
