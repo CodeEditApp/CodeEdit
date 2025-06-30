@@ -36,7 +36,6 @@ struct UtilityAreaTerminalSidebar: View {
                         TerminalTabDragDropView(
                             terminal: terminal,
                             group: group,
-                            viewModel: utilityAreaViewModel,
                             focusedTerminalID: $focusedTerminalID
                         )
                     } else {
@@ -44,7 +43,6 @@ struct UtilityAreaTerminalSidebar: View {
                             index: index,
                             group: group,
                             isGroupSelected: true,
-                            utilityAreaViewModel: utilityAreaViewModel,
                             focusedTerminalID: $focusedTerminalID
                         )
                     }

@@ -11,7 +11,7 @@ struct TerminalGroupView: View {
     let index: Int
     let group: UtilityAreaTerminalGroup
     let isGroupSelected: Bool
-    @ObservedObject var utilityAreaViewModel: UtilityAreaViewModel
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
     @FocusState.Binding var focusedTerminalID: UUID?
 
     var body: some View {
@@ -26,8 +26,7 @@ struct TerminalGroupView: View {
                 GroupTitleEditor(
                     index: index,
                     group: group,
-                    isEditing: isEditing,
-                    viewModel: utilityAreaViewModel
+                    isEditing: isEditing
                 )
 
                 Spacer()
@@ -44,7 +43,6 @@ struct TerminalGroupView: View {
             if !group.isCollapsed {
                 TerminalListView(
                     group: group,
-                    utilityAreaViewModel: utilityAreaViewModel,
                     focusedTerminalID: $focusedTerminalID
                 )
             }
@@ -66,10 +64,17 @@ struct TerminalGroupViewPreviews: PreviewProvider {
             title: "Terminal Preview",
             shell: .zsh
         )
+        
+        let terminal2 = UtilityAreaTerminal(
+            id: UUID(),
+            url: URL(fileURLWithPath: "/mock"),
+            title: "Terminal Preview",
+            shell: .zsh
+        )
 
         let utilityAreaViewModel = UtilityAreaViewModel()
         utilityAreaViewModel.terminalGroups = [
-            UtilityAreaTerminalGroup(name: "Grupo de Preview", terminals: [terminal])
+            UtilityAreaTerminalGroup(name: "Grupo de Preview", terminals: [terminal, terminal2])
         ]
         utilityAreaViewModel.selectedTerminals = [terminal.id]
 
@@ -94,8 +99,7 @@ private struct TerminalGroupViewPreviewWrapper: View {
         TerminalGroupView(
             index: 0,
             group: utilityAreaViewModel.terminalGroups[0],
-            isGroupSelected: true,
-            utilityAreaViewModel: utilityAreaViewModel,
+            isGroupSelected: false,
             focusedTerminalID: $focusedTerminalID
         )
     }

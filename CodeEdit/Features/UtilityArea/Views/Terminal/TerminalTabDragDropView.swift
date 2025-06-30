@@ -4,17 +4,17 @@ import UniformTypeIdentifiers
 struct TerminalTabDragDropView: View {
     let terminal: UtilityAreaTerminal
     let group: UtilityAreaTerminalGroup
-    @ObservedObject var viewModel: UtilityAreaViewModel
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
     @FocusState.Binding var focusedTerminalID: UUID?
 
     var body: some View {
         UtilityAreaTerminalTab(
             terminal: terminal,
-            removeTerminals: viewModel.removeTerminals,
+            removeTerminals: utilityAreaViewModel.removeTerminals,
             focusedTerminalID: $focusedTerminalID
         )
         .onDrag {
-            viewModel.draggedTerminalID = terminal.id
+            utilityAreaViewModel.draggedTerminalID = terminal.id
 
             let dragInfo = TerminalDragInfo(terminalID: terminal.id)
             let provider = NSItemProvider()
@@ -36,7 +36,7 @@ struct TerminalTabDragDropView: View {
             of: [UTType.terminal.identifier],
             delegate: TerminalDropDelegate(
                 groupID: group.id,
-                viewModel: viewModel,
+                viewModel: utilityAreaViewModel,
                 destinationTerminalID: terminal.id
             )
         )
@@ -88,7 +88,6 @@ private struct TerminalTabDragDropViewPreviewWrapper: View {
         TerminalTabDragDropView(
             terminal: terminal,
             group: group,
-            viewModel: viewModel,
             focusedTerminalID: $focusedTerminalID
         )
         .environmentObject(viewModel)

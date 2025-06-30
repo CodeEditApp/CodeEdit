@@ -11,7 +11,7 @@ struct GroupTitleEditor: View {
     let index: Int
     let group: UtilityAreaTerminalGroup
     let isEditing: Bool
-    @ObservedObject var viewModel: UtilityAreaViewModel
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
     @FocusState private var isFocused: Bool
 
     var body: some View {
@@ -20,16 +20,16 @@ struct GroupTitleEditor: View {
                 "",
                 text: Binding(
                     get: {
-                        viewModel.terminalGroups[safe: index]?.name ?? ""
+                        utilityAreaViewModel.terminalGroups[safe: index]?.name ?? ""
                     },
                     set: { newValue in
-                        if viewModel.terminalGroups.indices.contains(index) {
-                            viewModel.terminalGroups[index].name = newValue
+                        if utilityAreaViewModel.terminalGroups.indices.contains(index) {
+                            utilityAreaViewModel.terminalGroups[index].name = newValue
                         }
                     }
                 ),
                 onCommit: {
-                    viewModel.editingGroupID = nil
+                    utilityAreaViewModel.editingGroupID = nil
                 }
             )
             .font(.caption)
@@ -51,7 +51,7 @@ struct GroupTitleEditor: View {
             }
             .onChange(of: isFocused) { focused in
                 if !focused {
-                    viewModel.editingGroupID = nil
+                    utilityAreaViewModel.editingGroupID = nil
                 }
             }
         } else {
@@ -62,7 +62,7 @@ struct GroupTitleEditor: View {
                 .contentShape(Rectangle())
                 .simultaneousGesture(
                     TapGesture(count: 2).onEnded {
-                        viewModel.editingGroupID = group.id
+                        utilityAreaViewModel.editingGroupID = group.id
                     }
                 )
         }
@@ -87,8 +87,7 @@ private struct GroupTitleEditorPreviewWrapper: View {
         GroupTitleEditor(
             index: 0,
             group: group,
-            isEditing: viewModel.editingGroupID == group.id,
-            viewModel: viewModel
+            isEditing: viewModel.editingGroupID == group.id
         )
         .environmentObject(viewModel)
         .padding()

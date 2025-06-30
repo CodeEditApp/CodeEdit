@@ -56,7 +56,8 @@ class UtilityAreaViewModel: ObservableObject {
     @Published var tabViewModel = UtilityAreaTabViewModel()
     
     @Published var editingGroupID: UUID? = nil
-
+    @FocusState private var focusedTerminalID: UUID?
+    
     // MARK: - Drag Support
 
     func previewMoveTerminal(_ terminalID: UUID, toGroup groupID: UUID, before destinationID: UUID?) {

@@ -10,7 +10,7 @@ import UniformTypeIdentifiers
 
 struct TerminalListView: View {
     let group: UtilityAreaTerminalGroup
-    @ObservedObject var utilityAreaViewModel: UtilityAreaViewModel
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
     @FocusState.Binding var focusedTerminalID: UUID?
 
     var body: some View {
@@ -20,7 +20,6 @@ struct TerminalListView: View {
                     TerminalTabDragDropView(
                         terminal: terminal,
                         group: group,
-                        viewModel: utilityAreaViewModel,
                         focusedTerminalID: $focusedTerminalID
                     )
                 }
@@ -68,7 +67,6 @@ private struct TerminalListViewPreviewWrapper: View {
     var body: some View {
         TerminalListView(
             group: mockGroup,
-            utilityAreaViewModel: viewModel,
             focusedTerminalID: $focusedTerminalID
         )
         .environmentObject(viewModel)
