@@ -19,7 +19,7 @@ struct DoubleClickableText: View {
             .truncationMode(.middle)
             .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
             .foregroundColor(isSelected ? .white : .secondary)
-            .contentShape(Rectangle()) // garante que clique fora do texto funcione
+            .contentShape(Rectangle())
             .simultaneousGesture(
                 TapGesture(count: 2)
                     .onEnded { onDoubleClick() }
