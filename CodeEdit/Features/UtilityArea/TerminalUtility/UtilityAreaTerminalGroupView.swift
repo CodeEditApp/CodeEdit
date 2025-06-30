@@ -8,21 +8,33 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
+/// A view that displays a terminal group with a header and a list of its terminals.
+/// Supports editing the group name, collapsing, drag-and-drop, and inline terminal row management.
 struct UtilityAreaTerminalGroupView: View {
+    /// The index of the group within the terminalGroups array.
     let index: Int
+
+    /// Whether this group is currently selected in the UI.
     let isGroupSelected: Bool
+
+    /// The shared view model that manages terminal groups and their state.
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
+
+    /// Manages focus on a specific terminal row for keyboard navigation or editing.
     @FocusState private var focusedTerminalID: UUID?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 4) {
 
+            // MARK: - Group Header
+
+            HStack(spacing: 4) {
                 Image(systemName: "square.on.square")
                     .font(.system(size: 14, weight: .medium))
                     .frame(width: 20, height: 20)
                     .foregroundStyle(.primary.opacity(0.6))
 
+                // Editable group name when in edit mode
                 if utilityAreaViewModel.editingGroupID == utilityAreaViewModel.terminalGroups[index].id {
                     TextField("", text: Binding(
                         get: { utilityAreaViewModel.terminalGroups[index].name },
@@ -47,7 +59,12 @@ struct UtilityAreaTerminalGroupView: View {
                         utilityAreaViewModel.editingGroupID = nil
                     }
                 } else {
-                    Text(utilityAreaViewModel.terminalGroups[index].name.isEmpty ? "terminals" : utilityAreaViewModel.terminalGroups[index].name)
+                    // Display group name normally
+                    Text(
+                        utilityAreaViewModel.terminalGroups[index].name.isEmpty
+                            ? "terminals"
+                            : utilityAreaViewModel.terminalGroups[index].name
+                    )
                         .lineLimit(1)
                         .truncationMode(.middle)
                         .font(.system(size: 13, weight: .regular))
@@ -63,7 +80,12 @@ struct UtilityAreaTerminalGroupView: View {
 
                 Spacer()
 
-                Image(systemName: utilityAreaViewModel.terminalGroups[index].isCollapsed ? "chevron.right" : "chevron.down")
+                // Expand/collapse toggle
+                Image(
+                    systemName: utilityAreaViewModel.terminalGroups[index].isCollapsed
+                        ? "chevron.right"
+                        : "chevron.down"
+                )
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(.secondary)
             }
@@ -76,8 +98,7 @@ struct UtilityAreaTerminalGroupView: View {
                 }
             }
             .onDrag {
-//                utilityAreaViewModel.draggedTerminalID = terminal.id
-
+                // Optional: dragging the entire group (stubbed terminal ID)
                 let dragInfo = TerminalDragInfo(terminalID: .init())
                 let provider = NSItemProvider()
                 do {
@@ -90,10 +111,13 @@ struct UtilityAreaTerminalGroupView: View {
                         return nil
                     }
                 } catch {
-                    print("❌ Erro ao codificar dragInfo: \(error)")
+                    print("❌ Failed to encode dragInfo: \(error)")
                 }
                 return provider
             }
+
+            // MARK: - Terminal Rows (if group is expanded)
+
             if !utilityAreaViewModel.terminalGroups[index].isCollapsed {
                 VStack(spacing: 0) {
                     ForEach(utilityAreaViewModel.terminalGroups[index].terminals, id: \.id) { terminal in
@@ -107,17 +131,15 @@ struct UtilityAreaTerminalGroupView: View {
 
                                 let dragInfo = TerminalDragInfo(terminalID: terminal.id)
                                 let provider = NSItemProvider()
-                                do {
-                                    let data = try JSONEncoder().encode(dragInfo)
-                                    provider.registerDataRepresentation(
-                                        forTypeIdentifier: UTType.terminal.identifier,
-                                        visibility: .all
-                                    ) { completion in
-                                        completion(data, nil)
-                                        return nil
-                                    }
-                                } catch {
-                                    print("❌ Erro ao codificar dragInfo: \(error)")
+                                guard let data = try? JSONEncoder().encode(dragInfo) else {
+                                    return provider
+                                }
+                                provider.registerDataRepresentation(
+                                    forTypeIdentifier: UTType.terminal.identifier,
+                                    visibility: .all
+                                ) { completion in
+                                    completion(data, nil)
+                                    return nil
                                 }
                                 return provider
                             }
@@ -130,7 +152,10 @@ struct UtilityAreaTerminalGroupView: View {
                                 )
                             )
                             .transition(.opacity.combined(with: .move(edge: .top)))
-                            .animation(.easeInOut(duration: 0.2), value: utilityAreaViewModel.terminalGroups[index].isCollapsed)
+                            .animation(
+                                .easeInOut(duration: 0.2),
+                                value: utilityAreaViewModel.terminalGroups[index].isCollapsed
+                            )
                         }
                     }
                 }
@@ -147,6 +172,9 @@ struct UtilityAreaTerminalGroupView: View {
     }
 }
 
+// MARK: - Preview
+
+/// Preview provider for `UtilityAreaTerminalGroupView`, showing a mock terminal group with two terminals.
 struct TerminalGroupViewPreviews: PreviewProvider {
     static var previews: some View {
         let terminal = UtilityAreaTerminal(
@@ -165,7 +193,7 @@ struct TerminalGroupViewPreviews: PreviewProvider {
 
         let utilityAreaViewModel = UtilityAreaViewModel()
         utilityAreaViewModel.terminalGroups = [
-            UtilityAreaTerminalGroup(name: "Grupo de Preview", terminals: [terminal, terminal2])
+            UtilityAreaTerminalGroup(name: "Preview Group", terminals: [terminal, terminal2])
         ]
         utilityAreaViewModel.selectedTerminals = [terminal.id]
 
@@ -182,6 +210,7 @@ struct TerminalGroupViewPreviews: PreviewProvider {
     }
 }
 
+// Wrapper view to render the preview group.
 private struct TerminalGroupViewPreviewWrapper: View {
     @EnvironmentObject var utilityAreaViewModel: UtilityAreaViewModel
     @FocusState private var focusedTerminalID: UUID?

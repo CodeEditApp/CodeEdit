@@ -1,36 +1,47 @@
 //
-//  UtilityAreaTerminalRowView.swift
+//  UtilityAreaTerminalSidebar.swift
 //  CodeEdit
 //
-//  Created by Gustavo Soré on 28/06/25.
+//  Created by Khan Winter on 8/19/24.
 //
 
 import SwiftUI
 import UniformTypeIdentifiers
 
+/// A single row representing a terminal within a terminal group.
+/// Includes icon, title, selection handling, hover actions, and delete button.
 struct UtilityAreaTerminalRowView: View {
+    /// The terminal instance represented by this row.
     let terminal: UtilityAreaTerminal
+
+    /// Focus binding used for keyboard interactions or editing.
     @FocusState.Binding var focusedTerminalID: UUID?
 
+    /// View model that manages the terminal groups and selection state.
     @EnvironmentObject var utilityAreaViewModel: UtilityAreaViewModel
+
+    /// Tracks whether the mouse is currently hovering this row.
     @State private var isHovering = false
 
+    /// Computed property to check if the terminal is currently selected.
     var isSelected: Bool {
         utilityAreaViewModel.selectedTerminals.contains(terminal.id)
     }
 
     var body: some View {
-
         HStack(spacing: 8) {
+            // Terminal icon
             Image(systemName: "terminal")
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(isSelected ? Color.white : Color.secondary)
                 .frame(width: 20, height: 20)
 
+            // Terminal title
             terminalTitleView()
 
             Spacer()
 
+            // Close button shown only on hover
             if isHovering {
                 Button {
                     utilityAreaViewModel.removeTerminals([terminal.id])
@@ -46,11 +57,14 @@ struct UtilityAreaTerminalRowView: View {
         .padding(.horizontal, 6)
         .padding(.vertical, 2)
         .background(
+            // Background changes on selection or drag-over
             RoundedRectangle(cornerRadius: 6)
-                .fill(isSelected ? Color.blue :
-                      utilityAreaViewModel.dragOverTerminalID == terminal.id ? Color.blue.opacity(0.15) : .clear)
+                .fill(
+                    isSelected ? Color.blue :
+                    utilityAreaViewModel.dragOverTerminalID == terminal.id ? Color.blue.opacity(0.15) : .clear
+                )
         )
-        .contentShape(Rectangle())
+        .contentShape(Rectangle()) // Increases tappable area
         .onHover { hovering in
             isHovering = hovering
         }
@@ -62,6 +76,7 @@ struct UtilityAreaTerminalRowView: View {
         .animation(.easeInOut(duration: 0.15), value: isHovering)
     }
 
+    /// Returns a view displaying the terminal's title with styling depending on selection state.
     @ViewBuilder
     private func terminalTitleView() -> some View {
         Text(terminal.title.isEmpty ? "Terminal" : terminal.title)
@@ -73,10 +88,14 @@ struct UtilityAreaTerminalRowView: View {
     }
 }
 
+// MARK: - Preview
+
+/// Preview provider for `UtilityAreaTerminalRowView` with sample data.
 #Preview {
     UtilityAreaTerminalTabPreviewWrapper()
 }
 
+/// Wrapper view for rendering the terminal row in Xcode Preview with mock data and environment.
 private struct UtilityAreaTerminalTabPreviewWrapper: View {
     @StateObject private var viewModel = UtilityAreaViewModel()
     @StateObject private var tabViewModel = UtilityAreaTabViewModel()
