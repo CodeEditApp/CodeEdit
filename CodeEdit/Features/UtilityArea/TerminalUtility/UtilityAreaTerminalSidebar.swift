@@ -69,7 +69,6 @@ struct UtilityAreaTerminalSidebar: View {
                     } else {
                         UtilityAreaTerminalGroupView(
                             index: index,
-                            group: group,
                             isGroupSelected: true
                         )
                     }
