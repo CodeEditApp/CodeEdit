@@ -63,7 +63,7 @@ struct UtilityAreaTerminalTab: View {
             }
         }
         .padding(.horizontal, 6)
-        .padding(.vertical, 4)
+        .padding(.vertical, 2)
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(isSelected ? Color.blue :
@@ -126,5 +126,48 @@ struct UtilityAreaTerminalTab: View {
                 focusedTerminalID = terminal.id
             }
         }
+    }
+}
+
+#Preview {
+    UtilityAreaTerminalTabPreviewWrapper()
+}
+
+private struct UtilityAreaTerminalTabPreviewWrapper: View {
+    @StateObject private var viewModel = UtilityAreaViewModel()
+    @StateObject private var tabViewModel = UtilityAreaTabViewModel()
+    @FocusState private var focusedTerminalID: UUID?
+
+    private let terminal = UtilityAreaTerminal(
+        id: UUID(),
+        url: URL(fileURLWithPath: "/mock"),
+        title: "Terminal Preview",
+        shell: .zsh
+    )
+
+    private let workspace: WorkspaceDocument = {
+        let workspace = WorkspaceDocument()
+        workspace.setValue(URL(string: "file:///mock/path")!, forKey: "fileURL")
+        return workspace
+    }()
+
+    init() {
+        viewModel.terminalGroups = [
+            UtilityAreaTerminalGroup(name: "Preview Group", terminals: [terminal])
+        ]
+        viewModel.selectedTerminals = [terminal.id]
+    }
+
+    var body: some View {
+        UtilityAreaTerminalTab(
+            terminal: terminal,
+            removeTerminals: { _ in },
+            focusedTerminalID: $focusedTerminalID
+        )
+        .environmentObject(viewModel)
+        .environmentObject(tabViewModel)
+        .environmentObject(workspace)
+        .frame(width: 280)
+        .padding()
     }
 }

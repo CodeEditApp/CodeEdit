@@ -68,3 +68,36 @@ struct GroupTitleEditor: View {
         }
     }
 }
+
+#Preview {
+    GroupTitleEditorPreviewWrapper()
+}
+
+private struct GroupTitleEditorPreviewWrapper: View {
+    @StateObject private var viewModel = UtilityAreaViewModel()
+    @FocusState private var dummyFocus: Bool
+
+    private let group = UtilityAreaTerminalGroup(
+        id: UUID(),
+        name: "Grupo de Preview",
+        terminals: []
+    )
+
+    var body: some View {
+        GroupTitleEditor(
+            index: 0,
+            group: group,
+            isEditing: viewModel.editingGroupID == group.id,
+            viewModel: viewModel
+        )
+        .environmentObject(viewModel)
+        .padding()
+        .frame(width: 280)
+        .onAppear {
+            if viewModel.terminalGroups.isEmpty {
+                viewModel.terminalGroups = [group]
+                viewModel.editingGroupID = nil
+            }
+        }
+    }
+}
