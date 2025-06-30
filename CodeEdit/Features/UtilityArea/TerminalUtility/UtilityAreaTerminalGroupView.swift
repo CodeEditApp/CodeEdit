@@ -75,6 +75,25 @@ struct UtilityAreaTerminalGroupView: View {
                     utilityAreaViewModel.terminalGroups[index].isCollapsed.toggle()
                 }
             }
+            .onDrag {
+//                utilityAreaViewModel.draggedTerminalID = terminal.id
+
+                let dragInfo = TerminalDragInfo(terminalID: .init())
+                let provider = NSItemProvider()
+                do {
+                    let data = try JSONEncoder().encode(dragInfo)
+                    provider.registerDataRepresentation(
+                        forTypeIdentifier: UTType.terminal.identifier,
+                        visibility: .all
+                    ) { completion in
+                        completion(data, nil)
+                        return nil
+                    }
+                } catch {
+                    print("❌ Erro ao codificar dragInfo: \(error)")
+                }
+                return provider
+            }
             if !utilityAreaViewModel.terminalGroups[index].isCollapsed {
                 VStack(spacing: 0) {
                     ForEach(utilityAreaViewModel.terminalGroups[index].terminals, id: \.id) { terminal in
@@ -102,16 +121,16 @@ struct UtilityAreaTerminalGroupView: View {
                                 }
                                 return provider
                             }
-//                            .onDrop(
-//                                of: [UTType.terminal.identifier],
-//                                delegate: TerminalDropDelegate(
-//                                    groupID: group.id,
-//                                    viewModel: utilityAreaViewModel,
-//                                    destinationTerminalID: terminal.id
-//                                )
-//                            )
-//                            .transition(.opacity.combined(with: .move(edge: .top)))
-//                            .animation(.easeInOut(duration: 0.2), value: group.isCollapsed)
+                            .onDrop(
+                                of: [UTType.terminal.identifier],
+                                delegate: TerminalDropDelegate(
+                                    groupID: utilityAreaViewModel.terminalGroups[index].id,
+                                    viewModel: utilityAreaViewModel,
+                                    destinationTerminalID: terminal.id
+                                )
+                            )
+                            .transition(.opacity.combined(with: .move(edge: .top)))
+                            .animation(.easeInOut(duration: 0.2), value: utilityAreaViewModel.terminalGroups[index].isCollapsed)
                         }
                     }
                 }
