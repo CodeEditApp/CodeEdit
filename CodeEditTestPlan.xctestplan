@@ -9,7 +9,6 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : false,
     "targetForVariableExpansion" : {
       "containerPath" : "container:CodeEdit.xcodeproj",
       "identifier" : "B658FB2B27DA9E0F00EA4DBD",

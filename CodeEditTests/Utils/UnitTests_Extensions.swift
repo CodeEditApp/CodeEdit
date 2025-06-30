@@ -196,4 +196,38 @@ final class CodeEditUtilsExtensionsUnitTests: XCTestCase {
         let path = #"/Hello World/ With Spaces/ And " Characters "#
         XCTAssertEqual(path.escapedDirectory(), #""/Hello World/ With Spaces/ And \" Characters ""#)
     }
+
+    // MARK: - URL + Contains
+
+    func testURLContainsSubPath() {
+        XCTAssertTrue(URL(filePath: "/Users/Bob/Desktop").containsSubPath(URL(filePath: "/Users/Bob/Desktop/file.txt")))
+        XCTAssertFalse(URL(filePath: "/Users/Bob/Desktop").containsSubPath(URL(filePath: "/Users/Bob/Desktop/")))
+        XCTAssertFalse(URL(filePath: "/Users/Bob/Desktop").containsSubPath(URL(filePath: "/Users/Bob/")))
+        XCTAssertTrue(URL(filePath: "/Users/Bob/Desktop").containsSubPath(URL(filePath: "/Users/Bob/Desktop/Folder")))
+    }
+
+    func testURLSharedComponentsCount() {
+        // URL Treats the leading `/` as a component, so these all appear to have + 1 but are correct.
+        XCTAssertEqual(
+            URL(filePath: "/Users/Bob/Desktop").sharedComponents(URL(filePath: "/Users/Bob/Desktop/file.txt")),
+            4
+        )
+        XCTAssertEqual(
+            URL(filePath: "/Users/Bob/Desktop").sharedComponents(URL(filePath: "/Users/Bob/Desktop/")),
+            4
+        )
+        XCTAssertEqual(
+            URL(filePath: "/Users/Bob/Desktop").sharedComponents(URL(filePath: "/Users/Bob/")),
+            3
+        )
+        XCTAssertEqual(
+            URL(filePath: "/Users/Bob/Desktop").sharedComponents(URL(filePath: "/Users/Bob/Desktop/Folder")),
+            4
+        )
+
+        XCTAssertEqual(
+            URL(filePath: "/Users/Bob/Desktop").sharedComponents(URL(filePath: "/Some Other/ Path ")),
+            1
+        )
+    }
 }

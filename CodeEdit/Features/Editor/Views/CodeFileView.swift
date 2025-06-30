@@ -50,6 +50,10 @@ struct CodeFileView: View {
     var useSystemCursor
     @AppSettings(\.textEditing.showMinimap)
     var showMinimap
+    @AppSettings(\.textEditing.reformatAtColumn)
+    var reformatAtColumn
+    @AppSettings(\.textEditing.showReformattingGuide)
+    var showReformattingGuide
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -87,20 +91,6 @@ struct CodeFileView: View {
             }
             .store(in: &cancellables)
 
-        codeFile
-            .contentCoordinator
-            .textUpdatePublisher
-            .debounce(for: 1.0, scheduler: DispatchQueue.main)
-            .sink { _ in
-                // updateChangeCount is automatically managed by autosave(), so no manual call is necessary
-                codeFile.autosave(withImplicitCancellability: false) { error in
-                    if let error {
-                        CodeFileDocument.logger.error("Failed to autosave document, error: \(error)")
-                    }
-                }
-            }
-            .store(in: &cancellables)
-
         codeFile.undoManager = self.undoManager.manager
     }
 
@@ -135,7 +125,9 @@ struct CodeFileView: View {
             useSystemCursor: useSystemCursor,
             undoManager: undoManager,
             coordinators: textViewCoordinators,
-            showMinimap: showMinimap
+            showMinimap: showMinimap,
+            reformatAtColumn: reformatAtColumn,
+            showReformattingGuide: showReformattingGuide
         )
         .id(codeFile.fileURL)
         .background {

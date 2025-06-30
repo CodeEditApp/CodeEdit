@@ -64,6 +64,8 @@ final class ProjectNavigatorViewController: NSViewController {
     /// to open the file a second time.
     var shouldSendSelectionUpdate: Bool = true
 
+    var shouldReloadAfterDoneEditing: Bool = false
+
     var filterIsEmpty: Bool {
         workspace?.navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true
     }
@@ -74,7 +76,7 @@ final class ProjectNavigatorViewController: NSViewController {
         self.scrollView.hasVerticalScroller = true
         self.view = scrollView
 
-        self.outlineView = NSOutlineView()
+        self.outlineView = ProjectNavigatorNSOutlineView()
         self.outlineView.dataSource = self
         self.outlineView.delegate = self
         self.outlineView.autosaveExpandedItems = true

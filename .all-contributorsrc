@@ -794,6 +794,52 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "rustemd02",
+      "name": "rustemd02",
+      "avatar_url": "https://avatars.githubusercontent.com/u/11714456?v=4",
+      "profile": "https://github.com/rustemd02",
+      "contributions": [
+        "bug",
+        "code"
+      ]
+    },
+    {
+      "login": "SimonKudsk",
+      "name": "Simon Kudsk",
+      "avatar_url": "https://avatars.githubusercontent.com/u/10168417?v=4",
+      "profile": "https://github.com/SimonKudsk",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Syrux64",
+      "name": "Surya",
+      "avatar_url": "https://avatars.githubusercontent.com/u/118998822?v=4",
+      "profile": "https://github.com/Syrux64",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "georgetchelidze",
+      "name": "George Tchelidze",
+      "avatar_url": "https://avatars.githubusercontent.com/u/96194129?v=4",
+      "profile": "https://github.com/georgetchelidze",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "zhrispineda",
+      "name": "Chris Pineda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148818634?v=4",
+      "profile": "http://zhr.is",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
