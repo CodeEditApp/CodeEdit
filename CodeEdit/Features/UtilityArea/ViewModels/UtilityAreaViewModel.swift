@@ -9,6 +9,7 @@ struct UtilityAreaTerminalGroup: Identifiable, Hashable {
     var name: String = "Grupo"
     var terminals: [UtilityAreaTerminal] = []
     var isCollapsed: Bool = false
+    var userName: Bool = false
 
     static func == (lhs: UtilityAreaTerminalGroup, rhs: UtilityAreaTerminalGroup) -> Bool {
         lhs.id == rhs.id
@@ -79,6 +80,8 @@ class UtilityAreaViewModel: ObservableObject {
 
     func finalizeMoveTerminal(_ terminal: UtilityAreaTerminal, toGroup groupID: UUID, before destinationID: UUID?) {
 
+        print("finalizeMoveTerminal")
+
         let alreadyInGroup = terminalGroups.contains { group in
             group.id == groupID &&
             group.terminals.count == 1 &&
@@ -110,6 +113,12 @@ class UtilityAreaViewModel: ObservableObject {
         // Atualiza seleção
         if !selectedTerminals.contains(terminal.id) {
             selectedTerminals = [terminal.id]
+        }
+
+        for index in terminalGroups.indices {
+            if !terminalGroups[index].userName {
+                terminalGroups[index].name = "\(terminalGroups[index].terminals.count) Terminals"
+            }
         }
     }
 
@@ -180,6 +189,9 @@ class UtilityAreaViewModel: ObservableObject {
     }
 
     func addTerminal(to groupID: UUID? = nil, shell: Shell? = nil, rootURL: URL?) {
+        
+        print("Did add temrinal")
+        
         let newTerminal = UtilityAreaTerminal(
             id: UUID(),
             url: rootURL ?? URL(filePath: "~/"),

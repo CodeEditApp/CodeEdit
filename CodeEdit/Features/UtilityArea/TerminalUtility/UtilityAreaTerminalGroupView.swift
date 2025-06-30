@@ -29,6 +29,7 @@ struct UtilityAreaTerminalGroupView: View {
                         set: { newTitle in
                             guard !newTitle.trimmingCharacters(in: .whitespaces).isEmpty else { return }
                             utilityAreaViewModel.terminalGroups[index].name = newTitle
+                            utilityAreaViewModel.terminalGroups[index].userName = true
                         }
                     ))
                     .textFieldStyle(.plain)
