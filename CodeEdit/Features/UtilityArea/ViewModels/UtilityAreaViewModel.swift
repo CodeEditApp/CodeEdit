@@ -35,20 +35,15 @@ class UtilityAreaViewModel: ObservableObject {
     @Published var selectedTerminals: Set<UUID> = []
     @Published var dragOverTerminalID: UUID? = nil
     @Published var draggedTerminalID: UUID? = nil
-
     @Published var isCollapsed: Bool = false
     @Published var animateCollapse: Bool = true
     @Published var isMaximized: Bool = false
     @Published var currentHeight: Double = 0
-    
     @Published var editingTerminalID: UUID? = nil
-
     @Published var tabItems: [UtilityAreaTab] = UtilityAreaTab.allCases
     @Published var tabViewModel = UtilityAreaTabViewModel()
-    
     @Published var editingGroupID: UUID? = nil
     @FocusState private var focusedTerminalID: UUID?
-    
     // MARK: - Drag Support
 
     func previewMoveTerminal(_ terminalID: UUID, toGroup groupID: UUID, before destinationID: UUID?) {
@@ -83,7 +78,15 @@ class UtilityAreaViewModel: ObservableObject {
     }
 
     func finalizeMoveTerminal(_ terminal: UtilityAreaTerminal, toGroup groupID: UUID, before destinationID: UUID?) {
-        // Remove de qualquer grupo atual
+
+        let alreadyInGroup = terminalGroups.contains { group in
+            group.id == groupID &&
+            group.terminals.count == 1 &&
+            group.terminals.first?.id == terminal.id
+        }
+
+        guard !alreadyInGroup else { return }
+
         for index in terminalGroups.indices {
             terminalGroups[index].terminals.removeAll { $0.id == terminal.id }
         }

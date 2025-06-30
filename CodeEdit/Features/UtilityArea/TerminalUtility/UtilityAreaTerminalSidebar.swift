@@ -77,7 +77,12 @@ struct UtilityAreaTerminalSidebar: View {
             }
             .padding(.top)
         }
-        .onDrop(of: [UTType.terminal.identifier], delegate: NewGroupDropDelegate(viewModel: utilityAreaViewModel))
+        .onDrop(
+            of: [UTType.terminal.identifier],
+            delegate: NewGroupDropDelegate(
+                viewModel: utilityAreaViewModel
+            )
+        )
         .background(Color(NSColor.controlBackgroundColor))
         .contextMenu {
             Button("New Terminal") {
