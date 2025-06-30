@@ -67,11 +67,10 @@ struct UtilityAreaTerminalSidebar: View {
                         .transition(.opacity.combined(with: .move(edge: .top)))
                         .animation(.easeInOut(duration: 0.2), value: group.isCollapsed)
                     } else {
-                        TerminalGroupView(
+                        UtilityAreaTerminalGroupView(
                             index: index,
                             group: group,
-                            isGroupSelected: true,
-                            focusedTerminalID: $focusedTerminalID
+                            isGroupSelected: true
                         )
                     }
                 }

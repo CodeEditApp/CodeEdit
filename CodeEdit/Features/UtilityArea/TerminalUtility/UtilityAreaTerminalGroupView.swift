@@ -1,18 +1,19 @@
 //
-//  TerminalGroupView.swift
+//  UtilityAreaTerminalGroupView.swift
 //  CodeEdit
 //
 //  Created by Gustavo Soré on 29/06/25.
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
-struct TerminalGroupView: View {
+struct UtilityAreaTerminalGroupView: View {
     let index: Int
     let group: UtilityAreaTerminalGroup
     let isGroupSelected: Bool
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
-    @FocusState.Binding var focusedTerminalID: UUID?
+    @FocusState private var focusedTerminalID: UUID?
 
     var body: some View {
         let isEditing = utilityAreaViewModel.editingGroupID == group.id
@@ -41,10 +42,51 @@ struct TerminalGroupView: View {
             }
 
             if !group.isCollapsed {
-                TerminalListView(
-                    group: group,
-                    focusedTerminalID: $focusedTerminalID
-                )
+                VStack(spacing: 0) {
+                    ForEach(group.terminals, id: \.id) { terminal in
+                        VStack(spacing: 0) {
+                            UtilityAreaTerminalRowView(
+                                terminal: terminal,
+                                focusedTerminalID: $focusedTerminalID
+                            )
+                            .onDrag {
+                                utilityAreaViewModel.draggedTerminalID = terminal.id
+
+                                let dragInfo = TerminalDragInfo(terminalID: terminal.id)
+                                let provider = NSItemProvider()
+                                do {
+                                    let data = try JSONEncoder().encode(dragInfo)
+                                    provider.registerDataRepresentation(
+                                        forTypeIdentifier: UTType.terminal.identifier,
+                                        visibility: .all
+                                    ) { completion in
+                                        completion(data, nil)
+                                        return nil
+                                    }
+                                } catch {
+                                    print("❌ Erro ao codificar dragInfo: \(error)")
+                                }
+                                return provider
+                            }
+                            .onDrop(
+                                of: [UTType.terminal.identifier],
+                                delegate: TerminalDropDelegate(
+                                    groupID: group.id,
+                                    viewModel: utilityAreaViewModel,
+                                    destinationTerminalID: terminal.id
+                                )
+                            )
+                            .transition(.opacity.combined(with: .move(edge: .top)))
+                            .animation(.easeInOut(duration: 0.2), value: group.isCollapsed)
+                        }
+                    }
+                }
+                .padding(.bottom, 8)
+                .onDrop(of: [UTType.terminal.identifier], delegate: TerminalDropDelegate(
+                    groupID: group.id,
+                    viewModel: utilityAreaViewModel,
+                    destinationTerminalID: focusedTerminalID
+                ))
             }
         }
         .background(
@@ -96,11 +138,10 @@ private struct TerminalGroupViewPreviewWrapper: View {
     @FocusState private var focusedTerminalID: UUID?
 
     var body: some View {
-        TerminalGroupView(
+        UtilityAreaTerminalGroupView(
             index: 0,
             group: utilityAreaViewModel.terminalGroups[0],
-            isGroupSelected: false,
-            focusedTerminalID: $focusedTerminalID
+            isGroupSelected: false
         )
     }
 }

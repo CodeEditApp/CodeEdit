@@ -80,7 +80,7 @@ struct UtilityAreaTerminalRowView: View {
         )
         .animation(.easeInOut(duration: 0.15), value: isHovering)
     }
-    
+
     @ViewBuilder
     private func terminalTitleView() -> some View {
         if utilityAreaViewModel.editingTerminalID == terminal.id {
