@@ -1,5 +1,5 @@
 //
-//  UtilityAreaTerminalTab.swift
+//  UtilityAreaTerminalRowView.swift
 //  CodeEdit
 //
 //  Created by Gustavo Soré on 28/06/25.
@@ -27,9 +27,8 @@ struct DoubleClickableText: View {
     }
 }
 
-struct UtilityAreaTerminalTab: View {
+struct UtilityAreaTerminalRowView: View {
     let terminal: UtilityAreaTerminal
-    let removeTerminals: (Set<UUID>) -> Void
     @FocusState.Binding var focusedTerminalID: UUID?
 
     @EnvironmentObject var utilityAreaViewModel: UtilityAreaViewModel
@@ -40,8 +39,9 @@ struct UtilityAreaTerminalTab: View {
     }
 
     var body: some View {
+
         HStack(spacing: 8) {
-            Image(systemName: terminal.shell?.iconName ?? "terminal")
+            Image(systemName: "terminal")
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(isSelected ? Color.white : Color.secondary)
                 .frame(width: 20, height: 20)
@@ -52,7 +52,7 @@ struct UtilityAreaTerminalTab: View {
 
             if isHovering {
                 Button {
-                    removeTerminals([terminal.id])
+                    utilityAreaViewModel.removeTerminals([terminal.id])
                 } label: {
                     Image(systemName: "xmark.circle.fill")
                         .foregroundStyle(.secondary)
@@ -159,9 +159,8 @@ private struct UtilityAreaTerminalTabPreviewWrapper: View {
     }
 
     var body: some View {
-        UtilityAreaTerminalTab(
+        UtilityAreaTerminalRowView(
             terminal: terminal,
-            removeTerminals: { _ in },
             focusedTerminalID: $focusedTerminalID
         )
         .environmentObject(viewModel)

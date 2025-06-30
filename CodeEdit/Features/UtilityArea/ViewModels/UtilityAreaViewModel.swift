@@ -4,15 +4,6 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-extension Shell {
-    var iconName: String {
-        switch self {
-        case .bash: return "terminal"
-        case .zsh: return "circle.lefthalf.filled"
-        }
-    }
-}
-
 struct UtilityAreaTerminalGroup: Identifiable, Hashable {
     var id = UUID()
     var name: String = "Grupo"

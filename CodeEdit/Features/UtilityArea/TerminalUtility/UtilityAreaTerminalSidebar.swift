@@ -33,11 +33,39 @@ struct UtilityAreaTerminalSidebar: View {
                 ForEach(Array(utilityAreaViewModel.terminalGroups.enumerated()), id: \.element.id) { index, group in
                     if group.terminals.count == 1 {
                         let terminal = group.terminals[0]
-                        TerminalTabDragDropView(
+                        UtilityAreaTerminalRowView(
                             terminal: terminal,
-                            group: group,
                             focusedTerminalID: $focusedTerminalID
                         )
+                        .onDrag {
+                            utilityAreaViewModel.draggedTerminalID = terminal.id
+
+                            let dragInfo = TerminalDragInfo(terminalID: terminal.id)
+                            let provider = NSItemProvider()
+                            do {
+                                let data = try JSONEncoder().encode(dragInfo)
+                                provider.registerDataRepresentation(
+                                    forTypeIdentifier: UTType.terminal.identifier,
+                                    visibility: .all
+                                ) { completion in
+                                    completion(data, nil)
+                                    return nil
+                                }
+                            } catch {
+                                print("❌ Erro ao codificar dragInfo: \(error)")
+                            }
+                            return provider
+                        }
+                        .onDrop(
+                            of: [UTType.terminal.identifier],
+                            delegate: TerminalDropDelegate(
+                                groupID: group.id,
+                                viewModel: utilityAreaViewModel,
+                                destinationTerminalID: terminal.id
+                            )
+                        )
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                        .animation(.easeInOut(duration: 0.2), value: group.isCollapsed)
                     } else {
                         TerminalGroupView(
                             index: index,
