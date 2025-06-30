@@ -91,39 +91,80 @@ struct UtilityAreaTerminalView: View {
     var body: some View {
         UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { tabState in
             ZStack {
-                // Keeps the sidebar from changing sizes because TerminalEmulatorView takes a µs to load in
-                HStack { Spacer() }
+                if let selectedTerminal = getSelectedTerminal(),
+                   let group = utilityAreaViewModel.terminalGroups.first(where: { $0.terminals.contains(selectedTerminal) }) {
 
-                if let selectedTerminal = getSelectedTerminal() {
                     GeometryReader { geometry in
                         let containerHeight = geometry.size.height
+                        let containerWidth = geometry.size.width
                         let totalFontHeight = fontTotalHeight(nsFont: font).rounded(.up)
                         let constrainedHeight = containerHeight - containerHeight.truncatingRemainder(
                             dividingBy: totalFontHeight
                         )
-                        VStack(spacing: 0) {
-                            Spacer(minLength: 0).frame(minHeight: 0)
-                            TerminalEmulatorView(
-                                url: selectedTerminal.url,
-                                terminalID: selectedTerminal.id,
-                                shellType: selectedTerminal.shell,
-                                onTitleChange: { [weak selectedTerminal] newTitle in
-                                    guard let id = selectedTerminal?.id else { return }
-                                    // This can be called whenever, even in a view update so it needs to be dispatched.
-                                    DispatchQueue.main.async { [weak utilityAreaViewModel] in
-                                        utilityAreaViewModel?.updateTerminal(id, title: newTitle)
+
+                        if group.terminals.count == 1 {
+                            VStack(spacing: 0) {
+                                TerminalEmulatorView(
+                                    url: selectedTerminal.url,
+                                    terminalID: selectedTerminal.id,
+                                    shellType: selectedTerminal.shell,
+                                    onTitleChange: { [weak selectedTerminal] newTitle in
+                                        guard let id = selectedTerminal?.id else { return }
+                                        DispatchQueue.main.async { [weak utilityAreaViewModel] in
+                                            utilityAreaViewModel?.updateTerminal(id, title: newTitle)
+                                        }
                                     }
+                                )
+                                .frame(height: max(0, constrainedHeight - 1))
+                                .id(selectedTerminal.id)
+                                .padding(.horizontal, 4)
+                            }
+                        } else {
+                            VStack {
+                                ScrollView(.horizontal, showsIndicators: true) {
+                                    HStack(spacing: 0.5) {
+                                        Rectangle()
+                                            .frame(width: 2)
+                                            .foregroundStyle(.gray.opacity(0.2))
+                                        ForEach(group.terminals, id: \.id) { terminal in
+                                            TerminalEmulatorView(
+                                                url: terminal.url,
+                                                terminalID: terminal.id,
+                                                shellType: terminal.shell,
+                                                onTitleChange: { [weak terminal] newTitle in
+                                                    guard let id = terminal?.id else { return }
+                                                    DispatchQueue.main.async { [weak utilityAreaViewModel] in
+                                                        utilityAreaViewModel?.updateTerminal(id, title: newTitle)
+                                                    }
+                                                }
+                                            )
+                                            .frame(height: max(0, constrainedHeight - 1))
+                                            .frame(minWidth: 200, maxWidth: .infinity)
+                                            .id(terminal.id)
+                                            .padding(.horizontal, 8)
+
+                                            Rectangle()
+                                                .frame(width: 2)
+                                                .foregroundStyle(.gray.opacity(0.2))
+                                        }
+                                    }
+                                    .frame(minWidth: containerWidth)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                 }
-                            )
-                            .frame(height: max(0, constrainedHeight - 1))
-                            .id(selectedTerminal.id)
+
+                                Rectangle()
+                                    .frame(height: 2)
+                                    .foregroundStyle(.gray.opacity(0.2))
+                            }
                         }
                     }
+
                 } else {
                     CEContentUnavailableView("No Selection")
                 }
             }
             .padding(.horizontal, 10)
+            .padding(.bottom, 10)
             .paneToolbar {
                 PaneToolbarSection {
                     UtilityAreaTerminalPicker(
