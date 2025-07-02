@@ -1,5 +1,5 @@
 {
-  "originHash" : "009e1551c2694bea3a9d2dbceddd8e00773fef8a671e74aec625abd3b334d910",
+  "originHash" : "3cb552b5e2e31b91b281091225c5b3ea09f287f41b8e0cccdf51671a9f974d6a",
   "pins" : [
     {
       "identity" : "aboutwindow",
@@ -38,6 +38,15 @@
       }
     },
     {
+      "identity" : "codeeditsourceeditor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
+      "state" : {
+        "revision" : "8a47aa4d3969a5e3bd372ce6c3d49ae3232883dd",
+        "version" : "0.14.0"
+      }
+    },
+    {
       "identity" : "codeeditsymbols",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSymbols",
@@ -51,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "80fb8842a232cdb04a9b9487da8f266f62066e75",
-        "version" : "0.11.5"
+        "revision" : "d65c2a4b23a52f69d0b3a113124d7434c7af07fa",
+        "version" : "0.11.6"
       }
     },
     {
@@ -159,8 +168,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/Rearrange",
       "state" : {
-        "revision" : "5ff7f3363f7a08f77e0d761e38e6add31c2136e1",
-        "version" : "1.8.1"
+        "revision" : "f1d74e1642956f0300756ad8d1d64e9034857bc3",
+        "version" : "2.0.0"
       }
     },
     {
@@ -266,8 +275,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ChimeHQ/TextStory",
       "state" : {
-        "revision" : "8dc9148b46fcf93b08ea9d4ef9bdb5e4f700e008",
-        "version" : "0.9.0"
+        "revision" : "91df6fc9bd817f9712331a4a3e826f7bdc823e1d",
+        "version" : "0.9.1"
       }
     },
     {
