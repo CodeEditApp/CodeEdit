@@ -139,6 +139,7 @@ struct CodeFileView: View {
                     showGutter: showGutter,
                     showMinimap: showMinimap,
                     showReformattingGuide: showReformattingGuide,
+                    showFoldingRibbon: false,
                     invisibleCharactersConfiguration: .empty,
                     warningCharacters: []
                 )
