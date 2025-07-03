@@ -139,7 +139,7 @@ struct UtilityAreaTerminalView: View {
                                                 }
                                             )
                                             .frame(height: max(0, constrainedHeight - 1))
-                                            .frame(minWidth: 200, maxWidth: .infinity)
+                                            .frame(minWidth: 400, maxWidth: .infinity)
                                             .id(terminal.id)
                                             .padding(.horizontal, 8)
 
