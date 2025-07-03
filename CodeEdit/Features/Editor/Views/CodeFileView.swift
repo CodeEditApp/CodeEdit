@@ -46,8 +46,12 @@ struct CodeFileView: View {
     var bracketEmphasis
     @AppSettings(\.textEditing.useSystemCursor)
     var useSystemCursor
+    @AppSettings(\.textEditing.showGutter)
+    var showGutter
     @AppSettings(\.textEditing.showMinimap)
     var showMinimap
+    @AppSettings(\.textEditing.showFoldingRibbon)
+    var showFoldingRibbon
     @AppSettings(\.textEditing.reformatAtColumn)
     var reformatAtColumn
     @AppSettings(\.textEditing.showReformattingGuide)
@@ -133,10 +137,10 @@ struct CodeFileView: View {
                     additionalTextInsets: NSEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
                 ),
                 peripherals: .init(
-                    showGutter: true,
+                    showGutter: showGutter,
                     showMinimap: showMinimap,
                     showReformattingGuide: showReformattingGuide,
-                    showFoldingRibbon: false,
+                    showFoldingRibbon: showFoldingRibbon,
                     invisibleCharactersConfiguration: .empty,
                     warningCharacters: []
                 )
