@@ -92,7 +92,9 @@ struct UtilityAreaTerminalView: View {
         UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { tabState in
             ZStack {
                 if let selectedTerminal = getSelectedTerminal(),
-                   let group = utilityAreaViewModel.terminalGroups.first(where: { $0.terminals.contains(selectedTerminal) }) {
+                   let group = utilityAreaViewModel.terminalGroups.first(where: {
+                       $0.terminals.contains(selectedTerminal)
+                   }) {
 
                     GeometryReader { geometry in
                         let containerHeight = geometry.size.height
@@ -229,8 +231,6 @@ struct UtilityAreaTerminalSidebarWrapper: View {
     @ObservedObject var viewModel: UtilityAreaViewModel
 
     var body: some View {
-
-
         return UtilityAreaTerminalSidebar()
     }
 }
