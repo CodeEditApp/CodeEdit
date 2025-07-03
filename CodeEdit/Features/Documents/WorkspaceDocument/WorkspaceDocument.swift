@@ -45,6 +45,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceSettingsManager: CEWorkspaceSettings?
     var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
 
+    var undoRegistration: UndoManagerRegistration = UndoManagerRegistration()
+
     @Published var notificationPanel = NotificationPanelViewModel()
     private var cancellables = Set<AnyCancellable>()
 

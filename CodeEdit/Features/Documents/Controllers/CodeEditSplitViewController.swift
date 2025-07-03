@@ -76,6 +76,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environmentObject(statusBarViewModel)
                     .environmentObject(utilityAreaModel)
                     .environmentObject(taskManager)
+                    .environmentObject(workspace.undoRegistration)
             }
         }
 

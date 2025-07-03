@@ -30,7 +30,7 @@ class EditorManager: ObservableObject {
     var activeEditorHistory: Deque<() -> Editor?> = []
 
     /// notify listeners whenever tab selection changes on the active editor.
-    var tabBarTabIdSubject = PassthroughSubject<String?, Never>()
+    var tabBarTabIdSubject = PassthroughSubject<Editor.Tab?, Never>()
     var cancellable: AnyCancellable?
 
     // This caching mechanism is a temporary solution and is not optimized
@@ -103,7 +103,7 @@ class EditorManager: ObservableObject {
         cancellable = nil
         cancellable = activeEditor.$selectedTab
             .sink { [weak self] tab in
-                self?.tabBarTabIdSubject.send(tab?.file.id)
+                self?.tabBarTabIdSubject.send(tab)
             }
     }
 

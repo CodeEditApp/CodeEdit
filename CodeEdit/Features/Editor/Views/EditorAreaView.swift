@@ -25,7 +25,7 @@ struct EditorAreaView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
-    @State var codeFile: CodeFileDocument?
+    @State var codeFile: (() -> CodeFileDocument?)?
 
     @Environment(\.window.value)
     private var window: NSWindow?
@@ -33,7 +33,9 @@ struct EditorAreaView: View {
     init(editor: Editor, focus: FocusState<Editor?>.Binding) {
         self.editor = editor
         self._focus = focus
-        self.codeFile = editor.selectedTab?.file.fileDocument
+        if let file = editor.selectedTab?.file.fileDocument {
+            self.codeFile = { [weak file] in file }
+        }
     }
 
     var body: some View {
@@ -53,29 +55,26 @@ struct EditorAreaView: View {
 
         VStack {
             if let selected = editor.selectedTab {
-                if let codeFile = codeFile {
-                    EditorAreaFileView(
-                        codeFile: codeFile,
-                        textViewCoordinators: [selected.rangeTranslator].compactMap({ $0 })
-                    )
-                    .focusedObject(editor)
-                    .transformEnvironment(\.edgeInsets) { insets in
-                        insets.top += editorInsetAmount
-                    }
-                    .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
-                    .onDrop(of: [.fileURL], isTargeted: nil) { providers in
-                        _ = handleDrop(providers: providers)
-                        return true
-                    }
+                if let codeFile = codeFile?() {
+                    EditorAreaFileView(editorInstance: selected, codeFile: codeFile)
+                        .focusedObject(editor)
+                        .transformEnvironment(\.edgeInsets) { insets in
+                            insets.top += editorInsetAmount
+                        }
+                        .opacity(dimEditorsWithoutFocus && editor != editorManager.activeEditor ? 0.5 : 1)
+                        .onDrop(of: [.fileURL], isTargeted: nil) { providers in
+                            _ = handleDrop(providers: providers)
+                            return true
+                        }
                 } else {
                     LoadingFileView(selected.file.name)
                         .onAppear {
                             if let file = selected.file.fileDocument {
-                                self.codeFile = file
+                                self.codeFile = { [weak file] in file }
                             }
                         }
                         .onReceive(selected.file.fileDocumentPublisher) { latestValue in
-                            self.codeFile = latestValue
+                            self.codeFile = { [weak latestValue] in latestValue }
                         }
                 }
 
@@ -96,6 +95,12 @@ struct EditorAreaView: View {
         .safeAreaInset(edge: .top, spacing: 0) {
             GeometryReader { geometry in
                 let topSafeArea = geometry.safeAreaInsets.top
+                let fileBinding = Binding {
+                    codeFile?()
+                } set: { newFile in
+                    codeFile = { [weak newFile] in newFile }
+                }
+
                 VStack(spacing: 0) {
                     if topSafeArea > 0 {
                         Rectangle()
@@ -104,7 +109,7 @@ struct EditorAreaView: View {
                             .background(.clear)
                     }
                     if shouldShowTabBar {
-                        EditorTabBarView(hasTopInsets: topSafeArea > 0, codeFile: $codeFile)
+                        EditorTabBarView(hasTopInsets: topSafeArea > 0, codeFile: fileBinding)
                             .id("TabBarView" + editor.id.uuidString)
                             .environmentObject(editor)
                         Divider()
@@ -113,7 +118,7 @@ struct EditorAreaView: View {
                         EditorJumpBarView(
                             file: editor.selectedTab?.file,
                             shouldShowTabBar: shouldShowTabBar,
-                            codeFile: $codeFile
+                            codeFile: fileBinding
                         ) { [weak editor] newFile in
                             if let file = editor?.selectedTab, let index = editor?.tabs.firstIndex(of: file) {
                                 editor?.openTab(file: newFile, at: index)
@@ -141,7 +146,9 @@ struct EditorAreaView: View {
             }
         }
         .onChange(of: editor.selectedTab) { newValue in
-            codeFile = newValue?.file.fileDocument
+            if let file = newValue?.file.fileDocument {
+                codeFile = { [weak file] in file }
+            }
         }
     }
 
@@ -155,9 +162,8 @@ struct EditorAreaView: View {
 
                 DispatchQueue.main.async {
                     let file = CEWorkspaceFile(url: url)
-                    editor.openTab(file: file)
                     editorManager.activeEditor = editor
-                    focus = editor
+                    editor.openTab(file: file)
                 }
             }
         }
