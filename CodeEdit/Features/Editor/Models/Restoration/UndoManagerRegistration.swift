@@ -19,7 +19,7 @@ final class UndoManagerRegistration: ObservableObject {
     private var managerMap: [CEWorkspaceFile.ID: CEUndoManager] = [:]
 
     init() { }
-    
+
     /// Find or create a new undo manager.
     /// - Parameter file: The file to create for.
     /// - Returns: The undo manager for the given file.

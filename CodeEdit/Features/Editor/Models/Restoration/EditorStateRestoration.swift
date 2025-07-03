@@ -61,20 +61,25 @@ final class EditorStateRestoration {
         }
     }
 
-    private var databaseQueue: DatabaseQueue
+    private var databaseQueue: DatabaseQueue?
+    private var databaseURL: URL
 
-    private init() throws {
-        let databaseURL: URL = FileManager.default
+    /// Create a new editor restoration object. Will connect to or create a SQLite db.
+    /// - Parameter databaseURL: The database URL to use. Must point to a file, not a directory. If left `nil`, will
+    ///                          create a new database named `editor-restoration.db` in the application support
+    ///                          directory.
+    init(_ databaseURL: URL? = nil) throws {
+        self.databaseURL = databaseURL ?? FileManager.default
             .homeDirectoryForCurrentUser
             .appending(path: "Library/Application Support/CodeEdit", directoryHint: .isDirectory)
             .appending(path: "editor-restoration.db", directoryHint: .notDirectory)
-
-        self.databaseQueue = try DatabaseQueue(path: databaseURL.absolutePath, configuration: .init())
         try attemptMigration(retry: true)
     }
 
-    private func attemptMigration(retry: Bool) throws {
+    func attemptMigration(retry: Bool) throws {
         do {
+            let databaseQueue = try DatabaseQueue(path: self.databaseURL.absolutePath, configuration: .init())
+
             var migrator = DatabaseMigrator()
 
             migrator.registerMigration("Version 0") {
@@ -85,12 +90,11 @@ final class EditorStateRestoration {
             }
 
             try migrator.migrate(databaseQueue)
+            self.databaseQueue = databaseQueue
         } catch {
             if retry {
                 // Try to delete the database on failure, might fix a corruption or version error.
                 try? FileManager.default.removeItem(at: databaseURL)
-                // This will recreate the db file if necessary
-                self.databaseQueue = try DatabaseQueue(path: databaseURL.absolutePath, configuration: .init())
                 try attemptMigration(retry: false)
 
                 return // Ignore the original error if we're retrying
@@ -108,7 +112,7 @@ final class EditorStateRestoration {
         do {
             let serializedData = try JSONEncoder().encode(data)
             let dbRow = StateRestorationRecord(uri: documentUrl.absolutePath, data: serializedData)
-            try databaseQueue.write { try dbRow.upsert($0) }
+            try databaseQueue?.write { try dbRow.upsert($0) }
         } catch {
             Self.logger.error("Failed to save editor state: \(error)")
         }
@@ -119,7 +123,7 @@ final class EditorStateRestoration {
     /// - Returns: Any data saved for this file.
     func restorationState(for documentUrl: URL) -> StateRestorationData? {
         do {
-            guard let row = try databaseQueue.read({
+            guard let row = try databaseQueue?.read({
                 try StateRestorationRecord.fetchOne($0, key: documentUrl.absolutePath)
             }) else {
                 return nil

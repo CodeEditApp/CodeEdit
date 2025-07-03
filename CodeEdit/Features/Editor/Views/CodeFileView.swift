@@ -58,8 +58,7 @@ struct CodeFileView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject
-    var undoRegistration: UndoManagerRegistration
+    @EnvironmentObject var undoRegistration: UndoManagerRegistration
 
     @ObservedObject private var themeModel: ThemeModel = .shared
 
