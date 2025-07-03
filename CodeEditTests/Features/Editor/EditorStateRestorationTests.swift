@@ -41,7 +41,7 @@ struct EditorStateRestorationTests {
     func clearsCorruptedDatabase() throws {
         try withTempDir { dir in
             let url = dir.appending(path: "database.db")
-            try "bad SQLITE data HAHAHA".write(to: url, atomically: true, encoding: .utf8)
+            try "bad data".write(to: url, atomically: true, encoding: .utf8)
             // This will throw if it can't connect to the database.
             _ = try EditorStateRestoration(url)
         }
