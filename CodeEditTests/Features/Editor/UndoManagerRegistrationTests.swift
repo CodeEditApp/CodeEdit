@@ -10,6 +10,7 @@ import Testing
 import Foundation
 import CodeEditTextView
 
+@MainActor
 @Suite
 struct UndoManagerRegistrationTests {
     let registrar = UndoManagerRegistration()
