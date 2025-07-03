@@ -69,9 +69,12 @@ final class EditorStateRestoration {
             .appending(path: "Library/Application Support/CodeEdit", directoryHint: .isDirectory)
             .appending(path: "editor-restoration.db", directoryHint: .notDirectory)
 
-        do {
-            self.databaseQueue = try DatabaseQueue(path: databaseURL.absolutePath, configuration: .init())
+        self.databaseQueue = try DatabaseQueue(path: databaseURL.absolutePath, configuration: .init())
+        try attemptMigration(retry: true)
+    }
 
+    private func attemptMigration(retry: Bool) throws {
+        do {
             var migrator = DatabaseMigrator()
 
             migrator.registerMigration("Version 0") {
@@ -83,8 +86,15 @@ final class EditorStateRestoration {
 
             try migrator.migrate(databaseQueue)
         } catch {
-            // Try to delete the database on failure, might fix a corruption or version error.
-            try? FileManager.default.removeItem(at: databaseURL)
+            if retry {
+                // Try to delete the database on failure, might fix a corruption or version error.
+                try? FileManager.default.removeItem(at: databaseURL)
+                // This will recreate the db file if necessary
+                self.databaseQueue = try DatabaseQueue(path: databaseURL.absolutePath, configuration: .init())
+                try attemptMigration(retry: false)
+
+                return // Ignore the original error if we're retrying
+            }
             Self.logger.error("Failed to start database connection: \(error)")
             throw error
         }
