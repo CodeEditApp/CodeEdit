@@ -74,9 +74,6 @@ extension SettingsData {
         /// Use the system cursor for the source editor.
         var useSystemCursor: Bool = true
 
-        /// Toggle the gutter in the editor.
-        var showGutter: Bool = true
-
         /// Toggle the minimap in the editor.
         var showMinimap: Bool = true
 
@@ -134,7 +131,6 @@ extension SettingsData {
                 self.useSystemCursor = false
             }
 
-            self.showGutter = try container.decodeIfPresent(Bool.self, forKey: .showGutter) ?? true
             self.showMinimap = try container.decodeIfPresent(Bool.self, forKey: .showMinimap) ?? true
             self.reformatAtColumn = try container.decodeIfPresent(Int.self, forKey: .reformatAtColumn) ?? 80
             self.showReformattingGuide = try container.decodeIfPresent(
@@ -176,12 +172,12 @@ extension SettingsData {
                 }
             )
 
-            mgr.addCommand(name: "Toggle Minimap", title: "Toggle Minimap", id: "prefs.text_editing.toggle_minimap") {
+            mgr.addCommand(
+                name: "Toggle Minimap",
+                title: "Toggle Minimap",
+                id: "prefs.text_editing.toggle_minimap"
+            ) {
                 Settings[\.textEditing].showMinimap.toggle()
-            }
-
-            mgr.addCommand(name: "Toggle Gutter", title: "Toggle Gutter", id: "prefs.text_editing.toggle_gutter") {
-                Settings[\.textEditing].showGutter.toggle()
             }
         }
 
