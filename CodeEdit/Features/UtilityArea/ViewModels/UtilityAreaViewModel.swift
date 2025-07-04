@@ -118,7 +118,10 @@ class UtilityAreaViewModel: ObservableObject {
         terminalGroups.removeAll { $0.terminals.isEmpty }
 
         // Insert into new group
-        guard let groupIndex = terminalGroups.firstIndex(where: { $0.id == groupID }) else { return }
+        guard let groupIndex = terminalGroups.firstIndex(where: { $0.id == groupID }) else {
+            renameGroups()
+            return
+        }
 
         if let destinationID,
            let destinationIndex = terminalGroups[groupIndex].terminals.firstIndex(where: { $0.id == destinationID }) {
@@ -132,10 +135,7 @@ class UtilityAreaViewModel: ObservableObject {
             selectedTerminals = [terminal.id]
         }
 
-        // Auto-name group if it wasn't named by user
-        for index in terminalGroups.indices where !terminalGroups[index].userName {
-            terminalGroups[index].name = "\(terminalGroups[index].terminals.count) Terminals"
-        }
+        renameGroups()
     }
 
     /// Removes a terminal from all groups by ID and returns it.
@@ -185,6 +185,7 @@ class UtilityAreaViewModel: ObservableObject {
            let last = terminalGroups.last?.terminals.last {
             selectedTerminals = [last.id]
         }
+        renameGroups()
     }
 
     /// Updates a terminal's title, or resets it if `nil`.
@@ -218,12 +219,12 @@ class UtilityAreaViewModel: ObservableObject {
 
         if let groupID, let index = terminalGroups.firstIndex(where: { $0.id == groupID }) {
             terminalGroups[index].terminals.append(newTerminal)
-            terminalGroups[index].name = "\(terminalGroups[index].terminals.count) Terminals"
         } else {
             terminalGroups.append(.init(name: "2 Terminals", terminals: [newTerminal]))
         }
 
         selectedTerminals = [newTerminal.id]
+        renameGroups()
     }
 
     /// Replaces a terminal with a new instance, useful for restarting.
@@ -267,5 +268,14 @@ class UtilityAreaViewModel: ObservableObject {
     /// Creates a new terminal group with the given terminals.
     func createGroup(with terminals: [UtilityAreaTerminal]) {
         terminalGroups.append(.init(name: "\(terminalGroups.count) Terminals", terminals: terminals))
+    }
+
+    // MARK: - PRIVATE METHODS
+
+    /// Rename all terminal groups that not has user name specifed.
+    private func renameGroups() {
+        for index in terminalGroups.indices where !terminalGroups[index].userName {
+            terminalGroups[index].name = "\(terminalGroups[index].terminals.count) Terminals"
+        }
     }
 }
