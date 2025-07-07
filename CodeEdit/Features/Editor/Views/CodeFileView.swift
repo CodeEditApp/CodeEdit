@@ -216,10 +216,19 @@ private extension SettingsData.TextEditingSettings.IndentOption {
 private extension SettingsData.TextEditingSettings.InvisibleCharactersConfig {
     func textViewOption() -> InvisibleCharactersConfiguration {
         guard self.enabled else { return .empty }
-        return InvisibleCharactersConfiguration(
+        var config = InvisibleCharactersConfiguration(
             showSpaces: self.showSpaces,
             showTabs: self.showTabs,
             showLineEndings: self.showLineEndings
         )
+
+        config.spaceReplacement = self.spaceReplacement
+        config.tabReplacement = self.tabReplacement
+        config.carriageReturnReplacement = self.carriageReturnReplacement
+        config.lineFeedReplacement = self.lineFeedReplacement
+        config.paragraphSeparatorReplacement = self.paragraphSeparatorReplacement
+        config.lineSeparatorReplacement = self.lineSeparatorReplacement
+
+        return config
     }
 }
