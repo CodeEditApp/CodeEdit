@@ -38,7 +38,7 @@ final class EditorStateRestoration {
         let data: Data
     }
 
-    struct StateRestorationData: Codable {
+    struct StateRestorationData: Codable, Equatable {
         // Cursor positions as range values (not row/column!)
         let cursorPositions: [Range<Int>]
         let scrollPositionX: Double

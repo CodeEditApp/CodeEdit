@@ -21,7 +21,7 @@ struct EditorStateRestorationTests {
     }
 
     @Test
-    func savesAndRetrievesState() throws {
+    func savesAndRetrievesStateForFile() throws {
         try withTempDir { dir in
             let url = dir.appending(path: "database.db")
             let restoration = try EditorStateRestoration(url)
@@ -33,7 +33,33 @@ struct EditorStateRestorationTests {
             )
 
             // Retrieve it
-            #expect(restoration.restorationState(for: dir.appending(path: "file.txt")) != nil)
+            #expect(
+                restoration.restorationState(for: dir.appending(path: "file.txt"))
+                == EditorStateRestoration.StateRestorationData(cursorPositions: [], scrollPosition: .zero)
+            )
+        }
+    }
+
+    @Test
+    func savesScrollPosition() throws {
+        try withTempDir { dir in
+            let url = dir.appending(path: "database.db")
+            let restoration = try EditorStateRestoration(url)
+
+            // Update some state
+            restoration.updateRestorationState(
+                for: dir.appending(path: "file.txt"),
+                data: .init(cursorPositions: [], scrollPosition: CGPoint(x: 100, y: 100))
+            )
+
+            // Retrieve it
+            #expect(
+                restoration.restorationState(for: dir.appending(path: "file.txt"))
+                == EditorStateRestoration.StateRestorationData(
+                    cursorPositions: [],
+                    scrollPosition: CGPoint(x: 100, y: 100)
+                )
+            )
         }
     }
 
