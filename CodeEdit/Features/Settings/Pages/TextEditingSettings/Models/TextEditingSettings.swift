@@ -298,6 +298,8 @@ extension SettingsData {
                 0x2019: "Right single quote",
                 0x201C: "Left double quote",
                 0x201D: "Right double quote",
+
+                0x037E: "Greek Question Mark"
             ])
 
             var enabled: Bool
