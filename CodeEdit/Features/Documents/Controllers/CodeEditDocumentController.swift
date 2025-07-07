@@ -7,6 +7,7 @@
 
 import Cocoa
 import SwiftUI
+import WelcomeWindow
 
 final class CodeEditDocumentController: NSDocumentController {
     @Environment(\.openWindow)
@@ -15,6 +16,26 @@ final class CodeEditDocumentController: NSDocumentController {
     @Service var lspService: LSPService
 
     private let fileManager = FileManager.default
+
+    @MainActor
+    func createAndOpenNewDocument(onCompletion: @escaping () -> Void) {
+        guard let newDocumentUrl = self.newDocumentUrl else { return }
+
+        let createdFile = self.fileManager.createFile(
+            atPath: newDocumentUrl.path,
+            contents: nil,
+            attributes: [FileAttributeKey.creationDate: Date()]
+        )
+
+        guard createdFile else {
+            print("Failed to create new document")
+            return
+        }
+
+        self.openDocument(withContentsOf: newDocumentUrl, display: true) { _, _, _ in
+            onCompletion()
+        }
+    }
 
     override func newDocument(_ sender: Any?) {
         guard let newDocumentUrl = self.newDocumentUrl else { return }
@@ -71,7 +92,7 @@ final class CodeEditDocumentController: NSDocumentController {
                 print("Unable to open document '\(url)': \(errorMessage)")
             }
 
-            RecentProjectsStore.shared.documentOpened(at: url)
+            RecentsStore.documentOpened(at: url)
             completionHandler(document, documentWasAlreadyOpen, error)
         }
     }

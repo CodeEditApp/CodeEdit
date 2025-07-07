@@ -822,6 +822,24 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "georgetchelidze",
+      "name": "George Tchelidze",
+      "avatar_url": "https://avatars.githubusercontent.com/u/96194129?v=4",
+      "profile": "https://github.com/georgetchelidze",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "zhrispineda",
+      "name": "Chris Pineda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148818634?v=4",
+      "profile": "http://zhr.is",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
