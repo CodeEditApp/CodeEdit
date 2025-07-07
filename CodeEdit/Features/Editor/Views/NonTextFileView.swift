@@ -20,15 +20,8 @@ struct NonTextFileView: View {
     var body: some View {
         Group {
             if let fileURL = fileDocument.fileURL {
-
-                if let utType = fileDocument.utType {
-                    if utType.conforms(to: .image) {
-                        ImageFileView(fileURL)
-                    } else if utType.conforms(to: .pdf) {
-                        PDFFileView(fileURL)
-                    } else {
-                        AnyFileView(fileURL)
-                    }
+                if let utType = fileDocument.utType, utType.conforms(to: .pdf) {
+                    PDFFileView(fileURL)
                 } else {
                     AnyFileView(fileURL)
                 }
