@@ -28,6 +28,7 @@ extension SettingsData {
                 "Enable type-over completion",
                 "Bracket Pair Emphasis",
                 "Bracket Pair Highlight",
+                "Show Gutter",
                 "Show Minimap",
                 "Reformat at Column",
                 "Show Reformatting Guide",
@@ -75,8 +76,14 @@ extension SettingsData {
         /// Use the system cursor for the source editor.
         var useSystemCursor: Bool = true
 
+        /// Toggle the gutter in the editor.
+        var showGutter: Bool = true
+
         /// Toggle the minimap in the editor.
         var showMinimap: Bool = true
+
+        /// Toggle the code folding ribbon.
+        var showFoldingRibbon: Bool = true
 
         /// The column at which to reformat text
         var reformatAtColumn: Int = 80
@@ -137,7 +144,9 @@ extension SettingsData {
                 self.useSystemCursor = false
             }
 
+            self.showGutter = try container.decodeIfPresent(Bool.self, forKey: .showGutter) ?? true
             self.showMinimap = try container.decodeIfPresent(Bool.self, forKey: .showMinimap) ?? true
+            self.showFoldingRibbon = try container.decodeIfPresent(Bool.self, forKey: .showFoldingRibbon) ?? true
             self.reformatAtColumn = try container.decodeIfPresent(Int.self, forKey: .reformatAtColumn) ?? 80
             self.showReformattingGuide = try container.decodeIfPresent(
                 Bool.self,
@@ -186,12 +195,20 @@ extension SettingsData {
                 }
             )
 
-            mgr.addCommand(
-                name: "Toggle Minimap",
-                title: "Toggle Minimap",
-                id: "prefs.text_editing.toggle_minimap"
-            ) {
+            mgr.addCommand(name: "Toggle Minimap", title: "Toggle Minimap", id: "prefs.text_editing.toggle_minimap") {
                 Settings[\.textEditing].showMinimap.toggle()
+            }
+
+            mgr.addCommand(name: "Toggle Gutter", title: "Toggle Gutter", id: "prefs.text_editing.toggle_gutter") {
+                Settings[\.textEditing].showGutter.toggle()
+            }
+
+            mgr.addCommand(
+                name: "Toggle Folding Ribbon",
+                title: "Toggle Folding Ribbon",
+                id: "prefs.text_editing.toggle_folding_ribbon"
+            ) {
+                Settings[\.textEditing].showFoldingRibbon.toggle()
             }
         }
 

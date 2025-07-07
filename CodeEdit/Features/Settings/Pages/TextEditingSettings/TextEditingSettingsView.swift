@@ -23,7 +23,11 @@ struct TextEditingSettingsView: View {
                 wrapLinesToEditorWidth
                 useSystemCursor
                 overscroll
+            }
+            Section {
+                showGutter
                 showMinimap
+                showFoldingRibbon
                 reformatSettings
             }
             Section {
@@ -209,13 +213,28 @@ private extension TextEditingSettingsView {
         }
     }
 
+    @ViewBuilder private var showGutter: some View {
+        Toggle("Show Gutter", isOn: $textEditing.showGutter)
+            .help("The gutter displays line numbers and code folding regions.")
+    }
+
     @ViewBuilder private var showMinimap: some View {
         Toggle("Show Minimap", isOn: $textEditing.showMinimap)
             // swiftlint:disable:next line_length
             .help("The minimap gives you a high-level summary of your source code, with controls to quickly navigate your document.")
     }
 
+    @ViewBuilder private var showFoldingRibbon: some View {
+        Toggle("Show Code Folding Ribbon", isOn: $textEditing.showFoldingRibbon)
+            .disabled(!textEditing.showGutter) // Disabled when the gutter is disabled
+            // swiftlint:disable:next line_length
+            .help("The code folding ribbon lets you fold regions of code. When the gutter is disabled, the folding ribbon is disabled.")
+    }
+
     @ViewBuilder private var reformatSettings: some View {
+        Toggle("Show Reformatting Guide", isOn: $textEditing.showReformattingGuide)
+            .help("Shows a vertical guide at the reformat column.")
+
         Stepper(
             "Reformat at Column",
             value: Binding<Double>(
@@ -226,10 +245,7 @@ private extension TextEditingSettingsView {
             step: 1,
             format: .number
         )
-        .help("The column at which text should be reformatted")
-
-        Toggle("Show Reformatting Guide", isOn: $textEditing.showReformattingGuide)
-            .help("Shows a vertical guide at the reformat column")
+        .help("The column at which text should be reformatted.")
     }
 
     @ViewBuilder private var invisibles: some View {

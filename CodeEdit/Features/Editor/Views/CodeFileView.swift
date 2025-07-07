@@ -16,8 +16,7 @@ import Combine
 struct CodeFileView: View {
     @ObservedObject private var codeFile: CodeFileDocument
 
-    /// The current cursor positions in the view
-    @State private var cursorPositions: [CursorPosition] = []
+    @State private var editorState: SourceEditorState
 
     @State private var treeSitterClient: TreeSitterClient = TreeSitterClient()
 
@@ -48,16 +47,16 @@ struct CodeFileView: View {
     var bracketEmphasis
     @AppSettings(\.textEditing.useSystemCursor)
     var useSystemCursor
+    @AppSettings(\.textEditing.showGutter)
+    var showGutter
     @AppSettings(\.textEditing.showMinimap)
     var showMinimap
+    @AppSettings(\.textEditing.showFoldingRibbon)
+    var showFoldingRibbon
     @AppSettings(\.textEditing.reformatAtColumn)
     var reformatAtColumn
     @AppSettings(\.textEditing.showReformattingGuide)
     var showReformattingGuide
-    @AppSettings(\.textEditing.invisibleCharacters)
-    var invisibleCharactersConfig
-    @AppSettings(\.textEditing.warningCharacters)
-    var warningCharacters
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -82,7 +81,9 @@ struct CodeFileView: View {
 
         if let openOptions = codeFile.openOptions {
             codeFile.openOptions = nil
-            self.cursorPositions = openOptions.cursorPositions
+            self.editorState = SourceEditorState(cursorPositions: openOptions.cursorPositions)
+        } else {
+            self.editorState = SourceEditorState()
         }
 
         updateHighlightProviders()
@@ -95,7 +96,7 @@ struct CodeFileView: View {
             }
             .store(in: &cancellables)
 
-        codeFile.undoManager = self.undoManager.manager
+        codeFile.undoManager = self.undoManager
     }
 
     private var currentTheme: Theme {
@@ -108,32 +109,44 @@ struct CodeFileView: View {
     private var edgeInsets
 
     var body: some View {
-        CodeEditSourceEditor(
+        SourceEditor(
             codeFile.content ?? NSTextStorage(),
             language: codeFile.getLanguage(),
-            theme: currentTheme.editor.editorTheme,
-            font: font,
-            tabWidth: codeFile.defaultTabWidth ?? defaultTabWidth,
-            indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
-            lineHeight: lineHeightMultiple,
-            wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
-            editorOverscroll: overscroll.overscrollPercentage,
-            cursorPositions: $cursorPositions,
-            useThemeBackground: useThemeBackground,
+            configuration: SourceEditorConfiguration(
+                appearance: .init(
+                    theme: currentTheme.editor.editorTheme,
+                    useThemeBackground: useThemeBackground,
+                    font: font,
+                    lineHeightMultiple: lineHeightMultiple,
+                    letterSpacing: letterSpacing,
+                    wrapLines: wrapLinesToEditorWidth,
+                    useSystemCursor: useSystemCursor,
+                    tabWidth: defaultTabWidth,
+                    bracketPairEmphasis: getBracketPairEmphasis()
+                ),
+                behavior: .init(
+                    isEditable: isEditable,
+                    indentOption: indentOption.textViewOption(),
+                    reformatAtColumn: reformatAtColumn
+                ),
+                layout: .init(
+                    editorOverscroll: overscroll.overscrollPercentage,
+                    contentInsets: edgeInsets.nsEdgeInsets,
+                    additionalTextInsets: NSEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
+                ),
+                peripherals: .init(
+                    showGutter: showGutter,
+                    showMinimap: showMinimap,
+                    showReformattingGuide: showReformattingGuide,
+                    showFoldingRibbon: showFoldingRibbon,
+                    invisibleCharactersConfiguration: .empty,
+                    warningCharacters: []
+                )
+            ),
+            state: $editorState,
             highlightProviders: highlightProviders,
-            contentInsets: edgeInsets.nsEdgeInsets,
-            additionalTextInsets: NSEdgeInsets(top: 2, left: 0, bottom: 0, right: 0),
-            isEditable: isEditable,
-            letterSpacing: letterSpacing,
-            bracketPairEmphasis: getBracketPairEmphasis(),
-            useSystemCursor: useSystemCursor,
             undoManager: undoManager,
-            coordinators: textViewCoordinators,
-            showMinimap: showMinimap,
-            reformatAtColumn: reformatAtColumn,
-            showReformattingGuide: showReformattingGuide,
-            invisibleCharactersConfig: invisibleCharactersConfig.textViewOption(),
-            warningCharacters: warningCharacters.textViewOption()
+            coordinators: textViewCoordinators
         )
         .id(codeFile.fileURL)
         .background {
@@ -193,33 +206,5 @@ private extension SettingsData.TextEditingSettings.IndentOption {
         case .tab:
             return IndentOption.tab
         }
-    }
-}
-
-private extension SettingsData.TextEditingSettings.InvisibleCharactersConfig {
-    func textViewOption() -> InvisibleCharactersConfig {
-        guard self.enabled else {
-            return .empty
-        }
-
-        var config = InvisibleCharactersConfig(
-            showSpaces: self.showSpaces,
-            showTabs: self.showTabs,
-            showLineEndings: self.showLineEndings
-        )
-        config.spaceReplacement = self.spaceReplacement
-        config.tabReplacement = self.tabReplacement
-        config.lineFeedReplacement = self.lineFeedReplacement
-        config.carriageReturnReplacement = self.carriageReturnReplacement
-        config.paragraphSeparatorReplacement = self.paragraphSeparatorReplacement
-        config.lineSeparatorReplacement = self.lineSeparatorReplacement
-        return config
-    }
-}
-
-private extension SettingsData.TextEditingSettings.WarningCharacters {
-    func textViewOption() -> Set<UInt16> {
-        guard self.enabled else { return [] }
-        return Set(self.characters.keys)
     }
 }
