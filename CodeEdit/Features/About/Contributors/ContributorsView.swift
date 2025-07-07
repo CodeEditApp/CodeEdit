@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
+import AboutWindow
 
 struct ContributorsView: View {
     @StateObject var model = ContributorsViewModel()
-    @Binding var aboutMode: AboutMode
-    var namespace: Namespace.ID
 
     var body: some View {
-        AboutDetailView(title: "Contributors", aboutMode: $aboutMode, namespace: namespace) {
+        AboutDetailView(title: "Contributors") {
             LazyVStack(spacing: 0) {
                 ForEach(model.contributors) { contributor in
                     ContributorRowView(contributor: contributor)

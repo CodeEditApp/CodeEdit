@@ -6,32 +6,63 @@
 //
 
 import AppKit
+import WelcomeWindow
 
-class RecentProjectsMenu: NSObject {
-    let projectsStore: RecentProjectsStore
+@MainActor
+final class RecentProjectsMenu: NSObject, NSMenuDelegate {
 
-    init(projectsStore: RecentProjectsStore = .shared) {
-        self.projectsStore = projectsStore
+    // MARK: - Menu construction
+
+    private let menuTitle = NSLocalizedString(
+        "Open Recent",
+        comment: "Open Recent menu title"
+    )
+
+    private lazy var menu: NSMenu = {
+        let menu = NSMenu(title: menuTitle)
+        menu.delegate = self           // <- make the menu ask us for updates
+        return menu
+    }()
+
+    /// Entry point used by the caller (e.g. the main menu bar template).
+    func makeMenu() -> NSMenu {
+        rebuildMenu()
+        return menu
     }
 
-    func makeMenu() -> NSMenu {
-        let menu = NSMenu(title: NSLocalizedString("Open Recent", comment: "Open Recent menu title"))
+    /// Called automatically right before the menu gets displayed.
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        rebuildMenu()
+    }
 
-        addFileURLs(to: menu, fileURLs: projectsStore.recentProjectURLs().prefix(10))
-        menu.addItem(NSMenuItem.separator())
-        addFileURLs(to: menu, fileURLs: projectsStore.recentFileURLs().prefix(10))
-        menu.addItem(NSMenuItem.separator())
+    // Rebuilds the whole “Open Recent” menu.
+    private func rebuildMenu() {
+        menu.removeAllItems()
+
+        addFileURLs(
+            to: menu,
+            fileURLs: RecentsStore.recentDirectoryURLs().prefix(10)
+        )
+        menu.addItem(.separator())
+        addFileURLs(
+            to: menu,
+            fileURLs: RecentsStore.recentFileURLs().prefix(10)
+        )
+        menu.addItem(.separator())
 
         let clearMenuItem = NSMenuItem(
-            title: NSLocalizedString("Clear Menu", comment: "Recent project menu clear button"),
+            title: NSLocalizedString(
+                "Clear Menu",
+                comment: "Recent project menu clear button"
+            ),
             action: #selector(clearMenuItemClicked(_:)),
             keyEquivalent: ""
         )
         clearMenuItem.target = self
         menu.addItem(clearMenuItem)
-
-        return menu
     }
+
+    // MARK: - Item creation helpers
 
     private func addFileURLs(to menu: NSMenu, fileURLs: ArraySlice<URL>) {
         for url in fileURLs {
@@ -80,7 +111,8 @@ class RecentProjectsMenu: NSObject {
             .path(percentEncoded: false)
             .abbreviatingWithTildeInPath()
         let alternateTitle = NSMutableAttributedString(
-            string: projectPath.lastPathComponent + " ", attributes: [.foregroundColor: NSColor.labelColor]
+            string: projectPath.lastPathComponent + " ",
+            attributes: [.foregroundColor: NSColor.labelColor]
         )
         alternateTitle.append(NSAttributedString(
             string: parentPath,
@@ -89,11 +121,11 @@ class RecentProjectsMenu: NSObject {
         return alternateTitle
     }
 
+    // MARK: - Actions
+
     @objc
-    func recentProjectItemClicked(_ sender: NSMenuItem) {
-        guard let projectURL = sender.representedObject as? URL else {
-            return
-        }
+    private func recentProjectItemClicked(_ sender: NSMenuItem) {
+        guard let projectURL = sender.representedObject as? URL else { return }
         CodeEditDocumentController.shared.openDocument(
             withContentsOf: projectURL,
             display: true,
@@ -102,7 +134,16 @@ class RecentProjectsMenu: NSObject {
     }
 
     @objc
-    func clearMenuItemClicked(_ sender: NSMenuItem) {
-        projectsStore.clearList()
+    private func clearMenuItemClicked(_ sender: NSMenuItem) {
+        RecentsStore.clearList()
+        rebuildMenu()
+    }
+}
+
+// MARK: - Helpers
+
+private extension String {
+    func abbreviatingWithTildeInPath() -> String {
+        (self as NSString).abbreviatingWithTildeInPath
     }
 }

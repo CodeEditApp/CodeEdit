@@ -16,8 +16,7 @@ import Combine
 struct CodeFileView: View {
     @ObservedObject private var codeFile: CodeFileDocument
 
-    /// The current cursor positions in the view
-    @State private var cursorPositions: [CursorPosition] = []
+    @State private var editorState: SourceEditorState
 
     @State private var treeSitterClient: TreeSitterClient = TreeSitterClient()
 
@@ -48,8 +47,12 @@ struct CodeFileView: View {
     var bracketEmphasis
     @AppSettings(\.textEditing.useSystemCursor)
     var useSystemCursor
+    @AppSettings(\.textEditing.showGutter)
+    var showGutter
     @AppSettings(\.textEditing.showMinimap)
     var showMinimap
+    @AppSettings(\.textEditing.showFoldingRibbon)
+    var showFoldingRibbon
     @AppSettings(\.textEditing.reformatAtColumn)
     var reformatAtColumn
     @AppSettings(\.textEditing.showReformattingGuide)
@@ -78,7 +81,9 @@ struct CodeFileView: View {
 
         if let openOptions = codeFile.openOptions {
             codeFile.openOptions = nil
-            self.cursorPositions = openOptions.cursorPositions
+            self.editorState = SourceEditorState(cursorPositions: openOptions.cursorPositions)
+        } else {
+            self.editorState = SourceEditorState()
         }
 
         updateHighlightProviders()
@@ -91,21 +96,7 @@ struct CodeFileView: View {
             }
             .store(in: &cancellables)
 
-        codeFile
-            .contentCoordinator
-            .textUpdatePublisher
-            .debounce(for: 1.0, scheduler: DispatchQueue.main)
-            .sink { _ in
-                // updateChangeCount is automatically managed by autosave(), so no manual call is necessary
-                codeFile.autosave(withImplicitCancellability: false) { error in
-                    if let error {
-                        CodeFileDocument.logger.error("Failed to autosave document, error: \(error)")
-                    }
-                }
-            }
-            .store(in: &cancellables)
-
-        codeFile.undoManager = self.undoManager.manager
+        codeFile.undoManager = self.undoManager
     }
 
     private var currentTheme: Theme {
@@ -118,30 +109,44 @@ struct CodeFileView: View {
     private var edgeInsets
 
     var body: some View {
-        CodeEditSourceEditor(
+        SourceEditor(
             codeFile.content ?? NSTextStorage(),
             language: codeFile.getLanguage(),
-            theme: currentTheme.editor.editorTheme,
-            font: font,
-            tabWidth: codeFile.defaultTabWidth ?? defaultTabWidth,
-            indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
-            lineHeight: lineHeightMultiple,
-            wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
-            editorOverscroll: overscroll.overscrollPercentage,
-            cursorPositions: $cursorPositions,
-            useThemeBackground: useThemeBackground,
+            configuration: SourceEditorConfiguration(
+                appearance: .init(
+                    theme: currentTheme.editor.editorTheme,
+                    useThemeBackground: useThemeBackground,
+                    font: font,
+                    lineHeightMultiple: lineHeightMultiple,
+                    letterSpacing: letterSpacing,
+                    wrapLines: wrapLinesToEditorWidth,
+                    useSystemCursor: useSystemCursor,
+                    tabWidth: defaultTabWidth,
+                    bracketPairEmphasis: getBracketPairEmphasis()
+                ),
+                behavior: .init(
+                    isEditable: isEditable,
+                    indentOption: indentOption.textViewOption(),
+                    reformatAtColumn: reformatAtColumn
+                ),
+                layout: .init(
+                    editorOverscroll: overscroll.overscrollPercentage,
+                    contentInsets: edgeInsets.nsEdgeInsets,
+                    additionalTextInsets: NSEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
+                ),
+                peripherals: .init(
+                    showGutter: showGutter,
+                    showMinimap: showMinimap,
+                    showReformattingGuide: showReformattingGuide,
+                    showFoldingRibbon: showFoldingRibbon,
+                    invisibleCharactersConfiguration: .empty,
+                    warningCharacters: []
+                )
+            ),
+            state: $editorState,
             highlightProviders: highlightProviders,
-            contentInsets: edgeInsets.nsEdgeInsets,
-            additionalTextInsets: NSEdgeInsets(top: 2, left: 0, bottom: 0, right: 0),
-            isEditable: isEditable,
-            letterSpacing: letterSpacing,
-            bracketPairEmphasis: getBracketPairEmphasis(),
-            useSystemCursor: useSystemCursor,
             undoManager: undoManager,
-            coordinators: textViewCoordinators,
-            showMinimap: showMinimap,
-            reformatAtColumn: reformatAtColumn,
-            showReformattingGuide: showReformattingGuide
+            coordinators: textViewCoordinators
         )
         .id(codeFile.fileURL)
         .background {

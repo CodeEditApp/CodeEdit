@@ -61,6 +61,12 @@ final class ProjectNavigatorMenu: NSMenu {
         let showFileInspector = menuItem("Show File Inspector", action: nil)
 
         let newFile = menuItem("New File...", action: #selector(newFile))
+        let newFileFromClipboard = menuItem(
+            "New File from Clipboard",
+            action: #selector(newFileFromClipboard),
+            key: "v"
+        )
+        newFileFromClipboard.keyEquivalentModifierMask = [.command]
         let newFolder = menuItem("New Folder", action: #selector(newFolder))
 
         let rename = menuItem("Rename", action: #selector(renameFile))
@@ -100,6 +106,7 @@ final class ProjectNavigatorMenu: NSMenu {
             showFileInspector,
             NSMenuItem.separator(),
             newFile,
+            newFileFromClipboard,
             newFolder
         ]
 

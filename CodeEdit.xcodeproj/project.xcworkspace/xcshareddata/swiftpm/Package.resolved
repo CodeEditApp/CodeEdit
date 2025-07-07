@@ -1,6 +1,15 @@
 {
-  "originHash" : "ac57a6899925c3e4ac6d43aed791c845c6fc24a4441b6a10297a207d951b7836",
+  "originHash" : "caf7678c3c52812febb80907a6a451d5e91a20058bbe45d250d7234c51299e91",
   "pins" : [
+    {
+      "identity" : "aboutwindow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/AboutWindow",
+      "state" : {
+        "revision" : "79c7c01fb739d024a3ca07fe153a068339213baf",
+        "version" : "1.0.0"
+      }
+    },
     {
       "identity" : "anycodable",
       "kind" : "remoteSourceControl",
@@ -33,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
       "state" : {
-        "revision" : "30eb8a8cf3b291c91da04cfbc6683bee643b86a6",
-        "version" : "0.13.2"
+        "revision" : "8a47aa4d3969a5e3bd372ce6c3d49ae3232883dd",
+        "version" : "0.14.0"
       }
     },
     {
@@ -51,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "69282e2ea7ad8976b062b945d575da47b61ed208",
-        "version" : "0.11.1"
+        "revision" : "d65c2a4b23a52f69d0b3a113124d7434c7af07fa",
+        "version" : "0.11.6"
       }
     },
     {
@@ -222,8 +231,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
       "state" : {
-        "revision" : "3825ebf8d55bb877c91bc897e8e3d0c001f16fba",
-        "version" : "0.58.2"
+        "revision" : "3780efccceaa87f17ec39638a9d263d0e742b71c",
+        "version" : "0.59.1"
       }
     },
     {
@@ -277,6 +286,15 @@
       "state" : {
         "revision" : "d97db6d63507eb62c536bcb2c4ac7d70c8ec665e",
         "version" : "0.23.2"
+      }
+    },
+    {
+      "identity" : "welcomewindow",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/CodeEditApp/WelcomeWindow",
+      "state" : {
+        "revision" : "5168cf1ce9579b35ad00706fafef441418d8011f",
+        "version" : "1.0.0"
       }
     }
   ],
