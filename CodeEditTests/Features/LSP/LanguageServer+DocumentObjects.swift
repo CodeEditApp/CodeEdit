@@ -49,6 +49,7 @@ final class LanguageServerDocumentObjectsTests: XCTestCase {
                 server: BufferingServerConnection(),
                 initializeParamsProvider: LanguageServerType.getInitParams(workspacePath: "/")
             ),
+            lspPid: -1,
             serverCapabilities: capabilities,
             rootPath: URL(fileURLWithPath: "")
         )
