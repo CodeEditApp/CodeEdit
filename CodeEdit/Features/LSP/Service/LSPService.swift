@@ -300,13 +300,15 @@ final class LSPService: ObservableObject {
 
     /// Goes through all active language servers and attempts to shut them down.
     func stopAllServers() async {
-        // Note: This is no longer a task group for a *REASON*
-        //       The task group for some reason would never return from the `await` suspension point.
-        for (key, server) in languageClients {
-            do {
-                try await server.shutdown()
-            } catch {
-                self.logger.warning("Shutting down \(key.languageId.rawValue): Error \(error)")
+        await withTaskGroup(of: Void.self) { group in
+            for (key, server) in languageClients {
+                group.addTask {
+                    do {
+                        try await server.shutdown()
+                    } catch {
+                        self.logger.warning("Shutting down \(key.languageId.rawValue): Error \(error)")
+                    }
+                }
             }
         }
         languageClients.removeAll()
