@@ -170,7 +170,7 @@ final class TaskNotificationHandler: ObservableObject {
               let actionRaw = userInfo["action"] as? String,
               let action = Action(rawValue: actionRaw) else { return }
 
-        /// If a workspace is specified, don't do anything with this task.
+        // If a workspace is specified and doesn't match, don't do anything with this task.
         if let workspaceURL = userInfo["workspace"] as? URL, workspaceURL != self.workspaceURL {
             return
         }
