@@ -86,18 +86,22 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
             environment: binary.env
         )
 
-        let (pid, connection) = try makeLocalServerConnection(languageId: languageId, executionParams: executionParams)
+        let (connection, process) = try makeLocalServerConnection(
+            languageId: languageId,
+            executionParams: executionParams
+        )
         let server = InitializingServer(
             server: connection,
             initializeParamsProvider: getInitParams(workspacePath: workspacePath)
         )
-        let capabilities = try await server.initializeIfNeeded()
+        let initializationResponse = try await server.initializeIfNeeded()
+
         return LanguageServer(
             languageId: languageId,
             binary: binary,
             lspInstance: server,
-            lspPid: pid,
-            serverCapabilities: capabilities,
+            lspPid: process.processIdentifier,
+            serverCapabilities: initializationResponse.capabilities,
             rootPath: URL(filePath: workspacePath)
         )
     }
@@ -112,15 +116,15 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     static func makeLocalServerConnection(
         languageId: LanguageIdentifier,
         executionParams: Process.ExecutionParameters
-    ) throws -> (pid: pid_t, connection: JSONRPCServerConnection) {
+    ) throws -> (connection: JSONRPCServerConnection, process: Process) {
         do {
-            let (pid, channel) = try DataChannel.localProcessChannel(
+            let (channel, process) = try DataChannel.localProcessChannel(
                 parameters: executionParams,
                 terminationHandler: {
                     logger.debug("Terminated data channel for \(languageId.rawValue)")
                 }
             )
-            return (pid, JSONRPCServerConnection(dataChannel: channel))
+            return (JSONRPCServerConnection(dataChannel: channel), process)
         } catch {
             logger.warning("Failed to initialize data channel for \(languageId.rawValue)")
             throw error

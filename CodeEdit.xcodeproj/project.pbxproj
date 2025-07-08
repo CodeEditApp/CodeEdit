@@ -1656,7 +1656,7 @@
 			repositoryURL = "https://github.com/ChimeHQ/LanguageClient";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.8.0;
+				minimumVersion = 0.8.2;
 			};
 		};
 		303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */ = {
