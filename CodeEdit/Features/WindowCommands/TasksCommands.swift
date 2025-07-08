@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct TasksCommands: Commands {
     @UpdatingWindowController var windowController: CodeEditWindowController?
@@ -14,29 +15,41 @@ struct TasksCommands: Commands {
         windowController?.workspace?.taskManager
     }
 
-    var selectedTask: CETask? {
-        taskManager?.availableTasks.first(where: { $0.id == taskManager?.selectedTaskID })
-    }
+    @State private var activeTaskStatus: CETaskStatus = .notRunning
+    @State private var taskManagerListener: AnyCancellable?
+    @State private var statusListener: AnyCancellable?
 
     var body: some Commands {
         CommandMenu("Tasks") {
-            let selectedTaskName: String? = if let selectedTask {
+            let selectedTaskName: String = if let selectedTask = taskManager?.selectedTask {
                 "\"" + selectedTask.name + "\""
             } else {
-                nil
+                "(No Selected Task)"
             }
 
-            Button("Run \(selectedTaskName ?? "(No Selected Task)")") {
+            Button("Run \(selectedTaskName)", systemImage: "play.fill") {
                 taskManager?.executeActiveTask()
+                showOutput()
             }
-            .keyboardShortcut("r", modifiers: .command)
+            .keyboardShortcut("R")
             .disabled(taskManager?.selectedTaskID == nil)
 
-            Button("Stop \(selectedTaskName ?? "(No Selected Task)")") {
-                taskManager?.terminateSelectedTask()
+            Button("Stop \(selectedTaskName)", systemImage: "stop.fill") {
+                taskManager?.terminateActiveTask()
             }
-            .keyboardShortcut(".", modifiers: .command)
-            .disabled(taskManager?.activeTasks.isEmpty == true)
+            .keyboardShortcut(".")
+            .onChange(of: windowController) { _ in
+                taskManagerListener = taskManager?.objectWillChange.sink {
+                    updateStatusListener()
+                }
+            }
+            .disabled(activeTaskStatus != .running)
+
+            Button("Show \(selectedTaskName) Output") {
+                showOutput()
+            }
+            // Disable when there's no output yet
+            .disabled(taskManager?.activeTasks[taskManager?.selectedTaskID ?? UUID()] == nil)
 
             Divider()
 
@@ -48,19 +61,54 @@ struct TasksCommands: Commands {
                         }
                     }
                 }
+
+                if taskManager?.availableTasks.isEmpty ?? true {
+                    Button("Create Tasks") {
+                        openSettings()
+                    }
+                }
             } label: {
                 Text("Choose Task...")
             }
             .disabled(taskManager?.availableTasks.isEmpty == true)
 
             Button("Manage Tasks...") {
-                NSApp.sendAction(
-                    #selector(CodeEditWindowController.openWorkspaceSettings(_:)),
-                    to: windowController,
-                    from: nil
-                )
+                openSettings()
             }
             .disabled(windowController == nil)
         }
+    }
+
+    /// Update the ``statusListener`` to listen to a potentially new active task.
+    private func updateStatusListener() {
+        statusListener?.cancel()
+        guard let taskManager else { return }
+
+        activeTaskStatus = taskManager.activeTasks[taskManager.selectedTaskID ?? UUID()]?.status ?? .notRunning
+        guard let id = taskManager.selectedTaskID else { return }
+
+        statusListener = taskManager.activeTasks[id]?.$status.sink { newValue in
+            activeTaskStatus = newValue
+        }
+    }
+
+    private func showOutput() {
+        guard let utilityAreaModel = windowController?.workspace?.utilityAreaModel else {
+            return
+        }
+        if utilityAreaModel.isCollapsed {
+            // Open the utility area
+            utilityAreaModel.isCollapsed.toggle()
+        }
+        utilityAreaModel.selectedTab = .debugConsole // Switch to the correct tab
+        taskManager?.taskShowingOutput = taskManager?.selectedTaskID // Switch to the selected task
+    }
+
+    private func openSettings() {
+        NSApp.sendAction(
+            #selector(CodeEditWindowController.openWorkspaceSettings(_:)),
+            to: windowController,
+            from: nil
+        )
     }
 }

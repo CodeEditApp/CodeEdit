@@ -93,7 +93,7 @@ class TaskManager: ObservableObject {
         }
     }
 
-    func terminateSelectedTask() {
+    func terminateActiveTask() {
         guard let taskID = selectedTaskID else {
             return
         }

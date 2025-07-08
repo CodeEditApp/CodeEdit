@@ -24,7 +24,7 @@ struct StopTaskToolbarButton: View {
         HStack {
             if let currentSelectedStatus, currentSelectedStatus == .running {
                     Button {
-                        taskManager.terminateSelectedTask()
+                        taskManager.terminateActiveTask()
                     } label: {
                         Label("Stop", systemImage: "stop.fill")
                             .labelStyle(.iconOnly)
