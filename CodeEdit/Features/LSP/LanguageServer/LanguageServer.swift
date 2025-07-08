@@ -40,17 +40,21 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     private(set) var lspInstance: InitializingServer
     /// The path to the root of the project
     private(set) var rootPath: URL
+    /// The PID of the running language server process.
+    private(set) var pid: pid_t
 
     init(
         languageId: LanguageIdentifier,
         binary: LanguageServerBinary,
         lspInstance: InitializingServer,
+        lspPid: pid_t,
         serverCapabilities: ServerCapabilities,
         rootPath: URL
     ) {
         self.languageId = languageId
         self.binary = binary
         self.lspInstance = lspInstance
+        self.pid = lspPid
         self.serverCapabilities = serverCapabilities
         self.rootPath = rootPath
         self.openFiles = LanguageServerFileMap()
@@ -82,8 +86,9 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
             environment: binary.env
         )
 
+        let (pid, connection) = try makeLocalServerConnection(languageId: languageId, executionParams: executionParams)
         let server = InitializingServer(
-            server: try makeLocalServerConnection(languageId: languageId, executionParams: executionParams),
+            server: connection,
             initializeParamsProvider: getInitParams(workspacePath: workspacePath)
         )
         let capabilities = try await server.initializeIfNeeded()
@@ -91,6 +96,7 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
             languageId: languageId,
             binary: binary,
             lspInstance: server,
+            lspPid: pid,
             serverCapabilities: capabilities,
             rootPath: URL(filePath: workspacePath)
         )
@@ -106,15 +112,15 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     static func makeLocalServerConnection(
         languageId: LanguageIdentifier,
         executionParams: Process.ExecutionParameters
-    ) throws -> JSONRPCServerConnection {
+    ) throws -> (pid: pid_t, connection: JSONRPCServerConnection) {
         do {
-            let channel = try DataChannel.localProcessChannel(
+            let (pid, channel) = try DataChannel.localProcessChannel(
                 parameters: executionParams,
                 terminationHandler: {
                     logger.debug("Terminated data channel for \(languageId.rawValue)")
                 }
             )
-            return JSONRPCServerConnection(dataChannel: channel)
+            return (pid, JSONRPCServerConnection(dataChannel: channel))
         } catch {
             logger.warning("Failed to initialize data channel for \(languageId.rawValue)")
             throw error
@@ -232,10 +238,14 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
         // swiftlint:enable function_body_length
     }
 
+    // MARK: - Shutdown
+
     /// Shuts down the language server and exits it.
     public func shutdown() async throws {
         self.logger.info("Shutting down language server")
-        try await lspInstance.shutdownAndExit()
+        try await withTimeout(duration: .seconds(1.0)) {
+            try await self.lspInstance.shutdownAndExit()
+        }
     }
 }
 

@@ -25,28 +25,35 @@ import Combine
 /// Remember to manage your task notifications appropriately. You should either delete task 
 /// notifications manually or schedule their deletion in advance using the `deleteWithDelay` method.
 ///
+/// Some tasks should be restricted to a specific workspace. To do this, specify the `workspace` attribute in the
+/// notification's `userInfo` dictionary as a `URL`, or use the `toWorkspace` parameter on
+/// ``TaskNotificationHandler/postTask(toWorkspace:action:model:)``.
+///
 /// ## Available Methods
 /// - `create`:
 ///     Creates a new Task Notification. 
 ///     Required fields: `id` (String), `action` (String), `title` (String). 
-///     Optional fields: `message` (String), `percentage` (Double), `isLoading` (Bool).
+///     Optional fields: `message` (String), `percentage` (Double), `isLoading` (Bool), `workspace` (URL).
 /// - `createWithPriority`:
 ///     Creates a new Task Notification and inserts it at the start of the array.
 ///     This ensures it appears in the activity viewer even if there are other task notifications before it.
 ///     **Note:** This should only be used for important notifications!
 ///     Required fields: `id` (String), `action` (String), `title` (String). 
-///     Optional fields: `message` (String), `percentage` (Double), `isLoading` (Bool).
+///     Optional fields: `message` (String), `percentage` (Double), `isLoading` (Bool), `workspace` (URL).
 /// - `update`:
 ///     Updates an existing task notification. It's important to pass the same `id` to update the correct task.
 ///     Required fields: `id` (String), `action` (String). 
-///     Optional fields: `title` (String), `message` (String), `percentage` (Double), `isLoading` (Bool).
+///     Optional fields: `title` (String), `message` (String), `percentage` (Double), `isLoading` (Bool),
+///     `workspace` (URL).
 /// - `delete`:
 ///     Deletes an existing task notification.
 ///     Required fields: `id` (String), `action` (String).
+///     Optional field: `workspace` (URL).
 /// - `deleteWithDelay`:
 ///     Deletes an existing task notification after a certain `TimeInterval`.
 ///     Required fields: `id` (String), `action` (String), `delay` (Double).
-///     **Important:** When specifying the delay, ensure it's a double. 
+///     Optional field: `workspace` (URL).
+///     **Important:** When specifying the delay, ensure it's a double.
 ///     For example, '2' would be invalid because it would count as an integer, use '2.0' instead.
 ///
 /// ## Example Usage:
@@ -101,13 +108,46 @@ import Combine
 /// }
 /// ```
 ///
+/// You can also use the static helper method instead of creating dictionaries manually:
+/// ```swift
+/// TaskNotificationHandler.postTask(action: .create, model: .init(id: "task_id", "title": "New Task"))
+/// ```
+///
 /// - Important: Please refer to ``CodeEdit/TaskNotificationModel`` and ensure you pass the correct values.
 final class TaskNotificationHandler: ObservableObject {
     @Published private(set) var notifications: [TaskNotificationModel] = []
+    var workspaceURL: URL?
     var cancellables: Set<AnyCancellable> = []
 
+    enum Action: String {
+        case create
+        case createWithPriority
+        case update
+        case delete
+        case deleteWithDelay
+    }
+
+    /// Post a new task.
+    /// - Parameters:
+    ///   - toWorkspace: The workspace to restrict the task to. Defaults to `nil`, which is received by all workspaces.
+    ///   - action: The action being taken on the task.
+    ///   - model: The task contents.
+    static func postTask(toWorkspace: URL? = nil, action: Action, model: TaskNotificationModel) {
+        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: [
+            "id": model.id,
+            "title": model.title,
+            "message": model.message as Any,
+            "percentage": model.percentage as Any,
+            "isLoading": model.isLoading,
+            "action": action.rawValue,
+            "workspace": toWorkspace as Any
+        ])
+    }
+
     /// Initialises a new `TaskNotificationHandler` and starts observing for task notifications.
-    init() {
+    init(workspaceURL: URL? = nil) {
+        self.workspaceURL = workspaceURL
+
         NotificationCenter.default
             .publisher(for: .taskNotification)
             .receive(on: DispatchQueue.main)
@@ -127,21 +167,25 @@ final class TaskNotificationHandler: ObservableObject {
     private func handleNotification(_ notification: Notification) {
         guard let userInfo = notification.userInfo,
               let taskID = userInfo["id"] as? String,
-              let action = userInfo["action"] as? String else { return }
+              let actionRaw = userInfo["action"] as? String,
+              let action = Action(rawValue: actionRaw) else { return }
+
+        /// If a workspace is specified, don't do anything with this task.
+        if let workspaceURL = userInfo["workspace"] as? URL, workspaceURL != self.workspaceURL {
+            return
+        }
 
         switch action {
-        case "create", "createWithPriority":
+        case .create, .createWithPriority:
             createTask(task: userInfo)
-        case "update":
+        case .update:
             updateTask(task: userInfo)
-        case "delete":
+        case .delete:
             deleteTask(taskID: taskID)
-        case "deleteWithDelay":
+        case .deleteWithDelay:
             if let delay = userInfo["delay"] as? Double {
                 deleteTaskAfterDelay(taskID: taskID, delay: delay)
             }
-        default:
-            break
         }
     }
 

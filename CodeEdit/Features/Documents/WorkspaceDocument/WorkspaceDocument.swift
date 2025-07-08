@@ -161,6 +161,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 workspaceURL: url
             )
         }
+        self.taskNotificationHandler.workspaceURL = url
 
         editorManager?.restoreFromState(self)
         utilityAreaModel?.restoreFromState(self)
