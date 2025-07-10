@@ -44,84 +44,47 @@ struct WorkspaceView: View {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
-                        ZStack {
-                            GeometryReader { geo in
-                                EditorLayoutView(
-                                    layout: editorManager.isFocusingActiveEditor
-                                    ? editorManager.activeEditor.getEditorLayout() ?? editorManager.editorLayout
-                                    : editorManager.editorLayout,
-                                    focus: $focusedEditor
-                                )
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .onChange(of: geo.size.height) { newHeight in
-                                    editorsHeight = newHeight
-                                }
-                                .onAppear {
-                                    editorsHeight = geo.size.height
-                                }
-                            }
-                        }
-                        .frame(minHeight: 170 + 29 + 29)
-                        .collapsable()
-                        .collapsed($utilityAreaViewModel.isMaximized)
-                        .holdingPriority(.init(1))
-                        Rectangle()
-                            .collapsable()
-                            .collapsed($utilityAreaViewModel.isCollapsed)
-                            .splitViewCanAnimate($utilityAreaViewModel.animateCollapse)
-                            .opacity(0)
-                            .frame(idealHeight: 260)
-                            .frame(minHeight: 100)
-                            .background {
-                                GeometryReader { geo in
-                                    Rectangle()
-                                        .opacity(0)
-                                        .onChange(of: geo.size.height) { newHeight in
-                                            drawerHeight = newHeight
-                                        }
-                                        .onAppear {
-                                            drawerHeight = geo.size.height
-                                        }
-                                }
-                            }
-                            .accessibilityHidden(true)
+                        editorArea
+                        utilityAreaPlaceholder
                     }
                     .edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .overlay(alignment: .top) {
-                        ZStack(alignment: .top) {
-                            UtilityAreaView()
-                                .frame(height: utilityAreaViewModel.isMaximized ? nil : drawerHeight)
-                                .frame(maxHeight: utilityAreaViewModel.isMaximized ? .infinity : nil)
-                                .padding(.top, utilityAreaViewModel.isMaximized ? statusbarHeight + 1 : 0)
-                                .offset(y: utilityAreaViewModel.isMaximized ? 0 : editorsHeight + 1)
-                            VStack(spacing: 0) {
-                                StatusBarView(proxy: proxy)
-                                if utilityAreaViewModel.isMaximized {
-                                    PanelDivider()
-                                }
-                            }
-                            .offset(y: utilityAreaViewModel.isMaximized ? 0 : editorsHeight - statusbarHeight)
-                        }
-                        .accessibilityElement(children: .contain)
+                        utilityArea(proxy: proxy)
                     }
                     .overlay(alignment: .topTrailing) {
                         NotificationPanelView()
                     }
+
+                    // MARK: - Tab Focus Listeners
+
+                    .onChange(of: editorManager.activeEditor) { newValue in
+                        focusedEditor = newValue
+                    }
                     .onChange(of: focusedEditor) { newValue in
-                        /// update active tab group only if the new one is not the same with it.
+                        /// Update active tab group only if the new one is not the same with it.
                         if let newValue, editorManager.activeEditor != newValue {
                             editorManager.activeEditor = newValue
                         }
                     }
-                    .onChange(of: editorManager.activeEditor) { newValue in
-                        if newValue != focusedEditor {
-                            focusedEditor = newValue
-                        }
-                    }
+
+                    // MARK: - Theme Color Scheme
+
                     .task {
                         themeModel.colorScheme = colorScheme
+                    }
+                    .onChange(of: colorScheme) { newValue in
+                        themeModel.colorScheme = newValue
+                        if matchAppearance {
+                            themeModel.selectedTheme = newValue == .dark
+                            ? themeModel.selectedDarkTheme
+                            : themeModel.selectedLightTheme
+                        }
+                    }
 
+                    // MARK: - Source Control
+
+                    .task {
                         do {
                             try await sourceControlManager.refreshRemotes()
                             try await sourceControlManager.refreshStashEntries()
@@ -130,14 +93,6 @@ struct WorkspaceView: View {
                                 title: "Error refreshing Git data",
                                 error: error
                             )
-                        }
-                    }
-                    .onChange(of: colorScheme) { newValue in
-                        themeModel.colorScheme = newValue
-                        if matchAppearance {
-                            themeModel.selectedTheme = newValue == .dark
-                            ? themeModel.selectedDarkTheme
-                            : themeModel.selectedLightTheme
                         }
                     }
                     .onChange(of: sourceControlIsEnabled) { newValue in
@@ -149,17 +104,9 @@ struct WorkspaceView: View {
                             sourceControlManager.currentBranch = nil
                         }
                     }
-                    .onChange(of: focusedEditor) { newValue in
-                        /// Update active tab group only if the new one is not the same with it.
-                        if let newValue, editorManager.activeEditor != newValue {
-                            editorManager.activeEditor = newValue
-                        }
-                    }
-                    .onChange(of: editorManager.activeEditor) { newValue in
-                        if newValue != focusedEditor {
-                            focusedEditor = newValue
-                        }
-                    }
+
+                    // MARK: - Window Will Close
+
                     .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { output in
                         if let window = output.object as? NSWindow, self.window == window {
                             workspace.addToWorkspaceState(
@@ -179,6 +126,76 @@ struct WorkspaceView: View {
             .accessibilityElement(children: .contain)
             .accessibilityLabel("workspace area")
         }
+    }
+
+    // MARK: - Editor Area
+
+    @ViewBuilder private var editorArea: some View {
+        ZStack {
+            GeometryReader { geo in
+                EditorLayoutView(
+                    layout: editorManager.isFocusingActiveEditor
+                    ? editorManager.activeEditor.getEditorLayout() ?? editorManager.editorLayout
+                    : editorManager.editorLayout,
+                    focus: $focusedEditor
+                )
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .onChange(of: geo.size.height) { newHeight in
+                    editorsHeight = newHeight
+                }
+                .onAppear {
+                    editorsHeight = geo.size.height
+                }
+            }
+        }
+        .frame(minHeight: 170 + 29 + 29)
+        .collapsable()
+        .collapsed($utilityAreaViewModel.isMaximized)
+        .holdingPriority(.init(1))
+    }
+
+    // MARK: - Utility Area
+
+    @ViewBuilder
+    private func utilityArea(proxy: SplitViewProxy) -> some View {
+        ZStack(alignment: .top) {
+            UtilityAreaView()
+                .frame(height: utilityAreaViewModel.isMaximized ? nil : drawerHeight)
+                .frame(maxHeight: utilityAreaViewModel.isMaximized ? .infinity : nil)
+                .padding(.top, utilityAreaViewModel.isMaximized ? statusbarHeight + 1 : 0)
+                .offset(y: utilityAreaViewModel.isMaximized ? 0 : editorsHeight + 1)
+            VStack(spacing: 0) {
+                StatusBarView(proxy: proxy)
+                if utilityAreaViewModel.isMaximized {
+                    PanelDivider()
+                }
+            }
+            .offset(y: utilityAreaViewModel.isMaximized ? 0 : editorsHeight - statusbarHeight)
+        }
+        .accessibilityElement(children: .contain)
+    }
+
+    @ViewBuilder private var utilityAreaPlaceholder: some View {
+        Rectangle()
+            .collapsable()
+            .collapsed($utilityAreaViewModel.isCollapsed)
+            .splitViewCanAnimate($utilityAreaViewModel.animateCollapse)
+            .opacity(0)
+            .frame(idealHeight: 260)
+            .frame(minHeight: 100)
+            .background {
+                GeometryReader { geo in
+                    Rectangle()
+                        .opacity(0)
+                        .onChange(of: geo.size.height) { newHeight in
+                            drawerHeight = newHeight
+                        }
+                        .onAppear {
+                            drawerHeight = geo.size.height
+                        }
+                }
+            }
+            .accessibilityHidden(true)
     }
 
     private func handleDrop(providers: [NSItemProvider]) -> Bool {
