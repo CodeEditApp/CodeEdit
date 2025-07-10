@@ -62,9 +62,10 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
                 save: nil
             )
         )
-        let server = LanguageServerType(
+        let server = await LanguageServerType(
             languageId: .swift,
             binary: .init(execPath: "", args: [], env: nil),
+            workspace: WorkspaceDocument(),
             lspInstance: InitializingServer(
                 server: bufferingConnection,
                 initializeParamsProvider: LanguageServerType.getInitParams(workspacePath: tempTestDir.path())
