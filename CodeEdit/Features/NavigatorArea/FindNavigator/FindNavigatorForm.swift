@@ -18,7 +18,6 @@ struct FindNavigatorForm: View {
         }
     }
 
-    @State private var replaceText: String = ""
     @State private var includesText: String = ""
     @State private var excludesText: String = ""
     @State private var scoped: Bool = false
@@ -167,7 +166,7 @@ struct FindNavigatorForm: View {
             if selectedMode[0] == SearchModeModel.Replace {
                 PaneTextField(
                     "With",
-                    text: $replaceText,
+                    text: $state.replaceText,
                     axis: .vertical,
                     leadingAccessories: {
                         Image(systemName: "arrow.2.squarepath")
@@ -254,7 +253,7 @@ struct FindNavigatorForm: View {
                 Button {
                     Task {
                         let startTime = Date()
-                        try? await state.findAndReplace(query: state.searchQuery, replacingTerm: replaceText)
+                        try? await state.findAndReplace(query: state.searchQuery, replacingTerm: state.replaceText)
                         print(Date().timeIntervalSince(startTime))
                     }
                 } label: {

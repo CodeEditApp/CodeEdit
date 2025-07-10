@@ -29,6 +29,7 @@ extension WorkspaceDocument {
         @Published var searchResultsCount: Int = 0
         /// Stores the user's input, shown when no files are found, and persists across navigation items.
         @Published var searchQuery: String = ""
+        @Published var replaceText: String = ""
 
         @Published var indexStatus: IndexStatus = .none
 

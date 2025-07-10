@@ -14,9 +14,8 @@ import Combine
 
 /// CodeFileView is just a wrapper of the `CodeEditor` dependency
 struct CodeFileView: View {
+    @ObservedObject private var editorInstance: EditorInstance
     @ObservedObject private var codeFile: CodeFileDocument
-
-    @State private var editorState: SourceEditorState
 
     @State private var treeSitterClient: TreeSitterClient = TreeSitterClient()
 
@@ -65,6 +64,8 @@ struct CodeFileView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
+    @EnvironmentObject var undoRegistration: UndoManagerRegistration
+
     @ObservedObject private var themeModel: ThemeModel = .shared
 
     @State private var treeSitter = TreeSitterClient()
@@ -73,21 +74,24 @@ struct CodeFileView: View {
 
     private let isEditable: Bool
 
-    private let undoManager = CEUndoManager()
-
-    init(codeFile: CodeFileDocument, textViewCoordinators: [TextViewCoordinator] = [], isEditable: Bool = true) {
+    init(
+        editorInstance: EditorInstance,
+        codeFile: CodeFileDocument,
+        textViewCoordinators: [TextViewCoordinator] = [],
+        isEditable: Bool = true
+    ) {
+        self._editorInstance = .init(wrappedValue: editorInstance)
         self._codeFile = .init(wrappedValue: codeFile)
 
         self.textViewCoordinators = textViewCoordinators
+            + [editorInstance.rangeTranslator]
             + [codeFile.contentCoordinator]
             + [codeFile.languageServerObjects.textCoordinator].compactMap({ $0 })
         self.isEditable = isEditable
 
         if let openOptions = codeFile.openOptions {
             codeFile.openOptions = nil
-            self.editorState = SourceEditorState(cursorPositions: openOptions.cursorPositions)
-        } else {
-            self.editorState = SourceEditorState()
+            editorInstance.cursorPositions = openOptions.cursorPositions
         }
 
         updateHighlightProviders()
@@ -99,8 +103,6 @@ struct CodeFileView: View {
                 codeFile.updateChangeCount(.changeDone)
             }
             .store(in: &cancellables)
-
-        codeFile.undoManager = self.undoManager
     }
 
     private var currentTheme: Theme {
@@ -147,9 +149,26 @@ struct CodeFileView: View {
                     warningCharacters: Set(warningCharacters.characters.keys)
                 )
             ),
-            state: $editorState,
+            state: Binding(
+                get: {
+                    SourceEditorState(
+                        cursorPositions: editorInstance.cursorPositions,
+                        scrollPosition: editorInstance.scrollPosition,
+                        findText: editorInstance.findText,
+                        replaceText: editorInstance.replaceText
+                    )
+                },
+                set: { newState in
+                    editorInstance.cursorPositions = newState.cursorPositions ?? []
+                    editorInstance.scrollPosition = newState.scrollPosition
+                    editorInstance.findText = newState.findText
+                    editorInstance.findTextSubject.send(newState.findText)
+                    editorInstance.replaceText = newState.replaceText
+                    editorInstance.replaceTextSubject.send(newState.replaceText)
+                }
+            ),
             highlightProviders: highlightProviders,
-            undoManager: undoManager,
+            undoManager: undoRegistration.manager(forFile: editorInstance.file),
             coordinators: textViewCoordinators
         )
         .id(codeFile.fileURL)

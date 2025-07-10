@@ -19,12 +19,12 @@ struct EditorCommands: Commands {
         CommandMenu("Editor") {
             Menu("Structure") {
                 Button("Move line up") {
-                    editor?.selectedTab?.rangeTranslator?.moveLinesUp()
+                    editor?.selectedTab?.rangeTranslator.moveLinesUp()
                 }
                 .keyboardShortcut("[", modifiers: [.command, .option])
 
                 Button("Move line down") {
-                    editor?.selectedTab?.rangeTranslator?.moveLinesDown()
+                    editor?.selectedTab?.rangeTranslator.moveLinesDown()
                 }
                 .keyboardShortcut("]", modifiers: [.command, .option])
             }

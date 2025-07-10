@@ -55,23 +55,27 @@ final class Editor: ObservableObject, Identifiable {
     var id = UUID()
 
     weak var parent: SplitViewData?
+    weak var workspace: WorkspaceDocument?
 
     init() {
         self.tabs = []
         self.temporaryTab = nil
         self.parent = nil
+        self.workspace = nil
     }
 
     init(
         files: OrderedSet<CEWorkspaceFile> = [],
         selectedTab: Tab? = nil,
         temporaryTab: Tab? = nil,
-        parent: SplitViewData? = nil
+        parent: SplitViewData? = nil,
+        workspace: WorkspaceDocument? = nil,
     ) {
         self.tabs = []
         self.parent = parent
+        self.workspace = workspace
         files.forEach { openTab(file: $0) }
-        self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(file: files.first!))
+        self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(workspace: workspace, file: files.first!))
         self.temporaryTab = temporaryTab
     }
 
@@ -79,10 +83,12 @@ final class Editor: ObservableObject, Identifiable {
         files: OrderedSet<Tab> = [],
         selectedTab: Tab? = nil,
         temporaryTab: Tab? = nil,
-        parent: SplitViewData? = nil
+        parent: SplitViewData? = nil,
+        workspace: WorkspaceDocument? = nil
     ) {
         self.tabs = []
         self.parent = parent
+        self.workspace = workspace
         files.forEach { openTab(file: $0.file) }
         self.selectedTab = selectedTab ?? tabs.first
         self.temporaryTab = temporaryTab
@@ -135,7 +141,7 @@ final class Editor: ObservableObject, Identifiable {
             clearFuture()
         }
         if file != selectedTab?.file {
-            addToHistory(EditorInstance(file: file))
+            addToHistory(EditorInstance(workspace: workspace, file: file))
         }
         removeTab(file)
         if let selectedTab {
@@ -165,7 +171,7 @@ final class Editor: ObservableObject, Identifiable {
     ///   - file: the file to open.
     ///   - asTemporary: indicates whether the tab should be opened as a temporary tab or a permanent tab.
     func openTab(file: CEWorkspaceFile, asTemporary: Bool) {
-        let item = EditorInstance(file: file)
+        let item = EditorInstance(workspace: workspace, file: file)
         // Item is already opened in a tab.
         guard !tabs.contains(item) || !asTemporary else {
             selectedTab = item
@@ -207,7 +213,7 @@ final class Editor: ObservableObject, Identifiable {
     ///   - index: Index where the tab needs to be added. If nil, it is added to the back.
     ///   - fromHistory: Indicates whether the tab has been opened from going back in history.
     func openTab(file: CEWorkspaceFile, at index: Int? = nil, fromHistory: Bool = false) {
-        let item = Tab(file: file)
+        let item = Tab(workspace: workspace, file: file)
         if let index {
             tabs.insert(item, at: index)
         } else {

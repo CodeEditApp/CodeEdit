@@ -19,12 +19,15 @@ struct EditorAreaFileView: View {
     @Environment(\.edgeInsets)
     private var edgeInsets
 
+    var editorInstance: EditorInstance
     var codeFile: CodeFileDocument
-    var textViewCoordinators: [TextViewCoordinator] = []
 
     @ViewBuilder var editorAreaFileView: some View {
         if let utType = codeFile.utType, utType.conforms(to: .text) {
-            CodeFileView(codeFile: codeFile, textViewCoordinators: textViewCoordinators)
+            CodeFileView(
+                editorInstance: editorInstance,
+                codeFile: codeFile
+            )
         } else {
             NonTextFileView(fileDocument: codeFile)
                 .padding(.top, edgeInsets.top - 1.74)

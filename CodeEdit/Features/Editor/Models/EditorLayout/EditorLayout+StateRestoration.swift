@@ -14,8 +14,7 @@ extension EditorManager {
     /// - Parameter workspace: The workspace to retrieve state from.
     func restoreFromState(_ workspace: WorkspaceDocument) {
         do {
-            guard let fileManager = workspace.workspaceFileManager,
-                  let data = workspace.getFromWorkspaceState(.openTabs) as? Data else {
+            guard let data = workspace.getFromWorkspaceState(.openTabs) as? Data else {
                 return
             }
 
@@ -35,7 +34,7 @@ extension EditorManager {
                 return
             }
 
-            fixRestoredEditorLayout(state.groups, fileManager: fileManager)
+            fixRestoredEditorLayout(state.groups, workspace: workspace)
 
             self.editorLayout = state.groups
             self.activeEditor = activeEditor
@@ -54,17 +53,17 @@ extension EditorManager {
     /// - Parameters:
     ///   - group: The tab group to fix.
     ///   - fileManager: The file manager to use to map files.
-    private func fixRestoredEditorLayout(_ group: EditorLayout, fileManager: CEWorkspaceFileManager) {
+    private func fixRestoredEditorLayout(_ group: EditorLayout, workspace: WorkspaceDocument) {
         switch group {
         case let .one(data):
-            fixEditor(data, fileManager: fileManager)
+            fixEditor(data, workspace: workspace)
         case let .vertical(splitData):
             splitData.editorLayouts.forEach { group in
-                fixRestoredEditorLayout(group, fileManager: fileManager)
+                fixRestoredEditorLayout(group, workspace: workspace)
             }
         case let .horizontal(splitData):
             splitData.editorLayouts.forEach { group in
-                fixRestoredEditorLayout(group, fileManager: fileManager)
+                fixRestoredEditorLayout(group, workspace: workspace)
             }
         }
     }
@@ -88,11 +87,13 @@ extension EditorManager {
     /// - Parameters:
     ///   - data: The tab group to fix.
     ///   - fileManager: The file manager to use to map files.a
-    private func fixEditor(_ editor: Editor, fileManager: CEWorkspaceFileManager) {
+    private func fixEditor(_ editor: Editor, workspace: WorkspaceDocument) {
+        guard let fileManager = workspace.workspaceFileManager else { return }
         let resolvedTabs = editor
             .tabs
             .compactMap({ fileManager.getFile($0.file.url.path(), createIfNotFound: true) })
-            .map({ EditorInstance(file: $0) })
+            .map({ EditorInstance(workspace: workspace, file: $0) })
+        editor.workspace = workspace
         editor.tabs = OrderedSet(resolvedTabs)
         if let selectedTab = editor.selectedTab {
             if let resolvedFile = fileManager.getFile(selectedTab.file.url.path(), createIfNotFound: true) {
@@ -215,8 +216,12 @@ extension Editor: Codable {
         let id = try container.decode(UUID.self, forKey: .id)
         self.init(
             files: OrderedSet(fileURLs.map { CEWorkspaceFile(url: $0) }),
-            selectedTab: selectedTab == nil ? nil : EditorInstance(file: CEWorkspaceFile(url: selectedTab!)),
-            parent: nil
+            selectedTab: selectedTab == nil ? nil : EditorInstance(
+                workspace: nil,
+                file: CEWorkspaceFile(url: selectedTab!)
+            ),
+            parent: nil,
+            workspace: nil
         )
         self.id = id
     }
