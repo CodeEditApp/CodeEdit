@@ -19,13 +19,20 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     /// The name of the associated task.
     @ObservedObject var task: CETask
 
+    /// Reference to the workspace that owns this task
+    weak var workspace: WorkspaceDocument?
+
+    /// The activity associated with this task
+    private var activity: CEActivity?
+
     var process: Process?
     var outputPipe: Pipe?
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(task: CETask) {
+    init(task: CETask, workspace: WorkspaceDocument?) {
         self.task = task
+        self.workspace = workspace
         self.process = Process()
         self.outputPipe = Pipe()
 
@@ -47,7 +54,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
             guard let process, let outputPipe else { return }
 
             await updateTaskStatus(to: .running)
-            createStatusTaskNotification()
+            createStatusActivity()
 
             process.terminationHandler = { [weak self] capturedProcess in
                 if let self {
@@ -84,7 +91,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         if terminationStatus == 0 {
             await updateOutput("\nFinished running \(task.name).\n\n")
             await updateTaskStatus(to: .finished)
-            updateTaskNotification(
+            updateActivity(
                 title: "Finished Running \(task.name)",
                 message: "",
                 isLoading: false
@@ -92,7 +99,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         } else if terminationStatus == 15 {
             await updateOutput("\n\(task.name) cancelled.\n\n")
             await updateTaskStatus(to: .notRunning)
-            updateTaskNotification(
+            updateActivity(
                 title: "\(task.name) cancelled",
                 message: "",
                 isLoading: false
@@ -100,7 +107,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         } else {
             await updateOutput("\nFailed to run \(task.name).\n\n")
             await updateTaskStatus(to: .failed)
-            updateTaskNotification(
+            updateActivity(
                 title: "Failed Running \(task.name)",
                 message: "",
                 isLoading: false
@@ -108,7 +115,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }
         outputPipe?.fileHandleForReading.readabilityHandler = nil
 
-        deleteStatusTaskNotification()
+        deleteStatusActivity()
     }
 
     func renew() {
@@ -144,44 +151,33 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         output = ""
     }
 
-    private func createStatusTaskNotification() {
-        let userInfo: [String: Any] = [
-            "id": self.task.id.uuidString,
-            "action": "createWithPriority",
-            "title": "Running \(self.task.name)",
-            "message": "Running your task: \(self.task.name).",
-            "isLoading": true
-        ]
-
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: userInfo)
+    private func createStatusActivity() {
+        activity = workspace?.activityManager.post(
+            priority: true,
+            title: "Running \(self.task.name)",
+            message: "Running your task: \(self.task.name).",
+            isLoading: true
+        )
     }
 
-    private func deleteStatusTaskNotification() {
-        let deleteInfo: [String: Any] = [
-            "id": "\(task.id.uuidString)",
-            "action": "deleteWithDelay",
-            "delay": 3.0
-        ]
-
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteInfo)
+    private func deleteStatusActivity() {
+        if let activityId = activity?.id {
+            workspace?.activityManager.delete(
+                id: activityId,
+                delay: 3.0
+            )
+        }
     }
 
-    private func updateTaskNotification(title: String? = nil, message: String? = nil, isLoading: Bool? = nil) {
-        var userInfo: [String: Any] = [
-            "id": task.id.uuidString,
-            "action": "update"
-        ]
-        if let title {
-            userInfo["title"] = title
+    private func updateActivity(title: String? = nil, message: String? = nil, isLoading: Bool? = nil) {
+        if let activityId = activity?.id {
+            workspace?.activityManager.update(
+                id: activityId,
+                title: title,
+                message: message,
+                isLoading: isLoading
+            )
         }
-        if let message {
-            userInfo["message"] = message
-        }
-        if let isLoading {
-            userInfo["isLoading"] = isLoading
-        }
-
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: userInfo)
     }
 
     private func updateTaskStatus(to taskStatus: CETaskStatus) async {

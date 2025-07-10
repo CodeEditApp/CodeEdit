@@ -43,13 +43,22 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     var taskManager: TaskManager?
     var workspaceSettingsManager: CEWorkspaceSettings?
-    var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
 
+    @Published var activityManager: ActivityManager = ActivityManager()
     @Published var notificationPanel = NotificationPanelViewModel()
+
     private var cancellables = Set<AnyCancellable>()
 
     override init() {
         super.init()
+
+        // Observe changes to activity manager
+        activityManager.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            .store(in: &cancellables)
 
         // Observe changes to notification panel
         notificationPanel.objectWillChange
@@ -158,7 +167,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         if let workspaceSettingsManager {
             self.taskManager = TaskManager(
                 workspaceSettings: workspaceSettingsManager.settings,
-                workspaceURL: url
+                workspaceURL: url,
+                workspace: self
             )
         }
 

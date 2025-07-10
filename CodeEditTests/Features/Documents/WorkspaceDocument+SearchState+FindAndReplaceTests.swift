@@ -99,7 +99,7 @@ final class FindAndReplaceTests: XCTestCase {
         // IMPORTANT:
         // This is only a temporary solution, in the feature a file watcher would track the file update
         // and trigger a index update.
-        searchState.addProjectToIndex()
+        await searchState.addProjectToIndex()
         let startTime = Date()
         while searchState.indexStatus != .done {
             try? await Task.sleep(nanoseconds: 100_000_000)

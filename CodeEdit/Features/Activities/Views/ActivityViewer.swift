@@ -14,7 +14,7 @@ struct ActivityViewer: View {
 
     var workspaceFileManager: CEWorkspaceFileManager?
 
-    @ObservedObject var taskNotificationHandler: TaskNotificationHandler
+    @ObservedObject var activityManager: ActivityManager
     @ObservedObject var workspaceSettingsManager: CEWorkspaceSettings
 
     // TODO: try to get this from the envrionment
@@ -23,12 +23,12 @@ struct ActivityViewer: View {
     init(
         workspaceFileManager: CEWorkspaceFileManager?,
         workspaceSettingsManager: CEWorkspaceSettings,
-        taskNotificationHandler: TaskNotificationHandler,
+        activityManager: ActivityManager,
         taskManager: TaskManager
     ) {
         self.workspaceFileManager = workspaceFileManager
         self.workspaceSettingsManager = workspaceSettingsManager
-        self.taskNotificationHandler = taskNotificationHandler
+        self.activityManager = activityManager
         self.taskManager = taskManager
     }
     var body: some View {
@@ -42,7 +42,7 @@ struct ActivityViewer: View {
 
             Spacer(minLength: 0)
 
-            TaskNotificationView(taskNotificationHandler: taskNotificationHandler)
+            ActivityView(activityManager: activityManager)
                 .fixedSize()
         }
         .fixedSize(horizontal: false, vertical: false)

@@ -10,64 +10,86 @@ import Foundation
 extension WorkspaceDocument.SearchState {
     /// Adds the contents of the current workspace URL to the search index.
     /// That means that the contents of the workspace will be indexed and searchable.
-    func addProjectToIndex() {
+    func addProjectToIndex() async {
         guard let indexer = indexer else { return }
         guard let url = workspace.fileURL else { return }
 
         indexStatus = .indexing(progress: 0.0)
-        let uuidString = UUID().uuidString
-        let createInfo: [String: Any] = [
-            "id": uuidString,
-            "action": "create",
-            "title": "Indexing | Processing files",
-            "message": "Creating an index to enable fast and accurate searches within your codebase.",
-            "isLoading": true
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createInfo)
+
+        let activity = await MainActor.run {
+            workspace.activityManager.post(
+                title: "Indexing | Processing files",
+                message: "Creating an index to enable fast and accurate searches within your codebase.",
+                isLoading: true
+            )
+        }
+
+        let (progressStream, continuation) = AsyncStream<Double>.makeStream()
+        // Dispatch this now, we want to continue after starting to monitor
+        let monitorTask = Task {
+            await self.monitorProgressStream(progressStream, activityId: activity.id)
+        }
 
         Task.detached {
             let filePaths = self.getFileURLs(at: url)
-
             let asyncController = SearchIndexer.AsyncManager(index: indexer)
             var lastProgress: Double = 0
+
+            // Batch our progress updates
+            var pendingProgress: Double?
 
             for await (file, index) in AsyncFileIterator(fileURLs: filePaths) {
                 _ = await asyncController.addText(files: [file], flushWhenComplete: false)
                 let progress = Double(index) / Double(filePaths.count)
 
-                // Send only if difference is > 0.5%, to keep updates from sending too frequently
-                if progress - lastProgress > 0.005 || index == filePaths.count - 1 {
+                // Send only if difference is > 1%
+                if progress - lastProgress > 0.01 {
                     lastProgress = progress
-                    await MainActor.run {
-                        self.indexStatus = .indexing(progress: progress)
+                    pendingProgress = progress
+
+                    // Only update UI every 100ms
+                    if index == filePaths.count - 1 || pendingProgress != nil {
+                        continuation.yield(progress)
+                        pendingProgress = nil
                     }
-                    let updateInfo: [String: Any] = [
-                        "id": uuidString,
-                        "action": "update",
-                        "percentage": progress
-                    ]
-                    NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: updateInfo)
                 }
             }
+
+            continuation.finish()
+            await monitorTask.value // Await monitor to finish draining the stream
             asyncController.index.flush()
 
             await MainActor.run {
                 self.indexStatus = .done
+                self.workspace.activityManager.update(
+                    id: activity.id,
+                    title: "Finished indexing",
+                    isLoading: false
+                )
+                self.workspace.activityManager.delete(
+                    id: activity.id,
+                    delay: 4.0
+                )
             }
-            let updateInfo: [String: Any] = [
-                "id": uuidString,
-                "action": "update",
-                "title": "Finished indexing",
-                "isLoading": false
-            ]
-            NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: updateInfo)
+        }
+    }
 
-            let deleteInfo = [
-                "id": uuidString,
-                "action": "deleteWithDelay",
-                "delay": 4.0
-            ]
-            NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteInfo)
+    /// Monitors a progress stream from ``addProjectToIndex()`` and updates ``indexStatus`` and the workspace's activity
+    /// manager accordingly.
+    ///
+    /// Without this, updates can come too fast for `Combine` to handle and can cause crashes.
+    ///
+    /// - Parameters:
+    ///   - stream: The stream to monitor for progress updates, in %.
+    ///   - activityId: The activity ID that's being monitored
+    @MainActor
+    private func monitorProgressStream(_ stream: AsyncStream<Double>, activityId: String) async {
+        for await progressUpdate in stream.debounce(for: .milliseconds(10)) {
+            self.indexStatus = .indexing(progress: progressUpdate)
+            self.workspace.activityManager.update(
+                id: activityId,
+                percentage: progressUpdate
+            )
         }
     }
 
