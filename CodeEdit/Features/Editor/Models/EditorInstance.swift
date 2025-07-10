@@ -157,5 +157,15 @@ class EditorInstance: ObservableObject, Hashable {
             }
             return (endTextLine.index - startTextLine.index) + 1
         }
+
+        func moveLinesUp() {
+            guard let controller = textViewController else { return }
+            controller.moveLinesUp()
+        }
+
+        func moveLinesDown() {
+            guard let controller = textViewController else { return }
+            controller.moveLinesDown()
+        }
     }
 }
