@@ -30,12 +30,7 @@ func withTempDir(_ test: (URL) throws -> Void) throws {
 }
 
 private func createAndClearDir() throws -> URL {
-    let tempDirURL = try FileManager.default.url(
-        for: .developerApplicationDirectory,
-        in: .userDomainMask,
-        appropriateFor: nil,
-        create: true
-    )
+    let tempDirURL = FileManager.default.temporaryDirectory
         .appending(path: "CodeEditTestDirectory", directoryHint: .isDirectory)
 
     // If it exists, delete it before the test
