@@ -224,12 +224,20 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     // MARK: - External Changes
 
     /// Handle the notification that the represented file item changed.
+    ///
+    /// We check if a file has been modified and can be read again to display to the user.
+    /// To determine if a file has changed, we check the modification date. If it's different from the stored one,
+    /// we continue.
+    /// To determine if we can reload the file, we check if the document has outstanding edits. If not, we reload the
+    /// file.
     override func presentedItemDidChange() {
-        // Grab the file saved date
         if fileModificationDate != getModificationDate() {
             guard isDocumentEdited else {
                 fileModificationDate = getModificationDate()
                 if let fileURL, let fileType {
+                    // This blocks the presented item thread intentionally. If we don't wait, we'll receive more updates
+                    // that the file has changed and we'll end up dispatching multiple reads.
+                    // The presented item thread expects this operation to by synchronous anyways.
                     DispatchQueue.main.asyncAndWait {
                         try? self.read(from: fileURL, ofType: fileType)
                     }
@@ -241,6 +249,10 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         super.presentedItemDidChange()
     }
 
+    /// Helper to find the last modified date of the represented file item.
+    /// 
+    /// Different from `NSDocument.fileModificationDate`. This returns the *current* modification date, whereas the
+    /// alternative stores the date that existed when we last read the file.
     private func getModificationDate() -> Date? {
         guard let path = fileURL?.absolutePath else { return nil }
         return try? FileManager.default.attributesOfItem(atPath: path)[.modificationDate] as? Date
