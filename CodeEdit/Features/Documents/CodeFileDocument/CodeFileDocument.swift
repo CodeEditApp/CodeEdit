@@ -227,7 +227,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     override func presentedItemDidChange() {
         // Grab the file saved date
         if fileModificationDate != getModificationDate() {
-            Self.logger.debug("Detected outside change to file")
             guard isDocumentEdited else {
                 fileModificationDate = getModificationDate()
                 if let fileURL, let fileType {
