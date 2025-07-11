@@ -14,6 +14,7 @@ import CodeEditTextView
 import CodeEditLanguages
 import Combine
 import OSLog
+import TextStory
 
 enum CodeFileError: Error {
     case failedToDecode
@@ -161,17 +162,37 @@ final class CodeFileDocument: NSDocument, ObservableObject {
             convertedString: &nsString,
             usedLossyConversion: nil
         )
-        if let validEncoding = FileEncoding(rawEncoding), let nsString {
-            self.sourceEncoding = validEncoding
-            if let content {
-                content.mutableString.setString(nsString as String)
-            } else {
-                self.content = NSTextStorage(string: nsString as String)
-            }
-        } else {
+        guard let validEncoding = FileEncoding(rawEncoding), let nsString else {
             Self.logger.error("Failed to read file from data using encoding: \(rawEncoding)")
+            return
+        }
+        self.sourceEncoding = validEncoding
+        if let content {
+            registerContentChangeUndo(fileURL: fileURL, nsString: nsString, content: content)
+            content.mutableString.setString(nsString as String)
+        } else {
+            self.content = NSTextStorage(string: nsString as String)
         }
         NotificationCenter.default.post(name: Self.didOpenNotification, object: self)
+    }
+    
+    /// If this file is already open and being tracked by an undo manager, we register an undo mutation
+    /// of the entire contents. This allows the user to undo changes that occurred outside of CodeEdit
+    /// while the file was displayed in CodeEdit.
+    ///
+    /// - Note: This is inefficient memory-wise. We could do a diff of the file and only register the
+    ///         mutations that would recreate the diff. However, that would instead be CPU intensive.
+    ///         Tradeoffs.
+    private func registerContentChangeUndo(fileURL: URL?, nsString: NSString, content: NSTextStorage) {
+        guard let fileURL else { return }
+        // If there's an undo manager, register a mutation replacing the entire contents.
+        let mutation = TextMutation(
+            string: nsString as String,
+            range: NSRange(location: 0, length: content.length),
+            limit: content.length
+        )
+        let undoManager = self.findWorkspace()?.undoRegistration.managerIfExists(forFile: fileURL)
+        undoManager?.registerMutation(mutation)
     }
 
     // MARK: - Autosave
