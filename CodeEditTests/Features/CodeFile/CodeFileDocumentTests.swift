@@ -10,7 +10,7 @@ import SwiftUI
 import Testing
 @testable import CodeEdit
 
-@Suite(.serialized)
+@Suite
 struct CodeFileDocumentTests {
     let defaultString = "func test() { }"
 
