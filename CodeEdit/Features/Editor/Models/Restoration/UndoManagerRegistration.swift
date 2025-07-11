@@ -57,9 +57,6 @@ extension UndoManagerRegistration: CEWorkspaceFileManagerObserver {
     /// - When we receive a file update, if the file is not open in any editors we clear the undo stack
     func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>) {
         for file in updatedItems where file.fileDocument == nil {
-            if managerMap[file.url.absolutePath] != nil {
-                print("Clearing undo stack for file \(file.fileName())")
-            }
             managerMap.removeValue(forKey: file.url.absolutePath)
         }
     }
