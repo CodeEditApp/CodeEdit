@@ -164,6 +164,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             )
         }
 
+        workspaceFileManager?.addObserver(undoRegistration)
         editorManager?.restoreFromState(self)
         utilityAreaModel?.restoreFromState(self)
     }

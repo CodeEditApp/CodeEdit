@@ -38,7 +38,10 @@ extension CEWorkspaceFileManager {
             )
 
             try rebuildFiles(fromItem: file.isFolder ? file : file.parent ?? file)
-            notifyObservers(updatedItems: [file.isFolder ? file : file.parent ?? file])
+            notifyObservers(updatedItems: [ResolvedFSEvent(
+                file: file.isFolder ? file : file.parent ?? file,
+                eventType: .itemCreated
+            )])
 
             guard let newFolder = getFile(folderUrl.path(), createIfNotFound: true) else {
                 throw FileManagerError.fileNotFound
@@ -103,7 +106,10 @@ extension CEWorkspaceFileManager {
             }
 
             try rebuildFiles(fromItem: file.isFolder ? file : file.parent ?? file)
-            notifyObservers(updatedItems: [file.isFolder ? file : file.parent ?? file])
+            notifyObservers(updatedItems: [ResolvedFSEvent(
+                file: file.isFolder ? file : file.parent ?? file,
+                eventType: .itemCreated
+            )])
 
             // Create if not found here because this should be indexed if we're creating it.
             // It's not often a user makes a file and then doesn't use it.
@@ -284,13 +290,13 @@ extension CEWorkspaceFileManager {
 
             if let parent = file.parent {
                 try rebuildFiles(fromItem: parent)
-                notifyObservers(updatedItems: [parent])
+                notifyObservers(updatedItems: [ResolvedFSEvent(file: parent, eventType: .changeInDirectory)])
             }
 
             // If we have the new parent file, let's rebuild that directory too
             if let newFileParent = getFile(newLocation.deletingLastPathComponent().path) {
                 try rebuildFiles(fromItem: newFileParent)
-                notifyObservers(updatedItems: [newFileParent])
+                notifyObservers(updatedItems: [ResolvedFSEvent(file: newFileParent, eventType: .changeInDirectory)])
             }
 
             return getFile(newLocation.absoluteURL.path)
