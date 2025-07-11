@@ -9,7 +9,7 @@ import Testing
 import Foundation
 @testable import CodeEdit
 
-@Suite(.serialized)
+@Suite
 struct EditorStateRestorationTests {
     @Test
     func createsDatabase() throws {

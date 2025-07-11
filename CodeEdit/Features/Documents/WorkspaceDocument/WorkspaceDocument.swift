@@ -165,6 +165,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         }
         self.taskNotificationHandler.workspaceURL = url
 
+        workspaceFileManager?.addObserver(undoRegistration)
         editorManager?.restoreFromState(self)
         utilityAreaModel?.restoreFromState(self)
     }

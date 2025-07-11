@@ -8,8 +8,8 @@
 import XCTest
 @testable import CodeEdit
 
-// swiftlint:disable:next type_body_length
-final class FindAndReplaceTests: XCTestCase {
+@MainActor
+final class FindAndReplaceTests: XCTestCase { // swiftlint:disable:this type_body_length
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
     private var mockWorkspace: WorkspaceDocument!
@@ -34,8 +34,8 @@ final class FindAndReplaceTests: XCTestCase {
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
-        mockWorkspace = try await WorkspaceDocument(for: directory, withContentsOf: directory, ofType: "")
-        searchState = await mockWorkspace.searchState
+        mockWorkspace = try WorkspaceDocument(for: directory, withContentsOf: directory, ofType: "")
+        searchState = mockWorkspace.searchState
 
         // Add a few files
         let folder1 = directory.appending(path: "Folder 2")
@@ -64,7 +64,7 @@ final class FindAndReplaceTests: XCTestCase {
         files[1].parent = folder1File
         files[2].parent = folder2File
 
-        await mockWorkspace.searchState?.addProjectToIndex()
+        mockWorkspace.searchState?.addProjectToIndex()
 
         // NOTE: This is a temporary solution. In the future, a file watcher should track file updates
         // and trigger an index update.
