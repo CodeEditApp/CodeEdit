@@ -121,6 +121,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         }
     }
 
+    // MARK: - Should Terminate
+
     /// Defers the application terminate message until we've finished cleanup.
     ///
     /// All paths _must_ call `NSApplication.shared.reply(toApplicationShouldTerminate: true)` as soon as possible.
@@ -255,20 +257,56 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     /// Terminates running language servers. Used during app termination to ensure resources are freed.
     private func terminateLanguageServers() {
-        Task {
-            await lspService.stopAllServers()
-            await MainActor.run {
-                NSApplication.shared.reply(toApplicationShouldTerminate: true)
+        Task { @MainActor in
+            let task = TaskNotificationModel(
+                id: "appdelegate.terminate_language_servers",
+                title: "Stopping Language Servers",
+                message: "Stopping running language server processes...",
+                isLoading: true
+            )
+
+            if !lspService.languageClients.isEmpty {
+                TaskNotificationHandler.postTask(action: .create, model: task)
             }
+
+            try await withTimeout(
+                duration: .seconds(5.0),
+                onTimeout: {
+                    // Stop-gap measure to ensure we don't hang on CMD-Q
+                    await self.lspService.killAllServers()
+                },
+                operation: {
+                    await self.lspService.stopAllServers()
+                }
+            )
+
+            TaskNotificationHandler.postTask(action: .delete, model: task)
+            NSApplication.shared.reply(toApplicationShouldTerminate: true)
         }
     }
 
     /// Terminates all running tasks. Used during app termination to ensure resources are freed.
     private func terminateTasks() {
-        let documents = CodeEditDocumentController.shared.documents.compactMap({ $0 as? WorkspaceDocument })
-        documents.forEach { workspace in
-            workspace.taskManager?.stopAllTasks()
+        let task = TaskNotificationModel(
+            id: "appdelegate.terminate_tasks",
+            title: "Terminating Tasks",
+            message: "Interrupting all running tasks before quitting...",
+            isLoading: true
+        )
+
+        let taskManagers = CodeEditDocumentController.shared.documents
+            .compactMap({ $0 as? WorkspaceDocument })
+            .compactMap({ $0.taskManager })
+
+        if taskManagers.reduce(0, { $0 + $1.activeTasks.count }) > 0 {
+            TaskNotificationHandler.postTask(action: .create, model: task)
         }
+
+        taskManagers.forEach { manager in
+            manager.stopAllTasks()
+        }
+
+        TaskNotificationHandler.postTask(action: .delete, model: task)
     }
 }
 

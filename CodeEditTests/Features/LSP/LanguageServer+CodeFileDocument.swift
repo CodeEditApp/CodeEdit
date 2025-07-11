@@ -69,6 +69,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
                 server: bufferingConnection,
                 initializeParamsProvider: LanguageServerType.getInitParams(workspacePath: tempTestDir.path())
             ),
+            lspPid: -1,
             serverCapabilities: capabilities,
             rootPath: tempTestDir
         )
