@@ -175,7 +175,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         }
         NotificationCenter.default.post(name: Self.didOpenNotification, object: self)
     }
-    
+
     /// If this file is already open and being tracked by an undo manager, we register an undo mutation
     /// of the entire contents. This allows the user to undo changes that occurred outside of CodeEdit
     /// while the file was displayed in CodeEdit.
