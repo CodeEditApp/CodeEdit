@@ -49,10 +49,6 @@ final class UndoManagerRegistration: ObservableObject {
 }
 
 extension UndoManagerRegistration: CEWorkspaceFileManagerObserver {
-    func fileManagerEventsFilter() -> Set<FSEvent> {
-        [.itemModified, .itemRemoved]
-    }
-
     /// Managers need to be cleared when the following is true:
     /// - The file is not open in any editors
     /// - The file is updated externally

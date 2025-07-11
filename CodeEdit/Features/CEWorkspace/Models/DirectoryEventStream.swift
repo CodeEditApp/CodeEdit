@@ -16,19 +16,6 @@ enum FSEvent: String {
     case itemModified
     case itemRemoved
     case itemRenamed
-
-    static func all() -> Set<FSEvent> {
-        [
-            .changeInDirectory,
-            .rootChanged,
-            .itemChangedOwner,
-            .itemCreated,
-            .itemCloned,
-            .itemModified,
-            .itemRemoved,
-            .itemRenamed
-        ]
-    }
 }
 
 /// Creates a stream of events using the File System Events API.

@@ -9,11 +9,6 @@ import Foundation
 
 /// This extension handles the file system events triggered by changes in the root folder.
 extension CEWorkspaceFileManager {
-    struct ResolvedFSEvent: Hashable {
-        let file: CEWorkspaceFile
-        let eventType: FSEvent
-    }
-
     /// Called by `fsEventStream` when an event occurs.
     ///
     /// This method may be called on a background thread, but all work done by this function will be queued on the main
@@ -21,23 +16,17 @@ extension CEWorkspaceFileManager {
     /// - Parameter events: An array of events that occurred.
     func fileSystemEventReceived(events: [DirectoryEventStream.Event]) {
         DispatchQueue.main.async {
-            var files: Set<ResolvedFSEvent> = []
+            var files: Set<CEWorkspaceFile> = []
             for event in events {
                 // Event returns file/folder that was changed, but in tree we need to update it's parent
-                guard let eventFileUrl = URL(string: event.path, relativeTo: self.folderUrl) else {
-                    continue
-                }
-                let parentUrl = eventFileUrl.deletingLastPathComponent()
-                guard let parentFileItem = self.flattenedFileItems[parentUrl.path] else {
+                guard let parentUrl = URL(string: event.path, relativeTo: self.folderUrl)?.deletingLastPathComponent(),
+                      let parentFileItem = self.flattenedFileItems[parentUrl.path] else {
                     continue
                 }
 
                 switch event.eventType {
                 case .changeInDirectory, .itemChangedOwner, .itemModified:
                     continue
-//                    if let fileItem = self.flattenedFileItems[eventFileUrl.path] {
-//                        files.insert(ResolvedFSEvent(file: fileItem, eventType: event.eventType))
-//                    }
                 case .rootChanged:
                     // TODO: #1880 - Handle workspace root changing.
                     continue
@@ -48,7 +37,7 @@ extension CEWorkspaceFileManager {
                         // swiftlint:disable:next line_length
                         self.logger.error("Failed to rebuild files for event: \(event.eventType.rawValue), path: \(event.path, privacy: .sensitive)")
                     }
-                    files.insert(ResolvedFSEvent(file: parentFileItem, eventType: event.eventType))
+                    files.insert(parentFileItem)
                 }
             }
             if !files.isEmpty {
@@ -192,17 +181,13 @@ extension CEWorkspaceFileManager {
     }
 
     /// Notify observers that an update occurred in the watched files.
-    func notifyObservers(updatedItems: Set<ResolvedFSEvent>) {
+    func notifyObservers(updatedItems: Set<CEWorkspaceFile>) {
         observers.allObjects.reversed().forEach { delegate in
             guard let delegate = delegate as? CEWorkspaceFileManagerObserver else {
                 observers.remove(delegate)
                 return
             }
-            let eventsFilter = delegate.fileManagerEventsFilter()
-            let events = updatedItems.compactMap({ eventsFilter.contains($0.eventType) ? $0.file : nil })
-            if !events.isEmpty {
-                delegate.fileManagerUpdated(updatedItems: Set(events))
-            }
+            delegate.fileManagerUpdated(updatedItems: updatedItems)
         }
     }
 

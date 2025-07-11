@@ -11,14 +11,7 @@ import AppKit
 import OSLog
 
 protocol CEWorkspaceFileManagerObserver: AnyObject {
-    func fileManagerEventsFilter() -> Set<FSEvent>
     func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>)
-}
-
-extension CEWorkspaceFileManagerObserver {
-    func fileManagerEventsFilter() -> Set<FSEvent> {
-        FSEvent.all()
-    }
 }
 
 /// This class is used to load, modify, and listen to files on a user's machine.

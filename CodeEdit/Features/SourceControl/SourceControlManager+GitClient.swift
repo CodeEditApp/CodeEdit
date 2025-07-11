@@ -135,7 +135,7 @@ extension SourceControlManager {
             return
         }
 
-        var updatedStatusFor: Set<CEWorkspaceFileManager.ResolvedFSEvent> = []
+        var updatedStatusFor: Set<CEWorkspaceFile> = []
         // Refresh status of file manager files
         for changedFile in changedFiles {
             guard let file = fileManager.getFile(changedFile.ceFileKey) else {
@@ -144,13 +144,13 @@ extension SourceControlManager {
             if file.gitStatus != changedFile.anyStatus() {
                 file.gitStatus = changedFile.anyStatus()
             }
-            updatedStatusFor.insert(.init(file: file, eventType: .itemModified))
+            updatedStatusFor.insert(file)
         }
 
         for (_, file) in fileManager.flattenedFileItems
-        where !updatedStatusFor.contains(.init(file: file, eventType: .itemModified)) && file.gitStatus != nil {
+        where !updatedStatusFor.contains(file) && file.gitStatus != nil {
             file.gitStatus = nil
-            updatedStatusFor.insert(.init(file: file, eventType: .itemModified))
+            updatedStatusFor.insert(file)
         }
 
         if updatedStatusFor.isEmpty {
