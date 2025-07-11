@@ -99,8 +99,8 @@ struct CodeFileView: View {
         codeFile
             .contentCoordinator
             .textUpdatePublisher
-            .sink { _ in
-                codeFile.updateChangeCount(.changeDone)
+            .sink { [weak codeFile] _ in
+                codeFile?.updateChangeCount(.changeDone)
             }
             .store(in: &cancellables)
     }
