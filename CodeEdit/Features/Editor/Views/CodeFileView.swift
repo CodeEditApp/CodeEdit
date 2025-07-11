@@ -171,7 +171,8 @@ struct CodeFileView: View {
             undoManager: undoRegistration.manager(forFile: editorInstance.file),
             coordinators: textViewCoordinators
         )
-        .id(codeFile.fileURL)
+        // This view needs to refresh when the codefile changes. The file URL is too stable.
+        .id(ObjectIdentifier(codeFile))
         .background {
             if colorScheme == .dark {
                 EffectView(.underPageBackground)
