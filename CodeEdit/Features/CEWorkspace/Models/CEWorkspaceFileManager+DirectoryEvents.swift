@@ -26,6 +26,7 @@ extension CEWorkspaceFileManager {
 
                 switch event.eventType {
                 case .changeInDirectory, .itemChangedOwner, .itemModified:
+                    // Can be ignored for now, these I think not related to tree changes
                     continue
                 case .rootChanged:
                     // TODO: #1880 - Handle workspace root changing.
