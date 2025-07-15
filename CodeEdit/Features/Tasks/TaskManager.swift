@@ -16,10 +16,10 @@ class TaskManager: ObservableObject {
 
     @ObservedObject var workspaceSettings: CEWorkspaceSettingsData
 
-    private var workspaceURL: URL
+    private var workspaceURL: URL?
     private var settingsListener: AnyCancellable?
 
-    init(workspaceSettings: CEWorkspaceSettingsData, workspaceURL: URL) {
+    init(workspaceSettings: CEWorkspaceSettingsData, workspaceURL: URL?) {
         self.workspaceURL = workspaceURL
         self.workspaceSettings = workspaceSettings
 

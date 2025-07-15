@@ -16,7 +16,9 @@ import Foundation
 /// frame of `0`. This enables terminals to keep running in the background, and allows them to be removed and added
 /// back into the hierarchy for use in the utility area.
 ///
-/// If there is a bug here: **there probably isn't**. Look instead in ``TerminalEmulatorView``.
+/// # 07/15/25
+/// This has now been updated so that it differs from `LocalProcessTerminalView` in enough important ways that it
+/// should not be removed in the future even if SwiftTerm has a change in behavior.
 
 protocol CELocalShellTerminalViewDelegate: AnyObject {
     /// This method is invoked to notify that the terminal has been resized to the specified number of columns and rows
@@ -73,18 +75,12 @@ class CELocalShellTerminalView: CETerminalView, TerminalViewDelegate, LocalProce
     ///     - workspaceURL: The URL of the workspace to start at.
     ///     - shell: The shell to use, leave as `nil` to
     public func startProcess(
-        workspaceURL url: URL,
+        workspaceURL url: URL?,
         shell: Shell? = nil,
         environment: [String] = [],
         interactive: Bool = true
     ) {
         let terminalSettings = Settings.shared.preferences.terminal
-        // changes working directory to project root
-        // TODO: Get rid of FileManager shared instance to prevent problems
-        // using shared instance of FileManager might lead to problems when using
-        // multiple workspaces. This works for now but most probably will need
-        // to be changed later on
-        FileManager.default.changeCurrentDirectoryPath(url.path)
 
         var terminalEnvironment: [String] = Terminal.getEnvironmentVariables()
         terminalEnvironment.append("TERM_PROGRAM=CodeEditApp_Terminal")
@@ -114,7 +110,8 @@ class CELocalShellTerminalView: CETerminalView, TerminalViewDelegate, LocalProce
                 executable: shellPath,
                 args: shellArgs,
                 environment: terminalEnvironment,
-                execName: shell.rawValue
+                execName: shell.rawValue,
+                currentDirectory: url?.absolutePath
             )
         } catch {
             terminal.feed(text: "Failed to start a terminal session: \(error.localizedDescription)")

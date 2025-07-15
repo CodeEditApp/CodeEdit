@@ -67,7 +67,7 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
     }
 
     override func startProcess(
-        workspaceURL url: URL,
+        workspaceURL url: URL?,
         shell: Shell? = nil,
         environment: [String] = [],
         interactive: Bool = true
@@ -75,7 +75,6 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
         // Start the shell
         do {
             let terminalSettings = Settings.shared.preferences.terminal
-            FileManager.default.changeCurrentDirectoryPath(url.path)
 
             var terminalEnvironment: [String] = Terminal.getEnvironmentVariables()
             terminalEnvironment.append("TERM_PROGRAM=CodeEditApp_Terminal")
@@ -92,17 +91,21 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
             )
 
             terminalEnvironment.append(contentsOf: environment)
+            terminalEnvironment.append("CE_SHELL_INTEGRATION_DISABLE_PROMPT=1")
+            terminalEnvironment.append(
+                contentsOf: activeTask.task.environmentVariables.map({ $0.key + "=" + $0.value })
+            )
 
             process.startProcess(
                 executable: shellPath,
                 args: shellArgs,
-                environment: terminalEnvironment + ["CE_SHELL_INTEGRATION_DISABLE_PROMPT=1"],
-                execName: shell.rawValue
+                environment: terminalEnvironment,
+                execName: shell.rawValue,
+                currentDirectory: URL(filePath: activeTask.task.workingDirectory, relativeTo: url).absolutePath
             )
 
             // Feed the command and run it
-            let data = Array(activeTask.task.command.utf8)
-            process.send(data: data[0..<data.count])
+            process.send(text: activeTask.task.command)
             process.send(data: EscapeSequences.cmdRet[0..<1])
         } catch {
             newline()
@@ -170,6 +173,13 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
         }
 
         return children
+    }
+
+    func getBufferAsString() -> String {
+        terminal.getText(
+            start: .init(col: 0, row: 0),
+            end: .init(col: terminal.cols, row: terminal.rows + terminal.buffer.yDisp)
+        )
     }
 
     override func dataReceived(slice: ArraySlice<UInt8>) {

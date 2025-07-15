@@ -43,7 +43,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }.store(in: &cancellables)
     }
 
-    func run(workspaceURL: URL) {
+    func run(workspaceURL: URL?) {
         self.workspaceURL = workspaceURL
         self.activeTaskID = UUID() // generate a new ID for this run
 
