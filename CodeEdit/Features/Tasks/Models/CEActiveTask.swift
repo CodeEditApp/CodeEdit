@@ -125,6 +125,12 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }
     }
 
+    func waitForExit() {
+        for pid in output?.getChildProcesses() ?? [] {
+            waitpid(pid, nil, 0)
+        }
+    }
+
     func clearOutput() {
         output?.terminal.resetToInitialState()
         output?.feed(text: "")
