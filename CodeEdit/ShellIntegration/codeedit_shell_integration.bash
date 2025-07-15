@@ -443,14 +443,27 @@ _install_bash_preexec
 unset -f _install_bash_preexec
 
 # -- BEGIN CODEEDIT CUSTOMIZATIONS --
+
+__codeedit_status="$?"
+
 __codeedit_preexec() {
-    echo -ne "\033]0;${1}\007"
+    builtin printf "\033]133;C\007"
+    builtin printf "\033]0;%s\007" "$1"
 }
 
 __codeedit_precmd() {
-    echo -ne "\033]0;bash\007"
+    builtin printf "\033]133;D;%s\007" "$?"
+    builtin printf "\033]0;bash\007"
 }
 
 preexec_functions+=(__codeedit_preexec)
 precmd_functions+=(__codeedit_precmd)
+
+if [[ "$CE_SHELL_INTEGRATION_DISABLE_PROMPT" == "1" ]]; then
+    unset HISTFILE
+    PROMPT_COMMAND="echo -n ''"
+    PS1="> "
+    PS2=""
+fi;
+
 # -- END CODEEDIT CUSTOMIZATIONS --
