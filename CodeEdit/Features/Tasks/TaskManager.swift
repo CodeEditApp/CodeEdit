@@ -16,10 +16,10 @@ class TaskManager: ObservableObject {
 
     @ObservedObject var workspaceSettings: CEWorkspaceSettingsData
 
-    private var workspaceURL: URL?
+    private var workspaceURL: URL
     private var settingsListener: AnyCancellable?
 
-    init(workspaceSettings: CEWorkspaceSettingsData, workspaceURL: URL? = nil) {
+    init(workspaceSettings: CEWorkspaceSettingsData, workspaceURL: URL) {
         self.workspaceURL = workspaceURL
         self.workspaceSettings = workspaceSettings
 
@@ -71,7 +71,7 @@ class TaskManager: ObservableObject {
         // A process can only be started once, that means we have to renew the Process and Pipe
         // but don't initialize a new object.
         if let activeTask = activeTasks[task.id] {
-            activeTask.renew()
+            activeTask.terminate()
             // Wait until the task is no longer running.
             // The termination handler is asynchronous, so we avoid a race condition using this.
             while activeTask.status == .running {
@@ -138,10 +138,9 @@ class TaskManager: ObservableObject {
     ///
     /// - Parameter taskID: The ID of the task to terminate.
     func terminateTask(taskID: UUID) {
-        guard let process = activeTasks[taskID]?.process, process.isRunning else {
-            return
+        if let activeTask = activeTasks[taskID] {
+            activeTask.terminate()
         }
-        process.terminate()
     }
 
     /// Interrupts the task associated with the given task ID.
@@ -156,10 +155,9 @@ class TaskManager: ObservableObject {
     ///
     /// - Parameter taskID: The ID of the task to interrupt.
     func interruptTask(taskID: UUID) {
-        guard let process = activeTasks[taskID]?.process, process.isRunning else {
-            return
+        if let activeTask = activeTasks[taskID] {
+            activeTask.interrupt()
         }
-        process.interrupt()
     }
 
     func stopAllTasks() {
