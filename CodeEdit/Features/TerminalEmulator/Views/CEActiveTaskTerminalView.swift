@@ -54,7 +54,7 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
                     self.enableOutput = false
                     let chunks = string.split(separator: ";")
                     guard chunks.count == 2, let code = Int32(chunks[1]) else { return }
-                    self.processDelegate?.userProcessTerminated(exitCode: code)
+
                     if self.activeTask.status == .running {
                         self.activeTask.handleProcessFinished(terminationStatus: code)
                     }

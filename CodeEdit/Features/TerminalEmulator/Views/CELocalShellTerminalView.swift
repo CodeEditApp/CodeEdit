@@ -42,10 +42,6 @@ protocol CELocalShellTerminalViewDelegate: AnyObject {
     /// - Parameter exitCode: the exit code returned by the process, or nil if this was an error caused during
     ///                       the IO reading/writing
     func processTerminated(source: TerminalView, exitCode: Int32?)
-
-    /// Invoked when the shell integration notifies the terminal that a user-executed command has finished with an exit
-    /// code.
-    func userProcessTerminated(exitCode: Int32)
 }
 
 // MARK: - CELocalShellTerminalView

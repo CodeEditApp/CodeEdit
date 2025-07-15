@@ -218,6 +218,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(terminalID: terminalID, onTitleChange: onTitleChange)
+        Coordinator(terminalID: terminalID, mode: mode, onTitleChange: onTitleChange)
     }
 }
