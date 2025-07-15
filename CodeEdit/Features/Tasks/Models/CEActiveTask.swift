@@ -96,26 +96,22 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     func suspend() {
-        if let output, status == .running {
-            for pid in output.runningChildProcesses() {
-                kill(pid, SIGSTOP)
-            }
+        if let pid = output?.runningPID(), status == .running {
+            kill(pid, SIGSTOP)
             updateTaskStatus(to: .stopped)
         }
     }
 
     func resume() {
-        if let output, status == .stopped {
-            for pid in output.runningChildProcesses() {
-                kill(pid, SIGCONT)
-            }
+        if let pid = output?.runningPID(), status == .stopped {
+            kill(pid, SIGCONT)
             updateTaskStatus(to: .running)
         }
     }
 
     func terminate() {
         if let output {
-            for pid in output.runningChildProcesses() {
+            for pid in output.getChildProcesses() {
                 kill(pid, SIGTERM)
             }
         }
@@ -123,15 +119,15 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     func interrupt() {
         if let output {
-            for pid in output.runningChildProcesses() {
+            for pid in output.getChildProcesses() {
                 kill(pid, SIGINT)
             }
         }
     }
 
     func clearOutput() {
-        // TODO: - Clear Output
-//        output?.feed(text: "\033[2J") // same command as 'clear'
+        output?.terminal.resetToInitialState()
+        output?.feed(text: "")
     }
 
     private func createStatusTaskNotification() {

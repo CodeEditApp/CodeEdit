@@ -11,9 +11,9 @@ import SwiftTerm
 class CEActiveTaskTerminalView: CELocalShellTerminalView {
     var activeTask: CEActiveTask
 
-    var cachedCaretColor: NSColor?
-    var isUserCommandRunning: Bool = false
-    var enableOutput: Bool = false
+    private var cachedCaretColor: NSColor?
+    private var isUserCommandRunning: Bool = false
+    private var enableOutput: Bool = false
 
     init(activeTask: CEActiveTask) {
         self.activeTask = activeTask
@@ -131,14 +131,52 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
         feed(byteArray: [13, 13, 10])
     }
 
-    func runningChildProcesses() -> [Int32] {
-        getChildProcessesLibproc(parentPID: process.shellPid)
+    func runningPID() -> pid_t? {
+        if process.shellPid != 0 {
+            return process.shellPid
+        }
+        return nil
+    }
+
+    func getChildProcesses() -> [pid_t] {
+        var children: [pid_t] = []
+        guard let parentPID = runningPID() else { return [] }
+
+        // Get number of processes
+        let numProcs = proc_listallpids(nil, 0)
+        guard numProcs > 0 else { return children }
+
+        // Allocate buffer for PIDs
+        let pids = UnsafeMutablePointer<pid_t>.allocate(capacity: Int(numProcs))
+        defer { pids.deallocate() }
+
+        // Get all PIDs
+        let actualNumProcs = proc_listallpids(pids, numProcs * Int32(MemoryLayout<pid_t>.size))
+
+        // Check each process
+        for idx in 0..<Int(actualNumProcs) {
+            var taskInfo = proc_taskallinfo()
+            let size = proc_pidinfo(
+                pids[idx],
+                PROC_PIDTASKALLINFO,
+                0,
+                &taskInfo,
+                Int32(MemoryLayout<proc_taskallinfo>.size)
+            )
+
+            if size > 0 && taskInfo.pbsd.pbi_ppid == parentPID {
+                children.append(pids[idx])
+            }
+        }
+
+        return children
     }
 
     override func dataReceived(slice: ArraySlice<UInt8>) {
         if enableOutput {
             super.dataReceived(slice: slice)
         } else if slice.count >= 5 {
+            // ESC [ 1 3 3 in UTF8
             let sequence: [UInt8] = [0x1B, 0x5D, 0x31, 0x33, 0x33]
             // Ignore until we see an OSC 133 code
             for idx in 0..<(slice.count - 5) where slice[idx..<idx + 5] == sequence[0..<5] {
@@ -147,37 +185,4 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
             }
         }
     }
-}
-
-func getChildProcessesLibproc(parentPID: Int32) -> [Int32] {
-    var children: [Int32] = []
-
-    // Get number of processes
-    let numProcs = proc_listallpids(nil, 0)
-    guard numProcs > 0 else { return children }
-
-    // Allocate buffer for PIDs
-    let pids = UnsafeMutablePointer<pid_t>.allocate(capacity: Int(numProcs))
-    defer { pids.deallocate() }
-
-    // Get all PIDs
-    let actualNumProcs = proc_listallpids(pids, numProcs * Int32(MemoryLayout<pid_t>.size))
-
-    // Check each process
-    for idx in 0..<Int(actualNumProcs) {
-        var taskInfo = proc_taskallinfo()
-        let size = proc_pidinfo(
-            pids[idx],
-            PROC_PIDTASKALLINFO,
-            0,
-            &taskInfo,
-            Int32(MemoryLayout<proc_taskallinfo>.size)
-        )
-
-        if size > 0 && taskInfo.pbsd.pbi_ppid == parentPID {
-            children.append(pids[idx])
-        }
-    }
-
-    return children
 }
