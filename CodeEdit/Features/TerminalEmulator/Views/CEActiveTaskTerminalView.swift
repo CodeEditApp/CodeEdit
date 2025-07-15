@@ -12,7 +12,7 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
     var activeTask: CEActiveTask
 
     private var cachedCaretColor: NSColor?
-    private var isUserCommandRunning: Bool = false
+    private(set) var isUserCommandRunning: Bool = false
     private var enableOutput: Bool = false
 
     init(activeTask: CEActiveTask) {

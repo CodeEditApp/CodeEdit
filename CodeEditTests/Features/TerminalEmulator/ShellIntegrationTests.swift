@@ -13,7 +13,12 @@ import XCTest
 final class ShellIntegrationTests: XCTestCase {
     func testBash() throws {
         var environment: [String] = []
-        let args = try ShellIntegration.setUpIntegration(for: .bash, environment: &environment, useLogin: false)
+        let args = try ShellIntegration.setUpIntegration(
+            for: .bash,
+            environment: &environment,
+            useLogin: false,
+            interactive: true
+        )
         XCTAssertTrue(
             environment.contains("\(ShellIntegration.Variables.ceInjection)=1"), "Does not contain injection flag"
         )
@@ -29,7 +34,12 @@ final class ShellIntegrationTests: XCTestCase {
 
     func testBashLogin() throws {
         var environment: [String] = []
-        let args = try ShellIntegration.setUpIntegration(for: .bash, environment: &environment, useLogin: true)
+        let args = try ShellIntegration.setUpIntegration(
+            for: .bash,
+            environment: &environment,
+            useLogin: true,
+            interactive: true
+        )
         XCTAssertTrue(
             environment.contains("\(ShellIntegration.Variables.ceInjection)=1"), "Does not contain injection flag"
         )
@@ -43,7 +53,12 @@ final class ShellIntegrationTests: XCTestCase {
 
     func testZsh() throws {
         var environment: [String] = []
-        let args = try ShellIntegration.setUpIntegration(for: .zsh, environment: &environment, useLogin: false)
+        let args = try ShellIntegration.setUpIntegration(
+            for: .zsh,
+            environment: &environment,
+            useLogin: false,
+            interactive: true
+        )
         XCTAssertTrue(args.contains("-i"), "Interactive flag")
         XCTAssertTrue(!args.contains("-il"), "No Interactive/Login flag")
 
@@ -72,7 +87,12 @@ final class ShellIntegrationTests: XCTestCase {
 
     func testZshLogin() throws {
         var environment: [String] = []
-        let args = try ShellIntegration.setUpIntegration(for: .zsh, environment: &environment, useLogin: true)
+        let args = try ShellIntegration.setUpIntegration(
+            for: .zsh,
+            environment: &environment,
+            useLogin: true,
+            interactive: true
+        )
         XCTAssertTrue(!args.contains("-i"), "No Interactive flag")
         XCTAssertTrue(args.contains("-il"), "Interactive/Login flag")
 

@@ -22,7 +22,7 @@ final class TaskManagerTests: XCTestCase {
             XCTFail("Error decoding JSON: \(error.localizedDescription)")
         }
 
-        taskManager = TaskManager(workspaceSettings: mockWorkspaceSettings)
+        taskManager = TaskManager(workspaceSettings: mockWorkspaceSettings, workspaceURL: nil)
     }
 
     override func tearDown() {
@@ -44,7 +44,9 @@ final class TaskManagerTests: XCTestCase {
 
         let testExpectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            XCTAssertTrue(((self.taskManager.activeTasks[task.id]?.output.contains("Hello World")) != nil))
+            XCTAssertTrue(
+                self.taskManager.activeTasks[task.id]?.output?.getBufferAsString().contains("Hello World") != nil
+            )
             testExpectation.fulfill()
         }
         wait(for: [testExpectation], timeout: 1)
@@ -93,7 +95,7 @@ final class TaskManagerTests: XCTestCase {
 
         let verifySuspensionExpectation = XCTestExpectation(description: "Verify task is suspended and resume it")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            XCTAssertEqual(self.taskManager.activeTasks[task.id]?.process?.isRunning, true)
+            XCTAssertEqual(self.taskManager.activeTasks[task.id]?.output?.isUserCommandRunning, true)
             XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .stopped)
             self.taskManager.resumeTask(taskID: task.id)
             verifySuspensionExpectation.fulfill()
