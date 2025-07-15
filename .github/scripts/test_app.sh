@@ -18,4 +18,4 @@ set -o pipefail && arch -"${ARCH}" xcodebuild \
            -scheme CodeEdit \
            -destination "platform=OS X,arch=${ARCH}" \
            -skipPackagePluginValidation \
-           clean test | xcpretty
+           clean test | xcbeautify --renderer github-actions
