@@ -19,8 +19,18 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     /// The name of the associated task.
     @ObservedObject var task: CETask
 
+    /// Prevents tasks overwriting each other.
+    /// Say a user cancels one task, then runs it immediately, the cancel message should show and then the
+    /// starting message should show. If we don't add this modifier the starting message will be deleted.
+    var activeTaskID: String = UUID().uuidString
+
+    var taskId: String {
+        task.id.uuidString + "-" + activeTaskID
+    }
+
     var process: Process?
     var outputPipe: Pipe?
+    var workspaceURL: URL?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -35,6 +45,8 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     func run(workspaceURL: URL? = nil) {
+        self.workspaceURL = workspaceURL
+        self.activeTaskID = UUID().uuidString // generate a new ID for this run
         Task {
             // Reconstruct the full command to ensure it executes in the correct directory.
             // Because: CETask only contains information about the relative path.
@@ -146,11 +158,12 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     private func createStatusTaskNotification() {
         let userInfo: [String: Any] = [
-            "id": self.task.id.uuidString,
+            "id": taskId,
             "action": "createWithPriority",
             "title": "Running \(self.task.name)",
             "message": "Running your task: \(self.task.name).",
-            "isLoading": true
+            "isLoading": true,
+            "workspace": workspaceURL as Any
         ]
 
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: userInfo)
@@ -158,9 +171,10 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     private func deleteStatusTaskNotification() {
         let deleteInfo: [String: Any] = [
-            "id": "\(task.id.uuidString)",
+            "id": taskId,
             "action": "deleteWithDelay",
-            "delay": 3.0
+            "delay": 3.0,
+            "workspace": workspaceURL as Any
         ]
 
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteInfo)
@@ -168,8 +182,9 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     private func updateTaskNotification(title: String? = nil, message: String? = nil, isLoading: Bool? = nil) {
         var userInfo: [String: Any] = [
-            "id": task.id.uuidString,
-            "action": "update"
+            "id": taskId,
+            "action": "update",
+            "workspace": workspaceURL as Any
         ]
         if let title {
             userInfo["title"] = title

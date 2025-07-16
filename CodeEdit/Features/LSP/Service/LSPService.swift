@@ -305,14 +305,13 @@ final class LSPService: ObservableObject {
 
     /// Goes through all active language servers and attempts to shut them down.
     func stopAllServers() async {
-        await withThrowingTaskGroup(of: Void.self) { group in
+        await withTaskGroup(of: Void.self) { group in
             for (key, server) in languageClients {
                 group.addTask {
                     do {
                         try await server.shutdown()
                     } catch {
-                        self.logger.error("Shutting down \(key.languageId.rawValue): Error \(error)")
-                        throw error
+                        self.logger.warning("Shutting down \(key.languageId.rawValue): Error \(error)")
                     }
                 }
             }
@@ -322,6 +321,13 @@ final class LSPService: ObservableObject {
             value.cancel()
         }
         eventListeningTasks.removeAll()
+    }
+
+    /// Call this when a server is refusing to terminate itself. Sends the `SIGKILL` signal to all lsp processes.
+    func killAllServers() {
+        for (_, server) in languageClients {
+            kill(server.pid, SIGKILL)
+        }
     }
 }
 

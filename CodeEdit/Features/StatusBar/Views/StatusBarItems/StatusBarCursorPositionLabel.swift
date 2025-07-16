@@ -61,7 +61,7 @@ struct StatusBarCursorPositionLabel: View {
                 .font(statusBarViewModel.statusBarFont)
                 .foregroundColor(foregroundColor)
                 .lineLimit(1)
-                .onReceive(editorInstance.cursorPositions) { newValue in
+                .onReceive(editorInstance.$cursorPositions) { newValue in
                     self.cursorPositions = newValue
                 }
         }
@@ -78,7 +78,7 @@ struct StatusBarCursorPositionLabel: View {
         /// - Parameter range: The range to query.
         /// - Returns: The number of lines in the range.
         func getLines(_ range: NSRange) -> Int {
-            return editorInstance.rangeTranslator?.linesInRange(range) ?? 0
+            return editorInstance.rangeTranslator.linesInRange(range)
         }
 
         /// Create a label string for cursor positions.

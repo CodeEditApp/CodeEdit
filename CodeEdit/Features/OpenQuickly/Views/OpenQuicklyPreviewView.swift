@@ -12,7 +12,8 @@ struct OpenQuicklyPreviewView: View {
     private let queue = DispatchQueue(label: "app.codeedit.CodeEdit.quickOpen.preview")
     private let item: CEWorkspaceFile
 
-    @ObservedObject var document: CodeFileDocument
+    @StateObject var editorInstance: EditorInstance
+    @StateObject var document: CodeFileDocument
 
     init(item: CEWorkspaceFile) {
         self.item = item
@@ -21,12 +22,13 @@ struct OpenQuicklyPreviewView: View {
             withContentsOf: item.url,
             ofType: item.contentType?.identifier ?? "public.source-code"
         )
+        self._editorInstance = .init(wrappedValue: EditorInstance(workspace: nil, file: item))
         self._document = .init(wrappedValue: doc ?? .init())
     }
 
     var body: some View {
         if let utType = document.utType, utType.conforms(to: .text) {
-            CodeFileView(codeFile: document, isEditable: false)
+            CodeFileView(editorInstance: editorInstance, codeFile: document, isEditable: false)
         } else {
             NonTextFileView(fileDocument: document)
         }

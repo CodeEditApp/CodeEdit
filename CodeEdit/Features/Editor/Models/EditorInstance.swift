@@ -13,32 +13,104 @@ import CodeEditSourceEditor
 
 /// A single instance of an editor in a group with a published ``EditorInstance/cursorPositions`` variable to publish
 /// the user's current location in a file.
-class EditorInstance: Hashable {
-    // Public
-
+class EditorInstance: ObservableObject, Hashable {
     /// The file presented in this editor instance.
     let file: CEWorkspaceFile
 
     /// A publisher for the user's current location in a file.
-    var cursorPositions: AnyPublisher<[CursorPosition], Never> {
-        cursorSubject.eraseToAnyPublisher()
-    }
+    @Published var cursorPositions: [CursorPosition]
+    @Published var scrollPosition: CGPoint?
 
-    // Public TextViewCoordinator APIs
+    @Published var findText: String?
+    var findTextSubject: PassthroughSubject<String?, Never>
 
-    var rangeTranslator: RangeTranslator?
+    @Published var replaceText: String?
+    var replaceTextSubject: PassthroughSubject<String?, Never>
 
-    // Internal Combine subjects
+    var rangeTranslator: RangeTranslator = RangeTranslator()
 
-    private let cursorSubject = CurrentValueSubject<[CursorPosition], Never>([])
+    private var cancellables: Set<AnyCancellable> = []
 
-    // MARK: - Init, Hashable, Equatable
+    // MARK: - Init
 
-    init(file: CEWorkspaceFile, cursorPositions: [CursorPosition] = []) {
+    init(workspace: WorkspaceDocument?, file: CEWorkspaceFile, cursorPositions: [CursorPosition]? = nil) {
         self.file = file
-        self.cursorSubject.send(cursorPositions)
-        self.rangeTranslator = RangeTranslator(cursorSubject: cursorSubject)
+        let url = file.url
+        let editorState = EditorStateRestoration.shared?.restorationState(for: url)
+
+        findText = workspace?.searchState?.searchQuery
+        findTextSubject = PassthroughSubject()
+        replaceText = workspace?.searchState?.replaceText
+        replaceTextSubject = PassthroughSubject()
+
+        self.cursorPositions = (
+            cursorPositions ?? editorState?.editorCursorPositions ?? [CursorPosition(line: 1, column: 1)]
+        )
+        self.scrollPosition = editorState?.scrollPosition
+
+        // Setup listeners
+
+        Publishers.CombineLatest(
+            $cursorPositions.removeDuplicates(),
+            $scrollPosition
+                .debounce(for: .seconds(0.1), scheduler: RunLoop.main) // This can trigger *very* often
+                .removeDuplicates()
+        )
+        .sink { (cursorPositions, scrollPosition) in
+            EditorStateRestoration.shared?.updateRestorationState(
+                for: url,
+                data: .init(cursorPositions: cursorPositions, scrollPosition: scrollPosition ?? .zero)
+            )
+        }
+        .store(in: &cancellables)
+
+        listenToFindText(workspace: workspace)
+        listenToReplaceText(workspace: workspace)
     }
+
+    // MARK: - Find/Replace Listeners
+
+    func listenToFindText(workspace: WorkspaceDocument?) {
+        workspace?.searchState?.$searchQuery
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newQuery in
+                if self?.findText != newQuery {
+                    self?.findText = newQuery
+                }
+            }
+            .store(in: &cancellables)
+        findTextSubject
+            .receive(on: RunLoop.main)
+            .sink { [weak workspace, weak self] newFindText in
+                if let newFindText, workspace?.searchState?.searchQuery != newFindText {
+                    workspace?.searchState?.searchQuery = newFindText
+                }
+                self?.findText = workspace?.searchState?.searchQuery
+            }
+            .store(in: &cancellables)
+    }
+
+    func listenToReplaceText(workspace: WorkspaceDocument?) {
+        workspace?.searchState?.$replaceText
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newText in
+                if self?.replaceText != newText {
+                    self?.replaceText = newText
+                }
+            }
+            .store(in: &cancellables)
+        replaceTextSubject
+            .receive(on: RunLoop.main)
+            .sink { [weak workspace, weak self] newReplaceText in
+                if let newReplaceText, workspace?.searchState?.replaceText != newReplaceText {
+                    workspace?.searchState?.replaceText = newReplaceText
+                }
+                self?.replaceText = workspace?.searchState?.replaceText
+            }
+            .store(in: &cancellables)
+    }
+
+    // MARK: - Hashable, Equatable
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(file)
@@ -53,19 +125,17 @@ class EditorInstance: Hashable {
     /// Translates ranges (eg: from a cursor position) to other information like the number of lines in a range.
     class RangeTranslator: TextViewCoordinator {
         private weak var textViewController: TextViewController?
-        private var cursorSubject: CurrentValueSubject<[CursorPosition], Never>
 
-        init(cursorSubject: CurrentValueSubject<[CursorPosition], Never>) {
-            self.cursorSubject = cursorSubject
-        }
-
-        func textViewDidChangeSelection(controller: TextViewController, newPositions: [CursorPosition]) {
-            self.cursorSubject.send(controller.cursorPositions)
-        }
+        init() { }
 
         func prepareCoordinator(controller: TextViewController) {
             self.textViewController = controller
-            self.cursorSubject.send(controller.cursorPositions)
+        }
+
+        func controllerDidAppear(controller: TextViewController) {
+            if controller.isEditable && controller.isSelectable {
+                controller.view.window?.makeFirstResponder(controller.textView)
+            }
         }
 
         func destroy() {
@@ -86,6 +156,16 @@ class EditorInstance: Hashable {
                 return 0
             }
             return (endTextLine.index - startTextLine.index) + 1
+        }
+
+        func moveLinesUp() {
+            guard let controller = textViewController else { return }
+            controller.moveLinesUp()
+        }
+
+        func moveLinesDown() {
+            guard let controller = textViewController else { return }
+            controller.moveLinesDown()
         }
     }
 }

@@ -22,12 +22,14 @@
 		6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0617D52BDB4432008C9C42 /* LogStream */; };
 		6C0824A12C5C0C9700A0751E /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0824A02C5C0C9700A0751E /* SwiftTerm */; };
 		6C147C4529A329350089B630 /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = 6C147C4429A329350089B630 /* OrderedCollections */; };
+		6C315FC82E05E33D0011BFC5 /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6C315FC72E05E33D0011BFC5 /* CodeEditSourceEditor */; };
 		6C4E37FC2C73E00700AEE7B5 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 6C4E37FB2C73E00700AEE7B5 /* SwiftTerm */; };
 		6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */ = {isa = PBXBuildFile; productRef = 6C66C31229D05CDC00DE9ED2 /* GRDB */; };
 		6C6BD6F429CD142C00235D17 /* CollectionConcurrencyKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6BD6F329CD142C00235D17 /* CollectionConcurrencyKit */; };
 		6C6BD6F829CD14D100235D17 /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C6BD6F729CD14D100235D17 /* CodeEditKit */; };
 		6C6BD6F929CD14D100235D17 /* CodeEditKit in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 6C6BD6F729CD14D100235D17 /* CodeEditKit */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		6C73A6D32D4F1E550012D95C /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6C73A6D22D4F1E550012D95C /* CodeEditSourceEditor */; };
+		6C76D6D42E15B91E00EF52C3 /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6C76D6D32E15B91E00EF52C3 /* CodeEditSourceEditor */; };
 		6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 6C81916A29B41DD300B75C92 /* DequeModule */; };
 		6C85BB402C2105ED00EB5DEF /* CodeEditKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6C85BB3F2C2105ED00EB5DEF /* CodeEditKit */; };
 		6C85BB442C210EFD00EB5DEF /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 6C85BB432C210EFD00EB5DEF /* SwiftUIIntrospect */; };
@@ -173,6 +175,8 @@
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				6CE21E872C650D2C0031B056 /* SwiftTerm in Frameworks */,
+				6C76D6D42E15B91E00EF52C3 /* CodeEditSourceEditor in Frameworks */,
+				6C315FC82E05E33D0011BFC5 /* CodeEditSourceEditor in Frameworks */,
 				6CC00A8B2CBEF150004E8134 /* CodeEditSourceEditor in Frameworks */,
 				6CD3CA552C8B508200D83DCD /* CodeEditSourceEditor in Frameworks */,
 				6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */,
@@ -328,6 +332,8 @@
 				6C73A6D22D4F1E550012D95C /* CodeEditSourceEditor */,
 				5EACE6212DF4BF08005E08B8 /* WelcomeWindow */,
 				5E4485602DF600D9008BBE69 /* AboutWindow */,
+				6C315FC72E05E33D0011BFC5 /* CodeEditSourceEditor */,
+				6C76D6D32E15B91E00EF52C3 /* CodeEditSourceEditor */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -430,10 +436,10 @@
 				303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 				6C4E37FA2C73E00700AEE7B5 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
-				6CF368562DBBD274006A77FD /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 				30ED7B722DD299E600ACC922 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 				5EACE6202DF4BF08005E08B8 /* XCRemoteSwiftPackageReference "WelcomeWindow" */,
 				5E44855F2DF600D9008BBE69 /* XCRemoteSwiftPackageReference "AboutWindow" */,
+				6C76D6D22E15B91E00EF52C3 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 			);
 			preferredProjectObjectVersion = 55;
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
@@ -620,7 +626,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -660,7 +666,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
@@ -697,7 +703,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -725,7 +731,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -754,7 +760,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -817,7 +823,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -857,7 +863,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
@@ -894,7 +900,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -922,7 +928,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -951,7 +957,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -986,7 +992,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1021,7 +1027,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1085,7 +1091,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1126,7 +1132,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
@@ -1163,7 +1169,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1191,7 +1197,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1220,7 +1226,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1283,7 +1289,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1355,7 +1361,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1394,7 +1400,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
@@ -1435,7 +1441,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
@@ -1472,7 +1478,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1499,7 +1505,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1527,7 +1533,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1556,7 +1562,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 45;
+				CURRENT_PROJECT_VERSION = 46;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1662,7 +1668,7 @@
 			repositoryURL = "https://github.com/ChimeHQ/LanguageClient";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.8.0;
+				minimumVersion = 0.8.2;
 			};
 		};
 		303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */ = {
@@ -1777,6 +1783,14 @@
 				minimumVersion = 0.2.0;
 			};
 		};
+		6C76D6D22E15B91E00EF52C3 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
+			requirement = {
+				kind = exactVersion;
+				version = 0.14.1;
+			};
+		};
 		6C85BB3E2C2105ED00EB5DEF /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditKit";
@@ -1807,14 +1821,6 @@
 			requirement = {
 				kind = exactVersion;
 				version = 1.0.1;
-			};
-		};
-		6CF368562DBBD274006A77FD /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
-			requirement = {
-				kind = exactVersion;
-				version = 0.13.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1874,6 +1880,10 @@
 			package = 6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = OrderedCollections;
 		};
+		6C315FC72E05E33D0011BFC5 /* CodeEditSourceEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditSourceEditor;
+		};
 		6C4E37FB2C73E00700AEE7B5 /* SwiftTerm */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6C4E37FA2C73E00700AEE7B5 /* XCRemoteSwiftPackageReference "SwiftTerm" */;
@@ -1895,6 +1905,11 @@
 		};
 		6C73A6D22D4F1E550012D95C /* CodeEditSourceEditor */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditSourceEditor;
+		};
+		6C76D6D32E15B91E00EF52C3 /* CodeEditSourceEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6C76D6D22E15B91E00EF52C3 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */;
 			productName = CodeEditSourceEditor;
 		};
 		6C7B1C752A1D57CE005CBBFC /* SwiftLint */ = {
