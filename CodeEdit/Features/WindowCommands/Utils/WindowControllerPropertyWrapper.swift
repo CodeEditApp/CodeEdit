@@ -36,10 +36,8 @@ struct UpdatingWindowController: DynamicProperty {
     class WindowControllerBox: ObservableObject {
         public private(set) weak var controller: CodeEditWindowController?
 
-        private var objectWillChangeCancellable: AnyCancellable?
-        private var utilityAreaCancellable: AnyCancellable? // ``ViewCommands`` needs this.
-        private var windowCancellable: AnyCancellable?
-        private var activeEditorCancellable: AnyCancellable?
+        private var windowCancellable: AnyCancellable? // Needs to stick around between window changes.
+        private var cancellables: Set<AnyCancellable> = []
 
         init() {
             windowCancellable = NSApp.publisher(for: \.keyWindow).receive(on: RunLoop.main).sink { [weak self] window in
@@ -50,25 +48,32 @@ struct UpdatingWindowController: DynamicProperty {
         }
 
         func setNewController(_ controller: CodeEditWindowController?) {
-            objectWillChangeCancellable?.cancel()
-            objectWillChangeCancellable = nil
-            utilityAreaCancellable?.cancel()
-            utilityAreaCancellable = nil
-            activeEditorCancellable?.cancel()
-            activeEditorCancellable = nil
+            cancellables.forEach { $0.cancel() }
+            cancellables.removeAll()
 
             self.controller = controller
 
-            objectWillChangeCancellable = controller?.objectWillChange.sink { [weak self] in
+            controller?.objectWillChange.sink { [weak self] in
                 self?.objectWillChange.send()
             }
-            utilityAreaCancellable = controller?.workspace?.utilityAreaModel?.objectWillChange.sink { [weak self] in
+            .store(in: &cancellables)
+
+            controller?.workspace?.utilityAreaModel?.objectWillChange.sink { [weak self] in
                 self?.objectWillChange.send()
             }
+            .store(in: &cancellables)
+
             let activeEditor = controller?.workspace?.editorManager?.activeEditor
-            activeEditorCancellable = activeEditor?.objectWillChange.sink { [weak self] in
+            activeEditor?.objectWillChange.sink { [weak self] in
                 self?.objectWillChange.send()
             }
+            .store(in: &cancellables)
+
+            controller?.workspace?.taskManager?.objectWillChange.sink { [weak self] in
+                self?.objectWillChange.send()
+            }
+            .store(in: &cancellables)
+
             self.objectWillChange.send()
         }
     }
