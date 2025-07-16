@@ -40,7 +40,7 @@
     {
       "identity" : "codeeditsourceeditor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor.git",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
       "state" : {
         "revision" : "afc57523b05c209496a221655c2171c0624b51d3",
         "version" : "0.14.1"
@@ -286,15 +286,6 @@
       "state" : {
         "revision" : "bf655c0beaf4943573543fa77c58e8006ff34971",
         "version" : "0.25.6"
-      }
-    },
-    {
-      "identity" : "zipfoundation",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/weichsel/ZIPFoundation",
-      "state" : {
-        "revision" : "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
-        "version" : "0.9.19"
       }
     },
     {

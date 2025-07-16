@@ -21,7 +21,7 @@ class ShellClient {
     /// - Parameter args: commands to run
     /// - Returns: command output
     func generateProcessAndPipe(_ args: [String]) -> (Process, Pipe) {
-        var arguments = ["-l", "-c"]
+        var arguments = ["-c"]
         arguments.append(contentsOf: args)
         let task = Process()
         let pipe = Pipe()
