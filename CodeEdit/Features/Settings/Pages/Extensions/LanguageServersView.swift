@@ -15,6 +15,19 @@ struct LanguageServersView: View {
 
     var body: some View {
         SettingsForm {
+            Section {
+                EmptyView()
+            } header: {
+                Label(
+                    "Warning: Language server installation is not complete. Use this at your own risk. It "
+                    + "**WILL** break.",
+                    systemImage: "exclamationmark.triangle.fill"
+                )
+                .padding()
+                .foregroundStyle(.black)
+                .background(RoundedRectangle(cornerRadius: 12).fill(.yellow))
+            }
+
             if isLoading {
                 HStack {
                     Spacer()
