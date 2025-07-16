@@ -9,7 +9,7 @@ import Testing
 @testable import CodeEdit
 
 @MainActor
-@Suite
+@Suite(.serialized)
 class CEActiveTaskTests {
     var task: CETask
     var activeTask: CEActiveTask
