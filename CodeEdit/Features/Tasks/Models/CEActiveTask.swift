@@ -10,7 +10,6 @@ import Combine
 import SwiftTerm
 
 /// Stores the state of a task once it's executed
-@MainActor
 class CEActiveTask: ObservableObject, Identifiable, Hashable {
     /// The current progress of the task.
     @Published var output: CEActiveTaskTerminalView?
@@ -44,6 +43,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }.store(in: &cancellables)
     }
 
+    @MainActor
     func run(workspaceURL: URL?) {
         self.workspaceURL = workspaceURL
         self.activeTaskID = UUID() // generate a new ID for this run
@@ -57,6 +57,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         output = view
     }
 
+    @MainActor
     func handleProcessFinished(terminationStatus: Int32) {
         if terminationStatus == 0 {
             output?.newline()
@@ -96,6 +97,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         deleteStatusTaskNotification()
     }
 
+    @MainActor
     func suspend() {
         if let pid = output?.runningPID(), status == .running {
             kill(pid, SIGSTOP)
@@ -103,6 +105,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }
     }
 
+    @MainActor
     func resume() {
         if let pid = output?.runningPID(), status == .stopped {
             kill(pid, SIGCONT)
@@ -132,6 +135,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }
     }
 
+    @MainActor
     func clearOutput() {
         output?.terminal.resetToInitialState()
         output?.feed(text: "")
