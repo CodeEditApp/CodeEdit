@@ -459,11 +459,8 @@ __codeedit_precmd() {
 preexec_functions+=(__codeedit_preexec)
 precmd_functions+=(__codeedit_precmd)
 
-if [[ "$CE_SHELL_INTEGRATION_DISABLE_PROMPT" == "1" ]]; then
+if [[ "$CE_DISABLE_HISTORY" == "1" ]]; then
     unset HISTFILE
-    PROMPT_COMMAND="echo -n ''"
-    PS1="> "
-    PS2=""
 fi;
 
 # -- END CODEEDIT CUSTOMIZATIONS --

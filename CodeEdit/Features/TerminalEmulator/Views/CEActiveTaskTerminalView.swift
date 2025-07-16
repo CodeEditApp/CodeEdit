@@ -12,7 +12,9 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
     var activeTask: CEActiveTask
 
     private var cachedCaretColor: NSColor?
-    private(set) var isUserCommandRunning: Bool = false
+    var isUserCommandRunning: Bool {
+        activeTask.status == .running || activeTask.status == .stopped
+    }
     private var enableOutput: Bool = false
 
     init(activeTask: CEActiveTask) {
@@ -28,7 +30,6 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
         super.setup()
         terminal.parser.oscHandlers[133] = { [weak self] slice in
             guard let string = String(bytes: slice, encoding: .utf8), let self else { return }
-
             // There's some more commands we could handle but don't right now. See the section on the FinalTerm codes
             // here: https://iterm2.com/documentation-escape-codes.html
             // There's also a few codes we don't emit. This should be improved in the future.
@@ -39,27 +40,24 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
                     self.cachedCaretColor = self.caretColor
                 }
                 self.caretColor = self.cachedCaretColor ?? self.caretColor
+                self.activeTask.updateTaskStatus(to: .running)
 
                 self.sendOutputMessage("Starting task: " + self.activeTask.task.name)
                 self.sendOutputMessage(self.activeTask.task.command)
                 self.newline()
 
                 // Command started
-                self.isUserCommandRunning = true
                 self.enableOutput = true
             case "D":
+                // Disabled before we've received the first C CMD from the task
+                guard enableOutput else { return }
                 // Command terminated with code
-                if self.isUserCommandRunning == true {
-                    self.isUserCommandRunning = false
-                    self.enableOutput = false
-                    let chunks = string.split(separator: ";")
-                    guard chunks.count == 2, let code = Int32(chunks[1]) else { return }
+                let chunks = string.split(separator: ";")
+                guard chunks.count == 2, let status = Int32(chunks[1]) else { return }
+                self.activeTask.handleProcessFinished(terminationStatus: status)
 
-                    if self.activeTask.status == .running {
-                        self.activeTask.handleProcessFinished(terminationStatus: code)
-                    }
-                    self.caretColor = .clear
-                }
+                self.enableOutput = false
+                self.caretColor = .clear
             default:
                 break
             }
@@ -91,7 +89,7 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
             )
 
             terminalEnvironment.append(contentsOf: environment)
-            terminalEnvironment.append("CE_SHELL_INTEGRATION_DISABLE_PROMPT=1")
+            terminalEnvironment.append("\(ShellIntegration.Variables.disableHistory)=1")
             terminalEnvironment.append(
                 contentsOf: activeTask.task.environmentVariables.map({ $0.key + "=" + $0.value })
             )
@@ -130,7 +128,7 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
     }
 
     func newline() {
-        // cr cr lf (it's what zsh sends on a cmdRet)
+        // cr cr lf
         feed(byteArray: [13, 13, 10])
     }
 
@@ -141,38 +139,11 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
         return nil
     }
 
-    func getChildProcesses() -> [pid_t] {
-        var children: [pid_t] = []
-        guard let parentPID = runningPID() else { return [] }
-
-        // Get number of processes
-        let numProcs = proc_listallpids(nil, 0)
-        guard numProcs > 0 else { return children }
-
-        // Allocate buffer for PIDs
-        let pids = UnsafeMutablePointer<pid_t>.allocate(capacity: Int(numProcs))
-        defer { pids.deallocate() }
-
-        // Get all PIDs
-        let actualNumProcs = proc_listallpids(pids, numProcs * Int32(MemoryLayout<pid_t>.size))
-
-        // Check each process
-        for idx in 0..<Int(actualNumProcs) {
-            var taskInfo = proc_taskallinfo()
-            let size = proc_pidinfo(
-                pids[idx],
-                PROC_PIDTASKALLINFO,
-                0,
-                &taskInfo,
-                Int32(MemoryLayout<proc_taskallinfo>.size)
-            )
-
-            if size > 0 && taskInfo.pbsd.pbi_ppid == parentPID {
-                children.append(pids[idx])
-            }
-        }
-
-        return children
+    func getProcessGroup() -> pid_t? {
+        guard let shellPID = runningPID() else { return nil }
+        let group = getpgid(shellPID)
+        guard group >= 0 else { return nil }
+        return group
     }
 
     func getBufferAsString() -> String {
@@ -186,7 +157,7 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
         if enableOutput {
             super.dataReceived(slice: slice)
         } else if slice.count >= 5 {
-            // ESC [ 1 3 3 in UTF8
+            // ESC [ 1 3 3
             let sequence: [UInt8] = [0x1B, 0x5D, 0x31, 0x33, 0x33]
             // Ignore until we see an OSC 133 code
             for idx in 0..<(slice.count - 5) where slice[idx..<idx + 5] == sequence[0..<5] {

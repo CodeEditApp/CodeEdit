@@ -20,6 +20,7 @@ enum ShellIntegration {
         static let userZDotDir = "USER_ZDOTDIR"
         static let zDotDir = "ZDOTDIR"
         static let ceInjection = "CE_INJECTION"
+        static let disableHistory = "CE_DISABLE_HISTORY"
     }
 
     /// Errors for shell integration setup.

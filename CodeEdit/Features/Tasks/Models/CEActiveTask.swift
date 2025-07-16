@@ -48,7 +48,6 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         self.workspaceURL = workspaceURL
         self.activeTaskID = UUID() // generate a new ID for this run
 
-        updateTaskStatus(to: .running)
         createStatusTaskNotification()
 
         let view = output ?? CEActiveTaskTerminalView(activeTask: self)
@@ -59,7 +58,14 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     @MainActor
     func handleProcessFinished(terminationStatus: Int32) {
-        if terminationStatus == 0 {
+        // Shells add 128 to non-zero exit codes.
+        var terminationStatus = terminationStatus
+        if terminationStatus > 128 {
+            terminationStatus -= 128
+        }
+
+        switch terminationStatus {
+        case 0:
             output?.newline()
             output?.sendOutputMessage("Finished running \(task.name).")
             output?.newline()
@@ -70,7 +76,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
                 message: "",
                 isLoading: false
             )
-        } else if terminationStatus == 15 {
+        case 2, 15: // SIGINT or SIGTERM
             output?.newline()
             output?.sendOutputMessage("\(task.name) cancelled.")
             output?.newline()
@@ -81,7 +87,9 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
                 message: "",
                 isLoading: false
             )
-        } else {
+        case 17: // SIGSTOP
+            updateTaskStatus(to: .stopped)
+        default:
             output?.newline()
             output?.sendOutputMessage("Failed to run \(task.name)")
             output?.newline()
@@ -99,39 +107,35 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     @MainActor
     func suspend() {
-        if let pid = output?.runningPID(), status == .running {
-            kill(pid, SIGSTOP)
+        if let groupPID = output?.getProcessGroup(), status == .running {
+            kill(groupPID, SIGSTOP)
             updateTaskStatus(to: .stopped)
         }
     }
 
     @MainActor
     func resume() {
-        if let pid = output?.runningPID(), status == .stopped {
-            kill(pid, SIGCONT)
+        if let groupPID = output?.getProcessGroup(), status == .running {
+            kill(groupPID, SIGCONT)
             updateTaskStatus(to: .running)
         }
     }
 
     func terminate() {
-        if let output {
-            for pid in output.getChildProcesses() {
-                kill(pid, SIGTERM)
-            }
+        if let groupPID = output?.getProcessGroup() {
+            kill(groupPID, SIGTERM)
         }
     }
 
     func interrupt() {
-        if let output {
-            for pid in output.getChildProcesses() {
-                kill(pid, SIGINT)
-            }
+        if let groupPID = output?.getProcessGroup() {
+            kill(groupPID, SIGINT)
         }
     }
 
     func waitForExit() {
-        for pid in output?.getChildProcesses() ?? [] {
-            waitpid(pid, nil, 0)
+        if let groupPID = output?.getProcessGroup() {
+            waitid(P_PGID, UInt32(groupPID), nil, 0)
         }
     }
 
@@ -185,7 +189,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     @MainActor
-    private func updateTaskStatus(to taskStatus: CETaskStatus) {
+    func updateTaskStatus(to taskStatus: CETaskStatus) {
         self.status = taskStatus
     }
 
