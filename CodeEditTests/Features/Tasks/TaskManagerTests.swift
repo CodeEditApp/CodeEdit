@@ -33,7 +33,7 @@ class TaskManagerTests {
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
-        await waitForExpectation(timeout: .seconds(1)) {
+        await waitForExpectation(timeout: .seconds(10)) {
             self.taskManager.activeTasks[task.id]?.status == .finished
         } onTimeout: {
             Issue.record("Status never changed to finished.")

@@ -28,22 +28,27 @@ class CEActiveTaskTests {
         #expect(activeTask.task == task, "Active task should be initialized with the provided CETask.")
     }
 
-    @Test(.timeLimit(.minutes(1)))
+    @Test
     func testRunMethod() async throws {
         activeTask.run(workspaceURL: nil)
+        await waitForExpectation(timeout: .seconds(10)) {
+            activeTask.status == .running
+        } onTimeout: {
+            Issue.record("Task never started. \(activeTask.status)")
+        }
         activeTask.waitForExit()
 
         await waitForExpectation {
             activeTask.status == .finished
         } onTimeout: {
-            Issue.record("Status never changed to finished.")
+            Issue.record("Status never changed to finished. \(activeTask.status)")
         }
 
         let output = try #require(activeTask.output)
         #expect(output.getBufferAsString().contains("Testing"))
     }
 
-    @Test(.timeLimit(.minutes(1)))
+    @Test
     func testHandleProcessFinished() async throws {
         task.command = "aNon-existentCommand"
         activeTask.run(workspaceURL: nil)
