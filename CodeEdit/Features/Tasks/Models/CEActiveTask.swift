@@ -10,6 +10,7 @@ import Combine
 import SwiftTerm
 
 /// Stores the state of a task once it's executed
+@MainActor
 class CEActiveTask: ObservableObject, Identifiable, Hashable {
     /// The current progress of the task.
     @Published var output: CEActiveTaskTerminalView?

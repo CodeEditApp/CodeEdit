@@ -8,6 +8,7 @@
 import XCTest
 @testable import CodeEdit
 
+@MainActor
 final class DocumentsUnitTests: XCTestCase {
     // Properties
     private var splitViewController: CodeEditSplitViewController!

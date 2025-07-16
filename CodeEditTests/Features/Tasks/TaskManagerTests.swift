@@ -8,6 +8,7 @@
 import XCTest
 @testable import CodeEdit
 
+@MainActor
 final class TaskManagerTests: XCTestCase {
     var taskManager: TaskManager!
     var mockWorkspaceSettings: CEWorkspaceSettingsData!
@@ -44,6 +45,12 @@ final class TaskManagerTests: XCTestCase {
 
         let testExpectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            do {
+                let outputString = try XCTUnwrap(self.taskManager.activeTasks[task.id]?.output?.getBufferAsString())
+                self.add(XCTAttachment(string: outputString))
+            } catch {
+                XCTFail("No Output")
+            }
             XCTAssertTrue(
                 self.taskManager.activeTasks[task.id]?.output?.getBufferAsString().contains("Hello World") != nil
             )
@@ -69,7 +76,13 @@ final class TaskManagerTests: XCTestCase {
 
         let testExpectation2 = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .notRunning)
+            do {
+                let outputString = try XCTUnwrap(self.taskManager.activeTasks[task.id]?.output?.getBufferAsString())
+                self.add(XCTAttachment(string: outputString))
+            } catch {
+                XCTFail("No Output")
+            }
+            XCTAssertEqual(self.taskManager.taskStatus(taskID: task.id), .failed)
             testExpectation2.fulfill()
         }
 

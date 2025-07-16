@@ -9,6 +9,7 @@ import SwiftUI
 import Combine
 
 /// This class handles the execution of tasks
+@MainActor
 class TaskManager: ObservableObject {
     @Published var activeTasks: [UUID: CEActiveTask] = [:]
     @Published var selectedTaskID: UUID?
@@ -60,8 +61,7 @@ class TaskManager: ObservableObject {
     }
 
     func executeActiveTask() {
-        let task = workspaceSettings.tasks.first { $0.id == selectedTaskID }
-        guard let task else { return }
+        guard let task = workspaceSettings.tasks.first(where: { $0.id == selectedTaskID }) else { return }
         Task {
             await runTask(task: task)
         }
@@ -87,10 +87,8 @@ class TaskManager: ObservableObject {
         }
     }
 
-    private func createRunningTask(taskID: UUID, runningTask: CEActiveTask) async {
-        await MainActor.run {
-            activeTasks[taskID] = runningTask
-        }
+    private func createRunningTask(taskID: UUID, runningTask: CEActiveTask) {
+        activeTasks[taskID] = runningTask
     }
 
     func terminateActiveTask() {
