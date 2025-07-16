@@ -16,7 +16,7 @@ import CodeEditTextView
 /// - `CodeFileDocument` is released once there are no editors viewing it.
 /// Undo stacks need to be retained for the duration of a workspace session, enduring editor closes..
 final class UndoManagerRegistration: ObservableObject {
-    private var managerMap: [CEWorkspaceFile.ID: CEUndoManager] = [:]
+    private var managerMap: [String: CEUndoManager] = [:]
 
     init() { }
 
@@ -24,12 +24,40 @@ final class UndoManagerRegistration: ObservableObject {
     /// - Parameter file: The file to create for.
     /// - Returns: The undo manager for the given file.
     func manager(forFile file: CEWorkspaceFile) -> CEUndoManager {
-        if let manager = managerMap[file.id] {
+        manager(forFile: file.url)
+    }
+
+    /// Find or create a new undo manager.
+    /// - Parameter path: The path of the file to create for.
+    /// - Returns: The undo manager for the given file.
+    func manager(forFile path: URL) -> CEUndoManager {
+        if let manager = managerMap[path.absolutePath] {
             return manager
         } else {
             let newManager = CEUndoManager()
-            managerMap[file.id] = newManager
+            managerMap[path.absolutePath] = newManager
             return newManager
+        }
+    }
+
+    /// Find or create a new undo manager.
+    /// - Parameter path: The path of the file to create for.
+    /// - Returns: The undo manager for the given file.
+    func managerIfExists(forFile path: URL) -> CEUndoManager? {
+        managerMap[path.absolutePath]
+    }
+}
+
+extension UndoManagerRegistration: CEWorkspaceFileManagerObserver {
+    /// Managers need to be cleared when the following is true:
+    /// - The file is not open in any editors
+    /// - The file is updated externally
+    ///
+    /// To handle this?
+    /// - When we receive a file update, if the file is not open in any editors we clear the undo stack
+    func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>) {
+        for file in updatedItems where file.fileDocument == nil {
+            managerMap.removeValue(forKey: file.url.absolutePath)
         }
     }
 }

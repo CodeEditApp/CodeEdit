@@ -69,12 +69,16 @@ final class Editor: ObservableObject, Identifiable {
         selectedTab: Tab? = nil,
         temporaryTab: Tab? = nil,
         parent: SplitViewData? = nil,
-        workspace: WorkspaceDocument? = nil,
+        workspace: WorkspaceDocument? = nil
     ) {
-        self.tabs = []
         self.parent = parent
         self.workspace = workspace
-        files.forEach { openTab(file: $0) }
+        // If we open the files without a valid workspace, we risk creating a file we lose track of but stays in memory
+        if workspace != nil {
+            files.forEach { openTab(file: $0) }
+        } else {
+            self.tabs = OrderedSet(files.map { EditorInstance(workspace: workspace, file: $0) })
+        }
         self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(workspace: workspace, file: files.first!))
         self.temporaryTab = temporaryTab
     }
@@ -237,18 +241,12 @@ final class Editor: ObservableObject, Identifiable {
     }
 
     private func openFile(item: Tab) throws {
-        guard item.file.fileDocument == nil else {
+        // If this isn't attached to a workspace, loading a new NSDocument will cause a loose document we can't close
+        guard item.file.fileDocument == nil && workspace != nil else {
             return
         }
 
-        let contentType = item.file.resolvedURL.contentType
-        let codeFile = try CodeFileDocument(
-            for: item.file.url,
-            withContentsOf: item.file.resolvedURL,
-            ofType: contentType?.identifier ?? ""
-        )
-        item.file.fileDocument = codeFile
-        CodeEditDocumentController.shared.addDocument(codeFile)
+        try item.file.loadCodeFile()
     }
 
     /// Check if tab can be closed

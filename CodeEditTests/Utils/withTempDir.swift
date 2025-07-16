@@ -6,9 +6,14 @@
 //
 
 import Foundation
+import Testing
 
 func withTempDir(_ test: (URL) async throws -> Void) async throws {
-    let tempDirURL = try createAndClearDir()
+    guard let currentTest = Test.current else {
+        #expect(Bool(false))
+        return
+    }
+    let tempDirURL = try createAndClearDir(file: currentTest.sourceLocation.fileID + currentTest.name)
     do {
         try await test(tempDirURL)
     } catch {
@@ -19,7 +24,11 @@ func withTempDir(_ test: (URL) async throws -> Void) async throws {
 }
 
 func withTempDir(_ test: (URL) throws -> Void) throws {
-    let tempDirURL = try createAndClearDir()
+    guard let currentTest = Test.current else {
+        #expect(Bool(false))
+        return
+    }
+    let tempDirURL = try createAndClearDir(file: currentTest.sourceLocation.fileID + currentTest.name)
     do {
         try test(tempDirURL)
     } catch {
@@ -29,9 +38,10 @@ func withTempDir(_ test: (URL) throws -> Void) throws {
     try clearDir(tempDirURL)
 }
 
-private func createAndClearDir() throws -> URL {
+private func createAndClearDir(file: String) throws -> URL {
+    let file = file.components(separatedBy: CharacterSet(charactersIn: "/:?%*|\"<>")).joined()
     let tempDirURL = FileManager.default.temporaryDirectory
-        .appending(path: "CodeEditTestDirectory", directoryHint: .isDirectory)
+        .appending(path: "CodeEditTestDirectory" + file, directoryHint: .isDirectory)
 
     // If it exists, delete it before the test
     try clearDir(tempDirURL)
