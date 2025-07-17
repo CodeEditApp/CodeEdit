@@ -18,7 +18,7 @@ struct CodeEditCommands: Commands {
             FileCommands()
             ViewCommands()
             FindCommands()
-            NavigateCommands()      
+            NavigateCommands()
             TasksCommands()
             if sourceControlIsEnabled { SourceControlCommands() }
             EditorCommands()
