@@ -180,13 +180,12 @@ struct TerminalEmulatorView: NSViewRepresentable {
         terminal.appearance = colorAppearance
         scroller(terminal)?.isHidden = true
         terminal.font = font
-        terminal.configureNativeColors()
         terminal.installColors(self.colors)
         terminal.caretColor = cursorColor.withAlphaComponent(0.5)
         terminal.caretTextColor = cursorColor.withAlphaComponent(0.5)
         terminal.selectedTextBackgroundColor = selectionColor
-//        terminal.nativeForegroundColor = textColor
-//        terminal.nativeBackgroundColor = terminalSettings.useThemeBackground ? backgroundColor : .clear
+        terminal.nativeForegroundColor = textColor
+        terminal.nativeBackgroundColor = terminalSettings.useThemeBackground ? backgroundColor : .clear
         terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
         terminal.layer?.backgroundColor = CGColor.clear
         terminal.optionAsMetaKey = optionAsMeta
@@ -202,13 +201,12 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     func updateNSView(_ view: CELocalShellTerminalView, context: Context) {
-        view.configureNativeColors()
         view.installColors(self.colors)
         view.caretColor = cursorColor.withAlphaComponent(0.5)
         view.caretTextColor = cursorColor.withAlphaComponent(0.5)
         view.selectedTextBackgroundColor = selectionColor
-//        view.nativeForegroundColor = textColor
-//        view.nativeBackgroundColor = terminalSettings.useThemeBackground ? backgroundColor : .clear
+        view.nativeForegroundColor = textColor
+        view.nativeBackgroundColor = terminalSettings.useThemeBackground ? backgroundColor : .clear
         view.layer?.backgroundColor = .clear
         view.optionAsMetaKey = optionAsMeta
         view.cursorStyleChanged(source: view.getTerminal(), newStyle: getTerminalCursor())

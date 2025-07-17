@@ -16,4 +16,13 @@ class CETerminalView: TerminalView {
             super.setFrameSize(newSize)
         }
     }
+
+    @objc
+    override open func copy(_ sender: Any) {
+        let range = selectedPositions()
+        let text = terminal.getText(start: range.start, end: range.end)
+        let pasteboard = NSPasteboard.general
+        pasteboard.clearContents()
+        pasteboard.setString(text, forType: .string)
+    }
 }
