@@ -48,7 +48,7 @@ final class ShellIntegrationTests: XCTestCase {
         XCTAssertTrue(
             args.contains(where: { $0.hasSuffix("/codeedit_shell_integration.bash") }), "No setup file provided in args"
         )
-        XCTAssertTrue(args.contains("-i"), "No interactive flag found")
+        XCTAssertTrue(args.contains("-il"), "No interactive login flag found")
     }
 
     func testZsh() throws {

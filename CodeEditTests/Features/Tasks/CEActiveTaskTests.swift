@@ -54,10 +54,10 @@ class CEActiveTaskTests {
         activeTask.run(workspaceURL: nil, shell: shell)
         activeTask.waitForExit()
 
-        await waitForExpectation {
+        await waitForExpectation(timeout: .seconds(10)) {
             activeTask.status == .failed
         } onTimeout: {
-            Issue.record("Status never changed to failed.")
+            Issue.record("Status never changed to failed. \(activeTask.status)")
         }
     }
 
