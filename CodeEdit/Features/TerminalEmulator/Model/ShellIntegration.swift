@@ -65,11 +65,15 @@ enum ShellIntegration {
             // Enable injection in our scripts.
             environment.append("\(Variables.ceInjection)=1")
 
+            if let execArgs = shell.execArguments(interactive: interactive, login: useLogin) {
+                args.append(execArgs)
+            }
+
             switch shell {
             case .bash:
-                try bash(&args, interactive)
+                try bash(&args)
             case .zsh:
-                try zsh(&args, &environment, useLogin, interactive)
+                try zsh(&args, &environment)
             }
 
             if useLogin {
@@ -95,7 +99,7 @@ enum ShellIntegration {
     /// - Parameters:
     ///   - args: The args to use for shell exec, will be modified by this function.
     ///   - interactive: Set to true to use an interactive shell.
-    private static func bash(_ args: inout [String], _ interactive: Bool) throws {
+    private static func bash(_ args: inout [String]) throws {
         // Inject our own bash script that will execute the user's init files, then install our pre/post exec functions.
         guard let scriptURL = Bundle.main.url(
             forResource: "codeedit_shell_integration",
@@ -104,9 +108,6 @@ enum ShellIntegration {
             throw Error.bashShellFileNotFound
         }
         args.append(contentsOf: ["--init-file", scriptURL.path()])
-        if interactive {
-            args.append("-i")
-        }
     }
 
     /// Sets up the `zsh` shell integration.
@@ -125,22 +126,8 @@ enum ShellIntegration {
     ///   - interactive: Whether to use an interactive shell.
     private static func zsh(
         _ args: inout [String],
-        _ environment: inout [String],
-        _ useLogin: Bool,
-        _ interactive: Bool
+        _ environment: inout [String]
     ) throws {
-        // Interactive, login shell.
-        switch (useLogin, interactive) {
-        case (true, true):
-            args.append("-il")
-        case (false, true):
-            args.append("-i")
-        case (true, false):
-            args.append("-l")
-        default:
-            break
-        }
-
         // All injection script URLs
         guard let profileScriptURL = Bundle.main.url(
             forResource: "codeedit_shell_integration_profile",

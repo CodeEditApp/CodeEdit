@@ -44,14 +44,15 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     @MainActor
-    func run(workspaceURL: URL?) {
+    func run(workspaceURL: URL?, shell: Shell? = nil) {
         self.workspaceURL = workspaceURL
         self.activeTaskID = UUID() // generate a new ID for this run
 
         createStatusTaskNotification()
+        updateTaskStatus(to: .running)
 
         let view = output ?? CEActiveTaskTerminalView(activeTask: self)
-        view.startProcess(workspaceURL: workspaceURL, shell: nil)
+        view.startProcess(workspaceURL: workspaceURL, shell: shell)
 
         output = view
     }
@@ -107,35 +108,35 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     @MainActor
     func suspend() {
-        if let groupPID = output?.getProcessGroup(), status == .running {
-            kill(groupPID, SIGSTOP)
+        if let shellPID = output?.runningPID(), status == .running {
+            kill(shellPID, SIGSTOP)
             updateTaskStatus(to: .stopped)
         }
     }
 
     @MainActor
     func resume() {
-        if let groupPID = output?.getProcessGroup(), status == .running {
-            kill(groupPID, SIGCONT)
+        if let shellPID = output?.runningPID(), status == .running {
+            kill(shellPID, SIGCONT)
             updateTaskStatus(to: .running)
         }
     }
 
     func terminate() {
-        if let groupPID = output?.getProcessGroup() {
-            kill(groupPID, SIGTERM)
+        if let shellPID = output?.runningPID() {
+            kill(shellPID, SIGTERM)
         }
     }
 
     func interrupt() {
-        if let groupPID = output?.getProcessGroup() {
-            kill(groupPID, SIGINT)
+        if let shellPID = output?.runningPID() {
+            kill(shellPID, SIGINT)
         }
     }
 
     func waitForExit() {
-        if let groupPID = output?.getProcessGroup() {
-            waitid(P_PGID, UInt32(groupPID), nil, 0)
+        if let shellPID = output?.runningPID() {
+            waitid(P_PGID, UInt32(shellPID), nil, 0)
         }
     }
 

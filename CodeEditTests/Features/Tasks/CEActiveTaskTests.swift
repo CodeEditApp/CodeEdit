@@ -28,9 +28,9 @@ class CEActiveTaskTests {
         #expect(activeTask.task == task, "Active task should be initialized with the provided CETask.")
     }
 
-    @Test
-    func testRunMethod() async throws {
-        activeTask.run(workspaceURL: nil)
+    @Test(arguments: [Shell.zsh, Shell.bash])
+    func testRunMethod(_ shell: Shell) async throws {
+        activeTask.run(workspaceURL: nil, shell: shell)
         await waitForExpectation(timeout: .seconds(10)) {
             activeTask.status == .running
         } onTimeout: {
@@ -48,10 +48,10 @@ class CEActiveTaskTests {
         #expect(output.getBufferAsString().contains("Testing"))
     }
 
-    @Test
-    func testHandleProcessFinished() async throws {
+    @Test(arguments: [Shell.zsh, Shell.bash])
+    func testHandleProcessFinished(_ shell: Shell) async throws {
         task.command = "aNon-existentCommand"
-        activeTask.run(workspaceURL: nil)
+        activeTask.run(workspaceURL: nil, shell: shell)
         activeTask.waitForExit()
 
         await waitForExpectation {
@@ -61,9 +61,9 @@ class CEActiveTaskTests {
         }
     }
 
-    @Test
-    func testClearOutput() async throws {
-        activeTask.run(workspaceURL: nil)
+    @Test(arguments: [Shell.zsh, Shell.bash])
+    func testClearOutput(_ shell: Shell) async throws {
+        activeTask.run(workspaceURL: nil, shell: shell)
         activeTask.waitForExit()
 
         await waitForExpectation {

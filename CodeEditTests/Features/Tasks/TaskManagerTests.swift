@@ -26,8 +26,10 @@ class TaskManagerTests {
         #expect(taskManager.availableTasks == mockWorkspaceSettings.tasks)
     }
 
-    @Test
-    func executeSelectedTask() async throws {
+    @Test(arguments: [SettingsData.TerminalShell.zsh, SettingsData.TerminalShell.bash])
+    func executeSelectedTask(_ shell: SettingsData.TerminalShell) async throws {
+        Settings.shared.preferences.terminal.shell = shell
+
         let task = CETask(name: "Test Task", command: "echo 'Hello World'")
         mockWorkspaceSettings.tasks.append(task)
         taskManager.selectedTaskID = task.id

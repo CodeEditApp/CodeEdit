@@ -447,12 +447,10 @@ unset -f _install_bash_preexec
 __codeedit_status="$?"
 
 __codeedit_preexec() {
-    builtin printf "\033]133;C\007"
     builtin printf "\033]0;%s\007" "$1"
 }
 
 __codeedit_precmd() {
-    builtin printf "\033]133;D;%s\007" "$?"
     builtin printf "\033]0;bash\007"
 }
 
