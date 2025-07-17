@@ -59,9 +59,9 @@ struct EditorTabBarTrailingAccessories: View {
                     Toggle(
                         "Wrap Lines",
                         isOn: Binding(
-                            get: { codeFile.wrapLines ?? wrapLinesToEditorWidth },
-                            set: {
-                                codeFile.wrapLines = $0
+                            get: { [weak codeFile] in codeFile?.wrapLines ?? wrapLinesToEditorWidth },
+                            set: { [weak codeFile] in
+                                codeFile?.wrapLines = $0
                             }
                         )
                     )

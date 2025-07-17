@@ -7,6 +7,7 @@
 
 import os.log
 import JSONRPC
+import SwiftUI
 import Foundation
 import LanguageClient
 import LanguageServerProtocol
@@ -123,6 +124,9 @@ final class LSPService: ObservableObject {
     @AppSettings(\.developerSettings.lspBinaries)
     var lspBinaries
 
+    @Environment(\.openWindow)
+    private var openWindow
+
     init() {
         // Load the LSP binaries from the developer menu
         for binary in lspBinaries {
@@ -221,6 +225,7 @@ final class LSPService: ObservableObject {
                     languageServer = try await self.startServer(for: lspLanguage, workspacePath: workspacePath)
                 }
             } catch {
+                notifyToInstallLanguageServer(language: lspLanguage)
                 // swiftlint:disable:next line_length
                 self.logger.error("Failed to find/start server for language: \(lspLanguage.rawValue), workspace: \(workspacePath, privacy: .private)")
                 return
@@ -324,4 +329,37 @@ final class LSPService: ObservableObject {
             kill(server.pid, SIGKILL)
         }
     }
+}
+
+extension LSPService {
+    private func notifyToInstallLanguageServer(language lspLanguage: LanguageIdentifier) {
+        let lspLanguageTitle = lspLanguage.rawValue.capitalized
+        let notificationTitle = "Install \(lspLanguageTitle) Language Server"
+        // Make sure the user doesn't have the same existing notification
+        guard !NotificationManager.shared.notifications.contains(where: { $0.title == notificationTitle }) else {
+            return
+        }
+
+        NotificationManager.shared.post(
+            iconSymbol: "arrow.down.circle",
+            iconColor: .clear,
+            title: notificationTitle,
+            description: "Install the \(lspLanguageTitle) language server to enable code intelligence features.",
+            actionButtonTitle: "Install"
+        ) { [weak self] in
+            // TODO: Warning:
+            // Accessing Environment<OpenWindowAction>'s value outside of being installed on a View.
+            // This will always read the default value and will not update
+            self?.openWindow(sceneID: .settings)
+        }
+    }
+}
+
+// MARK: - Errors
+
+enum ServerManagerError: Error {
+    case serverNotFound
+    case serverStartFailed
+    case serverStopFailed
+    case languageClientNotFound
 }

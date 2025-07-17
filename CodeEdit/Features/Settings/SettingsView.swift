@@ -87,6 +87,13 @@ struct SettingsView: View {
         ),
         .init(
             SettingsPage(
+                .languageServers,
+                baseColor: Color(hex: "#6A69DC"), // Purple
+                icon: .system("cube.box.fill")
+            )
+        ),
+        .init(
+            SettingsPage(
                 .developer,
                 baseColor: .pink,
                 icon: .system("bolt")
@@ -134,7 +141,7 @@ struct SettingsView: View {
                 SettingsPageView(page, searchText: searchText)
             }
         } else if !page.isSetting {
-            if page.name == .developer && !showDeveloperSettings {
+            if (page.name == .developer || page.name == .languageServers) && !showDeveloperSettings {
                 EmptyView()
             } else {
                 SettingsPageView(page, searchText: searchText)
@@ -191,6 +198,8 @@ struct SettingsView: View {
                     SourceControlSettingsView()
                 case .location:
                     LocationsSettingsView()
+                case .languageServers:
+                    LanguageServersView()
                 case .developer:
                     DeveloperSettingsView()
                 default:

@@ -34,7 +34,7 @@ extension EditorManager {
                 return
             }
 
-            fixRestoredEditorLayout(state.groups, workspace: workspace)
+            try fixRestoredEditorLayout(state.groups, workspace: workspace)
 
             self.editorLayout = state.groups
             self.activeEditor = activeEditor
@@ -53,29 +53,29 @@ extension EditorManager {
     /// - Parameters:
     ///   - group: The tab group to fix.
     ///   - fileManager: The file manager to use to map files.
-    private func fixRestoredEditorLayout(_ group: EditorLayout, workspace: WorkspaceDocument) {
+    private func fixRestoredEditorLayout(_ group: EditorLayout, workspace: WorkspaceDocument) throws {
         switch group {
         case let .one(data):
-            fixEditor(data, workspace: workspace)
+            try fixEditor(data, workspace: workspace)
         case let .vertical(splitData):
-            splitData.editorLayouts.forEach { group in
-                fixRestoredEditorLayout(group, workspace: workspace)
+            try splitData.editorLayouts.forEach { group in
+                try fixRestoredEditorLayout(group, workspace: workspace)
             }
         case let .horizontal(splitData):
-            splitData.editorLayouts.forEach { group in
-                fixRestoredEditorLayout(group, workspace: workspace)
+            try splitData.editorLayouts.forEach { group in
+                try fixRestoredEditorLayout(group, workspace: workspace)
             }
         }
     }
 
-    private func findEditorLayout(group: EditorLayout, searchFor id: UUID) -> Editor? {
+    private func findEditorLayout(group: EditorLayout, searchFor id: UUID) throws -> Editor? {
         switch group {
         case let .one(data):
             return data.id == id ? data : nil
         case let .vertical(splitData):
-            return splitData.editorLayouts.compactMap { findEditorLayout(group: $0, searchFor: id) }.first
+            return try splitData.editorLayouts.compactMap { try findEditorLayout(group: $0, searchFor: id) }.first
         case let .horizontal(splitData):
-            return splitData.editorLayouts.compactMap { findEditorLayout(group: $0, searchFor: id) }.first
+            return try splitData.editorLayouts.compactMap { try findEditorLayout(group: $0, searchFor: id) }.first
         }
     }
 
@@ -87,16 +87,25 @@ extension EditorManager {
     /// - Parameters:
     ///   - data: The tab group to fix.
     ///   - fileManager: The file manager to use to map files.a
-    private func fixEditor(_ editor: Editor, workspace: WorkspaceDocument) {
+    private func fixEditor(_ editor: Editor, workspace: WorkspaceDocument) throws {
         guard let fileManager = workspace.workspaceFileManager else { return }
         let resolvedTabs = editor
             .tabs
-            .compactMap({ fileManager.getFile($0.file.url.path(), createIfNotFound: true) })
+            .compactMap({ fileManager.getFile($0.file.url.path(percentEncoded: false), createIfNotFound: true) })
             .map({ EditorInstance(workspace: workspace, file: $0) })
+
+        for tab in resolvedTabs {
+            try tab.file.loadCodeFile()
+        }
+
         editor.workspace = workspace
         editor.tabs = OrderedSet(resolvedTabs)
+
         if let selectedTab = editor.selectedTab {
-            if let resolvedFile = fileManager.getFile(selectedTab.file.url.path(), createIfNotFound: true) {
+            if let resolvedFile = fileManager.getFile(
+                selectedTab.file.url.path(percentEncoded: false),
+                createIfNotFound: true
+            ) {
                 editor.setSelectedTab(resolvedFile)
             } else {
                 editor.setSelectedTab(nil)
