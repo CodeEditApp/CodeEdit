@@ -36,7 +36,7 @@ enum Shell: String, CaseIterable {
             "/bin/zsh"
         }
     }
-    
+
     /// Create the exec arguments for a new shell with the given behavior.
     /// - Parameters:
     ///   - interactive: The shell is interactive, accepts user input.
