@@ -38,7 +38,7 @@ class CEActiveTaskTests {
         }
         activeTask.waitForExit()
 
-        await waitForExpectation {
+        await waitForExpectation(timeout: .seconds(10)) {
             activeTask.status == .finished
         } onTimeout: {
             Issue.record("Status never changed to finished. \(activeTask.status)")
