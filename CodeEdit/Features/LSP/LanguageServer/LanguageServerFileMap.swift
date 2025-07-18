@@ -8,6 +8,7 @@
 import Foundation
 import LanguageServerProtocol
 
+
 /// Tracks data associated with files and language servers.
 class LanguageServerFileMap<DocumentType: LanguageServerDocument> {
     typealias HighlightProviderType = SemanticTokenHighlightProvider<SemanticTokenStorage, DocumentType>

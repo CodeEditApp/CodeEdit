@@ -36,6 +36,8 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     /// The configuration options this server supports.
     var serverCapabilities: ServerCapabilities
 
+    var logContainer: LanguageServerLogContainer
+
     /// An instance of a language server, that may or may not be initialized
     private(set) var lspInstance: InitializingServer
     /// The path to the root of the project
@@ -58,6 +60,7 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
         self.serverCapabilities = serverCapabilities
         self.rootPath = rootPath
         self.openFiles = LanguageServerFileMap()
+        self.logContainer = LanguageServerLogContainer(language: languageId)
         self.logger = Logger(
             subsystem: Bundle.main.bundleIdentifier ?? "",
             category: "LanguageServer.\(languageId.rawValue)"

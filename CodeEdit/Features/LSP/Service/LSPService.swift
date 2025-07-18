@@ -212,7 +212,7 @@ final class LSPService: ObservableObject {
     /// - Parameter document: The code document that was opened.
     func openDocument(_ document: CodeFileDocument) {
         guard let workspace = document.findWorkspace(),
-              let workspacePath = workspace.fileURL?.absoluteURL.path(),
+              let workspacePath = workspace.fileURL?.absolutePath,
               let lspLanguage = document.getLanguage().lspLanguage else {
             return
         }
