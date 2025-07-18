@@ -87,10 +87,6 @@ class TaskManager: ObservableObject {
         }
     }
 
-    private func createRunningTask(taskID: UUID, runningTask: CEActiveTask) {
-        activeTasks[taskID] = runningTask
-    }
-
     func terminateActiveTask() {
         guard let taskID = selectedTaskID else {
             return

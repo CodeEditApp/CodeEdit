@@ -161,7 +161,9 @@ struct TerminalEmulatorView: NSViewRepresentable {
             if let output = activeTask.output {
                 view = output
             } else {
-                fatalError()
+                let newView = CEActiveTaskTerminalView(activeTask: activeTask)
+                activeTask.output = newView
+                view = newView
             }
             if !activeTask.hasOutputBeenConfigured {
                 configureView(view)
