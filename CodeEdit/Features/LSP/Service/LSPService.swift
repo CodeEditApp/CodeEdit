@@ -115,7 +115,7 @@ final class LSPService: ObservableObject {
     }
 
     /// Holds the active language clients
-    var languageClients: [ClientKey: LanguageServerType] = [:]
+    @Published var languageClients: [ClientKey: LanguageServerType] = [:]
     /// Holds the language server configurations for all the installed language servers
     var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
     /// Holds all the event listeners for each active language client
@@ -212,7 +212,7 @@ final class LSPService: ObservableObject {
     /// - Parameter document: The code document that was opened.
     func openDocument(_ document: CodeFileDocument) {
         guard let workspace = document.findWorkspace(),
-              let workspacePath = workspace.fileURL?.absoluteURL.path(),
+              let workspacePath = workspace.fileURL?.absolutePath,
               let lspLanguage = document.getLanguage().lspLanguage else {
             return
         }
