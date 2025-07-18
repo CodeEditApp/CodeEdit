@@ -170,6 +170,8 @@ extension SourceControlManager {
 
             await setChangedFiles(status.changedFiles + status.untrackedFiles)
             await refreshStatusInFileManager()
+        } catch GitClient.GitClientError.notGitRepository {
+            await setChangedFiles([])
         } catch {
             logger.error("Error fetching git status: \(error)")
             await setChangedFiles([])

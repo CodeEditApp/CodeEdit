@@ -9,13 +9,16 @@ import SwiftUI
 import SwiftTerm
 
 extension TerminalEmulatorView {
-    final class Coordinator: NSObject, CELocalProcessTerminalViewDelegate {
+    final class Coordinator: NSObject, CELocalShellTerminalViewDelegate {
         private let terminalID: UUID
         public var onTitleChange: (_ title: String) -> Void
 
-        init(terminalID: UUID, onTitleChange: @escaping (_ title: String) -> Void) {
+        var mode: TerminalMode
+
+        init(terminalID: UUID, mode: TerminalMode, onTitleChange: @escaping (_ title: String) -> Void) {
             self.terminalID = terminalID
             self.onTitleChange = onTitleChange
+            self.mode = mode
             super.init()
         }
 
@@ -31,9 +34,11 @@ extension TerminalEmulatorView {
             guard let exitCode else {
                 return
             }
-            source.feed(text: "Exit code: \(exitCode)\n\r\n")
-            source.feed(text: "To open a new session, create a new terminal tab.")
-            TerminalCache.shared.removeCachedView(terminalID)
+            if case .shell = mode {
+                source.feed(text: "Exit code: \(exitCode)\n\r\n")
+                source.feed(text: "To open a new session, create a new terminal tab.")
+                TerminalCache.shared.removeCachedView(terminalID)
+            }
         }
     }
 }

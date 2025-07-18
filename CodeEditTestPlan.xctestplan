@@ -31,6 +31,7 @@
         "CodeEditUIUnitTests\/testSegmentedControlLight()",
         "CodeEditUIUnitTests\/testSegmentedControlProminentDark()",
         "CodeEditUIUnitTests\/testSegmentedControlProminentLight()",
+        "RegistryTests",
         "WelcomeModuleUnitTests",
         "WelcomeModuleUnitTests\/testRecentJSFileDarkSnapshot()",
         "WelcomeModuleUnitTests\/testRecentJSFileLightSnapshot()",

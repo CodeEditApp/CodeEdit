@@ -6,9 +6,9 @@
 //
 
 import XCTest
-
 @testable import CodeEdit
 
+@MainActor
 final class RegistryTests: XCTestCase {
     var registry: RegistryManager = RegistryManager.shared
 

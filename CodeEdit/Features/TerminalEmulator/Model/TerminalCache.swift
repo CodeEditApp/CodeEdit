@@ -14,7 +14,7 @@ final class TerminalCache {
     static let shared: TerminalCache = TerminalCache()
 
     /// The cache of terminal views.
-    private var terminals: [UUID: CELocalProcessTerminalView]
+    private var terminals: [UUID: CELocalShellTerminalView]
 
     private init() {
         terminals = [:]
@@ -23,7 +23,7 @@ final class TerminalCache {
     /// Get a cached terminal view.
     /// - Parameter id: The ID of the terminal.
     /// - Returns: The existing terminal, if it exists.
-    func getTerminalView(_ id: UUID) -> CELocalProcessTerminalView? {
+    func getTerminalView(_ id: UUID) -> CELocalShellTerminalView? {
         terminals[id]
     }
 
@@ -31,7 +31,7 @@ final class TerminalCache {
     /// - Parameters:
     ///   - id: The ID of the terminal.
     ///   - view: The view representing the terminal's contents.
-    func cacheTerminalView(for id: UUID, view: CELocalProcessTerminalView) {
+    func cacheTerminalView(for id: UUID, view: CELocalShellTerminalView) {
         terminals[id] = view
     }
 

@@ -15,6 +15,13 @@ struct UtilityAreaDebugView: View {
     @AppSettings(\.theme.useThemeBackground)
     private var useThemeBackground
 
+    @AppSettings(\.textEditing.font)
+    private var textEditingFont
+    @AppSettings(\.terminal.font)
+    private var terminalFont
+    @AppSettings(\.terminal.useTextEditorFont)
+    private var useTextEditorFont
+
     @Environment(\.colorScheme)
     private var colorScheme
 
@@ -27,45 +34,31 @@ struct UtilityAreaDebugView: View {
 
     @Namespace var bottomID
 
+    var font: NSFont {
+        useTextEditorFont == true ? textEditingFont.current : terminalFont.current
+    }
+
     var body: some View {
         UtilityAreaTabView(model: utilityAreaViewModel.tabViewModel) { _ in
             ZStack {
-                HStack {
-                    Spacer()
-                    Text("No Task Selected")
-                        .font(.system(size: 16))
-                        .foregroundColor(.secondary)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    Spacer()
-                }
-                .opacity(taskManager.taskShowingOutput == nil ? 1 : 0)
+                HStack { Spacer() }
 
                 if let taskShowingOutput = taskManager.taskShowingOutput,
                    let activeTask = taskManager.activeTasks[taskShowingOutput] {
-                    ScrollViewReader { proxy in
-                        VStack {
-                            ScrollView {
-                                VStack {
-                                    TaskOutputView(activeTask: activeTask)
+                    GeometryReader { geometry in
+                        let containerHeight = geometry.size.height
+                        let totalFontHeight = fontTotalHeight(nsFont: font).rounded(.up)
+                        let constrainedHeight = containerHeight - containerHeight.truncatingRemainder(
+                            dividingBy: totalFontHeight
+                        )
+                        VStack(spacing: 0) {
+                            Spacer(minLength: 0).frame(minHeight: 0)
 
-                                    Rectangle()
-                                        .frame(width: 1, height: 1)
-                                        .foregroundStyle(.clear)
-                                        .id(bottomID)
-
-                                }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-                            }.animation(.default, value: bottomID)
-                                .onAppear {
-                                    // assign proxy to scrollProxy in order
-                                    // to use the button to scroll down and scroll down on reappear
-                                    scrollProxy = proxy
-                                    scrollProxy?.scrollTo(bottomID, anchor: .bottom)
-                                }
-                            Spacer()
+                            TaskOutputView(activeTask: activeTask)
+                                .frame(height: max(0, constrainedHeight - 1))
+                                .id(activeTask.task.id)
+                                .padding(.horizontal, 10)
                         }
-                        .onReceive(activeTask.$output, perform: { _ in
-                            proxy.scrollTo(bottomID)
-                        })
                     }
                     .paneToolbar {
                         TaskOutputActionsView(
@@ -90,11 +83,13 @@ struct UtilityAreaDebugView: View {
                     }
                     .colorScheme(
                         utilityAreaViewModel.selectedTerminals.isEmpty
-                            ? colorScheme
-                            : matchAppearance && darkAppearance
-                            ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
-                            : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
+                        ? colorScheme
+                        : matchAppearance && darkAppearance
+                        ? themeModel.selectedDarkTheme?.appearance == .dark ? .dark : .light
+                        : themeModel.selectedTheme?.appearance == .dark ? .dark : .light
                     )
+                } else {
+                    CEContentUnavailableView("No Task Selected")
                 }
             }
         } leadingSidebar: { _ in
@@ -144,5 +139,16 @@ struct UtilityAreaDebugView: View {
             return NSColor(themeModel.themes[index].terminal.background.swiftColor)
         }
         return .windowBackgroundColor
+    }
+
+    /// Estimate the font's height for keeping the terminal aligned with the bottom.
+    /// - Parameter nsFont: The font being used in the terminal.
+    /// - Returns: The height in pixels of the font.
+    private func fontTotalHeight(nsFont: NSFont) -> CGFloat {
+        let ctFont = nsFont as CTFont
+        let ascent = CTFontGetAscent(ctFont)
+        let descent = CTFontGetDescent(ctFont)
+        let leading = CTFontGetLeading(ctFont)
+        return ascent + descent + leading
     }
 }

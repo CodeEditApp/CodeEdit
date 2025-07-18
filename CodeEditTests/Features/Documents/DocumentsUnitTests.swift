@@ -8,6 +8,7 @@
 import XCTest
 @testable import CodeEdit
 
+@MainActor
 final class DocumentsUnitTests: XCTestCase {
     // Properties
     private var splitViewController: CodeEditSplitViewController!
@@ -22,7 +23,7 @@ final class DocumentsUnitTests: XCTestCase {
         super.setUp()
         hapticFeedbackPerformerMock = NSHapticFeedbackPerformerMock()
         navigatorViewModel = .init()
-        workspace.taskManager = TaskManager(workspaceSettings: CEWorkspaceSettingsData())
+        workspace.taskManager = TaskManager(workspaceSettings: CEWorkspaceSettingsData(), workspaceURL: nil)
         window = NSWindow()
         splitViewController = .init(
             workspace: workspace,
