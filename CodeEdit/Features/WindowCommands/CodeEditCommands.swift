@@ -12,8 +12,7 @@ struct CodeEditCommands: Commands {
     private var sourceControlIsEnabled
 
     var body: some Commands {
-        // Group required every 9 elements for backwards compatibility with some SwiftUI and macOS versions.
-        Group {
+        Group { // SwiftUI limits to 9 items in an initializer, so we have to group every 9 items.
             MainCommands()
             FileCommands()
             ViewCommands()
@@ -23,8 +22,8 @@ struct CodeEditCommands: Commands {
             if sourceControlIsEnabled { SourceControlCommands() }
             EditorCommands()
             ExtensionCommands()
+            WindowCommands()
         }
-        WindowCommands()
         HelpCommands()
     }
 }
