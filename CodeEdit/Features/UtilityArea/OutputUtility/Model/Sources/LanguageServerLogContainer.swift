@@ -43,7 +43,9 @@ class LanguageServerLogContainer: UtilityAreaOutputSource {
 
     init(language: LanguageIdentifier) {
         id = language.rawValue
-        (stream, streamContinuation) = AsyncStream<LanguageServerMessage>.makeStream()
+        (stream, streamContinuation) = AsyncStream<LanguageServerMessage>.makeStream(
+            bufferingPolicy: .bufferingNewest(0)
+        )
     }
 
     func appendLog(_ log: LogMessageParams) {
