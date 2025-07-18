@@ -29,7 +29,7 @@ struct UtilityAreaOutputSourcePicker: View {
                 Text("No Language Servers")
             } else {
                 ForEach(languageServerClients, id: \.languageId) { server in
-                    Text(server.languageId.rawValue)
+                    Text(Sources.languageServer(server.logContainer).title)
                         .tag(Sources.languageServer(server.logContainer))
                 }
             }
@@ -40,14 +40,14 @@ struct UtilityAreaOutputSourcePicker: View {
                 Text("No Extensions")
             } else {
                 ForEach(extensionManager.extensions) { extensionInfo in
-                    Text(extensionInfo.name)
+                    Text(Sources.extensions(.init(extensionInfo: extensionInfo)).title)
                         .tag(Sources.extensions(.init(extensionInfo: extensionInfo)))
                 }
             }
 
             if showInternalDevelopmentInspector {
                 Divider()
-                Text("Development Output")
+                Text(Sources.devOutput.title)
                     .tag(Sources.devOutput)
             }
         }
