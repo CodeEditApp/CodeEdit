@@ -16,6 +16,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     @Published var sortFoldersOnTop: Bool = true
     /// A string used to filter the displayed files and folders in the project navigator area based on user input.
     @Published var navigatorFilter: String = ""
+    /// Whether the workspace only shows files with changes.
+    @Published var sourceControlFilter = false
 
     private var workspaceState: [String: Any] {
         get {
@@ -42,6 +44,8 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var taskManager: TaskManager?
     var workspaceSettingsManager: CEWorkspaceSettings?
     var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
+
+    var undoRegistration: UndoManagerRegistration = UndoManagerRegistration()
 
     @Published var notificationPanel = NotificationPanelViewModel()
     private var cancellables = Set<AnyCancellable>()
@@ -159,7 +163,9 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
                 workspaceURL: url
             )
         }
+        self.taskNotificationHandler.workspaceURL = url
 
+        workspaceFileManager?.addObserver(undoRegistration)
         editorManager?.restoreFromState(self)
         utilityAreaModel?.restoreFromState(self)
     }

@@ -11,8 +11,11 @@ import LanguageClient
 import LanguageServerProtocol
 import OSLog
 
-class LanguageServer {
-    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LanguageServer")
+/// A client for language servers.
+class LanguageServer<DocumentType: LanguageServerDocument> {
+    static var logger: Logger { // types with associated types cannot have constant static properties
+        Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LanguageServer")
+    }
     let logger: Logger
 
     /// Identifies which language the server belongs to
@@ -25,7 +28,7 @@ class LanguageServer {
     /// Tracks documents and their associated objects.
     /// Use this property when adding new objects that need to track file data, or have a state associated with the
     /// language server and a document. For example, the content coordinator.
-    let openFiles: LanguageServerFileMap
+    let openFiles: LanguageServerFileMap<DocumentType>
 
     /// Maps the language server's highlight config to one CodeEdit can read. See ``SemanticTokenMap``.
     let highlightMap: SemanticTokenMap?
@@ -33,24 +36,31 @@ class LanguageServer {
     /// The configuration options this server supports.
     var serverCapabilities: ServerCapabilities
 
+    var logContainer: LanguageServerLogContainer
+
     /// An instance of a language server, that may or may not be initialized
     private(set) var lspInstance: InitializingServer
     /// The path to the root of the project
     private(set) var rootPath: URL
+    /// The PID of the running language server process.
+    private(set) var pid: pid_t
 
     init(
         languageId: LanguageIdentifier,
         binary: LanguageServerBinary,
         lspInstance: InitializingServer,
+        lspPid: pid_t,
         serverCapabilities: ServerCapabilities,
         rootPath: URL
     ) {
         self.languageId = languageId
         self.binary = binary
         self.lspInstance = lspInstance
+        self.pid = lspPid
         self.serverCapabilities = serverCapabilities
         self.rootPath = rootPath
         self.openFiles = LanguageServerFileMap()
+        self.logContainer = LanguageServerLogContainer(language: languageId)
         self.logger = Logger(
             subsystem: Bundle.main.bundleIdentifier ?? "",
             category: "LanguageServer.\(languageId.rawValue)"
@@ -79,16 +89,22 @@ class LanguageServer {
             environment: binary.env
         )
 
+        let (connection, process) = try makeLocalServerConnection(
+            languageId: languageId,
+            executionParams: executionParams
+        )
         let server = InitializingServer(
-            server: try makeLocalServerConnection(languageId: languageId, executionParams: executionParams),
+            server: connection,
             initializeParamsProvider: getInitParams(workspacePath: workspacePath)
         )
-        let capabilities = try await server.initializeIfNeeded()
+        let initializationResponse = try await server.initializeIfNeeded()
+
         return LanguageServer(
             languageId: languageId,
             binary: binary,
             lspInstance: server,
-            serverCapabilities: capabilities,
+            lspPid: process.processIdentifier,
+            serverCapabilities: initializationResponse.capabilities,
             rootPath: URL(filePath: workspacePath)
         )
     }
@@ -103,15 +119,15 @@ class LanguageServer {
     static func makeLocalServerConnection(
         languageId: LanguageIdentifier,
         executionParams: Process.ExecutionParameters
-    ) throws -> JSONRPCServerConnection {
+    ) throws -> (connection: JSONRPCServerConnection, process: Process) {
         do {
-            let channel = try DataChannel.localProcessChannel(
+            let (channel, process) = try DataChannel.localProcessChannel(
                 parameters: executionParams,
                 terminationHandler: {
                     logger.debug("Terminated data channel for \(languageId.rawValue)")
                 }
             )
-            return JSONRPCServerConnection(dataChannel: channel)
+            return (JSONRPCServerConnection(dataChannel: channel), process)
         } catch {
             logger.warning("Failed to initialize data channel for \(languageId.rawValue)")
             throw error
@@ -152,13 +168,13 @@ class LanguageServer {
                 // https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#semanticTokensClientCapabilities
                 semanticTokens: SemanticTokensClientCapabilities(
                     dynamicRegistration: false,
-                    requests: .init(range: true, delta: true),
+                    requests: .init(range: false, delta: true),
                     tokenTypes: SemanticTokenTypes.allStrings,
                     tokenModifiers: SemanticTokenModifiers.allStrings,
                     formats: [.relative],
                     overlappingTokenSupport: true,
                     multilineTokenSupport: true,
-                    serverCancelSupport: true,
+                    serverCancelSupport: false,
                     augmentsSyntaxTokens: true
                 )
             )
@@ -218,7 +234,7 @@ class LanguageServer {
                 processId: nil,
                 locale: nil,
                 rootPath: nil,
-                rootUri: workspacePath,
+                rootUri: "file://" + workspacePath, // Make it a URI
                 initializationOptions: [],
                 capabilities: capabilities,
                 trace: nil,
@@ -229,10 +245,14 @@ class LanguageServer {
         // swiftlint:enable function_body_length
     }
 
+    // MARK: - Shutdown
+
     /// Shuts down the language server and exits it.
     public func shutdown() async throws {
         self.logger.info("Shutting down language server")
-        try await lspInstance.shutdownAndExit()
+        try await withTimeout(duration: .seconds(1.0)) {
+            try await self.lspInstance.shutdownAndExit()
+        }
     }
 }
 

@@ -12,6 +12,9 @@ struct TextEditingSettingsView: View {
     @AppSettings(\.textEditing)
     var textEditing
 
+    @State private var isShowingInvisibleCharacterSettings = false
+    @State private var isShowingWarningCharactersSettings = false
+
     var body: some View {
         SettingsForm {
             Section {
@@ -20,6 +23,12 @@ struct TextEditingSettingsView: View {
                 wrapLinesToEditorWidth
                 useSystemCursor
                 overscroll
+            }
+            Section {
+                showGutter
+                showMinimap
+                showFoldingRibbon
+                reformatSettings
             }
             Section {
                 fontSelector
@@ -34,6 +43,10 @@ struct TextEditingSettingsView: View {
             }
             Section {
                 bracketPairHighlight
+            }
+            Section {
+                invisibles
+                warningCharacters
             }
         }
     }
@@ -176,27 +189,108 @@ private extension TextEditingSettingsView {
         Group {
             Picker(
                 "Bracket Pair Highlight",
-                selection: $textEditing.bracketHighlight.highlightType
+                selection: $textEditing.bracketEmphasis.highlightType
             ) {
-                Text("Disabled").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.disabled)
+                Text("Disabled").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.disabled)
                 Divider()
-                Text("Bordered").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.bordered)
-                Text("Flash").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.flash)
-                Text("Underline").tag(SettingsData.TextEditingSettings.BracketPairHighlight.HighlightType.underline)
+                Text("Bordered").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.bordered)
+                Text("Flash").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.flash)
+                Text("Underline").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.underline)
             }
-            if [.bordered, .underline].contains(textEditing.bracketHighlight.highlightType) {
-                Toggle("Use Custom Color", isOn: $textEditing.bracketHighlight.useCustomColor)
+            if [.bordered, .underline].contains(textEditing.bracketEmphasis.highlightType) {
+                Toggle("Use Custom Color", isOn: $textEditing.bracketEmphasis.useCustomColor)
                 SettingsColorPicker(
                     "Bracket Pair Highlight Color",
-                    color: $textEditing.bracketHighlight.color.swiftColor
+                    color: $textEditing.bracketEmphasis.color.swiftColor
                 )
                 .foregroundColor(
-                    textEditing.bracketHighlight.useCustomColor
+                    textEditing.bracketEmphasis.useCustomColor
                         ? Color(.labelColor)
                         : Color(.secondaryLabelColor)
                 )
-                .disabled(!textEditing.bracketHighlight.useCustomColor)
+                .disabled(!textEditing.bracketEmphasis.useCustomColor)
             }
+        }
+    }
+
+    @ViewBuilder private var showGutter: some View {
+        Toggle("Show Gutter", isOn: $textEditing.showGutter)
+            .help("The gutter displays line numbers and code folding regions.")
+    }
+
+    @ViewBuilder private var showMinimap: some View {
+        Toggle("Show Minimap", isOn: $textEditing.showMinimap)
+            // swiftlint:disable:next line_length
+            .help("The minimap gives you a high-level summary of your source code, with controls to quickly navigate your document.")
+    }
+
+    @ViewBuilder private var showFoldingRibbon: some View {
+        Toggle("Show Code Folding Ribbon", isOn: $textEditing.showFoldingRibbon)
+            .disabled(!textEditing.showGutter) // Disabled when the gutter is disabled
+            // swiftlint:disable:next line_length
+            .help("The code folding ribbon lets you fold regions of code. When the gutter is disabled, the folding ribbon is disabled.")
+    }
+
+    @ViewBuilder private var reformatSettings: some View {
+        Toggle("Show Reformatting Guide", isOn: $textEditing.showReformattingGuide)
+            .help("Shows a vertical guide at the reformat column.")
+
+        Stepper(
+            "Reformat at Column",
+            value: Binding<Double>(
+                get: { Double(textEditing.reformatAtColumn) },
+                set: { textEditing.reformatAtColumn = Int($0) }
+            ),
+            in: 40...200,
+            step: 1,
+            format: .number
+        )
+        .help("The column at which text should be reformatted.")
+    }
+
+    @ViewBuilder private var invisibles: some View {
+        HStack {
+            Text("Show Invisible Characters")
+            Spacer()
+            Toggle(isOn: $textEditing.invisibleCharacters.enabled, label: { EmptyView() })
+            Button {
+                isShowingInvisibleCharacterSettings = true
+            } label: {
+                Text("Configure...")
+            }
+            .disabled(textEditing.invisibleCharacters.enabled == false)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if textEditing.invisibleCharacters.enabled {
+                isShowingInvisibleCharacterSettings = true
+            }
+        }
+        .sheet(isPresented: $isShowingInvisibleCharacterSettings) {
+            InvisiblesSettingsView(invisibleCharacters: $textEditing.invisibleCharacters)
+        }
+    }
+
+    @ViewBuilder private var warningCharacters: some View {
+        HStack {
+            Text("Show Warning Characters")
+            Spacer()
+            Toggle(isOn: $textEditing.warningCharacters.enabled, label: { EmptyView() })
+            Button {
+                isShowingWarningCharactersSettings = true
+            } label: {
+                Text("Configure...")
+            }
+            .disabled(textEditing.warningCharacters.enabled == false)
+        }
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if textEditing.warningCharacters.enabled {
+                isShowingWarningCharactersSettings = true
+            }
+        }
+        .sheet(isPresented: $isShowingWarningCharactersSettings) {
+            WarningCharactersView(warningCharacters: $textEditing.warningCharacters)
         }
     }
 }

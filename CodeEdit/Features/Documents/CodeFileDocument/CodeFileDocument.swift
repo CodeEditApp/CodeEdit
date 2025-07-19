@@ -13,6 +13,7 @@ import CodeEditSourceEditor
 import CodeEditLanguages
 import Combine
 import OSLog
+import TextStory
 
 enum CodeFileError: Error {
     case failedToDecode
@@ -49,9 +50,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// See ``CodeEditSourceEditor/CombineCoordinator``.
     @Published var contentCoordinator: CombineCoordinator = CombineCoordinator()
 
-    /// Set by ``LanguageServer`` when initialized.
-    @Published var lspCoordinator: LSPContentCoordinator?
-
     /// Used to override detected languages.
     @Published var language: CodeLanguage?
 
@@ -63,6 +61,9 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     /// Document-specific overridden line wrap preference.
     @Published var wrapLines: Bool?
+
+    /// Set up by ``LanguageServer``, conforms this type to ``LanguageServerDocument``.
+    @Published var languageServerObjects: LanguageServerDocumentObjects<CodeFileDocument> = .init()
 
     /// The type of data this file document contains.
     ///
@@ -82,9 +83,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         return type
     }
 
-    /// A stable string to use when identifying documents with language servers.
-    var languageServerURI: String? { fileURL?.absolutePath }
-
     /// Specify options for opening the file such as the initial cursor positions.
     /// Nulled by ``CodeFileView`` on first load.
     var openOptions: OpenOptions?
@@ -95,6 +93,11 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     var isDocumentEditedPublisher: AnyPublisher<Bool, Never> {
         isDocumentEditedSubject.eraseToAnyPublisher()
     }
+
+    /// A lock that ensures autosave scheduling happens correctly.
+    private var autosaveTimerLock: NSLock = NSLock()
+    /// Timer used to schedule autosave intervals.
+    private var autosaveTimer: Timer?
 
     // MARK: - NSDocument
 
@@ -132,6 +135,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         }
     }
 
+    // MARK: - Data
+
     override func data(ofType _: String) throws -> Data {
         guard let sourceEncoding, let data = (content?.string as NSString?)?.data(using: sourceEncoding.nsValue) else {
             Self.logger.error("Failed to encode contents to \(self.sourceEncoding.debugDescription)")
@@ -139,6 +144,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         }
         return data
     }
+
+    // MARK: - Read
 
     /// This function is used for decoding files.
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
@@ -154,14 +161,40 @@ final class CodeFileDocument: NSDocument, ObservableObject {
             convertedString: &nsString,
             usedLossyConversion: nil
         )
-        if let validEncoding = FileEncoding(rawEncoding), let nsString {
-            self.sourceEncoding = validEncoding
-            self.content = NSTextStorage(string: nsString as String)
-        } else {
+        guard let validEncoding = FileEncoding(rawEncoding), let nsString else {
             Self.logger.error("Failed to read file from data using encoding: \(rawEncoding)")
+            return
+        }
+        self.sourceEncoding = validEncoding
+        if let content {
+            registerContentChangeUndo(fileURL: fileURL, nsString: nsString, content: content)
+            content.mutableString.setString(nsString as String)
+        } else {
+            self.content = NSTextStorage(string: nsString as String)
         }
         NotificationCenter.default.post(name: Self.didOpenNotification, object: self)
     }
+
+    /// If this file is already open and being tracked by an undo manager, we register an undo mutation
+    /// of the entire contents. This allows the user to undo changes that occurred outside of CodeEdit
+    /// while the file was displayed in CodeEdit.
+    ///
+    /// - Note: This is inefficient memory-wise. We could do a diff of the file and only register the
+    ///         mutations that would recreate the diff. However, that would instead be CPU intensive.
+    ///         Tradeoffs.
+    private func registerContentChangeUndo(fileURL: URL?, nsString: NSString, content: NSTextStorage) {
+        guard let fileURL else { return }
+        // If there's an undo manager, register a mutation replacing the entire contents.
+        let mutation = TextMutation(
+            string: nsString as String,
+            range: NSRange(location: 0, length: content.length),
+            limit: content.length
+        )
+        let undoManager = self.findWorkspace()?.undoRegistration.managerIfExists(forFile: fileURL)
+        undoManager?.registerMutation(mutation)
+    }
+
+    // MARK: - Autosave
 
     /// Triggered when change occurred
     override func updateChangeCount(_ change: NSDocument.ChangeType) {
@@ -185,6 +218,68 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         self.isDocumentEditedSubject.send(self.isDocumentEdited)
     }
 
+    /// If ``hasUnautosavedChanges`` is `true` and an autosave has not already been scheduled, schedules a new autosave.
+    /// If ``hasUnautosavedChanges`` is `false`, cancels any scheduled timers and returns.
+    ///
+    /// All operations are done with the ``autosaveTimerLock`` acquired (including the scheduled autosave) to ensure
+    /// correct timing when scheduling or cancelling timers.
+    override func scheduleAutosaving() {
+        autosaveTimerLock.withLock {
+            if self.hasUnautosavedChanges {
+                guard autosaveTimer == nil else { return }
+                autosaveTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
+                    self?.autosaveTimerLock.withLock {
+                        guard timer.isValid else { return }
+                        self?.autosaveTimer = nil
+                        self?.autosave(withDelegate: nil, didAutosave: nil, contextInfo: nil)
+                    }
+                }
+            } else {
+                autosaveTimer?.invalidate()
+                autosaveTimer = nil
+            }
+        }
+    }
+
+    // MARK: - External Changes
+
+    /// Handle the notification that the represented file item changed.
+    ///
+    /// We check if a file has been modified and can be read again to display to the user.
+    /// To determine if a file has changed, we check the modification date. If it's different from the stored one,
+    /// we continue.
+    /// To determine if we can reload the file, we check if the document has outstanding edits. If not, we reload the
+    /// file.
+    override func presentedItemDidChange() {
+        if fileModificationDate != getModificationDate() {
+            guard isDocumentEdited else {
+                fileModificationDate = getModificationDate()
+                if let fileURL, let fileType {
+                    // This blocks the presented item thread intentionally. If we don't wait, we'll receive more updates
+                    // that the file has changed and we'll end up dispatching multiple reads.
+                    // The presented item thread expects this operation to by synchronous anyways.
+                    DispatchQueue.main.asyncAndWait {
+                        try? self.read(from: fileURL, ofType: fileType)
+                    }
+                }
+                return
+            }
+        }
+
+        super.presentedItemDidChange()
+    }
+
+    /// Helper to find the last modified date of the represented file item.
+    /// 
+    /// Different from `NSDocument.fileModificationDate`. This returns the *current* modification date, whereas the
+    /// alternative stores the date that existed when we last read the file.
+    private func getModificationDate() -> Date? {
+        guard let path = fileURL?.absolutePath else { return nil }
+        return try? FileManager.default.attributesOfItem(atPath: path)[.modificationDate] as? Date
+    }
+
+    // MARK: - Close
+
     override func close() {
         super.close()
         NotificationCenter.default.post(name: Self.didCloseNotification, object: fileURL)
@@ -201,12 +296,16 @@ final class CodeFileDocument: NSDocument, ObservableObject {
             let directory = fileURL.deletingLastPathComponent()
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
 
-            try data(ofType: fileType ?? "").write(to: fileURL, options: .atomic)
+            super.save(sender)
         } catch {
             presentError(error)
         }
     }
 
+    /// Determines the code language of the document.
+    /// Use ``CodeFileDocument/language`` for the default value before using this. That property is used to override
+    /// the file's language.
+    /// - Returns: The detected code language.
     func getLanguage() -> CodeLanguage {
         guard let url = fileURL else {
             return .default
@@ -220,5 +319,15 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     func findWorkspace() -> WorkspaceDocument? {
         fileURL?.findWorkspace()
+    }
+}
+
+// MARK: LanguageServerDocument
+
+extension CodeFileDocument: LanguageServerDocument {
+    /// A stable string to use when identifying documents with language servers.
+    /// Needs to be a valid URI, so always returns with the `file://` prefix to indicate it's a file URI.
+    var languageServerURI: String? {
+        fileURL?.lspURI
     }
 }

@@ -11,6 +11,7 @@ struct InternalDevelopmentInspectorView: View {
     var body: some View {
         Form {
             InternalDevelopmentNotificationsView()
+            InternalDevelopmentOutputView()
         }
     }
 }

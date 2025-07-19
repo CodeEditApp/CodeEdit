@@ -12,7 +12,6 @@ struct CETaskFormView: View {
     @ObservedObject var task: CETask
     @State private var selectedEnvID: UUID?
 
-    @StateObject var settingsViewModel = SettingsViewModel()
     var body: some View {
         Form {
             Section {
@@ -85,7 +84,6 @@ struct CETaskFormView: View {
             }
         }
         .formStyle(.grouped)
-        .environmentObject(settingsViewModel)
     }
 
     func removeSelectedEnv() {
@@ -100,7 +98,3 @@ struct CETaskFormView: View {
         })
     }
 }
-
-// #Preview {
-//    CETaskFormView()
-// }

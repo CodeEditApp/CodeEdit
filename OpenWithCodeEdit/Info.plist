@@ -17,9 +17,9 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.3.3</string>
+	<string>0.3.5</string>
 	<key>CFBundleVersion</key>
-	<string>44</string>
+	<string>46</string>
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSExtension</key>

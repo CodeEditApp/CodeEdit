@@ -7,6 +7,7 @@
 
 import os.log
 import JSONRPC
+import SwiftUI
 import Foundation
 import LanguageClient
 import LanguageServerProtocol
@@ -36,6 +37,8 @@ import CodeEditLanguages
 /// ```
 @MainActor
 final class LSPService: ObservableObject {
+    typealias LanguageServerType = LanguageServer<CodeFileDocument>
+
     let logger: Logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
 
     struct ClientKey: Hashable, Equatable {
@@ -49,7 +52,7 @@ final class LSPService: ObservableObject {
     }
 
     /// Holds the active language clients
-    var languageClients: [ClientKey: LanguageServer] = [:]
+    @Published var languageClients: [ClientKey: LanguageServerType] = [:]
     /// Holds the language server configurations for all the installed language servers
     var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
     /// Holds all the event listeners for each active language client
@@ -57,6 +60,9 @@ final class LSPService: ObservableObject {
 
     @AppSettings(\.developerSettings.lspBinaries)
     var lspBinaries
+
+    @Environment(\.openWindow)
+    private var openWindow
 
     init() {
         // Load the LSP binaries from the developer menu
@@ -99,9 +105,15 @@ final class LSPService: ObservableObject {
     }
 
     /// Gets the language client for the specified language
-    func languageClient(for languageId: LanguageIdentifier, workspacePath: String) -> LanguageServer? {
+    func languageClient(for languageId: LanguageIdentifier, workspacePath: String) -> LanguageServerType? {
         return languageClients[ClientKey(languageId, workspacePath)]
     }
+
+    func languageClient(forDocument url: URL) -> LanguageServerType? {
+        languageClients.values.first(where: { $0.openFiles.document(for: url.lspURI) != nil })
+    }
+
+    // MARK: - Start Server
 
     /// Given a language and workspace path, will attempt to start the language server
     /// - Parameters:
@@ -111,7 +123,7 @@ final class LSPService: ObservableObject {
     func startServer(
         for languageId: LanguageIdentifier,
         workspacePath: String
-    ) async throws -> LanguageServer {
+    ) async throws -> LanguageServerType {
         guard let serverBinary = languageConfigs[languageId] else {
             logger.error("Couldn't find language sever binary for \(languageId.rawValue)")
             throw LSPError.binaryNotFound
@@ -127,10 +139,10 @@ final class LSPService: ObservableObject {
             "isLoading": true
         ]
         logger.info("Starting \(languageId.rawValue) language server")
+
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createInfo)
 
-        // Attempt to start the language server
-        let server = try await LanguageServer.createServer(
+        let server = try await LanguageServerType.createServer(
             for: languageId,
             with: serverBinary,
             workspacePath: workspacePath
@@ -158,17 +170,19 @@ final class LSPService: ObservableObject {
         return server
     }
 
+    // MARK: - Document Management
+
     /// Notify all relevant language clients that a document was opened.
     /// - Note: Must be invoked after the contents of the file are available.
     /// - Parameter document: The code document that was opened.
     func openDocument(_ document: CodeFileDocument) {
         guard let workspace = document.findWorkspace(),
-              let workspacePath = workspace.fileURL?.absoluteURL.path(),
+              let workspacePath = workspace.fileURL?.absolutePath,
               let lspLanguage = document.getLanguage().lspLanguage else {
             return
         }
         Task {
-            let languageServer: LanguageServer
+            let languageServer: LanguageServerType
             do {
                 if let server = self.languageClients[ClientKey(lspLanguage, workspacePath)] {
                     languageServer = server
@@ -176,6 +190,7 @@ final class LSPService: ObservableObject {
                     languageServer = try await self.startServer(for: lspLanguage, workspacePath: workspacePath)
                 }
             } catch {
+                notifyToInstallLanguageServer(language: lspLanguage)
                 // swiftlint:disable:next line_length
                 self.logger.error("Failed to find/start server for language: \(lspLanguage.rawValue), workspace: \(workspacePath, privacy: .private)")
                 return
@@ -193,20 +208,18 @@ final class LSPService: ObservableObject {
     /// Notify all relevant language clients that a document was closed.
     /// - Parameter url: The url of the document that was closed
     func closeDocument(_ url: URL) {
-        guard let languageClient = languageClients.first(where: {
-                  $0.value.openFiles.document(for: url.absolutePath) != nil
-              })?.value else {
-            return
-        }
+        guard let languageClient = languageClient(forDocument: url) else { return }
         Task {
             do {
-                try await languageClient.closeDocument(url.absolutePath)
+                try await languageClient.closeDocument(url.lspURI)
             } catch {
                 // swiftlint:disable:next line_length
-                logger.error("Failed to close document: \(url.absolutePath, privacy: .private), language: \(languageClient.languageId.rawValue). Error \(error)")
+                logger.error("Failed to close document: \(url.lspURI, privacy: .private), language: \(languageClient.languageId.rawValue). Error \(error)")
             }
         }
     }
+
+    // MARK: - Close Workspace
 
     /// Close all language clients for a workspace.
     ///
@@ -231,6 +244,8 @@ final class LSPService: ObservableObject {
         }
     }
 
+    // MARK: - Stop Servers
+
     /// Attempts to stop a running language server. Throws an error if the server is not found
     /// or if the language server throws an error while trying to shutdown.
     /// - Parameters:
@@ -239,7 +254,7 @@ final class LSPService: ObservableObject {
     func stopServer(forLanguage languageId: LanguageIdentifier, workspacePath: String) async throws {
         guard let server = server(for: languageId, workspacePath: workspacePath) else {
             logger.error("Server not found for language \(languageId.rawValue) during stop operation")
-            throw ServerManagerError.serverNotFound
+            throw LSPServiceError.serverNotFound
         }
         do {
             try await server.shutdownAndExit()
@@ -255,14 +270,13 @@ final class LSPService: ObservableObject {
 
     /// Goes through all active language servers and attempts to shut them down.
     func stopAllServers() async {
-        await withThrowingTaskGroup(of: Void.self) { group in
+        await withTaskGroup(of: Void.self) { group in
             for (key, server) in languageClients {
                 group.addTask {
                     do {
                         try await server.shutdown()
                     } catch {
-                        self.logger.error("Shutting down \(key.languageId.rawValue): Error \(error)")
-                        throw error
+                        self.logger.warning("Shutting down \(key.languageId.rawValue): Error \(error)")
                     }
                 }
             }
@@ -272,6 +286,37 @@ final class LSPService: ObservableObject {
             value.cancel()
         }
         eventListeningTasks.removeAll()
+    }
+
+    /// Call this when a server is refusing to terminate itself. Sends the `SIGKILL` signal to all lsp processes.
+    func killAllServers() {
+        for (_, server) in languageClients {
+            kill(server.pid, SIGKILL)
+        }
+    }
+}
+
+extension LSPService {
+    private func notifyToInstallLanguageServer(language lspLanguage: LanguageIdentifier) {
+        let lspLanguageTitle = lspLanguage.rawValue.capitalized
+        let notificationTitle = "Install \(lspLanguageTitle) Language Server"
+        // Make sure the user doesn't have the same existing notification
+        guard !NotificationManager.shared.notifications.contains(where: { $0.title == notificationTitle }) else {
+            return
+        }
+
+        NotificationManager.shared.post(
+            iconSymbol: "arrow.down.circle",
+            iconColor: .clear,
+            title: notificationTitle,
+            description: "Install the \(lspLanguageTitle) language server to enable code intelligence features.",
+            actionButtonTitle: "Install"
+        ) { [weak self] in
+            // TODO: Warning:
+            // Accessing Environment<OpenWindowAction>'s value outside of being installed on a View.
+            // This will always read the default value and will not update
+            self?.openWindow(sceneID: .settings)
+        }
     }
 }
 

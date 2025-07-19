@@ -36,4 +36,14 @@ extension Date {
 
         return formatter.string(from: self)
     }
+
+    static var logFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss.SSSS"
+        return formatter
+    }()
+
+    func logFormatted() -> String {
+        Self.logFormatter.string(from: self)
+    }
 }

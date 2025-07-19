@@ -103,12 +103,12 @@ final class CEWorkspaceFileManager {
                 return nil
             }
 
-            // Drill down towards the file, indexing any directories needed. 
-            // If file is not in the `workspaceSettingsFolderURL` or subdirectories, exit.
-            guard url.absoluteString.starts(with: folderUrl.absoluteString),
-                  url.pathComponents.count > folderUrl.pathComponents.count else {
+            // If file is not in the `folderUrl` or subdirectories, exit.
+            guard folderUrl.containsSubPath(url) else {
                 return nil
             }
+
+            // Drill down towards the file, indexing any directories needed.
             let pathComponents = url.pathComponents.dropFirst(folderUrl.pathComponents.count)
             var currentURL = folderUrl
 

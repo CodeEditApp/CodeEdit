@@ -1,6 +1,7 @@
 name: Deploy Website on Release Note Changes
 
 on:
+  workflow_dispatch:
   release:
     types: [created, edited, deleted]
 
