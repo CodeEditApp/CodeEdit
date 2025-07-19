@@ -180,7 +180,7 @@
 				6CC00A8B2CBEF150004E8134 /* CodeEditSourceEditor in Frameworks */,
 				6CD3CA552C8B508200D83DCD /* CodeEditSourceEditor in Frameworks */,
 				6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */,
-				6CC17B4F2C432AE000834E2C /* CodeEditSourceEditor in Frameworks */,
+				6CC17B4F2C432AE000834E2C /* (null) in Frameworks */,
 				30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */,
 				5E4485612DF600D9008BBE69 /* AboutWindow in Frameworks */,
 				6C4E37FC2C73E00700AEE7B5 /* SwiftTerm in Frameworks */,
@@ -321,11 +321,9 @@
 				6C0617D52BDB4432008C9C42 /* LogStream */,
 				6C85BB3F2C2105ED00EB5DEF /* CodeEditKit */,
 				6C85BB432C210EFD00EB5DEF /* SwiftUIIntrospect */,
-				6CC17B4E2C432AE000834E2C /* CodeEditSourceEditor */,
 				6C0824A02C5C0C9700A0751E /* SwiftTerm */,
 				6CE21E862C650D2C0031B056 /* SwiftTerm */,
 				6C4E37FB2C73E00700AEE7B5 /* SwiftTerm */,
-				6CD3CA542C8B508200D83DCD /* CodeEditSourceEditor */,
 				6CB94D022CA1205100E8651C /* AsyncAlgorithms */,
 				6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */,
 				30818CB42D4E563900967860 /* ZIPFoundation */,
@@ -1646,6 +1644,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		302EFBFB2CC3284D004A74DF /* XCLocalSwiftPackageReference "../CodeEditSourceEditor" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../CodeEditSourceEditor;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1947,14 +1952,6 @@
 			productName = AsyncAlgorithms;
 		};
 		6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CodeEditSourceEditor;
-		};
-		6CC17B4E2C432AE000834E2C /* CodeEditSourceEditor */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CodeEditSourceEditor;
-		};
-		6CD3CA542C8B508200D83DCD /* CodeEditSourceEditor */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditSourceEditor;
 		};
