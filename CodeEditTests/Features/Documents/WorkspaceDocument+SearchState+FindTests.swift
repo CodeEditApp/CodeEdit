@@ -139,58 +139,38 @@ final class FindTests: XCTestCase {
 
     /// Tests the search functionality of the `WorkspaceDocument.SearchState` and `SearchIndexer`.
     func testSearch() async {
-        let searchExpectation = XCTestExpectation(description: "Search for 'Ipsum'")
-        let searchExpectation2 = XCTestExpectation(description: "Search for 'asperiores'")
-
-        Task {
-            await searchState.search("Ipsum")
-            searchExpectation.fulfill()
-        }
-
+        await searchState.search("Ipsum")
         // Wait for the first search expectation to be fulfilled
-        await fulfillment(of: [searchExpectation], timeout: 10)
-        // Retrieve the search results after the first search
-        let searchResults = searchState.searchResult
-
-        XCTAssertEqual(searchResults.count, 2)
-
-        Task {
-            await searchState.search("asperiores")
-            searchExpectation2.fulfill()
+        await waitForExpectation {
+            searchState.searchResult.count == 2
+        } onTimeout: {
+            XCTFail("Search state did not find two results.")
         }
 
-        await fulfillment(of: [searchExpectation2], timeout: 10)
-        let searchResults2 = searchState.searchResult
-
-        XCTAssertEqual(searchResults2.count, 1)
+        await searchState.search("asperiores")
+        await waitForExpectation {
+            searchState.searchResult.count == 1
+        } onTimeout: {
+            XCTFail("Search state did not find correct results.")
+        }
     }
 
     /// Checks if the search still returns proper results,
     /// if the search term isn't a complete word
     func testSearchWithOptionContaining() async {
-        let searchExpectation = XCTestExpectation(description: "Search for 'psu'")
-        let searchExpectation2 = XCTestExpectation(description: "Search for 'erio'")
-
-        Task {
-            await searchState.search("psu")
-            searchExpectation.fulfill()
+        await searchState.search("psu")
+        await waitForExpectation {
+            searchState.searchResult.count == 2
+        } onTimeout: {
+            XCTFail("Search state did not find two results.")
         }
 
-        await fulfillment(of: [searchExpectation], timeout: 10)
-
-        let searchResults = searchState.searchResult
-
-        XCTAssertEqual(searchResults.count, 2)
-
-        Task {
-            await searchState.search("erio")
-            searchExpectation2.fulfill()
+        await searchState.search("erio")
+        await waitForExpectation {
+            searchState.searchResult.count == 1
+        } onTimeout: {
+            XCTFail("Search state did not find correct results.")
         }
-
-        await fulfillment(of: [searchExpectation2], timeout: 10)
-        let searchResults2 = searchState.searchResult
-
-        XCTAssertEqual(searchResults2.count, 1)
     }
 
     /// This test verifies the accuracy of the word search feature.
@@ -198,121 +178,81 @@ final class FindTests: XCTestCase {
     /// Following that, it examines the occurrence of the fragment 'perior,'
     /// which is not a complete word in any of the documents
     func testSearchWithOptionMatchingWord() async {
-        let searchExpectation = XCTestExpectation(description: "Search for 'Ipsum'")
-        let searchExpectation2 = XCTestExpectation(description: "Search for 'perior'")
-
         // Set the search option to 'Matching Word'
         searchState.selectedMode[2] = .MatchingWord
 
-        Task {
-            await searchState.search("Ipsum")
-            searchExpectation.fulfill()
+        await searchState.search("Ipsum")
+        await waitForExpectation {
+            searchState.searchResult.count == 2
+        } onTimeout: {
+            XCTFail("Search state did not find correct results.")
         }
-
-        await fulfillment(of: [searchExpectation], timeout: 10)
-
-        let searchResults = searchState.searchResult
-
-        XCTAssertEqual(searchResults.count, 2)
 
         // Check if incomplete words return no search results.
-        Task {
-            await searchState.search("perior")
-            searchExpectation2.fulfill()
+        await searchState.search("perior")
+        await waitForExpectation {
+            searchState.searchResult.isEmpty
+        } onTimeout: {
+            XCTFail("Search state did not find correct results.")
         }
-
-        await fulfillment(of: [searchExpectation2], timeout: 10)
-        let searchResults2 = searchState.searchResult
-
-        XCTAssertEqual(searchResults2.count, 0)
     }
 
     func testSearchWithOptionStartingWith() async {
-        let searchExpectation = XCTestExpectation(description: "Search for 'Ip'")
-        let searchExpectation2 = XCTestExpectation(description: "Search for 'res'")
-
         // Set the search option to 'Starting With'
         searchState.selectedMode[2] = .StartingWith
 
-        Task {
-            await searchState.search("Ip")
-            searchExpectation.fulfill()
+        await searchState.search("Ip")
+        await waitForExpectation {
+            searchState.searchResult.count == 2
+        } onTimeout: {
+            XCTFail("Search state did not find two results.")
         }
 
-        await fulfillment(of: [searchExpectation], timeout: 10)
-
-        let searchResults = searchState.searchResult
-
-        XCTAssertEqual(searchResults.count, 2)
-
-        Task {
-            await searchState.search("res")
-            searchExpectation2.fulfill()
+        await searchState.search("res")
+        await waitForExpectation {
+            searchState.searchResult.isEmpty
+        } onTimeout: {
+            XCTFail("Search state did not find two results.")
         }
-
-        await fulfillment(of: [searchExpectation2], timeout: 10)
-        let searchResults2 = searchState.searchResult
-
-        XCTAssertEqual(searchResults2.count, 0)
     }
 
     func testSearchWithOptionEndingWith() async {
-        let searchExpectation = XCTestExpectation(description: "Search for 'um'")
-        let searchExpectation2 = XCTestExpectation(description: "Search for 'res'")
-
         // Set the search option to 'Ending with'
         searchState.selectedMode[2] = .EndingWith
 
-        Task {
-            await searchState.search("um")
-            searchExpectation.fulfill()
+        await searchState.search("um")
+        await waitForExpectation {
+            searchState.searchResult.count == 2
+        } onTimeout: {
+            XCTFail("Search state did not find two results.")
         }
 
-        await fulfillment(of: [searchExpectation], timeout: 10)
-
-        let searchResults = searchState.searchResult
-
-        XCTAssertEqual(searchResults.count, 2)
-
-        Task {
-            await searchState.search("asperi")
-            searchExpectation2.fulfill()
+        await searchState.search("asperi")
+        await waitForExpectation {
+            searchState.searchResult.isEmpty
+        } onTimeout: {
+            XCTFail("Search state did not find correct results.")
         }
-
-        await fulfillment(of: [searchExpectation2], timeout: 10)
-        let searchResults2 = searchState.searchResult
-
-        XCTAssertEqual(searchResults2.count, 0)
     }
 
     func testSearchWithOptionCaseSensitive() async {
-        let searchExpectation = XCTestExpectation(description: "Search for 'Ipsum'")
-        let searchExpectation2 = XCTestExpectation(description: "Search for 'asperiores'")
-
         searchState.caseSensitive = true
-        Task {
-            await searchState.search("ipsum")
-            searchExpectation.fulfill()
-        }
-
+        await searchState.search("ipsum")
         // Wait for the first search expectation to be fulfilled
-        await fulfillment(of: [searchExpectation], timeout: 10)
-        // Retrieve the search results after the first search
-        let searchResults = searchState.searchResult
-
-        // Expecting a result count of 0 due to the intentional use of a lowercase 'i'
-        XCTAssertEqual(searchResults.count, 0)
-
-        Task {
-            await searchState.search("Asperiores")
-            searchExpectation2.fulfill()
+        await waitForExpectation {
+            // Expecting a result count of 0 due to the intentional use of a lowercase 'i'
+            searchState.searchResult.isEmpty
+        } onTimeout: {
+            XCTFail("Search state did not find correct results.")
         }
 
-        await fulfillment(of: [searchExpectation2], timeout: 10)
-        let searchResults2 = searchState.searchResult
-
-        // Anticipating zero results since the search is case-sensitive and we used an uppercase 'A'
-        XCTAssertEqual(searchResults2.count, 0)
+        await searchState.search("Asperiores")
+        await waitForExpectation {
+            // Anticipating zero results since the search is case-sensitive and we used an uppercase 'A'
+            searchState.searchResult.isEmpty
+        } onTimeout: {
+            XCTFail("Search state did not find correct results.")
+        }
     }
 
     // Not implemented yet

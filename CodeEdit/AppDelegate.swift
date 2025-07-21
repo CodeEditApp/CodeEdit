@@ -10,6 +10,7 @@ import CodeEditSymbols
 import CodeEditSourceEditor
 import OSLog
 
+@MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "AppDelegate")
     private let updater = SoftwareUpdater()

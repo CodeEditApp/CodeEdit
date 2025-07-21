@@ -47,15 +47,19 @@ fi
 builtin autoload -Uz add-zsh-hook
 
 __codeedit_preexec() {
-    echo -n "\033]0;${1}\007"
+    builtin printf "\033]0;%s\007" "$1"
 }
 
 __codeedit_precmd() {
-    echo -n "\033]0;zsh\007"
+    builtin printf "\033]0;zsh\007"
 }
 
 add-zsh-hook preexec __codeedit_preexec
 add-zsh-hook precmd __codeedit_precmd
+
+if [[ "$CE_DISABLE_HISTORY" == "1" ]]; then
+    unset HISTFILE
+fi
 
 # Fix ZDOTDIR
 

@@ -20,6 +20,7 @@ enum ShellIntegration {
         static let userZDotDir = "USER_ZDOTDIR"
         static let zDotDir = "ZDOTDIR"
         static let ceInjection = "CE_INJECTION"
+        static let disableHistory = "CE_DISABLE_HISTORY"
     }
 
     /// Errors for shell integration setup.
@@ -51,7 +52,12 @@ enum ShellIntegration {
     /// - Returns: An array of args to pass to the shell executable.
     /// - Throws: Errors involving filesystem operations. This function requires copying various files, which can
     ///           throw. Can also throw ``ShellIntegration/Error`` errors if required files are not found in the bundle.
-    static func setUpIntegration(for shell: Shell, environment: inout [String], useLogin: Bool) throws -> [String] {
+    static func setUpIntegration(
+        for shell: Shell,
+        environment: inout [String],
+        useLogin: Bool,
+        interactive: Bool
+    ) throws -> [String] {
         do {
             logger.debug("Setting up shell: \(shell.rawValue)")
             var args: [String] = []
@@ -59,11 +65,15 @@ enum ShellIntegration {
             // Enable injection in our scripts.
             environment.append("\(Variables.ceInjection)=1")
 
+            if let execArgs = shell.execArguments(interactive: interactive, login: useLogin) {
+                args.append(execArgs)
+            }
+
             switch shell {
             case .bash:
                 try bash(&args)
             case .zsh:
-                try zsh(&args, &environment, useLogin)
+                try zsh(&args, &environment)
             }
 
             if useLogin {
@@ -84,9 +94,11 @@ enum ShellIntegration {
     ///
     /// Sets the bash `--init-file` option to point to CE's shell integration script. This script will source the
     /// user's "real" init file and then install our required functions.
-    /// Also sets the `-i` option to initialize an interactive session.
+    /// Also sets the `-i` option to initialize an interactive session if `interactive` is true.
     ///
-    /// - Parameter args: The args to use for shell exec, will be modified by this function.
+    /// - Parameters:
+    ///   - args: The args to use for shell exec, will be modified by this function.
+    ///   - interactive: Set to true to use an interactive shell.
     private static func bash(_ args: inout [String]) throws {
         // Inject our own bash script that will execute the user's init files, then install our pre/post exec functions.
         guard let scriptURL = Bundle.main.url(
@@ -95,7 +107,7 @@ enum ShellIntegration {
         ) else {
             throw Error.bashShellFileNotFound
         }
-        args += ["--init-file", scriptURL.path(), "-i"]
+        args.append(contentsOf: ["--init-file", scriptURL.path()])
     }
 
     /// Sets up the `zsh` shell integration.
@@ -111,14 +123,11 @@ enum ShellIntegration {
     ///   - environment: Environment variables in an array. Formatted as `EnvVar=Value`. Will be modified by this
     ///                  function.
     ///   - useLogin: Whether to use a login shell.
-    private static func zsh(_ args: inout [String], _ environment: inout [String], _ useLogin: Bool) throws {
-        // Interactive, login shell.
-        if useLogin {
-            args.append("-il")
-        } else {
-            args.append("-i")
-        }
-
+    ///   - interactive: Whether to use an interactive shell.
+    private static func zsh(
+        _ args: inout [String],
+        _ environment: inout [String]
+    ) throws {
         // All injection script URLs
         guard let profileScriptURL = Bundle.main.url(
             forResource: "codeedit_shell_integration_profile",
