@@ -1288,5 +1288,25 @@
 	<string>https://github.com/CodeEditApp/CodeEdit/releases/latest/download/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>/vAnxnK9wj4IqnUt6wS9EN3Ug69zHb+S/Pb9CyZuwa0=</string>
+    <key>UTExportedTypeDeclarations</key>
+    <array>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>dev.codeedit.terminal</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.data</string>
+            </array>
+            <key>UTTypeDescription</key>
+            <string>Terminal Drag Info</string>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>term</string>
+                </array>
+            </dict>
+        </dict>
+    </array>
 </dict>
 </plist>
