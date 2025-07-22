@@ -9,13 +9,12 @@ import SwiftUI
 
 struct TaskOutputView: View {
     @ObservedObject var activeTask: CEActiveTask
+
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(activeTask.output)
-                .fontDesign(.monospaced)
-                .textSelection(.enabled)
+        if activeTask.output != nil, let workspaceURL = activeTask.workspaceURL {
+            TerminalEmulatorView(url: workspaceURL, task: activeTask)
+        } else {
+            EmptyView()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(10)
     }
 }

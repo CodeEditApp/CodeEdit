@@ -18,6 +18,11 @@ import SwiftTerm
 /// Caches the view in the ``TerminalCache`` to keep terminal state when the view is removed from the hierarchy.
 ///
 struct TerminalEmulatorView: NSViewRepresentable {
+    enum TerminalMode {
+        case shell(shellType: Shell?)
+        case task(activeTask: CEActiveTask)
+    }
+
     @AppSettings(\.terminal)
     var terminalSettings
     @AppSettings(\.textEditing.font)
@@ -36,7 +41,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
     private let terminalID: UUID
     private var url: URL
 
-    public var shellType: Shell?
+    public var mode: TerminalMode
     public var onTitleChange: (_ title: String) -> Void
 
     /// Create an emulator view
@@ -48,37 +53,29 @@ struct TerminalEmulatorView: NSViewRepresentable {
     init(url: URL, terminalID: UUID, shellType: Shell? = nil, onTitleChange: @escaping (_ title: String) -> Void) {
         self.url = url
         self.terminalID = terminalID
-        self.shellType = shellType
+        self.mode = .shell(shellType: shellType)
         self.onTitleChange = onTitleChange
+    }
+
+    init(url: URL, task: CEActiveTask) {
+        terminalID = task.task.id
+        self.url = url
+        self.mode = .task(activeTask: task)
+        self.onTitleChange = { _ in }
     }
 
     // MARK: - Settings
 
-    /// Returns a string of a shell path to use
-    private func getShell() -> String {
-        if let shellType {
-            return shellType.defaultPath
-        }
-        switch terminalSettings.shell {
-        case .system:
-            return Shell.autoDetectDefaultShell()
-        case .bash:
-            return "/bin/bash"
-        case .zsh:
-            return "/bin/zsh"
-        }
-    }
-
     private func getTerminalCursor() -> CursorStyle {
-            let blink = terminalSettings.cursorBlink
-            switch terminalSettings.cursorStyle {
-            case .block:
-                return blink ? .blinkBlock : .steadyBlock
-            case .underline:
-                return blink ? .blinkUnderline : .steadyUnderline
-            case .bar:
-                return blink ? .blinkBar : .steadyBar
-            }
+        let blink = terminalSettings.cursorBlink
+        switch terminalSettings.cursorStyle {
+        case .block:
+            return blink ? .blinkBlock : .steadyBlock
+        case .underline:
+            return blink ? .blinkUnderline : .steadyUnderline
+        case .bar:
+            return blink ? .blinkBar : .steadyBar
+        }
     }
 
     /// Returns true if the `option` key should be treated as the `meta` key.
@@ -149,60 +146,42 @@ struct TerminalEmulatorView: NSViewRepresentable {
     // MARK: - NSViewRepresentable
 
     /// Inherited from NSViewRepresentable.makeNSView(context:).
-    func makeNSView(context: Context) -> CELocalProcessTerminalView {
-        let terminalExists = TerminalCache.shared.getTerminalView(terminalID) != nil
-        let view = TerminalCache.shared.getTerminalView(terminalID) ?? CELocalProcessTerminalView(frame: .zero)
-        view.processDelegate = context.coordinator
-        if !terminalExists { // New terminal, start the shell process.
-            do {
-                try setupSession(view)
-            } catch {
-                view.feed(text: "Failed to start a terminal session: \(error.localizedDescription)")
+    func makeNSView(context: Context) -> CELocalShellTerminalView {
+        let view: CELocalShellTerminalView
+
+        switch mode {
+        case .shell(let shellType):
+            let isCached = TerminalCache.shared.getTerminalView(terminalID) != nil
+            view = TerminalCache.shared.getTerminalView(terminalID) ?? CELocalShellTerminalView(frame: .zero)
+            if !isCached {
+                view.startProcess(workspaceURL: url, shell: shellType)
+                configureView(view)
             }
-            configureView(view)
+        case .task(let activeTask):
+            if let output = activeTask.output {
+                view = output
+            } else {
+                let newView = CEActiveTaskTerminalView(activeTask: activeTask)
+                activeTask.output = newView
+                view = newView
+            }
+            if !activeTask.hasOutputBeenConfigured {
+                configureView(view)
+                activeTask.hasOutputBeenConfigured = true
+            }
         }
+
+        view.processDelegate = context.coordinator
+
         TerminalCache.shared.cacheTerminalView(for: terminalID, view: view)
         return view
     }
 
-    /// Setup a new shell process.
-    /// - Parameter terminal: The terminal view to set up.
-    func setupSession(_ terminal: CELocalProcessTerminalView) throws {
-        // changes working directory to project root
-        // TODO: Get rid of FileManager shared instance to prevent problems
-        // using shared instance of FileManager might lead to problems when using
-        // multiple workspaces. This works for now but most probably will need
-        // to be changed later on
-        FileManager.default.changeCurrentDirectoryPath(url.path)
-
-        var terminalEnvironment: [String] = Terminal.getEnvironmentVariables()
-        terminalEnvironment.append("TERM_PROGRAM=CodeEditApp_Terminal")
-
-        let shellPath = getShell()
-        guard let shell = Shell(rawValue: NSString(string: shellPath).lastPathComponent) else {
-            return
-        }
-        onTitleChange(shell.rawValue)
-
-        let shellArgs: [String]
-        if terminalSettings.useShellIntegration {
-            shellArgs = try ShellIntegration.setUpIntegration(
-                for: shell,
-                environment: &terminalEnvironment,
-                useLogin: terminalSettings.useLoginShell
-            )
-        } else {
-            shellArgs = []
-        }
-
-        terminal.startProcess(
-            executable: shellPath,
-            args: shellArgs,
-            environment: terminalEnvironment,
-            execName: shell.rawValue
-        )
+    func configureView(_ terminal: CELocalShellTerminalView) {
+        terminal.getTerminal().silentLog = true
+        terminal.appearance = colorAppearance
+        scroller(terminal)?.isHidden = true
         terminal.font = font
-        terminal.configureNativeColors()
         terminal.installColors(self.colors)
         terminal.caretColor = cursorColor.withAlphaComponent(0.5)
         terminal.caretTextColor = cursorColor.withAlphaComponent(0.5)
@@ -210,17 +189,11 @@ struct TerminalEmulatorView: NSViewRepresentable {
         terminal.nativeForegroundColor = textColor
         terminal.nativeBackgroundColor = terminalSettings.useThemeBackground ? backgroundColor : .clear
         terminal.cursorStyleChanged(source: terminal.getTerminal(), newStyle: getTerminalCursor())
-        terminal.layer?.backgroundColor = .clear
+        terminal.layer?.backgroundColor = CGColor.clear
         terminal.optionAsMetaKey = optionAsMeta
     }
 
-    func configureView(_ terminal: CELocalProcessTerminalView) {
-        terminal.getTerminal().silentLog = true
-        terminal.appearance = colorAppearance
-        scroller(terminal)?.isHidden = true
-    }
-
-    private func scroller(_ terminal: CELocalProcessTerminalView) -> NSScroller? {
+    private func scroller(_ terminal: CELocalShellTerminalView) -> NSScroller? {
         for subView in terminal.subviews {
             if let scroller = subView as? NSScroller {
                 return scroller
@@ -229,8 +202,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         return nil
     }
 
-    func updateNSView(_ view: CELocalProcessTerminalView, context: Context) {
-        view.configureNativeColors()
+    func updateNSView(_ view: CELocalShellTerminalView, context: Context) {
         view.installColors(self.colors)
         view.caretColor = cursorColor.withAlphaComponent(0.5)
         view.caretTextColor = cursorColor.withAlphaComponent(0.5)
@@ -246,6 +218,6 @@ struct TerminalEmulatorView: NSViewRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(terminalID: terminalID, onTitleChange: onTitleChange)
+        Coordinator(terminalID: terminalID, mode: mode, onTitleChange: onTitleChange)
     }
 }

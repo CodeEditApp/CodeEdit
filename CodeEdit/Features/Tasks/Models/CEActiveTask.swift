@@ -7,11 +7,14 @@
 
 import SwiftUI
 import Combine
+import SwiftTerm
 
 /// Stores the state of a task once it's executed
 class CEActiveTask: ObservableObject, Identifiable, Hashable {
     /// The current progress of the task.
-    @Published private(set) var output: String  = ""
+    @Published var output: CEActiveTaskTerminalView?
+
+    var hasOutputBeenConfigured: Bool = false
 
     /// The status of the task.
     @Published private(set) var status: CETaskStatus = .notRunning
@@ -22,138 +25,125 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     /// Prevents tasks overwriting each other.
     /// Say a user cancels one task, then runs it immediately, the cancel message should show and then the
     /// starting message should show. If we don't add this modifier the starting message will be deleted.
-    var activeTaskID: String = UUID().uuidString
+    var activeTaskID: UUID = UUID()
 
     var taskId: String {
-        task.id.uuidString + "-" + activeTaskID
+        task.id.uuidString + "-" + activeTaskID.uuidString
     }
 
-    var process: Process?
-    var outputPipe: Pipe?
     var workspaceURL: URL?
 
     private var cancellables = Set<AnyCancellable>()
 
     init(task: CETask) {
         self.task = task
-        self.process = Process()
-        self.outputPipe = Pipe()
 
         self.task.objectWillChange.sink { _ in
             self.objectWillChange.send()
         }.store(in: &cancellables)
     }
 
-    func run(workspaceURL: URL? = nil) {
+    @MainActor
+    func run(workspaceURL: URL?, shell: Shell? = nil) {
         self.workspaceURL = workspaceURL
-        self.activeTaskID = UUID().uuidString // generate a new ID for this run
-        Task {
-            // Reconstruct the full command to ensure it executes in the correct directory.
-            // Because: CETask only contains information about the relative path.
-            let fullCommand: String
-            if let workspaceURL = workspaceURL {
-                fullCommand = "cd \(workspaceURL.relativePath.escapedDirectory()) && \(task.fullCommand)"
-            } else {
-                fullCommand = task.fullCommand
-            }
-            guard let process, let outputPipe else { return }
+        self.activeTaskID = UUID() // generate a new ID for this run
 
-            await updateTaskStatus(to: .running)
-            createStatusTaskNotification()
+        createStatusTaskNotification()
+        updateTaskStatus(to: .running)
 
-            process.terminationHandler = { [weak self] capturedProcess in
-                if let self {
-                    Task {
-                        await self.handleProcessFinished(terminationStatus: capturedProcess.terminationStatus)
-                    }
-                }
-            }
+        let view = output ?? CEActiveTaskTerminalView(activeTask: self)
+        view.startProcess(workspaceURL: workspaceURL, shell: shell)
 
-            outputPipe.fileHandleForReading.readabilityHandler = { fileHandle in
-                if let data = String(bytes: fileHandle.availableData, encoding: .utf8),
-                   !data.isEmpty {
-                    Task {
-                        await self.updateOutput(data)
-                    }
-                }
-            }
-
-            do {
-                try Shell.executeCommandWithShell(
-                    process: process,
-                    command: fullCommand,
-                    environmentVariables: self.task.environmentVariablesDictionary,
-                    shell: Shell.zsh, // TODO: Let user decide which shell to use
-                    outputPipe: outputPipe
-                )
-            } catch { print(error) }
-        }
+        output = view
     }
 
-    func handleProcessFinished(terminationStatus: Int32) async {
-        handleTerminationStatus(terminationStatus)
+    @MainActor
+    func handleProcessFinished(terminationStatus: Int32) {
+        // Shells add 128 to non-zero exit codes.
+        var terminationStatus = terminationStatus
+        if terminationStatus > 128 {
+            terminationStatus -= 128
+        }
 
-        if terminationStatus == 0 {
-            await updateOutput("\nFinished running \(task.name).\n\n")
-            await updateTaskStatus(to: .finished)
+        switch terminationStatus {
+        case 0:
+            output?.newline()
+            output?.sendOutputMessage("Finished running \(task.name).")
+            output?.newline()
+
+            updateTaskStatus(to: .finished)
             updateTaskNotification(
                 title: "Finished Running \(task.name)",
                 message: "",
                 isLoading: false
             )
-        } else if terminationStatus == 15 {
-            await updateOutput("\n\(task.name) cancelled.\n\n")
-            await updateTaskStatus(to: .notRunning)
+        case 2, 15: // SIGINT or SIGTERM
+            output?.newline()
+            output?.sendOutputMessage("\(task.name) cancelled.")
+            output?.newline()
+
+            updateTaskStatus(to: .notRunning)
             updateTaskNotification(
                 title: "\(task.name) cancelled",
                 message: "",
                 isLoading: false
             )
-        } else {
-            await updateOutput("\nFailed to run \(task.name).\n\n")
-            await updateTaskStatus(to: .failed)
+        case 17: // SIGSTOP
+            updateTaskStatus(to: .stopped)
+        default:
+            output?.newline()
+            output?.sendOutputMessage("Failed to run \(task.name)")
+            output?.newline()
+
+            updateTaskStatus(to: .failed)
             updateTaskNotification(
                 title: "Failed Running \(task.name)",
                 message: "",
                 isLoading: false
             )
         }
-        outputPipe?.fileHandleForReading.readabilityHandler = nil
 
         deleteStatusTaskNotification()
     }
 
-    func renew() {
-        if let process {
-            if process.isRunning {
-                process.terminate()
-                process.waitUntilExit()
-            }
-            self.process = Process()
-            outputPipe = Pipe()
-        }
-    }
-
+    @MainActor
     func suspend() {
-        if let process, status == .running {
-            process.suspend()
-            Task {
-                await updateTaskStatus(to: .stopped)
-            }
+        if let shellPID = output?.runningPID(), status == .running {
+            kill(shellPID, SIGSTOP)
+            updateTaskStatus(to: .stopped)
         }
     }
 
+    @MainActor
     func resume() {
-        if let process, status == .stopped {
-            process.resume()
-            Task {
-                await updateTaskStatus(to: .running)
-            }
+        if let shellPID = output?.runningPID(), status == .running {
+            kill(shellPID, SIGCONT)
+            updateTaskStatus(to: .running)
         }
     }
 
+    func terminate() {
+        if let shellPID = output?.runningPID() {
+            kill(shellPID, SIGTERM)
+        }
+    }
+
+    func interrupt() {
+        if let shellPID = output?.runningPID() {
+            kill(shellPID, SIGINT)
+        }
+    }
+
+    func waitForExit() {
+        if let shellPID = output?.runningPID() {
+            waitid(P_PGID, UInt32(shellPID), nil, 0)
+        }
+    }
+
+    @MainActor
     func clearOutput() {
-        output = ""
+        output?.terminal.resetToInitialState()
+        output?.feed(text: "")
     }
 
     private func createStatusTaskNotification() {
@@ -199,23 +189,15 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: userInfo)
     }
 
-    private func updateTaskStatus(to taskStatus: CETaskStatus) async {
-        await MainActor.run {
-            self.status = taskStatus
-        }
-    }
-
-    /// Updates the progress and output values on the main thread`
-    private func updateOutput(_ output: String) async {
-        await MainActor.run {
-            self.output += output
-        }
+    @MainActor
+    func updateTaskStatus(to taskStatus: CETaskStatus) {
+        self.status = taskStatus
     }
 
     static func == (lhs: CEActiveTask, rhs: CEActiveTask) -> Bool {
         return lhs.output == rhs.output &&
         lhs.status == rhs.status &&
-        lhs.process == rhs.process &&
+        lhs.output?.process.shellPid == rhs.output?.process.shellPid &&
         lhs.task == rhs.task
     }
 
@@ -223,25 +205,5 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         hasher.combine(output)
         hasher.combine(status)
         hasher.combine(task)
-    }
-
-    // OPTIONAL
-    func handleTerminationStatus(_ status: Int32) {
-        switch status {
-        case 0:
-            print("Process completed successfully.")
-        case 1:
-            print("General error.")
-        case 2:
-            print("Misuse of shell builtins.")
-        case 126:
-            print("Command invoked cannot execute.")
-        case 127:
-            print("Command not found.")
-        case 128:
-            print("Invalid argument to exit.")
-        default:
-            print("Process ended with exit code \(status).")
-        }
     }
 }
