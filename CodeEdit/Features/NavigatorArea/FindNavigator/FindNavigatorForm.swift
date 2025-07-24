@@ -38,7 +38,6 @@ struct FindNavigatorForm: View {
 
     private func onSelectMenuItem(_ index: Int, searchMode: SearchModeModel) {
         var newSelectedMode: [SearchModeModel] = []
-
         switch index {
         case 0:
                 newSelectedMode.append(searchMode)
