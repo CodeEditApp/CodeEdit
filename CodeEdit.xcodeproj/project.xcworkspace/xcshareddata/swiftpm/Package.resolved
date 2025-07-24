@@ -1,5 +1,5 @@
 {
-  "originHash" : "ed7a5ce46da2e530a4b8ff23058a67ef7423fa2378b9588d66359f210b6365cb",
+  "originHash" : "a68a63b56c75b058610abbc7c9375c6cd3ccbe25fe06bf0f336610e78dab424c",
   "pins" : [
     {
       "identity" : "aboutwindow",
@@ -22,7 +22,7 @@
     {
       "identity" : "codeeditkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditKit",
+      "location" : "https://github.com/CodeEditApp/CodeEditKit.git",
       "state" : {
         "revision" : "ad28213a968586abb0cb21a8a56a3587227895f1",
         "version" : "0.1.2"
@@ -35,15 +35,6 @@
       "state" : {
         "revision" : "331d5dbc5fc8513be5848fce8a2a312908f36a11",
         "version" : "0.1.20"
-      }
-    },
-    {
-      "identity" : "codeeditsourceeditor",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor.git",
-      "state" : {
-        "revision" : "afc57523b05c209496a221655c2171c0624b51d3",
-        "version" : "0.14.1"
       }
     },
     {
@@ -60,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "d65c2a4b23a52f69d0b3a113124d7434c7af07fa",
-        "version" : "0.11.6"
+        "revision" : "fbb038caa8a2779153a94f6e01caa5016ffb973d",
+        "version" : "0.11.7"
       }
     },
     {
@@ -285,17 +276,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tree-sitter/tree-sitter",
       "state" : {
-        "revision" : "bf655c0beaf4943573543fa77c58e8006ff34971",
-        "version" : "0.25.6"
-      }
-    },
-    {
-      "identity" : "zipfoundation",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/weichsel/ZIPFoundation",
-      "state" : {
-        "revision" : "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
-        "version" : "0.9.19"
+        "revision" : "f2f197b6b27ce75c280c20f131d4f71e906b86f7",
+        "version" : "0.25.8"
       }
     },
     {
@@ -305,6 +287,15 @@
       "state" : {
         "revision" : "5168cf1ce9579b35ad00706fafef441418d8011f",
         "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "zipfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/weichsel/ZIPFoundation",
+      "state" : {
+        "revision" : "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
+        "version" : "0.9.19"
       }
     }
   ],

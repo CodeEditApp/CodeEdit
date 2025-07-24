@@ -169,7 +169,8 @@ struct CodeFileView: View {
             ),
             highlightProviders: highlightProviders,
             undoManager: undoRegistration.manager(forFile: editorInstance.file),
-            coordinators: textViewCoordinators
+            coordinators: textViewCoordinators,
+            completionDelegate: editorInstance.autoCompleteCoordinator
         )
         // This view needs to refresh when the codefile changes. The file URL is too stable.
         .id(ObjectIdentifier(codeFile))
