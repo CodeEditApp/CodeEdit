@@ -32,56 +32,6 @@ struct FindNavigatorForm: View {
         selectedMode = state.selectedMode
     }
 
-    private func getMenuList(_ index: Int) -> [SearchModeModel] {
-        index == 0 ? SearchModeModel.SearchModes : selectedMode[index - 1].children
-    }
-
-    private func onSelectMenuItem(_ index: Int, searchMode: SearchModeModel) {
-        var newSelectedMode: [SearchModeModel] = []
-        switch index {
-        case 0:
-                newSelectedMode.append(searchMode)
-                self.updateSelectedMode(searchMode, searchModel: &newSelectedMode)
-                self.selectedMode = newSelectedMode
-        case 1:
-            if let firstMode = selectedMode.first {
-                newSelectedMode.append(contentsOf: [firstMode, searchMode])
-                if let thirdMode = searchMode.children.first {
-                    if let selectedThirdMode = selectedMode.third, searchMode.children.contains(selectedThirdMode) {
-                        newSelectedMode.append(selectedThirdMode)
-                    } else {
-                        newSelectedMode.append(thirdMode)
-                    }
-                }
-            }
-            self.selectedMode = newSelectedMode
-        case 2:
-            if let firstMode = selectedMode.first, let secondMode = selectedMode.second {
-                newSelectedMode.append(contentsOf: [firstMode, secondMode, searchMode])
-            }
-            self.selectedMode = newSelectedMode
-        default:
-            return
-        }
-    }
-
-    private func updateSelectedMode(_ searchMode: SearchModeModel, searchModel: inout [SearchModeModel]) {
-        if let secondMode = searchMode.children.first {
-            if let selectedSecondMode = selectedMode.second, searchMode.children.contains(selectedSecondMode) {
-                searchModel.append(contentsOf: selectedMode.dropFirst())
-            } else {
-                searchModel.append(secondMode)
-                if let thirdMode = secondMode.children.first, let selectedThirdMode = selectedMode.third {
-                    if secondMode.children.contains(selectedThirdMode) {
-                        searchModel.append(selectedThirdMode)
-                    } else {
-                        searchModel.append(thirdMode)
-                    }
-                }
-            }
-        }
-    }
-
     private var chevron: some View {
         Image(systemName: "chevron.compact.right")
             .foregroundStyle(.tertiary)
@@ -273,12 +223,55 @@ struct FindNavigatorForm: View {
     }
 }
 
-extension Array {
-    var second: Element? {
-        self.count > 1 ? self[1] : nil
+extension FindNavigatorForm {
+    private func getMenuList(_ index: Int) -> [SearchModeModel] {
+        index == 0 ? SearchModeModel.SearchModes : selectedMode[index - 1].children
     }
 
-    var third: Element? {
-        self.count > 2 ? self[2] : nil
+    private func onSelectMenuItem(_ index: Int, searchMode: SearchModeModel) {
+        var newSelectedMode: [SearchModeModel] = []
+
+        switch index {
+        case 0:
+                newSelectedMode.append(searchMode)
+                self.updateSelectedMode(searchMode, searchModel: &newSelectedMode)
+                self.selectedMode = newSelectedMode
+        case 1:
+            if let firstMode = selectedMode.first {
+                newSelectedMode.append(contentsOf: [firstMode, searchMode])
+                if let thirdMode = searchMode.children.first {
+                    if let selectedThirdMode = selectedMode.third, searchMode.children.contains(selectedThirdMode) {
+                        newSelectedMode.append(selectedThirdMode)
+                    } else {
+                        newSelectedMode.append(thirdMode)
+                    }
+                }
+            }
+            self.selectedMode = newSelectedMode
+        case 2:
+            if let firstMode = selectedMode.first, let secondMode = selectedMode.second {
+                newSelectedMode.append(contentsOf: [firstMode, secondMode, searchMode])
+            }
+            self.selectedMode = newSelectedMode
+        default:
+            return
+        }
+    }
+
+    private func updateSelectedMode(_ searchMode: SearchModeModel, searchModel: inout [SearchModeModel]) {
+        if let secondMode = searchMode.children.first {
+            if let selectedSecondMode = selectedMode.second, searchMode.children.contains(selectedSecondMode) {
+                searchModel.append(contentsOf: selectedMode.dropFirst())
+            } else {
+                searchModel.append(secondMode)
+                if let thirdMode = secondMode.children.first, let selectedThirdMode = selectedMode.third {
+                    if secondMode.children.contains(selectedThirdMode) {
+                        searchModel.append(selectedThirdMode)
+                    } else {
+                        searchModel.append(thirdMode)
+                    }
+                }
+            }
+        }
     }
 }
