@@ -25,6 +25,7 @@ struct FindNavigatorForm: View {
     @State private var preserveCase: Bool = false
     @State private var scopedToOpenEditors: Bool = false
     @State private var excludeSettings: Bool = true
+    @FocusState private var isSearchFieldFocused: Bool
 
     init(state: WorkspaceDocument.SearchState) {
         self.state = state
@@ -152,6 +153,7 @@ struct FindNavigatorForm: View {
                 },
                 hasValue: caseSensitive
             )
+            .focused($isSearchFieldFocused)
             .onSubmit {
                 if !state.searchQuery.isEmpty {
                     Task {
@@ -260,6 +262,12 @@ struct FindNavigatorForm: View {
                     Text("Replace All")
                         .frame(maxWidth: .infinity)
                 }
+            }
+        }
+        .onReceive(state.$shouldFocusSearchField) { shouldFocus in
+            if shouldFocus {
+                isSearchFieldFocused = true
+                state.shouldFocusSearchField = false
             }
         }
         .lineLimit(1...5)
