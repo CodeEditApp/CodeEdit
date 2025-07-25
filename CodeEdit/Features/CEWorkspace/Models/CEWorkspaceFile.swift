@@ -164,6 +164,9 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         FileIcon.iconColor(fileType: type)
     }
 
+    /// Indicates whether the file is phantom (not yet created on disk)
+    var isPhantom: Bool = false
+
     init(
         id: String,
         url: URL,

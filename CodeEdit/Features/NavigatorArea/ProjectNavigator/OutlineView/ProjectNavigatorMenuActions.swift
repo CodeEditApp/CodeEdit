@@ -81,20 +81,35 @@ extension ProjectNavigatorMenu {
         try? process.run()
     }
 
-    // TODO: allow custom file names
     /// Action that creates a new untitled file
     @objc
     func newFile() {
         guard let item else { return }
-        do {
-            if let newFile = try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item) {
-                workspace?.listenerModel.highlightedFileItem = newFile
-                workspace?.editorManager?.openTab(item: newFile)
+        let phantomFile = CEWorkspaceFile(
+            id: UUID().uuidString,
+            url: item.url.appendingPathComponent("Untitled"),
+            changeType: nil,
+            staged: false
+        )
+        phantomFile.isPhantom = true
+        phantomFile.parent = item
+
+        // Add phantom file to parent's children temporarily for display
+        if let workspace = workspace,
+           let fileManager = workspace.workspaceFileManager {
+            _ = fileManager.childrenOfFile(item)
+            fileManager.flattenedFileItems[phantomFile.id] = phantomFile
+            if fileManager.childrenMap[item.id] == nil {
+                fileManager.childrenMap[item.id] = []
             }
-        } catch {
-            let alert = NSAlert(error: error)
-            alert.addButton(withTitle: "Dismiss")
-            alert.runModal()
+            fileManager.childrenMap[item.id]?.append(phantomFile.id)
+        }
+
+        workspace?.listenerModel.highlightedFileItem = phantomFile
+        sender.outlineView.reloadData()
+
+        DispatchQueue.main.async {
+            self.renameFile()
         }
     }
 
@@ -103,11 +118,11 @@ extension ProjectNavigatorMenu {
     func renameFile() {
         guard let newFile = workspace?.listenerModel.highlightedFileItem else { return }
         let row = sender.outlineView.row(forItem: newFile)
-        guard row > 0,
+        guard row >= 0,
               let cell = sender.outlineView.view(
                 atColumn: 0,
                 row: row,
-                makeIfNecessary: false
+                makeIfNecessary: true
               ) as? ProjectNavigatorTableViewCell else {
             return
         }

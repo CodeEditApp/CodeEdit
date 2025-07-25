@@ -56,15 +56,72 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
 
     override func controlTextDidEndEditing(_ obj: Notification) {
         guard let fileItem else { return }
-        textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
-        if fileItem.validateFileName(for: textField?.stringValue ?? "") {
-            let destinationURL = fileItem.url
-                .deletingLastPathComponent()
-                .appending(path: textField?.stringValue ?? "")
-            delegate?.moveFile(file: fileItem, to: destinationURL)
+
+        if fileItem.isPhantom {
+            handlePhantomFileCompletion(fileItem: fileItem, wasCancelled: false)
         } else {
-            textField?.stringValue = fileItem.labelFileName()
+            textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
+            if fileItem.validateFileName(for: textField?.stringValue ?? "") {
+                let destinationURL = fileItem.url
+                    .deletingLastPathComponent()
+                    .appending(path: textField?.stringValue ?? "")
+                delegate?.moveFile(file: fileItem, to: destinationURL)
+            } else {
+                textField?.stringValue = fileItem.labelFileName()
+            }
         }
         delegate?.cellDidFinishEditing()
+    }
+
+    private func handlePhantomFileCompletion(fileItem: CEWorkspaceFile, wasCancelled: Bool) {
+        if wasCancelled {
+            if let workspace = delegate as? ProjectNavigatorViewController,
+               let workspaceFileManager = workspace.workspace?.workspaceFileManager {
+                removePhantomFile(fileItem: fileItem, fileManager: workspaceFileManager)
+            }
+            return
+        }
+
+        let newName = textField?.stringValue ?? ""
+        if !newName.isEmpty && newName.isValidFilename {
+            if let workspace = delegate as? ProjectNavigatorViewController,
+               let workspaceFileManager = workspace.workspace?.workspaceFileManager,
+               let parent = fileItem.parent {
+                do {
+                    let newFile = try workspaceFileManager.addFile(
+                        fileName: newName,
+                        toFile: parent
+                    )
+
+                    removePhantomFile(fileItem: fileItem, fileManager: workspaceFileManager)
+                    workspace.workspace?.listenerModel.highlightedFileItem = newFile
+                    workspace.workspace?.editorManager?.openTab(item: newFile)
+
+                } catch {
+                    let alert = NSAlert(error: error)
+                    alert.addButton(withTitle: "Dismiss")
+                    alert.runModal()
+                    removePhantomFile(fileItem: fileItem, fileManager: workspaceFileManager)
+                }
+            }
+        } else {
+            if let workspace = delegate as? ProjectNavigatorViewController,
+               let workspaceFileManager = workspace.workspace?.workspaceFileManager {
+                removePhantomFile(fileItem: fileItem, fileManager: workspaceFileManager)
+            }
+        }
+    }
+
+    private func removePhantomFile(fileItem: CEWorkspaceFile, fileManager: CEWorkspaceFileManager) {
+        fileManager.flattenedFileItems.removeValue(forKey: fileItem.id)
+
+        if let parent = fileItem.parent,
+           let childrenIds = fileManager.childrenMap[parent.id] {
+            fileManager.childrenMap[parent.id] = childrenIds.filter { $0 != fileItem.id }
+        }
+
+        if let workspace = delegate as? ProjectNavigatorViewController {
+            workspace.outlineView.reloadData()
+        }
     }
 }
