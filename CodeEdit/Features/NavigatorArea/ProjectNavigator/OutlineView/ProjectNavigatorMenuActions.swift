@@ -119,7 +119,7 @@ extension ProjectNavigatorMenu {
                 ) {
                 workspace?.listenerModel.highlightedFileItem = newFile
                 workspace?.editorManager?.openTab(item: newFile)
-                renameFile()
+                self.renameFile()
             }
         } catch {
             let alert = NSAlert(error: error)
@@ -291,10 +291,7 @@ extension ProjectNavigatorMenu {
 
         workspace?.listenerModel.highlightedFileItem = phantomFile
         sender.outlineView.reloadData()
-
-        DispatchQueue.main.async {
-            self.renameFile()
-        }
+        self.renameFile()
     }
 
     private func reloadData() {

@@ -58,7 +58,10 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         guard let fileItem else { return }
 
         if fileItem.isPhantom {
-            handlePhantomFileCompletion(fileItem: fileItem, wasCancelled: false)
+            DispatchQueue.main.async { [weak fileItem, weak self] in
+                guard let fileItem, let self = self else { return }
+                self.handlePhantomFileCompletion(fileItem: fileItem, wasCancelled: false)
+            }
         } else {
             textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
             if fileItem.validateFileName(for: textField?.stringValue ?? "") {
@@ -129,5 +132,23 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         if let workspace = delegate as? ProjectNavigatorViewController {
             workspace.outlineView.reloadData()
         }
+    }
+
+    /// Capture a cancel operation (escape key) to remove a phantom file that we are currently renaming
+    func control(
+        _ control: NSControl,
+        textView: NSTextView,
+        doCommandBy commandSelector: Selector
+    ) -> Bool {
+        guard let fileItem, fileItem.isPhantom else { return false }
+
+        if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+            DispatchQueue.main.async { [weak fileItem, weak self] in
+                guard let fileItem, let self = self else { return }
+                self.handlePhantomFileCompletion(fileItem: fileItem, wasCancelled: true)
+            }
+        }
+
+        return false
     }
 }
