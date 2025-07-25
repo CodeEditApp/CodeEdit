@@ -88,21 +88,27 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
                let workspaceFileManager = workspace.workspace?.workspaceFileManager,
                let parent = fileItem.parent {
                 do {
-                    let newFile = try workspaceFileManager.addFile(
-                        fileName: newName,
-                        toFile: parent
-                    )
-
-                    removePhantomFile(fileItem: fileItem, fileManager: workspaceFileManager)
-                    workspace.workspace?.listenerModel.highlightedFileItem = newFile
-                    workspace.workspace?.editorManager?.openTab(item: newFile)
-
+                    if fileItem.isFolder {
+                        let newFolder = try workspaceFileManager.addFolder(
+                            folderName: newName,
+                            toFile: parent
+                        )
+                        workspace.workspace?.listenerModel.highlightedFileItem = newFolder
+                    } else {
+                        let newFile = try workspaceFileManager.addFile(
+                            fileName: newName,
+                            toFile: parent
+                        )
+                        workspace.workspace?.listenerModel.highlightedFileItem = newFile
+                        workspace.workspace?.editorManager?.openTab(item: newFile)
+                    }
                 } catch {
                     let alert = NSAlert(error: error)
                     alert.addButton(withTitle: "Dismiss")
                     alert.runModal()
-                    removePhantomFile(fileItem: fileItem, fileManager: workspaceFileManager)
                 }
+
+                removePhantomFile(fileItem: fileItem, fileManager: workspaceFileManager)
             }
         } else {
             if let workspace = delegate as? ProjectNavigatorViewController,

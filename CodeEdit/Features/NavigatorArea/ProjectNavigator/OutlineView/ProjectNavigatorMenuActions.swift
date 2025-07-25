@@ -84,33 +84,7 @@ extension ProjectNavigatorMenu {
     /// Action that creates a new untitled file
     @objc
     func newFile() {
-        guard let item else { return }
-        let phantomFile = CEWorkspaceFile(
-            id: UUID().uuidString,
-            url: item.url.appendingPathComponent("Untitled"),
-            changeType: nil,
-            staged: false
-        )
-        phantomFile.isPhantom = true
-        phantomFile.parent = item
-
-        // Add phantom file to parent's children temporarily for display
-        if let workspace = workspace,
-           let fileManager = workspace.workspaceFileManager {
-            _ = fileManager.childrenOfFile(item)
-            fileManager.flattenedFileItems[phantomFile.id] = phantomFile
-            if fileManager.childrenMap[item.id] == nil {
-                fileManager.childrenMap[item.id] = []
-            }
-            fileManager.childrenMap[item.id]?.append(phantomFile.id)
-        }
-
-        workspace?.listenerModel.highlightedFileItem = phantomFile
-        sender.outlineView.reloadData()
-
-        DispatchQueue.main.async {
-            self.renameFile()
-        }
+        createAndAddPhantomFile(isFolder: false)
     }
 
     /// Opens the rename file dialogue on the cell this was presented from.
@@ -154,20 +128,10 @@ extension ProjectNavigatorMenu {
         }
     }
 
-    // TODO: allow custom folder names
     /// Action that creates a new untitled folder
     @objc
     func newFolder() {
-        guard let item else { return }
-        do {
-            if let newFolder = try workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item) {
-                workspace?.listenerModel.highlightedFileItem = newFolder
-            }
-        } catch {
-            let alert = NSAlert(error: error)
-            alert.addButton(withTitle: "Dismiss")
-            alert.runModal()
-        }
+        createAndAddPhantomFile(isFolder: true)
     }
 
     /// Creates a new folder with the items selected.
@@ -297,6 +261,40 @@ extension ProjectNavigatorMenu {
 
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(paths, forType: .string)
+    }
+
+    private func createAndAddPhantomFile(isFolder: Bool) {
+        guard let item else { return }
+        let phantomFile = CEWorkspaceFile(
+            id: UUID().uuidString,
+            url: item.url
+                .appending(
+                    path: isFolder ? "New Folder" : "Untitled",
+                    directoryHint: isFolder ? .isDirectory : .notDirectory
+                ),
+            changeType: nil,
+            staged: false
+        )
+        phantomFile.isPhantom = true
+        phantomFile.parent = item
+
+        // Add phantom file to parent's children temporarily for display
+        if let workspace = workspace,
+           let fileManager = workspace.workspaceFileManager {
+            _ = fileManager.childrenOfFile(item)
+            fileManager.flattenedFileItems[phantomFile.id] = phantomFile
+            if fileManager.childrenMap[item.id] == nil {
+                fileManager.childrenMap[item.id] = []
+            }
+            fileManager.childrenMap[item.id]?.append(phantomFile.id)
+        }
+
+        workspace?.listenerModel.highlightedFileItem = phantomFile
+        sender.outlineView.reloadData()
+
+        DispatchQueue.main.async {
+            self.renameFile()
+        }
     }
 
     private func reloadData() {
