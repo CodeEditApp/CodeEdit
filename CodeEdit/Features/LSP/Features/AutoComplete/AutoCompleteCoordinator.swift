@@ -20,13 +20,13 @@ class AutoCompleteCoordinator {
     /// The current filter text based on partial token input
     private var currentFilterText: String = ""
     /// Stores the unfiltered completion items
-    private var completionItems: [CompletionItem] = []
+    private var completionItems: [AutoCompleteItem] = []
 
     init(_ file: CEWorkspaceFile) {
         self.file = file
     }
 
-    private func fetchCompletions(position: Position) async -> [CompletionItem] {
+    private func fetchCompletions(position: Position) async -> [AutoCompleteItem] {
         let workspace = await file?.fileDocument?.findWorkspace()
         guard let file,
               let workspacePath = workspace?.fileURL?.absoluteURL.path(),
@@ -51,9 +51,9 @@ class AutoCompleteCoordinator {
             // Extract the completion items list
             switch completions {
             case .optionA(let completionItems):
-                return completionItems
+                return completionItems.map { AutoCompleteItem($0) }
             case .optionB(let completionList):
-                return completionList.items
+                return completionList.items.map { AutoCompleteItem($0) }
             case .none:
                 return []
             }
@@ -63,7 +63,7 @@ class AutoCompleteCoordinator {
     }
 
     /// Filters completion items based on the current partial token input
-    private func filterCompletionItems(_ items: [CompletionItem]) -> [CompletionItem] {
+    private func filterCompletionItems(_ items: [AutoCompleteItem]) -> [AutoCompleteItem] {
         guard !currentFilterText.isEmpty else {
             return items
         }
@@ -183,9 +183,9 @@ extension AutoCompleteCoordinator: CodeSuggestionDelegate {
     func completionWindowApplyCompletion(
         item: CodeSuggestionEntry,
         textView: TextViewController,
-        cursorPosition: CursorPosition
+        cursorPosition: CursorPosition?
     ) {
-        guard let item = item as? CompletionItem else { return }
+        guard let cursorPosition, let item = item as? AutoCompleteItem else { return }
 
         // Make the updates
         let replacementRange = currentNode?.range ?? cursorPosition.range

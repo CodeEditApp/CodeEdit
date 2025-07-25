@@ -9,77 +9,82 @@ import SwiftUI
 import LanguageServerProtocol
 
 extension CompletionItemKind {
-    static func toSymbolName(kind: CompletionItemKind?) -> String {
-        let defaultSymbol = "dot.square.fill"
-
-        guard let kind = kind else {
-            return defaultSymbol
+    var symbolName: String {
+        switch self {
+        case .text:
+            "t.square.fill"
+        case .method, .module:
+            "m.square.fill"
+        case .function:
+            "curlybraces.square.fill"
+        case .constructor, .interface:
+            "i.square.fill"
+        case .field, .class, .color:
+            "c.square.fill"
+        case .variable:
+            "v.square.fill"
+        case .property:
+            "p.square.fill"
+        case .unit:
+            "u.square.fill"
+        case .value:
+            "n.square.fill"
+        case .enum, .enumMember, .event:
+            "e.square.fill"
+        case .keyword, .constant:
+            "k.square.fill"
+        case .snippet, .struct:
+            "s.square.fill"
+        case .file:
+            "d.square.fill"
+        case .reference:
+            "r.square.fill"
+        case .folder:
+            "f.square.fill"
+        case .operator:
+            "plus.slash.minus"
+        case .typeParameter:
+            "t.square.fill"
         }
-
-        let symbolMap: [CompletionItemKind: String] = [
-            .text: "t.square.fill",
-            .method: "m.square.fill",
-            .function: "curlybraces.square.fill",
-            .constructor: "i.square.fill",
-            .field: "c.square.fill",
-            .variable: "v.square.fill",
-            .class: "c.square.fill",
-            .interface: "i.square.fill",
-            .module: "m.square.fill",
-            .property: "p.square.fill",
-            .unit: "u.square.fill",
-            .value: "n.square.fill",
-            .enum: "e.square.fill",
-            .keyword: "k.square.fill",
-            .snippet: "s.square.fill",
-            .color: "c.square.fill",
-            .file: "d.square.fill",
-            .reference: "r.square.fill",
-            .folder: "f.square.fill",
-            .enumMember: "e.square.fill",
-            .constant: "k.square.fill",
-            .struct: "s.square.fill",
-            .event: "e.square.fill",
-            .operator: "plus.slash.minus",
-            .typeParameter: "t.square.fill"
-        ]
-        return symbolMap[kind] ?? defaultSymbol
     }
 
-    static func toSymbolColor(kind: CompletionItemKind?) -> SwiftUICore.Color {
-        let defaultColor = Color.gray
-
-        guard let kind = kind else {
-            return defaultColor
+    var swiftUIColor: SwiftUI.Color {
+        switch self {
+        case .text,
+                .function,
+                .interface,
+                .module,
+                .unit,
+                .value,
+                .color,
+                .file,
+                .reference,
+                .folder,
+                .enumMember,
+                .constant,
+                .struct,
+                .event,
+                .operator,
+                .typeParameter:
+            Color.blue
+        case .variable:
+            Color.green
+        case .method:
+            Color.cyan
+        case .constructor:
+            Color.teal
+        case .field:
+            Color.indigo
+        case .class:
+            Color.pink
+        case .property:
+            Color.purple
+        case .enum:
+            Color.mint
+        case .keyword:
+            Color.pink
+        case .snippet:
+            Color.purple
         }
-
-        let symbolMap: [CompletionItemKind: SwiftUICore.Color] = [
-            .text: Color.blue,
-            .method: Color.cyan,
-            .function: Color.blue,
-            .constructor: Color.teal,
-            .field: Color.indigo,
-            .variable: Color.blue,
-            .class: Color.pink,
-            .interface: Color.blue,
-            .module: Color.blue,
-            .property: Color.purple,
-            .unit: Color.blue,
-            .value: Color.blue,
-            .enum: Color.mint,
-            .keyword: Color.pink,
-            .snippet: Color.purple,
-            .color: Color.blue,
-            .file: Color.blue,
-            .reference: Color.blue,
-            .folder: Color.blue,
-            .enumMember: Color.blue,
-            .constant: Color.blue,
-            .struct: Color.blue,
-            .event: Color.blue,
-            .operator: Color.blue,
-            .typeParameter: Color.blue,
-        ]
-        return symbolMap[kind] ?? defaultColor
     }
 }

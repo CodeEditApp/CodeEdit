@@ -38,7 +38,7 @@ enum LSPCompletionItemsUtil {
         return edits
     }
 
-    static func getInsertText(from completionItem: CompletionItem) -> String {
+    static func getInsertText(from completionItem: AutoCompleteItem) -> String {
         // According to LSP spec, textEdit takes precedence if present, then insertText, then label
         if let textEdit = completionItem.textEdit {
             switch textEdit {
