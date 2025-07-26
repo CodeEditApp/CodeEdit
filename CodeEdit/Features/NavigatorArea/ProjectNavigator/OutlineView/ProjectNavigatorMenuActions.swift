@@ -81,21 +81,10 @@ extension ProjectNavigatorMenu {
         try? process.run()
     }
 
-    // TODO: allow custom file names
     /// Action that creates a new untitled file
     @objc
     func newFile() {
-        guard let item else { return }
-        do {
-            if let newFile = try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item) {
-                workspace?.listenerModel.highlightedFileItem = newFile
-                workspace?.editorManager?.openTab(item: newFile)
-            }
-        } catch {
-            let alert = NSAlert(error: error)
-            alert.addButton(withTitle: "Dismiss")
-            alert.runModal()
-        }
+        createAndAddPhantomFile(isFolder: false)
     }
 
     /// Opens the rename file dialogue on the cell this was presented from.
@@ -103,11 +92,11 @@ extension ProjectNavigatorMenu {
     func renameFile() {
         guard let newFile = workspace?.listenerModel.highlightedFileItem else { return }
         let row = sender.outlineView.row(forItem: newFile)
-        guard row > 0,
+        guard row >= 0,
               let cell = sender.outlineView.view(
                 atColumn: 0,
                 row: row,
-                makeIfNecessary: false
+                makeIfNecessary: true
               ) as? ProjectNavigatorTableViewCell else {
             return
         }
@@ -118,41 +107,20 @@ extension ProjectNavigatorMenu {
     /// Action that creates a new file with clipboard content
     @objc
     func newFileFromClipboard() {
-        guard let item else { return }
-        do {
-            let clipBoardContent = NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
-            if let clipBoardContent, !clipBoardContent.isEmpty, let newFile = try workspace?
-                .workspaceFileManager?
-                .addFile(
-                    fileName: "untitled",
-                    toFile: item,
-                    contents: clipBoardContent
-                ) {
-                workspace?.listenerModel.highlightedFileItem = newFile
-                workspace?.editorManager?.openTab(item: newFile)
-                renameFile()
-            }
-        } catch {
-            let alert = NSAlert(error: error)
-            alert.addButton(withTitle: "Dismiss")
-            alert.runModal()
+        guard item != nil else { return }
+        let clipBoardContent = NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
+
+        guard let clipBoardContent, !clipBoardContent.isEmpty else {
+            return
         }
+
+        createAndAddPhantomFile(isFolder: false, usePasteboardContent: true)
     }
 
-    // TODO: allow custom folder names
     /// Action that creates a new untitled folder
     @objc
     func newFolder() {
-        guard let item else { return }
-        do {
-            if let newFolder = try workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item) {
-                workspace?.listenerModel.highlightedFileItem = newFolder
-            }
-        } catch {
-            let alert = NSAlert(error: error)
-            alert.addButton(withTitle: "Dismiss")
-            alert.runModal()
-        }
+        createAndAddPhantomFile(isFolder: true)
     }
 
     /// Creates a new folder with the items selected.
@@ -282,6 +250,37 @@ extension ProjectNavigatorMenu {
 
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(paths, forType: .string)
+    }
+
+    private func createAndAddPhantomFile(isFolder: Bool, usePasteboardContent: Bool = false) {
+        guard let item else { return }
+        let file = CEWorkspaceFile(
+            id: UUID().uuidString,
+            url: item.url
+                .appending(
+                    path: isFolder ? "New Folder" : "Untitled",
+                    directoryHint: isFolder ? .isDirectory : .notDirectory
+                ),
+            changeType: nil,
+            staged: false
+        )
+        file.phantomFile = usePasteboardContent ? .pasteboardContent : .empty
+        file.parent = item
+
+        // Add phantom file to parent's children temporarily for display
+        if let workspace = workspace,
+           let fileManager = workspace.workspaceFileManager {
+            _ = fileManager.childrenOfFile(item)
+            fileManager.flattenedFileItems[file.id] = file
+            if fileManager.childrenMap[item.id] == nil {
+                fileManager.childrenMap[item.id] = []
+            }
+            fileManager.childrenMap[item.id]?.append(file.id)
+        }
+
+        workspace?.listenerModel.highlightedFileItem = file
+        sender.outlineView.reloadData()
+        self.renameFile()
     }
 
     private func reloadData() {
