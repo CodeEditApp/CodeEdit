@@ -116,7 +116,7 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
 
     /// Returns a boolean that is true if the resource represented by this object is a directory.
     lazy var isFolder: Bool = {
-        isPhantom ? resolvedURL.hasDirectoryPath : resolvedURL.isFolder
+        phantomFile != nil ? resolvedURL.hasDirectoryPath : resolvedURL.isFolder
     }()
 
     /// Returns a boolean that is true if the contents of the directory at this path are
@@ -164,8 +164,8 @@ final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable, Editor
         FileIcon.iconColor(fileType: type)
     }
 
-    /// Indicates whether the file is phantom (not yet created on disk)
-    var isPhantom: Bool = false
+    /// Holds information about the phantom file
+    var phantomFile: PhantomFile?
 
     init(
         id: String,

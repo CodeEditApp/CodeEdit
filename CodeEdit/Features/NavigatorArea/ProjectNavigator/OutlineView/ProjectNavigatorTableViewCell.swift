@@ -57,7 +57,7 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
     override func controlTextDidEndEditing(_ obj: Notification) {
         guard let fileItem else { return }
 
-        if fileItem.isPhantom {
+        if fileItem.phantomFile != nil {
             DispatchQueue.main.async { [weak fileItem, weak self] in
                 guard let fileItem, let self = self else { return }
                 self.handlePhantomFileCompletion(fileItem: fileItem, wasCancelled: false)
@@ -100,7 +100,10 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
                     } else {
                         let newFile = try workspaceFileManager.addFile(
                             fileName: newName,
-                            toFile: parent
+                            toFile: parent,
+                            contents: fileItem.phantomFile == PhantomFile.pasteboardContent
+                            ? NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
+                            : nil
                         )
                         workspace.workspace?.listenerModel.highlightedFileItem = newFile
                         workspace.workspace?.editorManager?.openTab(item: newFile)
@@ -140,7 +143,7 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         textView: NSTextView,
         doCommandBy commandSelector: Selector
     ) -> Bool {
-        guard let fileItem, fileItem.isPhantom else { return false }
+        guard let fileItem, fileItem.phantomFile != nil else { return false }
 
         if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
             DispatchQueue.main.async { [weak fileItem, weak self] in

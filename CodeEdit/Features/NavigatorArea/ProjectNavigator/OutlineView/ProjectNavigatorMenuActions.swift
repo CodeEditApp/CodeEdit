@@ -107,25 +107,14 @@ extension ProjectNavigatorMenu {
     /// Action that creates a new file with clipboard content
     @objc
     func newFileFromClipboard() {
-        guard let item else { return }
-        do {
-            let clipBoardContent = NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
-            if let clipBoardContent, !clipBoardContent.isEmpty, let newFile = try workspace?
-                .workspaceFileManager?
-                .addFile(
-                    fileName: "untitled",
-                    toFile: item,
-                    contents: clipBoardContent
-                ) {
-                workspace?.listenerModel.highlightedFileItem = newFile
-                workspace?.editorManager?.openTab(item: newFile)
-                self.renameFile()
-            }
-        } catch {
-            let alert = NSAlert(error: error)
-            alert.addButton(withTitle: "Dismiss")
-            alert.runModal()
+        guard item != nil else { return }
+        let clipBoardContent = NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
+
+        guard let clipBoardContent, !clipBoardContent.isEmpty else {
+            return
         }
+
+        createAndAddPhantomFile(isFolder: false, usePasteboardContent: true)
     }
 
     /// Action that creates a new untitled folder
@@ -263,9 +252,9 @@ extension ProjectNavigatorMenu {
         NSPasteboard.general.setString(paths, forType: .string)
     }
 
-    private func createAndAddPhantomFile(isFolder: Bool) {
+    private func createAndAddPhantomFile(isFolder: Bool, usePasteboardContent: Bool = false) {
         guard let item else { return }
-        let phantomFile = CEWorkspaceFile(
+        let file = CEWorkspaceFile(
             id: UUID().uuidString,
             url: item.url
                 .appending(
@@ -275,21 +264,21 @@ extension ProjectNavigatorMenu {
             changeType: nil,
             staged: false
         )
-        phantomFile.isPhantom = true
-        phantomFile.parent = item
+        file.phantomFile = usePasteboardContent ? .pasteboardContent : .empty
+        file.parent = item
 
         // Add phantom file to parent's children temporarily for display
         if let workspace = workspace,
            let fileManager = workspace.workspaceFileManager {
             _ = fileManager.childrenOfFile(item)
-            fileManager.flattenedFileItems[phantomFile.id] = phantomFile
+            fileManager.flattenedFileItems[file.id] = file
             if fileManager.childrenMap[item.id] == nil {
                 fileManager.childrenMap[item.id] = []
             }
-            fileManager.childrenMap[item.id]?.append(phantomFile.id)
+            fileManager.childrenMap[item.id]?.append(file.id)
         }
 
-        workspace?.listenerModel.highlightedFileItem = phantomFile
+        workspace?.listenerModel.highlightedFileItem = file
         sender.outlineView.reloadData()
         self.renameFile()
     }
