@@ -66,13 +66,26 @@ extension CEWorkspaceFileManager {
         contents: Data? = nil
     ) throws -> CEWorkspaceFile {
         do {
-            var fileUrl = file.nearestFolder.appending(path: "\(fileName)")
+            var fileExtension: String
+            if fileName.contains(".") {
+                // If we already have a file extension in the name, don't add another one
+                fileExtension = ""
+            } else {
+                fileExtension = useExtension ?? ""
+
+                // Don't add a . if the extension is empty, but add it if it's missing.
+                if !fileExtension.isEmpty && !fileExtension.starts(with: ".") {
+                    fileExtension = "." + fileExtension
+                }
+            }
+
+            var fileUrl = file.nearestFolder.appending(path: "\(fileName)\(fileExtension)")
             // If a file/folder with the same name exists, add a number to the end.
             var fileNumber = 0
             while fileManager.fileExists(atPath: fileUrl.path) {
                 fileNumber += 1
                 fileUrl = fileUrl.deletingLastPathComponent()
-                    .appending(path: "\(fileName)\(fileNumber)")
+                    .appending(path: "\(fileName)\(fileNumber)\(fileExtension)")
             }
 
             guard fileUrl.fileName.isValidFilename else {
