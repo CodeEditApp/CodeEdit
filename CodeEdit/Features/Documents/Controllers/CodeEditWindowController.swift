@@ -143,6 +143,21 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         }
     }
 
+    /// Opens the search navigator and focuses the search field
+    @IBAction func openSearchNavigator(_ sender: Any? = nil) {
+        if navigatorCollapsed {
+            toggleFirstPanel()
+        }
+
+        if let navigatorViewModel = navigatorSidebarViewModel,
+           let searchTab = navigatorViewModel.tabItems.first(where: { $0 == .search }) {
+            DispatchQueue.main.async {
+                self.workspace?.searchState?.shouldFocusSearchField = true
+                navigatorViewModel.setNavigatorTab(tab: searchTab)
+            }
+        }
+    }
+
     @IBAction func openQuickly(_ sender: Any?) {
         if let workspace, let state = workspace.openQuicklyViewModel {
             if let quickOpenPanel {

@@ -35,6 +35,8 @@ extension WorkspaceDocument {
 
         @Published var findNavigatorStatus: FindNavigatorStatus = .none
 
+        @Published var shouldFocusSearchField: Bool = false
+
         unowned var workspace: WorkspaceDocument
         var tempSearchResults = [SearchResultModel]()
         var caseSensitive: Bool = false
