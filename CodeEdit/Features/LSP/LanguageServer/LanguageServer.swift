@@ -157,7 +157,7 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
                         insertTextModeSupport: ValueSet(valueSet: [InsertTextMode.adjustIndentation]),
                         labelDetailsSupport: true
                     ),
-                    completionItemKind: ValueSet(valueSet: [CompletionItemKind.text, CompletionItemKind.method]),
+                    completionItemKind: ValueSet(valueSet: CompletionItemKind.allCases),
                     contextSupport: true,
                     insertTextMode: InsertTextMode.asIs,
                     completionList: CompletionClientCapabilities.CompletionList(

@@ -1,5 +1,5 @@
 {
-  "originHash" : "ed7a5ce46da2e530a4b8ff23058a67ef7423fa2378b9588d66359f210b6365cb",
+  "originHash" : "b620be67193e2620d55aeb3152a8e45d7c8b355ec3cfeec961129b411d6de1d7",
   "pins" : [
     {
       "identity" : "aboutwindow",
@@ -38,15 +38,6 @@
       }
     },
     {
-      "identity" : "codeeditsourceeditor",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor.git",
-      "state" : {
-        "revision" : "afc57523b05c209496a221655c2171c0624b51d3",
-        "version" : "0.14.1"
-      }
-    },
-    {
       "identity" : "codeeditsymbols",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditSymbols",
@@ -60,8 +51,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "d65c2a4b23a52f69d0b3a113124d7434c7af07fa",
-        "version" : "0.11.6"
+        "revision" : "e7f1580a8075af84c349fb8c66fbd2776ff5cb1d",
+        "version" : "0.12.0"
       }
     },
     {
@@ -150,8 +141,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/mattmassicotte/Queue",
       "state" : {
-        "revision" : "8d6f936097888f97011610ced40313655dc5948d",
-        "version" : "0.1.4"
+        "revision" : "6adf359a705e3252742905b413bb8f56401043ca",
+        "version" : "0.2.0"
       }
     },
     {
@@ -195,8 +186,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-collections.git",
       "state" : {
-        "revision" : "9bf03ff58ce34478e66aaee630e491823326fd06",
-        "version" : "1.1.3"
+        "revision" : "671108c96644956dddcd89dd59c203dcdb36cec7",
+        "version" : "1.1.4"
       }
     },
     {
@@ -285,17 +276,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tree-sitter/tree-sitter",
       "state" : {
-        "revision" : "bf655c0beaf4943573543fa77c58e8006ff34971",
-        "version" : "0.25.6"
-      }
-    },
-    {
-      "identity" : "zipfoundation",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/weichsel/ZIPFoundation",
-      "state" : {
-        "revision" : "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
-        "version" : "0.9.19"
+        "revision" : "f2f197b6b27ce75c280c20f131d4f71e906b86f7",
+        "version" : "0.25.8"
       }
     },
     {
@@ -305,6 +287,15 @@
       "state" : {
         "revision" : "5168cf1ce9579b35ad00706fafef441418d8011f",
         "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "zipfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/weichsel/ZIPFoundation",
+      "state" : {
+        "revision" : "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
+        "version" : "0.9.19"
       }
     }
   ],
