@@ -39,6 +39,10 @@ enum Query {
         static func getTabBar(_ window: XCUIElement) -> XCUIElement {
             return window.descendants(matching: .any).matching(identifier: "TabBar").element
         }
+
+        static func getUtilityArea(_ window: XCUIElement) -> XCUIElement {
+            return window.descendants(matching: .any).matching(identifier: "UtilityArea").element
+        }
     }
 
     enum Navigator {

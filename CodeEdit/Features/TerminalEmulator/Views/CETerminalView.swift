@@ -17,6 +17,17 @@ class CETerminalView: TerminalView {
         }
     }
 
+    override open var frame: CGRect {
+        get {
+            super.frame
+        }
+        set {
+            if newValue.size != .zero {
+                super.frame = newValue
+            }
+        }
+    }
+
     @objc
     override open func copy(_ sender: Any) {
         let range = selectedPositions()
@@ -25,4 +36,34 @@ class CETerminalView: TerminalView {
         pasteboard.clearContents()
         pasteboard.setString(text, forType: .string)
     }
+
+    override open func isAccessibilityElement() -> Bool {
+        true
+    }
+
+    override open func isAccessibilityEnabled() -> Bool {
+        true
+    }
+
+    override open func accessibilityLabel() -> String? {
+        "Terminal Emulator"
+    }
+
+    override open func accessibilityRole() -> NSAccessibility.Role? {
+        .textArea
+    }
+
+    override open func accessibilityValue() -> Any? {
+        terminal.getText(
+            start: Position(col: 0, row: 0),
+            end: Position(col: terminal.buffer.x, row: terminal.getTopVisibleRow() + terminal.rows)
+        )
+    }
+
+    override open func accessibilitySelectedText() -> String? {
+        let range = selectedPositions()
+        let text = terminal.getText(start: range.start, end: range.end)
+        return text
+    }
+
 }

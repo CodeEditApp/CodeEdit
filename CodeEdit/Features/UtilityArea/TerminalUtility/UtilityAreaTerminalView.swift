@@ -117,6 +117,7 @@ struct UtilityAreaTerminalView: View {
                             )
                             .frame(height: max(0, constrainedHeight - 1))
                             .id(selectedTerminal.id)
+                            .accessibilityIdentifier("terminal")
                         }
                     }
                 } else {
@@ -167,6 +168,7 @@ struct UtilityAreaTerminalView: View {
             }
             utilityAreaViewModel.initializeTerminals(workspaceURL: workspaceURL)
         }
+        .accessibilityIdentifier("terminal-area")
     }
 
     @ViewBuilder var backgroundEffectView: some View {

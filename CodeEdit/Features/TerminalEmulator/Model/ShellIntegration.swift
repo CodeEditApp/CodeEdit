@@ -65,19 +65,19 @@ enum ShellIntegration {
             // Enable injection in our scripts.
             environment.append("\(Variables.ceInjection)=1")
 
-            if let execArgs = shell.execArguments(interactive: interactive, login: useLogin) {
-                args.append(execArgs)
-            }
-
             switch shell {
             case .bash:
                 try bash(&args)
             case .zsh:
-                try zsh(&args, &environment)
+                try zsh(&environment)
             }
 
             if useLogin {
                 environment.append("\(Variables.shellLogin)=1")
+            }
+
+            if let execArgs = shell.execArguments(interactive: interactive, login: useLogin) {
+                args.append(execArgs)
             }
 
             return args
@@ -125,7 +125,6 @@ enum ShellIntegration {
     ///   - useLogin: Whether to use a login shell.
     ///   - interactive: Whether to use an interactive shell.
     private static func zsh(
-        _ args: inout [String],
         _ environment: inout [String]
     ) throws {
         // All injection script URLs
