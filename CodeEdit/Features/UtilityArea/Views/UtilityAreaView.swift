@@ -20,5 +20,6 @@ struct UtilityAreaView: View {
         )
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Utility Area")
+        .accessibilityIdentifier("UtilityArea")
     }
 }

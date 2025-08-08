@@ -46,7 +46,6 @@ struct UtilityAreaTerminalTab: View {
             }
         } icon: {
             Image(systemName: "terminal")
-                .accessibilityHidden(true)
         }
         .contextMenu {
             Button("Rename...") {
@@ -63,5 +62,8 @@ struct UtilityAreaTerminalTab: View {
                 }
             }
         }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(terminalTitle.wrappedValue)
+        .accessibilityIdentifier("terminalTab")
     }
 }
