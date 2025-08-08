@@ -44,7 +44,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
         guard let item = outlineView.item(atRow: selectedIndex) as? CEWorkspaceFile else { return }
 
-        if !item.isFolder && shouldSendSelectionUpdate {
+        if !item.isFolder && item.phantomFile == nil && shouldSendSelectionUpdate {
             shouldSendSelectionUpdate = false
             if workspace?.editorManager?.activeEditor.selectedTab?.file != item {
                 workspace?.editorManager?.activeEditor.openTab(file: item, asTemporary: true)
@@ -130,6 +130,10 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         shouldSendSelectionUpdate = false
         outlineView.selectRowIndexes(.init(integer: row), byExtendingSelection: false)
         shouldSendSelectionUpdate = true
+
+        if fileItem.phantomFile != nil {
+            return
+        }
 
         if row < 0 {
             let alert = NSAlert()
