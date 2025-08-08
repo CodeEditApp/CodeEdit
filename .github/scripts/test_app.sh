@@ -14,8 +14,13 @@ echo "SwiftLint Version: $(swiftlint --version)"
 
 export LC_CTYPE=en_US.UTF-8
 
+# xcbeautify flags: 
+# - renderer: render to gh actions
+# - q: quiet output
+# - is-ci: include test results in output
+
 set -o pipefail && arch -"${ARCH}" xcodebuild \
            -scheme CodeEdit \
            -destination "platform=OS X,arch=${ARCH}" \
            -skipPackagePluginValidation \
-           clean test | xcbeautify --renderer github-actions
+           clean test | xcbeautify --renderer github-actions -q --is-ci
