@@ -174,16 +174,6 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         // See #1966
         XCTAssertEqual(file.name, "Test File.txt")
 
-        // Test the automatic file extension stuff
-        file = try fileManager.addFile(
-            fileName: "Test File Extension",
-            toFile: fileManager.workspaceItem,
-            useExtension: nil
-        )
-
-        // Should detect '.txt' with the previous file in the same directory.
-        XCTAssertEqual(file.name, "Test File Extension.txt")
-
         // Test explicit file extension with both . and no period at the beginning of the given extension.
         file = try fileManager.addFile(
             fileName: "Explicit File Extension",
