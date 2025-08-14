@@ -18,27 +18,31 @@ struct LanguageServerRowView: View, Equatable {
     private let cleanedTitle: String
     private let cleanedSubtitle: String
 
+    private var isInstalled: Bool {
+        registryManager.installedLanguageServers[packageName] != nil
+    }
+    private var isEnabled: Bool {
+        registryManager.installedLanguageServers[packageName]?.isEnabled ?? false
+    }
+
     @State private var isHovering: Bool = false
-    @State private var installationStatus: PackageInstallationStatus = .notQueued
-    @State private var isInstalled: Bool = false
-    @State private var isEnabled = false
     @State private var showingRemovalConfirmation = false
     @State private var isRemoving = false
     @State private var removalError: Error?
     @State private var showingRemovalError = false
 
+    @State private var showMore: Bool = false
+
+    @EnvironmentObject var registryManager: RegistryManager
+
     init(
         packageName: String,
         subtitle: String,
-        isInstalled: Bool = false,
-        isEnabled: Bool = false,
         onCancel: @escaping (() -> Void),
         onInstall: @escaping () async -> Void
     ) {
         self.packageName = packageName
         self.subtitle = subtitle
-        self.isInstalled = isInstalled
-        self.isEnabled = isEnabled
         self.onCancel = onCancel
         self.onInstall = onInstall
 
@@ -63,11 +67,23 @@ struct LanguageServerRowView: View, Equatable {
             Label {
                 VStack(alignment: .leading) {
                     Text(cleanedTitle)
-                    Text(cleanedSubtitle)
-                        .font(.footnote)
-                        .foregroundColor(.secondary)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
+                    HStack(alignment: .lastTextBaseline, spacing: 4) {
+                        Text(cleanedSubtitle)
+                            .font(.footnote)
+                            .foregroundColor(.secondary)
+                            .lineLimit(showMore ? nil : 1)
+                            .truncationMode(.tail)
+                        if isHovering {
+                            Spacer(minLength: 0)
+                            Button {
+                                showMore.toggle()
+                            } label: {
+                                Text(showMore ? "Show Less" : "Show More")
+                                    .font(.footnote)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
                 }
             } icon: {
                 letterIcon()
@@ -80,21 +96,6 @@ struct LanguageServerRowView: View, Equatable {
         }
         .onHover { hovering in
             isHovering = hovering
-        }
-        .onAppear {
-            // Check if this package is already in the installation queue
-            installationStatus = InstallationQueueManager.shared.getInstallationStatus(packageName: packageName)
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .installationStatusChanged)) { notification in
-            if let notificationPackageName = notification.userInfo?["packageName"] as? String,
-               notificationPackageName == packageName,
-               let status = notification.userInfo?["status"] as? PackageInstallationStatus {
-                installationStatus = status
-                if case .installed = status {
-                    isInstalled = true
-                    isEnabled = true
-                }
-            }
         }
         .alert("Remove \(cleanedTitle)?", isPresented: $showingRemovalConfirmation) {
             Button("Cancel", role: .cancel) { }
@@ -115,17 +116,10 @@ struct LanguageServerRowView: View, Equatable {
     private func installationButton() -> some View {
         if isInstalled {
             installedRow()
-        } else {
-            switch installationStatus {
-            case .installing, .queued:
-                isInstallingRow()
-            case .failed:
-                failedRow()
-            default:
-                if isHovering {
-                    isHoveringRow()
-                }
-            }
+        } else if registryManager.runningInstall?.package.name == packageName {
+            isInstallingRow()
+        } else if isHovering {
+            isHoveringRow()
         }
     }
 
@@ -142,30 +136,27 @@ struct LanguageServerRowView: View, Equatable {
                     Text("Remove")
                 }
             }
-            Toggle("", isOn: $isEnabled)
-                .onChange(of: isEnabled) { newValue in
-                    RegistryManager.shared.installedLanguageServers[packageName]?.isEnabled = newValue
-                }
-                .toggleStyle(.switch)
-                .controlSize(.small)
-                .labelsHidden()
+            Toggle(
+                "",
+                isOn: Binding(
+                    get: { isEnabled },
+                    set: { registryManager.setPackageEnabled(packageName: packageName, enabled: $0) }
+                )
+            )
+            .toggleStyle(.switch)
+            .controlSize(.small)
+            .labelsHidden()
         }
     }
 
     @ViewBuilder
     private func isInstallingRow() -> some View {
         HStack {
-            if case .queued = installationStatus {
-                Text("Queued")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-
             ZStack {
                 CECircularProgressView()
                     .frame(width: 20, height: 20)
+
                 Button {
-                    InstallationQueueManager.shared.cancelInstallation(packageName: packageName)
                     onCancel()
                 } label: {
                     Image(systemName: "stop.fill")
@@ -181,8 +172,6 @@ struct LanguageServerRowView: View, Equatable {
     @ViewBuilder
     private func failedRow() -> some View {
         Button {
-            // Reset status and retry installation
-            installationStatus = .notQueued
             Task {
                 await onInstall()
             }
@@ -201,6 +190,7 @@ struct LanguageServerRowView: View, Equatable {
         } label: {
             Text("Install")
         }
+        .disabled(registryManager.isInstalling)
     }
 
     @ViewBuilder
@@ -225,11 +215,9 @@ struct LanguageServerRowView: View, Equatable {
         isRemoving = true
         Task {
             do {
-                try await RegistryManager.shared.removeLanguageServer(packageName: packageName)
+                try await registryManager.removeLanguageServer(packageName: packageName)
                 await MainActor.run {
                     isRemoving = false
-                    isInstalled = false
-                    isEnabled = false
                 }
             } catch {
                 await MainActor.run {

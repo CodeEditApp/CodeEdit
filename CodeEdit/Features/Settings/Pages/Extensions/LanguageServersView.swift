@@ -8,92 +8,50 @@
 import SwiftUI
 
 struct LanguageServersView: View {
-    @State private var didError = false
-    @State private var installationFailure: InstallationFailure?
-    @State private var registryItems: [RegistryItem] = []
-    @State private var isLoading = true
+    @StateObject var registryManager: RegistryManager = .shared
+    @StateObject private var searchModel = FuzzySearchUIModel<RegistryItem>()
+    @State private var searchText: String = ""
 
     var body: some View {
-        SettingsForm {
-            Section {
-                EmptyView()
-            } header: {
-                Label(
-                    "Warning: Language server installation is not complete. Use this at your own risk. It "
-                    + "**WILL** break.",
-                    systemImage: "exclamationmark.triangle.fill"
-                )
-                .padding()
-                .foregroundStyle(.black)
-                .background(RoundedRectangle(cornerRadius: 12).fill(.yellow))
-            }
-
-            if isLoading {
-                HStack {
-                    Spacer()
-                    ProgressView()
-                        .controlSize(.small)
-                    Spacer()
+        Group {
+            SettingsForm {
+                if registryManager.isDownloadingRegistry {
+                    HStack {
+                        Spacer()
+                        ProgressView()
+                            .controlSize(.small)
+                        Spacer()
+                    }
                 }
-            } else {
+
                 Section {
-                    List(registryItems, id: \.name) { item in
+                    List(searchModel.items ?? registryManager.registryItems, id: \.name) { item in
                         LanguageServerRowView(
                             packageName: item.name,
                             subtitle: item.description,
-                            isInstalled: RegistryManager.shared.installedLanguageServers[item.name] != nil,
-                            isEnabled: RegistryManager.shared.installedLanguageServers[item.name]?.isEnabled ?? false,
                             onCancel: {
-                                InstallationQueueManager.shared.cancelInstallation(packageName: item.name)
+                                registryManager.cancelInstallation()
                             },
-                            onInstall: {
-                                let item = item // Capture for closure
-                                InstallationQueueManager.shared.queueInstallation(package: item) { result in
-                                    switch result {
-                                    case .success:
-                                        break
-                                    case .failure(let error):
-                                        didError = true
-                                        installationFailure = InstallationFailure(error: error.localizedDescription)
-                                    }
+                            onInstall: { [item] in
+                                do {
+                                    try registryManager.startInstallation(package: item)
+                                } catch {
+                                    // TODO: Error? it's already handled elsewhere..
                                 }
                             }
                         )
                         .listRowInsets(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                     }
+                    .searchable(text: $searchText)
+                    .onChange(of: searchText) { newValue in
+                        searchModel.searchTextUpdated(searchText: newValue, allItems: registryManager.registryItems)
+                    }
                 }
             }
+            .sheet(item: $registryManager.runningInstall) { operation in
+                LanguageServerInstallView(operation: operation)
+            }
         }
-        .onAppear {
-            loadRegistryItems()
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .RegistryUpdatedNotification)) { _ in
-            loadRegistryItems()
-        }
-        .onDisappear {
-            InstallationQueueManager.shared.cleanUpInstallationStatus()
-        }
-        .alert(
-            "Installation Failed",
-            isPresented: $didError,
-            presenting: installationFailure
-        ) { _ in
-            Button("Dismiss") { }
-        } message: { details in
-            Text(details.error)
-        }
+        .environmentObject(registryManager)
     }
-
-    private func loadRegistryItems() {
-        isLoading = true
-        registryItems = RegistryManager.shared.registryItems
-        if !registryItems.isEmpty {
-            isLoading = false
-        }
-    }
-}
-
-private struct InstallationFailure: Identifiable {
-    let error: String
-    let id = UUID()
 }
