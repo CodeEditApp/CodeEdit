@@ -8,13 +8,13 @@
 import OSLog
 import Foundation
 import ZIPFoundation
+import Combine
 
 @MainActor
-final class RegistryManager {
-    static let shared: RegistryManager = .init()
+final class RegistryManager: ObservableObject {
+    static let shared = RegistryManager()
 
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "RegistryManager")
-
     let installPath = Settings.shared.baseURL.appending(path: "Language Servers")
 
     /// The URL of where the registry.json file will be downloaded from
@@ -26,86 +26,50 @@ final class RegistryManager {
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/checksums.txt"
     )!
 
+    @Published var isDownloadingRegistry: Bool = false
+    /// Holds an errors found while downloading the registry file. Needs a UI to dismiss, is logged.
+    @Published var downloadError: Error?
+    /// Any currently running installation operation.
+    @Published var runningInstall: PackageManagerInstallOperation?
+    private var installTask: Task<Void, Never>?
+
+    /// Indicates if the manager is currently installing a package.
+    var isInstalling: Bool {
+        installTask != nil
+    }
+
     /// Reference to cached registry data. Will be removed from memory after a certain amount of time.
     private var cachedRegistry: CachedRegistry?
     /// Timer to clear expired cache
     private var cleanupTimer: Timer?
     /// Public access to registry items with cache management
-    public var registryItems: [RegistryItem] {
-        if let cache = cachedRegistry, !cache.isExpired {
-            return cache.items
-        }
-
-        // Load the registry items from disk again after cache expires
-        if let items = loadItemsFromDisk() {
-            cachedRegistry = CachedRegistry(items: items)
-
-            // Set up timer to clear the cache after expiration
-            cleanupTimer?.invalidate()
-            cleanupTimer = Timer.scheduledTimer(
-                withTimeInterval: CachedRegistry.expirationInterval, repeats: false
-            ) { [weak self] _ in
-                Task { @MainActor in
-                    guard let self = self else { return }
-                    self.cachedRegistry = nil
-                    self.cleanupTimer = nil
-                }
-            }
-            return items
-        }
-
-        return []
-    }
+    @Published public private(set) var registryItems: [RegistryItem] = []
 
     @AppSettings(\.languageServers.installedLanguageServers)
     var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
+
+    init() {
+        // Load the registry items from disk again after cache expires
+        if let items = loadItemsFromDisk() {
+            setRegistryItems(items)
+        } else {
+            Task {
+                await downloadRegistryItems()
+            }
+        }
+    }
 
     deinit {
         cleanupTimer?.invalidate()
     }
 
-    func installPackage(package entry: RegistryItem) async throws {
-        return try await Task.detached(priority: .userInitiated) { () in
-            let method = await Self.parseRegistryEntry(entry)
-            guard let manager = await self.createPackageManager(for: method) else {
-                throw PackageManagerError.invalidConfiguration
-            }
+    // MARK: - Enable/Disable
 
-            // Add to activity viewer
-            let activityTitle = "\(entry.name)\("@" + (method.version ?? "latest"))"
-            await MainActor.run {
-                NotificationCenter.default.post(
-                    name: .taskNotification,
-                    object: nil,
-                    userInfo: [
-                        "id": entry.name,
-                        "action": "create",
-                        "title": "Installing \(activityTitle)"
-                    ]
-                )
-            }
-
-            do {
-                try await manager.install(method: method)
-            } catch {
-                await MainActor.run {
-                    Self.updateActivityViewer(entry.name, activityTitle, fail: true)
-                }
-                // Throw error again so the UI can catch it
-                throw error
-            }
-
-            // Update settings on the main thread
-            await MainActor.run {
-                self.installedLanguageServers[entry.name] = .init(
-                    packageName: entry.name,
-                    isEnabled: true,
-                    version: method.version ?? ""
-                )
-                Self.updateActivityViewer(entry.name, activityTitle, fail: false)
-            }
-        }.value
+    func setPackageEnabled(packageName: String, enabled: Bool) {
+        installedLanguageServers[packageName]?.isEnabled = enabled
     }
+
+    // MARK: - Uninstall
 
     @MainActor
     func removeLanguageServer(packageName: String) async throws {
@@ -138,9 +102,74 @@ final class RegistryManager {
         }
     }
 
+    // MARK: - Install
+
+    /// Starts the actual installation process for a package
+    public func startInstallation(package: RegistryItem) throws {
+        guard !isInstalling else {
+            throw RegistryManagerError.installationRunning
+        }
+        guard let method = package.installMethod,
+              let manager = method.packageManager(installPath: installPath) else {
+            throw PackageManagerError.invalidConfiguration
+        }
+        let installSteps = try manager.install(method: method)
+        let installOperation = PackageManagerInstallOperation(package: package, steps: installSteps)
+        self.runningInstall = installOperation
+
+        // Run it!
+        installPackage(operation: installOperation, method: method)
+    }
+
+    private func installPackage(operation: PackageManagerInstallOperation, method: InstallationMethod) {
+        installTask = Task { [weak self] in
+            defer {
+                self?.installTask = nil
+            }
+
+            // Add to activity viewer
+            let activityTitle = "\(operation.package.name)\("@" + (method.version ?? "latest"))"
+            TaskNotificationHandler.postTask(
+                action: .create,
+                model: TaskNotificationModel(id: operation.package.name, title: "Installing \(activityTitle)")
+            )
+
+            guard !Task.isCancelled else { return }
+            do {
+                try await operation.run()
+            } catch {
+
+                await MainActor.run { [weak self] in
+                    self?.updateActivityViewer(operation.package.name, activityTitle, fail: true)
+                }
+                return
+            }
+
+            guard !Task.isCancelled else { return }
+            // Update settings on the main thread
+            await MainActor.run { [weak self] in
+                self?.installedLanguageServers[operation.package.name] = .init(
+                    packageName: operation.package.name,
+                    isEnabled: true,
+                    version: method.version ?? ""
+                )
+                self?.updateActivityViewer(operation.package.name, activityTitle, fail: false)
+            }
+        }
+    }
+
+    // MARK: - Cancel Install
+
+    /// Cancel the currently running installation
+    public func cancelInstallation() {
+        runningInstall?.cancel()
+        installTask?.cancel()
+        installTask = nil
+    }
+
     /// Updates the activity viewer with the status of the language server installation
     @MainActor
-    private static func updateActivityViewer(
+    private func updateActivityViewer(
         _ id: String,
         _ activityName: String,
         fail failed: Bool
@@ -155,15 +184,9 @@ final class RegistryManager {
                 action: {},
             )
         } else {
-            NotificationCenter.default.post(
-                name: .taskNotification,
-                object: nil,
-                userInfo: [
-                    "id": id,
-                    "action": "update",
-                    "title": "Successfully installed \(activityName)",
-                    "isLoading": false
-                ]
+            TaskNotificationHandler.postTask(
+                action: .update,
+                model: TaskNotificationModel(id: id, title: "Successfully installed \(activityName)", isLoading: false)
             )
             NotificationCenter.default.post(
                 name: .taskNotification,
@@ -177,25 +200,25 @@ final class RegistryManager {
         }
     }
 
-    /// Create the appropriate package manager for the given installation method
-    func createPackageManager(for method: InstallationMethod) -> PackageManagerProtocol? {
-        switch method.packageManagerType {
-        case .npm:
-            return NPMPackageManager(installationDirectory: installPath)
-        case .cargo:
-            return CargoPackageManager(installationDirectory: installPath)
-        case .pip:
-            return PipPackageManager(installationDirectory: installPath)
-        case .golang:
-            return GolangPackageManager(installationDirectory: installPath)
-        case .github, .sourceBuild:
-            return GithubPackageManager(installationDirectory: installPath)
-        case .nuget, .opam, .gem, .composer:
-            // TODO: IMPLEMENT OTHER PACKAGE MANAGERS
-            return nil
-        case .none:
-            return nil
+    // MARK: - Cache
+
+    func setRegistryItems(_ items: [RegistryItem]) {
+        cachedRegistry = CachedRegistry(items: items)
+
+        // Set up timer to clear the cache after expiration
+        cleanupTimer?.invalidate()
+        cleanupTimer = Timer.scheduledTimer(
+            withTimeInterval: CachedRegistry.expirationInterval, repeats: false
+        ) { [weak self] _ in
+            Task { @MainActor in
+                guard let self = self else { return }
+                self.cachedRegistry = nil
+                self.cleanupTimer = nil
+                await self.downloadRegistryItems()
+            }
         }
+
+        registryItems = items
     }
 }
 
@@ -216,8 +239,4 @@ private final class CachedRegistry {
     var isExpired: Bool {
         Date().timeIntervalSince(timestamp) > Self.expirationInterval
     }
-}
-
-extension Notification.Name {
-    static let RegistryUpdatedNotification = Notification.Name("registryUpdatedNotification")
 }

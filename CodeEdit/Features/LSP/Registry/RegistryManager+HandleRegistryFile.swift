@@ -9,28 +9,19 @@ import Foundation
 
 extension RegistryManager {
     /// Downloads the latest registry
-    func update() async {
-        // swiftlint:disable:next large_tuple
-        let result = await Task.detached(priority: .userInitiated) { () -> (
-            registryData: Data?, checksumData: Data?, error: Error?
-        ) in
-            do {
-                async let zipDataTask = Self.download(from: self.registryURL)
-                async let checksumsTask = Self.download(from: self.checksumURL)
+    func downloadRegistryItems() async {
+        isDownloadingRegistry = true
+        defer { isDownloadingRegistry = false }
 
-                let (registryData, checksumData) = try await (zipDataTask, checksumsTask)
-                return (registryData, checksumData, nil)
-            } catch {
-                return (nil, nil, error)
-            }
-        }.value
+        let registryData, checksumData: Data
+        do {
+            async let zipDataTask = download(from: self.registryURL)
+            async let checksumsTask = download(from: self.checksumURL)
 
-        if let error = result.error {
+            (registryData, checksumData) = try await (zipDataTask, checksumsTask)
+        } catch {
+            logger.error("Error updating: \(error)")
             handleUpdateError(error)
-            return
-        }
-
-        guard let registryData = result.registryData, let checksumData = result.checksumData else {
             return
         }
 
@@ -56,8 +47,7 @@ extension RegistryManager {
             try FileManager.default.removeItem(at: tempZipURL)
 
             try checksumData.write(to: checksumDestination)
-
-            NotificationCenter.default.post(name: .RegistryUpdatedNotification, object: nil)
+            downloadError = nil
         } catch {
             logger.error("Error updating: \(error)")
             handleUpdateError(RegistryManagerError.writeFailed(error: error))
@@ -65,8 +55,11 @@ extension RegistryManager {
     }
 
     func handleUpdateError(_ error: Error) {
+        self.downloadError = error
         if let regError = error as? RegistryManagerError {
             switch regError {
+            case .installationRunning:
+                return // Shouldn't need to handle
             case .invalidResponse(let statusCode):
                 logger.error("Invalid response received: \(statusCode)")
             case let .downloadFailed(url, error):
@@ -82,7 +75,8 @@ extension RegistryManager {
     }
 
     /// Attempts downloading from `url`, with error handling and a retry policy
-    static func download(from url: URL, attempt: Int = 1) async throws -> Data {
+    @Sendable
+    func download(from url: URL, attempt: Int = 1) async throws -> Data {
         do {
             let (data, response) = try await URLSession.shared.data(from: url)
 
@@ -123,16 +117,16 @@ extension RegistryManager {
         }()
 
         if needsUpdate {
-            Task { await update() }
             return nil
         }
 
         do {
             let registryData = try Data(contentsOf: registryPath)
-            let items = try JSONDecoder().decode([RegistryItem].self, from: registryData)
+            let items = try JSONDecoder().decode([RegistryItem].self, from: registryData).filter { item in
+                [.github, .sourceBuild].contains(item.installMethod?.packageManagerType)
+            }
             return items.filter { $0.categories.contains("LSP") }
         } catch {
-            Task { await update() }
             return nil
         }
     }
