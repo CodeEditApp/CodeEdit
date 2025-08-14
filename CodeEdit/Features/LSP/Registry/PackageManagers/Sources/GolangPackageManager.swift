@@ -7,7 +7,7 @@
 
 import Foundation
 
-//final class GolangPackageManager: PackageManagerProtocol {
+// final class GolangPackageManager: PackageManagerProtocol {
 //    private let installationDirectory: URL
 //
 //    let shellClient: ShellClient
@@ -151,4 +151,4 @@ import Foundation
 //            return "\(source.pkgName)@\(source.version)"
 //        }
 //    }
-//}
+// }

@@ -29,7 +29,6 @@ final class NPMPackageManager: PackageManagerProtocol {
             verifyInstallation(source, installDir: installationDirectory)
         ]
 
-
     }
 
     // MARK: - Is Installed
@@ -128,7 +127,7 @@ final class NPMPackageManager: PackageManagerProtocol {
         return PackageManagerInstallStep(
             name: "Verify Installation",
             confirmation: .none
-        ) { model in
+        ) { _ in
             let packagePath = installationDirectory.appending(path: folderName)
             let packageJsonPath = packagePath.appending(path: "package.json").path
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-//final class CargoPackageManager: PackageManagerProtocol {
+// final class CargoPackageManager: PackageManagerProtocol {
 //    private let installationDirectory: URL
 //
 //    let shellClient: ShellClient
@@ -81,4 +81,4 @@ import Foundation
 //            return false
 //        }
 //    }
-//}
+// }

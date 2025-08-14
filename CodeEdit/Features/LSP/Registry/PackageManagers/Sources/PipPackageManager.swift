@@ -7,7 +7,7 @@
 
 import Foundation
 
-//final class PipPackageManager: PackageManagerProtocol {
+// final class PipPackageManager: PackageManagerProtocol {
 //    private let installationDirectory: URL
 //
 //    let shellClient: ShellClient
@@ -144,4 +144,4 @@ import Foundation
 //            throw PackageManagerError.installationFailed("Package \(package) not found in pip list")
 //        }
 //    }
-//}
+// }
