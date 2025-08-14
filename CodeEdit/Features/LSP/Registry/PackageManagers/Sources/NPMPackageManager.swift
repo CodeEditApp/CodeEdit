@@ -17,6 +17,8 @@ final class NPMPackageManager: PackageManagerProtocol {
         self.shellClient = .live()
     }
 
+    // MARK: - PackageManagerProtocol
+
     func install(method installationMethod: InstallationMethod) throws -> [PackageManagerInstallStep] {
         guard case .standardPackage(let source) = installationMethod else {
             throw PackageManagerError.invalidConfiguration
@@ -30,8 +32,6 @@ final class NPMPackageManager: PackageManagerProtocol {
         ]
 
     }
-
-    // MARK: - Is Installed
 
     /// Checks if npm is installed
     func isInstalled(method installationMethod: InstallationMethod) -> PackageManagerInstallStep {
@@ -50,6 +50,15 @@ final class NPMPackageManager: PackageManagerProtocol {
                 throw PackageManagerError.packageManagerNotInstalled
             }
         }
+    }
+
+    /// Get the path to the binary
+    func getBinaryPath(for package: String) -> String {
+        let binDirectory = installationDirectory
+            .appending(path: package)
+            .appending(path: "node_modules")
+            .appending(path: ".bin")
+        return binDirectory.appending(path: package).path
     }
 
     // MARK: - Initialize
@@ -80,6 +89,8 @@ final class NPMPackageManager: PackageManagerProtocol {
         }
     }
 
+    // MARK: - NPM Install
+
     func runNpmInstall(_ source: PackageSource, in packagePath: URL) -> PackageManagerInstallStep {
         PackageManagerInstallStep(
             name: "Install Package Using npm",
@@ -106,14 +117,7 @@ final class NPMPackageManager: PackageManagerProtocol {
         }
     }
 
-    /// Get the path to the binary
-    func getBinaryPath(for package: String) -> String {
-        let binDirectory = installationDirectory
-            .appending(path: package)
-            .appending(path: "node_modules")
-            .appending(path: ".bin")
-        return binDirectory.appending(path: package).path
-    }
+    // MARK: - Verify
 
     /// Verify the installation was successful
     private func verifyInstallation(

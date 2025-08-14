@@ -17,6 +17,8 @@ final class GithubPackageManager: PackageManagerProtocol {
         self.shellClient = .live()
     }
 
+    // MARK: - PackageManagerProtocol
+
     func install(method installationMethod: InstallationMethod) throws -> [PackageManagerInstallStep] {
         switch installationMethod {
         case let .binaryDownload(source, url):
@@ -37,12 +39,6 @@ final class GithubPackageManager: PackageManagerProtocol {
             throw PackageManagerError.invalidConfiguration
         }
     }
-
-    func getBinaryPath(for package: String) -> String {
-        return installationDirectory.appending(path: package).appending(path: "bin").path
-    }
-
-    // MARK: - Is Installed
 
     func isInstalled(method installationMethod: InstallationMethod) -> PackageManagerInstallStep {
         switch installationMethod {
@@ -74,6 +70,10 @@ final class GithubPackageManager: PackageManagerProtocol {
                 handler: { _ in throw PackageManagerError.invalidConfiguration }
             )
         }
+    }
+
+    func getBinaryPath(for package: String) -> String {
+        return installationDirectory.appending(path: package).appending(path: "bin").path
     }
 
     // MARK: - Initialize
@@ -180,15 +180,7 @@ final class GithubPackageManager: PackageManagerProtocol {
             }
 
             let executablePath = downloadPath.appending(path: url.deletingPathExtension().lastPathComponent)
-            let fileAttributes = try FileManager.default.attributesOfItem(
-                atPath: executablePath.path(percentEncoded: false)
-            )
-            guard var permissions = fileAttributes[.posixPermissions] as? UInt16 else { return }
-            permissions |= 0b001_000_000 // Execute perms for user
-            try FileManager.default.setAttributes(
-                [.posixPermissions: permissions],
-                ofItemAtPath: executablePath.path(percentEncoded: false)
-            )
+            try FileManager.default.makeExecutable(executablePath)
         }
     }
 
