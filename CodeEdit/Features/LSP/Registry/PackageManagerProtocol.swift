@@ -10,43 +10,12 @@ import Foundation
 protocol PackageManagerProtocol {
     var shellClient: ShellClient { get }
 
-    /// Performs any initialization steps for installing a package, such as creating the directory
-    /// and virtual environments.
-    func initialize(in packagePath: URL) async throws
     /// Calls the shell commands to install a package
-    func install(method installationMethod: InstallationMethod) async throws
+    func install(method installationMethod: InstallationMethod) throws -> [PackageManagerInstallStep]
     /// Gets the location of the binary that was installed
     func getBinaryPath(for package: String) -> String
     /// Checks if the shell commands for the package manager are available or not
-    func isInstalled() async -> Bool
-}
-
-extension PackageManagerProtocol {
-    /// Creates the directory for the language server to be installed in
-    func createDirectoryStructure(for packagePath: URL) throws {
-        let decodedPath = packagePath.path.removingPercentEncoding ?? packagePath.path
-        if !FileManager.default.fileExists(atPath: decodedPath) {
-            try FileManager.default.createDirectory(
-                at: packagePath,
-                withIntermediateDirectories: true,
-                attributes: nil
-            )
-        }
-    }
-
-    /// Executes commands in the specified directory
-    func executeInDirectory(in packagePath: String, _ args: [String]) async throws -> [String] {
-        return try await runCommand("cd \"\(packagePath)\" && \(args.joined(separator: " "))")
-    }
-
-    /// Runs a shell command and returns output
-    func runCommand(_ command: String) async throws -> [String] {
-        var output: [String] = []
-        for try await line in shellClient.runAsync(command) {
-            output.append(line)
-        }
-        return output
-    }
+    func isInstalled(method installationMethod: InstallationMethod) -> PackageManagerInstallStep
 }
 
 /// Generic package source information that applies to all installation methods.

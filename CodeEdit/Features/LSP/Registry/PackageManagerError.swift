@@ -6,6 +6,7 @@
 //
 
 enum PackageManagerError: Error {
+    case unknown
     case packageManagerNotInstalled
     case initializationFailed(String)
     case installationFailed(String)
