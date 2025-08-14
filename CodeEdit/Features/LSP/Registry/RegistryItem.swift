@@ -1,5 +1,5 @@
 //
-//  RegistryPackage.swift
+//  RegistryItem.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 1/29/25.
@@ -17,6 +17,26 @@ struct RegistryItem: Codable {
     let categories: [String]
     let source: Source
     let bin: [String: String]?
+
+    /// The method for installation, parsed from this item's ``source-swift.property`` parameter.
+    var installMethod: InstallationMethod? {
+        let sourceId = source.id
+        if sourceId.hasPrefix("pkg:cargo/") {
+            return PackageSourceParser.parseCargoPackage(self)
+        } else if sourceId.hasPrefix("pkg:npm/") {
+            return PackageSourceParser.parseNpmPackage(self)
+        } else if sourceId.hasPrefix("pkg:pypi/") {
+            return PackageSourceParser.parsePythonPackage(self)
+        } else if sourceId.hasPrefix("pkg:gem/") {
+            return PackageSourceParser.parseRubyGem(self)
+        } else if sourceId.hasPrefix("pkg:golang/") {
+            return PackageSourceParser.parseGolangPackage(self)
+        } else if sourceId.hasPrefix("pkg:github/") {
+            return PackageSourceParser.parseGithubPackage(self)
+        } else {
+            return nil
+        }
+    }
 
     struct Source: Codable {
         let id: String
@@ -254,4 +274,8 @@ struct RegistryItem: Codable {
         }
         return dictionary
     }
+}
+
+extension RegistryItem: FuzzySearchable {
+    var searchableString: String { name }
 }
