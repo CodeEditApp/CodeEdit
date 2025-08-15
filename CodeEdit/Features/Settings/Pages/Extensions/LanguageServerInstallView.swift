@@ -40,16 +40,7 @@ struct LanguageServerInstallView: View {
     @ViewBuilder private var formContent: some View {
         Form {
             packageInfoSection
-            if let error = operation.error {
-                Section {
-                    HStack(spacing: 0) {
-                        Image(systemName: "exclamationmark.octagon.fill").foregroundColor(.red)
-                        Text("Error Occurred")
-                    }
-                    .font(.title3)
-                    ErrorDescriptionLabel(error: error)
-                }
-            }
+            errorSection
             progressSection
             outputSection
         }
@@ -94,6 +85,19 @@ struct LanguageServerInstallView: View {
         }
     }
 
+    @ViewBuilder private var errorSection: some View {
+        if let error = operation.error {
+            Section {
+                HStack(spacing: 4) {
+                    Image(systemName: "exclamationmark.octagon.fill").foregroundColor(.red)
+                    Text("Error Occurred")
+                }
+                .font(.title3)
+                ErrorDescriptionLabel(error: error)
+            }
+        }
+    }
+
     @ViewBuilder private var sourceButton: some View {
         if #available(macOS 14.0, *) {
             Button(operation.package.homepagePretty) {
@@ -115,7 +119,20 @@ struct LanguageServerInstallView: View {
 
     @ViewBuilder private var progressSection: some View {
         Section {
-            LabeledContent("Step", value: operation.currentStep?.name ?? "Finished")
+            LabeledContent("Step") {
+                if registryManager.installedLanguageServers[operation.package.name] != nil {
+                    HStack(spacing: 4) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                        Text("Successfully Installed")
+                            .foregroundStyle(.primary)
+                    }
+                } else if operation.error != nil {
+                    Text("Error Occurred")
+                } else {
+                    Text(operation.currentStep?.name ?? "")
+                }
+            }
             ProgressView(operation.progress)
                 .progressViewStyle(.linear)
         }
@@ -124,20 +141,45 @@ struct LanguageServerInstallView: View {
     @ViewBuilder private var outputSection: some View {
         Section {
             ScrollViewReader { proxy in
-                List(operation.accumulatedOutput) { line in
-                    HStack(spacing: 0) {
-                        Text(line.contents)
-                            .font(.caption.monospaced())
-                        Spacer(minLength: 0)
+                ScrollView {
+                    LazyVStack(spacing: 2) {
+                        ForEach(operation.accumulatedOutput) { line in
+                            VStack {
+                                if line.isStepDivider && line != operation.accumulatedOutput.first {
+                                    Divider()
+                                }
+                                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                                    ZStack {
+                                        if let idx = line.outputIdx {
+                                            Text(String(idx))
+                                                .font(.caption2.monospaced())
+                                                .foregroundStyle(.tertiary)
+                                        }
+                                        Text(String(10)) // Placeholder for spacing
+                                            .font(.caption2.monospaced())
+                                            .foregroundStyle(.tertiary)
+                                            .opacity(0.0)
+                                    }
+                                    Text(line.contents)
+                                        .font(.caption.monospaced())
+                                        .foregroundStyle(line.isStepDivider ? .primary : .secondary)
+                                    Spacer(minLength: 0)
+                                }
+                            }
+                            .tag(line.id)
+                            .id(line.id)
+                        }
                     }
                 }
-                .listStyle(.plain)
-                .listRowSeparator(.hidden)
                 .onReceive(operation.$accumulatedOutput) { output in
-                    proxy.scrollTo(output.last?.id)
+                    DispatchQueue.main.async {
+                        withAnimation(.linear(duration: 0.1)) {
+                            proxy.scrollTo(output.last?.id)
+                        }
+                    }
                 }
             }
-            .frame(height: 350)
         }
+        .frame(height: 200)
     }
 }

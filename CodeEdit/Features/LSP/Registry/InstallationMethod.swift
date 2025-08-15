@@ -53,14 +53,14 @@ enum InstallationMethod: Equatable {
 
     func packageManager(installPath: URL) -> PackageManagerProtocol? {
         switch packageManagerType {
-            //        case .npm:
-            //            return NPMPackageManager(installationDirectory: installPath)
+        case .npm:
+            return NPMPackageManager(installationDirectory: installPath)
             //        case .cargo:
             //            return CargoPackageManager(installationDirectory: installPath)
             //        case .pip:
             //            return PipPackageManager(installationDirectory: installPath)
-            //        case .golang:
-            //            return GolangPackageManager(installationDirectory: installPath)
+        case .golang:
+            return GolangPackageManager(installationDirectory: installPath)
         case .github, .sourceBuild:
             return GithubPackageManager(installationDirectory: installPath)
         case .nuget, .opam, .gem, .composer:

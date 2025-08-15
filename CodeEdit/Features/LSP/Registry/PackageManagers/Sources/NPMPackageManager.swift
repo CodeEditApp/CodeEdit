@@ -27,8 +27,8 @@ final class NPMPackageManager: PackageManagerProtocol {
         let packagePath = installationDirectory.appending(path: source.entryName)
         return [
             initialize(in: packagePath),
-            runNpmInstall(source, in: installationDirectory),
-            verifyInstallation(source, installDir: installationDirectory)
+            runNpmInstall(source, installDir: packagePath),
+            verifyInstallation(source, installDir: packagePath)
         ]
 
     }
@@ -91,7 +91,7 @@ final class NPMPackageManager: PackageManagerProtocol {
 
     // MARK: - NPM Install
 
-    func runNpmInstall(_ source: PackageSource, in packagePath: URL) -> PackageManagerInstallStep {
+    func runNpmInstall(_ source: PackageSource, installDir installationDirectory: URL) -> PackageManagerInstallStep {
         let qualifiedSourceName = "\(source.pkgName)@\(source.version)"
         let otherPackages = source.options["extraPackages"]?
             .split(separator: ",")
@@ -127,9 +127,12 @@ final class NPMPackageManager: PackageManagerProtocol {
                     installArgs.append(extraPackage)
                 }
 
-                _ = try await model.executeInDirectory(in: packagePath.path, installArgs)
+                _ = try await model.executeInDirectory(
+                    in: installationDirectory.path(percentEncoded: false),
+                    installArgs
+                )
             } catch {
-                let nodeModulesPath = packagePath.appending(path: "node_modules").path
+                let nodeModulesPath = installationDirectory.appending(path: "node_modules").path(percentEncoded: false)
                 try? FileManager.default.removeItem(atPath: nodeModulesPath)
                 throw error
             }
@@ -141,9 +144,8 @@ final class NPMPackageManager: PackageManagerProtocol {
     /// Verify the installation was successful
     private func verifyInstallation(
         _ source: PackageSource,
-        installDir installationDirectory: URL
+        installDir packagePath: URL
     ) -> PackageManagerInstallStep {
-        let folderName = source.entryName
         let package = source.pkgName
         let version = source.version
 
@@ -151,7 +153,6 @@ final class NPMPackageManager: PackageManagerProtocol {
             name: "Verify Installation",
             confirmation: .none
         ) { _ in
-            let packagePath = installationDirectory.appending(path: folderName)
             let packageJsonPath = packagePath.appending(path: "package.json").path
 
             // Verify package.json contains the installed package

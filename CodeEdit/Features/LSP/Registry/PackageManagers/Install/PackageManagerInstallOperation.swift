@@ -10,9 +10,17 @@ import Combine
 
 @MainActor
 final class PackageManagerInstallOperation: ObservableObject, Identifiable {
-    struct OutputItem: Identifiable {
-        var id: UUID = UUID()
-        var contents: String
+    struct OutputItem: Identifiable, Equatable {
+        let id: UUID = UUID()
+        let isStepDivider: Bool
+        let outputIdx: Int?
+        let contents: String
+
+        init(outputIdx: Int? = nil, isStepDivider: Bool = false, contents: String) {
+            self.isStepDivider = isStepDivider
+            self.outputIdx = outputIdx
+            self.contents = contents
+        }
     }
 
     nonisolated var id: String { package.name }
@@ -35,6 +43,7 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     private let shellClient: ShellClient = .live()
     private var operationTask: Task<Void, Error>?
     private var confirmationContinuation: CheckedContinuation<Void, Never>?
+    private var outputIdx = 0
 
     init(package: RegistryItem, steps: [PackageManagerInstallStep]) {
         self.package = package
@@ -87,11 +96,19 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
         progress.addChild(model.progress, withPendingUnitCount: 1)
 
         try Task.checkCancellation()
+        accumulatedOutput.append(OutputItem(isStepDivider: true, contents: "Step \(currentStepIdx + 1): \(task.name)"))
+
         await withTaskGroup(of: Void.self) { group in
             group.addTask {
-                for await line in model.outputStream {
+                for await outputItem in model.outputStream {
                     await MainActor.run {
-                        self.accumulatedOutput.append(OutputItem(contents: line))
+                        switch outputItem {
+                        case .status(let string):
+                            self.outputIdx += 1
+                            self.accumulatedOutput.append(OutputItem(outputIdx: self.outputIdx, contents: string))
+                        case .output(let string):
+                            self.accumulatedOutput.append(OutputItem(contents: string))
+                        }
                     }
                 }
             }
@@ -113,6 +130,7 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
 
         try Task.checkCancellation()
         if let error {
+            progress.cancel()
             throw error
         }
         try await runNext()

@@ -10,20 +10,25 @@ import Combine
 
 @MainActor
 final class PackageManagerProgressModel: ObservableObject {
-    let outputStream: AsyncStream<String>
+    enum OutputItem {
+        case status(String)
+        case output(String)
+    }
+
+    let outputStream: AsyncStream<OutputItem>
     @Published var progress: Progress
 
     private let shellClient: ShellClient
-    private let outputContinuation: AsyncStream<String>.Continuation
+    private let outputContinuation: AsyncStream<OutputItem>.Continuation
 
     init(shellClient: ShellClient) {
         self.shellClient = shellClient
         self.progress = Progress(totalUnitCount: 1)
-        (outputStream, outputContinuation) = AsyncStream<String>.makeStream()
+        (outputStream, outputContinuation) = AsyncStream<OutputItem>.makeStream()
     }
 
     func status(_ string: String) {
-        outputContinuation.yield(string)
+        outputContinuation.yield(.status(string))
     }
 
     /// Creates the directory for the language server to be installed in
@@ -43,17 +48,19 @@ final class PackageManagerProgressModel: ObservableObject {
     }
 
     /// Executes commands in the specified directory
+    @discardableResult
     func executeInDirectory(in packagePath: String, _ args: [String]) async throws -> [String] {
         return try await runCommand("cd \"\(packagePath)\" && \(args.joined(separator: " "))")
     }
 
     /// Runs a shell command and returns output
+    @discardableResult
     func runCommand(_ command: String) async throws -> [String] {
         var output: [String] = []
-        status("Executing: \(command)")
+        status("\(command)")
         for try await line in shellClient.runAsync(command) {
             output.append(line)
-            outputContinuation.yield(line)
+            outputContinuation.yield(.output(line))
         }
         return output
     }

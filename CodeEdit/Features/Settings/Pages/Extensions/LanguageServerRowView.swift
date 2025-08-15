@@ -63,6 +63,11 @@ struct LanguageServerRowView: View, Equatable {
                                 .foregroundColor(Color(NSColor.linkColor))
                                 .font(.footnote)
                                 .cursor(.pointingHand)
+                                if let installerName = package.installMethod?.packageManagerType?.rawValue {
+                                    Text("Install using \(installerName)")
+                                        .font(.footnote)
+                                        .foregroundColor(.secondary)
+                                }
                             }
                         }
                         if isHovering {
