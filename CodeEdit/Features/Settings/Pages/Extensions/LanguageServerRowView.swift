@@ -10,19 +10,15 @@ import SwiftUI
 private let iconSize: CGFloat = 26
 
 struct LanguageServerRowView: View, Equatable {
-    let packageName: String
-    let subtitle: String
+    let package: RegistryItem
     let onCancel: (() -> Void)
     let onInstall: (() async -> Void)
 
-    private let cleanedTitle: String
-    private let cleanedSubtitle: String
-
     private var isInstalled: Bool {
-        registryManager.installedLanguageServers[packageName] != nil
+        registryManager.installedLanguageServers[package.name] != nil
     }
     private var isEnabled: Bool {
-        registryManager.installedLanguageServers[packageName]?.isEnabled ?? false
+        registryManager.installedLanguageServers[package.name]?.isEnabled ?? false
     }
 
     @State private var isHovering: Bool = false
@@ -36,52 +32,56 @@ struct LanguageServerRowView: View, Equatable {
     @EnvironmentObject var registryManager: RegistryManager
 
     init(
-        packageName: String,
-        subtitle: String,
+        package: RegistryItem,
         onCancel: @escaping (() -> Void),
         onInstall: @escaping () async -> Void
     ) {
-        self.packageName = packageName
-        self.subtitle = subtitle
+        self.package = package
         self.onCancel = onCancel
         self.onInstall = onInstall
-
-        self.cleanedTitle = packageName
-            .replacingOccurrences(of: "-", with: " ")
-            .replacingOccurrences(of: "_", with: " ")
-            .split(separator: " ")
-            .map { word -> String in
-                let str = String(word).lowercased()
-                // Check for special cases
-                if str == "ls" || str == "lsp" || str == "ci" || str == "cli" {
-                    return str.uppercased()
-                }
-                return str.capitalized
-            }
-            .joined(separator: " ")
-        self.cleanedSubtitle = subtitle.replacingOccurrences(of: "\n", with: " ")
     }
 
     var body: some View {
         HStack {
             Label {
                 VStack(alignment: .leading) {
-                    Text(cleanedTitle)
-                    HStack(alignment: .lastTextBaseline, spacing: 4) {
-                        Text(cleanedSubtitle)
-                            .font(.footnote)
-                            .foregroundColor(.secondary)
-                            .lineLimit(showMore ? nil : 1)
-                            .truncationMode(.tail)
-                        if isHovering {
-                            Spacer(minLength: 0)
-                            Button {
-                                showMore.toggle()
-                            } label: {
-                                Text(showMore ? "Show Less" : "Show More")
-                                    .font(.footnote)
+                    Text(package.sanitizedName)
+
+                    ZStack(alignment: .leadingLastTextBaseline) {
+                        VStack(alignment: .leading) {
+                            Text(package.sanitizedDescription)
+                                .font(.footnote)
+                                .foregroundColor(.secondary)
+                                .lineLimit(showMore ? nil : 1)
+                                .truncationMode(.tail)
+                            if showMore {
+                                Button(package.homepagePretty) {
+                                    guard let url = package.homepageURL else { return }
+                                    NSWorkspace.shared.open(url)
+                                }
+                                .buttonStyle(.plain)
+                                .foregroundColor(Color(NSColor.linkColor))
+                                .font(.footnote)
+                                .cursor(.pointingHand)
                             }
-                            .buttonStyle(.plain)
+                        }
+                        if isHovering {
+                            HStack {
+                                Spacer()
+                                Button {
+                                    showMore.toggle()
+                                } label: {
+                                    Text(showMore ? "Show Less" : "Show More")
+                                        .font(.footnote)
+                                }
+                                .buttonStyle(.plain)
+                                .background(
+                                    Rectangle()
+                                        .inset(by: -2)
+                                        .fill(.clear)
+                                        .background(Color(NSColor.windowBackgroundColor))
+                                )
+                            }
                         }
                     }
                 }
@@ -97,7 +97,7 @@ struct LanguageServerRowView: View, Equatable {
         .onHover { hovering in
             isHovering = hovering
         }
-        .alert("Remove \(cleanedTitle)?", isPresented: $showingRemovalConfirmation) {
+        .alert("Remove \(package.sanitizedName)?", isPresented: $showingRemovalConfirmation) {
             Button("Cancel", role: .cancel) { }
             Button("Remove", role: .destructive) {
                 removeLanguageServer()
@@ -116,7 +116,7 @@ struct LanguageServerRowView: View, Equatable {
     private func installationButton() -> some View {
         if isInstalled {
             installedRow()
-        } else if registryManager.runningInstall?.package.name == packageName {
+        } else if registryManager.runningInstall?.package.name == package.name {
             isInstallingRow()
         } else if isHovering {
             isHoveringRow()
@@ -140,7 +140,7 @@ struct LanguageServerRowView: View, Equatable {
                 "",
                 isOn: Binding(
                     get: { isEnabled },
-                    set: { registryManager.setPackageEnabled(packageName: packageName, enabled: $0) }
+                    set: { registryManager.setPackageEnabled(packageName: package.name, enabled: $0) }
                 )
             )
             .toggleStyle(.switch)
@@ -198,7 +198,7 @@ struct LanguageServerRowView: View, Equatable {
         RoundedRectangle(cornerRadius: iconSize / 4, style: .continuous)
             .fill(background)
             .overlay {
-                Text(String(cleanedTitle.first ?? Character("")))
+                Text(String(package.sanitizedName.first ?? Character("")))
                     .font(.system(size: iconSize * 0.65))
                     .foregroundColor(.primary)
             }
@@ -215,7 +215,7 @@ struct LanguageServerRowView: View, Equatable {
         isRemoving = true
         Task {
             do {
-                try await registryManager.removeLanguageServer(packageName: packageName)
+                try await registryManager.removeLanguageServer(packageName: package.name)
                 await MainActor.run {
                     isRemoving = false
                 }
@@ -233,11 +233,11 @@ struct LanguageServerRowView: View, Equatable {
         let colors: [Color] = [
             .blue, .green, .orange, .red, .purple, .pink, .teal, .yellow, .indigo, .cyan
         ]
-        let hashValue = abs(cleanedTitle.hash) % colors.count
+        let hashValue = abs(package.sanitizedName.hash) % colors.count
         return AnyShapeStyle(colors[hashValue].gradient)
     }
 
     static func == (lhs: LanguageServerRowView, rhs: LanguageServerRowView) -> Bool {
-        lhs.packageName == rhs.packageName && lhs.subtitle == rhs.subtitle
+        lhs.package.name == rhs.package.name
     }
 }

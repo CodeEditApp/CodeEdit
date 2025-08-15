@@ -27,8 +27,7 @@ struct LanguageServersView: View {
                 Section {
                     List(searchModel.items ?? registryManager.registryItems, id: \.name) { item in
                         LanguageServerRowView(
-                            packageName: item.name,
-                            subtitle: item.description,
+                            package: item,
                             onCancel: {
                                 registryManager.cancelInstallation()
                             },
@@ -36,7 +35,7 @@ struct LanguageServersView: View {
                                 do {
                                     try registryManager.startInstallation(package: item)
                                 } catch {
-                                    // TODO: Error? it's already handled elsewhere..
+                                    // TODO: Error handling
                                 }
                             }
                         )

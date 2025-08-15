@@ -138,23 +138,17 @@ final class RegistryManager: ObservableObject {
             do {
                 try await operation.run()
             } catch {
-
-                await MainActor.run { [weak self] in
-                    self?.updateActivityViewer(operation.package.name, activityTitle, fail: true)
-                }
+                self?.updateActivityViewer(operation.package.name, activityTitle, fail: true)
                 return
             }
 
             guard !Task.isCancelled else { return }
-            // Update settings on the main thread
-            await MainActor.run { [weak self] in
-                self?.installedLanguageServers[operation.package.name] = .init(
-                    packageName: operation.package.name,
-                    isEnabled: true,
-                    version: method.version ?? ""
-                )
-                self?.updateActivityViewer(operation.package.name, activityTitle, fail: false)
-            }
+            self?.installedLanguageServers[operation.package.name] = .init(
+                packageName: operation.package.name,
+                isEnabled: true,
+                version: method.version ?? ""
+            )
+            self?.updateActivityViewer(operation.package.name, activityTitle, fail: false)
         }
     }
 

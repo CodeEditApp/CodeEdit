@@ -18,6 +18,36 @@ struct RegistryItem: Codable {
     let source: Source
     let bin: [String: String]?
 
+    var sanitizedName: String {
+        name.replacingOccurrences(of: "-", with: " ")
+            .replacingOccurrences(of: "_", with: " ")
+            .split(separator: " ")
+            .map { word -> String in
+                let str = String(word).lowercased()
+                // Check for special cases
+                if str == "ls" || str == "lsp" || str == "ci" || str == "cli" {
+                    return str.uppercased()
+                }
+                return str.capitalized
+            }
+            .joined(separator: " ")
+    }
+
+    var sanitizedDescription: String {
+        description.replacingOccurrences(of: "\n", with: " ")
+    }
+
+    var homepageURL: URL? {
+        URL(string: homepage)
+    }
+
+    /// A pretty version of the homepage URL.
+    /// Removes the schema (eg https) and leaves the path and domain.
+    var homepagePretty: String {
+        guard let homepageURL else { return homepage }
+        return (homepageURL.host(percentEncoded: false) ?? "") + homepageURL.path(percentEncoded: false)
+    }
+
     /// The method for installation, parsed from this item's ``source-swift.property`` parameter.
     var installMethod: InstallationMethod? {
         let sourceId = source.id

@@ -100,7 +100,7 @@ final class GithubPackageManager: PackageManagerProtocol {
     ) -> PackageManagerInstallStep {
         PackageManagerInstallStep(
             name: "Download Binary Executable",
-            confirmation: .required(message: "Downloading binary from:\n\(url)")
+            confirmation: .none
         ) { model in
             do {
                 await model.status("Downloading \(url)")

@@ -20,13 +20,21 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     let package: RegistryItem
     let steps: [PackageManagerInstallStep]
 
+    var currentStep: PackageManagerInstallStep? {
+        steps[safe: currentStepIdx]
+    }
+
     @Published var accumulatedOutput: [OutputItem] = []
-    @Published var currentStep: Int = 0
+    @Published var currentStepIdx: Int = 0
     @Published var error: Error?
     @Published var progress: Progress
 
+    /// If non-nil, indicates that this operation has halted and requires confirmation.
+    @Published public private(set) var waitingForConfirmation: String?
+
     private let shellClient: ShellClient = .live()
     private var operationTask: Task<Void, Error>?
+    private var confirmationContinuation: CheckedContinuation<Void, Never>?
 
     init(package: RegistryItem, steps: [PackageManagerInstallStep]) {
         self.package = package
@@ -44,14 +52,37 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
 
     func cancel() {
         operationTask?.cancel()
+        operationTask = nil
+    }
+
+    /// Called by UI to confirm continuing to the next step
+    func confirmCurrentStep() {
+        waitingForConfirmation = nil
+        confirmationContinuation?.resume()
+        confirmationContinuation = nil
+    }
+
+    private func waitForConfirmation(message: String) async {
+        waitingForConfirmation = message
+        await withCheckedContinuation { [weak self] (continuation: CheckedContinuation<Void, Never>) in
+            self?.confirmationContinuation = continuation
+        }
     }
 
     private func runNext() async throws {
-        guard currentStep < steps.count, error == nil else {
+        guard currentStepIdx < steps.count, error == nil else {
             return
         }
 
-        let task = steps[currentStep]
+        let task = steps[currentStepIdx]
+
+        switch task.confirmation {
+        case .required(let message):
+            await waitForConfirmation(message: message)
+        case .none:
+            break
+        }
+
         let model = PackageManagerProgressModel(shellClient: shellClient)
         progress.addChild(model.progress, withPendingUnitCount: 1)
 
@@ -78,7 +109,7 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
             }
         }
 
-        self.currentStep += 1
+        self.currentStepIdx += 1
 
         try Task.checkCancellation()
         if let error {
