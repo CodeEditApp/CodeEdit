@@ -170,6 +170,6 @@ final class PipPackageManager: PackageManagerProtocol {
         let venvPip = "venv/bin/pip"
         return FileManager.default.fileExists(atPath: packagePath.appending(path: venvPip).path)
         ? venvPip
-        : "python -m pip"
+        : "python3 -m pip"
     }
 }
