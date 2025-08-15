@@ -122,9 +122,7 @@ extension RegistryManager {
 
         do {
             let registryData = try Data(contentsOf: registryPath)
-            let items = try JSONDecoder().decode([RegistryItem].self, from: registryData).filter { item in
-                [.github, .sourceBuild].contains(item.installMethod?.packageManagerType)
-            }
+            let items = try JSONDecoder().decode([RegistryItem].self, from: registryData)
             return items.filter { $0.categories.contains("LSP") }
         } catch {
             return nil

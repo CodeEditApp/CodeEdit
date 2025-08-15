@@ -92,20 +92,39 @@ final class NPMPackageManager: PackageManagerProtocol {
     // MARK: - NPM Install
 
     func runNpmInstall(_ source: PackageSource, in packagePath: URL) -> PackageManagerInstallStep {
-        PackageManagerInstallStep(
+        let qualifiedSourceName = "\(source.pkgName)@\(source.version)"
+        let otherPackages = source.options["extraPackages"]?
+            .split(separator: ",")
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) } ?? []
+
+        var packageList = ([qualifiedSourceName] + otherPackages)
+
+        // FIXME: This will break with localization. Use real Foundation APIs for pluralizing lists.
+        let plural = packageList.count > 1
+        if plural, var last = packageList.last {
+            // Oxford comma
+            last = "and " + last
+            packageList[packageList.count - 1] = last
+        }
+        let packagesDescription = packageList.joined(separator: ", ")
+
+        let sSuffix = packageList.count > 1 ? "s" : ""
+        let suffix = plural ? "these packages" : "this package"
+
+        return PackageManagerInstallStep(
             name: "Install Package Using npm",
-            // TODO: Confirm
-            confirmation: .required(message: "")
+            confirmation: .required(
+                message: "Package requires npm package\(sSuffix) \(packagesDescription)."
+                + "\nAllow CodeEdit to install \(suffix)?"
+            )
         ) { model in
             do {
-                var installArgs = ["npm", "install", "\(source.pkgName)@\(source.version)"]
+                var installArgs = ["npm", "install", qualifiedSourceName]
                 if let dev = source.options["dev"], dev.lowercased() == "true" {
                     installArgs.append("--save-dev")
                 }
-                if let extraPackages = source.options["extraPackages"]?.split(separator: ",") {
-                    for pkg in extraPackages {
-                        installArgs.append(String(pkg).trimmingCharacters(in: .whitespacesAndNewlines))
-                    }
+                for extraPackage in otherPackages {
+                    installArgs.append(extraPackage)
                 }
 
                 _ = try await model.executeInDirectory(in: packagePath.path, installArgs)

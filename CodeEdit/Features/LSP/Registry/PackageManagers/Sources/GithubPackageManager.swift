@@ -167,6 +167,16 @@ final class GithubPackageManager: PackageManagerProtocol {
                     try FileManager.default.removeItem(at: packagePath)
                 }
                 await model.status("Decompressed to '\(downloadPath.path(percentEncoded: false))'")
+            } else if packagePath.lastPathComponent.hasSuffix(".tar.gz") {
+                await model.status("Decompressing \(fileName) using `tar`")
+                _ = try await model.executeInDirectory(
+                    in: packagePath.deletingLastPathComponent().path(percentEncoded: false),
+                    [
+                        "tar",
+                        "-xzf",
+                        packagePath.path(percentEncoded: false).escapedDirectory(),
+                    ]
+                )
             } else if packagePath.pathExtension == "gz" {
                 await model.status("Decompressing \(fileName) using `gunzip`")
                 _ = try await model.executeInDirectory(
