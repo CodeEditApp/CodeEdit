@@ -183,7 +183,7 @@ final class GithubPackageManager: PackageManagerProtocol {
                     in: packagePath.deletingLastPathComponent().path(percentEncoded: false),
                     [
                         "gunzip",
-                        "-f", // Overwrite source file
+                        "-f",
                         packagePath.path(percentEncoded: false).escapedDirectory(),
                     ]
                 )

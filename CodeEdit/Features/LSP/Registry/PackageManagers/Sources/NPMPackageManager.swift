@@ -114,7 +114,7 @@ final class NPMPackageManager: PackageManagerProtocol {
         return PackageManagerInstallStep(
             name: "Install Package Using npm",
             confirmation: .required(
-                message: "Package requires npm package\(sSuffix) \(packagesDescription)."
+                message: "This requires the npm package\(sSuffix) \(packagesDescription)."
                 + "\nAllow CodeEdit to install \(suffix)?"
             )
         ) { model in

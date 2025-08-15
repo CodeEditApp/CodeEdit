@@ -91,8 +91,10 @@ final class GolangPackageManager: PackageManagerProtocol {
         let installCommand = getGoInstallCommand(source)
         return PackageManagerInstallStep(
             name: "Install Package Using go",
-            // TODO: Confirm
-            confirmation: .required(message: "")
+            confirmation: .required(
+                message: "This requires installing the go package \(installCommand)."
+                + "\nAllow CodeEdit to install this package?"
+            )
         ) { model in
             let gobinPath = packagePath.appending(path: "bin", directoryHint: .isDirectory).path
             var goInstallCommand = ["env", "GOBIN=\(gobinPath)", "go", "install"]
