@@ -166,7 +166,20 @@ final class SemanticTokenHighlightProvider<
         let rawTokens = storage.getTokensFor(range: lspRange)
         let highlights = tokenMap
             .decode(tokens: rawTokens, using: textView)
-            .filter({ $0.capture != nil || !$0.modifiers.isEmpty })
+            .compactMap { highlightRange -> HighlightRange? in
+                // Filter out empty ranges
+                guard highlightRange.capture != nil || !highlightRange.modifiers.isEmpty,
+                      // Clamp the highlight range to the queried range.
+                      let intersection = highlightRange.range.intersection(range),
+                      intersection.isEmpty == false else {
+                    return nil
+                }
+                return HighlightRange(
+                    range: intersection,
+                    capture: highlightRange.capture,
+                    modifiers: highlightRange.modifiers
+                )
+            }
         completion(.success(highlights))
     }
 }
