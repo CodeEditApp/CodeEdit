@@ -163,6 +163,7 @@ struct LanguageServerInstallView: View {
                                     Text(line.contents)
                                         .font(.caption.monospaced())
                                         .foregroundStyle(line.isStepDivider ? .primary : .secondary)
+                                        .textSelection(.enabled)
                                     Spacer(minLength: 0)
                                 }
                             }

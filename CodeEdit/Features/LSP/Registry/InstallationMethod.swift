@@ -55,10 +55,10 @@ enum InstallationMethod: Equatable {
         switch packageManagerType {
         case .npm:
             return NPMPackageManager(installationDirectory: installPath)
-            //        case .cargo:
-            //            return CargoPackageManager(installationDirectory: installPath)
-            //        case .pip:
-            //            return PipPackageManager(installationDirectory: installPath)
+        case .cargo:
+            return CargoPackageManager(installationDirectory: installPath)
+        case .pip:
+            return PipPackageManager(installationDirectory: installPath)
         case .golang:
             return GolangPackageManager(installationDirectory: installPath)
         case .github, .sourceBuild:
