@@ -7,9 +7,40 @@
 
 import Foundation
 
-enum RegistryManagerError: Error {
+enum RegistryManagerError: Error, LocalizedError {
+    case installationRunning
     case invalidResponse(statusCode: Int)
     case downloadFailed(url: URL, error: Error)
     case maxRetriesExceeded(url: URL, lastError: Error)
     case writeFailed(error: Error)
+
+    var errorDescription: String? {
+        switch self {
+        case .installationRunning:
+            "A package is already being installed."
+        case .invalidResponse(let statusCode):
+            "Invalid response received: \(statusCode)"
+        case .downloadFailed(let url, _):
+            "Download for \(url) error."
+        case .maxRetriesExceeded(let url, _):
+            "Maximum retries exceeded for url: \(url)"
+        case .writeFailed:
+            "Failed to write to file."
+        }
+    }
+
+    var failureReason: String? {
+        switch self {
+        case .installationRunning:
+            return nil
+        case .invalidResponse(let statusCode):
+            return nil
+        case .downloadFailed(_, let error), .maxRetriesExceeded(_, let error), .writeFailed(let error):
+            return if let error = error as? LocalizedError {
+                error.errorDescription
+            } else {
+                error.localizedDescription
+            }
+        }
+    }
 }
