@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A view for initiating a package install and monitoring progress.
 struct LanguageServerInstallView: View {
     @Environment(\.dismiss)
     var dismiss
@@ -66,7 +67,8 @@ struct LanguageServerInstallView: View {
                     do {
                         try registryManager.startInstallation(operation: operation)
                     } catch {
-                        // TODO: Error Handling
+                        // Display the error
+                        NSAlert(error: error).runModal()
                     }
                 } label: {
                     Text("Install")

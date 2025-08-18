@@ -8,6 +8,11 @@
 import Foundation
 import Combine
 
+/// This model is injected into each ``PackageManagerInstallStep`` when executing a ``PackageManagerInstallOperation``.
+/// A single model is used for each step. Output is collected by the ``PackageManagerInstallOperation``.
+///
+/// Yields output into an async stream, and provides common helper methods for exec-ing commands, creating
+/// directories, etc.
 @MainActor
 final class PackageManagerProgressModel: ObservableObject {
     enum OutputItem {

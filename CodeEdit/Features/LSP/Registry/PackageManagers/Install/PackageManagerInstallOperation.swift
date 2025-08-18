@@ -8,6 +8,12 @@
 import Foundation
 import Combine
 
+/// An executable install operation for installing a ``RegistryItem``.
+///
+/// Has a single entry point, ``run()``, which kicks off the operation. UI can observe properties like the ``error``,
+/// ``runningState-swift.property``, or ``currentStep`` to monitor progress.
+///
+/// If a step requires confirmation, the ``waitingForConfirmation`` value will be filled.
 @MainActor
 final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     enum RunningState {
@@ -34,10 +40,12 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     let package: RegistryItem
     let steps: [PackageManagerInstallStep]
 
+    /// The step the operation is currently executing or stopped at.
     var currentStep: PackageManagerInstallStep? {
         steps[safe: currentStepIdx]
     }
 
+    /// The current state of the operation.
     var runningState: RunningState {
         if operationTask != nil {
             return .running
@@ -60,7 +68,12 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     private var operationTask: Task<Void, Error>?
     private var confirmationContinuation: CheckedContinuation<Void, Never>?
     private var outputIdx = 0
-
+    
+    /// Create a new operation using a list of steps and a package description.
+    /// See ``PackageManagerProtocol`` for 
+    /// - Parameters:
+    ///   - package: The package to install.
+    ///   - steps: The steps that make up the operation.
     init(package: RegistryItem, steps: [PackageManagerInstallStep]) {
         self.package = package
         self.steps = steps

@@ -9,10 +9,3 @@ enum InstallStepConfirmation {
     case none
     case required(message: String)
 }
-
-struct PackageManagerInstallStep: Identifiable {
-    var id: String { name }
-    let name: String
-    let confirmation: InstallStepConfirmation
-    let handler: (_ model: PackageManagerProgressModel) async throws -> Void
-}
