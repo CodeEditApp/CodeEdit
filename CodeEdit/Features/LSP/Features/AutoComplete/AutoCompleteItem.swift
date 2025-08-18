@@ -15,7 +15,7 @@ struct AutoCompleteItem: Hashable, Sendable, CodeSuggestionEntry {
     let label: String
     let kind: CompletionItemKind?
     let detail: String?
-    let documentation: TwoTypeOption<String, MarkupContent>?
+    var documentation: String?
     let deprecated: Bool
     let preselect: Bool
     let sortText: String?
@@ -42,7 +42,14 @@ struct AutoCompleteItem: Hashable, Sendable, CodeSuggestionEntry {
         self.label = item.label
         self.kind = item.kind
         self.detail = item.detail
-        self.documentation = item.documentation
+        self.documentation = switch item.documentation {
+        case .optionA(let string):
+            string
+        case .optionB(let markup):
+            markup.value
+        case .none:
+            nil
+        }
         self.deprecated = item.deprecated ?? false
         self.preselect = item.preselect ?? false
         self.sortText = item.sortText

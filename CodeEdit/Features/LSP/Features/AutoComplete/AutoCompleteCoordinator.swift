@@ -94,14 +94,14 @@ extension AutoCompleteCoordinator: CodeSuggestionDelegate {
         let tokenSubstringCount = findTreeSitterNodeAtPosition(textView: textView, cursorPosition: cursorPosition)
         currentFilterText = ""
 
-        var textPosition = Position(line: cursorPosition.line - 1, character: cursorPosition.column - 1)
+        var textPosition = Position(line: cursorPosition.start.line - 1, character: cursorPosition.start.column - 1)
         var cursorPosition = cursorPosition
         // If we are asking for completions in the middle of a token, then
         // query the language server for completion items at the start of the token
         if currentNode != nil {
             textPosition = Position(
-                line: cursorPosition.line - 1,
-                character: cursorPosition.column - tokenSubstringCount - 1
+                line: cursorPosition.start.line - 1,
+                character: cursorPosition.start.column - tokenSubstringCount - 1
             )
             cursorPosition = CursorPosition(line: textPosition.line + 1, column: textPosition.character + 1)
         }
