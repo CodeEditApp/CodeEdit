@@ -41,8 +41,12 @@ struct LanguageServerInstallView: View {
         Form {
             packageInfoSection
             errorSection
-            progressSection
-            outputSection
+            if operation.runningState == .running || operation.runningState == .complete {
+                progressSection
+                outputSection
+            } else {
+                notInstalledSection
+            }
         }
         .formStyle(.grouped)
     }
@@ -50,7 +54,25 @@ struct LanguageServerInstallView: View {
     @ViewBuilder private var footer: some View {
         HStack {
             Spacer()
-            if operation.currentStep != nil {
+            switch operation.runningState {
+            case .none:
+                Button {
+                    dismiss()
+                } label: {
+                    Text("Cancel")
+                }
+                .buttonStyle(.bordered)
+                Button {
+                    do {
+                        try registryManager.startInstallation(operation: operation)
+                    } catch {
+                        // TODO: Error Handling
+                    }
+                } label: {
+                    Text("Install")
+                }
+                .buttonStyle(.borderedProminent)
+            case .running:
                 Button {
                     registryManager.cancelInstallation()
                     dismiss()
@@ -59,7 +81,7 @@ struct LanguageServerInstallView: View {
                         .frame(minWidth: 56)
                 }
                 .buttonStyle(.bordered)
-            } else {
+            case .complete:
                 Button {
                     dismiss()
                 } label: {
@@ -75,13 +97,17 @@ struct LanguageServerInstallView: View {
     @ViewBuilder private var packageInfoSection: some View {
         Section {
             LabeledContent("Installing Package", value: operation.package.sanitizedName)
-            LabeledContent("Source") {
-                sourceButton
+            LabeledContent("Homepage") {
+                sourceButton.cursor(.pointingHand)
             }
-            Text(operation.package.sanitizedDescription)
-                .multilineTextAlignment(.leading)
-                .foregroundColor(.secondary)
-                .labelsHidden()
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Description")
+                Text(operation.package.sanitizedDescription)
+                    .multilineTextAlignment(.leading)
+                    .foregroundColor(.secondary)
+                    .labelsHidden()
+                    .textSelection(.enabled)
+            }
         }
     }
 
@@ -182,5 +208,20 @@ struct LanguageServerInstallView: View {
             }
         }
         .frame(height: 200)
+    }
+
+    @ViewBuilder private var notInstalledSection: some View {
+        Section {
+            if let method = operation.package.installMethod {
+                LabeledContent("Install Method", value: method.installerDescription)
+                    .textSelection(.enabled)
+                if let packageDescription = method.packageDescription {
+                    LabeledContent("Package", value: packageDescription)
+                        .textSelection(.enabled)
+                }
+            } else {
+                LabeledContent("Installer", value: "Unknown")
+            }
+        }
     }
 }

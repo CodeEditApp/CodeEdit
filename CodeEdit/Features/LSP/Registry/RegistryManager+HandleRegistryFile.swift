@@ -20,7 +20,6 @@ extension RegistryManager {
 
             (registryData, checksumData) = try await (zipDataTask, checksumsTask)
         } catch {
-            logger.error("Error updating: \(error)")
             handleUpdateError(error)
             return
         }
@@ -49,8 +48,18 @@ extension RegistryManager {
             try checksumData.write(to: checksumDestination)
             downloadError = nil
         } catch {
-            logger.error("Error updating: \(error)")
             handleUpdateError(RegistryManagerError.writeFailed(error: error))
+            return
+        }
+
+        do {
+            if let items = loadItemsFromDisk() {
+                setRegistryItems(items)
+            } else {
+                throw RegistryManagerError.failedToSaveRegistryCache
+            }
+        } catch {
+            handleUpdateError(error)
         }
     }
 
@@ -68,6 +77,8 @@ extension RegistryManager {
                 logger.error("Max retries exceeded for \(url.absoluteString): \(error.localizedDescription)")
             case let .writeFailed(error):
                 logger.error("Failed to write files to disk: \(error.localizedDescription)")
+            case .failedToSaveRegistryCache:
+                logger.error("Failed to read registry from cache after download and write.")
             }
         } else {
             logger.error("Unexpected registry error: \(error.localizedDescription)")

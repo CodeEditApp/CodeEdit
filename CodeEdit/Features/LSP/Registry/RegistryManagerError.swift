@@ -13,6 +13,7 @@ enum RegistryManagerError: Error, LocalizedError {
     case downloadFailed(url: URL, error: Error)
     case maxRetriesExceeded(url: URL, lastError: Error)
     case writeFailed(error: Error)
+    case failedToSaveRegistryCache
 
     var errorDescription: String? {
         switch self {
@@ -26,14 +27,14 @@ enum RegistryManagerError: Error, LocalizedError {
             "Maximum retries exceeded for url: \(url)"
         case .writeFailed:
             "Failed to write to file."
+        case .failedToSaveRegistryCache:
+            "Failed to write to registry cache."
         }
     }
 
     var failureReason: String? {
         switch self {
-        case .installationRunning:
-            return nil
-        case .invalidResponse(let statusCode):
+        case .installationRunning, .invalidResponse, .failedToSaveRegistryCache:
             return nil
         case .downloadFailed(_, let error), .maxRetriesExceeded(_, let error), .writeFailed(let error):
             return if let error = error as? LocalizedError {

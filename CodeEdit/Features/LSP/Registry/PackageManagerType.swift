@@ -27,4 +27,29 @@ enum PackageManagerType: String, Codable {
     case sourceBuild
     /// Binary download
     case github
+
+    var userDescription: String {
+        switch self {
+        case .npm:
+            "NPM"
+        case .cargo:
+            "Cargo"
+        case .golang:
+            "Go"
+        case .pip:
+            "Pip"
+        case .gem:
+            "Gem"
+        case .nuget:
+            "Nuget"
+        case .opam:
+            "Opam"
+        case .composer:
+            "Composer"
+        case .sourceBuild:
+            "Build From Source"
+        case .github:
+            "Download From GitHub"
+        }
+    }
 }

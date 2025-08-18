@@ -132,8 +132,8 @@ struct LanguageServerRowView: View, Equatable {
     private func installedRow() -> some View {
         HStack {
             if isRemoving {
-                ProgressView()
-                    .controlSize(.small)
+                CECircularProgressView()
+                    .frame(width: 20, height: 20)
             } else if isHovering {
                 Button {
                     showingRemovalConfirmation = true

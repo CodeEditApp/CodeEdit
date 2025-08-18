@@ -10,6 +10,12 @@ import Combine
 
 @MainActor
 final class PackageManagerInstallOperation: ObservableObject, Identifiable {
+    enum RunningState {
+        case none
+        case running
+        case complete
+    }
+
     struct OutputItem: Identifiable, Equatable {
         let id: UUID = UUID()
         let isStepDivider: Bool
@@ -30,6 +36,16 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
 
     var currentStep: PackageManagerInstallStep? {
         steps[safe: currentStepIdx]
+    }
+
+    var runningState: RunningState {
+        if operationTask != nil {
+            return .running
+        } else if error != nil || currentStepIdx == steps.count {
+            return .complete
+        } else {
+            return .none
+        }
     }
 
     @Published var accumulatedOutput: [OutputItem] = []
@@ -54,6 +70,7 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     func run() async throws {
         guard operationTask == nil else { return }
         operationTask = Task {
+            defer { operationTask = nil }
             try await runNext()
         }
         try await operationTask?.value

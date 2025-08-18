@@ -11,6 +11,7 @@ struct LanguageServersView: View {
     @StateObject var registryManager: RegistryManager = .shared
     @StateObject private var searchModel = FuzzySearchUIModel<RegistryItem>()
     @State private var searchText: String = ""
+    @State private var selectedInstall: PackageManagerInstallOperation?
 
     var body: some View {
         Group {
@@ -33,7 +34,7 @@ struct LanguageServersView: View {
                             },
                             onInstall: { [item] in
                                 do {
-                                    try registryManager.startInstallation(package: item)
+                                    selectedInstall = try registryManager.installOperation(package: item)
                                 } catch {
                                     // TODO: Error handling
                                 }
@@ -47,7 +48,7 @@ struct LanguageServersView: View {
                     }
                 }
             }
-            .sheet(item: $registryManager.runningInstall) { operation in
+            .sheet(item: $selectedInstall) { operation in
                 LanguageServerInstallView(operation: operation)
             }
         }

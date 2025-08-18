@@ -70,4 +70,22 @@ enum InstallationMethod: Equatable {
             return nil
         }
     }
+
+    var installerDescription: String {
+        guard let packageManagerType else { return "Unknown" }
+        switch packageManagerType {
+        case .npm, .cargo, .golang, .pip, .sourceBuild, .github:
+            return packageManagerType.userDescription
+        case .nuget, .opam, .gem, .composer:
+            return "(Unsupported) \(packageManagerType.userDescription)"
+        }
+    }
+
+    var packageDescription: String? {
+        guard let packageName else { return nil }
+        if let version {
+            return "\(packageName)@\(version)"
+        }
+        return packageName
+    }
 }

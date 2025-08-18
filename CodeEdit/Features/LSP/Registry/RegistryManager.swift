@@ -104,8 +104,7 @@ final class RegistryManager: ObservableObject {
 
     // MARK: - Install
 
-    /// Starts the actual installation process for a package
-    public func startInstallation(package: RegistryItem) throws {
+    public func installOperation(package: RegistryItem) throws -> PackageManagerInstallOperation {
         guard !isInstalling else {
             throw RegistryManagerError.installationRunning
         }
@@ -114,8 +113,18 @@ final class RegistryManager: ObservableObject {
             throw PackageManagerError.invalidConfiguration
         }
         let installSteps = try manager.install(method: method)
-        let installOperation = PackageManagerInstallOperation(package: package, steps: installSteps)
-        self.runningInstall = installOperation
+        return PackageManagerInstallOperation(package: package, steps: installSteps)
+    }
+
+    /// Starts the actual installation process for a package
+    public func startInstallation(operation installOperation: PackageManagerInstallOperation) throws {
+        guard !isInstalling else {
+            throw RegistryManagerError.installationRunning
+        }
+
+        guard let method = installOperation.package.installMethod else {
+            throw PackageManagerError.invalidConfiguration
+        }
 
         // Run it!
         installPackage(operation: installOperation, method: method)
@@ -125,7 +134,9 @@ final class RegistryManager: ObservableObject {
         installTask = Task { [weak self] in
             defer {
                 self?.installTask = nil
+                self?.runningInstall = nil
             }
+            self?.runningInstall = operation
 
             // Add to activity viewer
             let activityTitle = "\(operation.package.name)\("@" + (method.version ?? "latest"))"
@@ -135,6 +146,7 @@ final class RegistryManager: ObservableObject {
             )
 
             guard !Task.isCancelled else { return }
+
             do {
                 try await operation.run()
             } catch {
@@ -142,7 +154,6 @@ final class RegistryManager: ObservableObject {
                 return
             }
 
-            guard !Task.isCancelled else { return }
             self?.installedLanguageServers[operation.package.name] = .init(
                 packageName: operation.package.name,
                 isEnabled: true,
