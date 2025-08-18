@@ -68,7 +68,7 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     private var operationTask: Task<Void, Error>?
     private var confirmationContinuation: CheckedContinuation<Void, Never>?
     private var outputIdx = 0
-    
+
     /// Create a new operation using a list of steps and a package description.
     /// See ``PackageManagerProtocol`` for 
     /// - Parameters:
