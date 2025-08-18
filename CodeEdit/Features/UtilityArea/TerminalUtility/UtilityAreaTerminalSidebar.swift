@@ -72,6 +72,7 @@ struct UtilityAreaTerminalSidebar: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Terminals")
+        .accessibilityIdentifier("terminalsList")
     }
 }
 
