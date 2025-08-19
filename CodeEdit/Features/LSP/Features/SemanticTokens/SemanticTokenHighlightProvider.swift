@@ -34,7 +34,7 @@ final class SemanticTokenHighlightProvider<
 
     private var tokenMap: SemanticTokenMap?
     private var documentURI: String?
-    private weak var languageServer: LanguageServer<DocumentType>?
+    weak var languageServer: LanguageServer<DocumentType>?
     private weak var textView: TextView?
 
     private var lastEditCallback: EditCallback?
