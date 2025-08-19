@@ -32,8 +32,8 @@ final class SemanticTokenHighlightProvider<
     typealias EditCallback = @MainActor (Result<IndexSet, any Error>) -> Void
     typealias HighlightCallback = @MainActor (Result<[HighlightRange], any Error>) -> Void
 
-    private let tokenMap: SemanticTokenMap
-    private let documentURI: String
+    private var tokenMap: SemanticTokenMap?
+    private var documentURI: String?
     private weak var languageServer: LanguageServer<DocumentType>?
     private weak var textView: TextView?
 
@@ -45,11 +45,21 @@ final class SemanticTokenHighlightProvider<
         textView?.documentRange ?? .zero
     }
 
-    init(tokenMap: SemanticTokenMap, languageServer: LanguageServer<DocumentType>, documentURI: String) {
+    init(
+        tokenMap: SemanticTokenMap? = nil,
+        languageServer: LanguageServer<DocumentType>? = nil,
+        documentURI: String? = nil
+    ) {
         self.tokenMap = tokenMap
         self.languageServer = languageServer
         self.documentURI = documentURI
         self.storage = Storage()
+    }
+
+    func setUp(server: LanguageServer<DocumentType>, document: DocumentType) {
+        languageServer = server
+        documentURI = document.languageServerURI
+        tokenMap = server.highlightMap
     }
 
     // MARK: - Language Server Content Lifecycle
@@ -95,7 +105,8 @@ final class SemanticTokenHighlightProvider<
         textView: TextView,
         lastResultId: String
     ) async throws {
-        guard let response = try await languageServer.requestSemanticTokens(
+        guard let documentURI,
+              let response = try await languageServer.requestSemanticTokens(
             for: documentURI,
             previousResultId: lastResultId
         ) else {
@@ -112,7 +123,7 @@ final class SemanticTokenHighlightProvider<
     /// Requests and applies tokens for an entire document. This does not require a previous response id, and should be
     /// used in place of `requestDeltaTokens` when that's the case.
     private func requestTokens(languageServer: LanguageServer<DocumentType>, textView: TextView) async throws {
-        guard let response = try await languageServer.requestSemanticTokens(for: documentURI) else {
+        guard let documentURI, let response = try await languageServer.requestSemanticTokens(for: documentURI) else {
             return
         }
         await applyEntireResponse(response, callback: lastEditCallback)
@@ -159,7 +170,7 @@ final class SemanticTokenHighlightProvider<
             return
         }
 
-        guard let lspRange = textView.lspRangeFrom(nsRange: range) else {
+        guard let lspRange = textView.lspRangeFrom(nsRange: range), let tokenMap else {
             completion(.failure(HighlightError.lspRangeFailure))
             return
         }

@@ -32,15 +32,21 @@ class LSPContentCoordinator<DocumentType: LanguageServerDocument>: TextViewCoord
     private var task: Task<Void, Never>?
 
     weak var languageServer: LanguageServer<DocumentType>?
-    var documentURI: String
+    var documentURI: String?
 
     /// Initializes a content coordinator, and begins an async stream of updates
-    init(documentURI: String, languageServer: LanguageServer<DocumentType>) {
+    init(documentURI: String? = nil, languageServer: LanguageServer<DocumentType>? = nil) {
         self.documentURI = documentURI
         self.languageServer = languageServer
 
         setUpUpdatesTask()
     }
+
+    func setUp(server: LanguageServer<DocumentType>, document: DocumentType) {
+        languageServer = server
+        documentURI = document.languageServerURI
+    }
+
 
     func setUpUpdatesTask() {
         task?.cancel()
@@ -76,7 +82,7 @@ class LSPContentCoordinator<DocumentType: LanguageServerDocument>: TextViewCoord
     }
 
     func textView(_ textView: TextView, didReplaceContentsIn range: NSRange, with string: String) {
-        guard let lspRange = editedRange else {
+        guard let lspRange = editedRange, let documentURI else {
             return
         }
         self.editedRange = nil
