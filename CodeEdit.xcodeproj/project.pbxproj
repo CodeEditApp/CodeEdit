@@ -1783,7 +1783,7 @@
 			repositoryURL = "https://github.com/CodeEditApp/CodeEditSourceEditor";
 			requirement = {
 				kind = exactVersion;
-				version = 0.14.1;
+				version = 0.15.0;
 			};
 		};
 		6C85BB3E2C2105ED00EB5DEF /* XCRemoteSwiftPackageReference "CodeEditKit" */ = {

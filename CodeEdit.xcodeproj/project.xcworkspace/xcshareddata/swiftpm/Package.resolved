@@ -1,5 +1,5 @@
 {
-  "originHash" : "ed7a5ce46da2e530a4b8ff23058a67ef7423fa2378b9588d66359f210b6365cb",
+  "originHash" : "01191ca9685501db65981a6fd21ab2d11c32196633d4cb776b5bb25908ed212f",
   "pins" : [
     {
       "identity" : "aboutwindow",
@@ -40,10 +40,10 @@
     {
       "identity" : "codeeditsourceeditor",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor.git",
+      "location" : "https://github.com/CodeEditApp/CodeEditSourceEditor",
       "state" : {
-        "revision" : "afc57523b05c209496a221655c2171c0624b51d3",
-        "version" : "0.14.1"
+        "revision" : "c0d2c90aecca04ce2be2ff29c39a3add5951b539",
+        "version" : "0.15.0"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/CodeEditTextView.git",
       "state" : {
-        "revision" : "d65c2a4b23a52f69d0b3a113124d7434c7af07fa",
-        "version" : "0.11.6"
+        "revision" : "d7ac3f11f22ec2e820187acce8f3a3fb7aa8ddec",
+        "version" : "0.12.1"
       }
     },
     {
@@ -290,21 +290,21 @@
       }
     },
     {
-      "identity" : "zipfoundation",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/weichsel/ZIPFoundation",
-      "state" : {
-        "revision" : "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
-        "version" : "0.9.19"
-      }
-    },
-    {
       "identity" : "welcomewindow",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/WelcomeWindow",
       "state" : {
         "revision" : "5168cf1ce9579b35ad00706fafef441418d8011f",
         "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "zipfoundation",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/weichsel/ZIPFoundation",
+      "state" : {
+        "revision" : "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
+        "version" : "0.9.19"
       }
     }
   ],
