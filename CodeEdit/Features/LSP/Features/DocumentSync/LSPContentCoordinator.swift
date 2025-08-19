@@ -47,7 +47,6 @@ class LSPContentCoordinator<DocumentType: LanguageServerDocument>: TextViewCoord
         documentURI = document.languageServerURI
     }
 
-
     func setUpUpdatesTask() {
         task?.cancel()
         // Create this stream here so it's always set up when the text view is set up, rather than only once on init.
