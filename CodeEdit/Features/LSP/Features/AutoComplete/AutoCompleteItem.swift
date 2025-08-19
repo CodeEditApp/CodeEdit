@@ -11,7 +11,7 @@ import LanguageServerProtocol
 
 /// A Near 1:1 of `LanguageServerProtocol`'s `CompletionItem`. Wrapped for compatibility with the CESE's
 /// `CodeSuggestionEntry` protocol to deal with some optional bools.
-struct AutoCompleteItem: Hashable, Sendable, CodeSuggestionEntry {
+struct AutoCompleteItem: Hashable, Sendable, CodeSuggestionEntry, Comparable {
     let label: String
     let kind: CompletionItemKind?
     let detail: String?
@@ -62,4 +62,12 @@ struct AutoCompleteItem: Hashable, Sendable, CodeSuggestionEntry {
         self.command = item.command
         self.data = item.data
     }
+
+    static func < (lhs: AutoCompleteItem, rhs: AutoCompleteItem) -> Bool {
+        lhs.sortText ?? lhs.label < rhs.sortText ?? rhs.label
+    }
+}
+
+extension AutoCompleteItem: FuzzySearchable {
+    var searchableString: String { filterText ?? label }
 }

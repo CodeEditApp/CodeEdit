@@ -21,6 +21,8 @@ class AutoCompleteCoordinator {
     private var currentFilterText: String = ""
     /// Stores the unfiltered completion items
     private var completionItems: [AutoCompleteItem] = []
+    /// Set to true when the server sends an incomplete list, indicating that we should not filter client-side.
+    private var receivedIncompleteCompletionItems: Bool = false
 
     init(_ file: CEWorkspaceFile) {
         self.file = file
@@ -51,9 +53,10 @@ class AutoCompleteCoordinator {
             // Extract the completion items list
             switch completions {
             case .optionA(let completionItems):
-                return completionItems.map { AutoCompleteItem($0) }
+                return completionItems.map { AutoCompleteItem($0) }.sorted()
             case .optionB(let completionList):
-                return completionList.items.map { AutoCompleteItem($0) }
+                receivedIncompleteCompletionItems = receivedIncompleteCompletionItems || completionList.isIncomplete
+                return completionList.items.map { AutoCompleteItem($0) }.sorted()
             case .none:
                 return []
             }
@@ -64,24 +67,15 @@ class AutoCompleteCoordinator {
 
     /// Filters completion items based on the current partial token input
     private func filterCompletionItems(_ items: [AutoCompleteItem]) -> [AutoCompleteItem] {
-        guard !currentFilterText.isEmpty else {
-            return items
+        guard !currentFilterText.isEmpty, !receivedIncompleteCompletionItems else {
+            return items.sorted()
         }
 
-        let items = items.filter { item in
-            let insertText = LSPCompletionItemsUtil.getInsertText(from: item)
-            let label = item.label.lowercased()
-            let filterText = currentFilterText.lowercased()
-            if insertText.lowercased().hasPrefix(filterText) {
-                return true
-            }
-            if label.hasPrefix(filterText) {
-                return true
-            }
-            return false
-        }
+        let items = items
+            .map { ($0.fuzzyMatch(query: currentFilterText), $0) }
+            .compactMap { $0.0.weight > 0 ? $0.1 : nil }
 
-        return items
+        return items.sorted()
     }
 }
 
@@ -91,22 +85,44 @@ extension AutoCompleteCoordinator: CodeSuggestionDelegate {
         textView: TextViewController,
         cursorPosition: CursorPosition
     ) async -> (windowPosition: CursorPosition, items: [CodeSuggestionEntry])? {
-        let tokenSubstringCount = findTreeSitterNodeAtPosition(textView: textView, cursorPosition: cursorPosition)
         currentFilterText = ""
+        let tokenSubstringCount = findTreeSitterNodeAtPosition(textView: textView, cursorPosition: cursorPosition)
 
-        var textPosition = Position(line: cursorPosition.start.line - 1, character: cursorPosition.start.column - 1)
-        var cursorPosition = cursorPosition
+        let textPosition = Position(line: cursorPosition.start.line - 1, character: cursorPosition.start.column - 1)
+
         // If we are asking for completions in the middle of a token, then
         // query the language server for completion items at the start of the token
-        if currentNode != nil {
-            textPosition = Position(
+        // but *only* if we haven't received an incomplete response.
+        let queryPosition = if currentNode != nil && !receivedIncompleteCompletionItems {
+            Position(
                 line: cursorPosition.start.line - 1,
                 character: cursorPosition.start.column - tokenSubstringCount - 1
             )
-            cursorPosition = CursorPosition(line: textPosition.line + 1, column: textPosition.character + 1)
+        } else {
+            textPosition
         }
-        completionItems = await fetchCompletions(position: textPosition)
-        return (cursorPosition, completionItems)
+        completionItems = await fetchCompletions(position: queryPosition)
+
+        if receivedIncompleteCompletionItems && queryPosition != textPosition {
+            // We need to re-request this. We've requested the wrong location and since know that the server
+            // returns incomplete items (meaning we can't filter them ourselves).
+            return await completionSuggestionsRequested(textView: textView, cursorPosition: cursorPosition)
+        }
+
+        // If we can detect that we're in a node, we still want to adjust the panel to be in the correct position
+        let cursorPosition: CursorPosition = if currentNode != nil {
+            CursorPosition(
+                line: cursorPosition.start.line,
+                column: cursorPosition.start.column - tokenSubstringCount
+            )
+        } else {
+            CursorPosition(
+                line: queryPosition.line + 1,
+                column: queryPosition.character + 1
+            )
+        }
+
+        return (cursorPosition, filterCompletionItems(completionItems))
     }
 
     func findTreeSitterNodeAtPosition(textView: TextViewController, cursorPosition: CursorPosition) -> Int {
@@ -140,7 +156,7 @@ extension AutoCompleteCoordinator: CodeSuggestionDelegate {
         textView: TextViewController,
         cursorPosition: CursorPosition
     ) -> [CodeSuggestionEntry]? {
-        guard var currentNode = currentNode, !completionItems.isEmpty else {
+        guard var currentNode = currentNode, !completionItems.isEmpty, !receivedIncompleteCompletionItems else {
             return nil
         }
         _ = findTreeSitterNodeAtPosition(textView: textView, cursorPosition: cursorPosition)
