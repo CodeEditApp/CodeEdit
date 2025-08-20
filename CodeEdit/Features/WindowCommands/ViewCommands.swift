@@ -149,7 +149,7 @@ extension ViewCommands {
                 windowController?.toggleInterface(shouldHide: !isInterfaceHidden)
             }
             .disabled(windowController == nil)
-            .keyboardShortcut(".", modifiers: .command)
+            .keyboardShortcut("H", modifiers: [.shift, .command])
         }
     }
 }
