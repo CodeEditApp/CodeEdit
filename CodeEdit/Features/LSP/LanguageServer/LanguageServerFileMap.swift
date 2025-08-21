@@ -16,8 +16,6 @@ class LanguageServerFileMap<DocumentType: LanguageServerDocument> {
     private struct DocumentObject {
         let uri: String
         var documentVersion: Int
-        var contentCoordinator: LSPContentCoordinator<DocumentType>
-        var semanticHighlighter: HighlightProviderType?
     }
 
     private var trackedDocuments: NSMapTable<NSString, DocumentType>
@@ -32,24 +30,7 @@ class LanguageServerFileMap<DocumentType: LanguageServerDocument> {
     func addDocument(_ document: DocumentType, for server: LanguageServer<DocumentType>) {
         guard let uri = document.languageServerURI else { return }
         trackedDocuments.setObject(document, forKey: uri as NSString)
-        var docData = DocumentObject(
-            uri: uri,
-            documentVersion: 0,
-            contentCoordinator: LSPContentCoordinator(
-                documentURI: uri,
-                languageServer: server
-            ),
-            semanticHighlighter: nil
-        )
-
-        if let tokenMap = server.highlightMap {
-            docData.semanticHighlighter = HighlightProviderType(
-                tokenMap: tokenMap,
-                languageServer: server,
-                documentURI: uri
-            )
-        }
-
+        let docData = DocumentObject(uri: uri, documentVersion: 0)
         trackedDocumentData[uri] = docData
     }
 
@@ -86,23 +67,5 @@ class LanguageServerFileMap<DocumentType: LanguageServerDocument> {
 
     func documentVersion(for uri: DocumentUri) -> Int? {
         return trackedDocumentData[uri]?.documentVersion
-    }
-
-    // MARK: - Content Coordinator
-
-    func contentCoordinator(for document: DocumentType) -> LSPContentCoordinator<DocumentType>? {
-        guard let uri = document.languageServerURI else { return nil }
-        return contentCoordinator(for: uri)
-    }
-
-    func contentCoordinator(for uri: DocumentUri) -> LSPContentCoordinator<DocumentType>? {
-        trackedDocumentData[uri]?.contentCoordinator
-    }
-
-    // MARK: - Semantic Highlighter
-
-    func semanticHighlighter(for document: DocumentType) -> HighlightProviderType? {
-        guard let uri = document.languageServerURI else { return nil }
-        return trackedDocumentData[uri]?.semanticHighlighter
     }
 }
