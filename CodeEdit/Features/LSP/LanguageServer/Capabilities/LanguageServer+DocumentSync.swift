@@ -86,6 +86,7 @@ extension LanguageServer {
             switch resolveDocumentSyncKind() {
             case .full:
                 guard let content = await getIsolatedDocumentContent(document) else {
+                    logger.error("Failed to get isolated document content")
                     return
                 }
                 let changeEvent = TextDocumentContentChangeEvent(range: nil, rangeLength: nil, text: content.string)
@@ -107,7 +108,7 @@ extension LanguageServer {
 
             // Let the semantic token provider know about the update.
             // Note for future: If a related LSP object need notifying about document changes, do it here.
-            try await document.languageServerObjects.highlightProvider?.documentDidChange()
+            try await document.languageServerObjects.highlightProvider.documentDidChange()
         } catch {
             logger.warning("closeDocument: Error \(error)")
             throw error
@@ -128,10 +129,7 @@ extension LanguageServer {
 
     @MainActor
     private func updateIsolatedDocument(_ document: DocumentType) {
-        document.languageServerObjects = LanguageServerDocumentObjects(
-            textCoordinator: openFiles.contentCoordinator(for: document),
-            highlightProvider: openFiles.semanticHighlighter(for: document)
-        )
+        document.languageServerObjects.setUp(server: self, document: document)
     }
 
     @MainActor
