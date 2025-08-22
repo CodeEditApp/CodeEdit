@@ -303,6 +303,16 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         }
     }
 
+    override func fileNameExtension(
+        forType typeName: String,
+        saveOperation: NSDocument.SaveOperationType
+    ) -> String? {
+        guard let fileTypeName = Self.fileTypeExtension[typeName] else {
+            return super.fileNameExtension(forType: typeName, saveOperation: saveOperation)
+        }
+        return fileTypeName
+    }
+
     /// Determines the code language of the document.
     /// Use ``CodeFileDocument/language`` for the default value before using this. That property is used to override
     /// the file's language.
@@ -331,4 +341,11 @@ extension CodeFileDocument: LanguageServerDocument {
     var languageServerURI: String? {
         fileURL?.lspURI
     }
+}
+
+private extension CodeFileDocument {
+
+    static let fileTypeExtension: [String: String?] = [
+        "public.make-source": nil
+    ]
 }
