@@ -259,9 +259,16 @@ final class CodeFileDocument: NSDocument, ObservableObject {
                     // This blocks the presented item thread intentionally. If we don't wait, we'll receive more updates
                     // that the file has changed and we'll end up dispatching multiple reads.
                     // The presented item thread expects this operation to by synchronous anyways.
-                    DispatchQueue.main.asyncAndWait {
+
+                    // https://github.com/CodeEditApp/CodeEdit/issues/2091
+                    // We can't use `.asyncAndWait` on Ventura as it seems the symbol is missing. Could be just for
+                    // x86 machines. We use a semaphore instead here.
+                    let semaphore = DispatchSemaphore(value: 0)
+                    DispatchQueue.main.async {
                         try? self.read(from: fileURL, ofType: fileType)
+                        semaphore.signal()
                     }
+                    semaphore.wait()
                 }
                 return
             }
