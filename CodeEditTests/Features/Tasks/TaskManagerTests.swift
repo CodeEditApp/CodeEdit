@@ -10,7 +10,7 @@ import Testing
 @testable import CodeEdit
 
 @MainActor
-@Suite
+@Suite(.serialized)
 class TaskManagerTests {
     var taskManager: TaskManager!
     var mockWorkspaceSettings: CEWorkspaceSettingsData!
