@@ -30,7 +30,7 @@ public func withTimeout<R>(
         }
         // Start timeout child task.
         group.addTask {
-            if .now > deadline {
+            if .now < deadline {
                 try await Task.sleep(until: deadline) // sleep until the deadline
             }
             try Task.checkCancellation()
@@ -39,8 +39,12 @@ public func withTimeout<R>(
             throw TimedOutError()
         }
         // First finished child task wins, cancel the other task.
-        let result = try await group.next()!
-        group.cancelAll()
-        return result
+        defer { group.cancelAll() }
+        do {
+            let result = try await group.next()!
+            return result
+        } catch {
+            throw error
+        }
     }
 }
