@@ -40,7 +40,7 @@ enum PackageSourceParser {
             false
         }
 
-        var source = PackageSource(
+        let source = PackageSource(
             sourceId: sourceId,
             type: isSourceBuild ? .sourceBuild : .github,
             pkgName: packageName,
