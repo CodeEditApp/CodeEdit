@@ -261,14 +261,11 @@ final class CodeFileDocument: NSDocument, ObservableObject {
                     // The presented item thread expects this operation to by synchronous anyways.
 
                     // https://github.com/CodeEditApp/CodeEdit/issues/2091
-                    // We can't use `.asyncAndWait` on Ventura as it seems the symbol is missing. Could be just for
-                    // x86 machines. We use a semaphore instead here.
-                    let semaphore = DispatchSemaphore(value: 0)
-                    DispatchQueue.main.async {
+                    // We can't use `.asyncAndWait` on Ventura as it seems the symbol is missing on that platform.
+                    // Could be just for x86 machines.
+                    DispatchQueue.main.sync {
                         try? self.read(from: fileURL, ofType: fileType)
-                        semaphore.signal()
                     }
-                    semaphore.wait()
                 }
                 return
             }
