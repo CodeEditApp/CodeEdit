@@ -26,9 +26,28 @@ class TaskManagerTests {
         #expect(taskManager.availableTasks == mockWorkspaceSettings.tasks)
     }
 
-    @Test(arguments: [SettingsData.TerminalShell.zsh, SettingsData.TerminalShell.bash])
-    func executeSelectedTask(_ shell: SettingsData.TerminalShell) async throws {
-        Settings.shared.preferences.terminal.shell = shell
+    @Test
+    func executeTaskInZsh() async throws {
+        Settings.shared.preferences.terminal.shell = .zsh
+
+        let task = CETask(name: "Test Task", command: "echo 'Hello World'")
+        mockWorkspaceSettings.tasks.append(task)
+        taskManager.selectedTaskID = task.id
+        taskManager.executeActiveTask()
+
+        await waitForExpectation(timeout: .seconds(10)) {
+            self.taskManager.activeTasks[task.id]?.status == .finished
+        } onTimeout: {
+            Issue.record("Status never changed to finished.")
+        }
+
+        let outputString = try #require(taskManager.activeTasks[task.id]?.output?.getBufferAsString())
+        #expect(outputString.contains("Hello World"))
+    }
+
+    @Test
+    func executeTaskInBash() async throws {
+        Settings.shared.preferences.terminal.shell = .bash
 
         let task = CETask(name: "Test Task", command: "echo 'Hello World'")
         mockWorkspaceSettings.tasks.append(task)
