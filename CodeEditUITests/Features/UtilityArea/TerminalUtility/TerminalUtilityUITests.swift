@@ -28,7 +28,7 @@ final class TerminalUtilityUITests: XCTestCase {
     }
 
     func testTerminalsInputData() throws {
-        var terminal = utilityArea.textViews["Terminal Emulator"]
+        let terminal = utilityArea.textViews["Terminal Emulator"]
         XCTAssertTrue(terminal.exists)
         terminal.click()
         terminal.typeText("echo hello world")
