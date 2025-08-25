@@ -13,21 +13,10 @@ struct LanguageServersView: View {
     @State private var registryItems: [RegistryItem] = []
     @State private var isLoading = true
 
+    @State private var showingInfoPanel = false
+
     var body: some View {
         SettingsForm {
-            Section {
-                EmptyView()
-            } header: {
-                Label(
-                    "Warning: Language server installation is not complete. Use this at your own risk. It "
-                    + "**WILL** break.",
-                    systemImage: "exclamationmark.triangle.fill"
-                )
-                .padding()
-                .foregroundStyle(.black)
-                .background(RoundedRectangle(cornerRadius: 12).fill(.yellow))
-            }
-
             if isLoading {
                 HStack {
                     Spacer()
@@ -61,6 +50,11 @@ struct LanguageServersView: View {
                         )
                         .listRowInsets(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                     }
+                } header: {
+                    Label(
+                        "Warning: Language server installation is experimental. Use at your own risk.",
+                        systemImage: "exclamationmark.triangle.fill"
+                    )
                 }
             }
         }
@@ -82,6 +76,28 @@ struct LanguageServersView: View {
         } message: { details in
             Text(details.error)
         }
+        .toolbar {
+            Button {
+                showingInfoPanel.toggle()
+            } label: {
+                Image(systemName: "questionmark.circle")
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(.secondary)
+            .popover(isPresented: $showingInfoPanel, arrowEdge: .top) {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Text("Language Server Installation").font(.title2)
+                        Spacer()
+                    }
+                    .frame(width: 300)
+                    Text(getInfoString())
+                        .lineLimit(nil)
+                        .frame(width: 300)
+                }
+                .padding()
+            }
+        }
     }
 
     private func loadRegistryItems() {
@@ -90,6 +106,23 @@ struct LanguageServersView: View {
         if !registryItems.isEmpty {
             isLoading = false
         }
+    }
+
+    private func getInfoString() -> AttributedString {
+        let string = "CodeEdit makes use of the Mason Registry for language server installation. To install a package, "
+        + "CodeEdit uses the package manager directed by the Mason Registry, and installs a copy of "
+        + "the language server in Application Support.\n\n"
+        + "Language server installation is still experimental, there may be bugs and expect this flow "
+        + "to change over time."
+
+        var attrString = AttributedString(string)
+
+        if let linkRange = attrString.range(of: "Mason Registry") {
+            attrString[linkRange].link = URL(string: "https://mason-registry.dev/")
+            attrString[linkRange].foregroundColor = NSColor.linkColor
+        }
+
+        return attrString
     }
 }
 
