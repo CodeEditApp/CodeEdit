@@ -5,53 +5,60 @@
 //  Created by Abe Malla on 2/2/25.
 //
 
-import XCTest
+import Testing
+import Foundation
 @testable import CodeEdit
 
 @MainActor
-final class RegistryTests: XCTestCase {
-    var registry: RegistryManager = RegistryManager.shared
+@Suite()
+struct RegistryTests {
+    var registry: RegistryManager = RegistryManager()
 
     // MARK: - Download Tests
 
-    func testRegistryDownload() async throws {
-        await registry.update()
+    @Test
+    func registryDownload() async throws {
+        await registry.downloadRegistryItems()
 
-        let registryJsonPath = Settings.shared.baseURL.appending(path: "extensions/registry.json")
-        let checksumPath = Settings.shared.baseURL.appending(path: "extensions/checksums.txt")
+        #expect(registry.downloadError == nil)
 
-        XCTAssertTrue(FileManager.default.fileExists(atPath: registryJsonPath.path), "Registry JSON file should exist.")
-        XCTAssertTrue(FileManager.default.fileExists(atPath: checksumPath.path), "Checksum file should exist.")
+        let registryJsonPath = registry.installPath.appending(path: "registry.json")
+        let checksumPath = registry.installPath.appending(path: "checksums.txt")
+
+        #expect(FileManager.default.fileExists(atPath: registryJsonPath.path), "Registry JSON file should exist.")
+        #expect(FileManager.default.fileExists(atPath: checksumPath.path), "Checksum file should exist.")
     }
 
     // MARK: - Decoding Tests
 
-    func testRegistryDecoding() async throws {
-        await registry.update()
+    @Test
+    func registryDecoding() async throws {
+        await registry.downloadRegistryItems()
 
-        let registryJsonPath = Settings.shared.baseURL.appending(path: "extensions/registry.json")
+        let registryJsonPath = registry.installPath.appending(path: "registry.json")
         let jsonData = try Data(contentsOf: registryJsonPath)
 
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         let entries = try decoder.decode([RegistryItem].self, from: jsonData)
 
-        XCTAssertFalse(entries.isEmpty, "Registry should not be empty after decoding.")
+        #expect(entries.isEmpty == false, "Registry should not be empty after decoding.")
 
         if let actionlint = entries.first(where: { $0.name == "actionlint" }) {
-            XCTAssertEqual(actionlint.description, "Static checker for GitHub Actions workflow files.")
-            XCTAssertEqual(actionlint.licenses, ["MIT"])
-            XCTAssertEqual(actionlint.languages, ["YAML"])
-            XCTAssertEqual(actionlint.categories, ["Linter"])
+            #expect(actionlint.description == "Static checker for GitHub Actions workflow files.")
+            #expect(actionlint.licenses == ["MIT"])
+            #expect(actionlint.languages == ["YAML"])
+            #expect(actionlint.categories == ["Linter"])
         } else {
-            XCTFail("Could not find actionlint in registry")
+            Issue.record("Could not find actionlint in registry")
         }
     }
 
-    func testHandlesVersionOverrides() async throws {
-        await registry.update()
+    @Test
+    func handlesVersionOverrides() async throws {
+        await registry.downloadRegistryItems()
 
-        let registryJsonPath = Settings.shared.baseURL.appending(path: "extensions/registry.json")
+        let registryJsonPath = registry.installPath.appending(path: "registry.json")
         let jsonData = try Data(contentsOf: registryJsonPath)
 
         let decoder = JSONDecoder()
@@ -59,10 +66,10 @@ final class RegistryTests: XCTestCase {
         let entries = try decoder.decode([RegistryItem].self, from: jsonData)
 
         if let adaServer = entries.first(where: { $0.name == "ada-language-server" }) {
-            XCTAssertNotNil(adaServer.source.versionOverrides, "Version overrides should be present.")
-            XCTAssertFalse(adaServer.source.versionOverrides!.isEmpty, "Version overrides should not be empty.")
+            #expect(adaServer.source.versionOverrides != nil, "Version overrides should be present.")
+            #expect(adaServer.source.versionOverrides!.isEmpty == false, "Version overrides should not be empty.")
         } else {
-            XCTFail("Could not find ada-language-server to test version overrides")
+            Issue.record("Could not find ada-language-server to test version overrides")
         }
     }
 }

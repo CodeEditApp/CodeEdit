@@ -1,23 +1,11 @@
 //
-//  RegistryPackage.swift
+//  RegistryItem+Source.swift
 //  CodeEdit
 //
-//  Created by Abe Malla on 1/29/25.
+//  Created by Khan Winter on 8/15/25.
 //
 
-import Foundation
-
-/// A `RegistryItem` represents an entry in the Registry that saves language servers, DAPs, linters and formatters.
-struct RegistryItem: Codable {
-    let name: String
-    let description: String
-    let homepage: String
-    let licenses: [String]
-    let languages: [String]
-    let categories: [String]
-    let source: Source
-    let bin: [String: String]?
-
+extension RegistryItem {
     struct Source: Codable {
         let id: String
         let asset: AssetContainer?
@@ -195,12 +183,12 @@ struct RegistryItem: Codable {
                 case .multiple(let values):
 #if arch(arm64)
                     return values.contains("darwin") ||
-                           values.contains("darwin_arm64") ||
-                           values.contains("unix")
+                    values.contains("darwin_arm64") ||
+                    values.contains("unix")
 #else
                     return values.contains("darwin") ||
-                           values.contains("darwin_x64") ||
-                           values.contains("unix")
+                    values.contains("darwin_x64") ||
+                    values.contains("unix")
 #endif
                 }
             }
@@ -243,15 +231,5 @@ struct RegistryItem: Codable {
             let id: String
             let asset: AssetContainer?
         }
-    }
-
-    /// Serializes back to JSON format
-    func toDictionary() throws -> [String: Any] {
-        let data = try JSONEncoder().encode(self)
-        let jsonObject = try JSONSerialization.jsonObject(with: data)
-        guard let dictionary = jsonObject as? [String: Any] else {
-            throw NSError(domain: "ConversionError", code: 1)
-        }
-        return dictionary
     }
 }

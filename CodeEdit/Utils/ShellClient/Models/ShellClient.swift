@@ -21,7 +21,9 @@ class ShellClient {
     /// - Parameter args: commands to run
     /// - Returns: command output
     func generateProcessAndPipe(_ args: [String]) -> (Process, Pipe) {
-        var arguments = ["-l", "-c"]
+        // Run in an 'interactive' login shell. Because we're passing -c here it won't actually be
+        // interactive but it will source the user's zshrc file as well as the zshprofile.
+        var arguments = ["-lic"]
         arguments.append(contentsOf: args)
         let task = Process()
         let pipe = Pipe()

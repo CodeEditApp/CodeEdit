@@ -141,7 +141,7 @@ struct SettingsView: View {
                 SettingsPageView(page, searchText: searchText)
             }
         } else if !page.isSetting {
-            if (page.name == .developer || page.name == .languageServers) && !showDeveloperSettings {
+            if page.name == .developer && !showDeveloperSettings {
                 EmptyView()
             } else {
                 SettingsPageView(page, searchText: searchText)
