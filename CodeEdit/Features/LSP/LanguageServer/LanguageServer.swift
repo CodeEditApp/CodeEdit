@@ -258,9 +258,7 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     /// Shuts down the language server and exits it.
     public func shutdown() async throws {
         self.logger.info("Shutting down language server")
-        try await withTimeout(duration: .seconds(1.0)) {
-            try await self.lspInstance.shutdownAndExit()
-        }
+        try await self.lspInstance.shutdownAndExit()
     }
 }
 
