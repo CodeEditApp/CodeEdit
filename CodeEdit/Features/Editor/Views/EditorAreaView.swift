@@ -77,7 +77,6 @@ struct EditorAreaView: View {
                             self.codeFile = { [weak latestValue] in latestValue }
                         }
                 }
-
             } else {
                 CEContentUnavailableView("No Editor")
                     .padding(.top, editorInsetAmount)
