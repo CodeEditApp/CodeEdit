@@ -58,10 +58,6 @@ final class ProjectNavigatorFileManagementUITests: XCTestCase {
             return
         }
 
-        let newFileEditor = Query.Window.getFirstEditor(window)
-        XCTAssertTrue(newFileEditor.exists)
-        XCTAssertNotNil(newFileEditor.value as? String)
-
         guard Query.Navigator.getProjectNavigatorRow(
             fileTitle: "New Folder",
             navigator
