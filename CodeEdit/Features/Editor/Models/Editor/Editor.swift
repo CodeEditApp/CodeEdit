@@ -9,8 +9,13 @@ import Foundation
 import OrderedCollections
 import DequeModule
 import AppKit
+import OSLog
 
 final class Editor: ObservableObject, Identifiable {
+    enum EditorError: Error {
+        case noWorkspaceAttached
+    }
+
     typealias Tab = EditorInstance
 
     /// Set of open tabs.
@@ -56,6 +61,8 @@ final class Editor: ObservableObject, Identifiable {
 
     weak var parent: SplitViewData?
     weak var workspace: WorkspaceDocument?
+
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "Editor")
 
     init() {
         self.tabs = []
@@ -185,29 +192,45 @@ final class Editor: ObservableObject, Identifiable {
 
         switch (temporaryTab, asTemporary) {
         case (.some(let tab), true):
-            if let index = tabs.firstIndex(of: tab) {
-                clearFuture()
-                addToHistory(item)
-                tabs.remove(tab)
-                tabs.insert(item, at: index)
-                self.selectedTab = item
-                temporaryTab = item
-            }
-
+            replaceTemporaryTab(tab: tab, with: item)
         case (.some(let tab), false) where tab == item:
             temporaryTab = nil
         case (.some(let tab), false) where tab != item:
             openTab(file: item.file)
-
+        case (.some, false):
+            // A temporary tab exists, but we don't want to open this one as temporary.
+            // Clear the temp tab and open the new one.
+            openTab(file: item.file)
         case (.none, true):
             openTab(file: item.file)
             temporaryTab = item
-
         case (.none, false):
             openTab(file: item.file)
+        }
+    }
 
-        default:
-            break
+    /// Replaces the given temporary tab with a new tab item.
+    /// - Parameters:
+    ///   - tab: The temporary tab to replace.
+    ///   - newItem: The new tab to replace it with and open as a temporary tab.
+    private func replaceTemporaryTab(tab: Tab, with newItem: Tab) {
+        if let index = tabs.firstIndex(of: tab) {
+            do {
+                try openFile(item: newItem)
+            } catch {
+                logger.error("Error opening file: \(error)")
+            }
+
+            clearFuture()
+            addToHistory(newItem)
+            tabs.remove(tab)
+            tabs.insert(newItem, at: index)
+            self.selectedTab = newItem
+            temporaryTab = newItem
+        } else {
+            // If we couldn't find the current temporary tab (invalid state) we should still do *something*
+            openTab(file: newItem.file)
+            temporaryTab = newItem
         }
     }
 
@@ -236,14 +259,18 @@ final class Editor: ObservableObject, Identifiable {
         do {
             try openFile(item: item)
         } catch {
-            print(error)
+            logger.error("Error opening file: \(error)")
         }
     }
 
     private func openFile(item: Tab) throws {
         // If this isn't attached to a workspace, loading a new NSDocument will cause a loose document we can't close
-        guard item.file.fileDocument == nil && workspace != nil else {
+        guard item.file.fileDocument == nil else {
             return
+        }
+
+        guard workspace != nil else {
+            throw EditorError.noWorkspaceAttached
         }
 
         try item.file.loadCodeFile()
