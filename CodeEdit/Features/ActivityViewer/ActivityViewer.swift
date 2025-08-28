@@ -32,6 +32,34 @@ struct ActivityViewer: View {
         self.taskManager = taskManager
     }
     var body: some View {
+        Group {
+            if #available(macOS 26, *) {
+                content
+                    .fixedSize(horizontal: false, vertical: false)
+                    .padding(.horizontal, 4)
+            } else {
+                content
+                    .fixedSize(horizontal: false, vertical: false)
+                    .padding(.horizontal, 5)
+                    .padding(.vertical, 1.5)
+                    .frame(height: 22)
+                    .clipped()
+                    .background {
+                        if colorScheme == .dark {
+                            RoundedRectangle(cornerRadius: 5)
+                                .opacity(0.1)
+                        } else {
+                            RoundedRectangle(cornerRadius: 5)
+                                .opacity(0.1)
+                        }
+                    }
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Activity Viewer")
+    }
+
+    @ViewBuilder private var content: some View {
         HStack(spacing: 0) {
             SchemeDropDownView(
                 workspaceSettingsManager: workspaceSettingsManager,
@@ -45,21 +73,5 @@ struct ActivityViewer: View {
             TaskNotificationView(taskNotificationHandler: taskNotificationHandler)
                 .fixedSize()
         }
-        .fixedSize(horizontal: false, vertical: false)
-        .padding(.horizontal, 5)
-        .padding(.vertical, 1.5)
-        .frame(height: 22)
-        .clipped()
-        .background {
-            if colorScheme == .dark {
-                RoundedRectangle(cornerRadius: 5)
-                    .opacity(0.1)
-            } else {
-                RoundedRectangle(cornerRadius: 5)
-                    .opacity(0.1)
-            }
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel("Activity Viewer")
     }
 }
