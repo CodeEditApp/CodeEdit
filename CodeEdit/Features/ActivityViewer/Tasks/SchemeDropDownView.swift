@@ -42,7 +42,7 @@ struct SchemeDropDownView: View {
         .onHover(perform: { hovering in
             self.isHoveringScheme = hovering
         })
-        .instantPopover(isPresented: $isSchemePopOverPresented, arrowEdge: .bottom) {
+        .instantPopover(isPresented: $isSchemePopOverPresented, arrowEdge: .top) {
             popoverContent
         }
         .onTapGesture {
