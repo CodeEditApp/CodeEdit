@@ -63,7 +63,11 @@ struct TaskNotificationView: View {
                 progress: notification.percentage,
                 currentTaskCount: taskNotificationHandler.notifications.count
             )
-            .padding(.horizontal, -1)
+            .if(.tahoe) {
+                $0.padding(.leading, 1)
+            } else: {
+                $0.padding(.horizontal, -1)
+            }
             .frame(height: 16)
         } else {
             if taskNotificationHandler.notifications.count > 1 {

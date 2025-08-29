@@ -13,13 +13,15 @@ extension CodeEditWindowController {
     internal func setupToolbar() {
         let toolbar = NSToolbar(identifier: UUID().uuidString)
         toolbar.delegate = self
-        toolbar.displayMode = .labelOnly
         toolbar.showsBaselineSeparator = false
-            self.window?.titleVisibility = toolbarCollapsed ? .visible : .hidden
+        self.window?.titleVisibility = toolbarCollapsed ? .visible : .hidden
         if #available(macOS 26, *) {
-            self.window?.toolbarStyle = .unified
+            self.window?.toolbarStyle = .automatic
+            toolbar.centeredItemIdentifiers = [.activityViewer, .notificationItem]
+            toolbar.displayMode = .iconOnly
         } else {
             self.window?.toolbarStyle = .unifiedCompact
+            toolbar.displayMode = .labelOnly
         }
         self.window?.titlebarSeparatorStyle = .automatic
         self.window?.toolbar = toolbar
@@ -32,9 +34,7 @@ extension CodeEditWindowController {
         ]
 
         if #available(macOS 26, *) {
-            items += [
-                .taskSidebarItem
-            ]
+            items += [.taskSidebarItem]
         } else {
             items += [
                 .stopTaskSidebarItem,
@@ -46,8 +46,22 @@ extension CodeEditWindowController {
             .sidebarTrackingSeparator,
             .branchPicker,
             .flexibleSpace,
-            .activityViewer,
-            .notificationItem,
+        ]
+
+        if #available(macOS 26, *) {
+            items += [
+                .activityViewer,
+                .space,
+                .notificationItem,
+            ]
+        } else {
+            items += [
+                .activityViewer,
+                .notificationItem,
+            ]
+        }
+
+        items += [
             .flexibleSpace,
             .itemListTrackingSeparator,
             .flexibleSpace,
@@ -156,43 +170,9 @@ extension CodeEditWindowController {
             toolbarItem.isBordered = false
             return toolbarItem
         case .activityViewer:
-            let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.activityViewer)
-            toolbarItem.visibilityPriority = .user
-            guard let workspaceSettingsManager = workspace?.workspaceSettingsManager,
-                  let taskNotificationHandler = workspace?.taskNotificationHandler,
-                  let taskManager = workspace?.taskManager
-            else { return nil }
-
-            let view = NSHostingView(
-                rootView: ActivityViewer(
-                    workspaceFileManager: workspace?.workspaceFileManager,
-                    workspaceSettingsManager: workspaceSettingsManager,
-                    taskNotificationHandler: taskNotificationHandler,
-                    taskManager: taskManager
-                )
-            )
-
-            let weakWidth = view.widthAnchor.constraint(equalToConstant: 650)
-            weakWidth.priority = .defaultLow
-            let strongWidth = view.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
-            strongWidth.priority = .defaultHigh
-
-            NSLayoutConstraint.activate([
-                weakWidth,
-                strongWidth
-            ])
-
-            toolbarItem.view = view
-            return toolbarItem
+            return activityViewerItem()
         case .notificationItem:
-            let toolbarItem = NSToolbarItem(itemIdentifier: .notificationItem)
-            guard let workspace = workspace else { return nil }
-            let view = NSHostingView(
-                rootView: NotificationToolbarItem()
-                    .environmentObject(workspace)
-            )
-            toolbarItem.view = view
-            return toolbarItem
+            return notificationItem()
         case .taskSidebarItem:
             guard #available(macOS 26, *) else {
                 fatalError("Unified task sidebar item used on pre-tahoe platform.")
@@ -240,6 +220,45 @@ extension CodeEditWindowController {
         )
         toolbarItem.view = view
 
+        return toolbarItem
+    }
+
+    private func notificationItem() -> NSToolbarItem? {
+        let toolbarItem = NSToolbarItem(itemIdentifier: .notificationItem)
+        guard let workspace = workspace else { return nil }
+        let view = NSHostingView(rootView: NotificationToolbarItem().environmentObject(workspace))
+        toolbarItem.view = view
+        return toolbarItem
+    }
+
+    private func activityViewerItem() -> NSToolbarItem? {
+        let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.activityViewer)
+        toolbarItem.visibilityPriority = .user
+        guard let workspaceSettingsManager = workspace?.workspaceSettingsManager,
+              let taskNotificationHandler = workspace?.taskNotificationHandler,
+              let taskManager = workspace?.taskManager
+        else { return nil }
+
+        let view = NSHostingView(
+            rootView: ActivityViewer(
+                workspaceFileManager: workspace?.workspaceFileManager,
+                workspaceSettingsManager: workspaceSettingsManager,
+                taskNotificationHandler: taskNotificationHandler,
+                taskManager: taskManager
+            )
+        )
+
+        let weakWidth = view.widthAnchor.constraint(equalToConstant: 650)
+        weakWidth.priority = .defaultLow
+        let strongWidth = view.widthAnchor.constraint(greaterThanOrEqualToConstant: 200)
+        strongWidth.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            weakWidth,
+            strongWidth
+        ])
+
+        toolbarItem.view = view
         return toolbarItem
     }
 }

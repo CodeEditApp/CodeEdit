@@ -135,6 +135,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .inspectorCollapsed
             ) as? Bool ?? true
         }
+
+        workspace.notificationPanel.updateToolbarItem()
     }
 
     // MARK: - NSSplitViewDelegate

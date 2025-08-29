@@ -36,13 +36,14 @@ struct ActivityViewer: View {
             if #available(macOS 26, *) {
                 content
                     .fixedSize(horizontal: false, vertical: false)
-                    .padding(.horizontal, 4)
+                    .padding(5)
                 // TaskNotificationView doesn't have it's own padding
                 // Also this padding seems weird. However, we want the spinning circle to be padded with the same
                 // amount from both the top and bottom, as well as the trailing edge. So despite it not being exactly
                 // the same it *looks* correctly padded
-                    .padding(.trailing, 8)
+                    .padding(.trailing, 5)
                     .clipShape(Capsule())
+                    .frame(minWidth: 200)
             } else {
                 content
                     .fixedSize(horizontal: false, vertical: false)
