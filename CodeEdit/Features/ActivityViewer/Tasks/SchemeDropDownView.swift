@@ -80,7 +80,7 @@ struct SchemeDropDownView: View {
         .background {
             Color(nsColor: colorScheme == .dark ? .white : .black)
                 .opacity(isHoveringScheme || isSchemePopOverPresented ? 0.05 : 0)
-                .clipShape(Capsule(style: .continuous))
+                .clipShape(Capsule())
         }
     }
 

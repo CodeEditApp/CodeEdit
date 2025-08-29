@@ -58,7 +58,7 @@ struct TaskDropDownView: View {
         .background {
             Color(nsColor: colorScheme == .dark ? .white : .black)
                 .opacity(isHoveringTasks || isTaskPopOverPresented ? 0.05 : 0)
-                .clipShape(Capsule(style: .continuous))
+                .clipShape(Capsule())
         }
     }
 
