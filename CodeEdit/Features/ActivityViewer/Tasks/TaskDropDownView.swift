@@ -111,25 +111,20 @@ struct TaskDropDownView: View {
     }
 
     @ViewBuilder private var taskPopoverContent: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            if !taskManager.availableTasks.isEmpty {
-                ForEach(taskManager.availableTasks, id: \.id) { task in
-                    TasksPopoverMenuItem(taskManager: taskManager, task: task) {
-                        isTaskPopOverPresented = false
-                    }
+        if !taskManager.availableTasks.isEmpty {
+            ForEach(taskManager.availableTasks, id: \.id) { task in
+                TasksPopoverMenuItem(taskManager: taskManager, task: task) {
+                    isTaskPopOverPresented = false
                 }
-                Divider()
-                    .padding(.vertical, 5)
             }
-            OptionMenuItemView(label: "Add Task...") {
-                NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
-            }
-            OptionMenuItemView(label: "Manage Tasks...") {
-                NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
-            }
+            Divider()
+                .padding(.vertical, 5)
         }
-        .font(.subheadline)
-        .padding(5)
-        .frame(minWidth: 215)
+        OptionMenuItemView(label: "Add Task...") {
+            NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
+        }
+        OptionMenuItemView(label: "Manage Tasks...") {
+            NSApp.sendAction(#selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil)
+        }
     }
 }

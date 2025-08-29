@@ -134,29 +134,24 @@ struct SchemeDropDownView: View {
     }
 
     @ViewBuilder var popoverContent: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            WorkspaceMenuItemView(
-                workspaceFileManager: workspaceFileManager,
-                item: workspaceFileManager?.workspaceItem
-            )
-            Divider()
-                .padding(.vertical, 5)
-            Group {
-                OptionMenuItemView(label: "Add Folder...") {
-                    // TODO: Implment Add Folder
-                    print("NOT IMPLEMENTED")
-                }
-                .disabled(true)
-                OptionMenuItemView(label: "Workspace Settings...") {
-                    NSApp.sendAction(
-                        #selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil
-                    )
-                }
+        WorkspaceMenuItemView(
+            workspaceFileManager: workspaceFileManager,
+            item: workspaceFileManager?.workspaceItem
+        )
+        Divider()
+            .padding(.vertical, 5)
+        Group {
+            OptionMenuItemView(label: "Add Folder...") {
+                // TODO: Implment Add Folder
+                print("NOT IMPLEMENTED")
+            }
+            .disabled(true)
+            OptionMenuItemView(label: "Workspace Settings...") {
+                NSApp.sendAction(
+                    #selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil
+                )
             }
         }
-        .font(.subheadline)
-        .padding(5)
-        .frame(minWidth: 215)
     }
 }
 
