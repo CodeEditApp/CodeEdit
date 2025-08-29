@@ -64,7 +64,7 @@ struct SchemeDropDownView: View {
         HStack(spacing: 4) {
             label
             chevron
-                .padding(.leading, 1)
+                .offset(x: 2)
                 .opacity(isHoveringScheme || isSchemePopOverPresented ? 0.0 : 1.0)
         }
         .background {
