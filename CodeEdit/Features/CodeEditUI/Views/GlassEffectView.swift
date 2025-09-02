@@ -5,6 +5,8 @@
 //  Created by Khan Winter on 9/2/25.
 //
 
+import SwiftUI
+import AppKit
 
 struct GlassEffectView: NSViewRepresentable {
     func makeNSView(context: Context) -> NSView {
