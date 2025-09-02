@@ -85,15 +85,17 @@ final class CodeEditDocumentController: NSDocumentController {
         }
 
         super.openDocument(withContentsOf: url, display: displayDocument) { document, documentWasAlreadyOpen, error in
-            if let document {
-                self.addDocument(document)
-            } else {
-                let errorMessage = error?.localizedDescription ?? "unknown error"
-                print("Unable to open document '\(url)': \(errorMessage)")
-            }
+            MainActor.assumeIsolated {
+                if let document {
+                    self.addDocument(document)
+                } else {
+                    let errorMessage = error?.localizedDescription ?? "unknown error"
+                    print("Unable to open document '\(url)': \(errorMessage)")
+                }
 
-            RecentsStore.documentOpened(at: url)
-            completionHandler(document, documentWasAlreadyOpen, error)
+                RecentsStore.documentOpened(at: url)
+                completionHandler(document, documentWasAlreadyOpen, error)
+            }
         }
     }
 

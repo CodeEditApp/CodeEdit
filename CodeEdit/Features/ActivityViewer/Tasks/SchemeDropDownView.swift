@@ -32,36 +32,17 @@ struct SchemeDropDownView: View {
     }
 
     var body: some View {
-        HStack(spacing: 6) {
-            Image(systemName: "folder.badge.gearshape")
-                .imageScale(.medium)
-            Text(workspaceDisplayName)
-                .frame(minWidth: 0)
-        }
-        .opacity(activeState == .inactive ? 0.4 : 1.0)
-        .font(.subheadline)
-        .padding(.trailing, 11.5)
-        .padding(.horizontal, 2.5)
-        .padding(.vertical, 2.5)
-        .background {
-            Color(nsColor: colorScheme == .dark ? .white : .black)
-                .opacity(isHoveringScheme || isSchemePopOverPresented ? 0.05 : 0)
-                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
-            HStack {
-                Spacer()
-                if isHoveringScheme || isSchemePopOverPresented {
-                    chevronDown
-                        .padding(.trailing, 2)
-                } else {
-                    chevron
-                        .padding(.trailing, 4)
-                }
+        Group {
+            if #available(macOS 26, *) {
+                tahoe
+            } else {
+                seqouia
             }
         }
         .onHover(perform: { hovering in
             self.isHoveringScheme = hovering
         })
-        .instantPopover(isPresented: $isSchemePopOverPresented, arrowEdge: .bottom) {
+        .instantPopover(isPresented: $isSchemePopOverPresented, arrowEdge: .top) {
             popoverContent
         }
         .onTapGesture {
@@ -78,7 +59,65 @@ struct SchemeDropDownView: View {
         }
     }
 
-    private var chevron: some View {
+    @available(macOS 26, *)
+    @ViewBuilder private var tahoe: some View {
+        HStack(spacing: 4) {
+            label
+            chevron
+                .offset(x: 2)
+                .opacity(isHoveringScheme || isSchemePopOverPresented ? 0.0 : 1.0)
+        }
+        .background {
+            if isHoveringScheme || isSchemePopOverPresented {
+                HStack {
+                    Spacer()
+                    chevronDown
+                }
+            }
+        }
+        .padding(6)
+        .padding(.leading, 2) // apparently this is cummulative?
+        .background {
+            Color(nsColor: colorScheme == .dark ? .white : .black)
+                .opacity(isHoveringScheme || isSchemePopOverPresented ? 0.05 : 0)
+                .clipShape(Capsule())
+        }
+    }
+
+    @ViewBuilder private var seqouia: some View {
+        label
+            .padding(.trailing, 11.5)
+            .padding(.horizontal, 2.5)
+            .padding(.vertical, 2.5)
+            .background {
+                Color(nsColor: colorScheme == .dark ? .white : .black)
+                    .opacity(isHoveringScheme || isSchemePopOverPresented ? 0.05 : 0)
+                    .clipShape(RoundedRectangle(cornerSize: CGSize(width: 4, height: 4)))
+                HStack {
+                    Spacer()
+                    if isHoveringScheme || isSchemePopOverPresented {
+                        chevronDown
+                            .padding(.trailing, 2)
+                    } else {
+                        chevron
+                            .padding(.trailing, 4)
+                    }
+                }
+            }
+    }
+
+    @ViewBuilder private var label: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "folder.badge.gearshape")
+                .imageScale(.medium)
+            Text(workspaceDisplayName)
+                .frame(minWidth: 0)
+        }
+        .opacity(activeState == .inactive ? 0.4 : 1.0)
+        .font(.subheadline)
+    }
+
+    @ViewBuilder private var chevron: some View {
         Image(systemName: "chevron.compact.right")
             .font(.system(size: 9, weight: .medium, design: .default))
             .foregroundStyle(.secondary)
@@ -86,7 +125,7 @@ struct SchemeDropDownView: View {
             .imageScale(.large)
     }
 
-    private var chevronDown: some View {
+    @ViewBuilder private var chevronDown: some View {
         VStack(spacing: 1) {
             Image(systemName: "chevron.down")
         }
@@ -95,29 +134,24 @@ struct SchemeDropDownView: View {
     }
 
     @ViewBuilder var popoverContent: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            WorkspaceMenuItemView(
-                workspaceFileManager: workspaceFileManager,
-                item: workspaceFileManager?.workspaceItem
-            )
-            Divider()
-                .padding(.vertical, 5)
-            Group {
-                OptionMenuItemView(label: "Add Folder...") {
-                    // TODO: Implment Add Folder
-                    print("NOT IMPLEMENTED")
-                }
-                .disabled(true)
-                OptionMenuItemView(label: "Workspace Settings...") {
-                    NSApp.sendAction(
-                        #selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil
-                    )
-                }
+        WorkspaceMenuItemView(
+            workspaceFileManager: workspaceFileManager,
+            item: workspaceFileManager?.workspaceItem
+        )
+        Divider()
+            .padding(.vertical, 5)
+        Group {
+            OptionMenuItemView(label: "Add Folder...") {
+                // TODO: Implment Add Folder
+                print("NOT IMPLEMENTED")
+            }
+            .disabled(true)
+            OptionMenuItemView(label: "Workspace Settings...") {
+                NSApp.sendAction(
+                    #selector(CodeEditWindowController.openWorkspaceSettings(_:)), to: nil, from: nil
+                )
             }
         }
-        .font(.subheadline)
-        .padding(5)
-        .frame(minWidth: 215)
     }
 }
 

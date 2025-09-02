@@ -126,13 +126,13 @@ extension View {
     func instantPopover<Content: View>(
         isPresented: Binding<Bool>,
         arrowEdge: Edge = .bottom,
-        @ViewBuilder content: () -> Content
+        @ViewBuilder content: @escaping () -> Content
     ) -> some View {
         self.modifier(
             InstantPopoverModifier(
                 isPresented: isPresented,
                 arrowEdge: arrowEdge,
-                popoverContent: content()
+                popoverContent: PopoverContainer(content: content)
             )
         )
     }
