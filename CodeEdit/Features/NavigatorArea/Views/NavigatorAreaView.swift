@@ -43,5 +43,8 @@ struct NavigatorAreaView: View {
         .environmentObject(workspace)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("navigator")
+        .if(.tahoe) {
+            $0.background(GlassEffectView().ignoresSafeArea(.all))
+        }
     }
 }
