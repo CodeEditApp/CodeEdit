@@ -19,6 +19,7 @@ extension CodeEditWindowController {
             self.window?.toolbarStyle = .automatic
             toolbar.centeredItemIdentifiers = [.activityViewer, .notificationItem]
             toolbar.displayMode = .iconOnly
+            self.window?.titlebarAppearsTransparent = true
         } else {
             self.window?.toolbarStyle = .unifiedCompact
             toolbar.displayMode = .labelOnly
