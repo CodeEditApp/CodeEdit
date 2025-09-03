@@ -270,8 +270,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 TaskNotificationHandler.postTask(action: .create, model: task)
             }
 
-            try await withTimeout(
-                duration: .seconds(5.0),
+            try? await withTimeout(
+                duration: .seconds(2.0),
                 onTimeout: {
                     // Stop-gap measure to ensure we don't hang on CMD-Q
                     await self.lspService.killAllServers()

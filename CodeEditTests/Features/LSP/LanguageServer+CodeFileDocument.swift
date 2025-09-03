@@ -71,7 +71,8 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             ),
             lspPid: -1,
             serverCapabilities: capabilities,
-            rootPath: tempTestDir
+            rootPath: tempTestDir,
+            logContainer: LanguageServerLogContainer(language: .swift)
         )
         _ = try await server.lspInstance.initializeIfNeeded()
         return (connection: bufferingConnection, server: server)
@@ -231,13 +232,13 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             let (connection, server) = try await makeTestServer()
             // Create a CodeFileDocument to test with, attach it to the workspace and file
             let codeFile = try await openCodeFile(for: server, connection: connection, file: file, syncOption: option)
-            XCTAssertNotNil(server.openFiles.contentCoordinator(for: codeFile))
-            server.openFiles.contentCoordinator(for: codeFile)?.setUpUpdatesTask()
+            XCTAssertNotNil(codeFile.languageServerObjects.textCoordinator.languageServer)
+            codeFile.languageServerObjects.textCoordinator.setUpUpdatesTask()
             codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
 
             let textView = TextView(string: "")
             textView.setTextStorage(codeFile.content!)
-            textView.delegate = server.openFiles.contentCoordinator(for: codeFile)
+            textView.delegate = codeFile.languageServerObjects.textCoordinator
 
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "Worlld")
             textView.replaceCharacters(in: NSRange(location: 39, length: 6), with: "")
@@ -289,13 +290,13 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             let (connection, server) = try await makeTestServer()
             let codeFile = try await openCodeFile(for: server, connection: connection, file: file, syncOption: option)
 
-            XCTAssertNotNil(server.openFiles.contentCoordinator(for: codeFile))
-            server.openFiles.contentCoordinator(for: codeFile)?.setUpUpdatesTask()
+            XCTAssertNotNil(codeFile.languageServerObjects.textCoordinator.languageServer)
+            codeFile.languageServerObjects.textCoordinator.setUpUpdatesTask()
             codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
 
             let textView = TextView(string: "")
             textView.setTextStorage(codeFile.content!)
-            textView.delegate = server.openFiles.contentCoordinator(for: codeFile)
+            textView.delegate =  codeFile.languageServerObjects.textCoordinator
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "Worlld")
             textView.replaceCharacters(in: NSRange(location: 39, length: 6), with: "")
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "World")

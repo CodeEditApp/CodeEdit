@@ -43,6 +43,12 @@ enum Query {
         static func getUtilityArea(_ window: XCUIElement) -> XCUIElement {
             return window.descendants(matching: .any).matching(identifier: "UtilityArea").element
         }
+
+        static func getFirstEditor(_ window: XCUIElement) -> XCUIElement {
+            return window.descendants(matching: .any)
+                .matching(NSPredicate(format: "label CONTAINS[c] 'Text Editor'"))
+                .firstMatch
+        }
     }
 
     enum Navigator {

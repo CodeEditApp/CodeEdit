@@ -333,6 +333,8 @@ final class LSPService: ObservableObject {
 
 extension LSPService {
     private func notifyToInstallLanguageServer(language lspLanguage: LanguageIdentifier) {
+        // TODO: Re-Enable when this is more fleshed out (don't send duplicate notifications in a session)
+        return
         let lspLanguageTitle = lspLanguage.rawValue.capitalized
         let notificationTitle = "Install \(lspLanguageTitle) Language Server"
         // Make sure the user doesn't have the same existing notification

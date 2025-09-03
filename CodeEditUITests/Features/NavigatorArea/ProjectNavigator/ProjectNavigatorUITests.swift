@@ -35,6 +35,10 @@ final class ProjectNavigatorUITests: XCTestCase {
         let readmeTab = Query.TabBar.getTab(labeled: "README.md", tabBar)
         XCTAssertTrue(readmeTab.exists)
 
+        let readmeEditor = Query.Window.getFirstEditor(window)
+        XCTAssertTrue(readmeEditor.exists)
+        XCTAssertNotNil(readmeEditor.value as? String)
+
         let rowCount = navigator.descendants(matching: .outlineRow).count
 
         // Open a folder

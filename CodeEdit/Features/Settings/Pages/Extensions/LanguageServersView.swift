@@ -14,6 +14,8 @@ struct LanguageServersView: View {
     @State private var searchText: String = ""
     @State private var selectedInstall: PackageManagerInstallOperation?
 
+    @State private var showingInfoPanel = false
+
     var body: some View {
         Group {
             SettingsForm {
@@ -48,6 +50,11 @@ struct LanguageServersView: View {
                     .onChange(of: searchText) { newValue in
                         searchModel.searchTextUpdated(searchText: newValue, allItems: registryManager.registryItems)
                     }
+                } header: {
+                    Label(
+                        "Warning: Language server installation is experimental. Use at your own risk.",
+                        systemImage: "exclamationmark.triangle.fill"
+                    )
                 }
             }
             .sheet(item: $selectedInstall) { operation in
@@ -55,5 +62,22 @@ struct LanguageServersView: View {
             }
         }
         .environmentObject(registryManager)
+    }
+
+    private func getInfoString() -> AttributedString {
+        let string = "CodeEdit makes use of the Mason Registry for language server installation. To install a package, "
+        + "CodeEdit uses the package manager directed by the Mason Registry, and installs a copy of "
+        + "the language server in Application Support.\n\n"
+        + "Language server installation is still experimental, there may be bugs and expect this flow "
+        + "to change over time."
+
+        var attrString = AttributedString(string)
+
+        if let linkRange = attrString.range(of: "Mason Registry") {
+            attrString[linkRange].link = URL(string: "https://mason-registry.dev/")
+            attrString[linkRange].foregroundColor = NSColor.linkColor
+        }
+
+        return attrString
     }
 }

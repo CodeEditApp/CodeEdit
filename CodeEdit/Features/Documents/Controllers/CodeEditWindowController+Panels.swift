@@ -82,7 +82,7 @@ extension CodeEditWindowController {
                 isCollapsed: { self.workspace?.utilityAreaModel?.isCollapsed ?? true },
                 getPrevCollapsed: { self.prevUtilityAreaCollapsed },
                 setPrevCollapsed: { self.prevUtilityAreaCollapsed = $0 },
-                toggle: { CommandManager.shared.executeCommand("open.drawer") }
+                toggle: { self.workspace?.utilityAreaModel?.togglePanel(animation: false) }
             ),
             PanelDescriptor(
                 isCollapsed: { self.toolbarCollapsed },
