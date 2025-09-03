@@ -22,7 +22,21 @@ struct StatusBarView: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
-    static let height = 28.0
+    static var height: CGFloat {
+        if #available(macOS 26, *) {
+            37.0
+        } else {
+            29.0
+        }
+    }
+
+    private var trailingPadding: CGFloat {
+        if #available(macOS 26, *) {
+            8
+        } else {
+            0
+        }
+    }
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -43,8 +57,9 @@ struct StatusBarView: View {
             StatusBarToggleUtilityAreaButton()
         }
         .padding(.horizontal, 10)
+        .padding(.trailing, trailingPadding)
         .cursor(.resizeUpDown)
-        .frame(height: Self.height)
+        .frame(height: Self.height - 1.0)
         .background(.bar)
         .padding(.top, 1)
         .overlay(alignment: .top) {
