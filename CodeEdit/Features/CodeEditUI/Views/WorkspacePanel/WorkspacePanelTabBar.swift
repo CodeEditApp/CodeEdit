@@ -46,26 +46,35 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         }
     }
 
-    var topBody: some View {
+    @ViewBuilder var topBody: some View {
         GeometryReader { proxy in
             iconsView(size: proxy.size)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .animation(.default, value: items)
         }
         .clipped()
-        .frame(maxWidth: .infinity, idealHeight: 27)
+        .if(.tahoe) {
+            $0.frame(maxWidth: .infinity, idealHeight: 28).padding(.horizontal, 8)
+        } else: {
+            $0.frame(maxWidth: .infinity, idealHeight: 27)
+        }
         .fixedSize(horizontal: false, vertical: true)
     }
 
-    var sideBody: some View {
+    @ViewBuilder var sideBody: some View {
         GeometryReader { proxy in
             iconsView(size: proxy.size)
-                .padding(.vertical, 5)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .if(!.tahoe) {
+                    $0.padding(.vertical, 5).frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
                 .animation(.default, value: items)
         }
         .clipped()
-        .frame(idealWidth: 40, maxHeight: .infinity)
+        .if(.tahoe) {
+            $0.frame(idealWidth: 26, maxHeight: .infinity)
+        } else: {
+            $0.frame(idealWidth: 40, maxHeight: .infinity)
+        }
         .fixedSize(horizontal: true, vertical: false)
     }
 
@@ -74,47 +83,68 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         let layout = position == .top
             ? AnyLayout(HStackLayout(spacing: 0))
             : AnyLayout(VStackLayout(spacing: 0))
+
         layout {
-            ForEach(items) { tab in
-                makeIcon(tab: tab, size: size)
-                    .offset(
-                        x: (position == .top) ? (tabOffsets[tab] ?? 0) : 0,
-                        y: (position == .side) ? (tabOffsets[tab] ?? 0) : 0
-                    )
-                    .background(makeTabItemGeometryReader(tab: tab))
-                    .simultaneousGesture(makeAreaTabDragGesture(tab: tab))
+            if #available(macOS 26, *) {
+                ForEach(Array(items.enumerated()), id: \.element) { (idx, tab) in
+                    tabViewTahoe(tab, next: items[safe: idx + 1], size: size)
+                }
+            } else {
+                ForEach(items) { tab in
+                    tabView(tab, size: size)
+                }
             }
-            if position == .side {
+
+            if position == .side, #unavailable(macOS 26) {
                 Spacer()
+            }
+        }
+        .if(.tahoe) {
+            if #available(macOS 14.0, *) {
+                $0.background(GlassEffectView(tintColor: .secondarySystemFill)).clipShape(Capsule())
             }
         }
     }
 
-    private func makeIcon(
-        tab: Tab,
-        scale: Image.Scale = .medium,
-        size: CGSize
-    ) -> some View {
-        Button {
-            selection = tab
-        } label: {
-            getSafeImage(named: tab.systemImage, accessibilityDescription: tab.title)
-                .font(.system(size: 12.5))
-                .symbolVariant(tab == selection ? .fill : .none)
-                .help(tab.title)
-        }
-        .buttonStyle(
-            .icon(
-                isActive: tab == selection,
-                size: CGSize(
-                    width: position == .side ? 40 : 24,
-                    height: position == .side ? 28 : size.height
-                )
+    @ViewBuilder
+    private func tabView(_ tab: Tab, size: CGSize) -> some View {
+        IconButton(tab: tab, size: size, position: position, selection: $selection)
+            .offset(
+                x: (position == .top) ? (tabOffsets[tab] ?? 0) : 0,
+                y: (position == .side) ? (tabOffsets[tab] ?? 0) : 0
             )
-        )
-        .focusable(false)
-        .accessibilityIdentifier("WorkspacePanelTab-\(tab.title)")
-        .accessibilityLabel(tab.title)
+            .background(makeTabItemGeometryReader(tab: tab))
+            .simultaneousGesture(makeAreaTabDragGesture(tab: tab))
+    }
+
+    @available(macOS 26, *)
+    @ViewBuilder
+    private func tabViewTahoe(_ tab: Tab, next: Tab?, size: CGSize) -> some View {
+        let layout = position == .top
+            ? AnyLayout(HStackLayout(spacing: 0))
+            : AnyLayout(VStackLayout(spacing: 0))
+        let paddingDirection: Edge.Set = position == .top
+            ? .vertical
+            : .horizontal
+        let paddingAmount: CGFloat = position == .top
+            ? 5
+            : 2
+
+        IconButton(tab: tab, size: size, position: position, selection: $selection)
+            .offset(
+                x: (position == .top) ? (tabOffsets[tab] ?? 0) : 0,
+                y: (position == .side) ? (tabOffsets[tab] ?? 0) : 0
+            )
+            .background(makeTabItemGeometryReader(tab: tab))
+            .simultaneousGesture(makeAreaTabDragGesture(tab: tab))
+            .overlay { // overlay to avoid layout adjustment when appearing/disappearing
+                layout {
+                    Spacer()
+                    if tab != items.last && selection != tab && next != selection {
+                        Divider().padding(paddingDirection, paddingAmount)
+                    }
+                }
+            }
     }
 
     private func makeAreaTabDragGesture(tab: Tab) -> some Gesture {
@@ -287,15 +317,6 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
                 .onChange(of: geometry.size.width) { newWidth in
                     self.tabWidth[tab] = newWidth
                 }
-        }
-    }
-
-    private func getSafeImage(named: String, accessibilityDescription: String?) -> Image {
-        // We still use the NSImage init to check if a symbol with the name exists.
-        if NSImage(systemSymbolName: named, accessibilityDescription: nil) != nil {
-            return Image(systemName: named)
-        } else {
-            return Image(symbol: named)
         }
     }
 }
