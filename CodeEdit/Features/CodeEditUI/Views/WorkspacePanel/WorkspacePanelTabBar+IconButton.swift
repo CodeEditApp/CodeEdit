@@ -17,13 +17,21 @@ extension WorkspacePanelTabBar {
 
         @Binding var selection: Tab?
 
+        var symbolVariant: SymbolVariants {
+            if #unavailable(macOS 26), selection == tab {
+                .fill
+            } else {
+                .none
+            }
+        }
+
         var body: some View {
             Button {
                 selection = tab
             } label: {
                 getSafeImage(named: tab.systemImage, accessibilityDescription: tab.title)
                     .font(.system(size: 13))
-                    .symbolVariant(tab == selection ? .fill : .none)
+                    .symbolVariant(symbolVariant)
                     .help(tab.title)
                     .frame(maxWidth: .infinity)
             }

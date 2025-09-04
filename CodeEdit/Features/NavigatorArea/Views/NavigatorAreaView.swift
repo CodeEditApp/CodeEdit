@@ -38,7 +38,10 @@ struct NavigatorAreaView: View {
             viewModel: viewModel,
             selectedTab: $viewModel.selectedTab,
             tabItems: $viewModel.tabItems,
-            sidebarPosition: sidebarPosition
+            sidebarPosition: sidebarPosition,
+            bottomAccessory: {
+                viewModel.selectedTab?.bottomView(workspace: workspace)
+            }
         )
         .environmentObject(workspace)
         .accessibilityElement(children: .contain)

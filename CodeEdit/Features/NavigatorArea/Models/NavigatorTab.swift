@@ -60,4 +60,20 @@ enum NavigatorTab: WorkspacePanelTab {
             ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
         }
     }
+
+    @ViewBuilder func bottomView(workspace: WorkspaceDocument) -> some View {
+        switch self {
+        case .project:
+            ProjectNavigatorToolbarBottom()
+        case .sourceControl:
+            if let sourceControlManager = workspace.sourceControlManager {
+                SourceControlNavigatorToolbarBottom()
+                    .environmentObject(sourceControlManager)
+            }
+        case .search:
+            FindNavigatorToolbarBottom()
+        case .uiExtension:
+            EmptyView()
+        }
+    }
 }

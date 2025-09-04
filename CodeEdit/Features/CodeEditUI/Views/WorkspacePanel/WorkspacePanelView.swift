@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: View {
+struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject, BottomAccessory: View>: View {
     @ObservedObject var viewModel: ViewModel
     @Binding var selectedTab: Tab?
     @Binding var tabItems: [Tab]
@@ -19,6 +19,7 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: 
     var darkDivider: Bool
     let padSideItemVertically: Bool
     let sideOnTrailing: Bool
+    let bottomAccessory: BottomAccessory
 
     init(
         viewModel: ViewModel,
@@ -27,7 +28,8 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: 
         sidebarPosition: SettingsData.SidebarTabBarPosition,
         darkDivider: Bool = false,
         padSideItemVertically: Bool = false,
-        sideOnTrailing: Bool = false
+        sideOnTrailing: Bool = false,
+        @ViewBuilder bottomAccessory: () -> BottomAccessory
     ) {
         self.viewModel = viewModel
         self._selectedTab = selectedTab
@@ -40,12 +42,41 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: 
         } else {
             self.sideOnTrailing = false
         }
+        self.bottomAccessory = bottomAccessory()
+    }
+
+    init(
+        viewModel: ViewModel,
+        selectedTab: Binding<Tab?>,
+        tabItems: Binding<[Tab]>,
+        sidebarPosition: SettingsData.SidebarTabBarPosition,
+        darkDivider: Bool = false,
+        padSideItemVertically: Bool = false,
+        sideOnTrailing: Bool = false,
+    ) where BottomAccessory == EmptyView {
+        self.viewModel = viewModel
+        self._selectedTab = selectedTab
+        self._tabItems = tabItems
+        self.sidebarPosition = sidebarPosition
+        self.darkDivider = darkDivider
+        self.padSideItemVertically = padSideItemVertically
+        if #available(macOS 26, *) {
+            self.sideOnTrailing = sideOnTrailing
+        } else {
+            self.sideOnTrailing = false
+        }
+        self.bottomAccessory = EmptyView()
     }
 
     var body: some View {
         VStack(spacing: 0) {
             if let selection = selectedTab {
                 selection
+                    .safeAreaInset(edge: .bottom, spacing: 0) {
+                        if #unavailable(macOS 26) {
+                            bottomAccessory
+                        }
+                    }
             } else {
                 CEContentUnavailableView("No Selection")
             }
@@ -75,6 +106,11 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: 
                 }
             } else if !darkDivider, #unavailable(macOS 26) {
                 Divider()
+            }
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if #available(macOS 26, *) {
+                bottomAccessory
             }
         }
     }

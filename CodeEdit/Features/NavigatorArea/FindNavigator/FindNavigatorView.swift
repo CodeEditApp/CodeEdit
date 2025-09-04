@@ -86,9 +86,6 @@ struct FindNavigatorView: View {
                 )
             }
         }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            FindNavigatorToolbarBottom()
-        }
         .onReceive(state.$searchResult, perform: { value in
             self.foundFilesCount = value.count
         })

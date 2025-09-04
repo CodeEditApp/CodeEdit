@@ -146,8 +146,12 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
                 }
             }
     }
+}
 
-    private func makeAreaTabDragGesture(tab: Tab) -> some Gesture {
+// MARK: - Drag Gesture
+
+private extension WorkspacePanelTabBar {
+    func makeAreaTabDragGesture(tab: Tab) -> some Gesture {
         DragGesture(minimumDistance: 2, coordinateSpace: .global)
             .onChanged({ value in
                 if draggingTab != tab {
@@ -203,7 +207,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
             })
     }
 
-    private func initializeDragGesture(value: DragGesture.Value, for tab: Tab) {
+    func initializeDragGesture(value: DragGesture.Value, for tab: Tab) {
         draggingTab = tab
         let initialLocation = position == .top ? value.startLocation.x : value.startLocation.y
         draggingStartLocation = initialLocation
@@ -216,7 +220,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
     }
 
     // swiftlint:disable:next function_parameter_count
-    private func swapTab(
+    func swapTab(
         tab: Tab,
         currentIndex: Int,
         currentLocation: CGFloat,
@@ -267,7 +271,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         }
     }
 
-    private func isWithinPrevTopBounds(
+    func isWithinPrevTopBounds(
         _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat
     ) -> Bool {
         return curLocation < max(
@@ -276,7 +280,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         )
     }
 
-    private func isWithinNextTopBounds(
+    func isWithinNextTopBounds(
         _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat, _ curWidth: CGFloat
     ) -> Bool {
         return curLocation > min(
@@ -285,7 +289,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         )
     }
 
-    private func isWithinPrevBottomBounds(
+    func isWithinPrevBottomBounds(
         _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat
     ) -> Bool {
         return curLocation < max(
@@ -294,7 +298,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         )
     }
 
-    private func isWithinNextBottomBounds(
+    func isWithinNextBottomBounds(
         _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat, _ curWidth: CGFloat
     ) -> Bool {
         return curLocation > min(
@@ -303,7 +307,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         )
     }
 
-    private func makeTabItemGeometryReader(tab: Tab) -> some View {
+    func makeTabItemGeometryReader(tab: Tab) -> some View {
         GeometryReader { geometry in
             Rectangle()
                 .foregroundColor(.clear)

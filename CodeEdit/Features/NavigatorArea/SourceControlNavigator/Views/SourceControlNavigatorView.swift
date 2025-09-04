@@ -14,7 +14,7 @@ struct SourceControlNavigatorView: View {
     var fetchRefreshServerStatus
 
     var body: some View {
-        if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager {
+        if let sourceControlManager = workspace.sourceControlManager {
             VStack(spacing: 0) {
                 SourceControlNavigatorTabs()
                     .environmentObject(sourceControlManager)
@@ -30,10 +30,6 @@ struct SourceControlNavigatorView: View {
                             // TODO: if source fetching fails, display message
                         }
                     }
-            }
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                SourceControlNavigatorToolbarBottom()
-                    .environmentObject(sourceControlManager)
             }
         }
     }
