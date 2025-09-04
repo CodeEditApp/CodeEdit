@@ -61,7 +61,8 @@ enum NavigatorTab: WorkspacePanelTab {
         }
     }
 
-    @ViewBuilder func bottomView(workspace: WorkspaceDocument) -> some View {
+    @ViewBuilder
+    func bottomView(workspace: WorkspaceDocument) -> some View {
         switch self {
         case .project:
             ProjectNavigatorToolbarBottom()
