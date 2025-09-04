@@ -19,6 +19,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
     private weak var windowRef: NSWindow?
     private unowned var hapticPerformer: NSHapticFeedbackPerformer
 
+    private weak var navigatorItem: NSSplitViewItem?
+
     // MARK: - Initialization
 
     init(
@@ -66,6 +68,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .environmentObject(editorManager)
         })
 
+        self.navigatorItem = navigator
         addSplitViewItem(navigator)
 
         let workspaceView = SettingsInjector {
@@ -120,6 +123,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         super.viewWillAppear()
 
         guard let workspace else { return }
+        workspace.notificationPanel.updateToolbarItem()
 
         let navigatorWidth = workspace.getFromWorkspaceState(.splitViewWidth) as? CGFloat
         splitView.setPosition(navigatorWidth ?? Self.minSidebarWidth, ofDividerAt: 0)
@@ -135,8 +139,6 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .inspectorCollapsed
             ) as? Bool ?? true
         }
-
-        workspace.notificationPanel.updateToolbarItem()
     }
 
     // MARK: - NSSplitViewDelegate
@@ -200,8 +202,14 @@ final class CodeEditSplitViewController: NSSplitViewController {
         }
 
         if resizedDivider == 0 {
-            let panel = splitView.subviews[0]
-            let width = panel.frame.size.width
+            let width: CGFloat
+            if #available(macOS 26, *) {
+                let panel = splitViewItems[0]
+                width = panel.viewController.view.frame.size.width
+            } else {
+                let panel = splitView.subviews[0]
+                width = panel.frame.size.width
+            }
             if width > 0 {
                 workspace?.addToWorkspaceState(key: .splitViewWidth, value: width)
             }
