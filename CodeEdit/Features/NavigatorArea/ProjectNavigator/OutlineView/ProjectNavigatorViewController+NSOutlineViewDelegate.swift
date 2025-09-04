@@ -181,4 +181,17 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         }
         return ""
     }
+
+    func outlineView(_ outlineView: NSOutlineView, tintConfigurationForItem item: Any) -> NSTintConfiguration? {
+        NSTintConfiguration(fixedColor: NSColor(name: nil, dynamicProvider: { appearance in
+            switch appearance.name {
+            case .darkAqua, .vibrantDark:
+                    .white
+            case .aqua, .vibrantLight:
+                    .black
+            default:
+                    .black
+            }
+        }))
+    }
 }
