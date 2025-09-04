@@ -77,30 +77,16 @@ final class ProjectNavigatorViewController: NSViewController {
         self.view = scrollView
 
         self.outlineView = ProjectNavigatorNSOutlineView()
-        self.outlineView.style = .inset
-        self.outlineView.dataSource = self
-        self.outlineView.delegate = self
-        self.outlineView.autosaveExpandedItems = true
-        self.outlineView.autosaveName = workspace?.workspaceFileManager?.folderUrl.path ?? ""
-        self.outlineView.headerView = nil
-        self.outlineView.menu = ProjectNavigatorMenu(self)
-        self.outlineView.menu?.delegate = self
-        self.outlineView.doubleAction = #selector(onItemDoubleClicked)
-        self.outlineView.allowsMultipleSelection = true
-
-        self.outlineView.setAccessibilityIdentifier("ProjectNavigator")
-        self.outlineView.setAccessibilityLabel("Project Navigator")
-
-        let column = NSTableColumn(identifier: .init(rawValue: "Cell"))
-        column.title = "Cell"
-        outlineView.addTableColumn(column)
-
-        outlineView.setDraggingSourceOperationMask(.move, forLocal: false)
-        outlineView.registerForDraggedTypes([.fileURL])
+        configureOutlineView()
 
         scrollView.documentView = outlineView
         scrollView.contentView.automaticallyAdjustsContentInsets = false
-        scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
+        if #available(macOS 26, *) {
+            scrollView.clipsToBounds = false
+            scrollView.contentView.clipsToBounds = false
+        } else {
+            scrollView.contentView.contentInsets = .init(top: 10, left: 0, bottom: 0, right: 0)
+        }
         scrollView.scrollerStyle = .overlay
         scrollView.hasVerticalScroller = true
         scrollView.hasHorizontalScroller = false
@@ -128,6 +114,32 @@ final class ProjectNavigatorViewController: NSViewController {
             noResultsLabel.centerXAnchor.constraint(equalTo: outlineView.centerXAnchor),
             noResultsLabel.centerYAnchor.constraint(equalTo: outlineView.centerYAnchor)
         ])
+    }
+
+    private func configureOutlineView() {
+        if #available(macOS 26, *) {
+            self.outlineView.style = .inset
+            self.outlineView.clipsToBounds = false
+        }
+        self.outlineView.dataSource = self
+        self.outlineView.delegate = self
+        self.outlineView.autosaveExpandedItems = true
+        self.outlineView.autosaveName = workspace?.workspaceFileManager?.folderUrl.path ?? ""
+        self.outlineView.headerView = nil
+        self.outlineView.menu = ProjectNavigatorMenu(self)
+        self.outlineView.menu?.delegate = self
+        self.outlineView.doubleAction = #selector(onItemDoubleClicked)
+        self.outlineView.allowsMultipleSelection = true
+
+        self.outlineView.setAccessibilityIdentifier("ProjectNavigator")
+        self.outlineView.setAccessibilityLabel("Project Navigator")
+
+        let column = NSTableColumn(identifier: .init(rawValue: "Cell"))
+        column.title = "Cell"
+        outlineView.addTableColumn(column)
+
+        outlineView.setDraggingSourceOperationMask(.move, forLocal: false)
+        outlineView.registerForDraggedTypes([.fileURL])
     }
 
     init() {

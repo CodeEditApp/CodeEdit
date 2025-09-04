@@ -114,6 +114,9 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject, B
                 Divider()
             }
         }
+        .if(.tahoe) {
+            $0.clipped()
+        }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             if #available(macOS 26, *) {
                 bottomAccessory
