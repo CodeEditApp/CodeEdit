@@ -16,6 +16,7 @@ struct GlassEffectView: NSViewRepresentable {
     }
 
     func makeNSView(context: Context) -> NSView {
+#if compiler(>=6.2)
         if #available(macOS 26, *) {
             let view = NSGlassEffectView()
             view.cornerRadius = 0
@@ -24,11 +25,16 @@ struct GlassEffectView: NSViewRepresentable {
         } else {
             return NSView()
         }
+#else
+        return NSView()
+#endif
     }
 
     func updateNSView(_ nsView: NSView, context: Context) {
+#if compiler(>=6.2)
         if #available(macOS 26, *), let view = nsView as? NSGlassEffectView {
             view.tintColor = tintColor
         }
+#endif
     }
 }
