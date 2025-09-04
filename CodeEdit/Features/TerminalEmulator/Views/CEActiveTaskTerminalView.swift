@@ -11,11 +11,9 @@ import SwiftTerm
 class CEActiveTaskTerminalView: CELocalShellTerminalView {
     var activeTask: CEActiveTask
 
-    private var cachedCaretColor: NSColor?
     var isUserCommandRunning: Bool {
         activeTask.status == .running || activeTask.status == .stopped
     }
-    private var enableOutput: Bool = false
 
     init(activeTask: CEActiveTask) {
         self.activeTask = activeTask

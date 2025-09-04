@@ -50,4 +50,42 @@ enum InstallationMethod: Equatable {
             return nil
         }
     }
+
+    func packageManager(installPath: URL) -> PackageManagerProtocol? {
+        switch packageManagerType {
+        case .npm:
+            return NPMPackageManager(installationDirectory: installPath)
+        case .cargo:
+            return CargoPackageManager(installationDirectory: installPath)
+        case .pip:
+            return PipPackageManager(installationDirectory: installPath)
+        case .golang:
+            return GolangPackageManager(installationDirectory: installPath)
+        case .github, .sourceBuild:
+            return GithubPackageManager(installationDirectory: installPath)
+        case .nuget, .opam, .gem, .composer:
+            // TODO: IMPLEMENT OTHER PACKAGE MANAGERS
+            return nil
+        default:
+            return nil
+        }
+    }
+
+    var installerDescription: String {
+        guard let packageManagerType else { return "Unknown" }
+        switch packageManagerType {
+        case .npm, .cargo, .golang, .pip, .sourceBuild, .github:
+            return packageManagerType.userDescription
+        case .nuget, .opam, .gem, .composer:
+            return "(Unsupported) \(packageManagerType.userDescription)"
+        }
+    }
+
+    var packageDescription: String? {
+        guard let packageName else { return nil }
+        if let version {
+            return "\(packageName)@\(version)"
+        }
+        return packageName
+    }
 }
