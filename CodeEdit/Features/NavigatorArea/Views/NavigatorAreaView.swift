@@ -39,6 +39,13 @@ struct NavigatorAreaView: View {
             selectedTab: $viewModel.selectedTab,
             tabItems: $viewModel.tabItems,
             sidebarPosition: sidebarPosition,
+            sidebarPadding: {
+                if sidebarPosition == .side {
+                    return (.trailing, 8)
+                }
+
+                return ([], 0)
+            },
             bottomAccessory: {
                 viewModel.selectedTab?.bottomView(workspace: workspace)
             }

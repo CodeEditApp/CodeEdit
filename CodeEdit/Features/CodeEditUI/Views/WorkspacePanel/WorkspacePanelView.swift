@@ -19,6 +19,7 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject, B
     var darkDivider: Bool
     let padSideItemVertically: Bool
     let sideOnTrailing: Bool
+    let sidebarPadding: () -> (Edge.Set, CGFloat)
     let bottomAccessory: BottomAccessory
 
     init(
@@ -29,6 +30,7 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject, B
         darkDivider: Bool = false,
         padSideItemVertically: Bool = false,
         sideOnTrailing: Bool = false,
+        sidebarPadding: @escaping () -> (Edge.Set, CGFloat) = { ([], 0) },
         @ViewBuilder bottomAccessory: () -> BottomAccessory
     ) {
         self.viewModel = viewModel
@@ -42,6 +44,7 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject, B
         } else {
             self.sideOnTrailing = false
         }
+        self.sidebarPadding = sidebarPadding
         self.bottomAccessory = bottomAccessory()
     }
 
@@ -52,6 +55,7 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject, B
         sidebarPosition: SettingsData.SidebarTabBarPosition,
         darkDivider: Bool = false,
         padSideItemVertically: Bool = false,
+        sidebarPadding: @escaping () -> (Edge.Set, CGFloat) = { ([], 0) },
         sideOnTrailing: Bool = false,
     ) where BottomAccessory == EmptyView {
         self.viewModel = viewModel
@@ -65,6 +69,7 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject, B
         } else {
             self.sideOnTrailing = false
         }
+        self.sidebarPadding = sidebarPadding
         self.bottomAccessory = EmptyView()
     }
 
@@ -83,12 +88,12 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject, B
         }
         .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side && !sideOnTrailing {
-                sideTabBar
+                sideTabBar.padding(sidebarPadding().0, sidebarPadding().1)
             }
         }
         .safeAreaInset(edge: .trailing, spacing: 0) {
             if sidebarPosition == .side && sideOnTrailing {
-                sideTabBar
+                sideTabBar.padding(sidebarPadding().0, sidebarPadding().1)
             }
         }
         .safeAreaInset(edge: .top, spacing: 0) {
@@ -104,6 +109,7 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject, B
                         Divider()
                     }
                 }
+                .padding(sidebarPadding().0, sidebarPadding().1)
             } else if !darkDivider, #unavailable(macOS 26) {
                 Divider()
             }
