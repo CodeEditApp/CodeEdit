@@ -50,6 +50,7 @@ struct NavigatorAreaView: View {
                 viewModel.selectedTab?.bottomView(workspace: workspace)
             }
         )
+        .listStyle(.inset)
         .environmentObject(workspace)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("navigator")

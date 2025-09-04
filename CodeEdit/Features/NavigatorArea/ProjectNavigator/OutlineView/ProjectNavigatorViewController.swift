@@ -77,6 +77,7 @@ final class ProjectNavigatorViewController: NSViewController {
         self.view = scrollView
 
         self.outlineView = ProjectNavigatorNSOutlineView()
+        self.outlineView.style = .inset
         self.outlineView.dataSource = self
         self.outlineView.delegate = self
         self.outlineView.autosaveExpandedItems = true
