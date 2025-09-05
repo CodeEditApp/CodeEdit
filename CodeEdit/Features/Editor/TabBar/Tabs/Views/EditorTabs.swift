@@ -341,21 +341,27 @@ struct EditorTabs: View {
                 // To fill up the parent space of tab bar.
                 .frame(maxWidth: .infinity)
             }
-            .overlay(alignment: .leading) {
-                EditorTabsOverflowShadow(
-                    width: colorScheme == .dark ? 5 : 7,
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .opacity(scrollOffset >= 0 ? 0 : 1)
-            }
-            .overlay(alignment: .trailing) {
-                EditorTabsOverflowShadow(
-                    width: colorScheme == .dark ? 5 : 7,
-                    startPoint: .trailing,
-                    endPoint: .leading
-                )
-                .opacity((scrollTrailingOffset ?? 0) <= 0 ? 0 : 1)
+            .if(.tahoe) {
+                if #available(macOS 26.0, *) {
+                    $0.background(GlassEffectView(tintColor: .secondarySystemFill)).clipShape(Capsule())
+                }
+            } else: {
+                $0.overlay(alignment: .leading) {
+                    EditorTabsOverflowShadow(
+                        width: colorScheme == .dark ? 5 : 7,
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .opacity(scrollOffset >= 0 ? 0 : 1)
+                }
+                .overlay(alignment: .trailing) {
+                    EditorTabsOverflowShadow(
+                        width: colorScheme == .dark ? 5 : 7,
+                        startPoint: .trailing,
+                        endPoint: .leading
+                    )
+                    .opacity((scrollTrailingOffset ?? 0) <= 0 ? 0 : 1)
+                }
             }
         }
     }

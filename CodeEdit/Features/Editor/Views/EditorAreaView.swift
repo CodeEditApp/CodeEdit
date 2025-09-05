@@ -19,6 +19,18 @@ struct EditorAreaView: View {
     @AppSettings(\.general.dimEditorsWithoutFocus)
     var dimEditorsWithoutFocus
 
+    @AppSettings(\.theme.useThemeBackground)
+    var useThemeBackground
+
+    private var backgroundColor: NSColor {
+        let fallback = NSColor.textBackgroundColor
+        return if useThemeBackground {
+            ThemeModel.shared.selectedTheme?.editor.background.nsColor ?? fallback
+        } else {
+            fallback
+        }
+    }
+
     @ObservedObject var editor: Editor
 
     @FocusState.Binding var focus: Editor?
@@ -111,7 +123,9 @@ struct EditorAreaView: View {
                         EditorTabBarView(hasTopInsets: topSafeArea > 0, codeFile: fileBinding)
                             .id("TabBarView" + editor.id.uuidString)
                             .environmentObject(editor)
-                        Divider()
+                        if #unavailable(macOS 26) {
+                            Divider()
+                        }
                     }
                     if showEditorJumpBar {
                         EditorJumpBarView(
@@ -129,7 +143,8 @@ struct EditorAreaView: View {
                     }
                 }
                 .environment(\.isActiveEditor, editor == editorManager.activeEditor)
-                .background(EffectView(.headerView))
+//                .background(EffectView(.headerView))
+                .background(GlassEffectView())
             }
         }
         .focused($focus, equals: editor)
