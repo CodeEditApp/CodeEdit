@@ -193,6 +193,16 @@ struct EditorTabView: View {
                 }
             }
         }
+        .onAppear {
+            NSEvent.addLocalMonitorForEvents(matching: .otherMouseDown) { event in
+                if self.isHovering && event.type == .otherMouseDown && event.buttonNumber == 2 {
+                    DispatchQueue.main.async {
+                        editor.closeTab(file: tabFile)
+                    }
+                }
+                return event
+            }
+        }
     }
 
     var body: some View {
