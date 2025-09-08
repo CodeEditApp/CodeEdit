@@ -18,7 +18,7 @@ struct EditorAreaView: View {
 
     @AppSettings(\.general.dimEditorsWithoutFocus)
     var dimEditorsWithoutFocus
-
+    
     @AppSettings(\.theme.useThemeBackground)
     var useThemeBackground
 
@@ -111,7 +111,7 @@ struct EditorAreaView: View {
                 } set: { newFile in
                     codeFile = { [weak newFile] in newFile }
                 }
-
+                
                 VStack(spacing: 0) {
                     if topSafeArea > 0 {
                         Rectangle()
@@ -143,8 +143,14 @@ struct EditorAreaView: View {
                     }
                 }
                 .environment(\.isActiveEditor, editor == editorManager.activeEditor)
-//                .background(EffectView(.headerView))
-                .background(GlassEffectView())
+//                .background(EffectView(.headerView, blendingMode: .withinWindow).ignoresSafeArea())
+                .if(.tahoe) {
+                    if #available(macOS 26, *) {
+                        $0.background(
+                            EffectView(.headerView, blendingMode: .withinWindow, emphasized: true).ignoresSafeArea()
+                        )
+                    }
+                }
             }
         }
         .focused($focus, equals: editor)
