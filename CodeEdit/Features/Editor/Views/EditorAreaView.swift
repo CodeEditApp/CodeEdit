@@ -111,7 +111,9 @@ struct EditorAreaView: View {
                         EditorTabBarView(hasTopInsets: topSafeArea > 0, codeFile: fileBinding)
                             .id("TabBarView" + editor.id.uuidString)
                             .environmentObject(editor)
-                        Divider()
+                        if #unavailable(macOS 26) {
+                            Divider()
+                        }
                     }
                     if showEditorJumpBar {
                         EditorJumpBarView(
@@ -125,6 +127,12 @@ struct EditorAreaView: View {
                         }
                         .environmentObject(editor)
                         .padding(.top, shouldShowTabBar ? -1 : 0)
+                        if #unavailable(macOS 26) {
+                            Divider()
+                        }
+                    }
+                    // On Tahoe we only show one divider
+                    if #available(macOS 26, *), shouldShowTabBar || showEditorJumpBar {
                         Divider()
                     }
                 }
