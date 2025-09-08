@@ -22,6 +22,8 @@ struct StatusBarView: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
+
     static var height: CGFloat {
         if #available(macOS 26, *) {
             37.0
@@ -48,6 +50,18 @@ struct StatusBarView: View {
     /// The actual status bar
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
+            ForEach(utilityAreaViewModel.tabItems) { tab in
+                Button {
+                    utilityAreaViewModel.selectedTab = tab
+                } label: {
+                    Image(systemName: tab.systemImage)
+                        .foregroundStyle(Color(
+                            utilityAreaViewModel.selectedTab == tab ? .controlAccentColor : .secondaryLabelColor
+                        ))
+                }
+                .buttonStyle(.icon)
+                .help(tab.title)
+            }
 //            StatusBarBreakpointButton()
 //            StatusBarDivider()
             Spacer()
