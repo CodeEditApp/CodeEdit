@@ -2,7 +2,7 @@
 //  View+if.swift
 //  CodeEdit
 //
-//  Created by Khan Winter on 9/5/25.
+//  Created by Khan Winter on 8/28/25.
 //
 
 import SwiftUI
@@ -42,11 +42,11 @@ extension View {
 }
 
 extension Bool {
-    static var tahoe: Bool {
-        if #available(macOS 26, *) {
-            return true
-        } else {
-            return false
-        }
-    }
-}
+     static var tahoe: Bool {
+         if #available(macOS 26, *) {
+             return true
+         } else {
+             return false
+         }
+     }
+ }

@@ -121,4 +121,6 @@ extension NSToolbarItem.Identifier {
     static let branchPicker: NSToolbarItem.Identifier = NSToolbarItem.Identifier("BranchPicker")
     static let activityViewer: NSToolbarItem.Identifier = NSToolbarItem.Identifier("ActivityViewer")
     static let notificationItem = NSToolbarItem.Identifier("notificationItem")
+
+    static let taskSidebarItem: NSToolbarItem.Identifier = NSToolbarItem.Identifier("TaskSidebarItem")
 }

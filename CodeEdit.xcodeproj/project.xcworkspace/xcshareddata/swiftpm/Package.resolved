@@ -285,8 +285,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tree-sitter/tree-sitter",
       "state" : {
-        "revision" : "bf655c0beaf4943573543fa77c58e8006ff34971",
-        "version" : "0.25.6"
+        "revision" : "f2f197b6b27ce75c280c20f131d4f71e906b86f7",
+        "version" : "0.25.8"
       }
     },
     {

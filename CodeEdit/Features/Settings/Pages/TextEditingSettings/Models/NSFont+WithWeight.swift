@@ -44,7 +44,7 @@ extension NSFont {
     }
 }
 
-extension NSFont.Weight: Codable {
+extension NSFont.Weight: @retroactive Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(self.rawValue)

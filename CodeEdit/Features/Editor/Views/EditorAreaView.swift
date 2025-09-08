@@ -18,18 +18,6 @@ struct EditorAreaView: View {
 
     @AppSettings(\.general.dimEditorsWithoutFocus)
     var dimEditorsWithoutFocus
-    
-    @AppSettings(\.theme.useThemeBackground)
-    var useThemeBackground
-
-    private var backgroundColor: NSColor {
-        let fallback = NSColor.textBackgroundColor
-        return if useThemeBackground {
-            ThemeModel.shared.selectedTheme?.editor.background.nsColor ?? fallback
-        } else {
-            fallback
-        }
-    }
 
     @ObservedObject var editor: Editor
 
@@ -111,7 +99,7 @@ struct EditorAreaView: View {
                 } set: { newFile in
                     codeFile = { [weak newFile] in newFile }
                 }
-                
+
                 VStack(spacing: 0) {
                     if topSafeArea > 0 {
                         Rectangle()
@@ -123,9 +111,7 @@ struct EditorAreaView: View {
                         EditorTabBarView(hasTopInsets: topSafeArea > 0, codeFile: fileBinding)
                             .id("TabBarView" + editor.id.uuidString)
                             .environmentObject(editor)
-                        if #unavailable(macOS 26) {
-                            Divider()
-                        }
+                        Divider()
                     }
                     if showEditorJumpBar {
                         EditorJumpBarView(
@@ -143,13 +129,12 @@ struct EditorAreaView: View {
                     }
                 }
                 .environment(\.isActiveEditor, editor == editorManager.activeEditor)
-//                .background(EffectView(.headerView, blendingMode: .withinWindow).ignoresSafeArea())
                 .if(.tahoe) {
-                    if #available(macOS 26, *) {
-                        $0.background(
-                            EffectView(.headerView, blendingMode: .withinWindow, emphasized: true).ignoresSafeArea()
-                        )
-                    }
+                    // FB20047271: Glass toolbar effect ignores floating scroll view views.
+                    // https://openradar.appspot.com/radar?id=EhAKBVJhZGFyEICAgKbGmesJ
+                    $0.background(EffectView(.headerView).ignoresSafeArea(.all))
+                } else: {
+                    $0.background(EffectView(.headerView))
                 }
             }
         }
