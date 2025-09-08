@@ -26,6 +26,20 @@ struct NavigatorFilterView<
     let leadingAccessories: LeadingAccessories
     let trailingAccessories: TrailingAccessories
 
+    /// Indicates that the filter view should have more emphasis, when it's focused or has a value.
+    private var shouldEmphasize: Bool {
+        isFocused || !text.isEmpty || hasValue
+    }
+
+    /// The border width to use, changes based on macOS version.
+    private var strokeWidth: CGFloat {
+        if #available(macOS 26, *) {
+            1.0
+        } else {
+            1.25
+        }
+    }
+
     init(
         text: Binding<String>,
         hasValue: (() -> Bool)? = nil,
@@ -96,7 +110,7 @@ struct NavigatorFilterView<
         )
         .overlay(
             Capsule()
-                .stroke(isFocused || !text.isEmpty || hasValue ? .tertiary : .quaternary, lineWidth: 1.25)
+                .stroke(shouldEmphasize ? .tertiary : .quaternary, lineWidth: strokeWidth)
                 .clipShape(Capsule())
                 .disabled(true)
                 .edgesIgnoringSafeArea(.all)
@@ -112,13 +126,15 @@ struct NavigatorFilterView<
         _ isFocused: Bool = false
     ) -> some View {
         if self.controlActive != .inactive || !text.isEmpty || hasValue {
-            if isFocused || !text.isEmpty || hasValue {
+            if shouldEmphasize {
                 Color(.textBackgroundColor)
             } else {
                 if colorScheme == .light {
                     Color.black.opacity(0.06)
-                } else {
+                } else if #unavailable(macOS 26) {
                     Color.white.opacity(0.24)
+                } else {
+                    Color.white.opacity(0.09)
                 }
             }
         } else {
