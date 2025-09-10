@@ -96,6 +96,16 @@ final class SplitViewController: NSSplitViewController {
         override var dividerThickness: CGFloat {
             customDividerStyle.customThickness ?? super.dividerThickness
         }
+
+        override func drawDivider(in rect: NSRect) {
+            let safeRect = NSRect(
+                x: rect.origin.x,
+                y: max(rect.origin.y, safeAreaRect.origin.y),
+                width: isVertical ? dividerThickness : rect.width,
+                height: isVertical ? safeAreaRect.height : dividerThickness
+            )
+            super.drawDivider(in: safeRect)
+        }
     }
 
     var items: [SplitViewItem] = []

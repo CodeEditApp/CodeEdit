@@ -30,6 +30,9 @@ struct EditorAreaView: View {
     @Environment(\.window.value)
     private var window: NSWindow?
 
+    @Environment(\.isEditorLayoutAtEdge)
+    private var isAtEdge
+
     init(editor: Editor, focus: FocusState<Editor?>.Binding) {
         self.editor = editor
         self._focus = focus
@@ -101,6 +104,10 @@ struct EditorAreaView: View {
                 }
 
                 VStack(spacing: 0) {
+                    if isAtEdge != .top, #available(macOS 26, *) {
+                        Spacer().frame(height: 4)
+                    }
+
                     if topSafeArea > 0 {
                         Rectangle()
                             .fill(.clear)
@@ -167,7 +174,6 @@ struct EditorAreaView: View {
                     // )
                     // ```
                     // When we can figure out how to disable the 'not focused' glass effect.
-
                     $0.background(EffectView(.headerView).ignoresSafeArea(.all))
                 } else: {
                     $0.background(EffectView(.headerView))
