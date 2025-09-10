@@ -18,6 +18,18 @@ struct EditorAreaView: View {
 
     @AppSettings(\.general.dimEditorsWithoutFocus)
     var dimEditorsWithoutFocus
+    
+    @AppSettings(\.theme.useThemeBackground)
+    var useThemeBackground
+
+    private var backgroundColor: NSColor {
+        let fallback = NSColor.textBackgroundColor
+        return if useThemeBackground {
+            ThemeModel.shared.selectedTheme?.editor.background.nsColor ?? fallback
+        } else {
+            fallback
+        }
+    }
 
     @ObservedObject var editor: Editor
 
