@@ -36,11 +36,25 @@ extension GitClient {
     /// - Throws: Can throw ``GitClient/GitClientError`` errors if it finds unexpected output.
     func getStatus() async throws -> Status {
         let output = try await run("status -z --porcelain=2 -u")
+        return try parseStatusString(output)
+    }
+
+    /// Parses a status string from ``getStatus()`` and returns a ``Status`` object if possible.
+    /// - Parameter output: The git output from running `status`. Expects a porcelain v2 string.
+    /// - Returns: A status object if parseable.
+    func parseStatusString(_ output: borrowing String) throws -> Status {
+        let endsInNull = output.last == Character(UnicodeScalar(0))
+        let endIndex: String.Index
+        if endsInNull && output.count > 1 {
+            endIndex = output.index(before: output.endIndex)
+        } else {
+            endIndex = output.endIndex
+        }
 
         var status = Status(changedFiles: [], unmergedChanges: [], untrackedFiles: [])
 
         var index = output.startIndex
-        while index < output.endIndex {
+        while index < endIndex {
             let typeIndex = index
 
             // Move ahead no matter what.
@@ -100,7 +114,11 @@ extension GitClient {
             }
             index = newIndex
         }
-        index = output.index(after: index)
+        defer {
+            if index < output.index(before: output.endIndex) {
+                index = output.index(after: index)
+            }
+        }
         return output[startIndex..<index]
     }
 
@@ -147,7 +165,8 @@ extension GitClient {
             try moveToNextSpace(from: &index, output: output)
         }
         try moveOneChar(from: &index, output: output)
-        let filename = String(try substringToNextNull(from: &index, output: output))
+        let substring = try substringToNextNull(from: &index, output: output)
+        let filename = String(substring)
         return GitChangedFile(
             status: status,
             stagedStatus: stagedStatus,
