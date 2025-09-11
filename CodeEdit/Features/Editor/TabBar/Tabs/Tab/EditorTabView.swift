@@ -45,7 +45,7 @@ struct EditorTabView: View {
     ///
     /// By default, this value is `false`. When the root view is appeared, it turns `true`.
     @State private var isAppeared: Bool = false
-    
+
     @State private var keyMonitor: Any?
 
     /// The id associating with the tab that is currently being dragged.
