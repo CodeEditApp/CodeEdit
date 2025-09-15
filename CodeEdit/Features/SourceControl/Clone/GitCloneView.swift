@@ -28,13 +28,12 @@ struct GitCloneView: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            HStack {
+            HStack(alignment: .top) {
                 Image(nsImage: NSApp.applicationIconImage)
                     .resizable()
                     .frame(width: 64, height: 64)
-                    .padding(.bottom, 50)
                 VStack(alignment: .leading) {
-                    Text("Clone a repository")
+                    Text("Clone a Repository")
                         .bold()
                         .padding(.bottom, 2)
                     Text("Enter a git repository URL:")
@@ -46,9 +45,9 @@ struct GitCloneView: View {
                     TextField("Git Repository URL", text: $viewModel.repoUrlStr)
                         .lineLimit(1)
                         .padding(.bottom, 15)
-                        .frame(width: 300)
 
                     HStack {
+                        Spacer()
                         Button("Cancel") {
                             dismiss()
                         }
@@ -58,11 +57,8 @@ struct GitCloneView: View {
                         .keyboardShortcut(.defaultAction)
                         .disabled(!viewModel.isValidUrl(url: viewModel.repoUrlStr))
                     }
-                    .offset(x: 185)
-                    .alignmentGuide(.leading) { context in
-                        context[.leading]
-                    }
                 }
+                .frame(width: 300)
             }
             .padding(.top, 20)
             .padding(.horizontal, 20)
@@ -71,28 +67,32 @@ struct GitCloneView: View {
                 viewModel.checkClipboard()
             }
             .sheet(isPresented: $viewModel.isCloning) {
-                NavigationStack {
-                    VStack {
-                        ProgressView(
-                            viewModel.cloningProgress.state.label,
-                            value: viewModel.cloningProgress.progress,
-                            total: 100
-                        )
-                    }
-                }
-                .toolbar {
-                    ToolbarItem {
-                        Button("Cancel Cloning") {
-                            viewModel.cloningTask?.cancel()
-                            viewModel.cloningTask = nil
-                            viewModel.isCloning = false
-                        }
-                    }
-                }
-                .padding()
-                .frame(width: 350)
+                cloningSheet
             }
         }
+    }
+
+    @ViewBuilder private var cloningSheet: some View {
+        NavigationStack {
+            VStack {
+                ProgressView(
+                    viewModel.cloningProgress.state.label,
+                    value: viewModel.cloningProgress.progress,
+                    total: 100
+                )
+            }
+        }
+        .toolbar {
+            ToolbarItem {
+                Button("Cancel Cloning") {
+                    viewModel.cloningTask?.cancel()
+                    viewModel.cloningTask = nil
+                    viewModel.isCloning = false
+                }
+            }
+        }
+        .padding()
+        .frame(width: 350)
     }
 
     func cloneRepository() {

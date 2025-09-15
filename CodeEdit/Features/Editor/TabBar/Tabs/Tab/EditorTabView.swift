@@ -46,6 +46,8 @@ struct EditorTabView: View {
     /// By default, this value is `false`. When the root view is appeared, it turns `true`.
     @State private var isAppeared: Bool = false
 
+    @State private var keyMonitor: Any?
+
     /// The id associating with the tab that is currently being dragged.
     ///
     /// When `nil`, then there is no tab being dragged.
@@ -197,6 +199,22 @@ struct EditorTabView: View {
                 } else {
                     NSCursor.pop()
                 }
+            }
+        }
+        .onAppear {
+            keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .otherMouseDown) { event in
+                if self.isHovering && event.type == .otherMouseDown && event.buttonNumber == 2 {
+                    DispatchQueue.main.async {
+                        editor.closeTab(file: tabFile)
+                    }
+                }
+                return event
+            }
+        }
+        .onDisappear {
+            if let keyMonitor = keyMonitor {
+                NSEvent.removeMonitor(keyMonitor)
+                self.keyMonitor = nil
             }
         }
     }

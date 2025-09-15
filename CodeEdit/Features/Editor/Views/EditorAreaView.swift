@@ -174,6 +174,7 @@ struct EditorAreaView: View {
                     // )
                     // ```
                     // When we can figure out how to disable the 'not focused' glass effect.
+
                     $0.background(EffectView(.headerView).ignoresSafeArea(.all))
                 } else: {
                     $0.background(EffectView(.headerView))
