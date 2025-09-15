@@ -26,4 +26,22 @@ extension Collection where Iterator.Element: FuzzySearchable {
             $0.result.weight > $1.result.weight
         }
     }
+
+    /// Synchronously performs a fuzzy search on a collection of elements conforming to FuzzySearchable.
+    ///
+    /// - Parameter query: The query string to match against the elements.
+    ///
+    /// - Returns: An array of tuples containing FuzzySearchMatchResult and the corresponding element.
+    ///
+    /// - Note: Because this is an extension on Collection and not only array,
+    /// you can also use this on sets.
+    func fuzzySearchSync(query: String) -> [(result: FuzzySearchMatchResult, item: Iterator.Element)] {
+        return map {
+            (result: $0.fuzzyMatch(query: query), item: $0)
+        }.filter {
+            $0.result.weight > 0
+        }.sorted {
+            $0.result.weight > $1.result.weight
+        }
+    }
 }
