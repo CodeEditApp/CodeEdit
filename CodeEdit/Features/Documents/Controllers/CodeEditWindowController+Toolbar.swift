@@ -59,6 +59,7 @@ extension CodeEditWindowController {
             items += [
                 .activityViewer,
                 .notificationItem,
+                .flexibleSpace,
             ]
         }
 
