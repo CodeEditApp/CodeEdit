@@ -15,6 +15,8 @@ struct OpenQuicklyPreviewView: View {
     @StateObject var editorInstance: EditorInstance
     @StateObject var document: CodeFileDocument
 
+    @StateObject var undoRegistration: UndoManagerRegistration = UndoManagerRegistration()
+
     init(item: CEWorkspaceFile) {
         self.item = item
         let doc = try? CodeFileDocument(
@@ -29,6 +31,7 @@ struct OpenQuicklyPreviewView: View {
     var body: some View {
         if let utType = document.utType, utType.conforms(to: .text) {
             CodeFileView(editorInstance: editorInstance, codeFile: document, isEditable: false)
+                .environmentObject(undoRegistration)
         } else {
             NonTextFileView(fileDocument: document)
         }

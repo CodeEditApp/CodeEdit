@@ -132,6 +132,7 @@ final class TaskNotificationHandler: ObservableObject {
     ///   - toWorkspace: The workspace to restrict the task to. Defaults to `nil`, which is received by all workspaces.
     ///   - action: The action being taken on the task.
     ///   - model: The task contents.
+    @MainActor
     static func postTask(toWorkspace: URL? = nil, action: Action, model: TaskNotificationModel) {
         NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: [
             "id": model.id,
