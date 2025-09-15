@@ -16,10 +16,8 @@ struct OptionMenuItemView: View {
             Text(label)
             Spacer()
         }
-        .padding(.vertical, 4)
-        .padding(.horizontal, 28)
-        .modifier(DropdownMenuItemStyleModifier())
-        .clipShape(RoundedRectangle(cornerRadius: 5))
+        .padding(.horizontal, 20)
+        .dropdownItemStyle()
         .onTapGesture {
             action()
         }

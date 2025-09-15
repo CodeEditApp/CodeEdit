@@ -129,7 +129,13 @@ struct EditorAreaView: View {
                     }
                 }
                 .environment(\.isActiveEditor, editor == editorManager.activeEditor)
-                .background(EffectView(.headerView))
+                .if(.tahoe) {
+                    // FB20047271: Glass toolbar effect ignores floating scroll view views.
+                    // https://openradar.appspot.com/radar?id=EhAKBVJhZGFyEICAgKbGmesJ
+                    $0.background(EffectView(.headerView).ignoresSafeArea(.all))
+                } else: {
+                    $0.background(EffectView(.headerView))
+                }
             }
         }
         .focused($focus, equals: editor)

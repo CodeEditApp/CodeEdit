@@ -17,48 +17,35 @@ struct TaskNotificationView: View {
 
     var body: some View {
         ZStack {
-            if let notification {
-                HStack {
-                    Text(notification.title)
-                        .font(.subheadline)
-                        .transition(
-                            .asymmetric(insertion: .move(edge: .top), removal: .move(edge: .bottom))
-                            .combined(with: .opacity)
-                        )
-                        .id("NotificationTitle" + notification.title)
-
-                    if notification.isLoading {
-                        CECircularProgressView(
-                            progress: notification.percentage,
-                            currentTaskCount: taskNotificationHandler.notifications.count
-                        )
-                        .padding(.horizontal, -1)
-                        .frame(height: 16)
-                    } else {
-                        if taskNotificationHandler.notifications.count > 1 {
-                            Text("\(taskNotificationHandler.notifications.count)")
-                                .font(.caption)
-                                .padding(5)
-                                .background(
-                                    Circle()
-                                        .foregroundStyle(.gray)
-                                        .opacity(0.2)
-                                )
-                                .padding(-5)
-                        }
+            HStack {
+                if let notification {
+                    HStack {
+                        Text(notification.title)
+                            .font(.subheadline)
+                            .transition(
+                                .asymmetric(insertion: .move(edge: .top), removal: .move(edge: .bottom))
+                                .combined(with: .opacity)
+                            )
+                            .id("NotificationTitle" + notification.title)
                     }
+                    .transition(.opacity.combined(with: .move(edge: .trailing)))
+
+                    loaderView(notification: notification)
+                        .transition(.opacity)
+                        .id("Loader")
+                } else {
+                    Text("")
+                        .id("Loader")
                 }
-                .transition(.opacity.combined(with: .move(edge: .trailing)))
-                .opacity(activeState == .inactive ? 0.4 : 1.0)
-                .padding(3)
-                .padding(-3)
-                .padding(.trailing, 3)
-                .popover(isPresented: $isPresented, arrowEdge: .bottom) {
-                    TaskNotificationsDetailView(taskNotificationHandler: taskNotificationHandler)
-                }
-                .onTapGesture {
-                    self.isPresented.toggle()
-                }
+            }
+            .opacity(activeState == .inactive ? 0.4 : 1.0)
+            .padding(3)
+            .padding(-3)
+            .popover(isPresented: $isPresented, arrowEdge: .bottom) {
+                TaskNotificationsDetailView(taskNotificationHandler: taskNotificationHandler)
+            }
+            .onTapGesture {
+                self.isPresented.toggle()
             }
         }
         .animation(.easeInOut, value: notification)
@@ -69,6 +56,33 @@ struct TaskNotificationView: View {
         }
     }
 
+    @ViewBuilder
+    private func loaderView(notification: TaskNotificationModel) -> some View {
+        if notification.isLoading {
+            CECircularProgressView(
+                progress: notification.percentage,
+                currentTaskCount: taskNotificationHandler.notifications.count
+            )
+            .if(.tahoe) {
+                $0.padding(.leading, 1)
+            } else: {
+                $0.padding(.horizontal, -1)
+            }
+            .frame(height: 16)
+        } else {
+            if taskNotificationHandler.notifications.count > 1 {
+                Text("\(taskNotificationHandler.notifications.count)")
+                    .font(.caption)
+                    .padding(5)
+                    .background(
+                        Circle()
+                            .foregroundStyle(.gray)
+                            .opacity(0.2)
+                    )
+                    .padding(-5)
+            }
+        }
+    }
 }
 
 #Preview {

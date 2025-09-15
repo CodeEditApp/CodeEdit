@@ -37,7 +37,9 @@ struct CodeEditApp: App {
                     OpenFileOrFolderButton(dismissWindow: dismissWindow)
                 },
                 onDrop: { url, dismissWindow in
-                    Task { CodeEditDocumentController.shared.openDocument(at: url, onCompletion: { dismissWindow() }) }
+                    Task {
+                        await CodeEditDocumentController.shared.openDocument(at: url, onCompletion: { dismissWindow() })
+                    }
                 }
             )
 
