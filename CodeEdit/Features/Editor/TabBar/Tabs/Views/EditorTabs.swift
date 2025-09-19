@@ -260,6 +260,12 @@ struct EditorTabs: View {
                     ) {
                         ForEach(Array(openedTabs.enumerated()), id: \.element) { index, id in
                             if let item = editor.tabs.first(where: { $0.file.id == id }) {
+                                if index != 0
+                                    && editor.selectedTab?.file.id != id
+                                    && editor.selectedTab?.file.id != openedTabs[index - 1] {
+                                    EditorTabDivider()
+                                }
+
                                 EditorTabView(
                                     file: item.file,
                                     index: index,
@@ -293,6 +299,12 @@ struct EditorTabs: View {
                                         tabWidth: $tabWidth
                                     )
                                 )
+
+                                if index < openedTabs.count - 1
+                                    && editor.selectedTab?.file.id != id
+                                    && editor.selectedTab?.file.id != openedTabs[index + 1] {
+                                    EditorTabDivider()
+                                }
                             }
                         }
                     }
@@ -356,6 +368,19 @@ struct EditorTabs: View {
                     endPoint: .leading
                 )
                 .opacity((scrollTrailingOffset ?? 0) <= 0 ? 0 : 1)
+            }
+            .if(.tahoe) {
+                if #available(macOS 26.0, *) {
+                    // Unfortunate triple if here due to needing to compile on
+                    // earlier Xcodes.
+#if compiler(>=6.2)
+                    $0.background(GlassEffectView(tintColor: .tertiarySystemFill))
+                        .clipShape(Capsule())
+                        .clipped()
+#else
+                    $0
+#endif
+                }
             }
         }
     }

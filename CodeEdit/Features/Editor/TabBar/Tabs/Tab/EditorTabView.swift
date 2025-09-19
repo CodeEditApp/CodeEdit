@@ -122,10 +122,11 @@ struct EditorTabView: View {
 
     @ViewBuilder var content: some View {
         HStack(spacing: 0.0) {
-            EditorTabDivider()
-                .opacity(
-                    (isActive || inHoldingState) ? 0.0 : 1.0
-                )
+
+            if #unavailable(macOS 26) {
+                EditorTabDivider()
+                    .opacity((isActive || inHoldingState) ? 0.0 : 1.0)
+            }
             // Tab content (icon and text).
             HStack(alignment: .center, spacing: 3) {
                 Image(nsImage: tabFile.nsIcon)
@@ -165,14 +166,19 @@ struct EditorTabView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .if(.tahoe) {
+                $0.padding(.horizontal, 1.5)
+            }
             .opacity(
                 // Inactive states for tab bar item content.
                 activeState != .inactive
                 ? 1.0
                 : isActive ? 0.6 : 0.4
             )
-            EditorTabDivider()
-                .opacity((isActive || inHoldingState) ? 0.0 : 1.0)
+            if #unavailable(macOS 26) {
+                EditorTabDivider()
+                    .opacity((isActive || inHoldingState) ? 0.0 : 1.0)
+            }
         }
         .foregroundColor(
             isActive && isActiveEditor
@@ -219,6 +225,11 @@ struct EditorTabView: View {
             .background {
                 EditorTabBackground(isActive: isActive, isPressing: isPressing, isDragging: isDragging)
                     .animation(.easeInOut(duration: 0.08), value: isHovering)
+            }
+            .if(.tahoe) {
+                if #available(macOS 26, *) {
+                    $0.clipShape(Capsule()).clipped().containerShape(Capsule())
+                }
             }
             // TODO: Enable the following code snippet when dragging-out behavior should be allowed.
             // Since we didn't handle the drop-outside event, dragging-out is disabled for now.

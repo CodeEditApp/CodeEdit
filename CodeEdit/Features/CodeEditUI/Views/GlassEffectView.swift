@@ -22,12 +22,9 @@ struct GlassEffectView: NSViewRepresentable {
             view.cornerRadius = 0
             view.tintColor = tintColor
             return view
-        } else {
-            return NSView()
         }
-#else
-        return NSView()
 #endif
+        return NSView()
     }
 
     func updateNSView(_ nsView: NSView, context: Context) {
