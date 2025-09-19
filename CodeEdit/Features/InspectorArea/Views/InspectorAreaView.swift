@@ -49,7 +49,8 @@ struct InspectorAreaView: View {
             viewModel: viewModel,
             selectedTab: $viewModel.selectedTab,
             tabItems: $viewModel.tabItems,
-            sidebarPosition: sidebarPosition
+            sidebarPosition: sidebarPosition,
+            sideOnTrailing: true
         )
         .formStyle(.grouped)
         .accessibilityElement(children: .contain)

@@ -1,13 +1,13 @@
 //
-//  IconButtonStyle.swift
+//  CapsuleButtonStyle.swift
 //  CodeEdit
 //
-//  Created by Austin Condiff on 11/9/23.
+//  Created by Khan Winter on 9/3/25.
 //
 
 import SwiftUI
 
-struct IconButtonStyle: ButtonStyle {
+struct CapsuleButtonStyle: ButtonStyle {
     var isActive: Bool?
     var font: Font?
     var width: CGFloat?
@@ -28,7 +28,7 @@ struct IconButtonStyle: ButtonStyle {
     }
 
     func makeBody(configuration: ButtonStyle.Configuration) -> some View {
-        IconButton(
+        CapsuleButton(
             configuration: configuration,
             isActive: isActive,
             font: font,
@@ -37,7 +37,7 @@ struct IconButtonStyle: ButtonStyle {
         )
     }
 
-    struct IconButton: View {
+    struct CapsuleButton: View {
         @Environment(\.controlActiveState)
         private var controlActiveState
         @Environment(\.isEnabled)
@@ -68,13 +68,13 @@ struct IconButtonStyle: ButtonStyle {
         var body: some View {
             configuration.label
                 .font(font)
-                .foregroundColor(
+                .foregroundStyle(
                     isActive
-                    ? Color(.controlAccentColor)
-                    : Color(.secondaryLabelColor)
+                    ? Color(.white)
+                    : Color(.labelColor)
                 )
                 .frame(width: width, height: height, alignment: .center)
-                .contentShape(Rectangle())
+                .contentShape(Capsule())
                 .brightness(
                     configuration.isPressed
                     ? colorScheme == .dark
@@ -83,39 +83,39 @@ struct IconButtonStyle: ButtonStyle {
                     : 0
                 )
                 .opacity(controlActiveState == .inactive ? 0.5 : 1)
-                .symbolVariant(isActive ? .fill : .none)
+                .background(Capsule().fill(isActive ? Color.accentColor : .clear))
         }
     }
 }
 
-extension ButtonStyle where Self == IconButtonStyle {
-    static func icon(
+extension ButtonStyle where Self == CapsuleButtonStyle {
+    static func capsuleIcon(
         isActive: Bool? = false,
         font: Font? = Font.system(size: 14.5, weight: .regular, design: .default),
         size: CGFloat? = 24
-    ) -> IconButtonStyle {
-        return IconButtonStyle(isActive: isActive, font: font, size: size)
+    ) -> CapsuleButtonStyle {
+        return CapsuleButtonStyle(isActive: isActive, font: font, size: size)
     }
-    static func icon(
+    static func capsuleIcon(
         isActive: Bool? = false,
         font: Font? = Font.system(size: 14.5, weight: .regular, design: .default),
         size: CGSize? = CGSize(width: 24, height: 24)
-    ) -> IconButtonStyle {
-        return IconButtonStyle(isActive: isActive, font: font, width: size?.width, height: size?.height)
+    ) -> CapsuleButtonStyle {
+        return CapsuleButtonStyle(isActive: isActive, font: font, width: size?.width, height: size?.height)
     }
-    static func icon(
+    static func capsuleIcon(
         isActive: Bool? = false,
         font: Font? = Font.system(size: 14.5, weight: .regular, design: .default),
         width: CGFloat? = nil,
         height: CGFloat? = nil
-    ) -> IconButtonStyle {
-        return IconButtonStyle(isActive: isActive, font: font, width: width, height: height)
+    ) -> CapsuleButtonStyle {
+        return CapsuleButtonStyle(isActive: isActive, font: font, width: width, height: height)
     }
-    static func icon(
+    static func capsuleIcon(
         isActive: Bool? = false,
         font: Font? = Font.system(size: 14.5, weight: .regular, design: .default)
-    ) -> IconButtonStyle {
-        return IconButtonStyle(isActive: isActive, font: font)
+    ) -> CapsuleButtonStyle {
+        return CapsuleButtonStyle(isActive: isActive, font: font)
     }
-    static var icon: IconButtonStyle { .init() }
+    static var capsuleIcon: CapsuleButtonStyle { .init() }
 }
