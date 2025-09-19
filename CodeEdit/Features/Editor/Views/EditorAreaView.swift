@@ -30,6 +30,9 @@ struct EditorAreaView: View {
     @Environment(\.window.value)
     private var window: NSWindow?
 
+    @Environment(\.isEditorLayoutAtEdge)
+    private var isAtEdge
+
     init(editor: Editor, focus: FocusState<Editor?>.Binding) {
         self.editor = editor
         self._focus = focus
@@ -101,6 +104,10 @@ struct EditorAreaView: View {
                 }
 
                 VStack(spacing: 0) {
+                    if isAtEdge != .top, #available(macOS 26, *) {
+                        Spacer().frame(height: 4)
+                    }
+
                     if topSafeArea > 0 {
                         Rectangle()
                             .fill(.clear)
@@ -111,7 +118,9 @@ struct EditorAreaView: View {
                         EditorTabBarView(hasTopInsets: topSafeArea > 0, codeFile: fileBinding)
                             .id("TabBarView" + editor.id.uuidString)
                             .environmentObject(editor)
-                        Divider()
+                        if #unavailable(macOS 26) {
+                            Divider()
+                        }
                     }
                     if showEditorJumpBar {
                         EditorJumpBarView(
@@ -125,6 +134,12 @@ struct EditorAreaView: View {
                         }
                         .environmentObject(editor)
                         .padding(.top, shouldShowTabBar ? -1 : 0)
+                        if #unavailable(macOS 26) {
+                            Divider()
+                        }
+                    }
+                    // On Tahoe we only show one divider
+                    if #available(macOS 26, *), shouldShowTabBar || showEditorJumpBar {
                         Divider()
                     }
                 }
@@ -132,6 +147,34 @@ struct EditorAreaView: View {
                 .if(.tahoe) {
                     // FB20047271: Glass toolbar effect ignores floating scroll view views.
                     // https://openradar.appspot.com/radar?id=EhAKBVJhZGFyEICAgKbGmesJ
+
+                    // FB20191516: Can't disable backgrounded liquid glass tint
+                    // https://openradar.appspot.com/radar?id=EhAKBVJhZGFyEICAgLqTk-4J
+                    // Tracking Issue: #2191
+                    // Add this to the top:
+                    // ```
+                    // @AppSettings(\.theme.useThemeBackground)
+                    // var useThemeBackground
+                    //
+                    // private var backgroundColor: NSColor {
+                    //     let fallback = NSColor.textBackgroundColor
+                    //     return if useThemeBackground {
+                    //         ThemeModel.shared.selectedTheme?.editor.background.nsColor ?? fallback
+                    //     } else {
+                    //         fallback
+                    //     }
+                    // }
+                    // ```
+                    // And use this:
+                    // ```
+                    // $0.background(
+                    //    Rectangle().fill(.clear)
+                    //        .glassEffect(.regular.tint(Color(backgroundColor))
+                    //        .ignoresSafeArea(.all)
+                    // )
+                    // ```
+                    // When we can figure out how to disable the 'not focused' glass effect.
+
                     $0.background(EffectView(.headerView).ignoresSafeArea(.all))
                 } else: {
                     $0.background(EffectView(.headerView))
