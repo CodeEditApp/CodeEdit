@@ -152,6 +152,12 @@ extension CEWorkspaceFileManager {
         let directoryContentsUrlsRelativePaths = directoryContentsUrls.map({ $0.relativePath })
         for (idx, oldURL) in (childrenMap[fileItem.id] ?? []).map({ URL(filePath: $0) }).enumerated().reversed()
         where !directoryContentsUrlsRelativePaths.contains(oldURL.relativePath) {
+            // Don't remove phantom files, they don't exist on disk yet
+            // They will be cleaned up when the user finishes editing
+            if let existingFile = flattenedFileItems[oldURL.relativePath],
+               existingFile.phantomFile != nil {
+                continue
+            }
             flattenedFileItems.removeValue(forKey: oldURL.relativePath)
             childrenMap[fileItem.id]?.remove(at: idx)
         }

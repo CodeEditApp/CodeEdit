@@ -65,14 +65,13 @@ extension CEWorkspaceFileManager {
         useExtension: String? = nil,
         contents: Data? = nil
     ) throws -> CEWorkspaceFile {
-        // check the folder for other files, and see what the most common file extension is
         do {
             var fileExtension: String
             if fileName.contains(".") {
                 // If we already have a file extension in the name, don't add another one
                 fileExtension = ""
             } else {
-                fileExtension = useExtension ?? findCommonFileExtension(for: file)
+                fileExtension = useExtension ?? ""
 
                 // Don't add a . if the extension is empty, but add it if it's missing.
                 if !fileExtension.isEmpty && !fileExtension.starts(with: ".") {
@@ -115,31 +114,6 @@ extension CEWorkspaceFileManager {
             logger.error("Failed to add file: \(error, privacy: .auto)")
             throw error
         }
-    }
-
-    /// Finds a common file extension in the same directory as a file. Defaults to `txt` if no better alternatives
-    /// are found.
-    /// - Parameter file: The file to use to determine a common extension.
-    /// - Returns: The suggested file extension.
-    private func findCommonFileExtension(for file: CEWorkspaceFile) -> String {
-        var fileExtensions: [String: Int] = ["": 0]
-
-        for child in (
-            file.isFolder ? file.flattenedSiblings(withHeight: 2, ignoringFolders: true, using: self)
-            : file.parent?.flattenedSiblings(withHeight: 2, ignoringFolders: true, using: self)
-        ) ?? []
-        where !child.isFolder {
-            // if the file extension was present before, add it now
-            let childFileName = child.fileName(typeHidden: false)
-            if let index = childFileName.lastIndex(of: ".") {
-                let childFileExtension = ".\(childFileName.suffix(from: index).dropFirst())"
-                fileExtensions[childFileExtension] = (fileExtensions[childFileExtension] ?? 0) + 1
-            } else {
-                fileExtensions[""] = (fileExtensions[""] ?? 0) + 1
-            }
-        }
-
-        return fileExtensions.max(by: { $0.value < $1.value })?.key ?? "txt"
     }
 
     /// This function deletes the item or folder from the current project by moving to Trash

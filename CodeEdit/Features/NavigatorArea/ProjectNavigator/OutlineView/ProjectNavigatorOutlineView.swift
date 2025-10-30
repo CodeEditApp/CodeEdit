@@ -85,16 +85,32 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
             guard let outlineView = controller?.outlineView else { return }
             let selectedRows = outlineView.selectedRowIndexes.compactMap({ outlineView.item(atRow: $0) })
 
-            // If some text view inside the outline view is first responder right now, push the update off
-            // until editing is finished using the `shouldReloadAfterDoneEditing` flag.
+            // Check if we're currently editing a phantom file and capture its text
+            var editingPhantomFile: CEWorkspaceFile?
+            var capturedText: String?
+            var capturedSelectionRange: NSRange?
+
             if outlineView.window?.firstResponder !== outlineView
                 && outlineView.window?.firstResponder is NSTextView
                 && (outlineView.window?.firstResponder as? NSView)?.isDescendant(of: outlineView) == true {
-                controller?.shouldReloadAfterDoneEditing = true
-            } else {
-                for item in updatedItems {
-                    outlineView.reloadItem(item, reloadChildren: true)
+                capturedSelectionRange = (outlineView.window?.firstResponder as? NSTextView)?.selectedRange
+
+                // Find the cell being edited by traversing up from the text view
+                var currentView = outlineView.window?.firstResponder as? NSView
+                while let view = currentView {
+                    if let cell = view as? ProjectNavigatorTableViewCell,
+                       let fileItem = cell.fileItem, fileItem.phantomFile != nil {
+                        editingPhantomFile = fileItem
+                        capturedText = cell.textField?.stringValue
+                        break
+                    }
+                    currentView = view.superview
                 }
+            }
+
+            // Reload all items with children
+            for item in updatedItems {
+                outlineView.reloadItem(item, reloadChildren: true)
             }
 
             // Restore selected items where the files still exist.
@@ -102,6 +118,28 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
             controller?.shouldSendSelectionUpdate = false
             outlineView.selectRowIndexes(IndexSet(selectedIndexes), byExtendingSelection: false)
             controller?.shouldSendSelectionUpdate = true
+
+            // If we were editing a phantom file, restore the text field and focus
+            if let phantomFile = editingPhantomFile, let text = capturedText {
+                let row = outlineView.row(forItem: phantomFile)
+                if row >= 0, let cell = outlineView.view(
+                    atColumn: 0,
+                    row: row,
+                    makeIfNecessary: false
+                ) as? ProjectNavigatorTableViewCell {
+                    cell.textField?.stringValue = text
+                    outlineView.window?.makeFirstResponder(cell.textField)
+                    if let selectionRange = capturedSelectionRange {
+                        cell.textField?.currentEditor()?.selectedRange = selectionRange
+                    }
+                }
+            } else {
+                // Reselect the file that is currently active in the editor so it still appears highlighted
+                if selectedIndexes.isEmpty,
+                   let activeFileID = workspace?.editorManager?.activeEditor.selectedTab?.file.id {
+                    controller?.updateSelection(itemID: activeFileID)
+                }
+            }
         }
 
         deinit {
