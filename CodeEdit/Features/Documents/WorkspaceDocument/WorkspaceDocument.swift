@@ -47,11 +47,12 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     var undoRegistration: UndoManagerRegistration = UndoManagerRegistration()
 
-    @Published var notificationPanel = NotificationPanelViewModel()
+    var notificationPanel = NotificationPanelViewModel()
     private var cancellables = Set<AnyCancellable>()
 
     override init() {
         super.init()
+        notificationPanel.workspace = self
 
         // Observe changes to notification panel
         notificationPanel.objectWillChange

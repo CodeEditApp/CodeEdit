@@ -30,6 +30,13 @@ final class NotificationPanelViewModel: ObservableObject {
 
     @Published var scrolledToTop: Bool = true
 
+    /// A filtered list of active notifications.
+    var visibleNotifications: [CENotification] {
+        activeNotifications.filter { !hiddenNotificationIds.contains($0.id) }
+    }
+
+    weak var workspace: WorkspaceDocument?
+
     /// Whether a notification should be visible in the panel
     func isNotificationVisible(_ notification: CENotification) -> Bool {
         if notification.isBeingDismissed {
@@ -171,12 +178,20 @@ final class NotificationPanelViewModel: ObservableObject {
 
     /// Handles a new notification being added
     func handleNewNotification(_ notification: CENotification) {
-        withAnimation(.easeInOut(duration: 0.3)) {
-            insertNotification(notification)
-            hiddenNotificationIds.remove(notification.id)
-            if !isPresented && !notification.isSticky {
-                startHideTimer(for: notification)
+        let operation = {
+            self.insertNotification(notification)
+            self.hiddenNotificationIds.remove(notification.id)
+            if !self.isPresented && !notification.isSticky {
+                self.startHideTimer(for: notification)
             }
+        }
+
+        if #available(macOS 26, *) {
+            withAnimation(.easeInOut(duration: 0.3), operation) {
+                self.updateToolbarItem()
+            }
+        } else {
+            withAnimation(.easeInOut(duration: 0.3), operation)
         }
     }
 
@@ -211,6 +226,31 @@ final class NotificationPanelViewModel: ObservableObject {
 
                 NotificationManager.shared.markAsRead(notification)
                 NotificationManager.shared.dismissNotification(notification)
+            }
+        }
+    }
+
+    func updateToolbarItem() {
+        if #available(macOS 15.0, *) {
+            self.workspace?.windowControllers.forEach { controller in
+                guard let toolbar = controller.window?.toolbar else {
+                    return
+                }
+                let shouldShow = !self.visibleNotifications.isEmpty || NotificationManager.shared.unreadCount > 0
+                if shouldShow && toolbar.items.filter({ $0.itemIdentifier == .notificationItem }).first == nil {
+                    guard let activityItemIdx = toolbar.items
+                        .firstIndex(where: { $0.itemIdentifier == .activityViewer }) else {
+                        return
+                    }
+                    toolbar.insertItem(withItemIdentifier: .space, at: activityItemIdx + 1)
+                    toolbar.insertItem(withItemIdentifier: .notificationItem, at: activityItemIdx + 2)
+                }
+
+                if !shouldShow, let index = toolbar.items
+                    .firstIndex(where: { $0.itemIdentifier == .notificationItem }) {
+                    toolbar.removeItem(at: index)
+                    toolbar.removeItem(at: index)
+                }
             }
         }
     }
@@ -252,14 +292,22 @@ final class NotificationPanelViewModel: ObservableObject {
     private func handleNotificationRemoved(_ notification: Notification) {
         guard let ceNotification = notification.object as? CENotification else { return }
 
-        // Just remove from active notifications without triggering global state changes
-        withAnimation(.easeOut(duration: 0.2)) {
-            activeNotifications.removeAll(where: { $0.id == ceNotification.id })
+        let operation: () -> Void = {
+            self.activeNotifications.removeAll(where: { $0.id == ceNotification.id })
 
             // If this was the last notification and they were manually shown, hide the panel
-            if activeNotifications.isEmpty && isPresented {
-                isPresented = false
+            if self.activeNotifications.isEmpty && self.isPresented {
+                self.isPresented = false
             }
+        }
+
+        // Just remove from active notifications without triggering global state changes
+        if #available(macOS 26, *) {
+            withAnimation(.easeOut(duration: 0.2), operation) {
+                self.updateToolbarItem()
+            }
+        } else {
+            withAnimation(.easeOut(duration: 0.2), operation)
         }
     }
 }

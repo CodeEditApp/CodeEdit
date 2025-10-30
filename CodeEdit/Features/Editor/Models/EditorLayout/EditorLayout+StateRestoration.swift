@@ -13,6 +13,13 @@ extension EditorManager {
     /// Restores the tab manager from a captured state obtained using `saveRestorationState`
     /// - Parameter workspace: The workspace to retrieve state from.
     func restoreFromState(_ workspace: WorkspaceDocument) {
+        defer {
+            // No matter what, set the workspace on each editor. Even if we fail to read data.
+            flattenedEditors.forEach { editor in
+                editor.workspace = workspace
+            }
+        }
+
         do {
             guard let data = workspace.getFromWorkspaceState(.openTabs) as? Data else {
                 return

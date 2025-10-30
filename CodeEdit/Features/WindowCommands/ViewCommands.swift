@@ -33,6 +33,11 @@ struct ViewCommands: Commands {
             }
             .keyboardShortcut("p", modifiers: [.shift, .command])
 
+            Button("Open Search Navigator") {
+                NSApp.sendAction(#selector(CodeEditWindowController.openSearchNavigator(_:)), to: nil, from: nil)
+            }
+            .keyboardShortcut("f", modifiers: [.shift, .command])
+
             Menu("Font Size") {
                 Button("Increase") {
                     if editorFontSize < 288 {
@@ -144,7 +149,7 @@ extension ViewCommands {
                 windowController?.toggleInterface(shouldHide: !isInterfaceHidden)
             }
             .disabled(windowController == nil)
-            .keyboardShortcut(".", modifiers: .command)
+            .keyboardShortcut("H", modifiers: [.shift, .command])
         }
     }
 }

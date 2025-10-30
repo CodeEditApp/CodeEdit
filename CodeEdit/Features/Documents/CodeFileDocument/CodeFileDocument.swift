@@ -259,7 +259,11 @@ final class CodeFileDocument: NSDocument, ObservableObject {
                     // This blocks the presented item thread intentionally. If we don't wait, we'll receive more updates
                     // that the file has changed and we'll end up dispatching multiple reads.
                     // The presented item thread expects this operation to by synchronous anyways.
-                    DispatchQueue.main.asyncAndWait {
+
+                    // https://github.com/CodeEditApp/CodeEdit/issues/2091
+                    // We can't use `.asyncAndWait` on Ventura as it seems the symbol is missing on that platform.
+                    // Could be just for x86 machines.
+                    DispatchQueue.main.sync {
                         try? self.read(from: fileURL, ofType: fileType)
                     }
                 }
@@ -303,6 +307,16 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         }
     }
 
+    override func fileNameExtension(
+        forType typeName: String,
+        saveOperation: NSDocument.SaveOperationType
+    ) -> String? {
+        guard let fileTypeName = Self.fileTypeExtension[typeName] else {
+            return super.fileNameExtension(forType: typeName, saveOperation: saveOperation)
+        }
+        return fileTypeName
+    }
+
     /// Determines the code language of the document.
     /// Use ``CodeFileDocument/language`` for the default value before using this. That property is used to override
     /// the file's language.
@@ -331,4 +345,11 @@ extension CodeFileDocument: LanguageServerDocument {
     var languageServerURI: String? {
         fileURL?.lspURI
     }
+}
+
+private extension CodeFileDocument {
+
+    static let fileTypeExtension: [String: String?] = [
+        "public.make-source": nil
+    ]
 }

@@ -11,13 +11,11 @@ struct StartTaskToolbarButton: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @UpdatingWindowController var windowController: CodeEditWindowController?
-
     @ObservedObject var taskManager: TaskManager
     @EnvironmentObject var workspace: WorkspaceDocument
 
     var utilityAreaCollapsed: Bool {
-        windowController?.workspace?.utilityAreaModel?.isCollapsed ?? true
+        workspace.utilityAreaModel?.isCollapsed ?? true
     }
 
     var body: some View {

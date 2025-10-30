@@ -14,9 +14,7 @@ struct NotificationToolbarItem: View {
     private var controlActiveState
 
     var body: some View {
-        let visibleNotifications = workspace.notificationPanel.activeNotifications.filter {
-            !workspace.notificationPanel.hiddenNotificationIds.contains($0.id)
-        }
+        let visibleNotifications = workspace.notificationPanel.visibleNotifications
 
         if notificationManager.unreadCount > 0 || !visibleNotifications.isEmpty {
             Button {

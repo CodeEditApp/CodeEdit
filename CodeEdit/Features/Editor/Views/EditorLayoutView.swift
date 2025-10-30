@@ -15,7 +15,7 @@ struct EditorLayoutView: View {
     @Environment(\.window.value)
     private var window
 
-    @Environment(\.isAtEdge)
+    @Environment(\.isEditorLayoutAtEdge)
     private var isAtEdge
 
     var toolbarHeight: CGFloat {
@@ -63,7 +63,7 @@ struct EditorLayoutView: View {
         var splitView: some View {
             ForEach(Array(data.editorLayouts.enumerated()), id: \.offset) { index, item in
                 EditorLayoutView(layout: item, focus: $focus)
-                   .transformEnvironment(\.isAtEdge) { belowToolbar in
+                   .transformEnvironment(\.isEditorLayoutAtEdge) { belowToolbar in
                        calcIsAtEdge(current: &belowToolbar, index: index)
                    }
                    .environment(\.splitEditor) { [weak data] edge, newEditor in
@@ -87,12 +87,12 @@ struct EditorLayoutView: View {
     }
 }
 
-private struct BelowToolbarEnvironmentKey: EnvironmentKey {
+struct BelowToolbarEnvironmentKey: EnvironmentKey {
     static var defaultValue: VerticalEdge.Set = .all
 }
 
 extension EnvironmentValues {
-    fileprivate var isAtEdge: BelowToolbarEnvironmentKey.Value {
+    var isEditorLayoutAtEdge: BelowToolbarEnvironmentKey.Value {
         get { self[BelowToolbarEnvironmentKey.self] }
         set { self[BelowToolbarEnvironmentKey.self] = newValue }
     }

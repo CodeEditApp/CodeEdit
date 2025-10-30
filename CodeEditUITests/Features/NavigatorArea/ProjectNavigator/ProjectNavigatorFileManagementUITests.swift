@@ -57,6 +57,7 @@ final class ProjectNavigatorFileManagementUITests: XCTestCase {
             XCTFail("newFile.txt did not appear")
             return
         }
+
         guard Query.Navigator.getProjectNavigatorRow(
             fileTitle: "New Folder",
             navigator
@@ -95,6 +96,15 @@ final class ProjectNavigatorFileManagementUITests: XCTestCase {
 
             let newFileRow = selectedRows.firstMatch
             XCTAssertEqual(newFileRow.descendants(matching: .textField).firstMatch.value as? String, title)
+
+            let tabBar = Query.Window.getTabBar(window)
+            XCTAssertTrue(tabBar.exists)
+            let readmeTab = Query.TabBar.getTab(labeled: title, tabBar)
+            XCTAssertTrue(readmeTab.exists)
+
+            let newFileEditor = Query.Window.getFirstEditor(window)
+            XCTAssertTrue(newFileEditor.exists)
+            XCTAssertNotNil(newFileEditor.value as? String)
         }
     }
 }

@@ -20,11 +20,8 @@ struct TasksPopoverMenuItem: View {
             selectionIndicator
             popoverContent
         }
-        .padding(.vertical, 4)
-        .padding(.horizontal, 8)
-        .modifier(DropdownMenuItemStyleModifier())
+        .dropdownItemStyle()
         .onTapGesture(perform: selectAction)
-        .clipShape(RoundedRectangle(cornerRadius: 5))
         .accessibilityElement()
         .accessibilityLabel(task.name)
         .accessibilityAction(.default, selectAction)

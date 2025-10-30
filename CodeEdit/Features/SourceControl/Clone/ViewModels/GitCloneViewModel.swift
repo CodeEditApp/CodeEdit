@@ -184,7 +184,7 @@ class GitCloneViewModel: ObservableObject {
         dialog.prompt = "Clone"
         dialog.nameFieldStringValue = saveName
         dialog.nameFieldLabel = "Clone as"
-        dialog.title = "Clone"
+        dialog.title = "Clone a Repository"
 
         guard dialog.runModal() == NSApplication.ModalResponse.OK,
               let result = dialog.url else {

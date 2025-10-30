@@ -21,8 +21,7 @@ struct CodeFileView: View {
 
     /// Any coordinators passed to the view.
     private var textViewCoordinators: [TextViewCoordinator]
-
-    @State private var highlightProviders: [any HighlightProviding] = []
+    private var highlightProviders: [any HighlightProviding] = []
 
     @AppSettings(\.textEditing.defaultTabWidth)
     var defaultTabWidth
@@ -86,7 +85,7 @@ struct CodeFileView: View {
         self.textViewCoordinators = textViewCoordinators
             + [editorInstance.rangeTranslator]
             + [codeFile.contentCoordinator]
-            + [codeFile.languageServerObjects.textCoordinator].compactMap({ $0 })
+            + [codeFile.languageServerObjects.textCoordinator]
         self.isEditable = isEditable
 
         if let openOptions = codeFile.openOptions {
@@ -94,7 +93,7 @@ struct CodeFileView: View {
             editorInstance.cursorPositions = openOptions.cursorPositions
         }
 
-        updateHighlightProviders()
+        highlightProviders = [codeFile.languageServerObjects.highlightProvider] + [treeSitterClient]
 
         codeFile
             .contentCoordinator
@@ -186,10 +185,6 @@ struct CodeFileView: View {
         .onChange(of: settingsFont) { newFontSetting in
             font = newFontSetting.current
         }
-        .onReceive(codeFile.$languageServerObjects) { languageServerObjects in
-            // This will not be called in single-file views (for now) but is safe to listen to either way
-            updateHighlightProviders(lspHighlightProvider: languageServerObjects.highlightProvider)
-        }
     }
 
     /// Determines the style of bracket emphasis based on the `bracketEmphasis` setting and the current theme.
@@ -211,12 +206,6 @@ struct CodeFileView: View {
         case .underline:
             return .underline(color: color)
         }
-    }
-
-    /// Updates the highlight providers array.
-    /// - Parameter lspHighlightProvider: The language server provider, if available.
-    private func updateHighlightProviders(lspHighlightProvider: HighlightProviding? = nil) {
-        highlightProviders = [lspHighlightProvider].compactMap({ $0 }) + [treeSitterClient]
     }
 }
 

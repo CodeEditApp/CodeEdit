@@ -97,7 +97,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
     private func makeNavigator(view: some View) -> NSSplitViewItem {
         let navigator = NSSplitViewItem(sidebarWithViewController: NSHostingController(rootView: view))
-        navigator.titlebarSeparatorStyle = .none
+        if #unavailable(macOS 26) {
+            navigator.titlebarSeparatorStyle = .none
+        }
         navigator.isSpringLoaded = true
         navigator.minimumThickness = Self.minSidebarWidth
         navigator.collapseBehavior = .useConstraints
@@ -133,6 +135,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .inspectorCollapsed
             ) as? Bool ?? true
         }
+
+        workspace.notificationPanel.updateToolbarItem()
     }
 
     // MARK: - NSSplitViewDelegate

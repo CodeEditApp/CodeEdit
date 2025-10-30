@@ -51,7 +51,8 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
         lspInstance: InitializingServer,
         lspPid: pid_t,
         serverCapabilities: ServerCapabilities,
-        rootPath: URL
+        rootPath: URL,
+        logContainer: LanguageServerLogContainer
     ) {
         self.languageId = languageId
         self.binary = binary
@@ -60,7 +61,7 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
         self.serverCapabilities = serverCapabilities
         self.rootPath = rootPath
         self.openFiles = LanguageServerFileMap()
-        self.logContainer = LanguageServerLogContainer(language: languageId)
+        self.logContainer = logContainer
         self.logger = Logger(
             subsystem: Bundle.main.bundleIdentifier ?? "",
             category: "LanguageServer.\(languageId.rawValue)"
@@ -89,9 +90,11 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
             environment: binary.env
         )
 
+        let logContainer = LanguageServerLogContainer(language: languageId)
         let (connection, process) = try makeLocalServerConnection(
             languageId: languageId,
-            executionParams: executionParams
+            executionParams: executionParams,
+            logContainer: logContainer
         )
         let server = InitializingServer(
             server: connection,
@@ -105,7 +108,8 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
             lspInstance: server,
             lspPid: process.processIdentifier,
             serverCapabilities: initializationResponse.capabilities,
-            rootPath: URL(filePath: workspacePath)
+            rootPath: URL(filePath: workspacePath),
+            logContainer: logContainer
         )
     }
 
@@ -118,13 +122,17 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     /// - Returns: A new connection to the language server.
     static func makeLocalServerConnection(
         languageId: LanguageIdentifier,
-        executionParams: Process.ExecutionParameters
+        executionParams: Process.ExecutionParameters,
+        logContainer: LanguageServerLogContainer
     ) throws -> (connection: JSONRPCServerConnection, process: Process) {
         do {
             let (channel, process) = try DataChannel.localProcessChannel(
                 parameters: executionParams,
-                terminationHandler: {
+                terminationHandler: { [weak logContainer] in
                     logger.debug("Terminated data channel for \(languageId.rawValue)")
+                    logContainer?.appendLog(
+                        LogMessageParams(type: .error, message: "Data Channel Terminated Unexpectedly")
+                    )
                 }
             )
             return (JSONRPCServerConnection(dataChannel: channel), process)
@@ -250,9 +258,7 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     /// Shuts down the language server and exits it.
     public func shutdown() async throws {
         self.logger.info("Shutting down language server")
-        try await withTimeout(duration: .seconds(1.0)) {
-            try await self.lspInstance.shutdownAndExit()
-        }
+        try await self.lspInstance.shutdownAndExit()
     }
 }
 

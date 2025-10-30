@@ -27,9 +27,7 @@ struct WorkspaceMenuItemView: View {
             Text(item?.name ?? "")
             Spacer()
         }
-        .padding(.vertical, 4)
-        .padding(.horizontal, 8)
-        .modifier(DropdownMenuItemStyleModifier())
+        .dropdownItemStyle()
         .onTapGesture { } // add accessibility action when this is filled in
         .clipShape(RoundedRectangle(cornerRadius: 5))
         .accessibilityElement()
