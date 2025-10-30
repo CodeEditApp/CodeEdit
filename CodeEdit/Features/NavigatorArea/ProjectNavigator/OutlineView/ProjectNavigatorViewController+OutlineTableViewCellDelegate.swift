@@ -41,7 +41,6 @@ extension ProjectNavigatorViewController: OutlineTableViewCellDelegate {
     }
 
     func cellDidFinishEditing() {
-        guard shouldReloadAfterDoneEditing else { return }
         outlineView.reloadData()
     }
 }

@@ -58,9 +58,11 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         guard let fileItem else { return }
 
         if fileItem.phantomFile != nil {
+            // Capture the text field value before any async work
+            let enteredName = textField?.stringValue ?? ""
             DispatchQueue.main.async { [weak fileItem, weak self] in
                 guard let fileItem, let self = self else { return }
-                self.handlePhantomFileCompletion(fileItem: fileItem, wasCancelled: false)
+                self.handlePhantomFileCompletion(fileItem: fileItem, wasCancelled: false, enteredName: enteredName)
             }
         } else {
             textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
@@ -76,7 +78,7 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         delegate?.cellDidFinishEditing()
     }
 
-    private func handlePhantomFileCompletion(fileItem: CEWorkspaceFile, wasCancelled: Bool) {
+    private func handlePhantomFileCompletion(fileItem: CEWorkspaceFile, wasCancelled: Bool, enteredName: String = "") {
         if wasCancelled {
             if let workspace = delegate as? ProjectNavigatorViewController,
                let workspaceFileManager = workspace.workspace?.workspaceFileManager {
@@ -85,7 +87,7 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
             return
         }
 
-        let newName = textField?.stringValue ?? ""
+        let newName = enteredName.isEmpty ? (textField?.stringValue ?? "") : enteredName
         if !newName.isEmpty && newName.isValidFilename {
             if let workspace = delegate as? ProjectNavigatorViewController,
                let workspaceFileManager = workspace.workspace?.workspaceFileManager,
