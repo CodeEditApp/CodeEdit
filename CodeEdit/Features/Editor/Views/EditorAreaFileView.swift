@@ -12,6 +12,8 @@ import SwiftUI
 import WebKit
 import UniformTypeIdentifiers
 import Combine
+import Foundation
+import Darwin
 
 // MARK: - Display Modes
 enum EditorDisplayMode: String, CaseIterable, Identifiable {
@@ -69,7 +71,6 @@ final class PreviewNavDelegate: NSObject, WKNavigationDelegate {
 }
 
 // MARK: - WebView (Coordinator reuse, safe refresh)
-
 struct WebView: NSViewRepresentable {
     let html: String
     let baseURL: URL?
@@ -199,7 +200,6 @@ struct PreviewBottomBar: View {
                     Button("Refresh") { refresh() }
                         .keyboardShortcut("r", modifiers: [])
                     Button("Reload (ignore cache)") { reloadIgnoreCache() }
-                    // WebKit is always enabled; remove toggle.
                     Toggle("Enable JS", isOn: $enableJS)
                     Picker("Preview Source", selection: $previewSource) {
                         Text("Local").tag(PreviewSource.localHTML)
@@ -231,6 +231,59 @@ struct PreviewBottomBar: View {
     }
 }
 
+// MARK: - Directory Watcher (helper)
+final class DirectoryWatcher {
+    private var fd: CInt = -1
+    private var source: DispatchSourceFileSystemObject?
+    private let queue = DispatchQueue(label: "codeedit.filewatch.queue")
+    private var lastEventAt: Date = .distantPast
+    private let debounceInterval: TimeInterval = 0.25
+
+    func startWatching(url: URL, onChange: @escaping () -> Void, onError: @escaping (Error) -> Void) {
+        stop()
+
+        let dirURL = url.deletingLastPathComponent()
+        fd = open(dirURL.path, O_EVTONLY)
+        guard fd >= 0 else {
+            onError(NSError(domain: "DirectoryWatcher", code: 1, userInfo: [
+                NSLocalizedDescriptionKey: "Failed to open directory: \(dirURL.path)"
+            ]))
+            return
+        }
+
+        let mask: DispatchSource.FileSystemEvent = [.write, .rename, .delete, .attrib, .extend]
+        let src = DispatchSource.makeFileSystemObjectSource(fileDescriptor: fd, eventMask: mask, queue: queue)
+        source = src
+
+        src.setEventHandler { [weak self] in
+            guard let self else { return }
+            let now = Date()
+            if now.timeIntervalSince(self.lastEventAt) < self.debounceInterval { return }
+            self.lastEventAt = now
+            onChange() // caller hops to main if needed
+        }
+
+        src.setCancelHandler { [weak self] in
+            guard let self else { return }
+            if self.fd >= 0 { close(self.fd) }
+            self.fd = -1
+            self.source = nil
+        }
+
+        src.resume()
+        print("[FS Watch] Started for directory: \(dirURL.path)")
+    }
+
+    func stop() {
+        source?.cancel()
+        source = nil
+        if fd >= 0 { close(fd) }
+        fd = -1
+    }
+
+    deinit { stop() }
+}
+
 // MARK: - Main View
 struct EditorAreaFileView: View {
     @EnvironmentObject private var editorManager: EditorManager
@@ -256,7 +309,6 @@ struct EditorAreaFileView: View {
               <head>
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
-
                 <style>
                   html, body { margin: 0; padding: 0; background: #ffffff; color: #111; font: -apple-system-body; }
                   pre { white-space: pre-wrap; word-wrap: break-word; margin: 0; padding: 16px; }
@@ -277,7 +329,6 @@ struct EditorAreaFileView: View {
     @State private var cancellables = Set<AnyCancellable>()
     @State private var renderWorkItem: DispatchWorkItem?
 
-    // WebKit is always enabled; only allow JS toggle
     @State private var webViewAllowJS: Bool = false
     @State private var previewSource: PreviewSource = .localHTML
 
@@ -286,9 +337,13 @@ struct EditorAreaFileView: View {
 
     @State private var webViewRefreshToken = UUID()
 
+    // FS watcher state
+    @State private var watcher = DirectoryWatcher()
+    @State private var lastKnownFileMTime: Date?
+
     // Fixed size constants
-    private let FIXED_PREVIEW_HEIGHT: CGFloat = 320    // adjust as needed
-    private let FIXED_PREVIEW_WIDTH: CGFloat = 420     // used in split right pane
+    private let FIXED_PREVIEW_HEIGHT: CGFloat = 320
+    private let FIXED_PREVIEW_WIDTH: CGFloat = 420
 
     private func bindContent() {
         NotificationCenter.default.publisher(
@@ -378,14 +433,54 @@ struct EditorAreaFileView: View {
         }
     }
 
-    // MARK: - Whole Editor Layout with fixed WebView below divider
+    // MARK: - FS Watch helpers 
+    private func startFileWatchIfNeeded() {
+        guard let fileURL = codeFile.fileURL else { return }
+
+        // Record current mtime to filter unrelated directory events
+        lastKnownFileMTime = (try? fileURL.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
+
+        watcher.startWatching(url: fileURL) { [fileURL] in
+            // Compute new mtime off the main thread
+            let mtime = (try? fileURL.resourceValues(forKeys: [.contentModificationDateKey]))?.contentModificationDate
+
+            // Hop to main to mutate state and refresh UI
+            DispatchQueue.main.async {
+                if self.lastKnownFileMTime == mtime { return }
+                self.lastKnownFileMTime = mtime
+
+                if let newText = self.codeFile.content?.string {
+                    self.updatePreview(with: newText)
+                } else {
+                    do {
+                        let data = try Data(contentsOf: fileURL)
+                        let newText = String(data: data, encoding: .utf8) ?? ""
+                        self.updatePreview(with: newText)
+                    } catch {
+                        print("[FS Watch] Failed reading file: \(error.localizedDescription)")
+                    }
+                }
+
+                self.webViewRefreshToken = UUID()
+            }
+        } onError: { err in
+            DispatchQueue.main.async {
+                print("[FS Watch] Error: \(err.localizedDescription)")
+            }
+        }
+    }
+
+    private func stopFileWatch() {
+        watcher.stop()
+    }
+
+    // MARK: - Layout
     @ViewBuilder var editorAreaFileView: some View {
         let pathExt = codeFile.fileURL?.pathExtension.lowercased() ?? ""
         let isHTML = (codeFile.utType?.conforms(to: .html) ?? false) || (["html", "htm"].contains(pathExt))
         let isMarkdown = (codeFile.utType?.identifier == "net.daringfireball.markdown") || (pathExt == "md" || pathExt == "markdown")
 
         VStack(spacing: 0) {
-            // Top row: mode picker
             HStack(spacing: 8) {
                 Picker("Display Mode", selection: $displayMode) {
                     ForEach(EditorDisplayMode.allCases) { mode in
@@ -400,14 +495,12 @@ struct EditorAreaFileView: View {
 
             Divider()
 
-            // Content below divider
             if isHTML {
                 switch displayMode {
                 case .code:
                     CodeFileView(editorInstance: editorInstance, codeFile: codeFile)
 
                 case .preview:
-                    // Fixed-height WebView area below the divider
                     VStack(spacing: 0) {
                         ZStack {
                             WebView(
@@ -422,7 +515,6 @@ struct EditorAreaFileView: View {
                             .frame(maxWidth: .infinity, minHeight: FIXED_PREVIEW_HEIGHT, maxHeight: FIXED_PREVIEW_HEIGHT)
                             .background(Color.white)
 
-                            // Bottom overlay bar pinned inside the fixed area
                             VStack(spacing: 0) {
                                 Spacer()
                                 PreviewBottomBar(
@@ -441,7 +533,6 @@ struct EditorAreaFileView: View {
                     HStack(spacing: 0) {
                         CodeFileView(editorInstance: editorInstance, codeFile: codeFile)
 
-                        // Right pane has fixed width; inside it, fixed-height WebView
                         VStack(spacing: 0) {
                             ZStack {
                                 WebView(
@@ -522,7 +613,6 @@ struct EditorAreaFileView: View {
                         .frame(minWidth: FIXED_PREVIEW_WIDTH,
                                idealWidth: FIXED_PREVIEW_WIDTH,
                                maxWidth: FIXED_PREVIEW_WIDTH,
-                               minHeight: nil, idealHeight: nil,
                                maxHeight: .infinity, alignment: .center)
                         .background(Color.white)
                     }
@@ -556,6 +646,14 @@ struct EditorAreaFileView: View {
                     await loadServerPreview(with: sourceString)
                 }
             }
+            startFileWatchIfNeeded()
+        }
+        .onChange(of: codeFile.fileURL) { _ in
+            stopFileWatch()
+            startFileWatchIfNeeded()
+        }
+        .onDisappear {
+            stopFileWatch()
         }
     }
 
@@ -568,47 +666,4 @@ struct EditorAreaFileView: View {
                 }
             }
     }
-
-    struct EditorArea: View {
-        let editorInstance: EditorInstance
-        let codeFile: CodeFileDocument
-
-        private let renderer = HTMLRenderer(
-            render: { source in
-                func isHTML(_ sourceString: String) -> Bool {
-                    let trimed = sourceString.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-                    return trimed.hasPrefix("<!doctype") || trimed.hasPrefix("<html")
-                }
-                if isHTML(source) { return source }
-                let escaped = source
-                    .replacingOccurrences(of: "&", with: "&amp;")
-                    .replacingOccurrences(of: "<", with: "&lt;")
-                    .replacingOccurrences(of: ">", with: "&gt;")
-                return """
-            <!doctype html>
-            <html>
-              <head>
-                <meta charset="utf-8">
-                <style>
-                  body { font: -apple-system-body; padding: 16px; background: transparent; color: #111; }
-                  pre { white-space: pre-wrap; word-wrap: break-word; margin: 0; }
-                </style>
-              </head>
-              <body><pre>\(escaped)</pre></body>
-            </html>
-            """
-            },
-            loggingEnabled: true
-        )
-
-        var body: some View {
-            EditorAreaFileView(
-                editorInstance: editorInstance,
-                codeFile: codeFile,
-                htmlRenderer: renderer,
-                enablePreviewLogging: true
-            )
-        }
-    }
 }
-
