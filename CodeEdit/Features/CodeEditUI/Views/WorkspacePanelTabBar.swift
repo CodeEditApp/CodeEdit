@@ -284,7 +284,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
                 .onChange(of: geometry.frame(in: .global)) { newFrame in
                     self.tabLocations[tab] = newFrame
                 }
-                .onChange(of: geometry.size.width) { newWidth in
+                .onChange(of: geometry.size.width) { _, newWidth in
                     self.tabWidth[tab] = newWidth
                 }
         }

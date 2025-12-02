@@ -57,7 +57,7 @@ struct UpdateStatusBarInfo: ViewModifier {
                     statusBarViewModel.fileSize = statusBarInfo?.fileSize
                     statusBarViewModel.dimensions = statusBarInfo?.dimensions
                 }
-                .onChange(of: editorManager.activeEditor.selectedTab) { newTab in
+                .onChange(of: editorManager.activeEditor.selectedTab) { _, newTab in
                     guard let newTab else { return }
                     let statusBarInfo = computeStatusBarInfo(with: newTab.file.url)
                     statusBarViewModel.fileSize = statusBarInfo?.fileSize

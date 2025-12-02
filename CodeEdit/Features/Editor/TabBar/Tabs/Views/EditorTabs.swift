@@ -331,14 +331,14 @@ struct EditorTabs: View {
                         }
                     }
                     // When selected tab is changed, scroll to it if possible.
-                    .onChange(of: editor.selectedTab) { newValue in
+                    .onChange(of: editor.selectedTab) { _, newValue in
                         withAnimation {
                             scrollReader.scrollTo(newValue?.file.id)
                         }
                     }
 
                     // When window size changes, re-compute the expected tab width.
-                    .onChange(of: geometryProxy.size.width) { _ in
+                    .onChange(of: geometryProxy.size.width) { _, _ in
                         withAnimation {
                             scrollReader.scrollTo(editor.selectedTab?.file.id)
                         }

@@ -126,7 +126,7 @@ struct SourceControlNavigatorChangesCommitView: View {
                 .padding(.top, 8)
             }
             .transition(.move(edge: .top))
-            .onChange(of: message) { _ in
+            .onChange(of: message) { _, _ in
                 withAnimation(.easeInOut(duration: 0.25)) {
                     showDetails = !message.isEmpty
                 }

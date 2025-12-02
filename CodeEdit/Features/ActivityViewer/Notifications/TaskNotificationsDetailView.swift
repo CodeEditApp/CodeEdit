@@ -35,7 +35,7 @@ struct TaskNotificationsDetailView: View {
         }
         .padding(15)
         .frame(minWidth: 320)
-        .onChange(of: taskNotificationHandler.notifications) { newValue in
+        .onChange(of: taskNotificationHandler.notifications) { _, newValue in
             if selectedTaskNotificationIndex >= newValue.count {
                 selectedTaskNotificationIndex = 0
             }

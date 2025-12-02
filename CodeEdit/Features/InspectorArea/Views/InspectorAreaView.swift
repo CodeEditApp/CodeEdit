@@ -54,7 +54,7 @@ struct InspectorAreaView: View {
         .formStyle(.grouped)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("inspector")
-        .onChange(of: showInternalDevelopmentInspector) { _ in
+        .onChange(of: showInternalDevelopmentInspector) { _, _ in
             updateTabs()
         }
     }

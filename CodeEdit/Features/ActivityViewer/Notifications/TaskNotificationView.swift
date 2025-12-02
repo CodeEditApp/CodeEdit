@@ -49,7 +49,7 @@ struct TaskNotificationView: View {
             }
         }
         .animation(.easeInOut, value: notification)
-        .onChange(of: taskNotificationHandler.notifications) { newValue in
+        .onChange(of: taskNotificationHandler.notifications) { _, newValue in
             withAnimation {
                 notification = newValue.first
             }
