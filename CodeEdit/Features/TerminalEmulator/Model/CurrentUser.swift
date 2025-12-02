@@ -39,8 +39,8 @@ struct CurrentUser {
             buffer.deallocate()
         }
         var pwd = passwd()
-        // points to `pwd`
-        var result: UnsafeMutablePointer<passwd>? = UnsafeMutablePointer<passwd>.allocate(capacity: 1)
+        // `result` will be set by getpwuid_r to point to `pwd` on success
+        var result: UnsafeMutablePointer<passwd>?
 
         if getpwuid_r(getuid(), &pwd, buffer, bufsize, &result) != 0 { return nil }
 
