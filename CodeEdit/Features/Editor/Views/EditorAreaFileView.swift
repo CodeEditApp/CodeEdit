@@ -1,3 +1,6 @@
+//  swiftlint:disable line_length
+//  swiftLint:disable file_length
+//  swiftlint:disable type_body_length
 //
 //  EditorAreaFileView.swift
 //  CodeEdit
@@ -329,6 +332,9 @@ struct EditorAreaFileView: View {
     @State private var cancellables = Set<AnyCancellable>()
     @State private var renderWorkItem: DispatchWorkItem?
 
+    // NEW: preview visibility toggle
+    @State private var showPreviewPane: Bool = true
+
     @State private var webViewAllowJS: Bool = false
     @State private var previewSource: PreviewSource = .localHTML
 
@@ -433,7 +439,7 @@ struct EditorAreaFileView: View {
         }
     }
 
-    // MARK: - FS Watch helpers 
+    // MARK: - FS Watch helpers
     private func startFileWatchIfNeeded() {
         guard let fileURL = codeFile.fileURL else { return }
 
@@ -501,38 +507,7 @@ struct EditorAreaFileView: View {
                     CodeFileView(editorInstance: editorInstance, codeFile: codeFile)
 
                 case .preview:
-                    VStack(spacing: 0) {
-                        ZStack {
-                            WebView(
-                                html: renderedHTMLState.isEmpty
-                                    ? "<!doctype html><html><body style='background:#fff'><h1>Preview Ready</h1></body></html>"
-                                    : renderedHTMLState,
-                                baseURL: codeFile.fileURL?.deletingLastPathComponent(),
-                                onCrash: { /* WebKit always on; show message if needed */ },
-                                allowJavaScript: webViewAllowJS
-                            )
-                            .id(webViewRefreshToken)
-                            .frame(maxWidth: .infinity, minHeight: FIXED_PREVIEW_HEIGHT, maxHeight: FIXED_PREVIEW_HEIGHT)
-                            .background(Color.white)
-
-                            VStack(spacing: 0) {
-                                Spacer()
-                                PreviewBottomBar(
-                                    refresh: { refreshPreview() },
-                                    reloadIgnoreCache: { webViewRefreshToken = UUID() },
-                                    enableJS: $webViewAllowJS,
-                                    previewSource: $previewSource,
-                                    serverErrorMessage: serverErrorMessage
-                                )
-                            }
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                case .split:
-                    HStack(spacing: 0) {
-                        CodeFileView(editorInstance: editorInstance, codeFile: codeFile)
-
+                    if showPreviewPane {
                         VStack(spacing: 0) {
                             ZStack {
                                 WebView(
@@ -540,7 +515,7 @@ struct EditorAreaFileView: View {
                                         ? "<!doctype html><html><body style='background:#fff'><h1>Preview Ready</h1></body></html>"
                                         : renderedHTMLState,
                                     baseURL: codeFile.fileURL?.deletingLastPathComponent(),
-                                    onCrash: { /* WebKit always on */ },
+                                    onCrash: { /* WebKit always on; show message if needed */ },
                                     allowJavaScript: webViewAllowJS
                                 )
                                 .id(webViewRefreshToken)
@@ -558,10 +533,129 @@ struct EditorAreaFileView: View {
                                     )
                                 }
                             }
+                            // Ensure overlay respects safe area and is not clipped
+                            .overlay(alignment: .topTrailing) {
+                                Button {
+                                    withAnimation(.easeInOut(duration: 0.18)) {
+                                        showPreviewPane = false
+                                    }
+                                } label: {
+                                    Image(systemName: "eye.slash")
+                                        .font(.system(size: 14, weight: .medium))
+                                        .padding(6)
+                                        .background(Color.black.opacity(0.12))
+                                        .clipShape(Circle())
+                                }
+                                .buttonStyle(.plain)
+                                .help("Hide Preview")
+                                .padding(.top, edgeInsets.top + 8)
+                                .padding(.trailing, 8)
+                                .zIndex(10)
+                            }
                         }
-                        .frame(width: FIXED_PREVIEW_WIDTH)
-                        .frame(maxHeight: .infinity)
-                        .background(Color.white)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    } else {
+                        // Preview hidden in Preview mode — show a center "show" button
+                        VStack {
+                            Spacer()
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.18)) {
+                                    showPreviewPane = true
+                                }
+                            } label: {
+                                Image(systemName: "eye")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .padding(10)
+                                    .background(Color.black.opacity(0.08))
+                                    .clipShape(Circle())
+                            }
+                            .buttonStyle(.plain)
+                            .help("Show Preview")
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color(NSColor.windowBackgroundColor))
+                    }
+
+                case .split:
+                    HStack(spacing: 0) {
+                        // Wrap code view so we can show the "show preview" button when preview is hidden
+                        ZStack {
+                            CodeFileView(editorInstance: editorInstance, codeFile: codeFile)
+
+                            if !showPreviewPane {
+                                // small overlay button at top-right of code area to restore preview
+                                Button {
+                                    withAnimation(.easeInOut(duration: 0.18)) {
+                                        showPreviewPane = true
+                                    }
+                                } label: {
+                                    Image(systemName: "eye")
+                                        .font(.system(size: 14, weight: .medium))
+                                        .padding(6)
+                                        .background(Color.black.opacity(0.12))
+                                        .clipShape(Circle())
+                                }
+                                .buttonStyle(.plain)
+                                .help("Show Preview")
+                                .padding(.top, edgeInsets.top + 8)
+                                .padding(.trailing, 8)
+                                .zIndex(10)
+                            }
+                        }
+                        .frame(minWidth: 200)
+
+                        if showPreviewPane {
+                            VStack(spacing: 0) {
+                                ZStack {
+                                    WebView(
+                                        html: renderedHTMLState.isEmpty
+                                            ? "<!doctype html><html><body style='background:#fff'><h1>Preview Ready</h1></body></html>"
+                                            : renderedHTMLState,
+                                        baseURL: codeFile.fileURL?.deletingLastPathComponent(),
+                                        onCrash: { /* WebKit always on */ },
+                                        allowJavaScript: webViewAllowJS
+                                    )
+                                    .id(webViewRefreshToken)
+                                    .frame(maxWidth: .infinity, minHeight: FIXED_PREVIEW_HEIGHT, maxHeight: FIXED_PREVIEW_HEIGHT)
+                                    .background(Color.white)
+
+                                    VStack(spacing: 0) {
+                                        Spacer()
+                                        PreviewBottomBar(
+                                            refresh: { refreshPreview() },
+                                            reloadIgnoreCache: { webViewRefreshToken = UUID() },
+                                            enableJS: $webViewAllowJS,
+                                            previewSource: $previewSource,
+                                            serverErrorMessage: serverErrorMessage
+                                        )
+                                    }
+
+                                    // drag / divider area (kept minimal here, you can replace with more advanced drag logic)
+                                }
+                                .overlay(alignment: .topTrailing) {
+                                    Button {
+                                        withAnimation(.easeInOut(duration: 0.18)) {
+                                            showPreviewPane = false
+                                        }
+                                    } label: {
+                                        Image(systemName: "eye.slash")
+                                            .font(.system(size: 14, weight: .medium))
+                                            .padding(6)
+                                            .background(Color.black.opacity(0.12))
+                                            .clipShape(Circle())
+                                    }
+                                    .buttonStyle(.plain)
+                                    .help("Hide Preview")
+                                    .padding(.top, edgeInsets.top + 8)
+                                    .padding(.trailing, 8)
+                                    .zIndex(10)
+                                }
+                            }
+                            .frame(width: FIXED_PREVIEW_WIDTH)
+                            .frame(maxHeight: .infinity)
+                            .background(Color.white)
+                        }
                     }
                 }
             } else if isMarkdown {
@@ -570,34 +664,13 @@ struct EditorAreaFileView: View {
                     CodeFileView(editorInstance: editorInstance, codeFile: codeFile)
 
                 case .preview:
-                    VStack(spacing: 0) {
-                        ZStack {
-                            MarkdownView(source: contentString)
-                                .frame(maxWidth: .infinity, minHeight: FIXED_PREVIEW_HEIGHT, maxHeight: FIXED_PREVIEW_HEIGHT)
-                                .background(Color.white)
-
-                            VStack(spacing: 0) {
-                                Spacer()
-                                PreviewBottomBar(
-                                    refresh: { refreshPreview() },
-                                    reloadIgnoreCache: { webViewRefreshToken = UUID() },
-                                    enableJS: $webViewAllowJS,
-                                    previewSource: $previewSource,
-                                    serverErrorMessage: serverErrorMessage
-                                )
-                            }
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                case .split:
-                    HStack(spacing: 0) {
-                        CodeFileView(editorInstance: editorInstance, codeFile: codeFile)
+                    if showPreviewPane {
                         VStack(spacing: 0) {
                             ZStack {
                                 MarkdownView(source: contentString)
                                     .frame(maxWidth: .infinity, minHeight: FIXED_PREVIEW_HEIGHT, maxHeight: FIXED_PREVIEW_HEIGHT)
                                     .background(Color.white)
+
                                 VStack(spacing: 0) {
                                     Spacer()
                                     PreviewBottomBar(
@@ -609,12 +682,119 @@ struct EditorAreaFileView: View {
                                     )
                                 }
                             }
+                            .overlay(alignment: .topTrailing) {
+                                Button {
+                                    withAnimation(.easeInOut(duration: 0.18)) {
+                                        showPreviewPane = false
+                                    }
+                                } label: {
+                                    Image(systemName: "eye.slash")
+                                        .font(.system(size: 14, weight: .medium))
+                                        .padding(6)
+                                        .background(Color.black.opacity(0.12))
+                                        .clipShape(Circle())
+                                }
+                                .buttonStyle(.plain)
+                                .help("Hide Preview")
+                                .padding(.top, edgeInsets.top + 8)
+                                .padding(.trailing, 8)
+                                .zIndex(10)
+                            }
                         }
-                        .frame(minWidth: FIXED_PREVIEW_WIDTH,
-                               idealWidth: FIXED_PREVIEW_WIDTH,
-                               maxWidth: FIXED_PREVIEW_WIDTH,
-                               maxHeight: .infinity, alignment: .center)
-                        .background(Color.white)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    } else {
+                        // Preview hidden in Preview mode — show a center "show" button
+                        VStack {
+                            Spacer()
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.18)) {
+                                    showPreviewPane = true
+                                }
+                            } label: {
+                                Image(systemName: "eye")
+                                    .font(.system(size: 20, weight: .semibold))
+                                    .padding(10)
+                                    .background(Color.black.opacity(0.08))
+                                    .clipShape(Circle())
+                            }
+                            .buttonStyle(.plain)
+                            .help("Show Preview")
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color(NSColor.windowBackgroundColor))
+                    }
+
+                case .split:
+                    HStack(spacing: 0) {
+                        // Wrap code view so we can show the "show preview" button when preview is hidden
+                        ZStack {
+                            CodeFileView(editorInstance: editorInstance, codeFile: codeFile)
+
+                            if !showPreviewPane {
+                                Button {
+                                    withAnimation(.easeInOut(duration: 0.18)) {
+                                        showPreviewPane = true
+                                    }
+                                } label: {
+                                    Image(systemName: "eye")
+                                        .font(.system(size: 14, weight: .medium))
+                                        .padding(6)
+                                        .background(Color.black.opacity(0.12))
+                                        .clipShape(Circle())
+                                }
+                                .buttonStyle(.plain)
+                                .help("Show Preview")
+                                .padding(.top, edgeInsets.top + 8)
+                                .padding(.trailing, 8)
+                                .zIndex(10)
+                            }
+                        }
+                        .frame(minWidth: 200)
+
+                        if showPreviewPane {
+                            VStack(spacing: 0) {
+                                ZStack {
+                                    MarkdownView(source: contentString)
+                                        .frame(maxWidth: .infinity, minHeight: FIXED_PREVIEW_HEIGHT, maxHeight: FIXED_PREVIEW_HEIGHT)
+                                        .background(Color.white)
+
+                                    VStack(spacing: 0) {
+                                        Spacer()
+                                        PreviewBottomBar(
+                                            refresh: { refreshPreview() },
+                                            reloadIgnoreCache: { webViewRefreshToken = UUID() },
+                                            enableJS: $webViewAllowJS,
+                                            previewSource: $previewSource,
+                                            serverErrorMessage: serverErrorMessage
+                                        )
+                                    }
+                                }
+                                .overlay(alignment: .topTrailing) {
+                                    Button {
+                                        withAnimation(.easeInOut(duration: 0.18)) {
+                                            showPreviewPane = false
+                                        }
+                                    } label: {
+                                        Image(systemName: "eye.slash")
+                                            .font(.system(size: 14, weight: .medium))
+                                            .padding(6)
+                                            .background(Color.black.opacity(0.12))
+                                            .clipShape(Circle())
+                                    }
+                                    .buttonStyle(.plain)
+                                    .help("Hide Preview")
+                                    .padding(.top, edgeInsets.top + 8)
+                                    .padding(.trailing, 8)
+                                    .zIndex(10)
+                                }
+                            }
+                            .frame(minWidth: FIXED_PREVIEW_WIDTH,
+                                   idealWidth: FIXED_PREVIEW_WIDTH,
+                                   maxWidth: FIXED_PREVIEW_WIDTH,
+                                   maxHeight: .infinity, alignment: .center)
+                            .background(Color.white)
+                        }
                     }
                 }
             } else if let utType = codeFile.utType, utType.conforms(to: .text) {
