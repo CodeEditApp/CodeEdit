@@ -53,7 +53,7 @@ struct HTMLRenderer {
     }
 }
 
-// MARK: - WebKit Crash-Aware Delegate
+// MARK: - WebKit Crash Delegate
 final class PreviewNavDelegate: NSObject, WKNavigationDelegate {
     var onCrash: (() -> Void)?
 
@@ -73,7 +73,7 @@ final class PreviewNavDelegate: NSObject, WKNavigationDelegate {
     }
 }
 
-// MARK: - WebView (Coordinator reuse, safe refresh)
+// MARK: - WebView 
 struct WebView: NSViewRepresentable {
     let html: String
     let baseURL: URL?
@@ -347,9 +347,13 @@ struct EditorAreaFileView: View {
     @State private var watcher = DirectoryWatcher()
     @State private var lastKnownFileMTime: Date?
 
-    // Fixed size constants
-    private let FIXED_PREVIEW_HEIGHT: CGFloat = 320
-    private let FIXED_PREVIEW_WIDTH: CGFloat = 420
+    // Width-resize state
+    @State private var previewWidth: CGFloat = 420   // default width for split mode
+    @State private var dragStartPreviewWidth: CGFloat?
+
+    // Min/max constraints for width-only resizing
+    private let MIN_PREVIEW_WIDTH: CGFloat = 200
+    private let MAX_PREVIEW_WIDTH: CGFloat = 1400
 
     private func bindContent() {
         NotificationCenter.default.publisher(
@@ -501,6 +505,26 @@ struct EditorAreaFileView: View {
 
             Divider()
 
+            // thin draggable vertical divider between code and preview (width-resize)
+            let verticalDivider: some View = Rectangle()
+                .fill(Color(NSColor.separatorColor))
+                .frame(width: 2)
+                // give a larger transparent hit area so it is easy to grab
+                .padding(.horizontal, 6)
+                .contentShape(Rectangle())
+                .gesture(DragGesture(minimumDistance: 1).onChanged { value in
+                    if dragStartPreviewWidth == nil { dragStartPreviewWidth = previewWidth }
+                    let start = dragStartPreviewWidth ?? previewWidth
+                    let delta = value.location.x - value.startLocation.x
+                    let newW = start - delta
+                    previewWidth = max(MIN_PREVIEW_WIDTH, min(MAX_PREVIEW_WIDTH, newW))
+                }.onEnded { _ in
+                    dragStartPreviewWidth = nil
+                })
+                .onHover { hovering in
+                    if hovering { NSCursor.resizeLeftRight.push() } else { NSCursor.pop() }
+                }
+
             if isHTML {
                 switch displayMode {
                 case .code:
@@ -519,7 +543,9 @@ struct EditorAreaFileView: View {
                                     allowJavaScript: webViewAllowJS
                                 )
                                 .id(webViewRefreshToken)
-                                .frame(maxWidth: .infinity, minHeight: FIXED_PREVIEW_HEIGHT, maxHeight: FIXED_PREVIEW_HEIGHT)
+                                .frame(maxWidth: .infinity, minHeight: 320, maxHeight: .infinity)
+                                // ensure top safe area isn't covered — add top padding to push web content down
+                                .padding(.top, edgeInsets.top)
                                 .background(Color.white)
 
                                 VStack(spacing: 0) {
@@ -579,7 +605,7 @@ struct EditorAreaFileView: View {
 
                 case .split:
                     HStack(spacing: 0) {
-                        // Wrap code view so we can show the "show preview" button when preview is hidden
+                        // Code area
                         ZStack {
                             CodeFileView(editorInstance: editorInstance, codeFile: codeFile)
 
@@ -606,53 +632,57 @@ struct EditorAreaFileView: View {
                         .frame(minWidth: 200)
 
                         if showPreviewPane {
-                            VStack(spacing: 0) {
-                                ZStack {
-                                    WebView(
-                                        html: renderedHTMLState.isEmpty
-                                            ? "<!doctype html><html><body style='background:#fff'><h1>Preview Ready</h1></body></html>"
-                                            : renderedHTMLState,
-                                        baseURL: codeFile.fileURL?.deletingLastPathComponent(),
-                                        onCrash: { /* WebKit always on */ },
-                                        allowJavaScript: webViewAllowJS
+                            // divider placed between code and preview (gesture here)
+                            verticalDivider
+                                .zIndex(5)
+
+                            // Preview container constrained to adjustable width
+                            ZStack {
+                                WebView(
+                                    html: renderedHTMLState.isEmpty
+                                        ? "<!doctype html><html><body style='background:#fff'><h1>Preview Ready</h1></body></html>"
+                                        : renderedHTMLState,
+                                    baseURL: codeFile.fileURL?.deletingLastPathComponent(),
+                                    onCrash: { /* WebKit always on */ },
+                                    allowJavaScript: webViewAllowJS
+                                )
+                                .id(webViewRefreshToken)
+                                .frame(maxWidth: .infinity, minHeight: 320, maxHeight: .infinity)
+                                // push content below top chrome so h1 isn't cut off
+                                .padding(.top, edgeInsets.top)
+                                .background(Color.white)
+
+                                VStack(spacing: 0) {
+                                    Spacer()
+                                    PreviewBottomBar(
+                                        refresh: { refreshPreview() },
+                                        reloadIgnoreCache: { webViewRefreshToken = UUID() },
+                                        enableJS: $webViewAllowJS,
+                                        previewSource: $previewSource,
+                                        serverErrorMessage: serverErrorMessage
                                     )
-                                    .id(webViewRefreshToken)
-                                    .frame(maxWidth: .infinity, minHeight: FIXED_PREVIEW_HEIGHT, maxHeight: FIXED_PREVIEW_HEIGHT)
-                                    .background(Color.white)
-
-                                    VStack(spacing: 0) {
-                                        Spacer()
-                                        PreviewBottomBar(
-                                            refresh: { refreshPreview() },
-                                            reloadIgnoreCache: { webViewRefreshToken = UUID() },
-                                            enableJS: $webViewAllowJS,
-                                            previewSource: $previewSource,
-                                            serverErrorMessage: serverErrorMessage
-                                        )
-                                    }
-
-                                    // drag / divider area (kept minimal here, you can replace with more advanced drag logic)
-                                }
-                                .overlay(alignment: .topTrailing) {
-                                    Button {
-                                        withAnimation(.easeInOut(duration: 0.18)) {
-                                            showPreviewPane = false
-                                        }
-                                    } label: {
-                                        Image(systemName: "eye.slash")
-                                            .font(.system(size: 14, weight: .medium))
-                                            .padding(6)
-                                            .background(Color.black.opacity(0.12))
-                                            .clipShape(Circle())
-                                    }
-                                    .buttonStyle(.plain)
-                                    .help("Hide Preview")
-                                    .padding(.top, edgeInsets.top + 8)
-                                    .padding(.trailing, 8)
-                                    .zIndex(10)
                                 }
                             }
-                            .frame(width: FIXED_PREVIEW_WIDTH)
+                            .overlay(alignment: .topTrailing) {
+                                Button {
+                                    withAnimation(.easeInOut(duration: 0.18)) {
+                                        showPreviewPane = false
+                                    }
+                                } label: {
+                                    Image(systemName: "eye.slash")
+                                        .font(.system(size: 14, weight: .medium))
+                                        .padding(6)
+                                        .background(Color.black.opacity(0.12))
+                                        .clipShape(Circle())
+                                }
+                                .buttonStyle(.plain)
+                                .help("Hide Preview")
+                                .padding(.top, edgeInsets.top + 8)
+                                .padding(.trailing, 8)
+                                .zIndex(10)
+                            }
+                            // Constrain preview to the adjustable width
+                            .frame(width: previewWidth)
                             .frame(maxHeight: .infinity)
                             .background(Color.white)
                         }
@@ -668,7 +698,8 @@ struct EditorAreaFileView: View {
                         VStack(spacing: 0) {
                             ZStack {
                                 MarkdownView(source: contentString)
-                                    .frame(maxWidth: .infinity, minHeight: FIXED_PREVIEW_HEIGHT, maxHeight: FIXED_PREVIEW_HEIGHT)
+                                    .frame(maxWidth: .infinity, minHeight: 320, maxHeight: .infinity)
+                                    .padding(.top, edgeInsets.top)
                                     .background(Color.white)
 
                                 VStack(spacing: 0) {
@@ -727,7 +758,7 @@ struct EditorAreaFileView: View {
 
                 case .split:
                     HStack(spacing: 0) {
-                        // Wrap code view so we can show the "show preview" button when preview is hidden
+                        // Code area
                         ZStack {
                             CodeFileView(editorInstance: editorInstance, codeFile: codeFile)
 
@@ -753,10 +784,14 @@ struct EditorAreaFileView: View {
                         .frame(minWidth: 200)
 
                         if showPreviewPane {
+                            verticalDivider
+                                .zIndex(5)
+
                             VStack(spacing: 0) {
                                 ZStack {
                                     MarkdownView(source: contentString)
-                                        .frame(maxWidth: .infinity, minHeight: FIXED_PREVIEW_HEIGHT, maxHeight: FIXED_PREVIEW_HEIGHT)
+                                        .frame(maxWidth: .infinity, minHeight: 320, maxHeight: .infinity)
+                                        .padding(.top, edgeInsets.top)
                                         .background(Color.white)
 
                                     VStack(spacing: 0) {
@@ -789,9 +824,9 @@ struct EditorAreaFileView: View {
                                     .zIndex(10)
                                 }
                             }
-                            .frame(minWidth: FIXED_PREVIEW_WIDTH,
-                                   idealWidth: FIXED_PREVIEW_WIDTH,
-                                   maxWidth: FIXED_PREVIEW_WIDTH,
+                            .frame(minWidth: previewWidth,
+                                   idealWidth: previewWidth,
+                                   maxWidth: previewWidth,
                                    maxHeight: .infinity, alignment: .center)
                             .background(Color.white)
                         }
