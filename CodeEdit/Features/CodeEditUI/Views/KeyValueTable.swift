@@ -203,7 +203,7 @@ struct KeyValueTable<Header: View, ActionBarView: View>: View {
             }
             selection = []
         }
-        .onChange(of: items) { newValue in
+        .onChange(of: items) { _, newValue in
             updateTableItems(newValue)
         }
     }

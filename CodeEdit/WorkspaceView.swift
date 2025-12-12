@@ -58,10 +58,10 @@ struct WorkspaceView: View {
 
                     // MARK: - Tab Focus Listeners
 
-                    .onChange(of: editorManager.activeEditor) { newValue in
+                    .onChange(of: editorManager.activeEditor) { _, newValue in
                         focusedEditor = newValue
                     }
-                    .onChange(of: focusedEditor) { newValue in
+                    .onChange(of: focusedEditor) { _, newValue in
                         /// Update active tab group only if the new one is not the same with it.
                         if let newValue, editorManager.activeEditor != newValue {
                             editorManager.activeEditor = newValue
@@ -73,7 +73,7 @@ struct WorkspaceView: View {
                     .task {
                         themeModel.colorScheme = colorScheme
                     }
-                    .onChange(of: colorScheme) { newValue in
+                    .onChange(of: colorScheme) { _, newValue in
                         themeModel.colorScheme = newValue
                         if matchAppearance {
                             themeModel.selectedTheme = newValue == .dark
@@ -95,7 +95,7 @@ struct WorkspaceView: View {
                             )
                         }
                     }
-                    .onChange(of: sourceControlIsEnabled) { newValue in
+                    .onChange(of: sourceControlIsEnabled) { _, newValue in
                         if newValue {
                             Task {
                                 await sourceControlManager.refreshCurrentBranch()
@@ -140,7 +140,7 @@ struct WorkspaceView: View {
                     focus: $focusedEditor
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onChange(of: geo.size.height) { newHeight in
+                .onChange(of: geo.size.height) { _, newHeight in
                     editorsHeight = newHeight
                 }
                 .onAppear {
@@ -187,7 +187,7 @@ struct WorkspaceView: View {
                 GeometryReader { geo in
                     Rectangle()
                         .opacity(0)
-                        .onChange(of: geo.size.height) { newHeight in
+                        .onChange(of: geo.size.height) { _, newHeight in
                             drawerHeight = newHeight
                         }
                         .onAppear {

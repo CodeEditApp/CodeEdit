@@ -182,7 +182,7 @@ struct CodeFileView: View {
         .colorScheme(currentTheme.appearance == .dark ? .dark : .light)
         // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
         .frame(minHeight: .zero, maxHeight: .infinity)
-        .onChange(of: settingsFont) { newFontSetting in
+        .onChange(of: settingsFont) { _, newFontSetting in
             font = newFontSetting.current
         }
     }

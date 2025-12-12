@@ -47,7 +47,7 @@ struct LanguageServersView: View {
                         .listRowInsets(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
                     }
                     .searchable(text: $searchText)
-                    .onChange(of: searchText) { newValue in
+                    .onChange(of: searchText) { _, newValue in
                         searchModel.searchTextUpdated(searchText: newValue, allItems: registryManager.registryItems)
                     }
                 } header: {

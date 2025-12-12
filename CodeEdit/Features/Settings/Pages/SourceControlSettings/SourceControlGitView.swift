@@ -72,7 +72,7 @@ struct SourceControlGitView: View {
 private extension SourceControlGitView {
     private var gitAuthorName: some View {
         TextField("Author Name", text: $authorName)
-            .onChange(of: authorName) { newValue in
+            .onChange(of: authorName) { _, newValue in
                 if hasAppeared {
                     Limiter.debounce(id: "authorNameDebouncer", duration: 0.5) {
                         Task {
@@ -85,7 +85,7 @@ private extension SourceControlGitView {
 
     private var gitEmail: some View {
         TextField("Author Email", text: $authorEmail)
-            .onChange(of: authorEmail) { newValue in
+            .onChange(of: authorEmail) { _, newValue in
                 if hasAppeared {
                     Limiter.debounce(id: "authorEmailDebouncer", duration: 0.5) {
                         Task {
@@ -101,7 +101,7 @@ private extension SourceControlGitView {
             Text("Default branch name")
             Text("Cannot contain spaces, backslashes, or other symbols")
         }
-        .onChange(of: defaultBranch) { newValue in
+        .onChange(of: defaultBranch) { _, newValue in
             if hasAppeared {
                 Limiter.debounce(id: "defaultBranchDebouncer", duration: 0.5) {
                     Task {
@@ -117,7 +117,7 @@ private extension SourceControlGitView {
             "Prefer to rebase when pulling",
             isOn: $preferRebaseWhenPulling
         )
-        .onChange(of: preferRebaseWhenPulling) { newValue in
+        .onChange(of: preferRebaseWhenPulling) { _, newValue in
             if hasAppeared {
                 Limiter.debounce(id: "pullRebaseDebouncer", duration: 0.5) {
                     Task {

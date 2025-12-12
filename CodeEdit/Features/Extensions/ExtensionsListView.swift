@@ -43,7 +43,7 @@ struct ExtensionsListView: View {
                     .frame(width: 400, height: 300)
             }
         }
-        .onChange(of: manager.extensions) { [oldValue = manager.extensions] newValue in
+        .onChange(of: manager.extensions) { oldValue, newValue in
             // Select the first one if previously the extension list was empty.
             if oldValue.isEmpty, let first = newValue.first {
                 selection = [first]
