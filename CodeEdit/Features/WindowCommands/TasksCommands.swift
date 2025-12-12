@@ -38,7 +38,7 @@ struct TasksCommands: Commands {
                 taskManager?.terminateActiveTask()
             }
             .keyboardShortcut(".")
-            .onChange(of: windowController) { _ in
+            .onChange(of: windowController) { _, _ in
                 taskManagerListener = taskManager?.objectWillChange.sink {
                     updateStatusListener()
                 }

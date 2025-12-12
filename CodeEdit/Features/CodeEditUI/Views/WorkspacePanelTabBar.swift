@@ -281,10 +281,10 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
                     self.tabWidth[tab] = (position == .top) ? geometry.size.width : geometry.size.height
                     self.tabLocations[tab] = geometry.frame(in: .global)
                 }
-                .onChange(of: geometry.frame(in: .global)) { newFrame in
+                .onChange(of: geometry.frame(in: .global)) { _, newFrame in
                     self.tabLocations[tab] = newFrame
                 }
-                .onChange(of: geometry.size.width) { newWidth in
+                .onChange(of: geometry.size.width) { _, newWidth in
                     self.tabWidth[tab] = newWidth
                 }
         }

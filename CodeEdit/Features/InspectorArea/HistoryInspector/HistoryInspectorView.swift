@@ -49,12 +49,12 @@ struct HistoryInspectorView: View {
                 await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
             }
         }
-        .onChange(of: editorManager.activeEditor) { _ in
+        .onChange(of: editorManager.activeEditor) { _, _ in
             Task {
                 await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
             }
         }
-        .onChange(of: editorManager.activeEditor.selectedTab) { _ in
+        .onChange(of: editorManager.activeEditor.selectedTab) { _, _ in
             Task {
                 await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
             }
@@ -63,7 +63,7 @@ struct HistoryInspectorView: View {
             await model.setWorkspace(sourceControlManager: workspace.sourceControlManager)
             await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path)
         }
-        .onChange(of: showMergeCommitsPerFileLog) { _ in
+        .onChange(of: showMergeCommitsPerFileLog) { _, _ in
             Task {
                 await model.updateCommitHistory()
             }

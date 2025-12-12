@@ -86,7 +86,7 @@ private extension GeneralSettingsView {
             Text("Dark")
                 .tag(SettingsData.Appearances.dark)
         }
-        .onChange(of: settings.appAppearance) { tag in
+        .onChange(of: settings.appAppearance) { _, tag in
             tag.applyAppearance()
         }
     }
@@ -350,7 +350,7 @@ private extension GeneralSettingsView {
 
     var openInCodeEditToggle: some View {
         Toggle("Show “Open With CodeEdit” option in Finder", isOn: $openInCodeEdit)
-            .onChange(of: openInCodeEdit) { newValue in
+            .onChange(of: openInCodeEdit) { _, newValue in
                 guard let defaults = UserDefaults.init(
                     suiteName: "app.codeedit.CodeEdit.shared"
                 ) else {

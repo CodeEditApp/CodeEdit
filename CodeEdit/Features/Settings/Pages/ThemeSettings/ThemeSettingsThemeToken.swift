@@ -58,7 +58,7 @@ struct ThemeSettingsThemeToken: View {
         .onHover { hovering in
             isHovering = hovering
         }
-        .onChange(of: selectedColor) { newValue in
+        .onChange(of: selectedColor) { _, newValue in
             color = newValue
         }
     }
