@@ -85,6 +85,9 @@ struct WorkspaceView: View {
                     // MARK: - Source Control
 
                     .task {
+                        // Only refresh git data if source control is enabled
+                        guard sourceControlIsEnabled else { return }
+                        
                         do {
                             try await sourceControlManager.refreshRemotes()
                             try await sourceControlManager.refreshStashEntries()
