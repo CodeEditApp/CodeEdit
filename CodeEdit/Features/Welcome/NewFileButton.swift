@@ -17,9 +17,22 @@ struct NewFileButton: View {
             iconName: "plus.square",
             title: "Create New File...",
             action: {
-                let documentController = CodeEditDocumentController()
+                let documentController = CodeEditDocumentControllerProvider.sharedDocumentController()
                 documentController.createAndOpenNewDocument(onCompletion: { dismissWindow() })
             }
         )
+    }
+}
+
+private enum CodeEditDocumentControllerProvider {
+    static func sharedDocumentController() -> CodeEditDocumentController {
+        if let typed = NSDocumentController.shared as? CodeEditDocumentController {
+            return typed
+        }
+        // Fall back to our own singleton instance without mutating the system `shared`
+        struct Holder {
+            static let instance = CodeEditDocumentController()
+        }
+        return Holder.instance
     }
 }
