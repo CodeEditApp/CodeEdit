@@ -27,6 +27,8 @@ class EditorInstance: ObservableObject, Hashable {
     @Published var replaceText: String?
     var replaceTextSubject: PassthroughSubject<String?, Never>
 
+    var autoCompleteCoordinator: AutoCompleteCoordinator?
+
     var rangeTranslator: RangeTranslator = RangeTranslator()
 
     private var cancellables: Set<AnyCancellable> = []
@@ -37,6 +39,7 @@ class EditorInstance: ObservableObject, Hashable {
         self.file = file
         let url = file.url
         let editorState = EditorStateRestoration.shared?.restorationState(for: url)
+        self.autoCompleteCoordinator = AutoCompleteCoordinator(file)
 
         findText = workspace?.searchState?.searchQuery
         findTextSubject = PassthroughSubject()
