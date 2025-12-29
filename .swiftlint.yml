@@ -17,6 +17,7 @@ identifier_name:
 excluded:
   - CodeEditModules/.build # Where Swift Package Manager checks out dependency sources
   - DerivedData
+  - build # Where xcodebuild checks out dependency sources and generated files
 
 opt_in_rules:
   - attributes

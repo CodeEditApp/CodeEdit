@@ -9,9 +9,11 @@ import Cocoa
 import SwiftUI
 
 final class CodeEditSplitViewController: NSSplitViewController {
-    static let minSidebarWidth: CGFloat = 242
+    static let minSidebarWidth: CGFloat = 150
+    static let maxSidebarWidth: CGFloat = 400
+    static let defaultSidebarWidth: CGFloat = 160
     static let maxSnapWidth: CGFloat = snapWidth + 10
-    static let snapWidth: CGFloat = 272
+    static let snapWidth: CGFloat = 180
     static let minSnapWidth: CGFloat = snapWidth - 10
 
     private weak var workspace: WorkspaceDocument?
@@ -102,7 +104,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
         }
         navigator.isSpringLoaded = true
         navigator.minimumThickness = Self.minSidebarWidth
+        navigator.maximumThickness = Self.maxSidebarWidth
         navigator.collapseBehavior = .useConstraints
+        navigator.holdingPriority = .defaultLow + 1
         return navigator
     }
 
@@ -121,9 +125,6 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
         guard let workspace else { return }
 
-        let navigatorWidth = workspace.getFromWorkspaceState(.splitViewWidth) as? CGFloat
-        splitView.setPosition(navigatorWidth ?? Self.minSidebarWidth, ofDividerAt: 0)
-
         if let firstSplitView = splitViewItems.first {
             firstSplitView.isCollapsed = workspace.getFromWorkspaceState(
                 .navigatorCollapsed
@@ -137,6 +138,21 @@ final class CodeEditSplitViewController: NSSplitViewController {
         }
 
         workspace.notificationPanel.updateToolbarItem()
+    }
+
+    override func viewDidAppear() {
+        super.viewDidAppear()
+
+        guard let workspace else { return }
+
+        // Set navigator width after layout is complete to ensure it takes effect
+        let savedWidth = workspace.getFromWorkspaceState(.splitViewWidth) as? CGFloat
+        // Clamp the width to valid bounds, using default if no saved state
+        let navigatorWidth = min(
+            max(savedWidth ?? Self.defaultSidebarWidth, Self.minSidebarWidth),
+            Self.maxSidebarWidth
+        )
+        splitView.setPosition(navigatorWidth, ofDividerAt: 0)
     }
 
     // MARK: - NSSplitViewDelegate
