@@ -31,6 +31,8 @@ struct CodeFileView: View {
     var lineHeightMultiple
     @AppSettings(\.textEditing.wrapLinesToEditorWidth)
     var wrapLinesToEditorWidth
+    @AppSettings(\.textEditing.wrappedLineIndent)
+    var wrappedLineIndent
     @AppSettings(\.textEditing.overscroll)
     var overscroll
     @AppSettings(\.textEditing.font)
@@ -125,6 +127,7 @@ struct CodeFileView: View {
                     lineHeightMultiple: lineHeightMultiple,
                     letterSpacing: letterSpacing,
                     wrapLines: wrapLinesToEditorWidth,
+                    wrappedLineIndent: wrappedLineIndent,
                     useSystemCursor: useSystemCursor,
                     tabWidth: defaultTabWidth,
                     bracketPairEmphasis: getBracketPairEmphasis()

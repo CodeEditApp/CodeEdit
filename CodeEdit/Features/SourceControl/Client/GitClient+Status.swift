@@ -75,7 +75,8 @@ extension GitClient {
             case "!", "#": // Ignored files or Header
                 try substringToNextNull(from: &index, output: output) // move the index to the next line.
             default:
-                throw GitClientError.statusInvalidChangeType(output[typeIndex])
+                // Skip unknown entry types (e.g. future porcelain v2 types or unexpected output)
+                try substringToNextNull(from: &index, output: output)
             }
         }
 

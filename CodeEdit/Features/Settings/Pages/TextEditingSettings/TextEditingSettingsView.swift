@@ -21,6 +21,7 @@ struct TextEditingSettingsView: View {
                 indentOption
                 defaultTabWidth
                 wrapLinesToEditorWidth
+                wrappedLineIndent
                 useSystemCursor
                 overscroll
             }
@@ -84,6 +85,25 @@ private extension TextEditingSettingsView {
 
     @ViewBuilder private var wrapLinesToEditorWidth: some View {
         Toggle("Wrap lines to editor width", isOn: $textEditing.wrapLinesToEditorWidth)
+    }
+
+    @ViewBuilder private var wrappedLineIndent: some View {
+        HStack(alignment: .top) {
+            Stepper(
+                "Indent wrapped lines",
+                value: Binding<Double>(
+                    get: { Double(textEditing.wrappedLineIndent) },
+                    set: { textEditing.wrappedLineIndent = Int($0) }
+                ),
+                in: 0...24,
+                step: 1,
+                format: .number
+            )
+            Text("spaces")
+                .foregroundColor(.secondary)
+        }
+        .disabled(!textEditing.wrapLinesToEditorWidth)
+        .help("Number of spaces to indent continuation lines when line wrapping is on (e.g. like Xcode).")
     }
 
     @ViewBuilder private var useSystemCursor: some View {
