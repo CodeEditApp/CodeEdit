@@ -18,6 +18,7 @@ extension SettingsData {
                 "Prefer Indent Using",
                 "Tab Width",
                 "Wrap lines to editor width",
+                "Indent wrapped lines",
                 "Editor Overscroll",
                 "Font",
                 "Font Size",
@@ -59,6 +60,11 @@ extension SettingsData {
 
         /// A flag indicating whether to wrap lines to editor width
         var wrapLinesToEditorWidth: Bool = true
+
+        /// Spaces to indent continuation lines when line wrapping 
+        /// is on (e.g. 4 or 12). See:
+        /// https://github.com/CodeEditApp/CodeEditTextView/issues/18
+        var wrappedLineIndent: Int = 4
 
         /// The percentage of overscroll to apply to the text view
         var overscroll: OverscrollOption = .medium
@@ -122,6 +128,10 @@ extension SettingsData {
                 Bool.self,
                 forKey: .wrapLinesToEditorWidth
             ) ?? true
+            self.wrappedLineIndent = try container.decodeIfPresent(
+                Int.self,
+                forKey: .wrappedLineIndent
+            ) ?? 4
             self.overscroll = try container.decodeIfPresent(
                 OverscrollOption.self,
                 forKey: .overscroll
