@@ -90,6 +90,7 @@ extension ProjectNavigatorMenu {
             if let newFile = try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item) {
                 workspace?.listenerModel.highlightedFileItem = newFile
                 workspace?.editorManager?.openTab(item: newFile)
+                renameFile()
             }
         } catch {
             let alert = NSAlert(error: error)
@@ -147,6 +148,7 @@ extension ProjectNavigatorMenu {
         do {
             if let newFolder = try workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item) {
                 workspace?.listenerModel.highlightedFileItem = newFolder
+                renameFile()
             }
         } catch {
             let alert = NSAlert(error: error)
