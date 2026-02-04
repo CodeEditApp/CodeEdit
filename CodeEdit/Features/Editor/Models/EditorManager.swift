@@ -101,7 +101,12 @@ class EditorManager: ObservableObject {
     func switchToActiveEditor() {
         cancellable?.cancel()
         cancellable = nil
+
+        // Send the current value immediately so subscribers get the initial state
+        tabBarTabIdSubject.send(activeEditor.selectedTab)
+
         cancellable = activeEditor.$selectedTab
+            .dropFirst() // Avoid duplicate emission since we just sent the current value
             .sink { [weak self] tab in
                 self?.tabBarTabIdSubject.send(tab)
             }
