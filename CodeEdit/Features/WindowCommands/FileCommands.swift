@@ -51,6 +51,11 @@ struct FileCommands: Commands {
             }
             .keyboardShortcut("w")
 
+            Button("Reopen Closed Tab") {
+                NSApp.sendAction(#selector(CodeEditWindowController.reopenClosedTab(_:)), to: nil, from: nil)
+            }
+            .keyboardShortcut("t", modifiers: [.command, .shift])
+
             Button("Close Editor") {
                 if NSApp.target(forAction: #selector(CodeEditWindowController.closeActiveEditor(_:))) != nil {
                     NSApp.sendAction(
