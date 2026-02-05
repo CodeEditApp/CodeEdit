@@ -52,6 +52,13 @@ final class Editor: ObservableObject, Identifiable {
     /// - Warning: Use the ``addToHistory(_:)`` or ``clearFuture()`` methods to modify this. Do not modify directly.
     @Published var history: Deque<CEWorkspaceFile> = []
 
+    /// Maintains the list of recently closed tabs that can be reopened.
+    /// The most recently closed tab is at the front of the deque.
+    @Published var closedTabsHistory: Deque<CEWorkspaceFile> = []
+
+    /// Maximum number of closed tabs to remember.
+    private static let maxClosedTabsHistory = 20
+
     /// Currently selected tab.
     @Published private(set) var selectedTab: Tab?
 
@@ -154,6 +161,10 @@ final class Editor: ObservableObject, Identifiable {
         if file != selectedTab?.file {
             addToHistory(EditorInstance(workspace: workspace, file: file))
         }
+
+        // Add to closed tabs history for reopening later
+        addToClosedTabsHistory(file)
+
         removeTab(file)
         if let selectedTab {
             addToHistory(selectedTab)
@@ -165,6 +176,45 @@ final class Editor: ObservableObject, Identifiable {
         }
         // remove file from memory
         file.fileDocument = nil
+    }
+
+    /// Adds a file to the closed tabs history.
+    /// - Parameter file: The file to add to the history.
+    private func addToClosedTabsHistory(_ file: CEWorkspaceFile) {
+        // Don't add duplicates (in case the same file is closed multiple times)
+        closedTabsHistory.removeAll(where: { $0 == file })
+
+        // Add to the front of the history
+        closedTabsHistory.prepend(file)
+
+        // Trim to max size
+        while closedTabsHistory.count > Self.maxClosedTabsHistory {
+            closedTabsHistory.removeLast()
+        }
+    }
+
+    /// Whether there are closed tabs that can be reopened.
+    var canReopenClosedTab: Bool {
+        !closedTabsHistory.isEmpty
+    }
+
+    /// Reopens the most recently closed tab.
+    /// - Returns: The file that was reopened, or nil if there are no closed tabs.
+    @discardableResult
+    func reopenLastClosedTab() -> CEWorkspaceFile? {
+        guard let file = closedTabsHistory.popFirst() else {
+            return nil
+        }
+
+        // Only reopen if the tab isn't already open
+        if !tabs.contains(where: { $0.file == file }) {
+            openTab(file: file)
+        } else {
+            // If already open, just select it
+            setSelectedTab(file)
+        }
+
+        return file
     }
 
     /// Closes the currently opened tab in the tab group.
