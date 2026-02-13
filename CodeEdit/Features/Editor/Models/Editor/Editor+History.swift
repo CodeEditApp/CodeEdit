@@ -39,6 +39,25 @@ extension Editor {
         }
     }
 
+    /// Reopens the most recently closed tab.
+    /// Pops from the ``closedTabs`` stack and opens it as a new tab.
+    func reopenClosedTab() {
+        guard let file = closedTabs.popLast() else { return }
+        // Skip files that are already open.
+        if tabs.contains(where: { $0.file == file }) {
+            // Already open — select it instead and try the next closed tab.
+            setSelectedTab(file)
+            reopenClosedTab()
+            return
+        }
+        openTab(file: file)
+    }
+
+    /// Whether there are closed tabs available to reopen.
+    var canReopenClosedTab: Bool {
+        !closedTabs.isEmpty
+    }
+
     // TODO: move to @Observable so this works better
     /// Warning: NOT published!
     var canGoBackInHistory: Bool {
