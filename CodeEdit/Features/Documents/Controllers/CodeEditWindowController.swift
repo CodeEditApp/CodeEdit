@@ -198,6 +198,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         }
     }
 
+    @IBAction func reopenClosedTab(_ sender: Any) {
+        workspace?.editorManager?.activeEditor.reopenClosedTab()
+    }
+
     @IBAction func closeActiveEditor(_ sender: Any) {
         if workspace?.editorManager?.editorLayout.findSomeEditor(
             except: workspace?.editorManager?.activeEditor

@@ -57,6 +57,12 @@ final class Editor: ObservableObject, Identifiable {
 
     @Published var temporaryTab: Tab?
 
+    /// Stack of recently closed files, used to support reopening closed tabs via ⇧⌘T.
+    @Published var recentlyClosedTabs: [CEWorkspaceFile] = []
+
+    /// Maximum number of recently closed tabs to remember.
+    private static let maxRecentlyClosedTabs = 20
+
     var id = UUID()
 
     weak var parent: SplitViewData?
@@ -144,6 +150,9 @@ final class Editor: ObservableObject, Identifiable {
     ///                  not be removed.
     func closeTab(file: CEWorkspaceFile, fromHistory: Bool = false) {
         guard canCloseTab(file: file) else { return }
+
+        // Remember the closed tab so it can be reopened with ⇧⌘T
+        addToRecentlyClosed(file)
 
         if temporaryTab?.file == file {
             temporaryTab = nil
@@ -322,6 +331,29 @@ final class Editor: ObservableObject, Identifiable {
 
     /// Remove the given file from tabs.
     /// - Parameter file: The file to remove.
+        // MARK: - Recently Closed Tabs
+
+    /// Pushes a file onto the recently-closed stack.
+    private func addToRecentlyClosed(_ file: CEWorkspaceFile) {
+        // Remove duplicates so the most recent close is always on top
+        recentlyClosedTabs.removeAll(where: { $0 == file })
+        recentlyClosedTabs.append(file)
+        if recentlyClosedTabs.count > Self.maxRecentlyClosedTabs {
+            recentlyClosedTabs.removeFirst()
+        }
+    }
+
+    /// Reopens the most recently closed tab, if any.
+    func reopenClosedTab() {
+        guard let file = recentlyClosedTabs.popLast() else { return }
+        openTab(file: file)
+    }
+
+    /// Whether there are any recently closed tabs that can be reopened.
+    var canReopenClosedTab: Bool {
+        !recentlyClosedTabs.isEmpty
+    }
+
     func removeTab(_ file: CEWorkspaceFile) {
         tabs.removeAll(where: { tab in tab.file == file })
         if temporaryTab?.file == file {
