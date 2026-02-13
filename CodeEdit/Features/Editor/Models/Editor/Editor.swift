@@ -52,6 +52,10 @@ final class Editor: ObservableObject, Identifiable {
     /// - Warning: Use the ``addToHistory(_:)`` or ``clearFuture()`` methods to modify this. Do not modify directly.
     @Published var history: Deque<CEWorkspaceFile> = []
 
+    /// Stack of recently closed tabs, used for ⇧⌘T reopen functionality.
+    /// Most recently closed tab is at the end.
+    @Published var closedTabs: [CEWorkspaceFile] = []
+
     /// Currently selected tab.
     @Published private(set) var selectedTab: Tab?
 
@@ -144,6 +148,15 @@ final class Editor: ObservableObject, Identifiable {
     ///                  not be removed.
     func closeTab(file: CEWorkspaceFile, fromHistory: Bool = false) {
         guard canCloseTab(file: file) else { return }
+
+        // Track closed tab for ⇧⌘T reopen. Avoid duplicates at the top of the stack.
+        if closedTabs.last != file {
+            closedTabs.append(file)
+            // Cap the stack to avoid unbounded growth.
+            if closedTabs.count > 25 {
+                closedTabs.removeFirst()
+            }
+        }
 
         if temporaryTab?.file == file {
             temporaryTab = nil
