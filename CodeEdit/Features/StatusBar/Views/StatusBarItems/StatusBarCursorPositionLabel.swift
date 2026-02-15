@@ -38,6 +38,9 @@ struct StatusBarCursorPositionLabel: View {
         .onReceive(editorManager.tabBarTabIdSubject) { _ in
             updateSource()
         }
+        .onReceive(editorManager.activeEditor.$selectedTab) { _ in
+            updateSource()
+        }
     }
 
     struct LineLabel: View {
