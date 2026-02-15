@@ -25,6 +25,8 @@ struct CodeFileView: View {
 
     @AppSettings(\.textEditing.defaultTabWidth)
     var defaultTabWidth
+    @AppSettings(\.textEditing.autocompleteBraces)
+    var autocompleteBraces
     @AppSettings(\.textEditing.indentOption)
     var indentOption
     @AppSettings(\.textEditing.lineHeightMultiple)
@@ -131,6 +133,7 @@ struct CodeFileView: View {
                 ),
                 behavior: .init(
                     isEditable: isEditable,
+                    autocompleteBraces: autocompleteBraces,
                     indentOption: indentOption.textViewOption(),
                     reformatAtColumn: reformatAtColumn
                 ),
