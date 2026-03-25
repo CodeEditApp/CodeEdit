@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct FindNavigatorIndexBar: View {
-    @ObservedObject private var state: WorkspaceDocument.SearchState
+    @ObservedObject private var state: SearchState
     @State private var progress: Double = 0.0
     @State private var shouldShow: Bool = false
 
-    init(state: WorkspaceDocument.SearchState) {
+    init(state: SearchState) {
         self.state = state
     }
 
@@ -45,7 +45,7 @@ struct FindNavigatorIndexBar: View {
 
     /// Updates the bar with a new status update.
     /// - Parameter status: The new status.
-    private func updateWithNewStatus(_ status: WorkspaceDocument.SearchState.IndexStatus) {
+    private func updateWithNewStatus(_ status: SearchState.IndexStatus) {
         switch status {
         case .none:
             self.progress = 0.0

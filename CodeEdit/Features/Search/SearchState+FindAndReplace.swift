@@ -1,5 +1,5 @@
 //
-//  WorkspaceDocument+FindAndReplace.swift
+//  SearchState+FindAndReplace.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 02.01.24.
@@ -8,7 +8,7 @@
 import Foundation
 import AppKit
 
-extension WorkspaceDocument.SearchState {
+extension SearchState {
     /// Performs a search and replace operation in a collection of files based on the provided query.
     ///
     /// - Parameters:

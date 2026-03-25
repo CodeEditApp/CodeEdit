@@ -1,5 +1,5 @@
 //
-//  WorkspaceDocument+Find.swift
+//  SearchState+Find.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 02.01.24.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-extension WorkspaceDocument.SearchState: @unchecked Sendable {}
+extension SearchState: @unchecked Sendable {}
 
-extension WorkspaceDocument.SearchState {
+extension SearchState {
     /// Creates a search term based on the given query and search mode.
     ///
     /// - Parameter query: The original user query string.

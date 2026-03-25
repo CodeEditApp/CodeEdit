@@ -22,8 +22,6 @@ struct EditorTabBarTrailingAccessories: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @EnvironmentObject var workspace: WorkspaceDocument
-
     @EnvironmentObject private var editorManager: EditorManager
 
     @EnvironmentObject private var editor: Editor
@@ -99,7 +97,7 @@ struct EditorTabBarTrailingAccessories: View {
     func split(edge: Edge) {
         let newEditor: Editor
         if let tab = editor.selectedTab {
-            newEditor = .init(files: [tab], temporaryTab: tab, workspace: workspace)
+            newEditor = .init(files: [tab], temporaryTab: tab, searchState: editor.searchState)
         } else {
             newEditor = .init()
         }

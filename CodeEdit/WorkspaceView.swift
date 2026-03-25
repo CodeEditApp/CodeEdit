@@ -112,7 +112,7 @@ struct WorkspaceView: View {
 
                     .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { output in
                         if let window = output.object as? NSWindow, self.window == window {
-                            workspace.addToWorkspaceState(
+                            workspace.statePersistence?.set(
                                 key: .workspaceWindowSize,
                                 value: NSStringFromRect(window.frame)
                             )

@@ -60,7 +60,10 @@ final class Editor: ObservableObject, Identifiable {
     var id = UUID()
 
     weak var parent: SplitViewData?
-    weak var workspace: WorkspaceDocument?
+    weak var searchState: SearchState?
+
+    /// Whether this editor is attached to a workspace. Used to guard file loading operations.
+    var isAttachedToWorkspace: Bool = false
 
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "Editor")
 
@@ -68,7 +71,7 @@ final class Editor: ObservableObject, Identifiable {
         self.tabs = []
         self.temporaryTab = nil
         self.parent = nil
-        self.workspace = nil
+        self.searchState = nil
     }
 
     init(
@@ -76,17 +79,17 @@ final class Editor: ObservableObject, Identifiable {
         selectedTab: Tab? = nil,
         temporaryTab: Tab? = nil,
         parent: SplitViewData? = nil,
-        workspace: WorkspaceDocument? = nil
+        searchState: SearchState? = nil
     ) {
         self.parent = parent
-        self.workspace = workspace
+        self.searchState = searchState
         // If we open the files without a valid workspace, we risk creating a file we lose track of but stays in memory
-        if workspace != nil {
+        if isAttachedToWorkspace {
             files.forEach { openTab(file: $0) }
         } else {
-            self.tabs = OrderedSet(files.map { EditorInstance(workspace: workspace, file: $0) })
+            self.tabs = OrderedSet(files.map { EditorInstance(searchState: searchState, file: $0) })
         }
-        self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(workspace: workspace, file: files.first!))
+        self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(searchState: searchState, file: files.first!))
         self.temporaryTab = temporaryTab
     }
 
@@ -95,11 +98,11 @@ final class Editor: ObservableObject, Identifiable {
         selectedTab: Tab? = nil,
         temporaryTab: Tab? = nil,
         parent: SplitViewData? = nil,
-        workspace: WorkspaceDocument? = nil
+        searchState: SearchState? = nil
     ) {
         self.tabs = []
         self.parent = parent
-        self.workspace = workspace
+        self.searchState = searchState
         files.forEach { openTab(file: $0.file) }
         self.selectedTab = selectedTab ?? tabs.first
         self.temporaryTab = temporaryTab
@@ -152,7 +155,7 @@ final class Editor: ObservableObject, Identifiable {
             clearFuture()
         }
         if file != selectedTab?.file {
-            addToHistory(EditorInstance(workspace: workspace, file: file))
+            addToHistory(EditorInstance(searchState: searchState, file: file))
         }
         removeTab(file)
         if let selectedTab {
@@ -182,7 +185,7 @@ final class Editor: ObservableObject, Identifiable {
     ///   - file: the file to open.
     ///   - asTemporary: indicates whether the tab should be opened as a temporary tab or a permanent tab.
     func openTab(file: CEWorkspaceFile, asTemporary: Bool) {
-        let item = EditorInstance(workspace: workspace, file: file)
+        let item = EditorInstance(searchState: searchState, file: file)
         // Item is already opened in a tab.
         guard !tabs.contains(item) || !asTemporary else {
             selectedTab = item
@@ -240,7 +243,7 @@ final class Editor: ObservableObject, Identifiable {
     ///   - index: Index where the tab needs to be added. If nil, it is added to the back.
     ///   - fromHistory: Indicates whether the tab has been opened from going back in history.
     func openTab(file: CEWorkspaceFile, at index: Int? = nil, fromHistory: Bool = false) {
-        let item = Tab(workspace: workspace, file: file)
+        let item = Tab(searchState: searchState, file: file)
         if let index {
             tabs.insert(item, at: index)
         } else {
@@ -269,7 +272,7 @@ final class Editor: ObservableObject, Identifiable {
             return
         }
 
-        guard workspace != nil else {
+        guard isAttachedToWorkspace else {
             throw EditorError.noWorkspaceAttached
         }
 

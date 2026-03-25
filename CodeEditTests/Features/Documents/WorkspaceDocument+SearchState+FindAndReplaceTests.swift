@@ -13,7 +13,7 @@ final class FindAndReplaceTests: XCTestCase { // swiftlint:disable:this type_bod
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
     private var mockWorkspace: WorkspaceDocument!
-    private var searchState: WorkspaceDocument.SearchState!
+    private var searchState: SearchState!
 
     private var folder1File: CEWorkspaceFile?
     private var folder2File: CEWorkspaceFile?

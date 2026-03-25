@@ -11,7 +11,6 @@ struct CEWorkspaceSettingsView: View {
     var dismiss: () -> Void
 
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
-    @EnvironmentObject var workspace: WorkspaceDocument
 
     @State var selectedTaskID: UUID?
     @State var showAddTaskSheet: Bool = false

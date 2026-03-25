@@ -7,28 +7,15 @@
 
 import AppKit
 import SwiftUI
-import Combine
 import Foundation
-import LanguageServerProtocol
 
 @objc(WorkspaceDocument)
-final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
+final class WorkspaceDocument: NSDocument, ObservableObject {
     @Published var sortFoldersOnTop: Bool = true
     /// A string used to filter the displayed files and folders in the project navigator area based on user input.
     @Published var navigatorFilter: String = ""
     /// Whether the workspace only shows files with changes.
     @Published var sourceControlFilter = false
-
-    private var workspaceState: [String: Any] {
-        get {
-            let key = "workspaceState-\(self.fileURL?.absoluteString ?? "")"
-            return UserDefaults.standard.object(forKey: key) as? [String: Any] ?? [:]
-        }
-        set {
-            let key = "workspaceState-\(self.fileURL?.absoluteString ?? "")"
-            UserDefaults.standard.set(newValue, forKey: key)
-        }
-    }
 
     var workspaceFileManager: CEWorkspaceFileManager?
 
@@ -45,39 +32,14 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
     var workspaceSettingsManager: CEWorkspaceSettings?
     var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
 
+    var statePersistence: WorkspaceStatePersistence?
+
     var undoRegistration: UndoManagerRegistration = UndoManagerRegistration()
 
     var notificationPanel = NotificationPanelViewModel()
-    private var cancellables = Set<AnyCancellable>()
-
-    override init() {
-        super.init()
-        notificationPanel.workspace = self
-
-        // Observe changes to notification panel
-        notificationPanel.objectWillChange
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.objectWillChange.send()
-            }
-            .store(in: &cancellables)
-    }
 
     deinit {
-        cancellables.forEach { $0.cancel() }
         NotificationCenter.default.removeObserver(self)
-    }
-
-    func getFromWorkspaceState(_ key: WorkspaceStateKey) -> Any? {
-        return workspaceState[key.rawValue]
-    }
-
-    func addToWorkspaceState(key: WorkspaceStateKey, value: Any?) {
-        if let value {
-            workspaceState.updateValue(value, forKey: key.rawValue)
-        } else {
-            workspaceState.removeValue(forKey: key.rawValue)
-        }
     }
 
     // MARK: NSDocument
@@ -114,7 +76,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
             workspace: self
         )
 
-        if let rectString = getFromWorkspaceState(.workspaceWindowSize) as? String {
+        if let rectString = statePersistence?.get(.workspaceWindowSize) as? String {
             window.setFrame(NSRectFromString(rectString), display: true, animate: false)
         } else {
             window.setFrame(NSRect(x: 0, y: 0, width: 1400, height: 900), display: true, animate: false)
@@ -125,6 +87,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         window.setAccessibilityDocument(self.fileURL?.absoluteString)
 
         self.addWindowController(windowController)
+        notificationPanel.windowController = windowController
 
         window.makeKeyAndOrderFront(nil)
     }
@@ -141,6 +104,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
         self.fileURL = url
         self.displayName = url.lastPathComponent
+        self.statePersistence = WorkspaceStatePersistence(workspaceURL: url)
 
         let sourceControlManager = SourceControlManager(
             workspaceURL: url,
@@ -154,7 +118,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         )
         self.sourceControlManager = sourceControlManager
         sourceControlManager.fileManager = workspaceFileManager
-        self.searchState = .init(self)
+        self.searchState = SearchState(workspaceURL: url)
         self.openQuicklyViewModel = .init(fileURL: url)
         self.commandsPaletteState = .init()
         self.workspaceSettingsManager = CEWorkspaceSettings(workspaceURL: url)
@@ -167,8 +131,14 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         self.taskNotificationHandler.workspaceURL = url
 
         workspaceFileManager?.addObserver(undoRegistration)
-        editorManager?.restoreFromState(self)
-        utilityAreaModel?.restoreFromState(self)
+        if let statePersistence {
+            editorManager?.restoreFromState(
+                statePersistence: statePersistence,
+                fileManager: workspaceFileManager,
+                searchState: searchState
+            )
+            utilityAreaModel?.restoreFromState(statePersistence)
+        }
     }
 
     override func read(from url: URL, ofType typeName: String) throws {
@@ -181,10 +151,11 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
 
     override func close() {
         super.close()
-        editorManager?.saveRestorationState(self)
-        utilityAreaModel?.saveRestorationState(self)
+        if let statePersistence {
+            editorManager?.saveRestorationState(statePersistence)
+            utilityAreaModel?.saveRestorationState(statePersistence)
+        }
 
-        cancellables.forEach({ $0.cancel() })
         statusBarViewModel = nil
         utilityAreaModel = nil
         searchState = nil
@@ -197,6 +168,7 @@ final class WorkspaceDocument: NSDocument, ObservableObject, NSToolbarDelegate {
         workspaceSettingsManager?.cleanUp()
         workspaceSettingsManager = nil
         taskManager = nil
+        statePersistence = nil
     }
 
     /// Determines the windows should be closed.

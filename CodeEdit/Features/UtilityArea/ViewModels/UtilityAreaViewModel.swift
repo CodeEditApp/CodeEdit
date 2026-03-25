@@ -38,16 +38,16 @@ class UtilityAreaViewModel: ObservableObject {
 
     // MARK: - State Restoration
 
-    func restoreFromState(_ workspace: WorkspaceDocument) {
-        isCollapsed = workspace.getFromWorkspaceState(.utilityAreaCollapsed) as? Bool ?? false
-        currentHeight = workspace.getFromWorkspaceState(.utilityAreaHeight) as? Double ?? 300.0
-        isMaximized = workspace.getFromWorkspaceState(.utilityAreaMaximized) as? Bool ?? false
+    func restoreFromState(_ statePersistence: WorkspaceStatePersistence) {
+        isCollapsed = statePersistence.get(.utilityAreaCollapsed) as? Bool ?? false
+        currentHeight = statePersistence.get(.utilityAreaHeight) as? Double ?? 300.0
+        isMaximized = statePersistence.get(.utilityAreaMaximized) as? Bool ?? false
     }
 
-    func saveRestorationState(_ workspace: WorkspaceDocument) {
-        workspace.addToWorkspaceState(key: .utilityAreaCollapsed, value: isCollapsed)
-        workspace.addToWorkspaceState(key: .utilityAreaHeight, value: currentHeight)
-        workspace.addToWorkspaceState(key: .utilityAreaMaximized, value: isMaximized)
+    func saveRestorationState(_ statePersistence: WorkspaceStatePersistence) {
+        statePersistence.set(key: .utilityAreaCollapsed, value: isCollapsed)
+        statePersistence.set(key: .utilityAreaHeight, value: currentHeight)
+        statePersistence.set(key: .utilityAreaMaximized, value: isMaximized)
     }
 
     func togglePanel(animation: Bool = true) {

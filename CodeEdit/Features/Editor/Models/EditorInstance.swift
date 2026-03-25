@@ -33,14 +33,14 @@ class EditorInstance: ObservableObject, Hashable {
 
     // MARK: - Init
 
-    init(workspace: WorkspaceDocument?, file: CEWorkspaceFile, cursorPositions: [CursorPosition]? = nil) {
+    init(searchState: SearchState?, file: CEWorkspaceFile, cursorPositions: [CursorPosition]? = nil) {
         self.file = file
         let url = file.url
         let editorState = EditorStateRestoration.shared?.restorationState(for: url)
 
-        findText = workspace?.searchState?.searchQuery
+        findText = searchState?.searchQuery
         findTextSubject = PassthroughSubject()
-        replaceText = workspace?.searchState?.replaceText
+        replaceText = searchState?.replaceText
         replaceTextSubject = PassthroughSubject()
 
         self.cursorPositions = (
@@ -64,14 +64,14 @@ class EditorInstance: ObservableObject, Hashable {
         }
         .store(in: &cancellables)
 
-        listenToFindText(workspace: workspace)
-        listenToReplaceText(workspace: workspace)
+        listenToFindText(searchState: searchState)
+        listenToReplaceText(searchState: searchState)
     }
 
     // MARK: - Find/Replace Listeners
 
-    func listenToFindText(workspace: WorkspaceDocument?) {
-        workspace?.searchState?.$searchQuery
+    func listenToFindText(searchState: SearchState?) {
+        searchState?.$searchQuery
             .receive(on: RunLoop.main)
             .sink { [weak self] newQuery in
                 if self?.findText != newQuery {
@@ -81,17 +81,17 @@ class EditorInstance: ObservableObject, Hashable {
             .store(in: &cancellables)
         findTextSubject
             .receive(on: RunLoop.main)
-            .sink { [weak workspace, weak self] newFindText in
-                if let newFindText, workspace?.searchState?.searchQuery != newFindText {
-                    workspace?.searchState?.searchQuery = newFindText
+            .sink { [weak searchState, weak self] newFindText in
+                if let newFindText, searchState?.searchQuery != newFindText {
+                    searchState?.searchQuery = newFindText
                 }
-                self?.findText = workspace?.searchState?.searchQuery
+                self?.findText = searchState?.searchQuery
             }
             .store(in: &cancellables)
     }
 
-    func listenToReplaceText(workspace: WorkspaceDocument?) {
-        workspace?.searchState?.$replaceText
+    func listenToReplaceText(searchState: SearchState?) {
+        searchState?.$replaceText
             .receive(on: RunLoop.main)
             .sink { [weak self] newText in
                 if self?.replaceText != newText {
@@ -101,11 +101,11 @@ class EditorInstance: ObservableObject, Hashable {
             .store(in: &cancellables)
         replaceTextSubject
             .receive(on: RunLoop.main)
-            .sink { [weak workspace, weak self] newReplaceText in
-                if let newReplaceText, workspace?.searchState?.replaceText != newReplaceText {
-                    workspace?.searchState?.replaceText = newReplaceText
+            .sink { [weak searchState, weak self] newReplaceText in
+                if let newReplaceText, searchState?.replaceText != newReplaceText {
+                    searchState?.replaceText = newReplaceText
                 }
-                self?.replaceText = workspace?.searchState?.replaceText
+                self?.replaceText = searchState?.replaceText
             }
             .store(in: &cancellables)
     }

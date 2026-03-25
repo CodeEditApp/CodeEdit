@@ -12,7 +12,7 @@ final class WorkspaceDocumentIndexTests: XCTestCase {
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
     private var mockWorkspace: WorkspaceDocument!
-    private var searchState: WorkspaceDocument.SearchState!
+    private var searchState: SearchState!
 
     private var folder1File: CEWorkspaceFile?
     private var folder2File: CEWorkspaceFile?

@@ -17,6 +17,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
     private weak var workspace: WorkspaceDocument?
     private weak var navigatorViewModel: NavigatorAreaViewModel?
     private weak var windowRef: NSWindow?
+    private weak var statePersistence: WorkspaceStatePersistence?
     private unowned var hapticPerformer: NSHapticFeedbackPerformer
 
     // MARK: - Initialization
@@ -30,6 +31,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         self.workspace = workspace
         self.navigatorViewModel = navigatorViewModel
         self.windowRef = windowRef
+        self.statePersistence = workspace.statePersistence
         self.hapticPerformer = hapticPerformer
         super.init(nibName: nil, bundle: nil)
     }
@@ -77,6 +79,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environmentObject(utilityAreaModel)
                     .environmentObject(taskManager)
                     .environmentObject(workspace.undoRegistration)
+                    .environmentObject(workspace.notificationPanel)
             }
         }
 
@@ -119,24 +122,22 @@ final class CodeEditSplitViewController: NSSplitViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
 
-        guard let workspace else { return }
-
-        let navigatorWidth = workspace.getFromWorkspaceState(.splitViewWidth) as? CGFloat
+        let navigatorWidth = statePersistence?.get(.splitViewWidth) as? CGFloat
         splitView.setPosition(navigatorWidth ?? Self.minSidebarWidth, ofDividerAt: 0)
 
         if let firstSplitView = splitViewItems.first {
-            firstSplitView.isCollapsed = workspace.getFromWorkspaceState(
+            firstSplitView.isCollapsed = statePersistence?.get(
                 .navigatorCollapsed
             ) as? Bool ?? false
         }
 
         if let lastSplitView = splitViewItems.last {
-            lastSplitView.isCollapsed = workspace.getFromWorkspaceState(
+            lastSplitView.isCollapsed = statePersistence?.get(
                 .inspectorCollapsed
             ) as? Bool ?? true
         }
 
-        workspace.notificationPanel.updateToolbarItem()
+        workspace?.notificationPanel.updateToolbarItem()
     }
 
     // MARK: - NSSplitViewDelegate
@@ -203,16 +204,16 @@ final class CodeEditSplitViewController: NSSplitViewController {
             let panel = splitView.subviews[0]
             let width = panel.frame.size.width
             if width > 0 {
-                workspace?.addToWorkspaceState(key: .splitViewWidth, value: width)
+                statePersistence?.set(key: .splitViewWidth, value: width)
             }
         }
     }
 
     func saveNavigatorCollapsedState(isCollapsed: Bool) {
-        workspace?.addToWorkspaceState(key: .navigatorCollapsed, value: isCollapsed)
+        statePersistence?.set(key: .navigatorCollapsed, value: isCollapsed)
     }
 
     func saveInspectorCollapsedState(isCollapsed: Bool) {
-        workspace?.addToWorkspaceState(key: .inspectorCollapsed, value: isCollapsed)
+        statePersistence?.set(key: .inspectorCollapsed, value: isCollapsed)
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FindNavigatorForm: View {
-    @ObservedObject private var state: WorkspaceDocument.SearchState
+    @ObservedObject private var state: SearchState
 
     @State private var selectedMode: [SearchModeModel] {
         didSet {
@@ -27,7 +27,7 @@ struct FindNavigatorForm: View {
     @State private var excludeSettings: Bool = true
     @FocusState private var isSearchFieldFocused: Bool
 
-    init(state: WorkspaceDocument.SearchState) {
+    init(state: SearchState) {
         self.state = state
         selectedMode = state.selectedMode
     }

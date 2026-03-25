@@ -21,8 +21,6 @@ struct FindModePicker: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @EnvironmentObject var workspace: WorkspaceDocument
-
     @State var position: NSPoint?
     @State var isHovering: Bool = false
     @State private var button: NSPopUpButton?

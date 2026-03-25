@@ -35,7 +35,7 @@ final class NotificationPanelViewModel: ObservableObject {
         activeNotifications.filter { !hiddenNotificationIds.contains($0.id) }
     }
 
-    weak var workspace: WorkspaceDocument?
+    weak var windowController: NSWindowController?
 
     /// Whether a notification should be visible in the panel
     func isNotificationVisible(_ notification: CENotification) -> Bool {
@@ -232,25 +232,24 @@ final class NotificationPanelViewModel: ObservableObject {
 
     func updateToolbarItem() {
         if #available(macOS 15.0, *) {
-            self.workspace?.windowControllers.forEach { controller in
-                guard let toolbar = controller.window?.toolbar else {
+            guard let windowController, let toolbar = windowController.window?.toolbar else {
+                return
+            }
+
+            let shouldShow = !self.visibleNotifications.isEmpty || NotificationManager.shared.unreadCount > 0
+            if shouldShow && toolbar.items.filter({ $0.itemIdentifier == .notificationItem }).first == nil {
+                guard let activityItemIdx = toolbar.items
+                    .firstIndex(where: { $0.itemIdentifier == .activityViewer }) else {
                     return
                 }
-                let shouldShow = !self.visibleNotifications.isEmpty || NotificationManager.shared.unreadCount > 0
-                if shouldShow && toolbar.items.filter({ $0.itemIdentifier == .notificationItem }).first == nil {
-                    guard let activityItemIdx = toolbar.items
-                        .firstIndex(where: { $0.itemIdentifier == .activityViewer }) else {
-                        return
-                    }
-                    toolbar.insertItem(withItemIdentifier: .space, at: activityItemIdx + 1)
-                    toolbar.insertItem(withItemIdentifier: .notificationItem, at: activityItemIdx + 2)
-                }
+                toolbar.insertItem(withItemIdentifier: .space, at: activityItemIdx + 1)
+                toolbar.insertItem(withItemIdentifier: .notificationItem, at: activityItemIdx + 2)
+            }
 
-                if !shouldShow, let index = toolbar.items
-                    .firstIndex(where: { $0.itemIdentifier == .notificationItem }) {
-                    toolbar.removeItem(at: index)
-                    toolbar.removeItem(at: index)
-                }
+            if !shouldShow, let index = toolbar.items
+                .firstIndex(where: { $0.itemIdentifier == .notificationItem }) {
+                toolbar.removeItem(at: index)
+                toolbar.removeItem(at: index)
             }
         }
     }

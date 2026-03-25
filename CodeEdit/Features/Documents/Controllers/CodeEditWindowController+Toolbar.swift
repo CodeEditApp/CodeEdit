@@ -101,7 +101,7 @@ extension CodeEditWindowController {
 
     func toggleToolbar() {
         toolbarCollapsed.toggle()
-        workspace?.addToWorkspaceState(key: .toolbarCollapsed, value: toolbarCollapsed)
+        workspace?.statePersistence?.set(key: .toolbarCollapsed, value: toolbarCollapsed)
         updateToolbarVisibility()
     }
 
@@ -228,7 +228,9 @@ extension CodeEditWindowController {
     private func notificationItem() -> NSToolbarItem? {
         let toolbarItem = NSToolbarItem(itemIdentifier: .notificationItem)
         guard let workspace = workspace else { return nil }
-        let view = NSHostingView(rootView: NotificationToolbarItem().environmentObject(workspace))
+        let view = NSHostingView(
+            rootView: NotificationToolbarItem().environmentObject(workspace.notificationPanel)
+        )
         toolbarItem.view = view
         return toolbarItem
     }

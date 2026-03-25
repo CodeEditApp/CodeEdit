@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NotificationPanelView: View {
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var notificationPanel: NotificationPanelViewModel
     @Environment(\.controlActiveState)
     private var controlActiveState
 
@@ -33,8 +33,8 @@ struct NotificationPanelView: View {
     }
 
     @ViewBuilder var notifications: some View {
-        let visibleNotifications = workspace.notificationPanel.activeNotifications.filter {
-            workspace.notificationPanel.isNotificationVisible($0)
+        let visibleNotifications = notificationPanel.activeNotifications.filter {
+            notificationPanel.isNotificationVisible($0)
         }
 
         VStack(spacing: 8) {
@@ -42,15 +42,15 @@ struct NotificationPanelView: View {
                 NotificationBannerView(
                     notification: notification,
                     onDismiss: {
-                        workspace.notificationPanel.dismissNotification(notification)
+                        notificationPanel.dismissNotification(notification)
                     },
                     onAction: {
                         notification.action()
-                        if workspace.notificationPanel.isPresented {
-                            workspace.notificationPanel.toggleNotificationsVisibility()
-                            workspace.notificationPanel.dismissNotification(notification, disableAnimation: true)
+                        if notificationPanel.isPresented {
+                            notificationPanel.toggleNotificationsVisibility()
+                            notificationPanel.dismissNotification(notification, disableAnimation: true)
                         } else {
-                            workspace.notificationPanel.dismissNotification(notification)
+                            notificationPanel.dismissNotification(notification)
                         }
                     }
                 )
@@ -79,10 +79,10 @@ struct NotificationPanelView: View {
                                     }
                                 )
                                 .onPreferenceChange(ViewOffsetKey.self) {
-                                    if $0 <= 0.0 && !workspace.notificationPanel.scrolledToTop {
-                                        workspace.notificationPanel.scrolledToTop = true
-                                    } else if $0 > 0.0 && workspace.notificationPanel.scrolledToTop {
-                                        workspace.notificationPanel.scrolledToTop = false
+                                    if $0 <= 0.0 && !notificationPanel.scrolledToTop {
+                                        notificationPanel.scrolledToTop = true
+                                    } else if $0 > 0.0 && notificationPanel.scrolledToTop {
+                                        notificationPanel.scrolledToTop = false
                                     }
                                 }
                             notifications
@@ -101,13 +101,13 @@ struct NotificationPanelView: View {
                     .scrollDisabled(!hasOverflow)
                     .coordinateSpace(name: "scroll")
                     .onChange(of: isFocused) { _, newValue in
-                        workspace.notificationPanel.handleFocusChange(isFocused: newValue)
+                        notificationPanel.handleFocusChange(isFocused: newValue)
                     }
                     .onChange(of: geometry.size.height) { _, newValue in
                         updateOverflow(contentHeight: contentHeight, containerHeight: newValue)
                     }
-                    .onChange(of: workspace.notificationPanel.isPresented) { _, isPresented in
-                        if !isPresented && !workspace.notificationPanel.scrolledToTop {
+                    .onChange(of: notificationPanel.isPresented) { _, isPresented in
+                        if !isPresented && !notificationPanel.scrolledToTop {
                             // If scrolled, delay scroll animation until after notifications are hidden
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 withAnimation(.easeOut(duration: 0.3)) {
@@ -117,8 +117,8 @@ struct NotificationPanelView: View {
                         }
                     }
                     .allowsHitTesting(
-                        workspace.notificationPanel.activeNotifications
-                            .contains { workspace.notificationPanel.isNotificationVisible($0) }
+                        notificationPanel.activeNotifications
+                            .contains { notificationPanel.isNotificationVisible($0) }
                     )
                 }
             }
@@ -133,16 +133,16 @@ struct NotificationPanelView: View {
                     .focusable()
                     .focusEffectDisabled()
                     .focused($isFocused)
-                    .onChange(of: workspace.notificationPanel.isPresented) { _, isPresented in
+                    .onChange(of: notificationPanel.isPresented) { _, isPresented in
                         if isPresented {
                             isFocused = true
                         }
                     }
                     .onChange(of: controlActiveState) { _, newState in
-                        if newState != .active && newState != .key && workspace.notificationPanel.isPresented {
+                        if newState != .active && newState != .key && notificationPanel.isPresented {
                             // Delay hiding notifications to match animation timing
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                workspace.notificationPanel.toggleNotificationsVisibility()
+                                notificationPanel.toggleNotificationsVisibility()
                             }
                         }
                     }
@@ -153,12 +153,12 @@ struct NotificationPanelView: View {
         .opacity(controlActiveState == .active || controlActiveState == .key ? 1 : 0)
         .offset(
             x: (controlActiveState == .active || controlActiveState == .key) &&
-                (workspace.notificationPanel.isPresented || workspace.notificationPanel.scrolledToTop)
+                (notificationPanel.isPresented || notificationPanel.scrolledToTop)
                 ? 0
                 : 350
         )
-        .animation(.easeInOut(duration: 0.3), value: workspace.notificationPanel.isPresented)
-        .animation(.easeInOut(duration: 0.3), value: workspace.notificationPanel.scrolledToTop)
+        .animation(.easeInOut(duration: 0.3), value: notificationPanel.isPresented)
+        .animation(.easeInOut(duration: 0.3), value: notificationPanel.scrolledToTop)
         .animation(.easeInOut(duration: 0.2), value: controlActiveState)
     }
 }

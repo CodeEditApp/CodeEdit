@@ -12,7 +12,7 @@ final class FindTests: XCTestCase {
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
     private var mockWorkspace: WorkspaceDocument!
-    private var searchState: WorkspaceDocument.SearchState!
+    private var searchState: SearchState!
 
     // MARK: - Setup
     /// A mock WorkspaceDocument is created
@@ -137,7 +137,7 @@ final class FindTests: XCTestCase {
         XCTAssertEqual(searchState.getRegexPattern(query), "\\b@\\(test\\. !\\*#Query\\b")
     }
 
-    /// Tests the search functionality of the `WorkspaceDocument.SearchState` and `SearchIndexer`.
+    /// Tests the search functionality of the `SearchState` and `SearchIndexer`.
     func testSearch() async {
         await searchState.search("Ipsum")
         // Wait for the first search expectation to be fulfilled
