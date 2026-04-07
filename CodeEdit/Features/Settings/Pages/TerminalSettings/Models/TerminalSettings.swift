@@ -28,57 +28,40 @@ extension SettingsData {
         }
 
         /// If true terminal will use editor theme.
-        var useEditorTheme: Bool = true
+        @CodableDefault<DefaultTrue> var useEditorTheme = true
 
         /// If true terminal appearance will always be `dark`. Otherwise it adapts to the system setting.
-        var darkAppearance: Bool = false
+        @CodableDefault<DefaultFalse> var darkAppearance = false
 
         /// If true, the terminal uses the background color of the theme, otherwise it is clear
-        var useThemeBackground: Bool = true
+        @CodableDefault<DefaultTrue> var useThemeBackground = true
 
         /// If true, the terminal treats the `Option` key as the `Meta` key
-        var optionAsMeta: Bool = false
+        @CodableDefault<DefaultFalse> var optionAsMeta = false
 
         /// The selected shell to use.
-        var shell: TerminalShell = .system
+        @CodableDefault<DefaultTerminalShell> var shell: TerminalShell = .system
 
         /// The font to use in terminal.
-        var font: TerminalFont = .init()
+        @CodableDefault<DefaultTerminalFont> var font: TerminalFont = .init()
 
         // The cursor style to use in terminal
-        var cursorStyle: TerminalCursorStyle = .block
+        @CodableDefault<DefaultTerminalCursorStyle> var cursorStyle: TerminalCursorStyle = .block
 
         // Toggle for blinking cursor or not
-        var cursorBlink: Bool = false
+        @CodableDefault<DefaultFalse> var cursorBlink = false
 
         // Use font settings from Text Editing
-        var useTextEditorFont: Bool = true
+        @CodableDefault<DefaultTrue> var useTextEditorFont = true
 
         /// If `true`, use injection scripts for terminal features like automatic tab title.
-        var useShellIntegration: Bool = true
+        @CodableDefault<DefaultTrue> var useShellIntegration = true
 
         /// If `true`, use a login shell.
-        var useLoginShell: Bool = true
+        @CodableDefault<DefaultTrue> var useLoginShell = true
 
         /// Default initializer
         init() {}
-
-        /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.darkAppearance = try container.decodeIfPresent(Bool.self, forKey: .darkAppearance) ?? false
-            self.optionAsMeta = try container.decodeIfPresent(Bool.self, forKey: .optionAsMeta) ?? false
-            self.shell = try container.decodeIfPresent(TerminalShell.self, forKey: .shell) ?? .system
-            self.font = try container.decodeIfPresent(TerminalFont.self, forKey: .font) ?? .init()
-            self.cursorStyle = try container.decodeIfPresent(
-                TerminalCursorStyle.self,
-                forKey: .cursorStyle
-            ) ?? .block
-            self.cursorBlink = try container.decodeIfPresent(Bool.self, forKey: .cursorBlink) ?? false
-            self.useTextEditorFont = try container.decodeIfPresent(Bool.self, forKey: .useTextEditorFont) ?? true
-            self.useShellIntegration = try container.decodeIfPresent(Bool.self, forKey: .useShellIntegration) ?? true
-            self.useLoginShell = try container.decodeIfPresent(Bool.self, forKey: .useLoginShell) ?? true
-        }
     }
 
     /// The shell options.
