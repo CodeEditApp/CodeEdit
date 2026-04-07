@@ -41,6 +41,7 @@ final class HistoryInspectorModel: ObservableObject {
             let commitHistory = try await sourceControlManager
                 .gitClient
                 .getCommitHistory(
+                    branchName: nil,
                     maxCount: 40,
                     fileLocalPath: fileURL,
                     showMergeCommits: Settings.shared.preferences.sourceControl.git.showMergeCommitsPerFileLog

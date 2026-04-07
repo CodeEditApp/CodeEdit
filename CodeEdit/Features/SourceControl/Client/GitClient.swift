@@ -9,7 +9,7 @@ import Combine
 import Foundation
 import OSLog
 
-class GitClient {
+class GitClient: GitClientProtocol {
     enum GitClientError: Error {
         case outputError(String)
         case notGitRepository

@@ -6,21 +6,29 @@
 //
 
 import Foundation
-import AppKit
 import OSLog
 
-/// This class is used to perform git functions such as fetch, pull, add/remove of changes, commit, push, etc.
-/// It also stores remotes, branches, current changes, stashes, and commits
+/// Stores git state for the workspace and delegates operations to ``GitClient``.
+///
+/// Git operations are organized across domain-specific extensions:
+/// - `+BranchOperations`: checkout, create, rename, delete branches
+/// - `+StashOperations`: stash, apply, delete stash entries
+/// - `+RemoteOperations`: fetch, pull, push, remote management
+/// - `+FileOperations`: status, staging, commit, discard
+/// - `+Repository`: validate, initiate
+/// - `+Alerts`: error presentation helpers
 final class SourceControlManager: ObservableObject {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "SourceControlManager")
 
-    let gitClient: GitClient
+    let gitClient: GitClientProtocol
 
     /// The base URL of the workspace
     let workspaceURL: URL
 
     let editorManager: EditorManager
     weak var fileManager: CEWorkspaceFileManager?
+
+    // MARK: - Git State
 
     /// A list of changed files
     @Published var changedFiles: [GitChangedFile] = []
@@ -42,6 +50,8 @@ final class SourceControlManager: ObservableObject {
 
     /// Is project a git repository
     @Published var isGitRepository: Bool = false
+
+    // MARK: - UI Presentation State
 
     /// Is the push sheet presented
     @Published var pushSheetIsPresented: Bool = false {
@@ -105,6 +115,8 @@ final class SourceControlManager: ObservableObject {
     /// Is no changes to discard alert presented
     @Published var noChangesToDiscardAlertIsPresented: Bool = false
 
+    // MARK: - Computed Properties
+
     var orderedLocalBranches: [GitBranch] {
         var orderedBranches: [GitBranch] = [currentBranch].compactMap { $0 }
         let otherBranches = branches.filter { $0.isLocal && $0 != currentBranch }
@@ -113,6 +125,8 @@ final class SourceControlManager: ObservableObject {
         return orderedBranches
     }
 
+    // MARK: - Initialization
+
     init(
         workspaceURL: URL,
         editorManager: EditorManager
@@ -120,47 +134,5 @@ final class SourceControlManager: ObservableObject {
         self.workspaceURL = workspaceURL
         self.editorManager = editorManager
         gitClient = GitClient(directoryURL: workspaceURL, shellClient: currentWorld.shellClient)
-    }
-
-    /// Show alert for error
-    func showAlertForError(title: String, error: Error) async {
-        if let error = error as? GitClient.GitClientError {
-            await showAlert(title: title, message: error.description)
-            return
-        }
-
-        if let error = error as? LocalizedError {
-            var description = error.errorDescription ?? ""
-            if let failureReason = error.failureReason {
-                if description.isEmpty {
-                    description += failureReason
-                } else {
-                    description += "\n\n" + failureReason
-                }
-            }
-
-            if let recoverySuggestion = error.recoverySuggestion {
-                if description.isEmpty {
-                    description += recoverySuggestion
-                } else {
-                    description += "\n\n" + recoverySuggestion
-                }
-            }
-
-            await showAlert(title: title, message: description)
-        } else {
-            await showAlert(title: title, message: error.localizedDescription)
-        }
-    }
-
-    private func showAlert(title: String, message: String) async {
-        await MainActor.run {
-            let alert = NSAlert()
-            alert.messageText = title
-            alert.informativeText = message
-            alert.addButton(withTitle: "OK")
-            alert.alertStyle = .warning
-            alert.runModal()
-        }
     }
 }

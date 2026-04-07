@@ -33,6 +33,8 @@ struct SourceControlNavigatorHistoryView: View {
                 .gitClient
                 .getCommitHistory(
                     branchName: sourceControlManager.currentBranch?.name,
+                    maxCount: nil,
+                    fileLocalPath: nil,
                     showMergeCommits: Settings.shared.preferences.sourceControl.git.showMergeCommitsPerFileLog
                 )
             await MainActor.run {
