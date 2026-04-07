@@ -8,7 +8,7 @@ import SwiftUI
 import CodeEditLanguages
 
 struct FileInspectorView: View {
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: Workspace
 
     @EnvironmentObject private var editorManager: EditorManager
 

@@ -23,7 +23,7 @@ struct WorkspaceView: View {
     @AppSettings(\.sourceControl.general.sourceControlIsEnabled)
     var sourceControlIsEnabled
 
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: Workspace
     @EnvironmentObject private var editorManager: EditorManager
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 

@@ -10,7 +10,7 @@ import SwiftUI
 struct UtilityAreaOutputSourcePicker: View {
     typealias Sources = UtilityAreaOutputView.Sources
 
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: Workspace
 
     @AppSettings(\.developerSettings.showInternalDevelopmentInspector)
     var showInternalDevelopmentInspector

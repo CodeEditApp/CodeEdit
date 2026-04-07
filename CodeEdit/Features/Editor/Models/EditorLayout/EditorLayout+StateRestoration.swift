@@ -16,7 +16,7 @@ extension EditorManager {
     ///   - fileManager: The file manager to resolve file references.
     ///   - searchState: The search state for editor instances.
     func restoreFromState(
-        statePersistence: WorkspaceStatePersistence,
+        statePersistence: any WorkspaceStatePersisting,
         fileManager: CEWorkspaceFileManager?,
         searchState: SearchState?
     ) {
@@ -137,7 +137,7 @@ extension EditorManager {
         }
     }
 
-    func saveRestorationState(_ statePersistence: WorkspaceStatePersistence) {
+    func saveRestorationState(_ statePersistence: any WorkspaceStatePersisting) {
         if let data = try? JSONEncoder().encode(
             EditorRestorationState(activeEditor: activeEditor.id, groups: editorLayout)
         ) {

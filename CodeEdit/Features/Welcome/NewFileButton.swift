@@ -17,8 +17,9 @@ struct NewFileButton: View {
             iconName: "plus.square",
             title: "Create New File...",
             action: {
-                let documentController = CodeEditDocumentController()
-                documentController.createAndOpenNewDocument(onCompletion: { dismissWindow() })
+                @Service var windowManager: WorkspaceWindowManager
+                windowManager.newDocumentFromPanel()
+                dismissWindow()
             }
         )
     }

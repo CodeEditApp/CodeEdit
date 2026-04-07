@@ -14,7 +14,7 @@ struct ProjectNavigatorToolbarBottom: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: Workspace
     @EnvironmentObject var editorManager: EditorManager
 
     @State var recentsFilter: Bool = false

@@ -9,7 +9,7 @@ import SwiftUI
 
 final class FindNavigatorListViewController: NSViewController {
 
-    public var workspace: WorkspaceDocument
+    public var workspace: Workspace
     public var selectedItem: Any?
 
     private var searchItems: [SearchResultModel] = []
@@ -44,7 +44,7 @@ final class FindNavigatorListViewController: NSViewController {
         self.scrollView.contentView.contentInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
     }
 
-    init(workspace: WorkspaceDocument) {
+    init(workspace: Workspace) {
         self.workspace = workspace
         super.init(nibName: nil, bundle: nil)
     }

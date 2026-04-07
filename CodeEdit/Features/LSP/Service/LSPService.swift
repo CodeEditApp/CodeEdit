@@ -258,7 +258,7 @@ final class LSPService: ObservableObject {
 
     /// Close all language clients for a workspace.
     ///
-    /// This is intentionally synchronous so we can exit from the workspace document's ``WorkspaceDocument/close()``
+    /// This is intentionally synchronous so we can exit from the workspace document's ``Workspace/close()``
     /// method ASAP.
     ///
     /// Errors thrown in this method are logged and otherwise not handled.

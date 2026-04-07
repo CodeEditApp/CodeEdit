@@ -20,8 +20,10 @@ struct OpenFileOrFolderButton: View {
             iconName: "folder",
             title: "Open File or Folder...",
             action: {
-                CodeEditDocumentController.shared.openDocumentWithDialog(
-                    configuration: .init(canChooseFiles: true, canChooseDirectories: true),
+                @Service var windowManager: WorkspaceWindowManager
+                windowManager.openDocumentWithDialog(
+                    canChooseFiles: true,
+                    canChooseDirectories: true,
                     onDialogPresented: { dismissWindow() },
                     onCancel: { openWindow(id: DefaultSceneID.welcome) }
                 )

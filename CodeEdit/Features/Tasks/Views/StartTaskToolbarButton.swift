@@ -12,7 +12,7 @@ struct StartTaskToolbarButton: View {
     private var activeState
 
     @ObservedObject var taskManager: TaskManager
-    @EnvironmentObject var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: Workspace
 
     var utilityAreaCollapsed: Bool {
         workspace.utilityAreaModel?.isCollapsed ?? true

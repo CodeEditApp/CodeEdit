@@ -19,11 +19,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     var openWindow
 
     @LazyService var lspService: LSPService
+    @LazyService var windowManager: WorkspaceWindowManager
+
+    private var welcomeWindowObserver: NSObjectProtocol?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         enableWindowSizeSaveOnQuit()
         Settings.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
+
+        // Listen for requests to open the welcome window from non-SwiftUI contexts
+        welcomeWindowObserver = NotificationCenter.default.addObserver(
+            forName: .openWelcomeWindow,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.openWindow(sceneID: .welcome)
+        }
 
         NSApp.closeWindow(.welcome, .about)
 
@@ -42,12 +54,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                     let path = CommandLine.arguments[index+1]
                     let url = URL(fileURLWithPath: path)
 
-                    CodeEditDocumentController.shared.reopenDocument(
-                        for: url,
-                        withContentsOf: url,
-                        display: true
-                    ) { document, _, _ in
-                        document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
+                    do {
+                        try self.windowManager.openWorkspace(at: url)
+                    } catch {
+                        self.logger.error("Failed to open workspace at \(path): \(error.localizedDescription)")
                     }
 
                     needToHandleOpen = false
@@ -61,7 +71,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-
+        if let welcomeWindowObserver {
+            NotificationCenter.default.removeObserver(welcomeWindowObserver)
+        }
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
@@ -93,9 +105,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 openWindow(sceneID: .welcome)
             }
         case .openPanel:
-            CodeEditDocumentController.shared.openDocument(self)
+            windowManager.openDocumentFromPanel()
         case .newDocument:
-            CodeEditDocumentController.shared.newDocument(self)
+            windowManager.newDocumentFromPanel()
         }
     }
 
@@ -107,18 +119,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             let line = file.count > 1 ? Int(file[1]) ?? 0 : 0
             let column = file.count > 2 ? Int(file[2]) ?? 1 : 1
 
-            CodeEditDocumentController.shared
-                .openDocument(withContentsOf: filePath, display: true) { document, _, error in
-                    if let error {
-                        NSAlert(error: error).runModal()
-                        return
-                    }
-                    if line > 0, let document = document as? CodeFileDocument {
-                        document.openOptions = CodeFileDocument.OpenOptions(
-                            cursorPositions: [CursorPosition(line: line, column: column > 0 ? column : 1)]
-                        )
-                    }
+            do {
+                if filePath.isFolder {
+                    try windowManager.openWorkspace(at: filePath)
+                } else if !windowManager.openFileInWorkspace(url: filePath) {
+                    // Standalone file — open via NSDocumentController (for CodeFileDocument)
+                    NSDocumentController.shared
+                        .openDocument(withContentsOf: filePath, display: true) { document, _, error in
+                            if let error {
+                                NSAlert(error: error).runModal()
+                                return
+                            }
+                            if line > 0, let document = document as? CodeFileDocument {
+                                document.openOptions = CodeFileDocument.OpenOptions(
+                                    cursorPositions: [CursorPosition(line: line, column: column > 0 ? column : 1)]
+                                )
+                            }
+                        }
                 }
+            } catch {
+                NSAlert(error: error).runModal()
+            }
         }
     }
 
@@ -127,32 +148,29 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     /// Defers the application terminate message until we've finished cleanup.
     ///
     /// All paths _must_ call `NSApplication.shared.reply(toApplicationShouldTerminate: true)` as soon as possible.
-    ///
-    /// The two things needing deferring are:
-    /// - Language server cancellation
-    /// - Outstanding document changes.
-    ///
-    /// Things that don't need deferring (happen immediately):
-    /// - Task termination.
-    /// These are called immediately if no documents need closing, and are called by
-    /// ``documentController(_:didCloseAll:contextInfo:)`` if there are documents we need to defer for.
-    ///
-    /// See ``terminateLanguageServers()`` and ``documentController(_:didCloseAll:contextInfo:)`` for deferring tasks.
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        let projects: [String] = CodeEditDocumentController.shared.documents
-            .compactMap { ($0 as? WorkspaceDocument)?.fileURL?.path }
+        let projects: [String] = windowManager.openWorkspaces
+            .compactMap { $0.fileURL?.path }
 
         UserDefaults.standard.set(projects, forKey: AppDelegate.recoverWorkspacesKey)
 
-        let areAllDocumentsClean = CodeEditDocumentController.shared.documents.allSatisfy { !$0.isDocumentEdited }
-        guard areAllDocumentsClean else {
-            CodeEditDocumentController.shared.closeAllDocuments(
-                withDelegate: self,
-                didCloseAllSelector: #selector(documentController(_:didCloseAll:contextInfo:)),
-                contextInfo: nil
-            )
-            // `documentController(_:didCloseAll:contextInfo:)` will call `terminateLanguageServers()`
-            return .terminateLater
+        let hasUnsavedChanges = windowManager.openWorkspaces.contains { $0.hasUnsavedChanges() }
+        guard !hasUnsavedChanges else {
+            // Prompt the user to save unsaved changes across all workspaces
+            var allSaved = true
+            for workspace in windowManager.openWorkspaces {
+                if !workspace.promptSaveUnsavedFiles() {
+                    allSaved = false
+                    break
+                }
+            }
+
+            if allSaved {
+                terminateTasks()
+                terminateLanguageServers()
+            }
+            // If not all saved (user cancelled), don't terminate
+            return allSaved ? .terminateLater : .terminateCancel
         }
 
         terminateTasks()
@@ -223,12 +241,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
             for filePath in files {
                 let fileURL = URL(fileURLWithPath: String(filePath))
-                CodeEditDocumentController.shared.reopenDocument(
-                    for: fileURL,
-                    withContentsOf: fileURL,
-                    display: true
-                ) { document, _, _ in
-                    document?.windowControllers.first?.synchronizeWindowTitleWithDocumentName()
+                do {
+                    try windowManager.openWorkspace(at: fileURL)
+                } catch {
+                    logger.error("Failed to open \(filePath): \(error.localizedDescription)")
                 }
             }
 
@@ -244,16 +260,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private func enableWindowSizeSaveOnQuit() {
         // This enables window restoring on normal quit (instead of only on force-quit).
         UserDefaults.standard.setValue(true, forKey: "NSQuitAlwaysKeepsWindows")
-    }
-
-    // MARK: NSDocumentController delegate
-
-    @objc
-    func documentController(_ docController: NSDocumentController, didCloseAll: Bool, contextInfo: Any) {
-        if didCloseAll {
-            terminateTasks()
-            terminateLanguageServers()
-        }
     }
 
     /// Terminates running language servers. Used during app termination to ensure resources are freed.
@@ -295,8 +301,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             isLoading: true
         )
 
-        let taskManagers = CodeEditDocumentController.shared.documents
-            .compactMap({ $0 as? WorkspaceDocument })
+        let taskManagers = windowManager.openWorkspaces
             .compactMap({ $0.taskManager })
 
         if taskManagers.reduce(0, { $0 + $1.activeTasks.count }) > 0 {

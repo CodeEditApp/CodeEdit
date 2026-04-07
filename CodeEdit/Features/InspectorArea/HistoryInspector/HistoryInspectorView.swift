@@ -10,7 +10,7 @@ struct HistoryInspectorView: View {
     @AppSettings(\.sourceControl.git.showMergeCommitsPerFileLog)
     var showMergeCommitsPerFileLog
 
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: Workspace
 
     @EnvironmentObject private var editorManager: EditorManager
 

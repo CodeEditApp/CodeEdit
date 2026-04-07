@@ -15,7 +15,7 @@ final class DocumentsUnitTests: XCTestCase {
     private var hapticFeedbackPerformerMock: NSHapticFeedbackPerformerMock!
     private var navigatorViewModel: NavigatorAreaViewModel!
     private var window: NSWindow!
-    private var workspace = WorkspaceDocument()
+    private var workspace = Workspace()
 
     // MARK: - Lifecycle
 

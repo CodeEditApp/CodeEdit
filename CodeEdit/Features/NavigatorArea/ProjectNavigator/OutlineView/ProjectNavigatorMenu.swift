@@ -9,13 +9,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 /// A subclass of `NSMenu` implementing the contextual menu for the project navigator
+@MainActor
 final class ProjectNavigatorMenu: NSMenu {
 
     /// The item to show the contextual menu for
     var item: CEWorkspaceFile?
 
     /// The workspace, for opening the item
-    var workspace: WorkspaceDocument?
+    var workspace: Workspace?
 
     /// The  `ProjectNavigatorViewController` is being called from.
     /// By sending it, we can access it's variables and functions.
@@ -46,7 +47,7 @@ final class ProjectNavigatorMenu: NSMenu {
 
     /// Configures the menu based on the current selection in the outline view.
     /// - Menu items get added depending on the amount of selected items.
-    private func setupMenu() { // swiftlint:disable:this function_body_length
+    @MainActor private func setupMenu() { // swiftlint:disable:this function_body_length
         guard let item else { return }
         let showInFinder = menuItem("Show in Finder", action: #selector(showInFinder))
 

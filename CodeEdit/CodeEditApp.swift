@@ -21,8 +21,10 @@ struct CodeEditApp: App {
         ServiceContainer.register(
             LSPService()
         )
+        ServiceContainer.register(
+            WorkspaceWindowManager()
+        )
 
-        _ = CodeEditDocumentController.shared
         NSMenuItem.swizzle()
         NSSplitViewItem.swizzle()
     }
@@ -37,8 +39,14 @@ struct CodeEditApp: App {
                     OpenFileOrFolderButton(dismissWindow: dismissWindow)
                 },
                 onDrop: { url, dismissWindow in
+                    @Service var windowManager: WorkspaceWindowManager
                     Task {
-                        await CodeEditDocumentController.shared.openDocument(at: url, onCompletion: { dismissWindow() })
+                        do {
+                            try windowManager.openWorkspace(at: url)
+                            dismissWindow()
+                        } catch {
+                            print("Failed to open workspace: \(error)")
+                        }
                     }
                 }
             )

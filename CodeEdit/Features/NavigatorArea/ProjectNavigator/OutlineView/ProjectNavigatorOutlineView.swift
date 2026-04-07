@@ -11,7 +11,7 @@ import Combine
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`
 struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
-    @EnvironmentObject var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: Workspace
     @EnvironmentObject var editorManager: EditorManager
 
     @StateObject var prefs: Settings = .shared
@@ -45,9 +45,11 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         Coordinator(workspace)
     }
 
+    @MainActor
     class Coordinator: NSObject, CEWorkspaceFileManagerObserver {
-        init(_ workspace: WorkspaceDocument) {
+        init(_ workspace: Workspace) {
             self.workspace = workspace
+            self.fileManager = workspace.workspaceFileManager
             super.init()
 
             workspace.listenerModel.$highlightedFileItem
@@ -78,7 +80,8 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         }
 
         var cancellables: Set<AnyCancellable> = []
-        weak var workspace: WorkspaceDocument?
+        weak var workspace: Workspace?
+        weak var fileManager: CEWorkspaceFileManager?
         weak var controller: ProjectNavigatorViewController?
 
         func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>) {
@@ -105,7 +108,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         }
 
         deinit {
-            workspace?.workspaceFileManager?.removeObserver(self)
+            fileManager?.removeObserver(self)
         }
     }
 }

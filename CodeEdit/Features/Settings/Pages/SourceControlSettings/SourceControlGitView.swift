@@ -202,14 +202,8 @@ private extension SourceControlGitView {
             FileManager.default.createFile(atPath: fileURL.path, contents: nil)
         }
 
-        NSDocumentController.shared.openDocument(
-            withContentsOf: fileURL,
-            display: true
-        ) { _, _, error in
-            if let error = error {
-                print("Failed to open document: \(error.localizedDescription)")
-            }
-        }
+        @Service var windowManager: WorkspaceWindowManager
+        windowManager.openDocument(at: fileURL, onCompletion: {})
     }
 
     private func openGitIgnoreFile() {
@@ -223,7 +217,8 @@ private extension SourceControlGitView {
                 }
 
                 // Open the file in the editor
-                try await NSDocumentController.shared.openDocument(withContentsOf: fileURL, display: true)
+                @Service var windowManager: WorkspaceWindowManager
+                windowManager.openDocument(at: fileURL, onCompletion: {})
             } catch {
                 print("Failed to open document: \(error.localizedDescription)")
             }

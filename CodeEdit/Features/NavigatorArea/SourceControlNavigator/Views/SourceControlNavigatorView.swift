@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SourceControlNavigatorView: View {
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: Workspace
 
     @AppSettings(\.sourceControl.general.fetchRefreshServerStatus)
     var fetchRefreshServerStatus

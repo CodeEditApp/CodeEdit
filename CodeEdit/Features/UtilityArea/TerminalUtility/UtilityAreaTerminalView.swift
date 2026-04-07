@@ -25,7 +25,7 @@ struct UtilityAreaTerminalView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: Workspace
 
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 

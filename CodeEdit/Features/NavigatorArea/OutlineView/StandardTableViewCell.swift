@@ -10,7 +10,7 @@ import SwiftUI
 class StandardTableViewCell: NSTableCellView {
 
     weak var secondaryLabel: NSTextField?
-    weak var workspace: WorkspaceDocument?
+    weak var workspace: Workspace?
 
     var secondaryLabelRightAligned: Bool = true {
         didSet {

@@ -1,5 +1,5 @@
 //
-//  WorkspaceDocument+SearchState+FindAndReplaceTests.swift
+//  Workspace+SearchState+FindAndReplaceTests.swift
 //  CodeEditTests
 //
 //  Created by Tommy Ludwig on 26.01.24.
@@ -12,14 +12,14 @@ import XCTest
 final class FindAndReplaceTests: XCTestCase { // swiftlint:disable:this type_body_length
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
-    private var mockWorkspace: WorkspaceDocument!
+    private var mockWorkspace: Workspace!
     private var searchState: SearchState!
 
     private var folder1File: CEWorkspaceFile?
     private var folder2File: CEWorkspaceFile?
 
     // MARK: - Setup
-    /// A mock WorkspaceDocument is created
+    /// A mock Workspace is created
     /// 3 mock files are added to the index
     /// which will be removed in the teardown function
     override func setUp() async throws {
@@ -34,7 +34,7 @@ final class FindAndReplaceTests: XCTestCase { // swiftlint:disable:this type_bod
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
-        mockWorkspace = try WorkspaceDocument(for: directory, withContentsOf: directory, ofType: "")
+        mockWorkspace = try Workspace(for: directory, withContentsOf: directory, ofType: "")
         searchState = mockWorkspace.searchState
 
         // Add a few files

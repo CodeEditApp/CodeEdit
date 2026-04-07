@@ -34,7 +34,7 @@ extension CodeEditWindowController {
     }
 
     // Listen to changes in all tabs/files
-    internal func listenToDocumentEdited(workspace: WorkspaceDocument) {
+    internal func listenToDocumentEdited(workspace: Workspace) {
         workspace.editorManager?.$activeEditor
             .flatMap({ editor in
                 editor.$tabs
@@ -70,7 +70,7 @@ extension CodeEditWindowController {
     }
 
     // Recalculate documentEdited by checking if any tab/file is edited
-    private func updateDocumentEdited(workspace: WorkspaceDocument) {
+    private func updateDocumentEdited(workspace: Workspace) {
         let hasEditedDocuments = !(workspace
             .editorManager?
             .editorLayout

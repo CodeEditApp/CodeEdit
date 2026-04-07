@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OpenQuicklyView: View {
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: Workspace
 
     private let onClose: () -> Void
     private let openFile: (CEWorkspaceFile) -> Void

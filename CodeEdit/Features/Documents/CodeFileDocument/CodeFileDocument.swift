@@ -332,7 +332,8 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         )
     }
 
-    func findWorkspace() -> WorkspaceDocument? {
+    @MainActor
+    func findWorkspace() -> Workspace? {
         fileURL?.findWorkspace()
     }
 }

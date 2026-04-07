@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GitChangedFileLabel: View {
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: Workspace
     @EnvironmentObject private var sourceControlManager: SourceControlManager
 
     let file: GitChangedFile
@@ -39,7 +39,7 @@ struct GitChangedFileLabel: View {
             originalFilename: nil
         ))
         .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), editorManager: .init()))
-        .environmentObject(WorkspaceDocument())
+        .environmentObject(Workspace())
 
         GitChangedFileLabel(file: GitChangedFile(
             status: .none,
@@ -48,6 +48,6 @@ struct GitChangedFileLabel: View {
             originalFilename: "app2.jsx"
         ))
         .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), editorManager: .init()))
-        .environmentObject(WorkspaceDocument())
+        .environmentObject(Workspace())
     }.padding()
 }

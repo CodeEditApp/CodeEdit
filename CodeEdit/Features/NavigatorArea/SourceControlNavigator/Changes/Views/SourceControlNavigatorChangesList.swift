@@ -9,7 +9,7 @@ import AppKit
 import SwiftUI
 
 struct SourceControlNavigatorChangesList: View {
-    @EnvironmentObject var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: Workspace
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
     @State var selection = Set<GitChangedFile>()

@@ -20,7 +20,7 @@ struct EditorJumpBarComponent: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @EnvironmentObject var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: Workspace
 
     @State var position: NSPoint?
     @State var selection: CEWorkspaceFile

@@ -8,8 +8,8 @@
 import Foundation
 
 /// A standalone service for persisting workspace-specific UI state (window size, collapsed panels, etc.)
-/// via UserDefaults. Extracted from WorkspaceDocument to enable independent injection and testing.
-final class WorkspaceStatePersistence: ObservableObject {
+/// via UserDefaults. Extracted from Workspace to enable independent injection and testing.
+final class WorkspaceStatePersistence: ObservableObject, WorkspaceStatePersisting {
     private let workspaceURL: URL
 
     private var workspaceState: [String: Any] {

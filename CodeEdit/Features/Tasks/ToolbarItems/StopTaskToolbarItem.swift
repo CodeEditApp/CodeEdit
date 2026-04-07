@@ -10,7 +10,7 @@ import Combine
 
 @available(macOS 26, *)
 final class StopTaskToolbarItem: NSToolbarItem {
-    private weak var workspace: WorkspaceDocument?
+    private weak var workspace: Workspace?
 
     private var taskManager: TaskManager? {
         workspace?.taskManager
@@ -21,7 +21,7 @@ final class StopTaskToolbarItem: NSToolbarItem {
     private var statusListener: AnyCancellable?
     private var otherListeners: Set<AnyCancellable> = []
 
-    init?(workspace: WorkspaceDocument) {
+    init?(workspace: Workspace) {
         guard let taskManager = workspace.taskManager else { return nil }
 
         self.workspace = workspace

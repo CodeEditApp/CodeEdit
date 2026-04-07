@@ -35,7 +35,7 @@ final class ProjectNavigatorViewController: NSViewController {
     var filteredContentChildren: [CEWorkspaceFile: [CEWorkspaceFile]] = [:]
     var expandedItems: Set<CEWorkspaceFile> = []
 
-    weak var workspace: WorkspaceDocument?
+    weak var workspace: Workspace?
     weak var editor: Editor?
 
     var iconColor: SettingsData.FileIconStyle = .color {

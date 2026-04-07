@@ -1,5 +1,5 @@
 //
-//  WorkspaceDocument+SearchState+FindTests.swift
+//  Workspace+SearchState+FindTests.swift
 //  CodeEditTests
 //
 //  Created by Tommy Ludwig on 26.01.24.
@@ -11,11 +11,11 @@ import XCTest
 final class FindTests: XCTestCase {
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
-    private var mockWorkspace: WorkspaceDocument!
+    private var mockWorkspace: Workspace!
     private var searchState: SearchState!
 
     // MARK: - Setup
-    /// A mock WorkspaceDocument is created
+    /// A mock Workspace is created
     /// 3 mock files are added to the index
     /// which will be removed in the teardown function
     override func setUp() async throws {
@@ -30,7 +30,7 @@ final class FindTests: XCTestCase {
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
-        mockWorkspace = try await WorkspaceDocument(for: directory, withContentsOf: directory, ofType: "")
+        mockWorkspace = try await Workspace(for: directory, withContentsOf: directory, ofType: "")
         searchState = await mockWorkspace.searchState
 
         // Add a few files

@@ -9,13 +9,13 @@ import AppKit
 
 @available(macOS 26, *)
 final class StartTaskToolbarItem: NSToolbarItem {
-    private weak var workspace: WorkspaceDocument?
+    private weak var workspace: Workspace?
 
     private var utilityAreaCollapsed: Bool {
         workspace?.utilityAreaModel?.isCollapsed ?? true
     }
 
-    init(workspace: WorkspaceDocument) {
+    init(workspace: Workspace) {
         self.workspace = workspace
         super.init(itemIdentifier: NSToolbarItem.Identifier("StartTaskToolbarItem"))
 

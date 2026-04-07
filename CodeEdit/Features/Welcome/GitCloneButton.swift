@@ -29,7 +29,8 @@ struct GitCloneButton: View {
                     showCheckoutBranchItem = url
                 },
                 openDocument: { url in
-                    CodeEditDocumentController.shared.openDocument(at: url, onCompletion: { dismissWindow() })
+                    @Service var windowManager: WorkspaceWindowManager
+                    windowManager.openDocument(at: url, onCompletion: { dismissWindow() })
                 }
             )
         }
@@ -37,7 +38,8 @@ struct GitCloneButton: View {
             GitCheckoutBranchView(
                 repoLocalPath: url,
                 openDocument: { url in
-                    CodeEditDocumentController.shared.openDocument(at: url, onCompletion: { dismissWindow() })
+                    @Service var windowManager: WorkspaceWindowManager
+                    windowManager.openDocument(at: url, onCompletion: { dismissWindow() })
                 }
             )
         }

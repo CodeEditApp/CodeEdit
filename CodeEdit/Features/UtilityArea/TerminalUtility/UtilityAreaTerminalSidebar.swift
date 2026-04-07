@@ -10,7 +10,7 @@ import SwiftUI
 /// The view that displays the list of available terminals in the utility area.
 /// See ``UtilityAreaTerminalView`` for use.
 struct UtilityAreaTerminalSidebar: View {
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: Workspace
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
     var body: some View {

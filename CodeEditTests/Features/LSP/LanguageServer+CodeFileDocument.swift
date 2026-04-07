@@ -78,8 +78,8 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         return (connection: bufferingConnection, server: server)
     }
 
-    func makeTestWorkspace() throws -> (WorkspaceDocument, CEWorkspaceFileManager) {
-        let workspace = WorkspaceDocument()
+    func makeTestWorkspace() throws -> (Workspace, CEWorkspaceFileManager) {
+        let workspace = Workspace()
         try workspace.read(from: tempTestDir, ofType: "")
         guard let fileManager = workspace.workspaceFileManager else {
             XCTFail("No File Manager")
@@ -151,7 +151,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
 
         // Set up workspace
         let (workspace, fileManager) = try makeTestWorkspace()
-        CodeEditDocumentController.shared.addDocument(workspace)
+        WorkspaceWindowManager.shared.addDocument(workspace)
 
         // Add a CEWorkspaceFile
         _ = try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
@@ -167,7 +167,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             ofType: "public.swift-source"
         )
         file.fileDocument = codeFile
-        CodeEditDocumentController.shared.addDocument(codeFile)
+        WorkspaceWindowManager.shared.addDocument(codeFile)
 
         await waitForClientState(
             (

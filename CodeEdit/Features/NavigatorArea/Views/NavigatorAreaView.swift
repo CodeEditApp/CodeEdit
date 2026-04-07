@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct NavigatorAreaView: View {
-    @ObservedObject private var workspace: WorkspaceDocument
+    @ObservedObject private var workspace: Workspace
     @ObservedObject private var extensionManager = ExtensionManager.shared
     @ObservedObject public var viewModel: NavigatorAreaViewModel
 
     @AppSettings(\.general.navigatorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    init(workspace: WorkspaceDocument, viewModel: NavigatorAreaViewModel) {
+    init(workspace: Workspace, viewModel: NavigatorAreaViewModel) {
         self.workspace = workspace
         self.viewModel = viewModel
 

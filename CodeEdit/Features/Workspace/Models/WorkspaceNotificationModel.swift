@@ -1,5 +1,5 @@
 //
-//  WorkspaceDocument+CommandListeners.swift
+//  WorkspaceNotificationModel.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 6/5/22.

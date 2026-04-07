@@ -23,7 +23,7 @@ struct EditorTabBarContextMenu: ViewModifier {
         self.isTemporary = isTemporary
     }
 
-    @EnvironmentObject var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: Workspace
 
     @EnvironmentObject var tabs: Editor
 

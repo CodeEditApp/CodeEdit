@@ -10,7 +10,7 @@ import Combine
 
 struct FindNavigatorResultList: NSViewControllerRepresentable {
 
-    @EnvironmentObject var workspace: WorkspaceDocument
+    @EnvironmentObject var workspace: Workspace
 
     @AppSettings(\.general.projectNavigatorSize)
     var projectNavigatorSize

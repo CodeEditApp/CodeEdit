@@ -24,7 +24,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     var observers: [NSKeyValueObservation] = []
 
-    var workspace: WorkspaceDocument?
+    var workspace: Workspace?
     var workspaceSettingsWindow: NSWindow?
     var quickOpenPanel: SearchPanel?
     var commandPalettePanel: SearchPanel?
@@ -38,7 +38,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     init(
         window: NSWindow?,
-        workspace: WorkspaceDocument?
+        workspace: Workspace?
     ) {
         super.init(window: window)
         window?.delegate = self
@@ -88,7 +88,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupSplitView(with workspace: WorkspaceDocument) -> CodeEditSplitViewController? {
+    private func setupSplitView(with workspace: Workspace) -> CodeEditSplitViewController? {
         guard let window else {
             assertionFailure("No window found for this controller. Cannot set up content.")
             return nil
@@ -209,6 +209,13 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     func windowShouldClose(_ sender: NSWindow) -> Bool {
+        // Check for unsaved changes before closing
+        if let workspace, workspace.hasUnsavedChanges() {
+            guard workspace.promptSaveUnsavedFiles() else {
+                return false // User cancelled
+            }
+        }
+
         cancellables.forEach({ $0.cancel() })
         cancellables.removeAll()
 
@@ -223,6 +230,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         quickOpenPanel = nil
         commandPalettePanel = nil
         navigatorSidebarViewModel = nil
+
+        // Notify the window manager to clean up workspace state
+        if let workspace {
+            @Service var windowManager: WorkspaceWindowManager
+            windowManager.closeWorkspace(workspace)
+        }
         workspace = nil
         return true
     }

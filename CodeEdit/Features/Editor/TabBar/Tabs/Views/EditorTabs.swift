@@ -20,7 +20,7 @@ struct EditorTabs: View {
     private var colorScheme
 
     /// The workspace document.
-    @EnvironmentObject private var workspace: WorkspaceDocument
+    @EnvironmentObject private var workspace: Workspace
 
     @EnvironmentObject private var editor: Editor
 

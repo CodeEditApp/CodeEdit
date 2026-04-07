@@ -38,13 +38,13 @@ class UtilityAreaViewModel: ObservableObject {
 
     // MARK: - State Restoration
 
-    func restoreFromState(_ statePersistence: WorkspaceStatePersistence) {
+    func restoreFromState(_ statePersistence: any WorkspaceStatePersisting) {
         isCollapsed = statePersistence.get(.utilityAreaCollapsed) as? Bool ?? false
         currentHeight = statePersistence.get(.utilityAreaHeight) as? Double ?? 300.0
         isMaximized = statePersistence.get(.utilityAreaMaximized) as? Bool ?? false
     }
 
-    func saveRestorationState(_ statePersistence: WorkspaceStatePersistence) {
+    func saveRestorationState(_ statePersistence: any WorkspaceStatePersisting) {
         statePersistence.set(key: .utilityAreaCollapsed, value: isCollapsed)
         statePersistence.set(key: .utilityAreaHeight, value: currentHeight)
         statePersistence.set(key: .utilityAreaMaximized, value: isMaximized)

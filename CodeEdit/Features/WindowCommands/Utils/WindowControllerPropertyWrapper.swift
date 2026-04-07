@@ -33,6 +33,7 @@ struct UpdatingWindowController: DynamicProperty {
         box.controller
     }
 
+    @MainActor
     class WindowControllerBox: ObservableObject {
         public private(set) weak var controller: CodeEditWindowController?
 

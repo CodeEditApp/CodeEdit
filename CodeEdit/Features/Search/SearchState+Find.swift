@@ -50,7 +50,7 @@ extension SearchState {
     /// - Returns: A string representing the regular expression pattern based on the selected search mode.
     ///
     /// - Note: This function is creating similar patterns to the
-    /// ``WorkspaceDocument/SearchState-swift.class/getSearchTerm(_:)`` function,
+    /// ``Workspace/SearchState-swift.class/getSearchTerm(_:)`` function,
     /// Except its using the word boundary anchor(\b) instead of the asterisk(\*).
     /// This is needed to highlight the search results correctly.
     func getRegexPattern(_ query: String) -> String {
@@ -75,14 +75,14 @@ extension SearchState {
     }
 
     /// Searches the entire workspace for the given string, using the
-    /// ``WorkspaceDocument/SearchState-swift.class/selectedMode`` modifiers
+    /// ``Workspace/SearchState-swift.class/selectedMode`` modifiers
     /// to modify the search if needed. This is done by filtering out files with SearchKit and then searching
     /// within each file for the given string.
     ///
     /// This method will update
-    /// ``WorkspaceDocument/SearchState-swift.class/searchResult``,
-    /// ``WorkspaceDocument/SearchState-swift.class/searchResultsFileCount``
-    /// and ``WorkspaceDocument/SearchState-swift.class/searchResultCount`` with any matched
+    /// ``Workspace/SearchState-swift.class/searchResult``,
+    /// ``Workspace/SearchState-swift.class/searchResultsFileCount``
+    /// and ``Workspace/SearchState-swift.class/searchResultCount`` with any matched
     /// search results. See ``SearchResultModel`` and ``SearchResultMatchModel``
     /// for more information on search results and matches.
     ///

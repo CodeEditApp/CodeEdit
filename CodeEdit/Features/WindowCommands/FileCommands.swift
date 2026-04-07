@@ -21,12 +21,14 @@ struct FileCommands: Commands {
         CommandGroup(replacing: .newItem) {
             Group {
                 Button("New") {
-                    NSDocumentController.shared.newDocument(nil)
+                    @Service var windowManager: WorkspaceWindowManager
+                    windowManager.newDocumentFromPanel()
                 }
                 .keyboardShortcut("n")
 
                 Button("Open...") {
-                    NSDocumentController.shared.openDocument(nil)
+                    @Service var windowManager: WorkspaceWindowManager
+                    windowManager.openDocumentFromPanel()
                 }
                 .keyboardShortcut("o")
 
