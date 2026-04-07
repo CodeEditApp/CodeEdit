@@ -13,13 +13,13 @@ extension SettingsData {
     struct GeneralSettings: Codable, Hashable, SearchableSettingsPage {
 
         /// The appearance of the app
-        var appAppearance: Appearances = .system
+        @CodableDefault<DefaultAppearance> var appAppearance: Appearances = .system
 
         /// The show issues behavior of the app
-        var showIssues: Issues = .inline
+        @CodableDefault<DefaultIssues> var showIssues: Issues = .inline
 
         /// The show live issues behavior of the app
-        var showLiveIssues: Bool = true
+        @CodableDefault<DefaultTrue> var showLiveIssues = true
 
         /// The search keys
         var searchKeys: [String] {
@@ -52,131 +52,52 @@ extension SettingsData {
         }
 
         /// Show editor jump bar
-        var showEditorJumpBar: Bool = true
+        @CodableDefault<DefaultTrue> var showEditorJumpBar = true
 
         /// Dims editors without focus
-        var dimEditorsWithoutFocus: Bool = false
+        @CodableDefault<DefaultFalse> var dimEditorsWithoutFocus = false
 
         /// The show file extensions behavior of the app
-        var fileExtensionsVisibility: FileExtensionsVisibility = .showAll
+        @CodableDefault<DefaultFileExtensionsVisibility> var fileExtensionsVisibility: FileExtensionsVisibility = .showAll
 
         /// The file extensions collection to display
-        var shownFileExtensions: FileExtensions = .default
+        @CodableDefault<DefaultFileExtensions> var shownFileExtensions: FileExtensions = .default
 
         /// The file extensions collection to hide
-        var hiddenFileExtensions: FileExtensions = .default
+        @CodableDefault<DefaultFileExtensions> var hiddenFileExtensions: FileExtensions = .default
 
         /// The style for file icons
-        var fileIconStyle: FileIconStyle = .color
+        @CodableDefault<DefaultFileIconStyle> var fileIconStyle: FileIconStyle = .color
 
         /// The position for the navigator sidebar tab bar
-        var navigatorTabBarPosition: SidebarTabBarPosition = .top
+        @CodableDefault<DefaultSidebarTabBarPositionTop> var navigatorTabBarPosition: SidebarTabBarPosition = .top
 
         /// The position for the inspector sidebar tab bar
-        var inspectorTabBarPosition: SidebarTabBarPosition = .top
+        @CodableDefault<DefaultSidebarTabBarPositionTop> var inspectorTabBarPosition: SidebarTabBarPosition = .top
 
         /// The reopen behavior of the app
-        var reopenBehavior: ReopenBehavior = .welcome
+        @CodableDefault<DefaultReopenBehavior> var reopenBehavior: ReopenBehavior = .welcome
 
         /// Decides what the app does after a workspace is closed
-        var reopenWindowAfterClose: ReopenWindowBehavior = .doNothing
+        @CodableDefault<DefaultReopenWindowBehavior> var reopenWindowAfterClose: ReopenWindowBehavior = .doNothing
 
         /// The size of the project navigator
-        var projectNavigatorSize: ProjectNavigatorSize = .medium
+        @CodableDefault<DefaultProjectNavigatorSize> var projectNavigatorSize: ProjectNavigatorSize = .medium
 
         /// The Find Navigator Detail line limit
-        var findNavigatorDetail: NavigatorDetail = .upTo3
+        @CodableDefault<DefaultNavigatorDetail> var findNavigatorDetail: NavigatorDetail = .upTo3
 
         /// The Issue Navigator Detail line limit
-        var issueNavigatorDetail: NavigatorDetail = .upTo3
+        @CodableDefault<DefaultNavigatorDetail> var issueNavigatorDetail: NavigatorDetail = .upTo3
 
         /// The reveal file in navigator when focus changes behavior of the app.
-        var revealFileOnFocusChange: Bool = false
+        @CodableDefault<DefaultFalse> var revealFileOnFocusChange = false
 
         /// Auto save behavior toggle
-        var isAutoSaveOn: Bool = true
+        @CodableDefault<DefaultTrue> var isAutoSaveOn = true
 
         /// Default initializer
         init() {}
-
-        // swiftlint:disable function_body_length
-        /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.appAppearance = try container.decodeIfPresent(
-                Appearances.self,
-                forKey: .appAppearance
-            ) ?? .system
-            self.showIssues = try container.decodeIfPresent(
-                Issues.self,
-                forKey: .showIssues
-            ) ?? .inline
-            self.showLiveIssues = try container.decodeIfPresent(
-                Bool.self,
-                forKey: .showLiveIssues
-            ) ?? true
-            self.showEditorJumpBar = try container.decodeIfPresent(
-                Bool.self,
-                forKey: .showEditorJumpBar
-            ) ?? true
-            self.dimEditorsWithoutFocus = try container.decodeIfPresent(
-                Bool.self,
-                forKey: .dimEditorsWithoutFocus
-            ) ?? false
-            self.fileExtensionsVisibility = try container.decodeIfPresent(
-                FileExtensionsVisibility.self,
-                forKey: .fileExtensionsVisibility
-            ) ?? .showAll
-            self.shownFileExtensions = try container.decodeIfPresent(
-                FileExtensions.self,
-                forKey: .shownFileExtensions
-            ) ?? .default
-            self.hiddenFileExtensions = try container.decodeIfPresent(
-                FileExtensions.self,
-                forKey: .hiddenFileExtensions
-            ) ?? .default
-            self.fileIconStyle = try container.decodeIfPresent(
-                FileIconStyle.self,
-                forKey: .fileIconStyle
-            ) ?? .color
-            self.navigatorTabBarPosition = try container.decodeIfPresent(
-                SidebarTabBarPosition.self,
-                forKey: .navigatorTabBarPosition
-            ) ?? .top
-            self.inspectorTabBarPosition = try container.decodeIfPresent(
-                SidebarTabBarPosition.self,
-                forKey: .inspectorTabBarPosition
-            ) ?? .top
-            self.reopenBehavior = try container.decodeIfPresent(
-                ReopenBehavior.self,
-                forKey: .reopenBehavior
-            ) ?? .welcome
-            self.reopenWindowAfterClose = try container.decodeIfPresent(
-                ReopenWindowBehavior.self,
-                forKey: .reopenWindowAfterClose
-            ) ?? .doNothing
-            self.projectNavigatorSize = try container.decodeIfPresent(
-                ProjectNavigatorSize.self,
-                forKey: .projectNavigatorSize
-            ) ?? .medium
-            self.findNavigatorDetail = try container.decodeIfPresent(
-                NavigatorDetail.self,
-                forKey: .findNavigatorDetail
-            ) ?? .upTo3
-            self.issueNavigatorDetail = try container.decodeIfPresent(
-                NavigatorDetail.self,
-                forKey: .issueNavigatorDetail
-            ) ?? .upTo3
-            self.revealFileOnFocusChange = try container.decodeIfPresent(
-                Bool.self,
-                forKey: .revealFileOnFocusChange
-            ) ?? false
-            self.isAutoSaveOn = try container.decodeIfPresent(
-                Bool.self,
-                forKey: .isAutoSaveOn
-            ) ?? true
-        }
-        // swiftlint:enable function_body_length
     }
 
     /// The appearance of the app

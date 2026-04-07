@@ -21,18 +21,10 @@ extension SettingsData {
         }
 
         /// Navigation style used
-        var navigationStyle: NavigationStyle = .openInTabs
+        @CodableDefault<DefaultNavigationStyle> var navigationStyle: NavigationStyle = .openInTabs
 
         /// Default initializer
         init() {}
-
-        /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.navigationStyle = try container.decodeIfPresent(
-                NavigationStyle.self, forKey: .navigationStyle
-            ) ?? .openInTabs
-        }
     }
 
     enum NavigationStyle: String, Codable, Hashable {
