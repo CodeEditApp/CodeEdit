@@ -34,7 +34,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
             return
         }
 
-        let workspace = try Workspace(url: url)
+        let workspace = Workspace(url: url)
 
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 1400, height: 900),

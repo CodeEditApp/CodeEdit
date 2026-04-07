@@ -17,8 +17,8 @@ final class Workspace: ObservableObject, WorkspaceManaging {
     @Published var navigatorFilter: String = ""
     @Published var sourceControlFilter = false
 
-    private(set) var fileURL: URL?
-    private(set) var displayName: String = ""
+    internal(set) var fileURL: URL?
+    internal(set) var displayName: String = ""
 
     var workspaceFileManager: CEWorkspaceFileManager?
     var editorManager: EditorManager? = EditorManager()
@@ -40,63 +40,14 @@ final class Workspace: ObservableObject, WorkspaceManaging {
 
     var notificationPanel = NotificationPanelViewModel()
 
-    private let ignoredFilesAndDirectory = [
-        ".DS_Store"
-    ]
-
     // MARK: - Initialization
 
-    init(url: URL) throws {
-        try initWorkspaceState(url)
+    init(url: URL) {
+        WorkspaceFactory.populate(self, url: url)
     }
 
     /// Minimal initializer for testing. Does not set up workspace state.
     internal init() {}
-
-    private func initWorkspaceState(_ url: URL) throws {
-        var url = url
-        if !url.absoluteString.hasSuffix("/") {
-            url = URL(filePath: url.absoluteURL.path(percentEncoded: false) + "/")
-        }
-
-        self.fileURL = url
-        self.displayName = url.lastPathComponent
-        self.statePersistence = WorkspaceStatePersistence(workspaceURL: url)
-
-        let sourceControlManager = SourceControlManager(
-            workspaceURL: url,
-            editorManager: editorManager!
-        )
-
-        self.workspaceFileManager = .init(
-            folderUrl: url,
-            ignoredFilesAndFolders: Set(ignoredFilesAndDirectory),
-            sourceControlManager: sourceControlManager
-        )
-        self.sourceControlManager = sourceControlManager
-        sourceControlManager.fileManager = workspaceFileManager
-        self.searchState = SearchState(workspaceURL: url)
-        self.openQuicklyViewModel = .init(fileURL: url)
-        self.commandsPaletteState = .init()
-        self.workspaceSettingsManager = CEWorkspaceSettings(workspaceURL: url)
-        if let workspaceSettingsManager {
-            self.taskManager = TaskManager(
-                workspaceSettings: workspaceSettingsManager.settings,
-                workspaceURL: url
-            )
-        }
-        self.taskNotificationHandler.workspaceURL = url
-
-        workspaceFileManager?.addObserver(undoRegistration)
-        if let statePersistence {
-            editorManager?.restoreFromState(
-                statePersistence: statePersistence,
-                fileManager: workspaceFileManager,
-                searchState: searchState
-            )
-            utilityAreaModel?.restoreFromState(statePersistence)
-        }
-    }
 
     // MARK: - Tear Down
 
