@@ -12,7 +12,7 @@ struct SourceControlGitView: View {
     @AppSettings(\.sourceControl.git)
     var git
 
-    let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
+    let gitConfig = GitConfigClient(shellClient: Container.shared.shellClient())
 
     @State private var authorName: String = ""
     @State private var authorEmail: String = ""

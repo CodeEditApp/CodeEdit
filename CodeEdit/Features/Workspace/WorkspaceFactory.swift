@@ -2,10 +2,11 @@
 //  WorkspaceFactory.swift
 //  CodeEdit
 //
-//  Created by CodeEdit Contributors on 07.04.26.
+//  Created by Matthijs Eikelenboom on 07.04.26.
 //
 
 import Foundation
+import Factory
 
 /// Constructs and wires the manager/service object graph for a ``Workspace``.
 ///
@@ -41,9 +42,11 @@ enum WorkspaceFactory {
             return
         }
 
+        let shellClient = Container.shared.shellClient()
         let sourceControlManager = SourceControlManager(
             workspaceURL: url,
-            editorManager: editorManager
+            editorManager: editorManager,
+            shellClient: shellClient
         )
 
         let workspaceFileManager = CEWorkspaceFileManager(

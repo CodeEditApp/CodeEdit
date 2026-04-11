@@ -5,16 +5,17 @@
 //  Created by Abe Malla on 2/3/25.
 //
 
+import Factory
 import Foundation
 
 final class PipPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL
 
-    let shellClient: ShellClient
+    let shellClient: ShellClientProtocol
 
     init(installationDirectory: URL) {
         self.installationDirectory = installationDirectory
-        self.shellClient = .live()
+        self.shellClient = Container.shared.shellClient()
     }
 
     // MARK: - PackageManagerProtocol

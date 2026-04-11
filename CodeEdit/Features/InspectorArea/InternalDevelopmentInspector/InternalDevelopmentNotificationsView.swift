@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 struct InternalDevelopmentNotificationsView: View {
     enum IconType: String, CaseIterable {
@@ -129,7 +130,7 @@ struct InternalDevelopmentNotificationsView: View {
                         let iconSymbol = selectedSymbol ?? availableSymbols.randomElement() ?? "bell.fill"
                         let iconColor = selectedColor ?? availableColors.randomElement()?.1 ?? .blue
 
-                        NotificationManager.shared.post(
+                        Container.shared.notificationManager().post(
                             iconSymbol: iconSymbol,
                             iconColor: iconColor,
                             title: notificationTitle,
@@ -143,7 +144,7 @@ struct InternalDevelopmentNotificationsView: View {
                     case .image:
                         let imageName = selectedImage ?? availableImages.randomElement() ?? "GitHubIcon"
 
-                        NotificationManager.shared.post(
+                        Container.shared.notificationManager().post(
                             iconImage: Image(imageName),
                             title: notificationTitle,
                             description: notificationDescription,
@@ -157,7 +158,7 @@ struct InternalDevelopmentNotificationsView: View {
                         let text = selectedText ?? randomLetter()
                         let iconColor = selectedColor ?? availableColors.randomElement()?.1 ?? .blue
 
-                        NotificationManager.shared.post(
+                        Container.shared.notificationManager().post(
                             iconText: text,
                             iconTextColor: .white,
                             iconColor: iconColor,
@@ -173,7 +174,7 @@ struct InternalDevelopmentNotificationsView: View {
                         let emoji = selectedEmoji ?? availableEmojis.randomElement() ?? "🔔"
                         let iconColor = selectedColor ?? availableColors.randomElement()?.1 ?? .blue
 
-                        NotificationManager.shared.post(
+                        Container.shared.notificationManager().post(
                             iconText: emoji,
                             iconTextColor: .white,
                             iconColor: iconColor,

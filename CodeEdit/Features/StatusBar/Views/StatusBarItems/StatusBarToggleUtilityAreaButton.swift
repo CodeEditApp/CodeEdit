@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 internal struct StatusBarToggleUtilityAreaButton: View {
     @Environment(\.controlActiveState)
@@ -25,7 +26,7 @@ internal struct StatusBarToggleUtilityAreaButton: View {
         .onHover { isHovering($0) }
         .onChange(of: controlActiveState) { _, newValue in
             if newValue == .key {
-                CommandManager.shared.addCommand(
+                Container.shared.commandManager().addCommand(
                     name: "Toggle Utility Area",
                     title: "Toggle Utility Area",
                     id: "open.drawer",
@@ -34,7 +35,7 @@ internal struct StatusBarToggleUtilityAreaButton: View {
             }
         }
         .onAppear {
-            CommandManager.shared.addCommand(
+            Container.shared.commandManager().addCommand(
                 name: "Toggle Utility Area",
                 title: "Toggle Utility Area",
                 id: "open.drawer",

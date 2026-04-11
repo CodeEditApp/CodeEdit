@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 struct SourceControlPullView: View {
     @Environment(\.dismiss)
@@ -13,7 +14,7 @@ struct SourceControlPullView: View {
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
-    let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
+    let gitConfig = GitConfigClient(shellClient: Container.shared.shellClient())
 
     @State var loading: Bool = false
 

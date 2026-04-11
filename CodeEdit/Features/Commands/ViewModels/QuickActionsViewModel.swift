@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 /// Simple state class for command palette view. Contains currently selected command,
 /// query text and list of filtered commands
@@ -24,15 +25,15 @@ final class QuickActionsViewModel: ObservableObject {
     func reset() {
         commandQuery = ""
         selected = nil
-        filteredCommands = CommandManager.shared.commands
+        filteredCommands = Container.shared.commandManager().commands
     }
 
     func fetchMatchingCommands(val: String) {
         if val == "" {
-            self.filteredCommands = CommandManager.shared.commands
+            self.filteredCommands = Container.shared.commandManager().commands
             return
         }
-        self.filteredCommands = CommandManager.shared.commands.filter { $0.title.localizedCaseInsensitiveContains(val) }
+        self.filteredCommands = Container.shared.commandManager().commands.filter { $0.title.localizedCaseInsensitiveContains(val) }
         self.selected = self.filteredCommands.first
     }
 

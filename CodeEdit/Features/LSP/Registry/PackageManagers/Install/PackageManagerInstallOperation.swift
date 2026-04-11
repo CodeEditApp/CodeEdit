@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Factory
 import Combine
 
 /// An executable install operation for installing a ``RegistryItem``.
@@ -64,7 +65,7 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     /// If non-nil, indicates that this operation has halted and requires confirmation.
     @Published public private(set) var waitingForConfirmation: String?
 
-    private let shellClient: ShellClient = .live()
+    private let shellClient: ShellClientProtocol = Container.shared.shellClient()
     private var operationTask: Task<Void, Error>?
     private var confirmationContinuation: CheckedContinuation<Void, Never>?
     private var outputIdx = 0

@@ -6,26 +6,28 @@
 //
 
 import SwiftUI
+import Factory
 import Combine
 
 extension CodeEditWindowController {
     /// These are example items that added as commands to command palette
     func registerCommands() {
-        CommandManager.shared.addCommand(
+        let commandManager = Container.shared.commandManager()
+        commandManager.addCommand(
             name: "Quick Open",
             title: "Quick Open",
             id: "quick_open",
             command: { [weak self] in self?.openQuickly(nil) }
         )
 
-        CommandManager.shared.addCommand(
+        commandManager.addCommand(
             name: "Toggle Navigator",
             title: "Toggle Navigator",
             id: "toggle_left_sidebar",
             command: { [weak self] in self?.toggleFirstPanel() }
         )
 
-        CommandManager.shared.addCommand(
+        commandManager.addCommand(
             name: "Toggle Inspector",
             title: "Toggle Inspector",
             id: "toggle_right_sidebar",

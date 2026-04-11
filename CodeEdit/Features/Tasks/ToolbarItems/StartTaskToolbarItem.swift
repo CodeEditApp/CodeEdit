@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Factory
 
 @available(macOS 26, *)
 final class StartTaskToolbarItem: NSToolbarItem {
@@ -36,7 +37,7 @@ final class StartTaskToolbarItem: NSToolbarItem {
 
         taskManager.executeActiveTask()
         if utilityAreaCollapsed {
-            CommandManager.shared.executeCommand("open.drawer")
+            Container.shared.commandManager().executeCommand("open.drawer")
         }
         workspace?.utilityAreaModel?.selectedTab = .debugConsole
         taskManager.taskShowingOutput = taskManager.selectedTaskID

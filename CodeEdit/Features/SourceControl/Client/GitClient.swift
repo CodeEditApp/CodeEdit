@@ -36,11 +36,11 @@ class GitClient: GitClientProtocol {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "GitClient")
 
     internal let directoryURL: URL
-    internal let shellClient: ShellClient
+    internal let shellClient: ShellClientProtocol
 
     private let configClient: GitConfigClient
 
-    init(directoryURL: URL, shellClient: ShellClient) {
+    init(directoryURL: URL, shellClient: ShellClientProtocol) {
         self.directoryURL = directoryURL
         self.shellClient = shellClient
         self.configClient = GitConfigClient(projectURL: directoryURL, shellClient: shellClient)

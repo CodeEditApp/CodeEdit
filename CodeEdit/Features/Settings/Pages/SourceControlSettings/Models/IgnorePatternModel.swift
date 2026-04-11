@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Factory
 
 /// A model to manage Git ignore patterns for a file, including loading, saving, and monitoring changes.
 @MainActor
@@ -28,7 +29,7 @@ class IgnorePatternModel: ObservableObject {
     @Published var selection: Set<UUID> = []
 
     /// A client for interacting with the Git configuration.
-    private let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
+    private let gitConfig = GitConfigClient(shellClient: Container.shared.shellClient())
 
     /// A file system monitor for detecting changes to the Git ignore file.
     private var fileMonitor: DispatchSourceFileSystemObject?

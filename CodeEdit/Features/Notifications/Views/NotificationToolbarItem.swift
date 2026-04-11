@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import Factory
 
 struct NotificationToolbarItem: View {
     @EnvironmentObject private var notificationPanel: NotificationPanelViewModel
-    @ObservedObject private var notificationManager = NotificationManager.shared
+    @ObservedObject private var notificationManager = Container.shared.notificationManager()
     @Environment(\.controlActiveState)
     private var controlActiveState
 

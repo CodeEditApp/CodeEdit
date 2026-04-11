@@ -14,9 +14,7 @@ import UserNotifications
 /// - Managing notification persistence
 /// - Tracking notification read status
 /// - Broadcasting notifications to workspaces
-final class NotificationManager: NSObject, ObservableObject {
-    /// Shared instance for accessing the notification manager
-    static let shared = NotificationManager()
+final class NotificationManager: NSObject, NotificationManaging {
 
     /// Collection of all notifications, both read and unread
     @Published private(set) var notifications: [CENotification] = []

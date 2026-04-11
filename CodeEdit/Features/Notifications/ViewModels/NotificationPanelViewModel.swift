@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 /// Coordinates notification display, auto-hide timers, panel visibility, and toolbar integration.
 ///
@@ -35,7 +36,7 @@ final class NotificationPanelViewModel: ObservableObject {
     /// Whether notifications are paused
     var isPaused: Bool = false
 
-    var notificationManager = NotificationManager.shared
+    var notificationManager = Container.shared.notificationManager()
 
     /// A filtered list of active notifications.
     var visibleNotifications: [CENotification] {

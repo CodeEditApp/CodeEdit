@@ -37,8 +37,6 @@ struct WorkspaceView: View {
 
     private let statusbarHeight: CGFloat = 29
 
-    private var keybindings: KeybindingManager =  .shared
-
     var body: some View {
         if workspace.workspaceFileManager != nil, let sourceControlManager = workspace.sourceControlManager {
             VStack {

@@ -16,11 +16,11 @@ enum ShellClientError: Error {
 
 /// Shell Client
 /// Run commands in shell
-class ShellClient {
+final class ShellClient: ShellClientProtocol {
     /// Generate a process and pipe to run commands
     /// - Parameter args: commands to run
     /// - Returns: command output
-    func generateProcessAndPipe(_ args: [String]) -> (Process, Pipe) {
+    private func generateProcessAndPipe(_ args: [String]) -> (Process, Pipe) {
         // Run in an 'interactive' login shell. Because we're passing -c here it won't actually be
         // interactive but it will source the user's zshrc file as well as the zshprofile.
         var arguments = ["-lic"]
@@ -35,13 +35,13 @@ class ShellClient {
     }
 
     /// Cancellable tasks
-    var cancellables: [UUID: AnyCancellable] = [:]
+    private var cancellables: [UUID: AnyCancellable] = [:]
 
     /// Run a command
     /// - Parameter args: command to run
     /// - Returns: command output
     @discardableResult
-    func run(_ args: String...) throws -> String {
+    func run(_ args: [String]) throws -> String {
         let (task, pipe) = generateProcessAndPipe(args)
         try task.run()
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
@@ -55,7 +55,7 @@ class ShellClient {
     /// - Parameter args: command to run
     /// - Returns: command output
     @discardableResult
-    func runLive(_ args: String...) -> AnyPublisher<String, Never> {
+    func runLive(_ args: [String]) -> AnyPublisher<String, Never> {
         let subject = PassthroughSubject<String, Never>()
         let (task, pipe) = generateProcessAndPipe(args)
         let outputHandler = pipe.fileHandleForReading
@@ -91,7 +91,7 @@ class ShellClient {
     /// Run a command with AsyncStream
     /// - Parameter args: command to run
     /// - Returns: async stream of command output
-    func runAsync(_ args: String...) -> AsyncThrowingStream<String, Error> {
+    func runAsync(_ args: [String]) -> AsyncThrowingStream<String, Error> {
         let (task, pipe) = generateProcessAndPipe(args)
 
         return AsyncThrowingStream { continuation in
@@ -125,11 +125,5 @@ class ShellClient {
                 continuation.finish(throwing: error)
             }
         }
-    }
-
-    /// Shell client
-    /// - Returns: description
-    static func live() -> ShellClient {
-        return ShellClient()
     }
 }

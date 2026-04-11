@@ -22,14 +22,12 @@ mgr.executeCommand("test")
  ```
  */
 
-final class CommandManager: ObservableObject {
+final class CommandManager: CommandManaging {
     @Published private var commandsList: [String: Command]
 
-    private init() {
+    init() {
         commandsList = [:]
     }
-
-    static let shared: CommandManager = .init()
 
     func addCommand(name: String, title: String, id: String, command: @escaping () -> Void) {
         let command = Command.init(id: name, title: title, closureWrapper: command)

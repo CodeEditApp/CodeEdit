@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Factory
 import Foundation
 
 extension SettingsData {
@@ -166,7 +167,7 @@ extension SettingsData {
 
         /// Adds toggle-able preferences to the command palette via shared `CommandManager`
         private func populateCommands() {
-            let mgr = CommandManager.shared
+            let mgr = Container.shared.commandManager()
 
             mgr.addCommand(
                 name: "Toggle Type-Over Completion",

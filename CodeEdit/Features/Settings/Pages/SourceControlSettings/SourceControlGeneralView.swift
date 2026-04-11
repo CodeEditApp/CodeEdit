@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Factory
 
 struct SourceControlGeneralView: View {
     @AppSettings(\.sourceControl.general)
     var settings
 
-    let gitConfig = GitConfigClient(shellClient: currentWorld.shellClient)
+    let gitConfig = GitConfigClient(shellClient: Container.shared.shellClient())
 
     var body: some View {
         Group {

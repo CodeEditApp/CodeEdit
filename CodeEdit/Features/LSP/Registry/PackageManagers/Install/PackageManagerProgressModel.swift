@@ -5,8 +5,9 @@
 //  Created by Khan Winter on 8/8/25.
 //
 
-import Foundation
 import Combine
+import Factory
+import Foundation
 
 /// This model is injected into each ``PackageManagerInstallStep`` when executing a ``PackageManagerInstallOperation``.
 /// A single model is used for each step. Output is collected by the ``PackageManagerInstallOperation``.
@@ -23,10 +24,10 @@ final class PackageManagerProgressModel: ObservableObject {
     let outputStream: AsyncStream<OutputItem>
     @Published var progress: Progress
 
-    private let shellClient: ShellClient
+    private let shellClient: ShellClientProtocol
     private let outputContinuation: AsyncStream<OutputItem>.Continuation
 
-    init(shellClient: ShellClient) {
+    init(shellClient: ShellClientProtocol) {
         self.shellClient = shellClient
         self.progress = Progress(totalUnitCount: 1)
         (outputStream, outputContinuation) = AsyncStream<OutputItem>.makeStream()

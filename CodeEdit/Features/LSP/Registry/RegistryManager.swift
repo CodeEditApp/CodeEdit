@@ -9,10 +9,10 @@ import OSLog
 import Foundation
 import ZIPFoundation
 import Combine
+import Factory
 
 @MainActor
-final class RegistryManager: ObservableObject {
-    static let shared = RegistryManager()
+final class RegistryManager: ObservableObject, RegistryManaging {
 
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "RegistryManager")
     let installPath = Settings.shared.baseURL.appending(path: "Language Servers")
@@ -180,7 +180,7 @@ final class RegistryManager: ObservableObject {
         fail failed: Bool
     ) {
         if failed {
-            NotificationManager.shared.post(
+            Container.shared.notificationManager().post(
                 iconSymbol: "xmark.circle",
                 iconColor: .clear,
                 title: "Could not install \(activityName)",

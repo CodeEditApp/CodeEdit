@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Factory
 import AppKit
 
 class GitCloneViewModel: ObservableObject {
@@ -108,7 +109,7 @@ class GitCloneViewModel: ObservableObject {
             return
         }
 
-        gitClient = GitClient(directoryURL: localPath, shellClient: .live())
+        gitClient = GitClient(directoryURL: localPath, shellClient: Container.shared.shellClient())
 
         self.cloningTask = Task(priority: .background) {
             await processCloning(

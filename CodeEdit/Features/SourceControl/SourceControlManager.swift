@@ -129,10 +129,11 @@ final class SourceControlManager: ObservableObject {
 
     init(
         workspaceURL: URL,
-        editorManager: EditorManager
+        editorManager: EditorManager,
+        shellClient: ShellClientProtocol
     ) {
         self.workspaceURL = workspaceURL
         self.editorManager = editorManager
-        gitClient = GitClient(directoryURL: workspaceURL, shellClient: currentWorld.shellClient)
+        gitClient = GitClient(directoryURL: workspaceURL, shellClient: shellClient)
     }
 }

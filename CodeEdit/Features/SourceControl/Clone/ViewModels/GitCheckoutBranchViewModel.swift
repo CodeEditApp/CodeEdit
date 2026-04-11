@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Factory
 
 class GitCheckoutBranchViewModel: ObservableObject {
     @Published var selectedBranch: GitBranch?
@@ -16,7 +17,7 @@ class GitCheckoutBranchViewModel: ObservableObject {
 
     init(repoPath: URL) {
         self.repoPath = repoPath
-        gitClient = .init(directoryURL: repoPath, shellClient: .live())
+        gitClient = .init(directoryURL: repoPath, shellClient: Container.shared.shellClient())
     }
 
     func loadBranches() async {

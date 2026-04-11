@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 /// Notification insertion, dismissal, and event handling.
 extension NotificationPanelViewModel {
@@ -62,8 +63,8 @@ extension NotificationPanelViewModel {
         if let index = activeNotifications.firstIndex(where: { $0.id == notification.id }) {
             if disableAnimation {
                 self.activeNotifications.removeAll(where: { $0.id == notification.id })
-                NotificationManager.shared.markAsRead(notification)
-                NotificationManager.shared.dismissNotification(notification)
+                Container.shared.notificationManager().markAsRead(notification)
+                Container.shared.notificationManager().dismissNotification(notification)
                 return
             }
 
@@ -80,8 +81,8 @@ extension NotificationPanelViewModel {
                     }
                 }
 
-                NotificationManager.shared.markAsRead(notification)
-                NotificationManager.shared.dismissNotification(notification)
+                Container.shared.notificationManager().markAsRead(notification)
+                Container.shared.notificationManager().dismissNotification(notification)
             }
         }
     }

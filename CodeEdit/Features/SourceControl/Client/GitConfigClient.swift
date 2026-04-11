@@ -12,13 +12,13 @@ import Foundation
 /// project and global levels.
 class GitConfigClient {
     private let projectURL: URL?
-    private let shellClient: ShellClient
+    private let shellClient: ShellClientProtocol
 
     /// Initializes a new GitConfigClient.
     /// - Parameters:
     ///   - projectURL: The project directory URL (if any).
     ///   - shellClient: The client responsible for executing shell commands.
-    init(projectURL: URL? = nil, shellClient: ShellClient) {
+    init(projectURL: URL? = nil, shellClient: ShellClientProtocol) {
         self.projectURL = projectURL
         self.shellClient = shellClient
     }

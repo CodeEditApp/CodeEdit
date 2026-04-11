@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 /// Quick actions view
 struct QuickActionsView: View {
@@ -15,7 +16,7 @@ struct QuickActionsView: View {
 
     @ObservedObject private var state: QuickActionsViewModel
 
-    @ObservedObject private var commandManager: CommandManager = .shared
+    @ObservedObject private var commandManager: CommandManager = Container.shared.commandManager()
 
     @State private var monitor: Any?
 

@@ -7,16 +7,13 @@
 import Foundation
 import SwiftUI
 
-final class KeybindingManager {
+final class KeybindingManager: KeybindingManaging {
     /// Array which contains all available keyboard shortcuts
     var keyboardShortcuts = [String: KeyboardShortcutWrapper]()
 
-    private init() {
+    init() {
         loadKeybindings()
     }
-
-    /// Static method to access singleton
-    static let shared: KeybindingManager = .init()
 
     // We need this fallback shortcut because optional shortcuts available only from 12.3, while we have target of 12.0x
     var fallbackShortcut = KeyboardShortcutWrapper(
