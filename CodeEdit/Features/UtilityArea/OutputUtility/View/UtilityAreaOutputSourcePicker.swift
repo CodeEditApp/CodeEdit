@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 struct UtilityAreaOutputSourcePicker: View {
     typealias Sources = UtilityAreaOutputView.Sources
@@ -19,7 +20,7 @@ struct UtilityAreaOutputSourcePicker: View {
 
     @ObservedObject var extensionManager = ExtensionManager.shared
 
-    @Service var lspService: LSPService
+    @Injected(\.lspService) var lspService
     @State private var updater: UUID = UUID()
     @State private var languageServerClients: [LSPService.LanguageServerType] = []
 

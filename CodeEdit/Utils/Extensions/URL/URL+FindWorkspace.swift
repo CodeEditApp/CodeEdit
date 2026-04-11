@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import Factory
 
 extension URL {
     /// Finds a workspace that contains the url.
     @MainActor
     func findWorkspace() -> Workspace? {
-        @Service var windowManager: WorkspaceWindowManager
+        let windowManager = Container.shared.workspaceWindowManager()
         return windowManager.workspace(containing: self)
     }
 }

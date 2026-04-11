@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Factory
 import WelcomeWindow
 
 @MainActor
@@ -126,7 +127,7 @@ final class RecentProjectsMenu: NSObject, NSMenuDelegate {
     @objc
     private func recentProjectItemClicked(_ sender: NSMenuItem) {
         guard let projectURL = sender.representedObject as? URL else { return }
-        @Service var windowManager: WorkspaceWindowManager
+        let windowManager = Container.shared.workspaceWindowManager()
         windowManager.openDocument(at: projectURL, onCompletion: {})
     }
 

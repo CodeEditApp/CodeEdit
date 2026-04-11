@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 struct FileCommands: Commands {
     static let recentProjectsMenu = RecentProjectsMenu()
@@ -21,13 +22,13 @@ struct FileCommands: Commands {
         CommandGroup(replacing: .newItem) {
             Group {
                 Button("New") {
-                    @Service var windowManager: WorkspaceWindowManager
+                    let windowManager = Container.shared.workspaceWindowManager()
                     windowManager.newDocumentFromPanel()
                 }
                 .keyboardShortcut("n")
 
                 Button("Open...") {
-                    @Service var windowManager: WorkspaceWindowManager
+                    let windowManager = Container.shared.workspaceWindowManager()
                     windowManager.openDocumentFromPanel()
                 }
                 .keyboardShortcut("o")

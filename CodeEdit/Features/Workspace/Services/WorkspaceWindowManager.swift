@@ -7,6 +7,7 @@
 
 import AppKit
 import SwiftUI
+import Factory
 import WelcomeWindow
 
 extension Notification.Name {
@@ -17,7 +18,8 @@ extension Notification.Name {
 @MainActor
 final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
-    @LazyService var lspService: LSPService
+    @LazyInjected(\.lspService)
+    var lspService
 
     /// All currently open workspaces.
     private(set) var openWorkspaces: [Workspace] = []

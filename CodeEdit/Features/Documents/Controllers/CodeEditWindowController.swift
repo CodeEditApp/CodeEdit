@@ -7,6 +7,7 @@
 
 import Cocoa
 import SwiftUI
+import Factory
 import Combine
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, ObservableObject, NSWindowDelegate {
@@ -233,7 +234,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
         // Notify the window manager to clean up workspace state
         if let workspace {
-            @Service var windowManager: WorkspaceWindowManager
+            let windowManager = Container.shared.workspaceWindowManager()
             windowManager.closeWorkspace(workspace)
         }
         workspace = nil

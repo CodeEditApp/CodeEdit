@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 import WelcomeWindow
 
 struct NewFileButton: View {
@@ -17,7 +18,7 @@ struct NewFileButton: View {
             iconName: "plus.square",
             title: "Create New File...",
             action: {
-                @Service var windowManager: WorkspaceWindowManager
+                let windowManager = Container.shared.workspaceWindowManager()
                 windowManager.newDocumentFromPanel()
                 dismissWindow()
             }

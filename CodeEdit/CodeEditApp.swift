@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 import WelcomeWindow
 import AboutWindow
 
@@ -17,14 +18,6 @@ struct CodeEditApp: App {
     let updater: SoftwareUpdater = SoftwareUpdater()
 
     init() {
-        // Register singleton services before anything else
-        ServiceContainer.register(
-            LSPService()
-        )
-        ServiceContainer.register(
-            WorkspaceWindowManager()
-        )
-
         NSMenuItem.swizzle()
         NSSplitViewItem.swizzle()
     }
@@ -39,7 +32,7 @@ struct CodeEditApp: App {
                     OpenFileOrFolderButton(dismissWindow: dismissWindow)
                 },
                 onDrop: { url, dismissWindow in
-                    @Service var windowManager: WorkspaceWindowManager
+                    let windowManager = Container.shared.workspaceWindowManager()
                     Task {
                         do {
                             try windowManager.openWorkspace(at: url)

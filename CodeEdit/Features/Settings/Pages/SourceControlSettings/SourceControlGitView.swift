@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 
 struct SourceControlGitView: View {
     @AppSettings(\.sourceControl.git)
@@ -202,7 +203,7 @@ private extension SourceControlGitView {
             FileManager.default.createFile(atPath: fileURL.path, contents: nil)
         }
 
-        @Service var windowManager: WorkspaceWindowManager
+        let windowManager = Container.shared.workspaceWindowManager()
         windowManager.openDocument(at: fileURL, onCompletion: {})
     }
 
@@ -217,7 +218,7 @@ private extension SourceControlGitView {
                 }
 
                 // Open the file in the editor
-                @Service var windowManager: WorkspaceWindowManager
+                let windowManager = Container.shared.workspaceWindowManager()
                 windowManager.openDocument(at: fileURL, onCompletion: {})
             } catch {
                 print("Failed to open document: \(error.localizedDescription)")

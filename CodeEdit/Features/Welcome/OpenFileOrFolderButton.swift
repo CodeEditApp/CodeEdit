@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 import WelcomeWindow
 
 struct OpenFileOrFolderButton: View {
@@ -20,7 +21,7 @@ struct OpenFileOrFolderButton: View {
             iconName: "folder",
             title: "Open File or Folder...",
             action: {
-                @Service var windowManager: WorkspaceWindowManager
+                let windowManager = Container.shared.workspaceWindowManager()
                 windowManager.openDocumentWithDialog(
                     canChooseFiles: true,
                     canChooseDirectories: true,

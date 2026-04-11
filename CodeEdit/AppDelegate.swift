@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 import CodeEditSymbols
 import CodeEditSourceEditor
 import OSLog
@@ -18,8 +19,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @Environment(\.openWindow)
     var openWindow
 
-    @LazyService var lspService: LSPService
-    @LazyService var windowManager: WorkspaceWindowManager
+    @LazyInjected(\.lspService)
+    var lspService
+    
+    @LazyInjected(\.workspaceWindowManager)
+    var windowManager
 
     private var welcomeWindowObserver: NSObjectProtocol?
 

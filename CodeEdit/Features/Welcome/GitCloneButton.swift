@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Factory
 import WelcomeWindow
 
 struct GitCloneButton: View {
@@ -29,7 +30,7 @@ struct GitCloneButton: View {
                     showCheckoutBranchItem = url
                 },
                 openDocument: { url in
-                    @Service var windowManager: WorkspaceWindowManager
+                    let windowManager = Container.shared.workspaceWindowManager()
                     windowManager.openDocument(at: url, onCompletion: { dismissWindow() })
                 }
             )
@@ -38,7 +39,7 @@ struct GitCloneButton: View {
             GitCheckoutBranchView(
                 repoLocalPath: url,
                 openDocument: { url in
-                    @Service var windowManager: WorkspaceWindowManager
+                    let windowManager = Container.shared.workspaceWindowManager()
                     windowManager.openDocument(at: url, onCompletion: { dismissWindow() })
                 }
             )
