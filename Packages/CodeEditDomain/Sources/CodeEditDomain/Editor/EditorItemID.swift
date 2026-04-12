@@ -1,6 +1,6 @@
 //
 //  EditorTabID.swift
-//  
+//
 //
 //  Created by Pavel Kasila on 30.04.22.
 //
@@ -8,8 +8,8 @@
 import Foundation
 
 /// Enum to represent item's ID to tab bar
-enum EditorTabID: Codable, Identifiable, Hashable {
-    var id: String {
+public enum EditorTabID: Codable, Identifiable, Hashable {
+    public var id: String {
         switch self {
         case .codeEditor(let path):
             return "codeEditor_\(path)"

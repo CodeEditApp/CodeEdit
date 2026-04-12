@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditDomain
 
 /// This parser is used to parse expressions that may be included in a field of a registry item.
 ///

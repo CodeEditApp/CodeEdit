@@ -5,6 +5,8 @@
 //  Created by Abe Malla on 3/12/25.
 //
 
+import CodeEditDomain
+
 extension PackageSourceParser {
     static func parseCargoPackage(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:cargo/PACKAGE@VERSION?PARAMS

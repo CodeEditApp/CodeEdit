@@ -2,7 +2,7 @@
 //  WorkspaceStatePersistence.swift
 //  CodeEdit
 //
-//  Created by CodeEdit Contributors on 25.03.26.
+//  Created by Matthijs Eikelenboom on 25.03.26.
 //
 
 import Foundation

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditDomain
 
 extension GitClient {
     /// Gets all remotes

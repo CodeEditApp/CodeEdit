@@ -7,6 +7,7 @@
 
 import Foundation
 import RegexBuilder
+import CodeEditDomain
 
 extension GitClient {
     /// Commit files

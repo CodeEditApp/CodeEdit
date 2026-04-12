@@ -8,7 +8,7 @@
 import Foundation
 
 /// Installation method enum with all supported types
-enum InstallationMethod: Equatable {
+public enum InstallationMethod: Equatable {
     /// For standard package manager installations
     case standardPackage(source: PackageSource)
     /// For packages that need to be built from source with custom build steps
@@ -18,7 +18,7 @@ enum InstallationMethod: Equatable {
     /// For installations that aren't recognized
     case unknown
 
-    var packageName: String? {
+    public var packageName: String? {
         switch self {
         case .standardPackage(let source),
              .sourceBuild(let source, _),
@@ -29,7 +29,7 @@ enum InstallationMethod: Equatable {
         }
     }
 
-    var version: String? {
+    public var version: String? {
         switch self {
         case .standardPackage(let source),
              .sourceBuild(let source, _),
@@ -40,7 +40,7 @@ enum InstallationMethod: Equatable {
         }
     }
 
-    var packageManagerType: PackageManagerType? {
+    public var packageManagerType: PackageManagerType? {
         switch self {
         case .standardPackage(let source),
              .sourceBuild(let source, _),
@@ -51,27 +51,7 @@ enum InstallationMethod: Equatable {
         }
     }
 
-    func packageManager(installPath: URL) -> PackageManagerProtocol? {
-        switch packageManagerType {
-        case .npm:
-            return NPMPackageManager(installationDirectory: installPath)
-        case .cargo:
-            return CargoPackageManager(installationDirectory: installPath)
-        case .pip:
-            return PipPackageManager(installationDirectory: installPath)
-        case .golang:
-            return GolangPackageManager(installationDirectory: installPath)
-        case .github, .sourceBuild:
-            return GithubPackageManager(installationDirectory: installPath)
-        case .nuget, .opam, .gem, .composer:
-            // TODO: IMPLEMENT OTHER PACKAGE MANAGERS
-            return nil
-        default:
-            return nil
-        }
-    }
-
-    var installerDescription: String {
+    public var installerDescription: String {
         guard let packageManagerType else { return "Unknown" }
         switch packageManagerType {
         case .npm, .cargo, .golang, .pip, .sourceBuild, .github:
@@ -81,7 +61,7 @@ enum InstallationMethod: Equatable {
         }
     }
 
-    var packageDescription: String? {
+    public var packageDescription: String? {
         guard let packageName else { return nil }
         if let version {
             return "\(packageName)@\(version)"

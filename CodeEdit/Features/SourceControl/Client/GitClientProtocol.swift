@@ -2,10 +2,11 @@
 //  GitClientProtocol.swift
 //  CodeEdit
 //
-//  Created by CodeEdit Contributors on 07.04.26.
+//  Created by Matthijs Eikelenboom on 07.04.26.
 //
 
 import Foundation
+import CodeEditDomain
 
 /// Abstraction over git operations used by ``SourceControlManager``.
 ///

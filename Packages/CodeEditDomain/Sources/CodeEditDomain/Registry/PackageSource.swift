@@ -7,25 +7,25 @@
 
 /// Generic package source information that applies to all installation methods.
 /// Takes all the necessary information from `RegistryItem`.
-struct PackageSource: Equatable, Codable {
+public struct PackageSource: Equatable, Codable {
     /// The raw source ID string from the registry
-    let sourceId: String
+    public let sourceId: String
     /// The type of the package manager
-    let type: PackageManagerType
+    public let type: PackageManagerType
     /// Package name
-    let pkgName: String
+    public let pkgName: String
     /// The name in the registry.json file. Used for the folder name when saved.
-    let entryName: String
+    public let entryName: String
     /// Package version
-    let version: String
+    public let version: String
     /// URL for repository or download link
-    let repositoryUrl: String?
+    public let repositoryUrl: String?
     /// Git reference type if this is a git based package
-    let gitReference: GitReference?
+    public let gitReference: GitReference?
     /// Additional possible options
-    var options: [String: String]
+    public var options: [String: String]
 
-    init(
+    public init(
         sourceId: String,
         type: PackageManagerType,
         pkgName: String,
@@ -45,7 +45,7 @@ struct PackageSource: Equatable, Codable {
         self.options = options
     }
 
-    enum GitReference: Equatable, Codable {
+    public enum GitReference: Equatable, Codable {
         case tag(String)
         case revision(String)
     }

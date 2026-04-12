@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import CodeEditDomain
 
 struct FindModePicker: View {
     var modes: [SearchModeModel]

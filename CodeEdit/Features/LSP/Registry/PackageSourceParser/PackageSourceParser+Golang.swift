@@ -5,6 +5,8 @@
 //  Created by Abe Malla on 3/12/25.
 //
 
+import CodeEditDomain
+
 extension PackageSourceParser {
     static func parseGolangPackage(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:golang/PACKAGE@VERSION#SUBPATH?PARAMS

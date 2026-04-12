@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditDomain
 
 struct FindNavigatorForm: View {
     @ObservedObject private var state: SearchState

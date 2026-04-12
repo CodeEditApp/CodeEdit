@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditDomain
 
 /// Protocol for managing the language server registry.
 ///

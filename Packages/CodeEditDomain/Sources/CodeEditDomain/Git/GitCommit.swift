@@ -8,22 +8,22 @@
 import Foundation.NSDate
 
 /// Model class to help map commit history log data
-struct GitCommit: Equatable, Hashable, Identifiable {
-    var id = UUID()
-    let hash: String
-    let commitHash: String
-    let message: String
-    let author: String
-    let authorEmail: String
-    let committer: String
-    let committerEmail: String
-    let body: String
-    let refs: [String]
-    let tag: String
-    let remoteURL: URL?
-    let date: Date
+public struct GitCommit: Equatable, Hashable, Identifiable {
+    public var id: UUID
+    public let hash: String
+    public let commitHash: String
+    public let message: String
+    public let author: String
+    public let authorEmail: String
+    public let committer: String
+    public let committerEmail: String
+    public let body: String
+    public let refs: [String]
+    public let tag: String
+    public let remoteURL: URL?
+    public let date: Date
 
-    var commitBaseURL: URL? {
+    public var commitBaseURL: URL? {
         if let remoteURL {
             if remoteURL.absoluteString.contains("github") {
                 return parsedRemoteUrl(domain: "https://github.com", remote: remoteURL)
@@ -51,7 +51,7 @@ struct GitCommit: Equatable, Hashable, Identifiable {
         return formattedRemote.deletingPathExtension().appending(path: "commit")
     }
 
-    var remoteString: String {
+    public var remoteString: String {
         if let remoteURL {
             if remoteURL.absoluteString.contains("github") {
                 return "GitHub"
@@ -64,5 +64,35 @@ struct GitCommit: Equatable, Hashable, Identifiable {
             }
         }
         return "Remote"
+    }
+
+    public init(
+        id: UUID = UUID(),
+        hash: String,
+        commitHash: String,
+        message: String,
+        author: String,
+        authorEmail: String,
+        committer: String,
+        committerEmail: String,
+        body: String,
+        refs: [String],
+        tag: String,
+        remoteURL: URL?,
+        date: Date
+    ) {
+        self.id = id
+        self.hash = hash
+        self.commitHash = commitHash
+        self.message = message
+        self.author = author
+        self.authorEmail = authorEmail
+        self.committer = committer
+        self.committerEmail = committerEmail
+        self.body = body
+        self.refs = refs
+        self.tag = tag
+        self.remoteURL = remoteURL
+        self.date = date
     }
 }

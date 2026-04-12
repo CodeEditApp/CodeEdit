@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditDomain
 
 final class HistoryInspectorModel: ObservableObject {
     private(set) var sourceControlManager: SourceControlManager?

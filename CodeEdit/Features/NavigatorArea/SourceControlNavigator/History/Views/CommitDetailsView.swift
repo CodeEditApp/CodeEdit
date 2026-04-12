@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditDomain
 
 struct CommitDetailsView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager

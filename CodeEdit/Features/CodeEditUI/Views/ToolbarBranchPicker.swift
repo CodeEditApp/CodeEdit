@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditDomain
 import CodeEditSymbols
 import Combine
 

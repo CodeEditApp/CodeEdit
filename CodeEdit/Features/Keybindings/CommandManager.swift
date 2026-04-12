@@ -5,6 +5,7 @@
 //
 
 import Foundation
+import CodeEditDomain
 
 /**
 The object of this class intended to be a hearth of command palette. This object only exists as singleton.
@@ -41,24 +42,4 @@ final class CommandManager: CommandManaging {
     func executeCommand(_ id: String) {
         commandsList[id]?.closureWrapper()
     }
-}
-
-/// Command struct uses as a wrapper for command. Used by command palette to call selected commands.
-struct Command: Identifiable, Hashable {
-
-    static func == (lhs: Command, rhs: Command) -> Bool {
-        return lhs.id == rhs.id
-    }
-
-    static func < (lhs: Command, rhs: Command) -> Bool {
-        return false
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
-    let id: String
-    let title: String
-    let closureWrapper: () -> Void
 }

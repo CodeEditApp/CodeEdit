@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CodeEditDomain
 
 struct GitCheckoutBranchView: View {
     @Environment(\.dismiss)

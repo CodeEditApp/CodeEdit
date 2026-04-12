@@ -7,6 +7,7 @@
 
 import Foundation
 import Factory
+import CodeEditDomain
 
 class GitCheckoutBranchViewModel: ObservableObject {
     @Published var selectedBranch: GitBranch?

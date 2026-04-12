@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Factory
+import CodeEditDomain
 
 /// Quick actions view
 struct QuickActionsView: View {

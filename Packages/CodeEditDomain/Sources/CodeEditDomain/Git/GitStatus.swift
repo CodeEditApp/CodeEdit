@@ -1,13 +1,13 @@
 //
 //  GitType.swift
-//  
+//
 //
 //  Created by Nanashi Li on 2022/05/20.
 //
 
 import Foundation
 
-enum GitStatus: String, Codable {
+public enum GitStatus: String, Codable {
     case none = "."
     case modified = "M"
     case untracked = "?"
@@ -18,7 +18,7 @@ enum GitStatus: String, Codable {
     case copied = "C"
     case unmerged = "U"
 
-    var description: String {
+    public var description: String {
         switch self {
         case .modified: return "M"
         case .untracked: return "U"

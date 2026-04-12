@@ -5,6 +5,8 @@
 //  Created by Abe Malla on 3/12/25.
 //
 
+import CodeEditDomain
+
 extension PackageSourceParser {
     static func parseRubyGem(_ entry: RegistryItem) -> InstallationMethod {
         // Format: pkg:gem/PACKAGE@VERSION?PARAMS

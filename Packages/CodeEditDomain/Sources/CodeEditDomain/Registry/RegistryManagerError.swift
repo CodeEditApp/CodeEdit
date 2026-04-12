@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum RegistryManagerError: Error, LocalizedError {
+public enum RegistryManagerError: Error, LocalizedError {
     case installationRunning
     case invalidResponse(statusCode: Int)
     case downloadFailed(url: URL, error: Error)
@@ -15,7 +15,7 @@ enum RegistryManagerError: Error, LocalizedError {
     case writeFailed(error: Error)
     case failedToSaveRegistryCache
 
-    var errorDescription: String? {
+    public var errorDescription: String? {
         switch self {
         case .installationRunning:
             "A package is already being installed."
@@ -32,7 +32,7 @@ enum RegistryManagerError: Error, LocalizedError {
         }
     }
 
-    var failureReason: String? {
+    public var failureReason: String? {
         switch self {
         case .installationRunning, .invalidResponse, .failedToSaveRegistryCache:
             return nil

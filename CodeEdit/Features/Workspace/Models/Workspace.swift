@@ -2,7 +2,7 @@
 //  Workspace.swift
 //  CodeEdit
 //
-//  Created by CodeEdit Contributors on 06.04.26.
+//  Created by Matthijs Eikelenboom on 06.04.26.
 //
 
 import AppKit

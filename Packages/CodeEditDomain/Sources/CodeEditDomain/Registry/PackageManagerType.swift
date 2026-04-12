@@ -6,7 +6,7 @@
 //
 
 /// Package manager types supported by the system
-enum PackageManagerType: String, Codable {
+public enum PackageManagerType: String, Codable {
     /// JavaScript
     case npm
     /// Rust
@@ -28,7 +28,7 @@ enum PackageManagerType: String, Codable {
     /// Binary download
     case github
 
-    var userDescription: String {
+    public var userDescription: String {
         switch self {
         case .npm:
             "NPM"

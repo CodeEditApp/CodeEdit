@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditDomain
 
 extension String {
     /// Normalises the characters of the string by converting them to ASCII representation.

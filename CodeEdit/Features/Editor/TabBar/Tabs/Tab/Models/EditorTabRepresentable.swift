@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditDomain
 
 /// Protocol for data passed to EditorTabView to conform to
 protocol EditorTabRepresentable {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditDomain
 
 /// Branch-related git operations.
 extension SourceControlManager {

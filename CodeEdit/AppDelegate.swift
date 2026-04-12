@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Factory
+import CodeEditDomain
 import CodeEditSymbols
 import CodeEditSourceEditor
 import OSLog

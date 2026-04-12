@@ -8,6 +8,7 @@
 import Foundation
 import Factory
 import Combine
+import CodeEditDomain
 
 /// An executable install operation for installing a ``RegistryItem``.
 ///

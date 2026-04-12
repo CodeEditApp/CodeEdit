@@ -7,6 +7,7 @@
 
 import Foundation
 import CollectionConcurrencyKit
+import CodeEditDomain
 
 extension Collection where Iterator.Element: FuzzySearchable {
     /// Asynchronously performs a fuzzy search on a collection of elements conforming to FuzzySearchable.

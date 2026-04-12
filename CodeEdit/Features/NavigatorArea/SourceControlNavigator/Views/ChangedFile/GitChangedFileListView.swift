@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditDomain
 
 /// A view to display a changed file's information in a list view. Optionally displays the staged status.
 struct GitChangedFileListView: View {

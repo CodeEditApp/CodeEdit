@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditDomain
 
 struct WorkspaceSheets: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager

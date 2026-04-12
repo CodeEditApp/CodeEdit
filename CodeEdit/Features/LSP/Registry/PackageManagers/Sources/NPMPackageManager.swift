@@ -7,6 +7,7 @@
 
 import Factory
 import Foundation
+import CodeEditDomain
 
 final class NPMPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL

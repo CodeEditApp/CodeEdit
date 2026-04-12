@@ -6,19 +6,31 @@
 //
 
 extension RegistryItem {
-    struct Source: Codable {
-        let id: String
-        let asset: AssetContainer?
-        let build: BuildContainer?
-        let versionOverrides: [VersionOverride]?
+    public struct Source: Codable {
+        public let id: String
+        public let asset: AssetContainer?
+        public let build: BuildContainer?
+        public let versionOverrides: [VersionOverride]?
 
-        enum AssetContainer: Codable {
+        public init(
+            id: String,
+            asset: AssetContainer?,
+            build: BuildContainer?,
+            versionOverrides: [VersionOverride]?
+        ) {
+            self.id = id
+            self.asset = asset
+            self.build = build
+            self.versionOverrides = versionOverrides
+        }
+
+        public enum AssetContainer: Codable {
             case single(Asset)
             case multiple([Asset])
             case simpleFile(String)
             case none
 
-            init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 if let container = try? decoder.singleValueContainer() {
                     if let singleValue = try? container.decode(Asset.self) {
                         self = .single(singleValue)
@@ -37,7 +49,7 @@ extension RegistryItem {
                 self = .none
             }
 
-            func encode(to encoder: Encoder) throws {
+            public func encode(to encoder: Encoder) throws {
                 var container = encoder.singleValueContainer()
                 switch self {
                 case .single(let value):
@@ -51,7 +63,7 @@ extension RegistryItem {
                 }
             }
 
-            func getDarwinFileName() -> String? {
+            public func getDarwinFileName() -> String? {
                 switch self {
                 case .single(let asset):
                     if asset.target.isDarwinTarget() {
@@ -73,12 +85,12 @@ extension RegistryItem {
             }
         }
 
-        enum BuildContainer: Codable {
+        public enum BuildContainer: Codable {
             case single(Build)
             case multiple([Build])
             case none
 
-            init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 if let container = try? decoder.singleValueContainer() {
                     if let singleValue = try? container.decode(Build.self) {
                         self = .single(singleValue)
@@ -91,7 +103,7 @@ extension RegistryItem {
                 self = .none
             }
 
-            func encode(to encoder: Encoder) throws {
+            public func encode(to encoder: Encoder) throws {
                 var container = encoder.singleValueContainer()
                 switch self {
                 case .single(let value):
@@ -103,7 +115,7 @@ extension RegistryItem {
                 }
             }
 
-            func getUnixBuildCommand() -> String? {
+            public func getUnixBuildCommand() -> String? {
                 switch self {
                 case .single(let build):
                     return build.run
@@ -121,31 +133,53 @@ extension RegistryItem {
             }
         }
 
-        struct Build: Codable {
-            let target: Target?
-            let run: String
-            let env: [String: String]?
-            let bin: BinContainer?
+        public struct Build: Codable {
+            public let target: Target?
+            public let run: String
+            public let env: [String: String]?
+            public let bin: BinContainer?
+
+            public init(
+                target: Target?,
+                run: String,
+                env: [String: String]?,
+                bin: BinContainer?
+            ) {
+                self.target = target
+                self.run = run
+                self.env = env
+                self.bin = bin
+            }
         }
 
-        struct Asset: Codable {
-            let target: Target
-            let file: String?
-            let bin: BinContainer?
+        public struct Asset: Codable {
+            public let target: Target
+            public let file: String?
+            public let bin: BinContainer?
 
-            init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
                 self.target = try container.decode(Target.self, forKey: .target)
                 self.file = try container.decodeIfPresent(String.self, forKey: .file)
                 self.bin = try container.decodeIfPresent(BinContainer.self, forKey: .bin)
             }
+
+            public init(
+                target: Target,
+                file: String?,
+                bin: BinContainer?
+            ) {
+                self.target = target
+                self.file = file
+                self.bin = bin
+            }
         }
 
-        enum Target: Codable {
+        public enum Target: Codable {
             case single(String)
             case multiple([String])
 
-            init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.singleValueContainer()
                 if let singleValue = try? container.decode(String.self) {
                     self = .single(singleValue)
@@ -162,7 +196,7 @@ extension RegistryItem {
                 }
             }
 
-            func encode(to encoder: Encoder) throws {
+            public func encode(to encoder: Encoder) throws {
                 var container = encoder.singleValueContainer()
                 switch self {
                 case .single(let value):
@@ -172,7 +206,7 @@ extension RegistryItem {
                 }
             }
 
-            func isDarwinTarget() -> Bool {
+            public func isDarwinTarget() -> Bool {
                 switch self {
                 case .single(let value):
 #if arch(arm64)
@@ -194,11 +228,11 @@ extension RegistryItem {
             }
         }
 
-        enum BinContainer: Codable {
+        public enum BinContainer: Codable {
             case single(String)
             case multiple([String: String])
 
-            init(from decoder: Decoder) throws {
+            public init(from decoder: Decoder) throws {
                 let container = try decoder.singleValueContainer()
                 if let singleValue = try? container.decode(String.self) {
                     self = .single(singleValue)
@@ -215,7 +249,7 @@ extension RegistryItem {
                 }
             }
 
-            func encode(to encoder: Encoder) throws {
+            public func encode(to encoder: Encoder) throws {
                 var container = encoder.singleValueContainer()
                 switch self {
                 case .single(let value):
@@ -226,10 +260,20 @@ extension RegistryItem {
             }
         }
 
-        struct VersionOverride: Codable {
-            let constraint: String
-            let id: String
-            let asset: AssetContainer?
+        public struct VersionOverride: Codable {
+            public let constraint: String
+            public let id: String
+            public let asset: AssetContainer?
+
+            public init(
+                constraint: String,
+                id: String,
+                asset: AssetContainer?
+            ) {
+                self.constraint = constraint
+                self.id = id
+                self.asset = asset
+            }
         }
     }
 }

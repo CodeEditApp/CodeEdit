@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditDomain
 
 /// Methods for parsing git's porcelain v2 format and returning the info in a ``GitClient/Status`` struct.
 ///

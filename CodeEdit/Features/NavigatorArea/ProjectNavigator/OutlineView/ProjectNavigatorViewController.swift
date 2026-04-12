@@ -8,6 +8,7 @@
 import AppKit
 import SwiftUI
 import OSLog
+import CodeEditDomain
 
 /// A `NSViewController` that handles the **ProjectNavigatorView** in the **NavigatorArea**.
 ///

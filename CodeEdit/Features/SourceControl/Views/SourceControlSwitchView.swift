@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditDomain
 
 struct SourceControlSwitchView: View {
     @Environment(\.dismiss)

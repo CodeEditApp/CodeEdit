@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditDomain
 
 extension RegistryManager {
     /// Downloads the latest registry
