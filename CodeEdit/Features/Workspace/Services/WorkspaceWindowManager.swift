@@ -7,7 +7,6 @@
 
 import AppKit
 import SwiftUI
-import Factory
 import WelcomeWindow
 
 extension Notification.Name {
@@ -18,8 +17,8 @@ extension Notification.Name {
 @MainActor
 final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
-    @LazyInjected(\.lspService)
-    var lspService
+    private let openWorkspaceUseCase = OpenWorkspaceUseCase()
+    private let closeWorkspaceUseCase = CloseWorkspaceUseCase()
 
     /// All currently open workspaces.
     private(set) var openWorkspaces: [Workspace] = []
@@ -36,35 +35,13 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
             return
         }
 
-        let workspace = Workspace(url: url)
+        let result = openWorkspaceUseCase.execute(url: url)
 
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 1400, height: 900),
-            styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
-            backing: .buffered,
-            defer: false
-        )
+        openWorkspaces.append(result.workspace)
+        windowControllers[ObjectIdentifier(result.workspace)] = result.windowController
+        result.workspace.notificationPanel.windowController = result.windowController
 
-        let windowController = CodeEditWindowController(
-            window: window,
-            workspace: workspace
-        )
-
-        if let rectString = workspace.statePersistence?.get(.workspaceWindowSize) as? String {
-            window.setFrame(NSRectFromString(rectString), display: true, animate: false)
-        } else {
-            window.setFrame(NSRect(x: 0, y: 0, width: 1400, height: 900), display: true, animate: false)
-            window.center()
-        }
-
-        window.setAccessibilityIdentifier("workspace")
-        window.setAccessibilityDocument(workspace.fileURL?.absoluteString)
-
-        openWorkspaces.append(workspace)
-        windowControllers[ObjectIdentifier(workspace)] = windowController
-        workspace.notificationPanel.windowController = windowController
-
-        window.makeKeyAndOrderFront(nil)
+        result.window.makeKeyAndOrderFront(nil)
 
         RecentsStore.documentOpened(at: url)
     }
@@ -72,11 +49,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
     // MARK: - Close Workspace
 
     func closeWorkspace(_ workspace: Workspace) {
-        if let path = workspace.fileURL?.absoluteURL.path() {
-            lspService.closeWorkspace(path)
-        }
-
-        workspace.tearDown()
+        closeWorkspaceUseCase.execute(workspace: workspace)
 
         let id = ObjectIdentifier(workspace)
         windowControllers.removeValue(forKey: id)

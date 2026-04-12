@@ -22,9 +22,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     @LazyInjected(\.lspService)
     var lspService
-    
+
     @LazyInjected(\.workspaceWindowManager)
     var windowManager
+
+    private let shutdownUseCase = ShutdownApplicationUseCase()
 
     private var welcomeWindowObserver: NSObjectProtocol?
 
@@ -154,31 +156,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     ///
     /// All paths _must_ call `NSApplication.shared.reply(toApplicationShouldTerminate: true)` as soon as possible.
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        let projects: [String] = windowManager.openWorkspaces
-            .compactMap { $0.fileURL?.path }
-
-        UserDefaults.standard.set(projects, forKey: AppDelegate.recoverWorkspacesKey)
-
-        let hasUnsavedChanges = windowManager.openWorkspaces.contains { $0.hasUnsavedChanges() }
-        guard !hasUnsavedChanges else {
-            // Prompt the user to save unsaved changes across all workspaces
-            var allSaved = true
-            for workspace in windowManager.openWorkspaces {
-                if !workspace.promptSaveUnsavedFiles() {
-                    allSaved = false
-                    break
-                }
-            }
-
-            if allSaved {
-                terminateTasks()
-                terminateLanguageServers()
-            }
-            // If not all saved (user cancelled), don't terminate
-            return allSaved ? .terminateLater : .terminateCancel
+        guard shutdownUseCase.execute() else {
+            return .terminateCancel
         }
 
-        terminateTasks()
         terminateLanguageServers()
         return .terminateLater
     }
@@ -297,28 +278,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
         }
     }
 
-    /// Terminates all running tasks. Used during app termination to ensure resources are freed.
-    private func terminateTasks() {
-        let task = TaskNotificationModel(
-            id: "appdelegate.terminate_tasks",
-            title: "Terminating Tasks",
-            message: "Interrupting all running tasks before quitting...",
-            isLoading: true
-        )
-
-        let taskManagers = windowManager.openWorkspaces
-            .compactMap({ $0.taskManager })
-
-        if taskManagers.reduce(0, { $0 + $1.activeTasks.count }) > 0 {
-            TaskNotificationHandler.postTask(action: .create, model: task)
-        }
-
-        taskManagers.forEach { manager in
-            manager.stopAllTasks()
-        }
-
-        TaskNotificationHandler.postTask(action: .delete, model: task)
-    }
 }
 
 extension AppDelegate {
