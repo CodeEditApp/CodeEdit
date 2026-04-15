@@ -95,45 +95,34 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
         guard let pasteboardItems = info.draggingPasteboard.readObjects(forClasses: [NSURL.self]) else { return false }
         let fileItemURLS = pasteboardItems.compactMap { $0 as? URL }
 
-        guard let fileItemDestination = item as? CEWorkspaceFile else { return false }
-        let destParentURL = fileItemDestination.url
+        guard let fileItemDestination = item as? CEWorkspaceFile,
+              let workspace else { return false }
 
-        for fileItemURL in fileItemURLS {
-            let destURL = destParentURL.appending(path: fileItemURL.lastPathComponent)
-            // cancel dropping file item on self or in parent directory
-            if fileItemURL == destURL || fileItemURL == destParentURL {
-                return false
-            }
+        let useCase = AcceptDroppedFilesUseCase()
+        let isCopy = info.draggingSourceOperationMask == .copy
 
-            // Needs to come before call to .removeItem or else race condition occurs
-            var srcFileItem: CEWorkspaceFile? = workspace?.workspaceFileManager?.getFile(fileItemURL.path)
-            // If srcFileItem is nil, fileItemUrl is an external file url.
-            if srcFileItem == nil {
-                srcFileItem = CEWorkspaceFile(url: URL(fileURLWithPath: fileItemURL.path))
-            }
-
-            guard let srcFileItem else {
-                return false
-            }
-
-            if CEWorkspaceFile.fileManager.fileExists(atPath: destURL.path) {
-                let shouldReplace = replaceFileDialog(fileName: fileItemURL.lastPathComponent)
-                guard shouldReplace else {
-                    return false
+        do {
+            let operations = try useCase.execute(
+                urls: fileItemURLS,
+                destinationParent: fileItemDestination,
+                isCopyOperation: isCopy,
+                in: workspace,
+                confirmReplace: { [weak self] fileName in
+                    self?.replaceFileDialog(fileName: fileName) ?? false
                 }
-                do {
-                    try CEWorkspaceFile.fileManager.removeItem(at: destURL)
-                } catch {
-                    fatalError(error.localizedDescription)
+            )
+
+            for operation in operations {
+                if operation.isCopy {
+                    self.copyFile(file: operation.source, to: operation.destination)
+                } else {
+                    self.moveFile(file: operation.source, to: operation.destination)
                 }
             }
-            if info.draggingSourceOperationMask == .copy {
-                self.copyFile(file: srcFileItem, to: destURL)
-            } else {
-                self.moveFile(file: srcFileItem, to: destURL)
-            }
+            return !operations.isEmpty
+        } catch {
+            fatalError(error.localizedDescription)
         }
-        return true
     }
 
     func replaceFileDialog(fileName: String) -> Bool {

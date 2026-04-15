@@ -19,6 +19,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
     private let openWorkspaceUseCase = OpenWorkspaceUseCase()
     private let closeWorkspaceUseCase = CloseWorkspaceUseCase()
+    private lazy var openDocumentUseCase = OpenDocumentUseCase(windowManager: self)
 
     /// All currently open workspaces.
     private(set) var openWorkspaces: [Workspace] = []
@@ -135,22 +136,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
     /// Opens a workspace or file at the given URL, calling the completion handler on success.
     func openDocument(at url: URL, onCompletion: @escaping () -> Void) {
-        do {
-            if url.isFolder {
-                try openWorkspace(at: url)
-                onCompletion()
-            } else if openFileInWorkspace(url: url) {
-                onCompletion()
-            } else {
-                NSDocumentController.shared.openDocument(
-                    withContentsOf: url, display: true
-                ) { _, _, error in
-                    if error == nil { onCompletion() }
-                }
-            }
-        } catch {
-            NSAlert(error: error).runModal()
-        }
+        openDocumentUseCase.execute(url: url, onCompletion: onCompletion)
     }
 
     /// Opens a dialog to choose a file or folder, with optional configuration.

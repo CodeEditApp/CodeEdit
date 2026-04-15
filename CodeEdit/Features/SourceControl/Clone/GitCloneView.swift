@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Foundation
+import Factory
 import Combine
 
 struct GitCloneView: View {
@@ -99,7 +100,7 @@ struct GitCloneView: View {
         viewModel.cloneRepository { localPath in
             dismiss()
 
-            guard let gitClient = viewModel.gitClient else { return }
+            let gitClient = GitClient(directoryURL: localPath, shellClient: Container.shared.shellClient())
 
             Task {
                 let branches = ((try? await  gitClient.getBranches()) ?? [])

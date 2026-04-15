@@ -28,112 +28,20 @@ extension EditorManager {
             }
         }
 
-        do {
-            guard let data = statePersistence.get(.openTabs) as? Data else {
-                return
-            }
-
-            let state = try JSONDecoder().decode(EditorRestorationState.self, from: data)
-
-            guard !state.groups.isEmpty else {
-                logger.warning("Empty Editor State found, restoring to clean editor state.")
-                initCleanState()
-                return
-            }
-
-            guard let activeEditor = state.groups.find(
-                editor: state.activeEditor
-            ) ?? state.groups.findSomeEditor() else {
-                logger.warning("Editor state could not restore active editor.")
-                initCleanState()
-                return
-            }
-
-            try fixRestoredEditorLayout(state.groups, fileManager: fileManager, searchState: searchState)
-
-            self.editorLayout = state.groups
+        let useCase = RestoreEditorStateUseCase()
+        switch useCase.execute(
+            statePersistence: statePersistence,
+            fileManager: fileManager,
+            searchState: searchState
+        ) {
+        case .restored(let layout, let activeEditor):
+            self.editorLayout = layout
             self.activeEditor = activeEditor
             switchToActiveEditor()
-        } catch {
-            logger.warning(
-                "Could not restore editor state from saved data: \(error.localizedDescription, privacy: .public)"
-            )
-        }
-    }
-
-    /// Fix any hanging files after restoring from saved state.
-    ///
-    /// After decoding the state, we're left with `CEWorkspaceFile`s that don't exist in the file manager
-    /// so this function maps all those to 'real' files. Works recursively on all the tab groups.
-    /// - Parameters:
-    ///   - group: The tab group to fix.
-    ///   - fileManager: The file manager to use to map files.
-    private func fixRestoredEditorLayout(
-        _ group: EditorLayout,
-        fileManager: CEWorkspaceFileManager?,
-        searchState: SearchState?
-    ) throws {
-        switch group {
-        case let .one(data):
-            try fixEditor(data, fileManager: fileManager, searchState: searchState)
-        case let .vertical(splitData):
-            try splitData.editorLayouts.forEach { group in
-                try fixRestoredEditorLayout(group, fileManager: fileManager, searchState: searchState)
-            }
-        case let .horizontal(splitData):
-            try splitData.editorLayouts.forEach { group in
-                try fixRestoredEditorLayout(group, fileManager: fileManager, searchState: searchState)
-            }
-        }
-    }
-
-    private func findEditorLayout(group: EditorLayout, searchFor id: UUID) throws -> Editor? {
-        switch group {
-        case let .one(data):
-            return data.id == id ? data : nil
-        case let .vertical(splitData):
-            return try splitData.editorLayouts.compactMap { try findEditorLayout(group: $0, searchFor: id) }.first
-        case let .horizontal(splitData):
-            return try splitData.editorLayouts.compactMap { try findEditorLayout(group: $0, searchFor: id) }.first
-        }
-    }
-
-    /// Fixes any hanging files after restoring from saved state.
-    ///
-    /// Resolves all file references with the workspace's file manager to ensure any referenced files use their shared
-    /// object representation.
-    ///
-    /// - Parameters:
-    ///   - data: The tab group to fix.
-    ///   - fileManager: The file manager to use to map files.a
-    private func fixEditor(
-        _ editor: Editor,
-        fileManager: CEWorkspaceFileManager?,
-        searchState: SearchState?
-    ) throws {
-        guard let fileManager else { return }
-        let resolvedTabs = editor
-            .tabs
-            .compactMap({ fileManager.getFile($0.file.url.path(percentEncoded: false), createIfNotFound: true) })
-            .map({ EditorInstance(searchState: searchState, file: $0) })
-
-        for tab in resolvedTabs {
-            try tab.file.loadCodeFile()
-        }
-
-        editor.searchState = searchState
-        editor.isAttachedToWorkspace = true
-        editor.tabs = OrderedSet(resolvedTabs)
-
-        if let selectedTab = editor.selectedTab {
-            if let resolvedFile = fileManager.getFile(
-                selectedTab.file.url.path(percentEncoded: false),
-                createIfNotFound: true
-            ) {
-                editor.setSelectedTab(resolvedFile)
-            } else {
-                editor.setSelectedTab(nil)
-            }
+        case .shouldInitCleanState:
+            initCleanState()
+        case .noChange:
+            break
         }
     }
 
