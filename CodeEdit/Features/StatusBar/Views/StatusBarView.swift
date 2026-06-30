@@ -40,6 +40,7 @@ struct StatusBarView: View {
             StatusBarFileInfoView()
             StatusBarCursorPositionLabel()
             StatusBarDivider()
+            StatusBarCopilotIcon()
             StatusBarToggleUtilityAreaButton()
         }
         .padding(.horizontal, 10)

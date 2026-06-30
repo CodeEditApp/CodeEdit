@@ -59,6 +59,8 @@ struct CodeFileView: View {
     var invisibleCharactersConfiguration
     @AppSettings(\.textEditing.warningCharacters)
     var warningCharacters
+    @AppSettings(\.copilot.enabled)
+    var copilotEnabled
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -92,6 +94,8 @@ struct CodeFileView: View {
             codeFile.openOptions = nil
             editorInstance.cursorPositions = openOptions.cursorPositions
         }
+
+        codeFile.copilotObjects.setUp(document: codeFile)
 
         highlightProviders = [codeFile.languageServerObjects.highlightProvider] + [treeSitterClient]
 
@@ -168,7 +172,8 @@ struct CodeFileView: View {
             ),
             highlightProviders: highlightProviders,
             undoManager: undoRegistration.manager(forFile: editorInstance.file),
-            coordinators: textViewCoordinators
+            coordinators: textViewCoordinators,
+            inlineCompletionDelegate: copilotEnabled ? codeFile.copilotObjects.provider : nil
         )
         // This view needs to refresh when the codefile changes. The file URL is too stable.
         .id(ObjectIdentifier(codeFile))
@@ -184,6 +189,11 @@ struct CodeFileView: View {
         .frame(minHeight: .zero, maxHeight: .infinity)
         .onChange(of: settingsFont) { _, newFontSetting in
             font = newFontSetting.current
+        }
+        .task(id: copilotEnabled) {
+            if copilotEnabled {
+                await CopilotService.shared.initializeIfNeeded()
+            }
         }
     }
 

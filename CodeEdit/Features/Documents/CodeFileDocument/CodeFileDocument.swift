@@ -66,6 +66,9 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// Set up by ``LanguageServer``, conforms this type to ``LanguageServerDocument``.
     @Published var languageServerObjects: LanguageServerDocumentObjects<CodeFileDocument> = .init()
 
+    /// Per-document GitHub Copilot objects (inline completion provider). See ``CopilotDocumentObjects``.
+    @Published var copilotObjects: CopilotDocumentObjects = .init()
+
     /// The type of data this file document contains.
     ///
     /// If its text content is not nil, a `text` UTType is returned.
