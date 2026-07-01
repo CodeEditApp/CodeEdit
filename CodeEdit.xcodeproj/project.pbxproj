@@ -453,7 +453,6 @@
 				6C76D6D22E15B91E00EF52C3 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 				6CCF73CE2E26DE3200B94F75 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
 				58CF9F382F86D64F009F4AA7 /* XCRemoteSwiftPackageReference "Factory" */,
-				58CFC4992F8BE78F009F4AA7 /* XCLocalSwiftPackageReference "Packages/CodeEditDomain" */,
 			);
 			preferredProjectObjectVersion = 55;
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
@@ -1680,13 +1679,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		58CFC4992F8BE78F009F4AA7 /* XCLocalSwiftPackageReference "Packages/CodeEditDomain" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = Packages/CodeEditDomain;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1912,7 +1904,6 @@
 		};
 		58CFC49A2F8BE799009F4AA7 /* CodeEditDomain */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 58CFC4992F8BE78F009F4AA7 /* XCLocalSwiftPackageReference "Packages/CodeEditDomain" */;
 			productName = CodeEditDomain;
 		};
 		58F2EB1D292FB954004A9BDE /* Sparkle */ = {

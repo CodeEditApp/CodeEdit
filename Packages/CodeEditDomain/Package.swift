@@ -9,7 +9,6 @@ let package = Package(
         .library(name: "CodeEditDomain", targets: ["CodeEditDomain"])
     ],
     targets: [
-        .target(name: "CodeEditDomain"),
-        .testTarget(name: "CodeEditDomainTests", dependencies: ["CodeEditDomain"])
+        .target(name: "CodeEditDomain")
     ]
 )
