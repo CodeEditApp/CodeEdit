@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SourceControlAddExistingRemoteView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
     @Environment(\.dismiss)
     private var dismiss
 
@@ -71,8 +72,8 @@ struct SourceControlAddExistingRemoteView: View {
         Task {
             do {
                 try await sourceControlManager.addRemote(name: name, location: location)
-                if sourceControlManager.pullSheetIsPresented || sourceControlManager.pushSheetIsPresented {
-                    sourceControlManager.operationRemote = sourceControlManager.remotes.first(
+                if sourceControlViewModel.pullSheetIsPresented || sourceControlViewModel.pushSheetIsPresented {
+                    sourceControlViewModel.operationRemote = sourceControlManager.remotes.first(
                         where: { $0.name == name }
                     )
                 }

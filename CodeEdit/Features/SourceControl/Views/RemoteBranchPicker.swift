@@ -10,6 +10,7 @@ import CodeEditCore
 
 struct RemoteBranchPicker: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 
     @Binding var branch: GitBranch?
     @Binding var remote: GitRemote?
@@ -70,7 +71,7 @@ struct RemoteBranchPicker: View {
         }
         .onChange(of: remote) { _, newValue in
             if newValue == nil {
-                sourceControlManager.addExistingRemoteSheetIsPresented = true
+                sourceControlViewModel.addExistingRemoteSheetIsPresented = true
             } else {
                 updateBranch()
             }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SourceControlNavigatorNoRemotesView: View {
-    @EnvironmentObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 
     var body: some View {
         VStack(spacing: 0) {
@@ -23,7 +23,7 @@ struct SourceControlNavigatorNoRemotesView: View {
                 )
                 Spacer()
                 Button("Add") {
-                    sourceControlManager.addExistingRemoteSheetIsPresented = true
+                    sourceControlViewModel.addExistingRemoteSheetIsPresented = true
                 }
             }
         }

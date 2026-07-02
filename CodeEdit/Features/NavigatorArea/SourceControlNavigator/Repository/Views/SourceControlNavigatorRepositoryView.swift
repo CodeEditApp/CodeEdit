@@ -14,6 +14,7 @@ struct SourceControlNavigatorRepositoryView: View {
     var controlActiveState
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 
     @State var selection = Set<String>()
     @State var showNewBranch: Bool = false

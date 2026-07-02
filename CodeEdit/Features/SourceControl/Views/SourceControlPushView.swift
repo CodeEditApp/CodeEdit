@@ -12,6 +12,7 @@ struct SourceControlPushView: View {
     private var dismiss
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 
     @State var loading: Bool = false
 
@@ -20,8 +21,8 @@ struct SourceControlPushView: View {
             Form {
                 Section {
                     RemoteBranchPicker(
-                        branch: $sourceControlManager.operationBranch,
-                        remote: $sourceControlManager.operationRemote,
+                        branch: $sourceControlViewModel.operationBranch,
+                        remote: $sourceControlViewModel.operationRemote,
                         onSubmit: submit,
                         canCreateBranch: true
                     )
@@ -29,8 +30,8 @@ struct SourceControlPushView: View {
                     Text("Push local changes to")
                 }
                 Section {
-                    Toggle("Force", isOn: $sourceControlManager.operationForce)
-                    Toggle("Include Tags", isOn: $sourceControlManager.operationIncludeTags)
+                    Toggle("Force", isOn: $sourceControlViewModel.operationForce)
+                    Toggle("Include Tags", isOn: $sourceControlViewModel.operationIncludeTags)
                 }
             }
             .formStyle(.grouped)
@@ -73,11 +74,11 @@ struct SourceControlPushView: View {
             do {
                 self.loading = true
                 try await sourceControlManager.push(
-                    remote: sourceControlManager.operationRemote?.name ?? nil,
-                    branch: sourceControlManager.operationBranch?.name ?? nil,
+                    remote: sourceControlViewModel.operationRemote?.name ?? nil,
+                    branch: sourceControlViewModel.operationBranch?.name ?? nil,
                     setUpstream: sourceControlManager.currentBranch?.upstream == nil,
-                    force: sourceControlManager.operationForce,
-                    tags: sourceControlManager.operationIncludeTags
+                    force: sourceControlViewModel.operationForce,
+                    tags: sourceControlViewModel.operationIncludeTags
                 )
                 self.loading = false
                 dismiss()

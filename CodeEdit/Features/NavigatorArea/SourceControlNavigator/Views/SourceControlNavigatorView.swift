@@ -14,10 +14,12 @@ struct SourceControlNavigatorView: View {
     var fetchRefreshServerStatus
 
     var body: some View {
-        if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager {
+        if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager,
+           let sourceControlViewModel = workspace.sourceControlViewModel {
             VStack(spacing: 0) {
                 SourceControlNavigatorTabs()
                     .environmentObject(sourceControlManager)
+                    .environmentObject(sourceControlViewModel)
                     .task {
                         do {
                             while true {
@@ -34,6 +36,7 @@ struct SourceControlNavigatorView: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 SourceControlNavigatorToolbarBottom()
                     .environmentObject(sourceControlManager)
+                    .environmentObject(sourceControlViewModel)
             }
         }
     }

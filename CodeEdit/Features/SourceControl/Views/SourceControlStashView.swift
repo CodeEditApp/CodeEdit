@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SourceControlStashView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
     @Environment(\.dismiss)
     private var dismiss
 
@@ -27,8 +28,8 @@ struct SourceControlStashView: View {
                 } header: {
                     Text("Stash Changes")
                     Group {
-                        if sourceControlManager.pullSheetIsPresented
-                            || sourceControlManager.switchToBranch != nil {
+                        if sourceControlViewModel.pullSheetIsPresented
+                            || sourceControlViewModel.switchToBranch != nil {
                             Text("Your local repository has uncommitted changes that need to be stashed " +
                                  "before you can continue. Enter a description for your changes.")
                         } else {
@@ -39,8 +40,8 @@ struct SourceControlStashView: View {
                     .multilineTextAlignment(.leading)
                     .lineLimit(nil)
                 }
-                if sourceControlManager.pullSheetIsPresented
-                    || sourceControlManager.switchToBranch != nil {
+                if sourceControlViewModel.pullSheetIsPresented
+                    || sourceControlViewModel.switchToBranch != nil {
                     Section {
                         Toggle("Apply stash after operation", isOn: $applyStashAfterOperation)
                     }
@@ -63,9 +64,9 @@ struct SourceControlStashView: View {
                     submit()
                 } label: {
                         Text(
-                            sourceControlManager.pullSheetIsPresented
+                            sourceControlViewModel.pullSheetIsPresented
                             ? "Stash and Pull"
-                            : sourceControlManager.switchToBranch != nil
+                            : sourceControlViewModel.switchToBranch != nil
                             ? "Stash and Switch"
                             : "Stash"
                         )
@@ -85,17 +86,17 @@ struct SourceControlStashView: View {
                 try await sourceControlManager.stashChanges(message: message)
                 message = ""
 
-                if sourceControlManager.pullSheetIsPresented
-                    || sourceControlManager.switchToBranch != nil {
-                    if sourceControlManager.pullSheetIsPresented {
+                if sourceControlViewModel.pullSheetIsPresented
+                    || sourceControlViewModel.switchToBranch != nil {
+                    if sourceControlViewModel.pullSheetIsPresented {
                         try await sourceControlManager.pull(
-                            remote: sourceControlManager.operationRemote?.name,
-                            branch: sourceControlManager.operationBranch?.name,
-                            rebase: sourceControlManager.operationRebase
+                            remote: sourceControlViewModel.operationRemote?.name,
+                            branch: sourceControlViewModel.operationBranch?.name,
+                            rebase: sourceControlViewModel.operationRebase
                         )
                     }
 
-                    if let branch = sourceControlManager.switchToBranch {
+                    if let branch = sourceControlViewModel.switchToBranch {
                         try await sourceControlManager.checkoutBranch(branch: branch)
                     }
 
@@ -110,10 +111,10 @@ struct SourceControlStashView: View {
                         try await sourceControlManager.applyStashEntry(stashEntry: lastStashEntry)
                     }
 
-                    sourceControlManager.operationRemote = nil
-                    sourceControlManager.operationBranch = nil
-                    sourceControlManager.pullSheetIsPresented = false
-                    sourceControlManager.switchToBranch = nil
+                    sourceControlViewModel.operationRemote = nil
+                    sourceControlViewModel.operationBranch = nil
+                    sourceControlViewModel.pullSheetIsPresented = false
+                    sourceControlViewModel.switchToBranch = nil
                 }
 
                 dismiss()

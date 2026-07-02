@@ -13,6 +13,7 @@ struct SourceControlSwitchView: View {
     private var dismiss
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 
     var branch: GitBranch
 
@@ -64,7 +65,7 @@ struct SourceControlSwitchView: View {
         Task {
             do {
                 if !sourceControlManager.changedFiles.isEmpty {
-                    sourceControlManager.stashSheetIsPresented = true
+                    sourceControlViewModel.stashSheetIsPresented = true
                 } else {
                     try await sourceControlManager.checkoutBranch(branch: branch)
                     dismiss()

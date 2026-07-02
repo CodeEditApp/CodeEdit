@@ -20,6 +20,7 @@ protocol WorkspaceManaging: AnyObject, ObservableObject {
     var openQuicklyViewModel: OpenQuicklyViewModel? { get }
     var commandsPaletteState: QuickActionsViewModel? { get }
     var sourceControlManager: SourceControlManager? { get }
+    var sourceControlViewModel: SourceControlViewModel? { get }
     var taskManager: TaskManager? { get }
     var workspaceSettingsManager: CEWorkspaceSettings? { get }
     var statePersistence: WorkspaceStatePersistence? { get }

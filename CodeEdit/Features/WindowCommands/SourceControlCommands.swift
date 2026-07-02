@@ -16,6 +16,10 @@ struct SourceControlCommands: Commands {
         windowController?.workspace?.sourceControlManager
     }
 
+    var sourceControlViewModel: SourceControlViewModel? {
+        windowController?.workspace?.sourceControlViewModel
+    }
+
     var body: some Commands {
         CommandMenu("Source Control") {
             Group {
@@ -25,16 +29,16 @@ struct SourceControlCommands: Commands {
                 .disabled(true)
 
                 Button("Push...") {
-                    sourceControlManager?.pushSheetIsPresented = true
+                    sourceControlViewModel?.pushSheetIsPresented = true
                 }
 
                 Button("Pull...") {
-                    sourceControlManager?.pullSheetIsPresented = true
+                    sourceControlViewModel?.pullSheetIsPresented = true
                 }
                 .keyboardShortcut("x", modifiers: [.command, .option])
 
                 Button("Fetch Changes") {
-                    sourceControlManager?.fetchSheetIsPresented = true
+                    sourceControlViewModel?.fetchSheetIsPresented = true
                 }
 
                 Divider()
@@ -42,7 +46,7 @@ struct SourceControlCommands: Commands {
                 Button("Stage All Changes") {
                     guard let sourceControlManager else { return }
                     if sourceControlManager.changedFiles.isEmpty {
-                        sourceControlManager.noChangesToStageAlertIsPresented = true
+                        sourceControlViewModel?.noChangesToStageAlertIsPresented = true
                     } else {
                         Task {
                             do {
@@ -60,7 +64,7 @@ struct SourceControlCommands: Commands {
                 Button("Unstage All Changes") {
                     guard let sourceControlManager else { return }
                     if sourceControlManager.changedFiles.isEmpty {
-                        sourceControlManager.noChangesToUnstageAlertIsPresented = true
+                        sourceControlViewModel?.noChangesToUnstageAlertIsPresented = true
                     } else {
                         Task {
                             do {
@@ -86,9 +90,9 @@ struct SourceControlCommands: Commands {
 
                 Button("Stash Changes...") {
                     if sourceControlManager?.changedFiles.isEmpty ?? false {
-                        sourceControlManager?.noChangesToStashAlertIsPresented = true
+                        sourceControlViewModel?.noChangesToStashAlertIsPresented = true
                     } else {
-                        sourceControlManager?.stashSheetIsPresented = true
+                        sourceControlViewModel?.stashSheetIsPresented = true
                     }
                 }
 
@@ -96,16 +100,16 @@ struct SourceControlCommands: Commands {
 
                 Button("Discard All Changes...") {
                     if sourceControlManager?.changedFiles.isEmpty ?? false {
-                        sourceControlManager?.noChangesToDiscardAlertIsPresented = true
+                        sourceControlViewModel?.noChangesToDiscardAlertIsPresented = true
                     } else {
-                        sourceControlManager?.discardAllAlertIsPresented = true
+                        sourceControlViewModel?.discardAllAlertIsPresented = true
                     }
                 }
 
                 Divider()
 
                 Button("Add Exisiting Remote...") {
-                    sourceControlManager?.addExistingRemoteSheetIsPresented = true
+                    sourceControlViewModel?.addExistingRemoteSheetIsPresented = true
                 }
             }
             .disabled(windowController?.workspace == nil)

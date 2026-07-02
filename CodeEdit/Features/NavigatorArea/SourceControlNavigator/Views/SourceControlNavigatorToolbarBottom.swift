@@ -10,6 +10,7 @@ import SwiftUI
 struct SourceControlNavigatorToolbarBottom: View {
     @EnvironmentObject private var workspace: Workspace
     @EnvironmentObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 
     @State private var text = ""
 
@@ -49,16 +50,16 @@ struct SourceControlNavigatorToolbarBottom: View {
         Menu {
             Button("Discard All Changes...") {
                 if sourceControlManager.changedFiles.isEmpty {
-                    sourceControlManager.noChangesToDiscardAlertIsPresented = true
+                    sourceControlViewModel.noChangesToDiscardAlertIsPresented = true
                 } else {
-                    sourceControlManager.discardAllAlertIsPresented = true
+                    sourceControlViewModel.discardAllAlertIsPresented = true
                 }
             }
             Button("Stash Changes...") {
                 if sourceControlManager.changedFiles.isEmpty {
-                    sourceControlManager.noChangesToStashAlertIsPresented = true
+                    sourceControlViewModel.noChangesToStashAlertIsPresented = true
                 } else {
-                    sourceControlManager.stashSheetIsPresented = true
+                    sourceControlViewModel.stashSheetIsPresented = true
                 }
             }
         } label: {}

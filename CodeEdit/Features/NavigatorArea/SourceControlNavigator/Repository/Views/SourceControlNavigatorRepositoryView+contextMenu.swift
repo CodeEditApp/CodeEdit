@@ -27,7 +27,7 @@ extension SourceControlNavigatorRepositoryView {
     @ViewBuilder
     func contextMenu(for item: RepoOutlineGroupItem, branch: GitBranch) -> some View {
         Button("Switch...") {
-            sourceControlManager.switchToBranch = branch
+            sourceControlViewModel.switchToBranch = branch
         }
         .disabled(item.branch == nil || sourceControlManager.currentBranch == item.branch)
         Divider()
@@ -51,7 +51,7 @@ extension SourceControlNavigatorRepositoryView {
         .disabled(item.branch == nil || item.branch?.isRemote == true)
         Divider()
         Button("Add Existing Remote...") {
-            sourceControlManager.addExistingRemoteSheetIsPresented = true
+            sourceControlViewModel.addExistingRemoteSheetIsPresented = true
         }
         .disabled(item.id != "RemotesGroup")
         Divider()

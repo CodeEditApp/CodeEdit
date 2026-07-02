@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SourceControlNavigatorSyncView: View {
     @ObservedObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
     @State private var isLoading: Bool = false
 
     var body: some View {
@@ -38,7 +39,7 @@ struct SourceControlNavigatorSyncView: View {
                 Spacer()
                 if sourceControlManager.numberOfUnsyncedCommits.behind > 0 {
                     Button {
-                        sourceControlManager.pullSheetIsPresented = true
+                        sourceControlViewModel.pullSheetIsPresented = true
                     } label: {
                         Text("Pull...")
                     }
@@ -46,7 +47,7 @@ struct SourceControlNavigatorSyncView: View {
                 } else if sourceControlManager.numberOfUnsyncedCommits.ahead > 0
                     || currentBranch.upstream == nil {
                     Button {
-                        sourceControlManager.pushSheetIsPresented = true
+                        sourceControlViewModel.pushSheetIsPresented = true
                     } label: {
                         Text("Push...")
                     }

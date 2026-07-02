@@ -38,7 +38,9 @@ struct WorkspaceView: View {
     private let statusbarHeight: CGFloat = 29
 
     var body: some View {
-        if workspace.workspaceFileManager != nil, let sourceControlManager = workspace.sourceControlManager {
+        if workspace.workspaceFileManager != nil,
+           let sourceControlManager = workspace.sourceControlManager,
+           let sourceControlViewModel = workspace.sourceControlViewModel {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
@@ -119,7 +121,11 @@ struct WorkspaceView: View {
                 }
             }
             .background(EffectView(.contentBackground))
-            .background(WorkspaceSheets().environmentObject(sourceControlManager))
+            .background(
+                WorkspaceSheets()
+                    .environmentObject(sourceControlManager)
+                    .environmentObject(sourceControlViewModel)
+            )
             .onDrop(of: [.fileURL], isTargeted: nil) { providers in
                 _ = handleDrop(providers: providers)
                 return true

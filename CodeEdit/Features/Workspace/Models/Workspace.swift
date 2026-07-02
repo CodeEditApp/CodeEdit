@@ -29,6 +29,7 @@ final class Workspace: ObservableObject, WorkspaceManaging {
     var commandsPaletteState: QuickActionsViewModel?
     var listenerModel: WorkspaceNotificationModel = .init()
     var sourceControlManager: SourceControlManager?
+    var sourceControlViewModel: SourceControlViewModel?
 
     var taskManager: TaskManager?
     var workspaceSettingsManager: CEWorkspaceSettings?
@@ -64,6 +65,7 @@ final class Workspace: ObservableObject, WorkspaceManaging {
         openQuicklyViewModel = nil
         commandsPaletteState = nil
         sourceControlManager = nil
+        sourceControlViewModel = nil
         workspaceFileManager?.cleanUp()
         workspaceFileManager = nil
         workspaceSettingsManager?.cleanUp()

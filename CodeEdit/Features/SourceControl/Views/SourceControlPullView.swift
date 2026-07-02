@@ -13,6 +13,7 @@ struct SourceControlPullView: View {
     private var dismiss
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 
     let gitConfig = GitConfigClient(shellClient: Container.shared.shellClient())
 
@@ -25,8 +26,8 @@ struct SourceControlPullView: View {
             Form {
                 Section {
                     RemoteBranchPicker(
-                        branch: $sourceControlManager.operationBranch,
-                        remote: $sourceControlManager.operationRemote,
+                        branch: $sourceControlViewModel.operationBranch,
+                        remote: $sourceControlViewModel.operationRemote,
                         onSubmit: submit,
                         canCreateBranch: false
                     )
@@ -34,7 +35,7 @@ struct SourceControlPullView: View {
                     Text("Pull remote changes from")
                 }
                 Section {
-                    Toggle("Rebase local changes onto upstream changes", isOn: $sourceControlManager.operationRebase)
+                    Toggle("Rebase local changes onto upstream changes", isOn: $sourceControlViewModel.operationRebase)
                 }
             }
             .formStyle(.grouped)
@@ -44,7 +45,7 @@ struct SourceControlPullView: View {
                 Task {
                     preferRebaseWhenPulling = try await gitConfig.get(key: "pull.rebase", global: true) ?? false
                     if preferRebaseWhenPulling {
-                        sourceControlManager.operationRebase = true
+                        sourceControlViewModel.operationRebase = true
                     }
                 }
             }
@@ -84,13 +85,13 @@ struct SourceControlPullView: View {
         Task {
             do {
                 if !sourceControlManager.changedFiles.isEmpty {
-                    sourceControlManager.stashSheetIsPresented = true
+                    sourceControlViewModel.stashSheetIsPresented = true
                 } else {
                     self.loading = true
                     try await sourceControlManager.pull(
-                        remote: sourceControlManager.operationRemote?.name ?? nil,
-                        branch: sourceControlManager.operationBranch?.name ?? nil,
-                        rebase: sourceControlManager.operationRebase
+                        remote: sourceControlViewModel.operationRemote?.name ?? nil,
+                        branch: sourceControlViewModel.operationBranch?.name ?? nil,
+                        rebase: sourceControlViewModel.operationRebase
                     )
                     self.loading = false
                     dismiss()

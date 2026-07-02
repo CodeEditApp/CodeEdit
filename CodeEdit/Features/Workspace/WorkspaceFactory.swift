@@ -57,6 +57,7 @@ enum WorkspaceFactory {
         sourceControlManager.fileManager = workspaceFileManager
 
         workspace.sourceControlManager = sourceControlManager
+        workspace.sourceControlViewModel = SourceControlViewModel()
         workspace.workspaceFileManager = workspaceFileManager
 
         // --- Phase 2: Independent managers ---
