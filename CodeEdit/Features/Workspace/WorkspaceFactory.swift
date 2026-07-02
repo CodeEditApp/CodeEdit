@@ -45,7 +45,6 @@ enum WorkspaceFactory {
         let shellClient = Container.shared.shellClient()
         let sourceControlManager = SourceControlManager(
             workspaceURL: url,
-            editorManager: editorManager,
             shellClient: shellClient
         )
 

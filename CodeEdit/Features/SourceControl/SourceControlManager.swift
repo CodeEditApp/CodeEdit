@@ -26,7 +26,6 @@ final class SourceControlManager: ObservableObject {
     /// The base URL of the workspace
     let workspaceURL: URL
 
-    let editorManager: EditorManager
     weak var fileManager: CEWorkspaceFileManager?
 
     // MARK: - Git State
@@ -130,11 +129,9 @@ final class SourceControlManager: ObservableObject {
 
     init(
         workspaceURL: URL,
-        editorManager: EditorManager,
         shellClient: ShellClientProtocol
     ) {
         self.workspaceURL = workspaceURL
-        self.editorManager = editorManager
         gitClient = GitClient(directoryURL: workspaceURL, shellClient: shellClient)
     }
 }
