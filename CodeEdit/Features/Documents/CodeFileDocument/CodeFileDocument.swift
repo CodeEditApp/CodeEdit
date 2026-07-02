@@ -174,8 +174,25 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         } else {
             self.content = NSTextStorage(string: nsString as String)
         }
-        MainActor.assumeIsolated {
-            lspService.openDocument(self)
+        notifyLSPDidOpen()
+    }
+
+    /// `LSPService` is main-actor isolated, but document reads and closes can happen off the main
+    /// thread (AppKit concurrent reads, Swift Testing). Mirrors the NotificationCenter `queue: .main`
+    /// delivery this replaced: synchronous on main, async hop otherwise.
+    private func notifyLSPDidOpen() {
+        if Thread.isMainThread {
+            MainActor.assumeIsolated { lspService.openDocument(self) }
+        } else {
+            DispatchQueue.main.async { self.lspService.openDocument(self) }
+        }
+    }
+
+    private func notifyLSPDidClose(_ url: URL) {
+        if Thread.isMainThread {
+            MainActor.assumeIsolated { lspService.closeDocument(url) }
+        } else {
+            DispatchQueue.main.async { self.lspService.closeDocument(url) }
         }
     }
 
@@ -291,9 +308,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     override func close() {
         super.close()
         if let fileURL {
-            MainActor.assumeIsolated {
-                lspService.closeDocument(fileURL)
-            }
+            notifyLSPDidClose(fileURL)
         }
     }
 
