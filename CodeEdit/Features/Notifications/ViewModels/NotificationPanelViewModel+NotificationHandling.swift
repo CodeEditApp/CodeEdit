@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Factory
+import CodeEditCore
 
 /// Notification insertion, dismissal, and event handling.
 extension NotificationPanelViewModel {
@@ -87,18 +88,22 @@ extension NotificationPanelViewModel {
         }
     }
 
-    @objc
-    func handleNewNotificationAdded(_ notification: Notification) {
-        guard let ceNotification = notification.object as? CENotification else { return }
-        handleNewNotification(ceNotification)
+    /// Routes notification list mutations published by `NotificationManager` on the EventBus.
+    func handle(_ event: CENotificationEvent) {
+        switch event.action {
+        case .added(let id):
+            guard let notification = notificationManager.notifications.first(where: { $0.id == id }) else {
+                return
+            }
+            handleNewNotification(notification)
+        case .dismissed(let id):
+            handleNotificationRemoved(id: id)
+        }
     }
 
-    @objc
-    func handleNotificationRemoved(_ notification: Notification) {
-        guard let ceNotification = notification.object as? CENotification else { return }
-
+    private func handleNotificationRemoved(id: UUID) {
         let operation: () -> Void = {
-            self.activeNotifications.removeAll(where: { $0.id == ceNotification.id })
+            self.activeNotifications.removeAll(where: { $0.id == id })
 
             // If this was the last notification and they were manually shown, hide the panel
             if self.activeNotifications.isEmpty && self.isPresented {

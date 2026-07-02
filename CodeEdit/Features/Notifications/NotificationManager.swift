@@ -8,6 +8,8 @@
 import SwiftUI
 import Combine
 import UserNotifications
+import Factory
+import CodeEditCore
 
 /// Manages the application's notification system, handling both in-app notifications and system notifications.
 /// This class is responsible for:
@@ -18,6 +20,9 @@ final class NotificationManager: NSObject, NotificationManaging {
 
     /// Collection of all notifications, both read and unread
     @Published private(set) var notifications: [CENotification] = []
+
+    @LazyInjected(\.eventBus)
+    private var eventBus
 
     private var isAppActive: Bool = true
 
@@ -128,10 +133,7 @@ final class NotificationManager: NSObject, NotificationManaging {
         // Remove system notification if it exists
         removeSystemNotification(notification)
 
-        NotificationCenter.default.post(
-            name: .init("NotificationDismissed"),
-            object: notification
-        )
+        eventBus.publish(CENotificationEvent(.dismissed(id: notification.id)))
     }
 
     /// Marks a notification as read
@@ -180,10 +182,7 @@ final class NotificationManager: NSObject, NotificationManaging {
             self?.notifications.append(notification)
 
             // Always notify workspaces of new notification
-            NotificationCenter.default.post(
-                name: .init("NewNotificationAdded"),
-                object: notification
-            )
+            self?.eventBus.publish(CENotificationEvent(.added(id: notification.id)))
 
             // Additionally show system notification when app is in background
             if self?.isAppActive != true {

@@ -6,7 +6,9 @@
 //
 
 import SwiftUI
+import Combine
 import Factory
+import CodeEditCore
 
 /// Coordinates notification display, auto-hide timers, panel visibility, and toolbar integration.
 ///
@@ -17,13 +19,13 @@ import Factory
 /// - `+Toolbar`: dynamic toolbar item management
 final class NotificationPanelViewModel: ObservableObject {
     /// Currently displayed notifications in the panel
-    @Published internal(set) var activeNotifications: [CENotification] = []
+    @Published var activeNotifications: [CENotification] = []
 
     /// Whether notifications panel was manually shown via toolbar
-    @Published internal(set) var isPresented: Bool = false
+    @Published var isPresented: Bool = false
 
     /// Set of hidden notification IDs
-    @Published internal(set) var hiddenNotificationIds: Set<UUID> = []
+    @Published var hiddenNotificationIds: Set<UUID> = []
 
     @Published var scrolledToTop: Bool = true
 
@@ -38,6 +40,11 @@ final class NotificationPanelViewModel: ObservableObject {
 
     var notificationManager = Container.shared.notificationManager()
 
+    @LazyInjected(\.eventBus)
+    var eventBus
+
+    private var cancellables = Set<AnyCancellable>()
+
     /// A filtered list of active notifications.
     var visibleNotifications: [CENotification] {
         activeNotifications.filter { !hiddenNotificationIds.contains($0.id) }
@@ -46,29 +53,15 @@ final class NotificationPanelViewModel: ObservableObject {
     weak var windowController: NSWindowController?
 
     init() {
-        // Observe new notifications
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleNewNotificationAdded(_:)),
-            name: .init("NewNotificationAdded"),
-            object: nil
-        )
-
-        // Observe notification dismissals
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleNotificationRemoved(_:)),
-            name: .init("NotificationDismissed"),
-            object: nil
-        )
+        // Observe notification additions and dismissals
+        eventBus.subscribe(CENotificationEvent.self)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] event in self?.handle(event) }
+            .store(in: &cancellables)
 
         // Load initial notifications from NotificationManager
         notificationManager.notifications.forEach { notification in
             handleNewNotification(notification)
         }
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }
