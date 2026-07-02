@@ -21,12 +21,12 @@ extension Container {
         self { ShellClient() as ShellClientProtocol }.singleton
     }
 
-    var commandManager: Factory<CommandManager> {
-        self { CommandManager() }.singleton
+    var commandManager: Factory<CommandManaging> {
+        self { CommandManager() as CommandManaging }.singleton
     }
 
-    var keybindingManager: Factory<KeybindingManager> {
-        self { KeybindingManager() }.singleton
+    var keybindingManager: Factory<KeybindingManaging> {
+        self { KeybindingManager() as KeybindingManaging }.singleton
     }
 
     var notificationManager: Factory<NotificationManager> {

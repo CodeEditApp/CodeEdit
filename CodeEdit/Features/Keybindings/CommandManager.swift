@@ -7,24 +7,10 @@
 import Foundation
 import CodeEditCore
 
-/**
-The object of this class intended to be a hearth of command palette. This object only exists as singleton.
- In Order to access its instance use `CommandManager.shared`
-
-```
- /* To add or execute command see snipper below */
-let mgr = CommandManager.shared
-let wrap = CommandClosureWrapper.init(closure: {
-    print("testing closure")
-})
-
-mgr.addCommand(name: "test", command: wrap)
-mgr.executeCommand("test")
- ```
- */
-
+/// Registry backing the command palette. Registered as a singleton in the Factory container
+/// (`Container.shared.commandManager`); inject via `@LazyInjected(\.commandManager)`.
 final class CommandManager: CommandManaging {
-    @Published private var commandsList: [String: Command]
+    private var commandsList: [String: Command]
 
     init() {
         commandsList = [:]

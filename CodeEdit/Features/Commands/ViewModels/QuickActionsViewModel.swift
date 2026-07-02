@@ -13,6 +13,9 @@ import CodeEditCore
 /// query text and list of filtered commands
 final class QuickActionsViewModel: ObservableObject {
 
+    @LazyInjected(\.commandManager)
+    private var commandManager
+
     @Published var commandQuery: String = ""
 
     @Published var selected: Command?
@@ -26,15 +29,15 @@ final class QuickActionsViewModel: ObservableObject {
     func reset() {
         commandQuery = ""
         selected = nil
-        filteredCommands = Container.shared.commandManager().commands
+        filteredCommands = commandManager.commands
     }
 
     func fetchMatchingCommands(val: String) {
         if val == "" {
-            self.filteredCommands = Container.shared.commandManager().commands
+            self.filteredCommands = commandManager.commands
             return
         }
-        self.filteredCommands = Container.shared.commandManager().commands.filter { $0.title.localizedCaseInsensitiveContains(val) }
+        self.filteredCommands = commandManager.commands.filter { $0.title.localizedCaseInsensitiveContains(val) }
         self.selected = self.filteredCommands.first
     }
 

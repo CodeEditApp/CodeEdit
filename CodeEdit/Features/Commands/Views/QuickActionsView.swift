@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Factory
 import CodeEditCore
 
 /// Quick actions view
@@ -17,8 +16,6 @@ struct QuickActionsView: View {
 
     @ObservedObject private var state: QuickActionsViewModel
 
-    @ObservedObject private var commandManager: CommandManager = Container.shared.commandManager()
-
     @State private var monitor: Any?
 
     @State private var selectedItem: Command?
@@ -28,7 +25,7 @@ struct QuickActionsView: View {
     init(state: QuickActionsViewModel, closePalette: @escaping () -> Void) {
         self.state = state
         self.closePalette = closePalette
-        state.filteredCommands = commandManager.commands
+        state.reset()
     }
 
     func callHandler(command: Command) {
