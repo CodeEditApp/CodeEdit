@@ -14,6 +14,8 @@ import Foundation
 /// Use `LSPService` directly in those cases.
 @MainActor
 protocol LSPServiceProtocol: AnyObject {
+    func openDocument(_ document: CodeFileDocument)
+    func closeDocument(_ url: URL)
     func closeWorkspace(_ workspacePath: String)
     func stopAllServers() async
     func killAllServers()

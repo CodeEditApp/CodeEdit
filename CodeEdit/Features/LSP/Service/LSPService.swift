@@ -139,28 +139,6 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
                 )
             }
         }
-
-        NotificationCenter.default.addObserver(
-            forName: CodeFileDocument.didOpenNotification,
-            object: nil,
-            queue: .main
-        ) { notification in
-            MainActor.assumeIsolated {
-                guard let document = notification.object as? CodeFileDocument else { return }
-                self.openDocument(document)
-            }
-        }
-
-        NotificationCenter.default.addObserver(
-            forName: CodeFileDocument.didCloseNotification,
-            object: nil,
-            queue: .main
-        ) { notification in
-            MainActor.assumeIsolated {
-                guard let url = notification.object as? URL else { return }
-                self.closeDocument(url)
-            }
-        }
     }
 
     /// Gets the language server for the specified language and workspace.

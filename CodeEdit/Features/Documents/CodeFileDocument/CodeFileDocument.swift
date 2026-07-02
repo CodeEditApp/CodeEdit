@@ -15,6 +15,7 @@ import CodeEditLanguages
 import Combine
 import OSLog
 import TextStory
+import Factory
 
 enum CodeFileError: Error {
     case failedToDecode
@@ -30,10 +31,10 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CodeFileDocument")
 
-    /// Sent when the document is opened. The document will be sent in the notification's object.
-    static let didOpenNotification = Notification.Name(rawValue: "CodeFileDocument.didOpen")
-    /// Sent when the document is closed. The document's `fileURL` will be sent in the notification's object.
-    static let didCloseNotification = Notification.Name(rawValue: "CodeFileDocument.didClose")
+    /// Notified when this document is opened (contents available) or closed,
+    /// so language servers can track the document's lifecycle.
+    @LazyInjected(\.lspService)
+    private var lspService
 
     /// The text content of the document, stored as a text storage
     ///
@@ -173,7 +174,9 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         } else {
             self.content = NSTextStorage(string: nsString as String)
         }
-        NotificationCenter.default.post(name: Self.didOpenNotification, object: self)
+        MainActor.assumeIsolated {
+            lspService.openDocument(self)
+        }
     }
 
     /// If this file is already open and being tracked by an undo manager, we register an undo mutation
@@ -287,7 +290,11 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     override func close() {
         super.close()
-        NotificationCenter.default.post(name: Self.didCloseNotification, object: fileURL)
+        if let fileURL {
+            MainActor.assumeIsolated {
+                lspService.closeDocument(fileURL)
+            }
+        }
     }
 
     override func save(_ sender: Any?) {
