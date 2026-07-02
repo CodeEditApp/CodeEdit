@@ -7,6 +7,7 @@
 
 import Testing
 import Foundation
+import CodeEditCore
 @testable import CodeEdit
 
 @MainActor

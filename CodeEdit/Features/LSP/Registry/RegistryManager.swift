@@ -49,6 +49,9 @@ final class RegistryManager: ObservableObject, RegistryManaging {
     @AppSettings(\.languageServers.installedLanguageServers)
     var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
 
+    @LazyInjected(\.eventBus)
+    private var eventBus
+
     init() {
         // Load the registry items from disk again after cache expires
         if let items = loadItemsFromDisk() {
@@ -83,15 +86,9 @@ final class RegistryManager: ObservableObject, RegistryManaging {
         }
 
         // Add to activity viewer
-        NotificationCenter.default.post(
-            name: .taskNotification,
-            object: nil,
-            userInfo: [
-                "id": packageName,
-                "action": "create",
-                "title": "Removing \(packageName)"
-            ]
-        )
+        eventBus.publish(TaskNotificationEvent(
+            .create(TaskNotificationModel(id: packageName, title: "Removing \(packageName)"))
+        ))
 
         do {
             try await Task.detached(priority: .userInitiated) {
@@ -141,10 +138,9 @@ final class RegistryManager: ObservableObject, RegistryManaging {
 
             // Add to activity viewer
             let activityTitle = "\(operation.package.name)\("@" + (method.version ?? "latest"))"
-            TaskNotificationHandler.postTask(
-                action: .create,
-                model: TaskNotificationModel(id: operation.package.name, title: "Installing \(activityTitle)")
-            )
+            self?.eventBus.publish(TaskNotificationEvent(
+                .create(TaskNotificationModel(id: operation.package.name, title: "Installing \(activityTitle)"))
+            ))
 
             guard !Task.isCancelled else { return }
 
@@ -190,19 +186,12 @@ final class RegistryManager: ObservableObject, RegistryManaging {
                 action: {},
             )
         } else {
-            TaskNotificationHandler.postTask(
-                action: .update,
-                model: TaskNotificationModel(id: id, title: "Successfully installed \(activityName)", isLoading: false)
-            )
-            NotificationCenter.default.post(
-                name: .taskNotification,
-                object: nil,
-                userInfo: [
-                    "id": id,
-                    "action": "deleteWithDelay",
-                    "delay": 5.0,
-                ]
-            )
+            eventBus.publish(TaskNotificationEvent(
+                .update(id: id, title: "Successfully installed \(activityName)", isLoading: false)
+            ))
+            eventBus.publish(TaskNotificationEvent(
+                .deleteWithDelay(id: id, delay: 5.0)
+            ))
         }
     }
 

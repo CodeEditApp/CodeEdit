@@ -10,6 +10,7 @@ import CodeEditTextView
 import CodeEditSourceEditor
 import LanguageClient
 import LanguageServerProtocol
+import Factory
 
 @testable import CodeEdit
 
@@ -78,9 +79,16 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         return (connection: bufferingConnection, server: server)
     }
 
+    @MainActor
     func makeTestWorkspace() throws -> (Workspace, CEWorkspaceFileManager) {
-        let workspace = Workspace()
-        try workspace.read(from: tempTestDir, ofType: "")
+        let windowManager = Container.shared.workspaceWindowManager()
+        try windowManager.openWorkspace(at: tempTestDir)
+        guard let workspace = windowManager.openWorkspaces.first(where: {
+            $0.fileURL?.standardizedFileURL.path() == tempTestDir.standardizedFileURL.path()
+        }) else {
+            XCTFail("Workspace was not registered with the window manager")
+            fatalError("Workspace was not registered with the window manager") // never runs
+        }
         guard let fileManager = workspace.workspaceFileManager else {
             XCTFail("No File Manager")
             fatalError("No File Manager") // never runs
@@ -146,12 +154,11 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         let (connection, server) = try await makeTestServer()
 
         // This service should receive the didOpen/didClose notifications
-        let lspService = ServiceContainer.resolve(.singleton, LSPService.self)
-        await MainActor.run { lspService?.languageClients[.init(.swift, tempTestDir.path() + "/")] = server }
+        let lspService = Container.shared.lspService()
+        lspService.languageClients[.init(.swift, tempTestDir.path() + "/")] = server
 
-        // Set up workspace
-        let (workspace, fileManager) = try makeTestWorkspace()
-        WorkspaceWindowManager.shared.addDocument(workspace)
+        // Set up workspace. Registers it with the workspace window manager.
+        let (_, fileManager) = try makeTestWorkspace()
 
         // Add a CEWorkspaceFile
         _ = try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
@@ -167,7 +174,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             ofType: "public.swift-source"
         )
         file.fileDocument = codeFile
-        WorkspaceWindowManager.shared.addDocument(codeFile)
+        NSDocumentController.shared.addDocument(codeFile)
 
         await waitForClientState(
             (

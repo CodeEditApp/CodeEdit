@@ -21,6 +21,9 @@ final class ShutdownApplicationUseCase {
     @LazyInjected(\.workspaceWindowManager)
     private var windowManager
 
+    @LazyInjected(\.eventBus)
+    private var eventBus
+
     /// - Returns: `true` if the app should proceed with termination, `false` if the user cancelled.
     func execute() -> Bool {
         let workspaces = windowManager.openWorkspaces
@@ -55,11 +58,11 @@ final class ShutdownApplicationUseCase {
                 message: "Interrupting all running tasks before quitting...",
                 isLoading: true
             )
-            TaskNotificationHandler.postTask(action: .create, model: task)
+            eventBus.publish(TaskNotificationEvent(.create(task)))
 
             taskManagers.forEach { $0.stopAllTasks() }
 
-            TaskNotificationHandler.postTask(action: .delete, model: task)
+            eventBus.publish(TaskNotificationEvent(.delete(id: task.id)))
         }
     }
 }

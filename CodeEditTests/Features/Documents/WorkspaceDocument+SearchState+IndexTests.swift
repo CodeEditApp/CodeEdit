@@ -11,7 +11,6 @@ import XCTest
 final class WorkspaceIndexTests: XCTestCase {
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
-    private var mockWorkspace: Workspace!
     private var searchState: SearchState!
 
     private var folder1File: CEWorkspaceFile?
@@ -32,9 +31,6 @@ final class WorkspaceIndexTests: XCTestCase {
         .appending(path: "WorkspaceClientTests", directoryHint: .isDirectory)
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-
-        mockWorkspace = try await Workspace(for: directory, withContentsOf: directory, ofType: "")
-        searchState = await mockWorkspace.searchState
 
         // Add a few files
         let folder1 = directory.appending(path: "Folder 2")
@@ -63,7 +59,8 @@ final class WorkspaceIndexTests: XCTestCase {
         files[1].parent = folder1File
         files[2].parent = folder2File
 
-        await mockWorkspace.searchState?.addProjectToIndex()
+        // SearchState indexes the workspace as part of its initializer.
+        searchState = SearchState(workspaceURL: directory)
 
         // The following code also tests whether the workspace is indexed correctly
         // Wait until the index is up to date and flushed

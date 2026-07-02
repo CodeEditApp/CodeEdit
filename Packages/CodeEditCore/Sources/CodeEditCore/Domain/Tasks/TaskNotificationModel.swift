@@ -8,7 +8,7 @@
 import Foundation
 
 /// Represents a notifications or tasks, that are displayed in the activity viewer
-public struct TaskNotificationModel: Equatable {
+public struct TaskNotificationModel: Equatable, Sendable {
     public var id: String
     public var title: String
     public var message: String?

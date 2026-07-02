@@ -8,6 +8,8 @@
 import SwiftUI
 import Combine
 import SwiftTerm
+import CodeEditCore
+import Factory
 
 /// Stores the state of a task once it's executed
 class CEActiveTask: ObservableObject, Identifiable, Hashable {
@@ -32,6 +34,9 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     var workspaceURL: URL?
+
+    @LazyInjected(\.eventBus)
+    private var eventBus
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -147,46 +152,29 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     }
 
     private func createStatusTaskNotification() {
-        let userInfo: [String: Any] = [
-            "id": taskId,
-            "action": "createWithPriority",
-            "title": "Running \(self.task.name)",
-            "message": "Running your task: \(self.task.name).",
-            "isLoading": true,
-            "workspace": workspaceURL as Any
-        ]
-
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: userInfo)
+        eventBus.publish(TaskNotificationEvent(
+            .createWithPriority(TaskNotificationModel(
+                id: taskId,
+                title: "Running \(self.task.name)",
+                message: "Running your task: \(self.task.name).",
+                isLoading: true
+            )),
+            workspace: workspaceURL
+        ))
     }
 
     private func deleteStatusTaskNotification() {
-        let deleteInfo: [String: Any] = [
-            "id": taskId,
-            "action": "deleteWithDelay",
-            "delay": 3.0,
-            "workspace": workspaceURL as Any
-        ]
-
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteInfo)
+        eventBus.publish(TaskNotificationEvent(
+            .deleteWithDelay(id: taskId, delay: 3.0),
+            workspace: workspaceURL
+        ))
     }
 
     private func updateTaskNotification(title: String? = nil, message: String? = nil, isLoading: Bool? = nil) {
-        var userInfo: [String: Any] = [
-            "id": taskId,
-            "action": "update",
-            "workspace": workspaceURL as Any
-        ]
-        if let title {
-            userInfo["title"] = title
-        }
-        if let message {
-            userInfo["message"] = message
-        }
-        if let isLoading {
-            userInfo["isLoading"] = isLoading
-        }
-
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: userInfo)
+        eventBus.publish(TaskNotificationEvent(
+            .update(id: taskId, title: title, message: message, isLoading: isLoading),
+            workspace: workspaceURL
+        ))
     }
 
     @MainActor

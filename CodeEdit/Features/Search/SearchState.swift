@@ -7,6 +7,7 @@
 
 import Foundation
 import CodeEditCore
+import Factory
 
 /// Manages the search/find state for a workspace, including indexing, search results,
 /// and find-and-replace operations. Extracted from Workspace to be independently
@@ -41,6 +42,10 @@ final class SearchState: ObservableObject {
     @Published var shouldFocusSearchField: Bool = false
 
     let workspaceURL: URL
+
+    @LazyInjected(\.eventBus)
+    var eventBus
+
     var tempSearchResults = [SearchResultModel]()
     var caseSensitive: Bool = false
     var indexer: SearchIndexer?

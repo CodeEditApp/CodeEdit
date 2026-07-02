@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 
 extension SearchState {
     /// Adds the contents of the current workspace URL to the search index.
@@ -16,14 +17,15 @@ extension SearchState {
 
         indexStatus = .indexing(progress: 0.0)
         let uuidString = UUID().uuidString
-        let createInfo: [String: Any] = [
-            "id": uuidString,
-            "action": "create",
-            "title": "Indexing | Processing files",
-            "message": "Creating an index to enable fast and accurate searches within your codebase.",
-            "isLoading": true
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createInfo)
+        let eventBus = eventBus
+        eventBus.publish(TaskNotificationEvent(
+            .create(TaskNotificationModel(
+                id: uuidString,
+                title: "Indexing | Processing files",
+                message: "Creating an index to enable fast and accurate searches within your codebase.",
+                isLoading: true
+            ))
+        ))
 
         Task.detached {
             let filePaths = self.getFileURLs(at: url)
@@ -41,12 +43,9 @@ extension SearchState {
                     await MainActor.run {
                         self.indexStatus = .indexing(progress: progress)
                     }
-                    let updateInfo: [String: Any] = [
-                        "id": uuidString,
-                        "action": "update",
-                        "percentage": progress
-                    ]
-                    NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: updateInfo)
+                    eventBus.publish(TaskNotificationEvent(
+                        .update(id: uuidString, percentage: progress)
+                    ))
                 }
             }
             asyncController.index.flush()
@@ -54,20 +53,13 @@ extension SearchState {
             await MainActor.run {
                 self.indexStatus = .done
             }
-            let updateInfo: [String: Any] = [
-                "id": uuidString,
-                "action": "update",
-                "title": "Finished indexing",
-                "isLoading": false
-            ]
-            NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: updateInfo)
+            eventBus.publish(TaskNotificationEvent(
+                .update(id: uuidString, title: "Finished indexing", isLoading: false)
+            ))
 
-            let deleteInfo = [
-                "id": uuidString,
-                "action": "deleteWithDelay",
-                "delay": 4.0
-            ]
-            NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteInfo)
+            eventBus.publish(TaskNotificationEvent(
+                .deleteWithDelay(id: uuidString, delay: 4.0)
+            ))
         }
     }
 

@@ -258,7 +258,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             )
 
             if !lspService.languageClients.isEmpty {
-                TaskNotificationHandler.postTask(action: .create, model: task)
+                eventBus.publish(TaskNotificationEvent(.create(task)))
             }
 
             try? await withTimeout(
@@ -272,7 +272,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
                 }
             )
 
-            TaskNotificationHandler.postTask(action: .delete, model: task)
+            eventBus.publish(TaskNotificationEvent(.delete(id: task.id)))
             NSApplication.shared.reply(toApplicationShouldTerminate: true)
         }
     }

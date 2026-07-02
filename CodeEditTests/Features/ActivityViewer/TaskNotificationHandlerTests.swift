@@ -6,29 +6,31 @@
 //
 
 import XCTest
+import CodeEditCore
+import Factory
 @testable import CodeEdit
 
 final class TaskNotificationHandlerTests: XCTestCase {
     var taskNotificationHandler: TaskNotificationHandler!
+    var eventBus: EventBus!
 
     override func setUp() {
         super.setUp()
+        eventBus = Container.shared.eventBus()
         taskNotificationHandler = TaskNotificationHandler()
     }
 
     override func tearDown() {
         taskNotificationHandler = nil
+        eventBus = nil
         super.tearDown()
     }
 
     func testCreateTask() {
         let uuid = UUID().uuidString
-        let userInfo: [String: Any] = [
-            "id": uuid,
-            "action": "create",
-            "title": "Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: userInfo)
+        eventBus.publish(TaskNotificationEvent(
+            .create(TaskNotificationModel(id: uuid, title: "Task Title"))
+        ))
 
         let testExpectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -39,19 +41,12 @@ final class TaskNotificationHandlerTests: XCTestCase {
     }
 
     func testCreateTaskWithPriority() {
-        let task1: [String: Any] = [
-            "id": UUID().uuidString,
-            "action": "create",
-            "title": "Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: task1)
-
-        let task2: [String: Any] = [
-            "id": UUID().uuidString,
-            "action": "createWithPriority",
-            "title": "Priority Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: task2)
+        eventBus.publish(TaskNotificationEvent(
+            .create(TaskNotificationModel(id: UUID().uuidString, title: "Task Title"))
+        ))
+        eventBus.publish(TaskNotificationEvent(
+            .createWithPriority(TaskNotificationModel(id: UUID().uuidString, title: "Priority Task Title"))
+        ))
 
         let testExpectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
@@ -63,19 +58,12 @@ final class TaskNotificationHandlerTests: XCTestCase {
 
     func testUpdateTask() {
         let uuid = UUID().uuidString
-        let taskInfo: [String: Any] = [
-            "id": uuid,
-            "action": "create",
-            "title": "Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: taskInfo)
-
-        let taskUpdateInfo: [String: Any] = [
-            "id": uuid,
-            "action": "update",
-            "title": "Updated Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: taskUpdateInfo)
+        eventBus.publish(TaskNotificationEvent(
+            .create(TaskNotificationModel(id: uuid, title: "Task Title"))
+        ))
+        eventBus.publish(TaskNotificationEvent(
+            .update(id: uuid, title: "Updated Task Title")
+        ))
 
         let testExpectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -87,17 +75,10 @@ final class TaskNotificationHandlerTests: XCTestCase {
 
     func testDeleteTask() {
         let uuid = UUID().uuidString
-        let createUserInfo: [String: Any] = [
-            "id": uuid,
-            "action": "create",
-            "title": "Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createUserInfo)
-        let deleteUserInfo: [String: Any] = [
-            "id": uuid,
-            "action": "delete"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteUserInfo)
+        eventBus.publish(TaskNotificationEvent(
+            .create(TaskNotificationModel(id: uuid, title: "Task Title"))
+        ))
+        eventBus.publish(TaskNotificationEvent(.delete(id: uuid)))
 
         let testExpectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -109,24 +90,31 @@ final class TaskNotificationHandlerTests: XCTestCase {
 
     func testDeleteTaskWithDelay() {
         let uuid = UUID().uuidString
-        let createUserInfo: [String: Any] = [
-            "id": uuid,
-            "action": "create",
-            "title": "Task Title"
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: createUserInfo)
-        let deleteUserInfo: [String: Any] = [
-            "id": uuid,
-            "action": "deleteWithDelay",
-            "delay": 0.2
-        ]
-        NotificationCenter.default.post(name: .taskNotification, object: nil, userInfo: deleteUserInfo)
+        eventBus.publish(TaskNotificationEvent(
+            .create(TaskNotificationModel(id: uuid, title: "Task Title"))
+        ))
+        eventBus.publish(TaskNotificationEvent(.deleteWithDelay(id: uuid, delay: 0.2)))
 
         let testExpectation = XCTestExpectation()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             XCTAssertFalse(self.taskNotificationHandler.notifications.isEmpty)
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            XCTAssertTrue(self.taskNotificationHandler.notifications.isEmpty)
+            testExpectation.fulfill()
+        }
+        wait(for: [testExpectation], timeout: 1)
+    }
+
+    func testEventForOtherWorkspaceIsIgnored() {
+        let uuid = UUID().uuidString
+        eventBus.publish(TaskNotificationEvent(
+            .create(TaskNotificationModel(id: uuid, title: "Task Title")),
+            workspace: URL(fileURLWithPath: "/some/other/workspace")
+        ))
+
+        let testExpectation = XCTestExpectation()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             XCTAssertTrue(self.taskNotificationHandler.notifications.isEmpty)
             testExpectation.fulfill()
         }
