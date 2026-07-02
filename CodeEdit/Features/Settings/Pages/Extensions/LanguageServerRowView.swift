@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CodeEditDomain
+import CodeEditCore
 
 private let iconSize: CGFloat = 26
 

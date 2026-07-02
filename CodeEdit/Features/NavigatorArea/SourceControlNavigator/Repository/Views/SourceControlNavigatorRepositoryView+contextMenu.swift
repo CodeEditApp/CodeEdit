@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CodeEditDomain
+import CodeEditCore
 
 extension SourceControlNavigatorRepositoryView {
     func handleDelete(_ item: RepoOutlineGroupItem) {

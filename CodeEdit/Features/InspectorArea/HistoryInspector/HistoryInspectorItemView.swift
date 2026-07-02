@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CodeEditDomain
+import CodeEditCore
 
 struct HistoryInspectorItemView: View {
     var commit: GitCommit

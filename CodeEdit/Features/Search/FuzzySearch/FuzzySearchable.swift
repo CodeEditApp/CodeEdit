@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 /// A protocol defining the requirements for an object that can be searched using fuzzy matching.
 protocol FuzzySearchable {

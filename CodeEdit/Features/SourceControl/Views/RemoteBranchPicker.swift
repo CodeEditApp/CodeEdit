@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CodeEditDomain
+import CodeEditCore
 
 struct RemoteBranchPicker: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 extension String {
     /// Returns the length of the matching prefix content or normalised content at the specified index.

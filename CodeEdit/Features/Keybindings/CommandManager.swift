@@ -5,7 +5,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 /**
 The object of this class intended to be a hearth of command palette. This object only exists as singleton.

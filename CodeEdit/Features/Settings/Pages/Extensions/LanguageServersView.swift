@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Factory
-import CodeEditDomain
+import CodeEditCore
 
 /// Displays a searchable list of packages from the ``RegistryManager``.
 struct LanguageServersView: View {

@@ -6,7 +6,7 @@
 //
 
 import AppKit
-import CodeEditDomain
+import CodeEditCore
 
 extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineView(

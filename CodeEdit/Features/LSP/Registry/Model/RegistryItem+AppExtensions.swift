@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 extension RegistryItem: FuzzySearchable {
     var searchableString: String { name }

@@ -5,7 +5,7 @@
 //  Created by Abe Malla on 3/12/25.
 //
 
-import CodeEditDomain
+import CodeEditCore
 
 extension PackageSourceParser {
     static func parsePythonPackage(_ entry: RegistryItem) -> InstallationMethod {

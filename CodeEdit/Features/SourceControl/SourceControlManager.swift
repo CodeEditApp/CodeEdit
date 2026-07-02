@@ -7,7 +7,7 @@
 
 import Foundation
 import OSLog
-import CodeEditDomain
+import CodeEditCore
 
 /// Stores git state for the workspace and delegates operations to ``GitClient``.
 ///

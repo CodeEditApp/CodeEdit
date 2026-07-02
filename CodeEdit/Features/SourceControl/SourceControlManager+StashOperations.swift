@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 /// Stash-related git operations.
 extension SourceControlManager {

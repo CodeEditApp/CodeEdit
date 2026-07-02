@@ -7,7 +7,7 @@
 
 import Foundation
 import Factory
-import CodeEditDomain
+import CodeEditCore
 
 /// Orchestrates application shutdown: saves workspace paths, checks for unsaved changes,
 /// prompts the user to save, and terminates running tasks.

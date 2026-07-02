@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 08.04.26.
 //
 
+import CodeEditCore
 import Factory
 
 extension Container {
@@ -34,5 +35,9 @@ extension Container {
 
     var registryManager: Factory<RegistryManager> {
         self { @MainActor in RegistryManager() }.singleton
+    }
+
+    var eventBus: Factory<EventBus> {
+        self { EventBus() }.singleton
     }
 }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 extension GitClient {
     /// Add uncommited changes to stash

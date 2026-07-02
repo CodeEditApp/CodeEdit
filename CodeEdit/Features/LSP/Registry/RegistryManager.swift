@@ -10,7 +10,7 @@ import Foundation
 import ZIPFoundation
 import Combine
 import Factory
-import CodeEditDomain
+import CodeEditCore
 
 @MainActor
 final class RegistryManager: ObservableObject, RegistryManaging {

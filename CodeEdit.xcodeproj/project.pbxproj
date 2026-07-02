@@ -17,7 +17,7 @@
 		583E529C29361BAB001AB554 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 583E529B29361BAB001AB554 /* SnapshotTesting */; };
 		58CF9F3A2F86D64F009F4AA7 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 58CF9F392F86D64F009F4AA7 /* Factory */; };
 		58CF9F422F86D981009F4AA7 /* FactoryTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 58CF9F412F86D981009F4AA7 /* FactoryTesting */; };
-		58CFC49B2F8BE799009F4AA7 /* CodeEditDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 58CFC49A2F8BE799009F4AA7 /* CodeEditDomain */; };
+		58CFC49B2F8BE799009F4AA7 /* CodeEditCore in Frameworks */ = {isa = PBXBuildFile; productRef = 58CFC49A2F8BE799009F4AA7 /* CodeEditCore */; };
 		58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACE292FB2B0004A9BDE /* Documentation.docc */; };
 		58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB1D292FB954004A9BDE /* Sparkle */; };
 		5E4485612DF600D9008BBE69 /* AboutWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 5E4485602DF600D9008BBE69 /* AboutWindow */; };
@@ -186,7 +186,7 @@
 				6CD3CA552C8B508200D83DCD /* CodeEditSourceEditor in Frameworks */,
 				6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */,
 				6CC17B4F2C432AE000834E2C /* CodeEditSourceEditor in Frameworks */,
-				58CFC49B2F8BE799009F4AA7 /* CodeEditDomain in Frameworks */,
+				58CFC49B2F8BE799009F4AA7 /* CodeEditCore in Frameworks */,
 				6CCF6DD32E26D48F00B94F75 /* SwiftTerm in Frameworks */,
 				30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */,
 				5E4485612DF600D9008BBE69 /* AboutWindow in Frameworks */,
@@ -344,7 +344,7 @@
 				6CCF6DD22E26D48F00B94F75 /* SwiftTerm */,
 				6CCF73CF2E26DE3200B94F75 /* SwiftTerm */,
 				58CF9F392F86D64F009F4AA7 /* Factory */,
-				58CFC49A2F8BE799009F4AA7 /* CodeEditDomain */,
+				58CFC49A2F8BE799009F4AA7 /* CodeEditCore */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1902,9 +1902,9 @@
 			package = 58CF9F382F86D64F009F4AA7 /* XCRemoteSwiftPackageReference "Factory" */;
 			productName = FactoryTesting;
 		};
-		58CFC49A2F8BE799009F4AA7 /* CodeEditDomain */ = {
+		58CFC49A2F8BE799009F4AA7 /* CodeEditCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = CodeEditDomain;
+			productName = CodeEditCore;
 		};
 		58F2EB1D292FB954004A9BDE /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;

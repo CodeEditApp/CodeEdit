@@ -7,7 +7,7 @@
 
 import Factory
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 final class CargoPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL

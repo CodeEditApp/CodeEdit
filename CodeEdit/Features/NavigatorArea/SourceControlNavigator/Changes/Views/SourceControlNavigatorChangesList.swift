@@ -7,7 +7,7 @@
 
 import AppKit
 import SwiftUI
-import CodeEditDomain
+import CodeEditCore
 
 struct SourceControlNavigatorChangesList: View {
     @EnvironmentObject var workspace: Workspace

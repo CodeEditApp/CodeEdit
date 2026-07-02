@@ -5,9 +5,10 @@
 //  Created by Pavel Kasila on 12.03.22.
 //
 
+import Combine
 import SwiftUI
 import Factory
-import CodeEditDomain
+import CodeEditCore
 import CodeEditSymbols
 import CodeEditSourceEditor
 import OSLog
@@ -26,23 +27,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @LazyInjected(\.workspaceWindowManager)
     var windowManager
 
+    @LazyInjected(\.eventBus)
+    var eventBus
+
     private let shutdownUseCase = ShutdownApplicationUseCase()
 
-    private var welcomeWindowObserver: NSObjectProtocol?
+    private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         enableWindowSizeSaveOnQuit()
         Settings.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()
 
-        // Listen for requests to open the welcome window from non-SwiftUI contexts
-        welcomeWindowObserver = NotificationCenter.default.addObserver(
-            forName: .openWelcomeWindow,
-            object: nil,
-            queue: .main
-        ) { [weak self] _ in
-            self?.openWindow(sceneID: .welcome)
-        }
+        // Subscribe to the welcome window event published by WorkspaceWindowManager
+        eventBus.subscribe(WelcomeWindowRequestedEvent.self)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in self?.openWindow(sceneID: .welcome) }
+            .store(in: &cancellables)
 
         NSApp.closeWindow(.welcome, .about)
 
@@ -78,9 +79,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        if let welcomeWindowObserver {
-            NotificationCenter.default.removeObserver(welcomeWindowObserver)
-        }
+        cancellables.removeAll()
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {

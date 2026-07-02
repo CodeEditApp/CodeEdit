@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 /// Parser for package source IDs
 enum PackageSourceParser {

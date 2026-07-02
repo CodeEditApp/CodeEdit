@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 /// File status, staging, committing, and discard operations.
 extension SourceControlManager {

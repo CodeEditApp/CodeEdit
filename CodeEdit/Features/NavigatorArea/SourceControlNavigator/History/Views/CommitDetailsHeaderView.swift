@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CodeEditDomain
+import CodeEditCore
 
 struct CommitDetailsHeaderView: View {
     var commit: GitCommit

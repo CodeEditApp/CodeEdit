@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 extension InstallationMethod {
     func packageManager(installPath: URL) -> PackageManagerProtocol? {

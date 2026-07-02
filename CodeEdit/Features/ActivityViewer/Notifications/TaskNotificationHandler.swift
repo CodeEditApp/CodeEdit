@@ -7,7 +7,7 @@
 
 import Foundation
 import Combine
-import CodeEditDomain
+import CodeEditCore
 
 /// Manages task-related notifications.
 ///

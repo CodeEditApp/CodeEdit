@@ -7,7 +7,7 @@
 
 import Factory
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 final class GithubPackageManager: PackageManagerProtocol {
     private let installationDirectory: URL

@@ -3,12 +3,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "CodeEditDomain",
+    name: "CodeEditCore",
     platforms: [.macOS(.v14)],
     products: [
-        .library(name: "CodeEditDomain", targets: ["CodeEditDomain"])
+        .library(name: "CodeEditCore", targets: ["CodeEditCore"])
     ],
     targets: [
-        .target(name: "CodeEditDomain")
+        .target(name: "CodeEditCore")
     ]
 )

@@ -5,6 +5,6 @@
       location = "container:CodeEdit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Packages/CodeEditDomain">
+      location = "group:Packages/CodeEditCore">
    </FileRef>
 </Workspace>

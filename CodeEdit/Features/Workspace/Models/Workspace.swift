@@ -17,8 +17,8 @@ final class Workspace: ObservableObject, WorkspaceManaging {
     @Published var navigatorFilter: String = ""
     @Published var sourceControlFilter = false
 
-    internal(set) var fileURL: URL?
-    internal(set) var displayName: String = ""
+    var fileURL: URL?
+    var displayName: String = ""
 
     var workspaceFileManager: CEWorkspaceFileManager?
     var editorManager: EditorManager? = EditorManager()

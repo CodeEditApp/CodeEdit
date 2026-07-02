@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 extension GitClient {
     /// Gets the commit history log for the specified branch or file

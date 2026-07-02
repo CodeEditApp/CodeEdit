@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CodeEditDomain
+import CodeEditCore
 
 struct SourceControlRenameBranchView: View {
     @Environment(\.dismiss)

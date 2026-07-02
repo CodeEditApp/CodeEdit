@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 /// The protocol each package manager conforms to for creating ``PackageManagerInstallOperation``s.
 protocol PackageManagerProtocol {

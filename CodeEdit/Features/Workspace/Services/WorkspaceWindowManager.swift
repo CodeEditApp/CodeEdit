@@ -6,16 +6,16 @@
 //
 
 import AppKit
+import CodeEditCore
+import Factory
 import SwiftUI
 import WelcomeWindow
-
-extension Notification.Name {
-    static let openWelcomeWindow = Notification.Name("CodeEdit.openWelcomeWindow")
-}
 
 /// Manages the lifecycle of workspace windows, replacing NSDocumentController for workspace management.
 @MainActor
 final class WorkspaceWindowManager: WorkspaceWindowManaging {
+
+    @LazyInjected(\.eventBus) private var eventBus
 
     private let openWorkspaceUseCase = OpenWorkspaceUseCase()
     private let closeWorkspaceUseCase = CloseWorkspaceUseCase()
@@ -179,8 +179,8 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
             if let welcomeWindow = NSApp.findWindow(.welcome) {
                 welcomeWindow.makeKeyAndOrderFront(nil)
             } else {
-                // Post notification for AppDelegate to open the welcome window via SwiftUI's openWindow
-                NotificationCenter.default.post(name: .openWelcomeWindow, object: nil)
+                // Publish event for AppDelegate to open the welcome window via SwiftUI's openWindow
+                eventBus.publish(WelcomeWindowRequestedEvent())
             }
         case .quit:
             NSApplication.shared.terminate(nil)

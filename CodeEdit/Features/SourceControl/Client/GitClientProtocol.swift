@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 /// Abstraction over git operations used by ``SourceControlManager``.
 ///

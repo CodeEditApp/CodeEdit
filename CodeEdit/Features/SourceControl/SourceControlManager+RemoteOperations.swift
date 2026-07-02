@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 /// Remote, fetch, pull, and push operations.
 extension SourceControlManager {

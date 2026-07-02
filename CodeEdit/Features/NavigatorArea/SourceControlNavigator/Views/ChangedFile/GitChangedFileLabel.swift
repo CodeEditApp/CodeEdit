@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Factory
-import CodeEditDomain
+import CodeEditCore
 
 struct GitChangedFileLabel: View {
     @EnvironmentObject private var workspace: Workspace

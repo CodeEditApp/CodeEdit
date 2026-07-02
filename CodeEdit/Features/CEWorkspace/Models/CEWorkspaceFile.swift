@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import UniformTypeIdentifiers
 import Combine
-import CodeEditDomain
+import CodeEditCore
 
 /// An object containing all necessary information and actions for a specific file in the workspace
 ///

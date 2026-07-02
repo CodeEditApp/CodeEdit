@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 /// Manages the search/find state for a workspace, including indexing, search results,
 /// and find-and-replace operations. Extracted from Workspace to be independently

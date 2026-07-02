@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import CodeEditDomain
+import CodeEditCore
 
 /// Protocol for managing application commands (command palette).
 protocol CommandManaging: AnyObject, ObservableObject {

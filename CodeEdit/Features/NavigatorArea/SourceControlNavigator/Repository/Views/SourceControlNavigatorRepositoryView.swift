@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import CodeEditDomain
+import CodeEditCore
 import CodeEditSymbols
 
 struct SourceControlNavigatorRepositoryView: View {
