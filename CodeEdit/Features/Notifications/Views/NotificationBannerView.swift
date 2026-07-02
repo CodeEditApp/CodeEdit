@@ -6,14 +6,12 @@
 //
 
 import SwiftUI
-import Factory
 
 struct NotificationBannerView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
     @EnvironmentObject private var notificationPanel: NotificationPanelViewModel
-    @ObservedObject private var notificationManager = Container.shared.notificationManager()
 
     let notification: CENotification
     let onDismiss: () -> Void

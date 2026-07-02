@@ -11,7 +11,7 @@ import Factory
 @testable import CodeEdit
 
 final class NotificationPanelViewModelTests: XCTestCase {
-    var notificationManager: NotificationManager!
+    var notificationManager: (any NotificationManaging)!
     var viewModel: NotificationPanelViewModel!
 
     override func setUp() {
@@ -67,6 +67,41 @@ final class NotificationPanelViewModelTests: XCTestCase {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                 XCTAssertTrue(self.viewModel.activeNotifications.isEmpty)
                 XCTAssertTrue(self.notificationManager.notifications.isEmpty)
+                testExpectation.fulfill()
+            }
+        }
+        wait(for: [testExpectation], timeout: 2)
+    }
+
+    func testUnreadCountRepublishedToViewModel() {
+        notificationManager.post(
+            iconSymbol: "bell",
+            title: "First",
+            description: "A notification for testing",
+            actionButtonTitle: "OK",
+            action: {}
+        )
+        notificationManager.post(
+            iconSymbol: "bell",
+            title: "Second",
+            description: "A notification for testing",
+            actionButtonTitle: "OK",
+            action: {}
+        )
+
+        let testExpectation = XCTestExpectation()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            XCTAssertEqual(self.viewModel.unreadCount, 2)
+
+            guard let notification = self.notificationManager.notifications.first else {
+                XCTFail("Notifications were never added to the manager")
+                testExpectation.fulfill()
+                return
+            }
+            self.notificationManager.markAsRead(notification)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                XCTAssertEqual(self.viewModel.unreadCount, 1)
                 testExpectation.fulfill()
             }
         }

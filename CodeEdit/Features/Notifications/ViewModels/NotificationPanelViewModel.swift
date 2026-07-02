@@ -29,6 +29,9 @@ final class NotificationPanelViewModel: ObservableObject {
 
     @Published var scrolledToTop: Bool = true
 
+    /// Number of unread notifications, republished from the notification manager for view observation.
+    @Published private(set) var unreadCount: Int = 0
+
     /// Timers for notifications
     var timers: [UUID: Timer] = [:]
 
@@ -38,7 +41,8 @@ final class NotificationPanelViewModel: ObservableObject {
     /// Whether notifications are paused
     var isPaused: Bool = false
 
-    var notificationManager = Container.shared.notificationManager()
+    @LazyInjected(\.notificationManager)
+    var notificationManager
 
     @LazyInjected(\.eventBus)
     var eventBus
@@ -58,6 +62,12 @@ final class NotificationPanelViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] event in self?.handle(event) }
             .store(in: &cancellables)
+
+        // Republish the unread count for views (the manager is behind a protocol and not observable).
+        notificationManager.notificationsPublisher
+            .map { notifications in notifications.filter { !$0.isRead }.count }
+            .receive(on: RunLoop.main)
+            .assign(to: &$unreadCount)
 
         // Load initial notifications from NotificationManager
         notificationManager.notifications.forEach { notification in

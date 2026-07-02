@@ -29,8 +29,8 @@ extension Container {
         self { KeybindingManager() as KeybindingManaging }.singleton
     }
 
-    var notificationManager: Factory<NotificationManager> {
-        self { NotificationManager() }.singleton
+    var notificationManager: Factory<NotificationManaging> {
+        self { NotificationManager() as NotificationManaging }.singleton
     }
 
     var registryManager: Factory<RegistryManager> {

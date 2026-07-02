@@ -6,18 +6,16 @@
 //
 
 import SwiftUI
-import Factory
 
 struct NotificationToolbarItem: View {
     @EnvironmentObject private var notificationPanel: NotificationPanelViewModel
-    @ObservedObject private var notificationManager = Container.shared.notificationManager()
     @Environment(\.controlActiveState)
     private var controlActiveState
 
     var body: some View {
         let visibleNotifications = notificationPanel.visibleNotifications
 
-        if notificationManager.unreadCount > 0 || !visibleNotifications.isEmpty {
+        if notificationPanel.unreadCount > 0 || !visibleNotifications.isEmpty {
             Button {
                 notificationPanel.toggleNotificationsVisibility()
             } label: {
@@ -25,7 +23,7 @@ struct NotificationToolbarItem: View {
                     Image(systemName: "bell.badge.fill")
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(controlActiveState == .inactive ? .secondary : Color.accentColor, .primary)
-                    Text("\(notificationManager.unreadCount)")
+                    Text("\(notificationPanel.unreadCount)")
                         .monospacedDigit()
                 }
             }

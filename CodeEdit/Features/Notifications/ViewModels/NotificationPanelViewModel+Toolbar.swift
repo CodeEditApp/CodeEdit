@@ -6,7 +6,6 @@
 //
 
 import AppKit
-import Factory
 
 /// Dynamic toolbar item management for the notification badge.
 extension NotificationPanelViewModel {
@@ -16,7 +15,7 @@ extension NotificationPanelViewModel {
                 return
             }
 
-            let shouldShow = !self.visibleNotifications.isEmpty || Container.shared.notificationManager().unreadCount > 0
+            let shouldShow = !self.visibleNotifications.isEmpty || notificationManager.unreadCount > 0
             if shouldShow && toolbar.items.filter({ $0.itemIdentifier == .notificationItem }).first == nil {
                 guard let activityItemIdx = toolbar.items
                     .firstIndex(where: { $0.itemIdentifier == .activityViewer }) else {
