@@ -14,6 +14,7 @@
 		302AD7FF2D8054D500231E16 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 30818CB42D4E563900967860 /* ZIPFoundation */; };
 		30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64902C16CA8100CC8A9E /* LanguageServerProtocol */; };
 		30CB64942C16CA9100CC8A9E /* LanguageClient in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64932C16CA9100CC8A9E /* LanguageClient */; };
+		5800E2F82FF843390085ECF1 /* CodeEditUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5800E2F72FF843390085ECF1 /* CodeEditUI */; };
 		583E529C29361BAB001AB554 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 583E529B29361BAB001AB554 /* SnapshotTesting */; };
 		58CF9F3A2F86D64F009F4AA7 /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 58CF9F392F86D64F009F4AA7 /* Factory */; };
 		58CF9F422F86D981009F4AA7 /* FactoryTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 58CF9F412F86D981009F4AA7 /* FactoryTesting */; };
@@ -177,6 +178,7 @@
 				6C85BB402C2105ED00EB5DEF /* CodeEditKit in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
+				5800E2F82FF843390085ECF1 /* CodeEditUI in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				6CE21E872C650D2C0031B056 /* SwiftTerm in Frameworks */,
 				6C76D6D42E15B91E00EF52C3 /* CodeEditSourceEditor in Frameworks */,
@@ -345,6 +347,7 @@
 				6CCF73CF2E26DE3200B94F75 /* SwiftTerm */,
 				58CF9F392F86D64F009F4AA7 /* Factory */,
 				58CFC49A2F8BE799009F4AA7 /* CodeEditCore */,
+				5800E2F72FF843390085ECF1 /* CodeEditUI */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1886,6 +1889,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 30CB64922C16CA9100CC8A9E /* XCRemoteSwiftPackageReference "LanguageClient" */;
 			productName = LanguageClient;
+		};
+		5800E2F72FF843390085ECF1 /* CodeEditUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditUI;
 		};
 		583E529B29361BAB001AB554 /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;

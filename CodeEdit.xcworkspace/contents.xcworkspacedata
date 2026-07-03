@@ -7,4 +7,7 @@
    <FileRef
       location = "group:Packages/CodeEditCore">
    </FileRef>
+   <FileRef
+      location = "group:Packages/CodeEditUI">
+   </FileRef>
 </Workspace>
