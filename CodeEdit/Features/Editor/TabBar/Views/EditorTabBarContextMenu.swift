@@ -23,7 +23,12 @@ struct EditorTabBarContextMenu: ViewModifier {
         self.isTemporary = isTemporary
     }
 
-    @EnvironmentObject var workspace: Workspace
+    @EnvironmentObject var editorManager: EditorManager
+
+    @EnvironmentObject var listenerModel: WorkspaceNotificationModel
+
+    @Environment(\.workspaceFileManager)
+    private var workspaceFileManager
 
     @EnvironmentObject var tabs: Editor
 
@@ -101,7 +106,7 @@ struct EditorTabBarContextMenu: ViewModifier {
                 }
 
                 Button("Reveal in Project Navigator") {
-                    workspace.listenerModel.highlightedFileItem = item
+                    listenerModel.highlightedFileItem = item
                 }
 
                 Button("Open in New Window") {
@@ -140,13 +145,13 @@ struct EditorTabBarContextMenu: ViewModifier {
         let newEditor = Editor(files: [item], searchState: tabs.searchState)
         splitEditor(edge, newEditor)
         tabs.closeTab(file: item)
-        workspace.editorManager?.activeEditor = newEditor
+        editorManager.activeEditor = newEditor
     }
 
     /// Copies the relative path from the workspace folder to the given file item to the pasteboard.
     /// - Parameter item: The `FileItem` to use.
     private func copyRelativePath(item: CEWorkspaceFile) {
-        guard let rootPath = workspace.workspaceFileManager?.folderUrl else {
+        guard let rootPath = workspaceFileManager?.folderUrl else {
             return
         }
         let destinationComponents = item.url.standardizedFileURL.pathComponents

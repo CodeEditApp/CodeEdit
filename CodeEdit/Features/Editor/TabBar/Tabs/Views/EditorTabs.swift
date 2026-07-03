@@ -15,9 +15,6 @@ struct EditorTabs: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    /// The workspace document.
-    @EnvironmentObject private var workspace: Workspace
-
     @EnvironmentObject var editor: Editor
 
     /// The tab id of current dragging tab.
@@ -41,7 +38,7 @@ struct EditorTabs: View {
 
     /// Current opened tabs.
     ///
-    /// This is a copy of `workspace.selectionState.openedTabs`.
+    /// This is a copy of `editor.tabs`.
     /// I am making a copy of it because using state will hugely improve the dragging performance.
     /// Updating ObservedObject too often will generate lags.
     @State var openedTabs: [TabID] = []

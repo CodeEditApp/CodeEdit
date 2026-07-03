@@ -21,8 +21,10 @@ struct EditorTabView: View {
     @Environment(\.isFullscreen)
     private var isFullscreen
 
-    @EnvironmentObject var workspace: Workspace
     @EnvironmentObject private var editorManager: EditorManager
+
+    @Environment(\.workspaceFileManager)
+    private var workspaceFileManager
 
     @StateObject private var fileObserver: EditorTabFileObserver
 
@@ -265,10 +267,10 @@ struct EditorTabView: View {
             .tabBarContextMenu(item: tabFile, isTemporary: isTemporary)
             .accessibilityElement(children: .contain)
             .onAppear {
-                workspace.workspaceFileManager?.addObserver(fileObserver)
+                workspaceFileManager?.addObserver(fileObserver)
             }
             .onDisappear {
-                workspace.workspaceFileManager?.removeObserver(fileObserver)
+                workspaceFileManager?.removeObserver(fileObserver)
             }
     }
 }
