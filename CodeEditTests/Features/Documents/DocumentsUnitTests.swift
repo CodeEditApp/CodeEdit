@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Factory
 @testable import CodeEdit
 
 @MainActor
@@ -24,6 +25,11 @@ final class DocumentsUnitTests: XCTestCase {
         hapticFeedbackPerformerMock = NSHapticFeedbackPerformerMock()
         navigatorViewModel = .init()
         workspace.taskManager = TaskManager(workspaceSettings: CEWorkspaceSettingsData(), workspaceURL: nil)
+        workspace.sourceControlManager = SourceControlManager(
+            workspaceURL: URL(filePath: "/tmp"),
+            shellClient: Container.shared.shellClient()
+        )
+        workspace.sourceControlViewModel = SourceControlViewModel()
         window = NSWindow()
         splitViewController = .init(
             workspace: workspace,

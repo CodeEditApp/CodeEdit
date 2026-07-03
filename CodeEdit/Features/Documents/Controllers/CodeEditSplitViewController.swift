@@ -55,6 +55,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
               let statusBarViewModel = workspace.statusBarViewModel,
               let utilityAreaModel = workspace.utilityAreaModel,
               let projectNavigatorViewModel = workspace.projectNavigatorViewModel,
+              let sourceControlManager = workspace.sourceControlManager,
+              let sourceControlViewModel = workspace.sourceControlViewModel,
               let taskManager = workspace.taskManager else {
             // swiftlint:disable:next line_length
             assertionFailure("Missing a workspace model: workspace=\(workspace == nil), navigator=\(navigatorViewModel == nil), editorManager=\(workspace?.editorManager == nil), statusBarModel=\(workspace?.statusBarViewModel == nil), utilityAreaModel=\(workspace?.utilityAreaModel == nil), taskManager=\(workspace?.taskManager == nil)")
@@ -69,6 +71,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .environmentObject(editorManager)
                 .environmentObject(workspace.listenerModel)
                 .environmentObject(projectNavigatorViewModel)
+                .environmentObject(sourceControlManager)
+                .environmentObject(sourceControlViewModel)
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                 .environment(\.workspaceFileURL, workspace.fileURL)
         })
@@ -83,8 +87,13 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environmentObject(statusBarViewModel)
                     .environmentObject(utilityAreaModel)
                     .environmentObject(taskManager)
+                    .environmentObject(sourceControlManager)
+                    .environmentObject(sourceControlViewModel)
+                    .environmentObject(workspace.listenerModel)
                     .environmentObject(workspace.undoRegistration)
                     .environmentObject(workspace.notificationPanel)
+                    .environment(\.workspaceFileManager, workspace.workspaceFileManager)
+                    .environment(\.workspaceFileURL, workspace.fileURL)
             }
         }
 
@@ -98,6 +107,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
             InspectorAreaView(viewModel: InspectorAreaViewModel())
                 .environmentObject(workspace)
                 .environmentObject(editorManager)
+                .environmentObject(sourceControlManager)
+                .environment(\.workspaceFileManager, workspace.workspaceFileManager)
         })
 
         addSplitViewItem(inspector)

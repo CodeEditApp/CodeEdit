@@ -12,10 +12,12 @@ struct SourceControlFetchView: View {
     private var dismiss
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
-    @EnvironmentObject var workspace: Workspace
+
+    @Environment(\.workspaceFileManager)
+    private var workspaceFileManager
 
     var projectName: String {
-        workspace.workspaceFileManager?.folderUrl.lastPathComponent ?? "Empty"
+        workspaceFileManager?.folderUrl.lastPathComponent ?? "Empty"
     }
 
     var body: some View {

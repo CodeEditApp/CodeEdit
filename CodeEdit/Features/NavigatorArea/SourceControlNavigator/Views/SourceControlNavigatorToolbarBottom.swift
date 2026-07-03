@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct SourceControlNavigatorToolbarBottom: View {
-    @EnvironmentObject private var workspace: Workspace
     @EnvironmentObject var sourceControlManager: SourceControlManager
     @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 

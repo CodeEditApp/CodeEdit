@@ -10,8 +10,11 @@ import SwiftUI
 import CodeEditCore
 
 struct SourceControlNavigatorChangesList: View {
-    @EnvironmentObject var workspace: Workspace
     @EnvironmentObject var sourceControlManager: SourceControlManager
+    @EnvironmentObject var editorManager: EditorManager
+
+    @Environment(\.workspaceFileManager)
+    private var workspaceFileManager
 
     @State var selection = Set<GitChangedFile>()
 
@@ -73,11 +76,11 @@ struct SourceControlNavigatorChangesList: View {
     }
 
     private func openGitFile(_ file: GitChangedFile) {
-        guard let ceFile = workspace.workspaceFileManager?.getFile(file.ceFileKey, createIfNotFound: true) else {
+        guard let ceFile = workspaceFileManager?.getFile(file.ceFileKey, createIfNotFound: true) else {
             return
         }
         DispatchQueue.main.async {
-            workspace.editorManager?.openTab(item: ceFile, asTemporary: true)
+            editorManager.openTab(item: ceFile, asTemporary: true)
         }
     }
 }

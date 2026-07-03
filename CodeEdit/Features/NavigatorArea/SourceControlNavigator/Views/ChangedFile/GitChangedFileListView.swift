@@ -12,8 +12,11 @@ import CodeEditCore
 struct GitChangedFileListView: View {
     @AppSettings(\.general.fileIconStyle)
     private var fileIconStyle
-    @EnvironmentObject private var workspace: Workspace
     @EnvironmentObject private var sourceControlManager: SourceControlManager
+
+    @Environment(\.workspaceFileManager)
+    private var workspaceFileManager
+
     @Binding private var changedFile: GitChangedFile
 
     @State private var staged: Bool
@@ -58,7 +61,7 @@ struct GitChangedFileListView: View {
     }
 
     private var listItemTint: Color {
-        if let ceFile = workspace.workspaceFileManager?.getFile(changedFile.ceFileKey, createIfNotFound: true) {
+        if let ceFile = workspaceFileManager?.getFile(changedFile.ceFileKey, createIfNotFound: true) {
             iconForegroundColor(ceFile)
         } else {
             iconForegroundColor(nil)

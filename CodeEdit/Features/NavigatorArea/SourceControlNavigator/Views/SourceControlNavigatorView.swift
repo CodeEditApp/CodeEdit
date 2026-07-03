@@ -8,36 +8,34 @@
 import SwiftUI
 
 struct SourceControlNavigatorView: View {
-    @EnvironmentObject private var workspace: Workspace
+    @EnvironmentObject private var sourceControlManager: SourceControlManager
+    @EnvironmentObject private var sourceControlViewModel: SourceControlViewModel
 
     @AppSettings(\.sourceControl.general.fetchRefreshServerStatus)
     var fetchRefreshServerStatus
 
     var body: some View {
-        if let sourceControlManager = workspace.workspaceFileManager?.sourceControlManager,
-           let sourceControlViewModel = workspace.sourceControlViewModel {
-            VStack(spacing: 0) {
-                SourceControlNavigatorTabs()
-                    .environmentObject(sourceControlManager)
-                    .environmentObject(sourceControlViewModel)
-                    .task {
-                        do {
-                            while true {
-                                if fetchRefreshServerStatus {
-                                    try await sourceControlManager.fetch()
-                                }
-                                try await Task.sleep(for: .seconds(10))
+        VStack(spacing: 0) {
+            SourceControlNavigatorTabs()
+                .environmentObject(sourceControlManager)
+                .environmentObject(sourceControlViewModel)
+                .task {
+                    do {
+                        while true {
+                            if fetchRefreshServerStatus {
+                                try await sourceControlManager.fetch()
                             }
-                        } catch {
-                            // TODO: if source fetching fails, display message
+                            try await Task.sleep(for: .seconds(10))
                         }
+                    } catch {
+                        // TODO: if source fetching fails, display message
                     }
-            }
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                SourceControlNavigatorToolbarBottom()
-                    .environmentObject(sourceControlManager)
-                    .environmentObject(sourceControlViewModel)
-            }
+                }
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            SourceControlNavigatorToolbarBottom()
+                .environmentObject(sourceControlManager)
+                .environmentObject(sourceControlViewModel)
         }
     }
 }

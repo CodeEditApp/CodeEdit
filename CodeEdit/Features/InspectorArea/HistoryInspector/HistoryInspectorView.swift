@@ -11,7 +11,7 @@ struct HistoryInspectorView: View {
     @AppSettings(\.sourceControl.git.showMergeCommitsPerFileLog)
     var showMergeCommitsPerFileLog
 
-    @EnvironmentObject private var workspace: Workspace
+    @EnvironmentObject private var sourceControlManager: SourceControlManager
 
     @EnvironmentObject private var editorManager: EditorManager
 
@@ -61,7 +61,7 @@ struct HistoryInspectorView: View {
             }
         }
         .task {
-            await model.setWorkspace(sourceControlManager: workspace.sourceControlManager)
+            await model.setWorkspace(sourceControlManager: sourceControlManager)
             await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path)
         }
         .onChange(of: showMergeCommitsPerFileLog) { _, _ in
