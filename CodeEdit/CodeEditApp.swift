@@ -41,6 +41,13 @@ struct CodeEditApp: App {
                             print("Failed to open workspace: \(error)")
                         }
                     }
+                },
+                openHandler: { urls, dismissWindow in
+                    let windowManager = Container.shared.workspaceWindowManager()
+                    for url in urls {
+                        windowManager.openDocument(at: url, onCompletion: {})
+                    }
+                    dismissWindow()
                 }
             )
 
