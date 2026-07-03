@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 import LanguageServerProtocol
 
 /// A view that implements the Developer settings section

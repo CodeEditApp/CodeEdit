@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct CEContentUnavailableView<Actions: View>: View {
+public struct CEContentUnavailableView<Actions: View>: View {
     var label: String
     var description: String?
     var systemImage: String?
     var actions: Actions?
 
-    init(
+    public init(
         _ label: String,
         description: String? = nil,
         systemImage: String? = nil,
@@ -52,7 +52,7 @@ struct CEContentUnavailableView<Actions: View>: View {
         .controlSize(.small)
     }
 
-    var body: some View {
+    public var body: some View {
         if #available(macOS 14, *) {
             contentUnavailableView
                 .buttonStyle(.accessoryBarAction)

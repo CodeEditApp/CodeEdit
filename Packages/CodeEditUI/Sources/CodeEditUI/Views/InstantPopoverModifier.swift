@@ -15,7 +15,7 @@ struct InstantPopoverModifier<PopoverContent: View>: ViewModifier {
     let arrowEdge: Edge
     let popoverContent: PopoverContent
 
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .background(
                 PopoverPresenter(
@@ -35,9 +35,9 @@ struct PopoverPresenter<ContentView: View>: NSViewRepresentable {
     let arrowEdge: Edge
     let contentView: ContentView
 
-    func makeNSView(context: Context) -> NSView { NSView() }
+    public func makeNSView(context: Context) -> NSView { NSView() }
 
-    func updateNSView(_ nsView: NSView, context: Context) {
+    public func updateNSView(_ nsView: NSView, context: Context) {
         if isPresented && context.coordinator.popover == nil {
             let popover = NSPopover()
             popover.animates = false
@@ -64,10 +64,11 @@ struct PopoverPresenter<ContentView: View>: NSViewRepresentable {
         }
     }
 
-    func makeCoordinator() -> Coordinator {
+    public func makeCoordinator() -> Coordinator {
         Coordinator(isPresented: $isPresented)
     }
 
+    @MainActor
     class Coordinator: NSObject, NSPopoverDelegate {
         @Binding var isPresented: Bool
         var popover: NSPopover?
@@ -84,9 +85,10 @@ struct PopoverPresenter<ContentView: View>: NSViewRepresentable {
                 object: window,
                 queue: .main
             ) { [weak self] _ in
-                guard let self = self else { return }
-                /// The parent window is no longer focused, close the popover
-                DispatchQueue.main.async {
+                /// Delivered on the main queue, so it is safe to assume main-actor isolation.
+                MainActor.assumeIsolated {
+                    guard let self = self else { return }
+                    /// The parent window is no longer focused, close the popover
                     self.isPresented = false
                     self.popover?.close()
                 }
@@ -94,9 +96,7 @@ struct PopoverPresenter<ContentView: View>: NSViewRepresentable {
         }
 
         func popoverWillClose(_ notification: Notification) {
-            DispatchQueue.main.async {
-                self.isPresented = false
-            }
+            isPresented = false
         }
 
         func popoverDidClose(_ notification: Notification) {
@@ -114,7 +114,7 @@ struct PopoverPresenter<ContentView: View>: NSViewRepresentable {
     }
 }
 
-extension View {
+public extension View {
     /// A custom view modifier that presents a popover attached to the view with no animation.
     /// - Warning: Views presented using this sheet must be dismissed by negating the `isPresented` binding. Using
     ///            SwiftUI's `dismiss` will likely cause a crash. See [FB16221871](rdar://FB16221871)

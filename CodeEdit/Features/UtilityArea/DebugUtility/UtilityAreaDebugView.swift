@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct UtilityAreaDebugView: View {
     @AppSettings(\.theme.matchAppearance)

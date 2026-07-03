@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct InvisibleCharacterWarningList: View {
     @Binding var items: [UInt16: String]

@@ -6,11 +6,17 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
-struct KeyValueItem: Identifiable, Equatable {
-    let id = UUID()
-    let key: String
-    let value: String
+public struct KeyValueItem: Identifiable, Equatable {
+    public let id = UUID()
+    public let key: String
+    public let value: String
+
+    public init(key: String, value: String) {
+        self.key = key
+        self.value = value
+    }
 }
 
 private struct NewListTableItemView<HeaderView: View>: View {
@@ -27,7 +33,7 @@ private struct NewListTableItemView<HeaderView: View>: View {
     let headerView: HeaderView?
     var completion: (String, String) -> Void
 
-    init(
+    public init(
         key: String? = nil,
         value: String? = nil,
         _ keyColumnName: String,
@@ -47,7 +53,7 @@ private struct NewListTableItemView<HeaderView: View>: View {
         self.completion = completion
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 0) {
             Form {
                 Section {
@@ -102,7 +108,7 @@ private struct NewListTableItemView<HeaderView: View>: View {
     }
 }
 
-struct KeyValueTable<Header: View, ActionBarView: View>: View {
+public struct KeyValueTable<Header: View, ActionBarView: View>: View {
     @Binding var items: [String: String]
 
     let validKeys: [String]
@@ -116,7 +122,7 @@ struct KeyValueTable<Header: View, ActionBarView: View>: View {
     @State private var selection: Set<UUID> = []
     @State private var tableItems: [KeyValueItem] = []
 
-    init(
+    public init(
         items: Binding<[String: String]>,
         validKeys: [String] = [],
         keyColumnName: String,
@@ -134,7 +140,7 @@ struct KeyValueTable<Header: View, ActionBarView: View>: View {
         self.actionBarTrailing = actionBarTrailing
     }
 
-    var body: some View {
+    public var body: some View {
         Table(tableItems, selection: $selection) {
             TableColumn(keyColumnName) { item in
                 Text(item.key)

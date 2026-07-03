@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct FindNavigatorView: View {
     @EnvironmentObject private var state: SearchState

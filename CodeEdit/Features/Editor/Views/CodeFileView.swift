@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CodeEditUI
 import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages

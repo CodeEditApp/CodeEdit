@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 extension View {
     @ViewBuilder

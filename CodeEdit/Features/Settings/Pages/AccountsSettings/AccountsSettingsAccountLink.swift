@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct AccountsSettingsAccountLink: View {
     @Binding var account: SourceControlAccount

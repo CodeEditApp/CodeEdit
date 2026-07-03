@@ -8,14 +8,14 @@
 import SwiftUI
 import AppKit
 
-struct GlassEffectView: NSViewRepresentable {
+public struct GlassEffectView: NSViewRepresentable {
     var tintColor: NSColor?
 
-    init(tintColor: NSColor? = nil) {
+    public init(tintColor: NSColor? = nil) {
         self.tintColor = tintColor
     }
 
-    func makeNSView(context: Context) -> NSView {
+    public func makeNSView(context: Context) -> NSView {
 #if compiler(>=6.2)
         if #available(macOS 26, *) {
             let view = NSGlassEffectView()
@@ -27,7 +27,7 @@ struct GlassEffectView: NSViewRepresentable {
         return NSView()
     }
 
-    func updateNSView(_ nsView: NSView, context: Context) {
+    public func updateNSView(_ nsView: NSView, context: Context) {
 #if compiler(>=6.2)
         if #available(macOS 26, *), let view = nsView as? NSGlassEffectView {
             view.tintColor = tintColor

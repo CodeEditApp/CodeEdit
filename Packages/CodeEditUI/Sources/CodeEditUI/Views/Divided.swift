@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct Divided<Content: View>: View {
+public struct Divided<Content: View>: View {
     var content: Content
 
-    init(@ViewBuilder content: () -> Content) {
+    public init(@ViewBuilder content: () -> Content) {
         self.content = content()
     }
 
-    var body: some View {
+    public var body: some View {
         _VariadicView.Tree(DividedLayout()) {
             content
         }

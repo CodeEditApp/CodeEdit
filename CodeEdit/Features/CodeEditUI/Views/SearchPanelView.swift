@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import CodeEditUI
 
 struct SearchPanelView<RowView: View, PreviewView: View, Option: Identifiable & Hashable>: View {
     @ViewBuilder let rowViewBuilder: ((Option) -> RowView)

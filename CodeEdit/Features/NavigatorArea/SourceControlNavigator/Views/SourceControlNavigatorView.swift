@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct SourceControlNavigatorView: View {
     @EnvironmentObject private var sourceControlManager: SourceControlManager

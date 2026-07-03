@@ -7,6 +7,7 @@
 
 import Cocoa
 import SwiftUI
+import CodeEditUI
 import Factory
 import Combine
 

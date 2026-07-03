@@ -7,11 +7,13 @@
 
 import SwiftUI
 
-struct PanelDivider: View {
+public struct PanelDivider: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         Divider()
             .opacity(0)
             .overlay(

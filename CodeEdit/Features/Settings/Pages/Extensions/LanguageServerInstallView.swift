@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 /// A view for initiating a package install and monitoring progress.
 struct LanguageServerInstallView: View {

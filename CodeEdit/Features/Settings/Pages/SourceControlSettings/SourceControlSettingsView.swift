@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct SourceControlSettingsView: View {
     @AppSettings(\.sourceControl.general)

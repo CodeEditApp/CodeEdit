@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 import Cocoa
 
 struct UtilityAreaTerminalView: View {

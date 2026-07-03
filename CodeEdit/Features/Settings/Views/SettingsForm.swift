@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 import SwiftUIIntrospect
 
 struct SettingsForm<Content: View>: View {

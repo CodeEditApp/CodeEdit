@@ -8,12 +8,12 @@
 import SwiftUI
 import CodeEditSymbols
 
-struct FeatureIcon: View {
+public struct FeatureIcon: View {
     private let content: IconContent
     private let color: Color?
     private let size: CGFloat
 
-    init(
+    public init(
         symbol: String,
         color: Color? = nil,
         size: CGFloat? = nil
@@ -23,7 +23,7 @@ struct FeatureIcon: View {
         self.size = size ?? 20
     }
 
-    init(
+    public init(
         text: String,
         textColor: Color? = nil,
         color: Color? = nil,
@@ -34,7 +34,7 @@ struct FeatureIcon: View {
         self.size = size ?? 20
     }
 
-    init(
+    public init(
         image: Image,
         size: CGFloat? = nil
     ) {
@@ -51,7 +51,7 @@ struct FeatureIcon: View {
         }
     }
 
-    var body: some View {
+    public var body: some View {
         RoundedRectangle(cornerRadius: size / 4, style: .continuous)
             .fill(background)
             .overlay {

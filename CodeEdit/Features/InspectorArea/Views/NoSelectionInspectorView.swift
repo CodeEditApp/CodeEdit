@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct NoSelectionInspectorView: View {
     var body: some View {

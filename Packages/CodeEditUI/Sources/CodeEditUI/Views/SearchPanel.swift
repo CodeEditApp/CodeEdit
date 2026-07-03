@@ -7,8 +7,8 @@
 
 import Cocoa
 
-final class SearchPanel: NSPanel, NSWindowDelegate {
-    init() {
+public final class SearchPanel: NSPanel, NSWindowDelegate {
+    public init() {
         super.init(
             contentRect: NSRect(x: 0, y: 0, width: 500, height: 48),
             styleMask: [.fullSizeContentView, .titled, .resizable],
@@ -20,13 +20,13 @@ final class SearchPanel: NSPanel, NSWindowDelegate {
         self.isMovableByWindowBackground = true
     }
 
-    override func standardWindowButton(_ button: NSWindow.ButtonType) -> NSButton? {
+    override public func standardWindowButton(_ button: NSWindow.ButtonType) -> NSButton? {
         let button = super.standardWindowButton(button)
         button?.isHidden = true
         return button
     }
 
-    func windowDidResignKey(_ notification: Notification) {
+    public func windowDidResignKey(_ notification: Notification) {
         if let panel = notification.object as? SearchPanel {
             panel.close()
         }

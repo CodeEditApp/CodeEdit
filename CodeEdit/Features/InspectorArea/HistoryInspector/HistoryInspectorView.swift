@@ -5,6 +5,7 @@
 //  Created by Nanashi Li on 2022/03/24.
 //
 import SwiftUI
+import CodeEditUI
 import CodeEditCore
 
 struct HistoryInspectorView: View {

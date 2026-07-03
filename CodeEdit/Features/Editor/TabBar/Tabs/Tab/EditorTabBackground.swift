@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct EditorTabBackground: View {
     var isActive: Bool

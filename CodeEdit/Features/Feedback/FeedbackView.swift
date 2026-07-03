@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct FeedbackView: View {
     @ObservedObject private var feedbackModel: FeedbackModel = .shared

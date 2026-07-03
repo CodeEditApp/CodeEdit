@@ -6,6 +6,7 @@
 //
 
 @testable import CodeEdit
+import CodeEditUI
 import Foundation
 import SnapshotTesting
 import SwiftUI

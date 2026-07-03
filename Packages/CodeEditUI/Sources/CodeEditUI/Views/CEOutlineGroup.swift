@@ -9,7 +9,7 @@ import SwiftUI
 
 // This view replaces OutlineGroup, which lacks support for controlling the expanded state.
 
-struct CEOutlineGroup<DataElement, ID, Leaf>: View where DataElement: Identifiable, ID: Hashable, Leaf: View {
+public struct CEOutlineGroup<DataElement, ID, Leaf>: View where DataElement: Identifiable, ID: Hashable, Leaf: View {
     let root: DataElement
     var expandedIds: Binding<[ID: Bool]>?
     @State var expanded: Bool = false
@@ -44,7 +44,7 @@ struct CEOutlineGroup<DataElement, ID, Leaf>: View where DataElement: Identifiab
             .tag(root[keyPath: idKeyPath])
     }
 
-    var body: some View {
+    public var body: some View {
         switch root[keyPath: childrenKeyPath] {
         case .none:
             itemView

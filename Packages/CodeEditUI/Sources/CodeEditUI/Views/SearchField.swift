@@ -7,38 +7,38 @@
 
 import SwiftUI
 
-struct SearchField: NSViewRepresentable {
+public struct SearchField: NSViewRepresentable {
     @Binding var text: String
     var placeholder: String
 
-    init(_ placeholder: String, text: Binding<String>) {
+    public init(_ placeholder: String, text: Binding<String>) {
         self.placeholder = placeholder
         self._text = text
     }
 
-    func makeNSView(context: Context) -> NSSearchField {
+    public func makeNSView(context: Context) -> NSSearchField {
         let searchField = NSSearchField()
         searchField.delegate = context.coordinator
         searchField.placeholderString = placeholder
         return searchField
     }
 
-    func updateNSView(_ nsView: NSSearchField, context: Context) {
+    public func updateNSView(_ nsView: NSSearchField, context: Context) {
         nsView.stringValue = text
     }
 
-    func makeCoordinator() -> Coordinator {
+    public func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
-    class Coordinator: NSObject, NSSearchFieldDelegate {
+    public class Coordinator: NSObject, NSSearchFieldDelegate {
         var parent: SearchField
 
         init(_ parent: SearchField) {
             self.parent = parent
         }
 
-        func controlTextDidChange(_ obj: Notification) {
+        public func controlTextDidChange(_ obj: Notification) {
             if let searchField = obj.object as? NSSearchField {
                 parent.text = searchField.stringValue
             }

@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct PressActions: ViewModifier {
+public struct PressActions: ViewModifier {
     var onPress: () -> Void
     var onRelease: (() -> Void)?
 
-    init(onPress: @escaping () -> Void, onRelease: (() -> Void)? = nil) {
+    public init(onPress: @escaping () -> Void, onRelease: (() -> Void)? = nil) {
         self.onPress = onPress
         self.onRelease = onRelease
     }
 
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .simultaneousGesture(
                 DragGesture(minimumDistance: 0)
@@ -26,7 +26,7 @@ struct PressActions: ViewModifier {
     }
 }
 
-extension View {
+public extension View {
 
     /// A custom view modifier for press actions with callbacks for `onPress` and `onRelease`.
     /// - Parameters:

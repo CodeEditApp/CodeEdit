@@ -13,7 +13,7 @@ import SwiftUI
 /// ```swift
 /// EffectView(material: .headerView, blendingMode: .withinWindow)
 /// ```
-struct EffectView: NSViewRepresentable {
+public struct EffectView: NSViewRepresentable {
     private let material: NSVisualEffectView.Material
     private let blendingMode: NSVisualEffectView.BlendingMode
     private let emphasized: Bool
@@ -32,7 +32,7 @@ struct EffectView: NSViewRepresentable {
     ///   - material: The material to use. Defaults to `.headerView`.
     ///   - blendingMode: The blending mode to use. Defaults to `.withinWindow`.
     ///   - emphasized:A Boolean value indicating whether to emphasize the look of the material. Defaults to `false`.
-    init(
+    public init(
         _ material: NSVisualEffectView.Material = .headerView,
         blendingMode: NSVisualEffectView.BlendingMode = .withinWindow,
         emphasized: Bool = false
@@ -42,7 +42,7 @@ struct EffectView: NSViewRepresentable {
         self.emphasized = emphasized
     }
 
-    func makeNSView(context: Context) -> NSVisualEffectView {
+    public func makeNSView(context: Context) -> NSVisualEffectView {
         let view = NSVisualEffectView()
         view.material = material
         view.blendingMode = blendingMode
@@ -51,7 +51,7 @@ struct EffectView: NSViewRepresentable {
         return view
     }
 
-    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
+    public func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
         nsView.material = material
         nsView.blendingMode = blendingMode
     }
@@ -62,7 +62,7 @@ struct EffectView: NSViewRepresentable {
     /// - Parameter condition: The condition of when to apply the background. Defaults to `true`.
     /// - Returns: A View
     @ViewBuilder
-    static func selectionBackground(_ condition: Bool = true) -> some View {
+    public static func selectionBackground(_ condition: Bool = true) -> some View {
         if condition {
             EffectView(.selection, blendingMode: .withinWindow, emphasized: true)
         } else {

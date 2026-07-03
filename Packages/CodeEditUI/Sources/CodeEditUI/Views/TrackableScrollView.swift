@@ -13,21 +13,21 @@ import SwiftUI
 private struct ScrollViewOffsetPreferenceKey: PreferenceKey {
     typealias Value = [CGFloat]
 
-    static var defaultValue: [CGFloat] = [0]
+    static let defaultValue: [CGFloat] = [0]
 
     static func reduce(value: inout [CGFloat], nextValue: () -> [CGFloat]) {
         value.append(contentsOf: nextValue())
     }
 }
 
-struct TrackableScrollView<Content>: View where Content: View {
+public struct TrackableScrollView<Content>: View where Content: View {
     let axes: Axis.Set
     let showIndicators: Bool
     @Binding var contentOffset: CGFloat
     @Binding var contentTrailingOffset: CGFloat?
     let content: Content
 
-    init(
+    public init(
         _ axes: Axis.Set = .vertical,
         showIndicators: Bool = true,
         contentOffset: Binding<CGFloat>,
@@ -40,7 +40,7 @@ struct TrackableScrollView<Content>: View where Content: View {
         self.content = content()
     }
 
-    init(
+    public init(
         _ axes: Axis.Set = .vertical,
         showIndicators: Bool = true,
         contentOffset: Binding<CGFloat>,
@@ -54,7 +54,7 @@ struct TrackableScrollView<Content>: View where Content: View {
         self.content = content()
     }
 
-    var body: some View {
+    public var body: some View {
         GeometryReader { outsideProxy in
             ScrollView(self.axes, showsIndicators: self.showIndicators) {
                 ZStack(alignment: self.axes == .vertical ? .top : .leading) {

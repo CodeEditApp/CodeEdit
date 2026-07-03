@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct SettingsPageView: View {
     var page: SettingsPage

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct AccountsSettingsProviderRow: View {
     var name: String

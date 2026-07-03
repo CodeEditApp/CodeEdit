@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 import CodeEditCore
 
 struct HistoryInspectorItemView: View {

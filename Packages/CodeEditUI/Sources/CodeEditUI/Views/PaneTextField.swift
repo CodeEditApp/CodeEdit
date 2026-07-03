@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-import CodeEditUI
 import Combine
 
-struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View {
+public struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View {
     @Environment(\.colorScheme)
     var colorScheme
 
@@ -34,7 +33,7 @@ struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View 
 
     var hasValue: Bool
 
-    init(
+    public init(
         _ label: String,
         text: Binding<String>,
         axis: Axis? = .horizontal,
@@ -77,7 +76,7 @@ struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View 
         }
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(alignment: .top, spacing: 0) {
             if let leading = leadingAccessories {
                 leading

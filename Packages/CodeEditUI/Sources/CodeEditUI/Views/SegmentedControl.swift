@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// A view that creates a segmented control from an array of text labels.
-struct SegmentedControl: View {
+public struct SegmentedControl: View {
     private var options: [String]
     private var prominent: Bool
 
@@ -20,7 +20,7 @@ struct SegmentedControl: View {
     ///   - options: the options to display as an array of strings.
     ///   - prominent: A Bool indicating whether to use a prominent appearance instead
     ///   of the muted selection color. Defaults to `false`.
-    init(
+    public init(
         _ selection: Binding<Int>,
         options: [String],
         prominent: Bool = false
@@ -30,7 +30,7 @@ struct SegmentedControl: View {
         self.prominent = prominent
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 4) {
             ForEach(options.indices, id: \.self) { index in
                 SegmentedControlItem(
@@ -48,7 +48,7 @@ struct SegmentedControl: View {
     }
 }
 
-struct SegmentedControlItem: View {
+public struct SegmentedControlItem: View {
     private let color: Color = Color(nsColor: .selectedControlColor)
     let label: String
     let active: Bool
@@ -65,7 +65,7 @@ struct SegmentedControlItem: View {
 
     @State var isPressing: Bool = false
 
-    var body: some View {
+    public var body: some View {
         Text(label)
             .font(.subheadline)
             .foregroundColor(textColor)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: View {
     @ObservedObject var viewModel: ViewModel

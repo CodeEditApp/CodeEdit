@@ -7,10 +7,14 @@
 
 import SwiftUI
 
-struct ErrorDescriptionLabel: View {
+public struct ErrorDescriptionLabel: View {
     let error: Error
 
-    var body: some View {
+    public init(error: Error) {
+        self.error = error
+    }
+
+    public var body: some View {
         VStack(alignment: .leading) {
             if let error = error as? LocalizedError {
                 if let description = error.errorDescription {
