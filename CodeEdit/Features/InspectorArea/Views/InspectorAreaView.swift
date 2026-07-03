@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct InspectorAreaView: View {
-    @EnvironmentObject private var workspace: Workspace
     @EnvironmentObject private var editorManager: EditorManager
     @ObservedObject private var extensionManager = ExtensionManager.shared
     @ObservedObject public var viewModel: InspectorAreaViewModel

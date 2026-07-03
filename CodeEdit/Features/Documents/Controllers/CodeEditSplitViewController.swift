@@ -84,7 +84,6 @@ final class CodeEditSplitViewController: NSSplitViewController {
         let workspaceView = SettingsInjector {
             WindowObserver(window: WindowBox(value: windowRef)) {
                 WorkspaceView()
-                    .environmentObject(workspace)
                     .environmentObject(editorManager)
                     .environmentObject(statusBarViewModel)
                     .environmentObject(utilityAreaModel)
@@ -96,6 +95,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environmentObject(workspace.notificationPanel)
                     .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                     .environment(\.workspaceFileURL, workspace.fileURL)
+                    .environment(\.workspaceStatePersistence, workspace.statePersistence)
             }
         }
 
@@ -107,7 +107,6 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
         let inspector = makeInspector(view: SettingsInjector {
             InspectorAreaView(viewModel: InspectorAreaViewModel())
-                .environmentObject(workspace)
                 .environmentObject(editorManager)
                 .environmentObject(sourceControlManager)
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)

@@ -8,7 +8,8 @@ import SwiftUI
 import CodeEditLanguages
 
 struct FileInspectorView: View {
-    @EnvironmentObject private var workspace: Workspace
+    @Environment(\.workspaceFileManager)
+    private var workspaceFileManager
 
     @EnvironmentObject private var editorManager: EditorManager
 
@@ -92,9 +93,9 @@ struct FileInspectorView: View {
                         let destinationURL = file.url
                             .deletingLastPathComponent()
                             .appending(path: fileName)
-                        DispatchQueue.main.async { [weak workspace] in
+                        DispatchQueue.main.async { [weak workspaceFileManager] in
                             do {
-                                if let newItem = try workspace?.workspaceFileManager?.move(
+                                if let newItem = try workspaceFileManager?.move(
                                     file: file,
                                     to: destinationURL
                                 ),
@@ -141,9 +142,9 @@ struct FileInspectorView: View {
                         }
                         // This is ugly but if the tab is opened at the same time as closing the others, it doesn't open
                         // And if the files are re-built at the same time as the tab is opened, it causes a memory error
-                        DispatchQueue.main.async { [weak workspace] in
+                        DispatchQueue.main.async { [weak workspaceFileManager] in
                             do {
-                                guard let newItem = try workspace?.workspaceFileManager?.move(file: file, to: newURL),
+                                guard let newItem = try workspaceFileManager?.move(file: file, to: newURL),
                                       !newItem.isFolder else {
                                     return
                                 }

@@ -23,9 +23,16 @@ struct WorkspaceView: View {
     @AppSettings(\.sourceControl.general.sourceControlIsEnabled)
     var sourceControlIsEnabled
 
-    @EnvironmentObject private var workspace: Workspace
     @EnvironmentObject private var editorManager: EditorManager
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
+    @EnvironmentObject private var sourceControlManager: SourceControlManager
+    @EnvironmentObject private var sourceControlViewModel: SourceControlViewModel
+
+    @Environment(\.workspaceFileManager)
+    private var workspaceFileManager
+
+    @Environment(\.workspaceStatePersistence)
+    private var statePersistence
 
     @StateObject private var themeModel: ThemeModel = .shared
 
@@ -38,9 +45,7 @@ struct WorkspaceView: View {
     private let statusbarHeight: CGFloat = 29
 
     var body: some View {
-        if workspace.workspaceFileManager != nil,
-           let sourceControlManager = workspace.sourceControlManager,
-           let sourceControlViewModel = workspace.sourceControlViewModel {
+        if workspaceFileManager != nil {
             VStack {
                 SplitViewReader { proxy in
                     SplitView(axis: .vertical) {
@@ -112,7 +117,7 @@ struct WorkspaceView: View {
 
                     .onReceive(NotificationCenter.default.publisher(for: NSWindow.willCloseNotification)) { output in
                         if let window = output.object as? NSWindow, self.window == window {
-                            workspace.statePersistence?.set(
+                            statePersistence?.set(
                                 key: .workspaceWindowSize,
                                 value: NSStringFromRect(window.frame)
                             )
