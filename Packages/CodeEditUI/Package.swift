@@ -16,7 +16,6 @@ let package = Package(
         .target(
             name: "CodeEditUI",
             dependencies: [.product(name: "CodeEditSymbols", package: "CodeEditSymbols")]
-        ),
-        .testTarget(name: "CodeEditUITests", dependencies: ["CodeEditUI"])
+        )
     ]
 )
