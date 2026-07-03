@@ -8,10 +8,16 @@
 import SwiftUI
 
 /// A menu styled to resemble a bordered button.
-struct MenuWithButtonStyle<MenuView: View>: View {
+public struct MenuWithButtonStyle<MenuView: View>: View {
     var systemImage: String
     var menu: () -> MenuView
-    var body: some View {
+
+    public init(systemImage: String, menu: @escaping () -> MenuView) {
+        self.systemImage = systemImage
+        self.menu = menu
+    }
+
+    public var body: some View {
         Menu { menu() } label: {}
             .background {
                 Button {} label: {

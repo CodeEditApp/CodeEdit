@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct TaskOutputActionsView: View {
     @ObservedObject var activeTask: CEActiveTask

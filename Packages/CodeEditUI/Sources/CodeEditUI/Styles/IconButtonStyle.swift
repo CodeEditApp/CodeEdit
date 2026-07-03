@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct IconButtonStyle: ButtonStyle {
+public struct IconButtonStyle: ButtonStyle {
     var isActive: Bool?
     var font: Font?
     var size: CGSize?
@@ -30,7 +30,7 @@ struct IconButtonStyle: ButtonStyle {
         self.size = nil
     }
 
-    func makeBody(configuration: ButtonStyle.Configuration) -> some View {
+    public func makeBody(configuration: ButtonStyle.Configuration) -> some View {
         IconButton(
             configuration: configuration,
             isActive: isActive,
@@ -95,7 +95,7 @@ struct IconButtonStyle: ButtonStyle {
     }
 }
 
-extension ButtonStyle where Self == IconButtonStyle {
+public extension ButtonStyle where Self == IconButtonStyle {
     static func icon(
         isActive: Bool? = false,
         font: Font? = Font.system(size: 14.5, weight: .regular, design: .default),

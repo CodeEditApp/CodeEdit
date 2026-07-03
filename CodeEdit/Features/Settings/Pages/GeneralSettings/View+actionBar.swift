@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 extension View {
     func actionBar<Content: View>(@ViewBuilder content: () -> Content) -> some View {

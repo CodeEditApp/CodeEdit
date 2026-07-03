@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct EditorTabBarTrailingAccessories: View {
     @AppSettings(\.textEditing.wrapLinesToEditorWidth)

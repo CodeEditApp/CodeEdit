@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct IconToggleStyle: ToggleStyle {
+public struct IconToggleStyle: ToggleStyle {
     var font: Font?
     var size: CGSize?
 
@@ -28,7 +28,7 @@ struct IconToggleStyle: ToggleStyle {
         self.size = nil
     }
 
-    func makeBody(configuration: ToggleStyle.Configuration) -> some View {
+    public func makeBody(configuration: ToggleStyle.Configuration) -> some View {
         Button(
             action: { configuration.isOn.toggle() },
             label: { configuration.label }
@@ -37,7 +37,7 @@ struct IconToggleStyle: ToggleStyle {
     }
 }
 
-extension ToggleStyle where Self == IconToggleStyle {
+public extension ToggleStyle where Self == IconToggleStyle {
     static func icon(
         font: Font? = Font.system(size: 14.5, weight: .regular, design: .default),
         size: CGFloat? = 24

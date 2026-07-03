@@ -1,11 +1,11 @@
 import SwiftUI
 
 /// A button style for overlay buttons (like close, action buttons in notifications)
-struct OverlayButtonStyle: ButtonStyle {
+public struct OverlayButtonStyle: ButtonStyle {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    func makeBody(configuration: Configuration) -> some View {
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 10))
             .foregroundColor(.secondary)
@@ -26,7 +26,7 @@ struct OverlayButtonStyle: ButtonStyle {
     }
 }
 
-extension ButtonStyle where Self == OverlayButtonStyle {
+public extension ButtonStyle where Self == OverlayButtonStyle {
     /// A button style for overlay buttons
     static var overlay: OverlayButtonStyle {
         OverlayButtonStyle()

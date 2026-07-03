@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct ThemeSettingsThemeToken: View {
     var label: String

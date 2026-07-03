@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct UtilityAreaTabView<Content: View, LeadingSidebar: View, TrailingSidebar: View>: View {
     @ObservedObject var model: UtilityAreaTabViewModel

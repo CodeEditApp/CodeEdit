@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 /// Accessory icon's view for tab bar.
 struct EditorTabBarAccessoryIcon: View {

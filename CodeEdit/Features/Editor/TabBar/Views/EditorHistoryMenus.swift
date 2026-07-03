@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct EditorHistoryMenus: View {
     @EnvironmentObject private var editorManager: EditorManager

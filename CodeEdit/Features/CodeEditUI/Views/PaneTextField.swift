@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 import Combine
 
 struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>: View {

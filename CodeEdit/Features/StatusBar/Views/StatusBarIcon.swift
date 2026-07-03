@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 /// Accessory icon view for status bar.
 struct StatusBarIcon: View {

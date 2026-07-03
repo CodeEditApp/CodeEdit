@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 import Factory
 
 internal struct StatusBarToggleUtilityAreaButton: View {

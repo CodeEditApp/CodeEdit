@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct PaneToolbar<Content: View>: View {
     @ViewBuilder var content: Content

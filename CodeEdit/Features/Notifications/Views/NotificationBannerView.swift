@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct NotificationBannerView: View {
     @Environment(\.colorScheme)
