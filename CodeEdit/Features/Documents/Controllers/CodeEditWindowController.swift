@@ -180,7 +180,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     self.panelOpen = false
                 } openFile: { file in
                     workspace.editorManager?.openTab(item: file)
-                }.environmentObject(workspace)
+                }.environment(\.workspaceFileManager, workspace.workspaceFileManager)
 
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)

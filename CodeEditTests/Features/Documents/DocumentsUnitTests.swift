@@ -30,6 +30,7 @@ final class DocumentsUnitTests: XCTestCase {
             shellClient: Container.shared.shellClient()
         )
         workspace.sourceControlViewModel = SourceControlViewModel()
+        workspace.searchState = SearchState(workspaceURL: URL(filePath: "/tmp"))
         window = NSWindow()
         splitViewController = .init(
             workspace: workspace,

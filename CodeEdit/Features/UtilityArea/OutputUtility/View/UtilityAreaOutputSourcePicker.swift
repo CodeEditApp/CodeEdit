@@ -11,7 +11,8 @@ import Factory
 struct UtilityAreaOutputSourcePicker: View {
     typealias Sources = UtilityAreaOutputView.Sources
 
-    @EnvironmentObject private var workspace: Workspace
+    @Environment(\.workspaceFileURL)
+    private var workspaceFileURL
 
     @AppSettings(\.developerSettings.showInternalDevelopmentInspector)
     var showInternalDevelopmentInspector
@@ -77,7 +78,7 @@ struct UtilityAreaOutputSourcePicker: View {
     func updateLanguageServers(_ clients: [LSPService.ClientKey: LSPService.LanguageServerType]) {
         languageServerClients = clients
             .compactMap { (key, value) in
-                if key.workspacePath == workspace.fileURL?.absolutePath {
+                if key.workspacePath == workspaceFileURL?.absolutePath {
                     return value
                 }
                 return nil

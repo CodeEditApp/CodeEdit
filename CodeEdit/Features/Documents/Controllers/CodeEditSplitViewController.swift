@@ -57,6 +57,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
               let projectNavigatorViewModel = workspace.projectNavigatorViewModel,
               let sourceControlManager = workspace.sourceControlManager,
               let sourceControlViewModel = workspace.sourceControlViewModel,
+              let searchState = workspace.searchState,
               let taskManager = workspace.taskManager else {
             // swiftlint:disable:next line_length
             assertionFailure("Missing a workspace model: workspace=\(workspace == nil), navigator=\(navigatorViewModel == nil), editorManager=\(workspace?.editorManager == nil), statusBarModel=\(workspace?.statusBarViewModel == nil), utilityAreaModel=\(workspace?.utilityAreaModel == nil), taskManager=\(workspace?.taskManager == nil)")
@@ -73,6 +74,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .environmentObject(projectNavigatorViewModel)
                 .environmentObject(sourceControlManager)
                 .environmentObject(sourceControlViewModel)
+                .environmentObject(searchState)
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                 .environment(\.workspaceFileURL, workspace.fileURL)
         })

@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct OpenQuicklyView: View {
-    @EnvironmentObject private var workspace: Workspace
+    @Environment(\.workspaceFileManager)
+    private var workspaceFileManager
 
     private let onClose: () -> Void
     private let openFile: (CEWorkspaceFile) -> Void
@@ -42,7 +43,7 @@ struct OpenQuicklyView: View {
         } preview: { searchResult in
             OpenQuicklyPreviewView(item: CEWorkspaceFile(url: searchResult.fileURL))
         } onRowClick: { searchResult in
-            guard let file = workspace.workspaceFileManager?.getFile(
+            guard let file = workspaceFileManager?.getFile(
                 searchResult.fileURL.relativePath,
                 createIfNotFound: true
             ) else {

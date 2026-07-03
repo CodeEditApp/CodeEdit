@@ -10,7 +10,9 @@ import SwiftUI
 /// The view that displays the list of available terminals in the utility area.
 /// See ``UtilityAreaTerminalView`` for use.
 struct UtilityAreaTerminalSidebar: View {
-    @EnvironmentObject private var workspace: Workspace
+    @Environment(\.workspaceFileURL)
+    private var workspaceFileURL
+
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
     var body: some View {
@@ -34,29 +36,29 @@ struct UtilityAreaTerminalSidebar: View {
         .accentColor(.secondary)
         .contextMenu {
             Button("New Terminal") {
-                utilityAreaViewModel.addTerminal(rootURL: workspace.fileURL)
+                utilityAreaViewModel.addTerminal(rootURL: workspaceFileURL)
             }
             Menu("New Terminal With Profile") {
                 Button("Default") {
-                    utilityAreaViewModel.addTerminal(rootURL: workspace.fileURL)
+                    utilityAreaViewModel.addTerminal(rootURL: workspaceFileURL)
                 }
                 Divider()
                 ForEach(Shell.allCases, id: \.self) { shell in
                     Button(shell.rawValue) {
-                        utilityAreaViewModel.addTerminal(shell: shell, rootURL: workspace.fileURL)
+                        utilityAreaViewModel.addTerminal(shell: shell, rootURL: workspaceFileURL)
                     }
                 }
             }
         }
         .onChange(of: utilityAreaViewModel.terminals) { _, newValue in
             if newValue.isEmpty {
-                utilityAreaViewModel.addTerminal(rootURL: workspace.fileURL)
+                utilityAreaViewModel.addTerminal(rootURL: workspaceFileURL)
             }
         }
         .paneToolbar {
             PaneToolbarSection {
                 Button {
-                    utilityAreaViewModel.addTerminal(rootURL: workspace.fileURL)
+                    utilityAreaViewModel.addTerminal(rootURL: workspaceFileURL)
                 } label: {
                     Image(systemName: "plus")
                 }

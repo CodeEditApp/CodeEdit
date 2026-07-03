@@ -214,11 +214,11 @@ extension CodeEditWindowController {
         let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.startTaskSidebarItem)
 
         guard let taskManager = workspace?.taskManager else { return nil }
-        guard let workspace = workspace else { return nil }
+        guard let utilityAreaModel = workspace?.utilityAreaModel else { return nil }
 
         let view = NSHostingView(
             rootView: StartTaskToolbarButton(taskManager: taskManager)
-                .environmentObject(workspace)
+                .environmentObject(utilityAreaModel)
         )
         toolbarItem.view = view
 

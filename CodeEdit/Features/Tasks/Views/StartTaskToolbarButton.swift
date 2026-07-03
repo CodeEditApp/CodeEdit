@@ -13,10 +13,10 @@ struct StartTaskToolbarButton: View {
     private var activeState
 
     @ObservedObject var taskManager: TaskManager
-    @EnvironmentObject var workspace: Workspace
+    @EnvironmentObject var utilityAreaModel: UtilityAreaViewModel
 
     var utilityAreaCollapsed: Bool {
-        workspace.utilityAreaModel?.isCollapsed ?? true
+        utilityAreaModel.isCollapsed
     }
 
     var body: some View {
@@ -25,7 +25,7 @@ struct StartTaskToolbarButton: View {
             if utilityAreaCollapsed {
                 Container.shared.commandManager().executeCommand("open.drawer")
             }
-            workspace.utilityAreaModel?.selectedTab = .debugConsole
+            utilityAreaModel.selectedTab = .debugConsole
             taskManager.taskShowingOutput = taskManager.selectedTaskID
         } label: {
             Label("Start", systemImage: "play.fill")

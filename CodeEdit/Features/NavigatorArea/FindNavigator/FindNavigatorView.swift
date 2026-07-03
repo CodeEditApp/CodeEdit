@@ -8,13 +8,7 @@
 import SwiftUI
 
 struct FindNavigatorView: View {
-    @EnvironmentObject private var workspace: Workspace
-
-    private var state: SearchState {
-        // SearchState is always initialized in Workspace.initWorkspaceState
-        // before any views are created, so this is safe to force unwrap.
-        workspace.searchState!
-    }
+    @EnvironmentObject private var state: SearchState
 
     @State private var foundFilesCount: Int = 0
     @State private var searchResultCount: Int = 0

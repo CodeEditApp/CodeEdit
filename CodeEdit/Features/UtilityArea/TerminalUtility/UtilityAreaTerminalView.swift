@@ -25,7 +25,8 @@ struct UtilityAreaTerminalView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject private var workspace: Workspace
+    @Environment(\.workspaceFileURL)
+    private var workspaceFileURL
 
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
@@ -162,7 +163,7 @@ struct UtilityAreaTerminalView: View {
             UtilityAreaTerminalSidebar()
         }
         .onAppear {
-            guard let workspaceURL = workspace.fileURL else {
+            guard let workspaceURL = workspaceFileURL else {
                 assertionFailure("Workspace does not have a file URL.")
                 return
             }
