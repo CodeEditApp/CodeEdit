@@ -39,6 +39,11 @@ final class Workspace: ObservableObject, WorkspaceManaging {
 
     var notificationPanel = NotificationPanelViewModel()
 
+    /// The original (possibly bookmark-derived) security-scoped URL whose access is held for this
+    /// workspace's lifetime. Set by `WorkspaceFactory` when the URL is security-scoped (e.g. opened
+    /// from recents in the sandbox); released in ``tearDown()``.
+    var securityScopedURL: URL?
+
     // MARK: - Initialization
 
     init(url: URL) {
@@ -71,6 +76,9 @@ final class Workspace: ObservableObject, WorkspaceManaging {
         workspaceSettingsManager = nil
         taskManager = nil
         statePersistence = nil
+
+        securityScopedURL?.stopAccessingSecurityScopedResource()
+        securityScopedURL = nil
     }
 
     // MARK: - Unsaved Changes

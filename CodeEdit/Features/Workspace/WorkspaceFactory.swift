@@ -26,6 +26,14 @@ enum WorkspaceFactory {
     ///   - url: The root URL of the workspace folder.
     @MainActor
     static func populate(_ workspace: Workspace, url: URL) {
+        // Begin security-scoped access on the original (possibly bookmark-derived) URL so a
+        // sandboxed build can read a workspace opened from recents. `startAccessingSecurityScopedResource`
+        // returns `false` for non-scoped URLs (e.g. from the open panel / Powerbox), which access
+        // fine without it. Released in `Workspace.tearDown`.
+        if url.startAccessingSecurityScopedResource() {
+            workspace.securityScopedURL = url
+        }
+
         // Normalize the URL to always end with "/"
         var url = url
         if !url.absoluteString.hasSuffix("/") {
