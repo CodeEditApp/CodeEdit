@@ -68,7 +68,8 @@ final class ProjectNavigatorViewController: NSViewController {
     var shouldReloadAfterDoneEditing: Bool = false
 
     var filterIsEmpty: Bool {
-        workspace?.navigatorFilter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true
+        workspace?.projectNavigatorViewModel?.navigatorFilter
+            .trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true
     }
 
     /// Setup the ``scrollView`` and ``outlineView``
@@ -200,7 +201,7 @@ final class ProjectNavigatorViewController: NSViewController {
         guard let workspace else { return }
 
         /// If the filter is empty, show all items and restore the expanded state.
-        if workspace.sourceControlFilter || !filterIsEmpty {
+        if workspace.projectNavigatorViewModel?.sourceControlFilter == true || !filterIsEmpty {
             outlineView.autosaveExpandedItems = false
             /// Expand all items for search.
             outlineView.expandItem(outlineView.item(atRow: 0), expandChildren: true)

@@ -29,7 +29,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             frame: frameRect,
             item: item as? CEWorkspaceFile,
             delegate: self,
-            navigatorFilter: workspace?.navigatorFilter
+            navigatorFilter: workspace?.projectNavigatorViewModel?.navigatorFilter
         )
         return cell
     }
@@ -61,7 +61,8 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineViewItemDidExpand(_ notification: Notification) {
         /// Save expanded items' state to restore when finish filtering.
         guard let workspace else { return }
-        if workspace.navigatorFilter.isEmpty, let item = notification.userInfo?["NSObject"] as? CEWorkspaceFile {
+        if workspace.projectNavigatorViewModel?.navigatorFilter.isEmpty ?? true,
+           let item = notification.userInfo?["NSObject"] as? CEWorkspaceFile {
             expandedItems.insert(item)
         }
 
@@ -80,7 +81,8 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineViewItemDidCollapse(_ notification: Notification) {
         /// Save expanded items' state to restore when finish filtering.
         guard let workspace else { return }
-        if workspace.navigatorFilter.isEmpty, let item = notification.userInfo?["NSObject"] as? CEWorkspaceFile {
+        if workspace.projectNavigatorViewModel?.navigatorFilter.isEmpty ?? true,
+           let item = notification.userInfo?["NSObject"] as? CEWorkspaceFile {
             expandedItems.remove(item)
         }
     }

@@ -65,18 +65,23 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
                     self?.controller?.updateSelection(itemID: editorInstance?.file.id)
                 }
                 .store(in: &cancellables)
-            workspace.$navigatorFilter
-                .throttle(for: 0.1, scheduler: RunLoop.main, latest: true)
-                .sink { [weak self] _ in
-                    self?.controller?.handleFilterChange()
-                }
-                .store(in: &cancellables)
-            Publishers.Merge(workspace.$sourceControlFilter, workspace.$sortFoldersOnTop)
-                .throttle(for: 0.1, scheduler: RunLoop.main, latest: true)
-                .sink { [weak self] _ in
-                    self?.controller?.handleFilterChange()
-                }
-                .store(in: &cancellables)
+            if let projectNavigatorViewModel = workspace.projectNavigatorViewModel {
+                projectNavigatorViewModel.$navigatorFilter
+                    .throttle(for: 0.1, scheduler: RunLoop.main, latest: true)
+                    .sink { [weak self] _ in
+                        self?.controller?.handleFilterChange()
+                    }
+                    .store(in: &cancellables)
+                Publishers.Merge(
+                    projectNavigatorViewModel.$sourceControlFilter,
+                    projectNavigatorViewModel.$sortFoldersOnTop
+                )
+                    .throttle(for: 0.1, scheduler: RunLoop.main, latest: true)
+                    .sink { [weak self] _ in
+                        self?.controller?.handleFilterChange()
+                    }
+                    .store(in: &cancellables)
+            }
         }
 
         var cancellables: Set<AnyCancellable> = []

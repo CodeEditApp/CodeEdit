@@ -28,7 +28,5 @@ protocol WorkspaceManaging: AnyObject, ObservableObject {
     var undoRegistration: UndoManagerRegistration { get }
     var notificationPanel: NotificationPanelViewModel { get }
     var taskNotificationHandler: TaskNotificationHandler { get }
-    var navigatorFilter: String { get set }
-    var sourceControlFilter: Bool { get set }
-    var sortFoldersOnTop: Bool { get set }
+    var projectNavigatorViewModel: ProjectNavigatorViewModel? { get }
 }

@@ -13,9 +13,7 @@ import Foundation
 /// Replaces `WorkspaceDocument` (NSDocument) with no framework coupling.
 @MainActor
 final class Workspace: ObservableObject, WorkspaceManaging {
-    @Published var sortFoldersOnTop: Bool = true
-    @Published var navigatorFilter: String = ""
-    @Published var sourceControlFilter = false
+    var projectNavigatorViewModel: ProjectNavigatorViewModel? = ProjectNavigatorViewModel()
 
     var fileURL: URL?
     var displayName: String = ""
@@ -66,6 +64,7 @@ final class Workspace: ObservableObject, WorkspaceManaging {
         commandsPaletteState = nil
         sourceControlManager = nil
         sourceControlViewModel = nil
+        projectNavigatorViewModel = nil
         workspaceFileManager?.cleanUp()
         workspaceFileManager = nil
         workspaceSettingsManager?.cleanUp()

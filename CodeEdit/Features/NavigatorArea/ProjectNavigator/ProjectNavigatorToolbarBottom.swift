@@ -14,8 +14,12 @@ struct ProjectNavigatorToolbarBottom: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject var workspace: Workspace
     @EnvironmentObject var editorManager: EditorManager
+    @EnvironmentObject var listenerModel: WorkspaceNotificationModel
+    @EnvironmentObject var projectNavigatorViewModel: ProjectNavigatorViewModel
+
+    @Environment(\.workspaceFileManager)
+    private var workspaceFileManager
 
     @State var recentsFilter: Bool = false
 
@@ -24,23 +28,23 @@ struct ProjectNavigatorToolbarBottom: View {
             addNewFileButton
             PaneTextField(
                 "Filter",
-                text: $workspace.navigatorFilter,
+                text: $projectNavigatorViewModel.navigatorFilter,
                 leadingAccessories: {
                     FilterDropDownIconButton(menu: {
                         ForEach([(true, "Folders on top"), (false, "Alphabetically")], id: \.0) { value, title in
                             Toggle(title, isOn: Binding(get: {
-                                workspace.sortFoldersOnTop == value
+                                projectNavigatorViewModel.sortFoldersOnTop == value
                             }, set: { _ in
                                 // Avoid calling the handleFilterChange method
-                                if workspace.sortFoldersOnTop != value {
-                                    workspace.sortFoldersOnTop = value
+                                if projectNavigatorViewModel.sortFoldersOnTop != value {
+                                    projectNavigatorViewModel.sortFoldersOnTop = value
                                 }
                             }))
                         }
-                    }, isOn: !workspace.navigatorFilter.isEmpty)
+                    }, isOn: !projectNavigatorViewModel.navigatorFilter.isEmpty)
                     .padding(.leading, 4)
                     .foregroundStyle(
-                        workspace.navigatorFilter.isEmpty
+                        projectNavigatorViewModel.navigatorFilter.isEmpty
                         ? Color(nsColor: .secondaryLabelColor)
                         : Color(nsColor: .controlAccentColor)
                     )
@@ -52,7 +56,7 @@ struct ProjectNavigatorToolbarBottom: View {
                             Image(systemName: "clock")
                         }
                         .help("Show only recent files")
-                        Toggle(isOn: $workspace.sourceControlFilter) {
+                        Toggle(isOn: $projectNavigatorViewModel.sourceControlFilter) {
                             Image(systemName: "plusminus.circle")
                         }
                         .help("Show only files with source-control status")
@@ -61,7 +65,9 @@ struct ProjectNavigatorToolbarBottom: View {
                     .padding(.trailing, 2.5)
                 },
                 clearable: true,
-                hasValue: !workspace.navigatorFilter.isEmpty || recentsFilter || workspace.sourceControlFilter
+                hasValue: !projectNavigatorViewModel.navigatorFilter.isEmpty
+                    || recentsFilter
+                    || projectNavigatorViewModel.sourceControlFilter
             )
         }
         .padding(.horizontal, 5)
@@ -93,21 +99,21 @@ struct ProjectNavigatorToolbarBottom: View {
             }
         }
 
-        return workspace.workspaceFileManager.unsafelyUnwrapped.folderUrl
+        return workspaceFileManager.unsafelyUnwrapped.folderUrl
     }
 
     private var addNewFileButton: some View {
         Menu {
             Button("Add File") {
                 let filePathURL = activeTabURL()
-                guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
+                guard let rootFile = workspaceFileManager?.getFile(filePathURL.path) else { return }
                 do {
-                    if let newFile = try workspace.workspaceFileManager?.addFile(
+                    if let newFile = try workspaceFileManager?.addFile(
                         fileName: "untitled",
                         toFile: rootFile
                     ) {
-                        workspace.listenerModel.highlightedFileItem = newFile
-                        workspace.editorManager?.openTab(item: newFile)
+                        listenerModel.highlightedFileItem = newFile
+                        editorManager.openTab(item: newFile)
                     }
                 } catch {
                     let alert = NSAlert(error: error)
@@ -118,13 +124,13 @@ struct ProjectNavigatorToolbarBottom: View {
 
             Button("Add Folder") {
                 let filePathURL = activeTabURL()
-                guard let rootFile = workspace.workspaceFileManager?.getFile(filePathURL.path) else { return }
+                guard let rootFile = workspaceFileManager?.getFile(filePathURL.path) else { return }
                 do {
-                    if let newFolder = try workspace.workspaceFileManager?.addFolder(
+                    if let newFolder = try workspaceFileManager?.addFolder(
                         folderName: "untitled",
                         toFile: rootFile
                     ) {
-                        workspace.listenerModel.highlightedFileItem = newFolder
+                        listenerModel.highlightedFileItem = newFolder
                     }
                 } catch {
                     let alert = NSAlert(error: error)
@@ -149,7 +155,7 @@ struct ProjectNavigatorToolbarBottom: View {
     /// when the user clears the filter.
     private var clearFilterButton: some View {
         Button {
-            workspace.navigatorFilter = ""
+            projectNavigatorViewModel.navigatorFilter = ""
             NSApp.keyWindow?.makeFirstResponder(nil)
         } label: {
             Image(systemName: "xmark.circle.fill")

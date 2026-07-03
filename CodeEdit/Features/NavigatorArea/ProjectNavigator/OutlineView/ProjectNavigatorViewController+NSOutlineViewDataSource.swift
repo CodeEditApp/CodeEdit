@@ -13,17 +13,22 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
         if let cachedChildren = filteredContentChildren[item] {
             return cachedChildren
                 .sorted { lhs, rhs in
-                    workspace?.sortFoldersOnTop == true ? lhs.isFolder && !rhs.isFolder : lhs.name < rhs.name
+                    workspace?.projectNavigatorViewModel?.sortFoldersOnTop == true
+                        ? lhs.isFolder && !rhs.isFolder : lhs.name < rhs.name
                 }
         }
 
         if let workspace, let children = workspace.workspaceFileManager?.childrenOfFile(item) {
-            if !workspace.navigatorFilter.isEmpty || workspace.sourceControlFilter {
+            let navigatorFilter = workspace.projectNavigatorViewModel?.navigatorFilter ?? ""
+            let sourceControlFilter = workspace.projectNavigatorViewModel?.sourceControlFilter ?? false
+            let sortFoldersOnTop = workspace.projectNavigatorViewModel?.sortFoldersOnTop ?? true
+
+            if !navigatorFilter.isEmpty || sourceControlFilter {
                 let filteredChildren = children.filter {
                     fileSearchMatches(
-                        workspace.navigatorFilter,
+                        navigatorFilter,
                         for: $0,
-                        sourceControlFilter: workspace.sourceControlFilter
+                        sourceControlFilter: sourceControlFilter
                     )
                 }
 
@@ -33,7 +38,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
 
             return children
                 .sorted { lhs, rhs in
-                    workspace.sortFoldersOnTop ? lhs.isFolder && !rhs.isFolder : lhs.name < rhs.name
+                    sortFoldersOnTop ? lhs.isFolder && !rhs.isFolder : lhs.name < rhs.name
                 }
         }
 
