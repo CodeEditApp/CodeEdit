@@ -49,6 +49,11 @@ playground.xcworkspace
 
 .build/
 
+# Per-package resolved files for local workspace packages — the workspace's
+# shared Package.resolved is authoritative; these are Xcode-generated noise.
+Packages/*/Package.resolved
+Packages/*/.swiftpm/
+
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However

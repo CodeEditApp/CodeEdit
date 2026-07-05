@@ -13,4 +13,7 @@
    <FileRef
       location = "group:Packages/Search">
    </FileRef>
+   <FileRef
+      location = "group:Packages/CodeEditServices">
+   </FileRef>
 </Workspace>
