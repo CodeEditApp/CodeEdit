@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 import SwiftUI
 
 /// View that fixes [#1158](https://github.com/CodeEditApp/CodeEdit/issues/1158)

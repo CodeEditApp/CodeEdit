@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import CodeEditCore
 import CodeEditTextView
 import CodeEditSourceEditor
 import LanguageClient

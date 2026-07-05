@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 
 enum EditorLayout: Equatable {
     case one(Editor)

@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditCore
 
 final class ProjectNavigatorNSOutlineView: NSOutlineView, NSMenuItemValidation {
     override func performKeyEquivalent(with event: NSEvent) -> Bool {

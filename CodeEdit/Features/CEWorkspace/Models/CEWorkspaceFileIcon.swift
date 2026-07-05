@@ -6,90 +6,10 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 // TODO: DOCS (Nanashi Li)
 enum FileIcon {
-
-    // swiftlint:disable identifier_name
-    enum FileType: String {
-        case adb
-        case aif
-        case avi
-        case bash
-        case c
-        case cetheme
-        case clj
-        case cls
-        case cs
-        case css
-        case d
-        case dart
-        case elm
-        case entitlements
-        case env
-        case ex
-        case example
-        case f95
-        case fs
-        case gitignore
-        case go
-        case gs
-        case h
-        case hs
-        case html
-        case ico
-        case java
-        case jl
-        case jpeg
-        case jpg
-        case js
-        case json
-        case jsx
-        case kt
-        case l
-        case LICENSE
-        case lock
-        case lsp
-        case lua
-        case m
-        case Makefile
-        case md
-        case mid
-        case mjs
-        case mk
-        case mod
-        case mov
-        case mp3
-        case mp4
-        case pas
-        case pdf
-        case pl
-        case plist
-        case png
-        case py
-        case resolved
-        case rb
-        case rs
-        case rtf
-        case scm
-        case scpt
-        case sh
-        case ss
-        case strings
-        case sum
-        case svg
-        case swift
-        case ts
-        case tsx
-        case txt = "text"
-        case vue
-        case wav
-        case xcconfig
-        case yml
-        case zsh
-    }
-
-    // swiftlint:enable identifier_name
 
     /// Returns a string describing a SFSymbol for files
     /// If not specified otherwise this will return `"doc"`

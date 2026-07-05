@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 import Combine
 
 class WorkspaceNotificationModel: ObservableObject {

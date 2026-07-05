@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 import Combine
 
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`

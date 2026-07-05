@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditCore
 import SwiftUI
 
 extension ProjectNavigatorMenu {

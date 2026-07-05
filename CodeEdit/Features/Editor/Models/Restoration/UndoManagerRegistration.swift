@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 import CodeEditTextView
 
 /// Very simple class for registering undo manager for files for a project session. This does not do any saving, it

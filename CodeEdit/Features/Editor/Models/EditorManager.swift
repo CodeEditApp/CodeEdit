@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CodeEditCore
 import Foundation
 import DequeModule
 import os

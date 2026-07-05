@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 import CodeEditUI
 import Notifications
 import UniformTypeIdentifiers

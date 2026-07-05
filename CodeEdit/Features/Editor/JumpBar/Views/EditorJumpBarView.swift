@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 struct EditorJumpBarView: View {
     private let file: CEWorkspaceFile?

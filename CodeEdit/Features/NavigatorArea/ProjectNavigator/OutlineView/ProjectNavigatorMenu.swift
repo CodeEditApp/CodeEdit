@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 import UniformTypeIdentifiers
 
 /// A subclass of `NSMenu` implementing the contextual menu for the project navigator

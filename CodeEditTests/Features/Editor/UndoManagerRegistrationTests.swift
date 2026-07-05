@@ -7,6 +7,7 @@
 
 @testable import CodeEdit
 import Testing
+import CodeEditCore
 import Foundation
 import CodeEditTextView
 

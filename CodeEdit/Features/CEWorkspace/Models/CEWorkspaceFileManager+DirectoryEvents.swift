@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 
 /// This extension handles the file system events triggered by changes in the root folder.
 extension CEWorkspaceFileManager {

@@ -5,6 +5,7 @@
 //  Created by Marco Carnevali on 16/03/22.
 //
 import Combine
+import CodeEditCore
 import Foundation
 import XCTest
 @testable import CodeEdit

@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditCore
 
 extension ProjectNavigatorViewController: NSOutlineViewDataSource {
     /// Retrieves the children of a given item for the outline view, applying the current filter if necessary.

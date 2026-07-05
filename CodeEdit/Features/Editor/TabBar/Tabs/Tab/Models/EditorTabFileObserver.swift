@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 import SwiftUI
 
 /// Observer ViewModel for tracking file deletion

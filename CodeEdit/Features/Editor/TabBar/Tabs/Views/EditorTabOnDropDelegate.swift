@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 struct EditorTabOnDropDelegate: DropDelegate {
     typealias TabID = CEWorkspaceFile.ID

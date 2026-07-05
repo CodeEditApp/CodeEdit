@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 struct OpenQuicklyView: View {
     @Environment(\.workspaceFileManager)

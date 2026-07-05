@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 import Search
 import SwiftUI
 import OrderedCollections

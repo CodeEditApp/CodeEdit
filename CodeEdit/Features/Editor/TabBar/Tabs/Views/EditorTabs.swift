@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 import CodeEditUI
 
 // - TODO: EditorTabView drop-outside event handler.

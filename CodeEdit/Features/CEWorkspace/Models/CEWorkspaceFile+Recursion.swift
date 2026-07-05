@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 
 extension CEWorkspaceFile {
     /// Flattens the children of `self` recursively with depth.

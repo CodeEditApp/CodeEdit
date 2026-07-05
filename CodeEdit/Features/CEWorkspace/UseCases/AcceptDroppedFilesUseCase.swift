@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 
 /// Resolves dropped file URLs into copy/move operations, handling source resolution and replace conflicts.
 @MainActor

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 struct WorkspaceMenuItemView: View {
     var workspaceFileManager: CEWorkspaceFileManager?
