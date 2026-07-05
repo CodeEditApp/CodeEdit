@@ -6,6 +6,7 @@
 //
 
 import Testing
+import ShellClient
 @testable import CodeEdit
 
 @Suite

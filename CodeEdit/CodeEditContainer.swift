@@ -6,6 +6,7 @@
 //
 
 import CodeEditCore
+import ShellClient
 import Factory
 
 extension Container {

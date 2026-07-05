@@ -10,14 +10,19 @@ import Foundation
 import CodeEditCore
 
 /// Errors that can occur during shell operations
-enum ShellClientError: Error {
+public enum ShellClientError: Error {
     case failedToDecodeOutput
     case taskTerminated(code: Int)
 }
 
 /// Shell Client
 /// Run commands in shell
-final class ShellClient: ShellClientProtocol {
+///
+/// `@unchecked Sendable`: the only mutable state, `cancellables`, is confined
+/// by `cancellablesLock`; everything else is immutable per call.
+public final class ShellClient: ShellClientProtocol, @unchecked Sendable {
+    public init() {}
+
     /// Generate a process and pipe to run commands
     /// - Parameter args: commands to run
     /// - Returns: command output
@@ -35,14 +40,15 @@ final class ShellClient: ShellClientProtocol {
         return (task, pipe)
     }
 
-    /// Cancellable tasks
+    private let cancellablesLock = NSLock()
+    /// Cancellable tasks. Access only while holding `cancellablesLock`.
     private var cancellables: [UUID: AnyCancellable] = [:]
 
     /// Run a command
     /// - Parameter args: command to run
     /// - Returns: command output
     @discardableResult
-    func run(_ args: [String]) throws -> String {
+    public func run(_ args: [String]) throws -> String {
         let (task, pipe) = generateProcessAndPipe(args)
         try task.run()
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
@@ -56,7 +62,7 @@ final class ShellClient: ShellClientProtocol {
     /// - Parameter args: command to run
     /// - Returns: command output
     @discardableResult
-    func runLive(_ args: [String]) -> AnyPublisher<String, Never> {
+    public func runLive(_ args: [String]) -> AnyPublisher<String, Never> {
         let subject = PassthroughSubject<String, Never>()
         let (task, pipe) = generateProcessAndPipe(args)
         let outputHandler = pipe.fileHandleForReading
@@ -64,16 +70,20 @@ final class ShellClient: ShellClientProtocol {
         // the Notification with Name: `NSFileHandleDataAvailable`
         outputHandler.waitForDataInBackgroundAndNotify()
         let id = UUID()
-        self.cancellables[id] = NotificationCenter
+        let cancellable = NotificationCenter
             .default
             .publisher(for: .NSFileHandleDataAvailable, object: outputHandler)
-            .sink { _ in
+            .sink { [weak self] _ in
                 let data = outputHandler.availableData
                 guard !data.isEmpty else {
                     // if no data is available anymore
                     // we should cancel this cancellable
                     // and mark the subject as finished
-                    self.cancellables.removeValue(forKey: id)
+                    if let self {
+                        self.cancellablesLock.withLock {
+                            _ = self.cancellables.removeValue(forKey: id)
+                        }
+                    }
                     subject.send(completion: .finished)
                     return
                 }
@@ -85,6 +95,9 @@ final class ShellClient: ShellClientProtocol {
                     .forEach({ subject.send(String($0)) })
                 outputHandler.waitForDataInBackgroundAndNotify()
             }
+        cancellablesLock.withLock {
+            cancellables[id] = cancellable
+        }
         task.launch()
         return subject.eraseToAnyPublisher()
     }
@@ -92,7 +105,7 @@ final class ShellClient: ShellClientProtocol {
     /// Run a command with AsyncStream
     /// - Parameter args: command to run
     /// - Returns: async stream of command output
-    func runAsync(_ args: [String]) -> AsyncThrowingStream<String, Error> {
+    public func runAsync(_ args: [String]) -> AsyncThrowingStream<String, Error> {
         let (task, pipe) = generateProcessAndPipe(args)
 
         return AsyncThrowingStream { continuation in
