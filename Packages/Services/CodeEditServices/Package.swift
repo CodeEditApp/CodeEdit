@@ -12,7 +12,7 @@ let package = Package(
         .library(name: "CodeEditServices", targets: ["ShellClient"])
     ],
     dependencies: [
-        .package(path: "../CodeEditCore")
+        .package(path: "../../Foundation/CodeEditCore")
     ],
     targets: [
         // Tier rule: service targets depend on CodeEditCore ONLY —

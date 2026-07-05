@@ -15,7 +15,8 @@ identifier_name:
 
 # paths to ignore during linting.
 excluded:
-  - CodeEditModules/.build # Where Swift Package Manager checks out dependency sources
+  - "**/.build" # SwiftPM dependency checkouts (inside any local package under Packages/)
+  - "**/.swiftpm"
   - DerivedData
 
 opt_in_rules:

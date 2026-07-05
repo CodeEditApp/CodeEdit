@@ -4,16 +4,28 @@
    <FileRef
       location = "container:CodeEdit.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Packages/CodeEditCore">
-   </FileRef>
-   <FileRef
-      location = "group:Packages/CodeEditUI">
-   </FileRef>
-   <FileRef
-      location = "group:Packages/Search">
-   </FileRef>
-   <FileRef
-      location = "group:Packages/CodeEditServices">
-   </FileRef>
+   <Group
+      location = "group:Packages/Foundation"
+      name = "Foundation">
+      <FileRef
+         location = "group:CodeEditCore">
+      </FileRef>
+      <FileRef
+         location = "group:CodeEditUI">
+      </FileRef>
+   </Group>
+   <Group
+      location = "group:Packages/Services"
+      name = "Services">
+      <FileRef
+         location = "group:CodeEditServices">
+      </FileRef>
+   </Group>
+   <Group
+      location = "group:Packages/Features"
+      name = "Features">
+      <FileRef
+         location = "group:Search">
+      </FileRef>
+   </Group>
 </Workspace>

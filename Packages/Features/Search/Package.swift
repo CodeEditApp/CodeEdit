@@ -9,8 +9,8 @@ let package = Package(
         .library(name: "Search", targets: ["Search"])
     ],
     dependencies: [
-        .package(path: "../CodeEditCore"),
-        .package(path: "../CodeEditUI"),
+        .package(path: "../../Foundation/CodeEditCore"),
+        .package(path: "../../Foundation/CodeEditUI"),
         .package(url: "https://github.com/hmlongco/Factory", exact: "2.5.3")
     ],
     targets: [
