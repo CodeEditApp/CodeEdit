@@ -27,5 +27,8 @@
       <FileRef
          location = "group:Search">
       </FileRef>
+      <FileRef
+         location = "group:Notifications">
+      </FileRef>
    </Group>
 </Workspace>
