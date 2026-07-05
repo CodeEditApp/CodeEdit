@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import XCTest
+import CodeEditCore
 @testable import CodeEdit
 
 final class CodeEditUtilsExtensionsUnitTests: XCTestCase {

@@ -1,13 +1,13 @@
 //
-//  String+escapedWhiteSpaces.swift
-//  CodeEdit
+//  String+Escaped.swift
+//  CodeEditCore
 //
 //  Created by Paul Ebose on 2024/07/05.
 //
 
 import Foundation
 
-extension String {
+public extension String {
     /// Escapes the string so it's an always-valid directory
     func escapedDirectory() -> String {
         "\"\(self.escapedQuotes())\""

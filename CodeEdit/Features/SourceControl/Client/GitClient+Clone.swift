@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import CodeEditCore
 
 extension GitClient {
     struct CloneProgress {
