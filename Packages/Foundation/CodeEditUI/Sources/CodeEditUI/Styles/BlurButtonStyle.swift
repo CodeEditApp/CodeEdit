@@ -1,25 +1,29 @@
 //
 //  BlurButtonStyle.swift
-//  CodeEdit
+//  CodeEditUI
 //
 //  Created by Wouter Hennen on 21/01/2023.
 //
 
 import SwiftUI
 
-extension ButtonStyle where Self == BlurButtonStyle {
+public extension ButtonStyle where Self == BlurButtonStyle {
     static var blur: BlurButtonStyle { BlurButtonStyle() }
     static var secondaryBlur: BlurButtonStyle { BlurButtonStyle(isSecondary: true) }
 }
 
-struct BlurButtonStyle: ButtonStyle {
-    var isSecondary: Bool = false
+public struct BlurButtonStyle: ButtonStyle {
+    var isSecondary: Bool
 
     @Environment(\.controlSize)
     var controlSize
 
     @Environment(\.colorScheme)
     var colorScheme
+
+    public init(isSecondary: Bool = false) {
+        self.isSecondary = isSecondary
+    }
 
     var height: CGFloat {
         switch controlSize {
@@ -30,7 +34,7 @@ struct BlurButtonStyle: ButtonStyle {
         }
     }
 
-    func makeBody(configuration: Configuration) -> some View {
+    public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(.horizontal, 8)
             .frame(height: height)

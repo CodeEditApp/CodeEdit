@@ -6,8 +6,15 @@
 //
 
 import AppKit
+import Factory
+import Notifications
 
-/// Dynamic toolbar item management for the notification badge.
+/// App-shell integration for the notification toolbar badge.
+///
+/// Window-toolbar mutation is app-shell responsibility (it uses the app-defined
+/// `.notificationItem` / `.activityViewer` identifiers), so this lives in the app
+/// target rather than the `Notifications` package. The package signals a refresh via
+/// ``NotificationPanelViewModel/onToolbarUpdateRequested``, wired up in `WorkspaceWindowManager`.
 extension NotificationPanelViewModel {
     func updateToolbarItem() {
         if #available(macOS 15.0, *) {
@@ -15,7 +22,8 @@ extension NotificationPanelViewModel {
                 return
             }
 
-            let shouldShow = !self.visibleNotifications.isEmpty || notificationManager.unreadCount > 0
+            let shouldShow = !visibleNotifications.isEmpty
+                || Container.shared.notificationManager().unreadCount > 0
             if shouldShow && toolbar.items.filter({ $0.itemIdentifier == .notificationItem }).first == nil {
                 guard let activityItemIdx = toolbar.items
                     .firstIndex(where: { $0.itemIdentifier == .activityViewer }) else {

@@ -8,6 +8,7 @@
 import AppKit
 import SwiftUI
 import Combine
+import Notifications
 
 extension CodeEditWindowController {
     internal func setupToolbar() {

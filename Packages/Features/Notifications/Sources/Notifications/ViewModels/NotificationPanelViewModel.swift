@@ -17,7 +17,8 @@ import CodeEditCore
 /// - `+Visibility`: panel show/hide, focus handling
 /// - `+NotificationHandling`: insertion, dismissal, event handling
 /// - `+Toolbar`: dynamic toolbar item management
-final class NotificationPanelViewModel: ObservableObject {
+@MainActor
+public final class NotificationPanelViewModel: ObservableObject {
     /// Currently displayed notifications in the panel
     @Published var activeNotifications: [CENotification] = []
 
@@ -50,13 +51,18 @@ final class NotificationPanelViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     /// A filtered list of active notifications.
-    var visibleNotifications: [CENotification] {
+    public var visibleNotifications: [CENotification] {
         activeNotifications.filter { !hiddenNotificationIds.contains($0.id) }
     }
 
-    weak var windowController: NSWindowController?
+    public weak var windowController: NSWindowController?
 
-    init() {
+    /// Hook set by the app shell to refresh the window toolbar's notification item when
+    /// notification state changes. Toolbar mutation is app-shell responsibility (it uses
+    /// app-defined `NSToolbarItem.Identifier`s), so the package only signals; the app acts.
+    public var onToolbarUpdateRequested: (() -> Void)?
+
+    public init() {
         // Observe notification additions and dismissals
         eventBus.subscribe(CENotificationEvent.self)
             .receive(on: RunLoop.main)

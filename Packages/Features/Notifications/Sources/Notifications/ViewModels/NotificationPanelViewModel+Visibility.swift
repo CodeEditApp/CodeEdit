@@ -43,16 +43,21 @@ extension NotificationPanelViewModel {
                 }
 
                 // After the slide-out animation, hide notifications
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    // Hide non-sticky notifications
-                    self.activeNotifications
-                        .filter { !$0.isSticky }
-                        .forEach { self.hiddenNotificationIds.insert($0.id) }
-                    self.objectWillChange.send()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+                    MainActor.assumeIsolated {
+                        guard let self else { return }
+                        // Hide non-sticky notifications
+                        self.activeNotifications
+                            .filter { !$0.isSticky }
+                            .forEach { self.hiddenNotificationIds.insert($0.id) }
+                        self.objectWillChange.send()
 
-                    // After notifications are hidden, reset scroll position
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        self.scrolledToTop = true
+                        // After notifications are hidden, reset scroll position
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                            MainActor.assumeIsolated {
+                                self?.scrolledToTop = true
+                            }
+                        }
                     }
                 }
             } else {

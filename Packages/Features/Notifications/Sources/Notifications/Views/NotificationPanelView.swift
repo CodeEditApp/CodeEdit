@@ -6,8 +6,9 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
-struct NotificationPanelView: View {
+public struct NotificationPanelView: View {
     @EnvironmentObject private var notificationPanel: NotificationPanelViewModel
     @Environment(\.controlActiveState)
     private var controlActiveState
@@ -124,7 +125,9 @@ struct NotificationPanelView: View {
         }
     }
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         Group {
             if #available(macOS 14.0, *) {
                 notificationsWithScrollView

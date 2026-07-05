@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Notifications
 import Search
 import SwiftUI
 import Foundation

@@ -8,6 +8,7 @@
 import AppKit
 import CodeEditCore
 import Factory
+import Notifications
 import SwiftUI
 import WelcomeWindow
 
@@ -40,7 +41,12 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
         openWorkspaces.append(result.workspace)
         windowControllers[ObjectIdentifier(result.workspace)] = result.windowController
-        result.workspace.notificationPanel.windowController = result.windowController
+        let notificationPanel = result.workspace.notificationPanel
+        notificationPanel.windowController = result.windowController
+        // App shell owns window-toolbar mutation; the package signals a refresh via this hook.
+        notificationPanel.onToolbarUpdateRequested = { [weak notificationPanel] in
+            notificationPanel?.updateToolbarItem()
+        }
 
         result.window.makeKeyAndOrderFront(nil)
 

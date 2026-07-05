@@ -8,8 +8,10 @@
 import XCTest
 import CodeEditCore
 import Factory
+@testable import Notifications
 @testable import CodeEdit
 
+@MainActor
 final class NotificationPanelViewModelTests: XCTestCase {
     var notificationManager: (any NotificationManaging)!
     var viewModel: NotificationPanelViewModel!
@@ -29,7 +31,7 @@ final class NotificationPanelViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func testNotificationAddedAppearsInPanel() {
+    func testNotificationAddedAppearsInPanel() async throws {
         notificationManager.post(
             iconSymbol: "bell",
             title: "Test Notification",
@@ -38,15 +40,13 @@ final class NotificationPanelViewModelTests: XCTestCase {
             action: {}
         )
 
-        let testExpectation = XCTestExpectation()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            XCTAssertEqual(self.viewModel.activeNotifications.first?.title, "Test Notification")
-            testExpectation.fulfill()
-        }
-        wait(for: [testExpectation], timeout: 1)
+        // Allow the Combine republish from manager to view model to propagate.
+        try await Task.sleep(for: .milliseconds(200))
+
+        XCTAssertEqual(viewModel.activeNotifications.first?.title, "Test Notification")
     }
 
-    func testNotificationDismissedRemovedFromPanel() {
+    func testNotificationDismissedRemovedFromPanel() async throws {
         notificationManager.post(
             iconSymbol: "bell",
             title: "Test Notification",
@@ -55,25 +55,21 @@ final class NotificationPanelViewModelTests: XCTestCase {
             action: {}
         )
 
-        let testExpectation = XCTestExpectation()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            guard let notification = self.notificationManager.notifications.first else {
-                XCTFail("Notification was never added to the manager")
-                testExpectation.fulfill()
-                return
-            }
-            self.notificationManager.dismissNotification(notification)
+        try await Task.sleep(for: .milliseconds(200))
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                XCTAssertTrue(self.viewModel.activeNotifications.isEmpty)
-                XCTAssertTrue(self.notificationManager.notifications.isEmpty)
-                testExpectation.fulfill()
-            }
-        }
-        wait(for: [testExpectation], timeout: 2)
+        let notification = try XCTUnwrap(
+            notificationManager.notifications.first,
+            "Notification was never added to the manager"
+        )
+        notificationManager.dismissNotification(notification)
+
+        try await Task.sleep(for: .milliseconds(200))
+
+        XCTAssertTrue(viewModel.activeNotifications.isEmpty)
+        XCTAssertTrue(notificationManager.notifications.isEmpty)
     }
 
-    func testUnreadCountRepublishedToViewModel() {
+    func testUnreadCountRepublishedToViewModel() async throws {
         notificationManager.post(
             iconSymbol: "bell",
             title: "First",
@@ -89,22 +85,18 @@ final class NotificationPanelViewModelTests: XCTestCase {
             action: {}
         )
 
-        let testExpectation = XCTestExpectation()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            XCTAssertEqual(self.viewModel.unreadCount, 2)
+        try await Task.sleep(for: .milliseconds(200))
 
-            guard let notification = self.notificationManager.notifications.first else {
-                XCTFail("Notifications were never added to the manager")
-                testExpectation.fulfill()
-                return
-            }
-            self.notificationManager.markAsRead(notification)
+        XCTAssertEqual(viewModel.unreadCount, 2)
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                XCTAssertEqual(self.viewModel.unreadCount, 1)
-                testExpectation.fulfill()
-            }
-        }
-        wait(for: [testExpectation], timeout: 2)
+        let notification = try XCTUnwrap(
+            notificationManager.notifications.first,
+            "Notifications were never added to the manager"
+        )
+        notificationManager.markAsRead(notification)
+
+        try await Task.sleep(for: .milliseconds(200))
+
+        XCTAssertEqual(viewModel.unreadCount, 1)
     }
 }

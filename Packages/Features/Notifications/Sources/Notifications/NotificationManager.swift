@@ -16,13 +16,14 @@ import CodeEditCore
 /// - Managing notification persistence
 /// - Tracking notification read status
 /// - Broadcasting notifications to workspaces
+@MainActor
 final class NotificationManager: NSObject, NotificationManaging {
 
     /// Collection of all notifications, both read and unread
-    @Published private(set) var notifications: [CENotification] = []
+    @Published public private(set) var notifications: [CENotification] = []
 
     /// Fires on any change to ``notifications``, including `isRead` mutations.
-    var notificationsPublisher: AnyPublisher<[CENotification], Never> {
+    public var notificationsPublisher: AnyPublisher<[CENotification], Never> {
         $notifications.eraseToAnyPublisher()
     }
 
@@ -32,7 +33,7 @@ final class NotificationManager: NSObject, NotificationManaging {
     private var isAppActive: Bool = true
 
     /// Dismisses a specific notification
-    func dismissNotification(_ notification: CENotification) {
+    public func dismissNotification(_ notification: CENotification) {
         notifications.removeAll(where: { $0.id == notification.id })
         markAsRead(notification)
 
@@ -44,7 +45,7 @@ final class NotificationManager: NSObject, NotificationManaging {
 
     /// Marks a notification as read
     /// - Parameter notification: The notification to mark as read
-    func markAsRead(_ notification: CENotification) {
+    public func markAsRead(_ notification: CENotification) {
         if let index = notifications.firstIndex(where: { $0.id == notification.id }) {
             notifications[index].isRead = true
         }
@@ -82,18 +83,20 @@ final class NotificationManager: NSObject, NotificationManaging {
         isAppActive = false
     }
 
-    /// Posts a notification to workspaces and system
-    func post(_ notification: CENotification) {
-        DispatchQueue.main.async { [weak self] in
-            self?.notifications.append(notification)
+    /// Posts a notification to workspaces and system.
+    ///
+    /// Runs synchronously on the main actor (the class is `@MainActor` and all callers are too);
+    /// the previous `DispatchQueue.main.async` hop only ensured main-thread execution, which the
+    /// actor now guarantees — call order (and thus notification order) is preserved.
+    public func post(_ notification: CENotification) {
+        notifications.append(notification)
 
-            // Always notify workspaces of new notification
-            self?.eventBus.publish(CENotificationEvent(.added(id: notification.id)))
+        // Always notify workspaces of new notification
+        eventBus.publish(CENotificationEvent(.added(id: notification.id)))
 
-            // Additionally show system notification when app is in background
-            if self?.isAppActive != true {
-                self?.showSystemNotification(notification)
-            }
+        // Additionally show system notification when app is in background
+        if !isAppActive {
+            showSystemNotification(notification)
         }
     }
 }

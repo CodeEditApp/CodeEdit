@@ -51,8 +51,8 @@ playground.xcworkspace
 
 # Per-package resolved files for local workspace packages — the workspace's
 # shared Package.resolved is authoritative; these are Xcode-generated noise.
-Packages/*/Package.resolved
-Packages/*/.swiftpm/
+Packages/**/Package.resolved
+Packages/**/.swiftpm/
 
 # CocoaPods
 #

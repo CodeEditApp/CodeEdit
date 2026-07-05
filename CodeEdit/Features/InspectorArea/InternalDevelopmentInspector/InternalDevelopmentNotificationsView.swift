@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Factory
+import Notifications
 
 struct InternalDevelopmentNotificationsView: View {
     enum IconType: String, CaseIterable {

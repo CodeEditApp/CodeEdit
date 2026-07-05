@@ -9,7 +9,12 @@ import SwiftUI
 import Combine
 
 /// Protocol for managing application notifications.
-protocol NotificationManaging: AnyObject {
+///
+/// `@MainActor`: notifications drive UI (the panel, banner, and toolbar badge), so the
+/// whole subsystem is main-actor-isolated. All consumers (LSPService, RegistryManager,
+/// the panel view-model, views) are already `@MainActor`.
+@MainActor
+public protocol NotificationManaging: AnyObject {
     /// Collection of all notifications, both read and unread.
     var notifications: [CENotification] { get }
 
@@ -23,7 +28,7 @@ protocol NotificationManaging: AnyObject {
     func markAsRead(_ notification: CENotification)
 }
 
-extension NotificationManaging {
+public extension NotificationManaging {
     /// Number of unread notifications.
     var unreadCount: Int {
         notifications.filter { !$0.isRead }.count

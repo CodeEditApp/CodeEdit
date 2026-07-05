@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeEditUI
+import Notifications
 import UniformTypeIdentifiers
 
 struct WorkspaceView: View {

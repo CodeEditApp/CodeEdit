@@ -7,12 +7,14 @@
 
 import SwiftUI
 
-struct NotificationToolbarItem: View {
+public struct NotificationToolbarItem: View {
     @EnvironmentObject private var notificationPanel: NotificationPanelViewModel
     @Environment(\.controlActiveState)
     private var controlActiveState
 
-    var body: some View {
+    public init() {}
+
+    public var body: some View {
         let visibleNotifications = notificationPanel.visibleNotifications
 
         if notificationPanel.unreadCount > 0 || !visibleNotifications.isEmpty {

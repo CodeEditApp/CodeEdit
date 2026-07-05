@@ -9,33 +9,40 @@ import AppKit
 import UserNotifications
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(
+    // System-invoked (not guaranteed main); `nonisolated` + hop to the main actor for state.
+    nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
     ) {
-        if let notification = notifications.first(where: {
-            $0.id.uuidString == response.notification.request.identifier
-        }) {
+        // Extract Sendable values before crossing to the main actor (UNNotificationResponse isn't Sendable).
+        // Extract Sendable values; the completion handler isn't Sendable so call it here
+        // (it only signals the delegate finished), and run the main-actor action work async.
+        let identifier = response.notification.request.identifier
+        let actionIdentifier = response.actionIdentifier
+        Task { @MainActor in
+            guard let notification = self.notifications.first(where: { $0.id.uuidString == identifier }) else {
+                return
+            }
             // Focus CodeEdit and run action if action button was clicked
-            if response.actionIdentifier == "ACTION_BUTTON" ||
-               response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+            if actionIdentifier == "ACTION_BUTTON" ||
+               actionIdentifier == UNNotificationDefaultActionIdentifier {
                 NSApp.activate(ignoringOtherApps: true)
                 notification.action()
             }
 
             // Remove the notification for both action and dismiss
-            if response.actionIdentifier == "ACTION_BUTTON" ||
-               response.actionIdentifier == UNNotificationDefaultActionIdentifier ||
-               response.actionIdentifier == UNNotificationDismissActionIdentifier {
-                dismissNotification(notification)
+            if actionIdentifier == "ACTION_BUTTON" ||
+               actionIdentifier == UNNotificationDefaultActionIdentifier ||
+               actionIdentifier == UNNotificationDismissActionIdentifier {
+                self.dismissNotification(notification)
             }
         }
 
         completionHandler()
     }
 
-    func userNotificationCenter(
+    nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void

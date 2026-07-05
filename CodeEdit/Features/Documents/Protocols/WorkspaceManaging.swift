@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Notifications
 import Search
 
 /// Protocol defining the interface that workspace consumers depend on.

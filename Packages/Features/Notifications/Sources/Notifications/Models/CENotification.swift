@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 
-struct CENotification: Identifiable, Equatable {
-    let id: UUID
+public struct CENotification: Identifiable, Equatable {
+    public let id: UUID
     let icon: IconType
     let title: String
     let description: String
@@ -20,13 +20,13 @@ struct CENotification: Identifiable, Equatable {
     let timestamp: Date
     var isBeingDismissed: Bool = false
 
-    enum IconType {
+    public enum IconType {
         case symbol(name: String, color: Color?)
         case image(Image)
         case text(String, backgroundColor: Color?, textColor: Color?)
     }
 
-    init(
+    public init(
         id: UUID = UUID(),
         iconSymbol: String,
         iconColor: Color? = nil,
@@ -49,7 +49,7 @@ struct CENotification: Identifiable, Equatable {
         )
     }
 
-    init(
+    public init(
         id: UUID = UUID(),
         iconText: String,
         iconTextColor: Color? = nil,
@@ -73,7 +73,7 @@ struct CENotification: Identifiable, Equatable {
         )
     }
 
-    init(
+    public init(
         id: UUID = UUID(),
         iconImage: Image,
         title: String,
@@ -116,7 +116,7 @@ struct CENotification: Identifiable, Equatable {
         self.timestamp = Date()
     }
 
-    static func == (lhs: CENotification, rhs: CENotification) -> Bool {
+    public static func == (lhs: CENotification, rhs: CENotification) -> Bool {
         lhs.id == rhs.id
     }
 }

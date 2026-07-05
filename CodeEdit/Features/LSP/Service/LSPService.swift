@@ -13,6 +13,7 @@ import Factory
 import LanguageClient
 import LanguageServerProtocol
 import CodeEditLanguages
+import Notifications
 
 /// `LSPService` is a service class responsible for managing the lifecycle and event handling
 /// of Language Server Protocol (LSP) clients within the CodeEdit application. It handles the initialization,

@@ -18,22 +18,24 @@ extension NotificationPanelViewModel {
 
         guard !isPaused else { return }
 
-        timers[notification.id] = Timer.scheduledTimer(
+        let notificationId = notification.id
+        timers[notificationId] = Timer.scheduledTimer(
             withTimeInterval: displayDuration,
             repeats: false
         ) { [weak self] _ in
-            guard let self = self else { return }
-            self.timers[notification.id] = nil
+            // The timer is scheduled from the main actor, so it fires on the main run loop.
+            // Capture only the Sendable `id` (CENotification isn't Sendable — it carries a closure).
+            MainActor.assumeIsolated {
+                guard let self else { return }
+                self.timers[notificationId] = nil
 
-            // Ensure we're on the main thread and animate the change
-            DispatchQueue.main.async {
                 NSAnimationContext.runAnimationGroup { context in
                     context.duration = 0.3
                     context.allowsImplicitAnimation = true
 
                     withAnimation(.easeInOut(duration: 0.3)) {
                         var newHiddenIds = self.hiddenNotificationIds
-                        newHiddenIds.insert(notification.id)
+                        newHiddenIds.insert(notificationId)
                         self.hiddenNotificationIds = newHiddenIds
                     }
                 }

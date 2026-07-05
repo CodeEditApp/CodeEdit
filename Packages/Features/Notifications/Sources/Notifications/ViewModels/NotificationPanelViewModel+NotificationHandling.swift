@@ -45,7 +45,7 @@ extension NotificationPanelViewModel {
 
         if #available(macOS 26, *) {
             withAnimation(.easeInOut(duration: 0.3), operation) {
-                self.updateToolbarItem()
+                self.onToolbarUpdateRequested?()
             }
         } else {
             withAnimation(.easeInOut(duration: 0.3), operation)
@@ -113,7 +113,7 @@ extension NotificationPanelViewModel {
         // Just remove from active notifications without triggering global state changes
         if #available(macOS 26, *) {
             withAnimation(.easeOut(duration: 0.2), operation) {
-                self.updateToolbarItem()
+                self.onToolbarUpdateRequested?()
             }
         } else {
             withAnimation(.easeOut(duration: 0.2), operation)
