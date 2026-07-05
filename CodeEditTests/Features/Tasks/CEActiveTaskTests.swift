@@ -6,6 +6,7 @@
 //
 
 import Testing
+import CodeEditCore
 @testable import CodeEdit
 
 @MainActor
@@ -50,7 +51,9 @@ class CEActiveTaskTests {
 
     @Test(arguments: [Shell.zsh, Shell.bash])
     func testHandleProcessFinished(_ shell: Shell) async throws {
-        task.command = "aNon-existentCommand"
+        // CETask is a value type, so build a fresh active task around the failing command
+        // rather than mutating `task` after `activeTask` already copied it.
+        let activeTask = CEActiveTask(task: CETask(name: "Test Task", command: "aNon-existentCommand"))
         activeTask.run(workspaceURL: nil, shell: shell)
         activeTask.waitForExit()
 

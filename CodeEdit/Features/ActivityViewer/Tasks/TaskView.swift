@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 /// `TaskView` represents a single active task and observes its state.
 /// - Parameter task: The task to be displayed and observed.
 /// - Parameter status: The status of the task to be displayed.
 struct TaskView: View {
-    @ObservedObject var task: CETask
+    let task: CETask
     var status: CETaskStatus
 
     var body: some View {

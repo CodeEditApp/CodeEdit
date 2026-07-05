@@ -6,23 +6,22 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 struct CEWorkspaceSettingsTaskListView: View {
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @EnvironmentObject var taskManager: TaskManager
 
-    @ObservedObject var settings: CEWorkspaceSettingsData
-
     @Binding var selectedTaskID: UUID?
     @Binding var showAddTaskSheet: Bool
 
     var body: some View {
-        if settings.tasks.isEmpty {
+        if workspaceSettingsManager.settings.tasks.isEmpty {
             Text("No tasks")
                 .foregroundColor(.secondary)
                 .frame(maxWidth: .infinity, alignment: .center)
         } else {
-            ForEach(settings.tasks) { task in
+            ForEach(workspaceSettingsManager.settings.tasks) { task in
                 TaskTile(task: task)
                     .contentShape(Rectangle())
                     .onTapGesture {
@@ -37,7 +36,7 @@ struct CEWorkspaceSettingsTaskListView: View {
                             Text("Edit")
                         }
                         Button {
-                            settings.tasks.removeAll { $0.id == task.id }
+                            workspaceSettingsManager.settings.tasks.removeAll { $0.id == task.id }
                             try? workspaceSettingsManager.savePreferences()
                             taskManager.deleteTask(taskID: task.id)
                         } label: {
@@ -48,9 +47,8 @@ struct CEWorkspaceSettingsTaskListView: View {
         }
     }
 
-    // Every task as to be observed individually
     private struct TaskTile: View {
-        @ObservedObject var task: CETask
+        let task: CETask
         var body: some View {
             HStack {
                 Text(task.name)

@@ -25,7 +25,10 @@ final class DocumentsUnitTests: XCTestCase {
         super.setUp()
         hapticFeedbackPerformerMock = NSHapticFeedbackPerformerMock()
         navigatorViewModel = .init()
-        workspace.taskManager = TaskManager(workspaceSettings: CEWorkspaceSettingsData(), workspaceURL: nil)
+        workspace.taskManager = TaskManager(
+            settingsStore: CEWorkspaceSettings(workspaceURL: URL(filePath: NSTemporaryDirectory())),
+            workspaceURL: nil
+        )
         workspace.sourceControlManager = SourceControlManager(
             workspaceURL: URL(filePath: "/tmp"),
             shellClient: Container.shared.shellClient()

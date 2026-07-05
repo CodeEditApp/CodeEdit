@@ -76,7 +76,7 @@ enum WorkspaceFactory {
         workspace.workspaceSettingsManager = CEWorkspaceSettings(workspaceURL: url)
         if let workspaceSettingsManager = workspace.workspaceSettingsManager {
             workspace.taskManager = TaskManager(
-                workspaceSettings: workspaceSettingsManager.settings,
+                settingsStore: workspaceSettingsManager,
                 workspaceURL: url
             )
         }

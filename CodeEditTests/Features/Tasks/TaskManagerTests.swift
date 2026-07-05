@@ -7,23 +7,24 @@
 
 import Foundation
 import Testing
+import CodeEditCore
 @testable import CodeEdit
 
 @MainActor
 @Suite(.serialized)
 class TaskManagerTests {
     var taskManager: TaskManager!
-    var mockWorkspaceSettings: CEWorkspaceSettingsData!
+    var settingsStore: CEWorkspaceSettings!
 
     init() throws {
-        let workspaceSettings = try JSONDecoder().decode(CEWorkspaceSettingsData.self, from: Data("{}".utf8))
-        mockWorkspaceSettings = workspaceSettings
-        taskManager = TaskManager(workspaceSettings: mockWorkspaceSettings, workspaceURL: nil)
+        settingsStore = CEWorkspaceSettings(workspaceURL: URL(filePath: NSTemporaryDirectory()))
+        settingsStore.settings = try JSONDecoder().decode(CEWorkspaceSettingsData.self, from: Data("{}".utf8))
+        taskManager = TaskManager(settingsStore: settingsStore, workspaceURL: nil)
     }
 
     func testInitialization() {
         #expect(taskManager != nil)
-        #expect(taskManager.availableTasks == mockWorkspaceSettings.tasks)
+        #expect(taskManager.availableTasks == settingsStore.settings.tasks)
     }
 
     @Test
@@ -31,7 +32,7 @@ class TaskManagerTests {
         Settings.shared.preferences.terminal.shell = .zsh
 
         let task = CETask(name: "Test Task", command: "echo 'Hello World'")
-        mockWorkspaceSettings.tasks.append(task)
+        settingsStore.settings.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
@@ -50,7 +51,7 @@ class TaskManagerTests {
         Settings.shared.preferences.terminal.shell = .bash
 
         let task = CETask(name: "Test Task", command: "echo 'Hello World'")
-        mockWorkspaceSettings.tasks.append(task)
+        settingsStore.settings.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
@@ -67,7 +68,7 @@ class TaskManagerTests {
     @Test(.disabled("Not sure why but tasks run in shells seem to never receive signals."))
     func terminateSelectedTask() async throws {
         let task = CETask(name: "Test Task", command: "sleep 10")
-        mockWorkspaceSettings.tasks.append(task)
+        settingsStore.settings.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
@@ -93,7 +94,7 @@ class TaskManagerTests {
     @Test(.disabled("Not sure why but tasks run in shells seem to never receive signals."))
     func suspendAndResumeTask() async throws {
         let task = CETask(name: "Test Task", command: "sleep 5")
-        mockWorkspaceSettings.tasks.append(task)
+        settingsStore.settings.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 

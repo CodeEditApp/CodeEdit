@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 struct CEWorkspaceSettingsView: View {
     var dismiss: () -> Void
@@ -31,7 +32,6 @@ struct CEWorkspaceSettingsView: View {
 
                 Section {
                     CEWorkspaceSettingsTaskListView(
-                        settings: workspaceSettingsManager.settings,
                         selectedTaskID: $selectedTaskID,
                         showAddTaskSheet: $showAddTaskSheet
                     )
@@ -70,7 +70,7 @@ struct CEWorkspaceSettingsView: View {
                 $0.id == selectedTaskID
             }) {
                 EditCETaskView(
-                    task: workspaceSettingsManager.settings.tasks[selectedTaskIndex],
+                    task: $workspaceSettingsManager.settings.tasks[selectedTaskIndex],
                     selectedTaskIndex: selectedTaskIndex
                 )
             } else {

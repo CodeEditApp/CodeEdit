@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 struct EditCETaskView: View {
     @Environment(\.dismiss)
@@ -13,13 +14,13 @@ struct EditCETaskView: View {
 
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @EnvironmentObject var taskManager: TaskManager
-    @ObservedObject var task: CETask
+    @Binding var task: CETask
 
     let selectedTaskIndex: Int
 
     var body: some View {
         VStack(spacing: 0) {
-            CETaskFormView(task: task)
+            CETaskFormView(task: $task)
             Divider()
             HStack {
                 Button(role: .destructive) {

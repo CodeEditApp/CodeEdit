@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import CodeEditCore
 
 /// This class handles the execution of tasks
 @MainActor
@@ -15,16 +16,18 @@ class TaskManager: ObservableObject {
     @Published var selectedTaskID: UUID?
     @Published var taskShowingOutput: UUID?
 
-    @ObservedObject var workspaceSettings: CEWorkspaceSettingsData
+    private let settingsStore: CEWorkspaceSettings
 
     private var workspaceURL: URL?
     private var settingsListener: AnyCancellable?
 
-    init(workspaceSettings: CEWorkspaceSettingsData, workspaceURL: URL?) {
+    init(settingsStore: CEWorkspaceSettings, workspaceURL: URL?) {
         self.workspaceURL = workspaceURL
-        self.workspaceSettings = workspaceSettings
+        self.settingsStore = settingsStore
 
-        settingsListener = workspaceSettings.$tasks
+        settingsListener = settingsStore.$settings
+            .map(\.tasks)
+            .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.updateSelectedTaskID()
@@ -48,7 +51,7 @@ class TaskManager: ObservableObject {
     }
 
     var availableTasks: [CETask] {
-        return workspaceSettings.tasks
+        return settingsStore.settings.tasks
     }
 
     func taskStatus(taskID: UUID) -> CETaskStatus {
@@ -61,7 +64,7 @@ class TaskManager: ObservableObject {
     }
 
     func executeActiveTask() {
-        guard let task = workspaceSettings.tasks.first(where: { $0.id == selectedTaskID }) else { return }
+        guard let task = settingsStore.settings.tasks.first(where: { $0.id == selectedTaskID }) else { return }
         Task {
             await runTask(task: task)
         }

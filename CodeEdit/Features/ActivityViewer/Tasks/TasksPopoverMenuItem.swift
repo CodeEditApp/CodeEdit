@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 /// - Note: This view **cannot** use the `dismiss` environment value to dismiss the sheet. It has to negate the boolean
 ///         value that presented it initially.

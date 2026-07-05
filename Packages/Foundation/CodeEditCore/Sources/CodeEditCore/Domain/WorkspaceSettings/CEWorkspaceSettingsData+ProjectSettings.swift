@@ -1,24 +1,24 @@
 //
-//  ProjectCEWorkspaceSettings.swift
-//  CodeEdit
+//  CEWorkspaceSettingsData+ProjectSettings.swift
+//  CodeEditCore
 //
 //  Created by Axel Martinez on 27/3/24.
 //
 
-import SwiftUI
+import Foundation
 
-class ProjectSettings: ObservableObject, Codable {
-    var projectName: String = ""
+public struct ProjectSettings: Codable, Sendable, Equatable {
+    public var projectName: String = ""
 
-    init() {}
+    public init() {}
 
     /// Explicit decoder init for setting default values when key is not present in `JSON`
-    required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.projectName = try container.decodeIfPresent(String.self, forKey: .projectName) ?? ""
     }
 
-    func isEmpty() -> Bool {
+    public func isEmpty() -> Bool {
         projectName == ""
     }
 }

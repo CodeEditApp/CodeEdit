@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 struct CETaskFormView: View {
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
-    @ObservedObject var task: CETask
+    @Binding var task: CETask
     @State private var selectedEnvID: UUID?
 
     var body: some View {

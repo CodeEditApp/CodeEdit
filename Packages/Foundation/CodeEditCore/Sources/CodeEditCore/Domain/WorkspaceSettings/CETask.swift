@@ -1,6 +1,6 @@
 //
 //  CETask.swift
-//  CodeEdit
+//  CodeEditCore
 //
 //  Created by Axel Martinez on 2/4/24.
 //
@@ -8,15 +8,15 @@
 import Foundation
 
 /// CodeEdit task that will be executed by the task manager.
-class CETask: ObservableObject, Identifiable, Hashable, Codable {
-    @Published var id = UUID()
-    @Published var name: String = ""
-    @Published var target: String = ""
-    @Published var workingDirectory: String = ""
-    @Published var command: String = ""
-    @Published var environmentVariables: [EnvironmentVariable]  = []
+public struct CETask: Identifiable, Hashable, Codable, Sendable {
+    public var id = UUID()
+    public var name: String
+    public var target: String
+    public var workingDirectory: String
+    public var command: String
+    public var environmentVariables: [EnvironmentVariable]
 
-    init(
+    public init(
         name: String = "",
         target: String = "",
         workingDirectory: String = "",
@@ -30,17 +30,21 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
         self.environmentVariables = environmentVariables
     }
 
-    init(target: String) {
+    public init(target: String) {
+        self.name = ""
         self.target = target
+        self.workingDirectory = ""
+        self.command = ""
+        self.environmentVariables = []
     }
 
-    var isInvalid: Bool {
+    public var isInvalid: Bool {
         name.isEmpty ||
         command.isEmpty
     }
 
     /// Ensures that the shell navigates to the correct folder, and then executes the specified command.
-    var fullCommand: String {
+    public var fullCommand: String {
         // Move into the specified folder if needed
         let changeDirectoryCommand = workingDirectory.isEmpty ? "" : "cd \(workingDirectory.escapedDirectory()) && "
 
@@ -51,7 +55,7 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
     /// Converts an array of `EnvironmentVariable` to a dictionary.
     ///
     /// - Returns: A dictionary with the environment variable keys and values.
-    var environmentVariablesDictionary: [String: String] {
+    public var environmentVariablesDictionary: [String: String] {
         return environmentVariables.reduce(into: [String: String]()) { result, environmentVariable in
             result[environmentVariable.key] = environmentVariable.value
         }
@@ -65,20 +69,20 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
         case environmentVariables
     }
 
-    struct EnvironmentVariable: Identifiable, Hashable {
-        var id = UUID()
-        var key: String = ""
-        var value: String = ""
+    public struct EnvironmentVariable: Identifiable, Hashable, Sendable {
+        public var id = UUID()
+        public var key: String = ""
+        public var value: String = ""
 
-        init() {}
+        public init() {}
 
-        init(key: String, value: String) {
+        public init(key: String, value: String) {
             self.key = key
             self.value = value
         }
     }
 
-    required init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         name = try container.decode(String.self, forKey: .name)
         target = try container.decodeIfPresent(String.self, forKey: .target) ?? ""
@@ -88,10 +92,12 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
         // Decode environment variables from a dictionary-like structure
         if let envDict = try container.decodeIfPresent([String: String].self, forKey: .environmentVariables) {
             environmentVariables = envDict.map { EnvironmentVariable(key: $0.key, value: $0.value) }
+        } else {
+            environmentVariables = []
         }
     }
 
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         if !name.isEmpty {
             try container.encode(name, forKey: .name)
@@ -116,25 +122,5 @@ class CETask: ObservableObject, Identifiable, Hashable, Codable {
             }
             try container.encode(envDict, forKey: .environmentVariables)
         }
-    }
-}
-
-extension CETask {
-    static func == (lhs: CETask, rhs: CETask) -> Bool {
-        return lhs.id == rhs.id &&
-        lhs.name == rhs.name &&
-        lhs.target == rhs.target &&
-        lhs.workingDirectory == rhs.workingDirectory &&
-        lhs.command == rhs.command &&
-        lhs.environmentVariables == rhs.environmentVariables
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-        hasher.combine(name)
-        hasher.combine(target)
-        hasher.combine(workingDirectory)
-        hasher.combine(command)
-        hasher.combine(environmentVariables)
     }
 }

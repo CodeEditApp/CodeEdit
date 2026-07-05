@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import CodeEditCore
 
 /// The CodeEdit workspace settings model.
 final class CEWorkspaceSettings: ObservableObject {

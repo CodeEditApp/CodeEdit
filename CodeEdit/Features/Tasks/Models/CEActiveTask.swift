@@ -22,7 +22,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     @Published private(set) var status: CETaskStatus = .notRunning
 
     /// The name of the associated task.
-    @ObservedObject var task: CETask
+    let task: CETask
 
     /// Prevents tasks overwriting each other.
     /// Say a user cancels one task, then runs it immediately, the cancel message should show and then the
@@ -38,14 +38,8 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
     @LazyInjected(\.eventBus)
     private var eventBus
 
-    private var cancellables = Set<AnyCancellable>()
-
     init(task: CETask) {
         self.task = task
-
-        self.task.objectWillChange.sink { _ in
-            self.objectWillChange.send()
-        }.store(in: &cancellables)
     }
 
     @MainActor

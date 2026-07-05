@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 struct EnvironmentVariableListItem: View {
     @FocusState private var isKeyFocused: Bool
