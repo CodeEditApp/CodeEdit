@@ -9,14 +9,18 @@ import Foundation
 
 /// Given a list of file URLs, asynchronously fetches their contents and returns them iteratively.
 /// Returns files as a ``SearchIndexer/AsyncManager/TextFile`` struct, used to index workspaces.
-struct AsyncFileIterator: AsyncSequence, AsyncIteratorProtocol {
-    typealias TextFile = SearchIndexer.AsyncManager.TextFile
-    typealias Element = (TextFile, Int)
+public struct AsyncFileIterator: AsyncSequence, AsyncIteratorProtocol {
+    public typealias TextFile = SearchIndexer.AsyncManager.TextFile
+    public typealias Element = (TextFile, Int)
 
     let fileURLs: [URL]
     var currentIdx = 0
 
-    mutating func next() async -> Element? {
+    public init(fileURLs: [URL]) {
+        self.fileURLs = fileURLs
+    }
+
+    public mutating func next() async -> Element? {
         guard !Task.isCancelled else {
             return nil
         }
@@ -42,7 +46,7 @@ struct AsyncFileIterator: AsyncSequence, AsyncIteratorProtocol {
         return (foundContent!, currentIdx)
     }
 
-    func makeAsyncIterator() -> AsyncFileIterator {
+    public func makeAsyncIterator() -> AsyncFileIterator {
         self
     }
 }

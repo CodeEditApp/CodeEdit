@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Search
 @testable import CodeEdit
 
 final class MemoryIndexSearchTests: XCTestCase {

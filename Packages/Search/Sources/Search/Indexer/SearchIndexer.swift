@@ -8,7 +8,10 @@
 import Foundation
 
 /// Indexer using SKIndex
-public class SearchIndexer {
+///
+/// `@unchecked Sendable`: SearchKit is documented thread-safe, and all index
+/// mutations are serialized on `modifyIndexQueue`.
+public class SearchIndexer: @unchecked Sendable {
     let modifyIndexQueue = DispatchQueue(label: "app.codeedit.CodeEdit.ModifySearchIndex")
 
     var index: SKIndex?

@@ -9,26 +9,26 @@ import Foundation
 
 extension SearchIndexer {
     /// Manager for SearchIndexer object that supports async calls to the index
-    class AsyncManager {
+    public class AsyncManager {
         /// An instance of the SearchIndexer
-        let index: SearchIndexer
+        public let index: SearchIndexer
         private let addQueue = DispatchQueue(label: "app.codeedit.CodeEdit.AddFilesToIndex", attributes: .concurrent)
         private let searchQueue = DispatchQueue(label: "app.codeedit.CodeEdit.SearchIndex", attributes: .concurrent)
 
-        init(index: SearchIndexer) {
+        public init(index: SearchIndexer) {
             self.index = index
         }
 
-        class TextFile {
-            let url: URL
-            let text: String
+        public final class TextFile: Sendable {
+            public let url: URL
+            public let text: String
 
             /// Create a text async task
             ///
             /// - Parameters:
             ///   - url: the identifying document URL
             ///   - text: The text to add to the index
-            init(url: URL, text: String) {
+            public init(url: URL, text: String) {
                 self.url = url
                 self.text = text
             }
@@ -61,7 +61,7 @@ extension SearchIndexer {
         ///     print(result)
         /// }
         /// ```
-        func search(
+        public func search(
             query: String,
             _ maxResults: Int,
             timeout: TimeInterval = 1.0
@@ -89,7 +89,7 @@ extension SearchIndexer {
         ///   the index when the operation is complete. Default is `false`.
         ///
         /// - Returns: An array of booleans indicating the success of adding each file to the index.
-        func addText(
+        public func addText(
             files: [TextFile],
             flushWhenComplete: Bool = false
         ) async -> [Bool] {
@@ -99,9 +99,9 @@ extension SearchIndexer {
             // Asynchronously iterate through the provided files using a task group
             await withTaskGroup(of: Bool.self) { taskGroup in
                 for file in files {
-                    taskGroup.addTask {
+                    taskGroup.addTask { [index] in
                         // Add the file to the index and return the success status
-                        return self.index.addFileWithText(file.url, text: file.text, canReplace: true)
+                        return index.addFileWithText(file.url, text: file.text, canReplace: true)
                     }
                 }
 
@@ -127,7 +127,7 @@ extension SearchIndexer {
         /// - Returns: An array of booleans indicating the success of adding each file to the index.
         /// - Warning: Prefer using `addText` when possible as SearchKit does not have the ability
         ///  to read every file type. For example, it is often not possible to read Swift files.
-        func addFiles(
+        public func addFiles(
             urls: [URL],
             flushWhenComplete: Bool = false
         ) async -> [Bool] {
@@ -135,8 +135,8 @@ extension SearchIndexer {
 
             await withTaskGroup(of: Bool.self) { taskGroup in
                 for url in urls {
-                    taskGroup.addTask {
-                        return self.index.addFile(fileURL: url, canReplace: true)
+                    taskGroup.addTask { [index] in
+                        return index.addFile(fileURL: url, canReplace: true)
                     }
                 }
 

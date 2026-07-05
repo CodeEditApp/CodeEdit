@@ -9,12 +9,12 @@ import Foundation
 
 extension SearchIndexer {
     /// Object representing the search results
-    public class SearchResult {
+    public final class SearchResult: Sendable {
         /// The identifying url for the document
-        let url: URL
+        public let url: URL
 
         /// The search score for the document, higher means more relevant
-        let score: Float
+        public let score: Float
 
         init(url: URL, score: Float) {
             self.url = url
@@ -34,7 +34,7 @@ extension SearchIndexer {
     /// A search starts on creation and can be cancelled at any time.
     public class ProgressiveSearch {
         /// A class representing the results of a search request.
-        public class Results {
+        public final class Results: Sendable {
             /// Create a search result
             ///
             /// - Parameters:
