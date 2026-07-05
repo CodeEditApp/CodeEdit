@@ -70,8 +70,7 @@ struct CEWorkspaceSettingsView: View {
                 $0.id == selectedTaskID
             }) {
                 EditCETaskView(
-                    task: $workspaceSettingsManager.settings.tasks[selectedTaskIndex],
-                    selectedTaskIndex: selectedTaskIndex
+                    task: workspaceSettingsManager.settings.tasks[selectedTaskIndex]
                 )
             } else {
                 AddCETaskView()
