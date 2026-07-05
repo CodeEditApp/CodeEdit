@@ -8,7 +8,14 @@ let package = Package(
     products: [
         .library(name: "CodeEditCore", targets: ["CodeEditCore"])
     ],
+    dependencies: [
+        // Pin matches the app's Package.resolved.
+        .package(url: "https://github.com/hmlongco/Factory", exact: "2.5.3")
+    ],
     targets: [
-        .target(name: "CodeEditCore")
+        .target(
+            name: "CodeEditCore",
+            dependencies: [.product(name: "Factory", package: "Factory")]
+        )
     ]
 )

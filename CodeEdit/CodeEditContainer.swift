@@ -36,8 +36,4 @@ extension Container {
     var registryManager: Factory<RegistryManager> {
         self { @MainActor in RegistryManager() }.singleton
     }
-
-    var eventBus: Factory<EventBus> {
-        self { EventBus() }.singleton
-    }
 }

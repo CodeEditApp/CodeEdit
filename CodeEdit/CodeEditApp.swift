@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 import Factory
 import WelcomeWindow
 import AboutWindow
@@ -20,6 +21,7 @@ struct CodeEditApp: App {
     init() {
         NSMenuItem.swizzle()
         NSSplitViewItem.swizzle()
+        Container.shared.workspaceFileOpener.register { AppWorkspaceFileOpener() }
     }
 
     var body: some Scene {
