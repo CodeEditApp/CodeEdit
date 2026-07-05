@@ -7,12 +7,13 @@
 
 import Foundation
 import Cocoa
+import CodeEditCore
 
 /// A struct for holding information about a search match.
-class SearchResultMatchModel: Hashable, Identifiable {
-    init(
+public class SearchResultMatchModel: Hashable, Identifiable {
+    public init(
         rangeWithinFile: Range<String.Index>,
-        file: CEWorkspaceFile,
+        file: SearchResultFile,
         lineContent: String,
         keywordRange: Range<String.Index>
     ) {
@@ -23,13 +24,13 @@ class SearchResultMatchModel: Hashable, Identifiable {
         self.keywordRange = keywordRange
     }
 
-    var id: UUID
-    var file: CEWorkspaceFile
-    var rangeWithinFile: Range<String.Index>
-    var lineContent: String
-    var keywordRange: Range<String.Index>
+    public var id: UUID
+    public var file: SearchResultFile
+    public var rangeWithinFile: Range<String.Index>
+    public var lineContent: String
+    public var keywordRange: Range<String.Index>
 
-    static func == (lhs: SearchResultMatchModel, rhs: SearchResultMatchModel) -> Bool {
+    public static func == (lhs: SearchResultMatchModel, rhs: SearchResultMatchModel) -> Bool {
         return lhs.id == rhs.id
         && lhs.file == rhs.file
         && lhs.rangeWithinFile == rhs.rangeWithinFile
@@ -37,7 +38,7 @@ class SearchResultMatchModel: Hashable, Identifiable {
         && lhs.keywordRange == rhs.keywordRange
     }
 
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
         hasher.combine(file)
         hasher.combine(rangeWithinFile)
@@ -48,7 +49,7 @@ class SearchResultMatchModel: Hashable, Identifiable {
     /// Returns a formatted `NSAttributedString` with the search result bolded.
     /// Will only return 60 characters before and after the matched result.
     /// - Returns: The formatted `NSAttributedString`
-    func attributedLabel() -> NSAttributedString {
+    public func attributedLabel() -> NSAttributedString {
         // By default `NSTextView` will ignore any paragraph wrapping set to the label when it's
         // using an `NSAttributedString` so we need to set the wrap mode here.
         let paragraphStyle = NSMutableParagraphStyle()

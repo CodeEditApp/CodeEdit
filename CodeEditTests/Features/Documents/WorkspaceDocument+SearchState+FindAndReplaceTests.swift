@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import Search
 @testable import CodeEdit
 
 @MainActor

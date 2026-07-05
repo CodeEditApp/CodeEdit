@@ -6,19 +6,20 @@
 //
 
 import Foundation
+import CodeEditCore
 
 /// A struct for holding information about a file and any matches it may have for a search query.
-class SearchResultModel: Hashable {
+public class SearchResultModel: Hashable {
 
-    var file: CEWorkspaceFile
+    public var file: SearchResultFile
     // The score represents how well the file matches the search query.
     // The higher the score is, the better the file matches the search query.
     // The score is assign by Search Kit.
-    var score: Float
-    var lineMatches: [SearchResultMatchModel]
+    public var score: Float
+    public var lineMatches: [SearchResultMatchModel]
 
-    init(
-        file: CEWorkspaceFile,
+    public init(
+        file: SearchResultFile,
         score: Float,
         lineMatches: [SearchResultMatchModel] = []
     ) {
@@ -27,12 +28,12 @@ class SearchResultModel: Hashable {
         self.lineMatches = lineMatches
     }
 
-    static func == (lhs: SearchResultModel, rhs: SearchResultModel) -> Bool {
+    public static func == (lhs: SearchResultModel, rhs: SearchResultModel) -> Bool {
         return lhs.file == rhs.file
         && lhs.lineMatches == rhs.lineMatches
     }
 
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(file)
         hasher.combine(lineMatches)
     }

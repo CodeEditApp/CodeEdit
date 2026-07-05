@@ -6,21 +6,20 @@
 //
 
 import Foundation
-import Search
 import CodeEditCore
 import Factory
 
 /// Manages the search/find state for a workspace, including indexing, search results,
 /// and find-and-replace operations. Extracted from Workspace to be independently
 /// injectable and testable.
-final class SearchState: ObservableObject {
-    enum IndexStatus: Equatable {
+public final class SearchState: ObservableObject {
+    public enum IndexStatus: Equatable, Sendable {
         case none
         case indexing(progress: Double)
         case done
     }
 
-    enum FindNavigatorStatus: Equatable {
+    public enum FindNavigatorStatus: Equatable, Sendable {
         case none
         case searching
         case replacing
@@ -29,34 +28,34 @@ final class SearchState: ObservableObject {
         case failed(errorMessage: String)
     }
 
-    @Published var searchResult: [SearchResultModel] = []
-    @Published var searchResultsFileCount: Int = 0
-    @Published var searchResultsCount: Int = 0
+    @Published public var searchResult: [SearchResultModel] = []
+    @Published public var searchResultsFileCount: Int = 0
+    @Published public var searchResultsCount: Int = 0
     /// Stores the user's input, shown when no files are found, and persists across navigation items.
-    @Published var searchQuery: String = ""
-    @Published var replaceText: String = ""
+    @Published public var searchQuery: String = ""
+    @Published public var replaceText: String = ""
 
-    @Published var indexStatus: IndexStatus = .none
+    @Published public var indexStatus: IndexStatus = .none
 
-    @Published var findNavigatorStatus: FindNavigatorStatus = .none
+    @Published public var findNavigatorStatus: FindNavigatorStatus = .none
 
-    @Published var shouldFocusSearchField: Bool = false
+    @Published public var shouldFocusSearchField: Bool = false
 
-    let workspaceURL: URL
+    public let workspaceURL: URL
 
     @LazyInjected(\.eventBus)
     var eventBus
 
     var tempSearchResults = [SearchResultModel]()
-    var caseSensitive: Bool = false
-    var indexer: SearchIndexer?
-    var selectedMode: [SearchModeModel] = [
+    public var caseSensitive: Bool = false
+    public var indexer: SearchIndexer?
+    public var selectedMode: [SearchModeModel] = [
         .Find,
         .Text,
         .Containing
     ]
 
-    init(workspaceURL: URL) {
+    public init(workspaceURL: URL) {
         self.workspaceURL = workspaceURL
         self.indexer = SearchIndexer.Memory.create()
         addProjectToIndex()

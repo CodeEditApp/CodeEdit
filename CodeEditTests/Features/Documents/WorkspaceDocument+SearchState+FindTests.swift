@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import Search
+@testable import Search
 @testable import CodeEdit
 
 final class FindTests: XCTestCase {

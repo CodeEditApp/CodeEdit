@@ -7,6 +7,7 @@
 
 import XCTest
 import Factory
+import Search
 @testable import CodeEdit
 
 @MainActor

@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Search
 import AppKit
 
 extension SearchState {
@@ -19,7 +18,7 @@ extension SearchState {
     /// - Important: This function relies on an indexer and assumes that it has been previously set.
     /// If the indexer is not available, the function will return early.
     /// Also make sure to flush any pending changes to the index before calling this function.
-    func findAndReplace(query: String, replacingTerm: String) async throws {
+    public func findAndReplace(query: String, replacingTerm: String) async throws {
         await setStatus(.replacing)
         let searchQuery = getSearchTerm(query)
         guard let indexer = indexer else { return }

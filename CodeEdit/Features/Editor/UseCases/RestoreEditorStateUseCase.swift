@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Search
 import OSLog
 import OrderedCollections
 

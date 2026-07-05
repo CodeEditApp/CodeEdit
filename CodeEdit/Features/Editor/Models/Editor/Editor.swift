@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Search
 import OrderedCollections
 import DequeModule
 import AppKit

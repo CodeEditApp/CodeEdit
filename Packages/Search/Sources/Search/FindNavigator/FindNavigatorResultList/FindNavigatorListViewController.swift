@@ -6,16 +6,21 @@
 //
 
 import SwiftUI
+import CodeEditCore
+import Factory
 
 final class FindNavigatorListViewController: NSViewController {
 
-    public var workspace: Workspace
+    @LazyInjected(\.workspaceFileOpener)
+    private var fileOpener
+
+    var configuration: FindNavigatorConfiguration
+
     public var selectedItem: Any?
 
     private var searchItems: [SearchResultModel] = []
     private var scrollView: NSScrollView!
     private var outlineView: NSOutlineView!
-    private let prefs = Settings.shared.preferences
     private var collapsedRows: Set<Int> = []
 
     var rowHeight: Double = 22 {
@@ -44,8 +49,8 @@ final class FindNavigatorListViewController: NSViewController {
         self.scrollView.contentView.contentInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
     }
 
-    init(workspace: Workspace) {
-        self.workspace = workspace
+    init(configuration: FindNavigatorConfiguration) {
+        self.configuration = configuration
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -168,17 +173,14 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
             let frameRect = NSRect(x: 0, y: 0, width: tableColumn.width, height: outlineView.rowHeight)
             return FindNavigatorListMatchCell(frame: frameRect, matchItem: item)
         } else {
+            guard let file = (item as? SearchResultModel)?.file else { return nil }
             let frameRect = NSRect(
                 x: 0,
                 y: 0,
                 width: tableColumn.width,
-                height: prefs.general.projectNavigatorSize.rowHeight
+                height: configuration.rowHeight
             )
-            let view = ProjectNavigatorTableViewCell(
-                frame: frameRect,
-                item: (item as? SearchResultModel)?.file,
-                isEditable: false
-            )
+            let view = SearchResultFileCell(frame: frameRect, file: file, rowHeight: configuration.rowHeight)
             // We're using a medium label for file names b/c it makes it easier to
             // distinguish quickly which results are from which files.
             view.textField?.font = .systemFont(ofSize: 13, weight: .medium)
@@ -197,13 +199,13 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
             let selectedMatch = self.selectedItem as? SearchResultMatchModel
             if selectedItem == nil || selectedMatch != item {
                 self.selectedItem = item
-                workspace.editorManager?.openTab(item: item.file)
+                fileOpener.openFile(at: item.file.url)
             }
         } else if let item = outlineView.item(atRow: selectedIndex) as? SearchResultModel {
             let selectedFile = self.selectedItem as? SearchResultModel
             if selectedItem == nil || selectedFile != item {
                 self.selectedItem = item
-                workspace.editorManager?.openTab(item: item.file)
+                fileOpener.openFile(at: item.file.url)
             }
         }
     }
@@ -222,7 +224,7 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
 
             guard availableWidth > 0 else {
                 // Not enough space to display anything, return minimum height
-                return max(rowHeight, Settings.shared.preferences.general.projectNavigatorSize.rowHeight)
+                return max(rowHeight, configuration.rowHeight)
             }
 
             let attributedString = matchItem.attributedLabel()
@@ -239,7 +241,7 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
             tempView.cell?.wraps = true
             tempView.cell?.usesSingleLineMode = false
             tempView.lineBreakMode = .byWordWrapping
-            tempView.maximumNumberOfLines = Settings.shared.preferences.general.findNavigatorDetail.rawValue
+            tempView.maximumNumberOfLines = configuration.matchDetailLineLimit
             tempView.preferredMaxLayoutWidth = availableWidth
 
             var calculatedHeight = tempView.sizeThatFits(
@@ -252,7 +254,7 @@ extension FindNavigatorListViewController: NSOutlineViewDelegate {
             return max(calculatedHeight, self.rowHeight)
         }
         // For parent items
-        return prefs.general.projectNavigatorSize.rowHeight
+        return configuration.rowHeight
     }
 
     func outlineViewColumnDidResize(_ notification: Notification) {

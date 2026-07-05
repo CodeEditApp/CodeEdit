@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 
 extension SearchState {
     /// Evaluates a matched file to determine if it contains any search matches.
@@ -24,7 +25,7 @@ extension SearchState {
         regexPattern: String
     ) async -> SearchResultModel? {
         var newResult = SearchResultModel(
-            file: CEWorkspaceFile(url: fileURL),
+            file: SearchResultFile(url: fileURL),
             score: fileScore
         )
 
@@ -98,7 +99,7 @@ extension SearchState {
     /// - Parameters:
     ///   - matchRange: The range of the matched substring within the entire file content.
     ///   - fileContent: The content of the file where the match was found.
-    ///   - file: The `CEWorkspaceFile` object representing the file containing the match.
+    ///   - file: The `SearchResultFile` representing the file containing the match.
     ///   - matchWordLength: The length of the matched substring.
     ///
     /// - Returns: A `SearchResultMatchModel` instance representing the matching occurrence.
@@ -112,7 +113,7 @@ extension SearchState {
     private func createMatchModel(
         from matchRange: Range<String.Index>,
         fileContent: String,
-        file: CEWorkspaceFile,
+        file: SearchResultFile,
         matchWordLength: Int
     ) -> SearchResultMatchModel {
         let preLine = extractPreLine(from: matchRange, fileContent: fileContent)

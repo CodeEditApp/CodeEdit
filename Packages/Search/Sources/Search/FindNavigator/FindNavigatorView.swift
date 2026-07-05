@@ -8,15 +8,21 @@
 import SwiftUI
 import CodeEditUI
 
-struct FindNavigatorView: View {
+public struct FindNavigatorView: View {
     @EnvironmentObject private var state: SearchState
+
+    private let configuration: FindNavigatorConfiguration
 
     @State private var foundFilesCount: Int = 0
     @State private var searchResultCount: Int = 0
     @State private var findNavigatorStatus: SearchState.FindNavigatorStatus = .none
     @State private var findResultMessage: String?
 
-    var body: some View {
+    public init(configuration: FindNavigatorConfiguration) {
+        self.configuration = configuration
+    }
+
+    public var body: some View {
         VStack {
             VStack {
                 FindNavigatorForm(state: state)
@@ -67,7 +73,7 @@ struct FindNavigatorView: View {
                         systemImage: "exclamationmark.magnifyingglass"
                     )
                 } else {
-                    FindNavigatorResultList()
+                    FindNavigatorResultList(configuration: configuration)
                 }
             case .replaced(let updatedFiles):
                 CEContentUnavailableView(

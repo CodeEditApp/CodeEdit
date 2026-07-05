@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Search
 
 extension SearchState: @unchecked Sendable {}
 
@@ -24,7 +23,7 @@ extension SearchState {
     /// for more information on search results and matches.
     ///
     /// - Parameter query: The search query to search for.
-    func search(_ query: String) async {
+    public func search(_ query: String) async {
         clearResults()
 
         await MainActor.run {
@@ -105,7 +104,7 @@ extension SearchState {
     }
 
     /// Resets the search results along with counts for overall results and file-specific results.
-    func clearResults() {
+    public func clearResults() {
         DispatchQueue.main.async {
             self.searchResult.removeAll()
             self.searchResultsCount = 0

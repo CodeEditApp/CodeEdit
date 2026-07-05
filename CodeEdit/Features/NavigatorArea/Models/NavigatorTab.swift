@@ -55,7 +55,7 @@ enum NavigatorTab: WorkspacePanelTab {
         case .sourceControl:
             SourceControlNavigatorView()
         case .search:
-            FindNavigatorView()
+            FindNavigatorTab()
         case let .uiExtension(endpoint, data):
             ExtensionSceneView(with: endpoint, sceneID: data.sceneID)
         }
