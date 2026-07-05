@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 
 /// A client for managing Git configuration settings.
 /// Provides methods to read and write Git configuration values at both

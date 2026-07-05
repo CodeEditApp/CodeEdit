@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import CodeEditCore
 
 /// Errors that can occur during shell operations
 enum ShellClientError: Error {

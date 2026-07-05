@@ -9,7 +9,7 @@ import Combine
 import Foundation
 
 /// Protocol for executing shell commands.
-protocol ShellClientProtocol: Sendable {
+public protocol ShellClientProtocol: Sendable {
     /// Run a command synchronously.
     /// - Parameter args: Arguments passed to the shell.
     /// - Returns: The command output.
@@ -28,7 +28,7 @@ protocol ShellClientProtocol: Sendable {
     func runAsync(_ args: [String]) -> AsyncThrowingStream<String, Error>
 }
 
-extension ShellClientProtocol {
+public extension ShellClientProtocol {
     /// Convenience variadic overload for `run`.
     @discardableResult
     func run(_ args: String...) throws -> String {

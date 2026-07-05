@@ -8,6 +8,7 @@
 import Combine
 import Factory
 import Foundation
+import CodeEditCore
 
 /// This model is injected into each ``PackageManagerInstallStep`` when executing a ``PackageManagerInstallOperation``.
 /// A single model is used for each step. Output is collected by the ``PackageManagerInstallOperation``.

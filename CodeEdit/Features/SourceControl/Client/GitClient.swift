@@ -7,6 +7,7 @@
 
 import Combine
 import Foundation
+import CodeEditCore
 import OSLog
 
 class GitClient: GitClientProtocol {
