@@ -55,8 +55,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let client = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
-            eventBus: EventBus(),
-            sourceControlManager: nil
+            eventBus: EventBus()
         )
 
         // Compare to flattened files - 1 cause root is in there
@@ -68,8 +67,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let client = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
-            eventBus: EventBus(),
-            sourceControlManager: nil
+            eventBus: EventBus()
         )
 
         let newFile = generateRandomFiles(amount: 1)[0]
@@ -121,8 +119,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
-            eventBus: EventBus(),
-            sourceControlManager: nil
+            eventBus: EventBus()
         )
 
         XCTAssert(fileManager.getFile(testFileURL.path()) == nil)
@@ -138,8 +135,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
-            eventBus: EventBus(),
-            sourceControlManager: nil
+            eventBus: EventBus()
         )
         XCTAssert(fileManager.getFile(testFileURL.path()) != nil)
         XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == true)
@@ -155,8 +151,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
-            eventBus: EventBus(),
-            sourceControlManager: nil
+            eventBus: EventBus()
         )
         XCTAssert(fileManager.getFile(testFileURL.path()) != nil)
         XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == true)
@@ -170,8 +165,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
-            eventBus: EventBus(),
-            sourceControlManager: nil
+            eventBus: EventBus()
         )
 
         // This will throw if unsuccessful.

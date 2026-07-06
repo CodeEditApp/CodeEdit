@@ -62,11 +62,8 @@ enum WorkspaceFactory {
         let workspaceFileManager = CEWorkspaceFileManager(
             folderUrl: url,
             ignoredFilesAndFolders: ignoredFilesAndDirectories,
-            eventBus: eventBus,
-            sourceControlManager: sourceControlManager
+            eventBus: eventBus
         )
-
-        sourceControlManager.fileManager = workspaceFileManager
 
         workspace.sourceControlManager = sourceControlManager
         workspace.sourceControlViewModel = SourceControlViewModel()

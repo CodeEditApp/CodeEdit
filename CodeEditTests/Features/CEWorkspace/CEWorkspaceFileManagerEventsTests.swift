@@ -28,8 +28,7 @@ final class CEWorkspaceFileManagerEventsTests: XCTestCase {
         let fm = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
-            eventBus: bus,
-            sourceControlManager: nil
+            eventBus: bus
         )
         let key = directory.appending(path: "changed.swift").relativePath
         XCTAssertNotNil(fm.getFile(key), "file should be cached after init")
@@ -49,8 +48,7 @@ final class CEWorkspaceFileManagerEventsTests: XCTestCase {
         let fm = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
-            eventBus: bus,
-            sourceControlManager: nil
+            eventBus: bus
         )
         let key = directory.appending(path: "changed.swift").relativePath
         fm.getFile(key)?.gitStatus = .modified
@@ -70,8 +68,7 @@ final class CEWorkspaceFileManagerEventsTests: XCTestCase {
         let fm = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
-            eventBus: bus,
-            sourceControlManager: nil
+            eventBus: bus
         )
         let key = directory.appending(path: "changed.swift").relativePath
 
@@ -83,5 +80,21 @@ final class CEWorkspaceFileManagerEventsTests: XCTestCase {
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 2)
+    }
+
+    func testInitPublishesChildrenIndexed() throws {
+        let bus = EventBus()
+        var kinds: [String] = []
+        let cancellable = bus.subscribe(WorkspaceFileEvent.self)
+            .sink { event in
+                if case .childrenIndexed = event.kind { kinds.append("childrenIndexed") }
+            }
+        _ = CEWorkspaceFileManager(
+            folderUrl: directory,
+            ignoredFilesAndFolders: [],
+            eventBus: bus
+        )
+        XCTAssertTrue(kinds.contains("childrenIndexed"), "init loads root children and should emit .childrenIndexed")
+        cancellable.cancel()
     }
 }

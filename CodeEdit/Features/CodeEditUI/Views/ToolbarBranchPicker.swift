@@ -25,10 +25,11 @@ struct ToolbarBranchPicker: View {
     /// Initializes the ``ToolbarBranchPicker`` with an instance of a `WorkspaceClient`
     /// - Parameter workspace: An instance of the current `WorkspaceClient`
     init(
-        workspaceFileManager: CEWorkspaceFileManager?
+        workspaceFileManager: CEWorkspaceFileManager?,
+        sourceControlManager: SourceControlManager?
     ) {
         self.workspaceFileManager = workspaceFileManager
-        self.sourceControlManager = workspaceFileManager?.sourceControlManager
+        self.sourceControlManager = sourceControlManager
     }
 
     var body: some View {
@@ -52,7 +53,7 @@ struct ToolbarBranchPicker: View {
                     .help(title)
                 if let currentBranch {
                     Menu(content: {
-                        if let sourceControlManager = workspaceFileManager?.sourceControlManager {
+                        if let sourceControlManager {
                             PopoverView(sourceControlManager: sourceControlManager)
                         }
                     }, label: {

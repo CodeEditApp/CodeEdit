@@ -28,6 +28,7 @@ final class SourceControlManager: ObservableObject {
     let workspaceURL: URL
 
     let eventBus: EventBus
+    var fileEventCancellables: Set<AnyCancellable> = []
 
     weak var fileManager: CEWorkspaceFileManager?
 
@@ -74,5 +75,7 @@ final class SourceControlManager: ObservableObject {
         self.workspaceURL = workspaceURL
         self.eventBus = eventBus
         gitClient = GitClient(directoryURL: workspaceURL, shellClient: shellClient)
+        subscribeToWorkspaceFileEvents()
+        Task { try? await validate() }
     }
 }

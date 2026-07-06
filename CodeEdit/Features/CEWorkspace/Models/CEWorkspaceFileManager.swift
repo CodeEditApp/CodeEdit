@@ -53,7 +53,6 @@ final class CEWorkspaceFileManager {
     let workspaceItem: CEWorkspaceFile
     let eventBus: EventBus
     private var eventCancellables: Set<AnyCancellable> = []
-    weak var sourceControlManager: SourceControlManager?
 
     /// Create a file  manager object with a root and a set of files to ignore.
     /// - Parameters:
@@ -64,15 +63,13 @@ final class CEWorkspaceFileManager {
         folderUrl: URL,
         ignoredFilesAndFolders: Set<String>,
         fileManager: FileManager = FileManager.default,
-        eventBus: EventBus,
-        sourceControlManager: SourceControlManager?
+        eventBus: EventBus
     ) {
         self.folderUrl = folderUrl
         self.ignoredFilesAndFolders = ignoredFilesAndFolders
 
         self.workspaceItem = CEWorkspaceFile(url: folderUrl)
         self.flattenedFileItems = [workspaceItem.id: workspaceItem]
-        self.sourceControlManager = sourceControlManager
         self.fileManager = fileManager
         self.eventBus = eventBus
 
@@ -82,10 +79,6 @@ final class CEWorkspaceFileManager {
 
         fsEventStream = DirectoryEventStream(directory: self.folderUrl.path) { [weak self] events in
             self?.fileSystemEventReceived(events: events)
-        }
-
-        Task {
-            try await self.sourceControlManager?.validate()
         }
     }
 
@@ -207,9 +200,7 @@ final class CEWorkspaceFileManager {
             addedChildrenUrls.append(newFileItem.id)
         }
         childrenMap[file.id] = addedChildrenUrls
-        Task {
-            await sourceControlManager?.refreshAllChangedFiles()
-        }
+        eventBus.publish(WorkspaceFileEvent(workspaceURL: folderUrl, kind: .childrenIndexed))
     }
 
     /// Creates an ordered array of all files and directories at the given file object.

@@ -46,10 +46,12 @@ extension CEWorkspaceFileManager {
                 self.notifyObservers(updatedItems: files)
             }
 
-            if Settings.shared.preferences.sourceControl.general.sourceControlIsEnabled &&
-                Settings.shared.preferences.sourceControl.general.refreshStatusLocally {
-                self.handleGitEvents(events: events)
-            }
+            self.eventBus.publish(
+                WorkspaceFileEvent(
+                    workspaceURL: self.folderUrl,
+                    kind: .filesystemChanged(paths: events.map(\.path))
+                )
+            )
         }
     }
 
