@@ -38,9 +38,8 @@ struct EditorAreaView: View {
     init(editor: Editor, focus: FocusState<Editor?>.Binding) {
         self.editor = editor
         self._focus = focus
-        if let file = editor.selectedTab?.file.fileDocument {
-            self.codeFile = { [weak file] in file }
-        }
+        // `codeFile` is seeded from the environment's document registry in `body`
+        // (via `.onAppear` / the document publisher) — the environment is unavailable in `init`.
     }
 
     var body: some View {
@@ -74,11 +73,11 @@ struct EditorAreaView: View {
                 } else {
                     LoadingFileView(selected.file.name)
                         .onAppear {
-                            if let file = selected.file.fileDocument {
+                            if let file = editorManager.document(for: selected.file) {
                                 self.codeFile = { [weak file] in file }
                             }
                         }
-                        .onReceive(selected.file.fileDocumentPublisher) { latestValue in
+                        .onReceive(editorManager.documentPublisher(for: selected.file)) { latestValue in
                             self.codeFile = { [weak latestValue] in latestValue }
                         }
                 }
@@ -196,7 +195,7 @@ struct EditorAreaView: View {
             }
         }
         .onChange(of: editor.selectedTab) { _, newValue in
-            if let file = newValue?.file.fileDocument {
+            if let newValue, let file = editorManager.document(for: newValue.file) {
                 codeFile = { [weak file] in file }
             }
         }

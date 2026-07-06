@@ -107,7 +107,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     private func getSelectedCodeFile() -> CodeFileDocument? {
-        workspace?.editorManager?.activeEditor.selectedTab?.file.fileDocument
+        guard let editorManager = workspace?.editorManager,
+              let file = editorManager.activeEditor.selectedTab?.file else { return nil }
+        return editorManager.document(for: file)
     }
 
     @IBAction func saveDocument(_ sender: Any) {

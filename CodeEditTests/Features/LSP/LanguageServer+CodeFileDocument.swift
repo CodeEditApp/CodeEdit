@@ -160,7 +160,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         lspService.languageClients[.init(.swift, tempTestDir.path() + "/")] = server
 
         // Set up workspace. Registers it with the workspace window manager.
-        let (_, fileManager) = try makeTestWorkspace()
+        let (workspace, fileManager) = try makeTestWorkspace()
 
         // Add a CEWorkspaceFile
         _ = try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
@@ -175,7 +175,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             withContentsOf: file.url,
             ofType: "public.swift-source"
         )
-        file.fileDocument = codeFile
+        workspace.editorManager?.setDocument(codeFile, for: file)
         NSDocumentController.shared.addDocument(codeFile)
 
         await waitForClientState(

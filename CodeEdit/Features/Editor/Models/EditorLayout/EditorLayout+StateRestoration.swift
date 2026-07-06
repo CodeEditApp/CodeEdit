@@ -36,7 +36,8 @@ extension EditorManager {
         switch useCase.execute(
             statePersistence: statePersistence,
             fileManager: fileManager,
-            searchState: searchState
+            searchState: searchState,
+            editorManager: self
         ) {
         case .restored(let layout, let activeEditor):
             self.editorLayout = layout

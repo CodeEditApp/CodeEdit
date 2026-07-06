@@ -132,7 +132,7 @@ final class Editor: ObservableObject, Identifiable {
             return
         }
         self.selectedTab = tab
-        if tab.file.fileDocument == nil {
+        if editorManager?.document(for: tab.file) == nil {
             do { // Ignore this error for simpler API usage.
                 try openFile(item: tab)
             } catch {
@@ -165,12 +165,12 @@ final class Editor: ObservableObject, Identifiable {
             addToHistory(selectedTab)
         }
         // Reset change count to 0
-        file.fileDocument?.updateChangeCount(.changeCleared)
-        if let codeFile = file.fileDocument {
+        editorManager?.document(for: file)?.updateChangeCount(.changeCleared)
+        if let codeFile = editorManager?.document(for: file) {
             codeFile.close()
         }
         // remove file from memory
-        file.fileDocument = nil
+        editorManager?.setDocument(nil, for: file)
     }
 
     /// Closes the currently opened tab in the tab group.
@@ -271,7 +271,7 @@ final class Editor: ObservableObject, Identifiable {
 
     private func openFile(item: Tab) throws {
         // If this isn't attached to a workspace, loading a new NSDocument will cause a loose document we can't close
-        guard item.file.fileDocument == nil else {
+        guard editorManager?.document(for: item.file) == nil else {
             return
         }
 
@@ -279,14 +279,14 @@ final class Editor: ObservableObject, Identifiable {
             throw EditorError.noWorkspaceAttached
         }
 
-        try item.file.loadCodeFile()
+        try editorManager?.loadDocument(for: item.file)
     }
 
     /// Check if tab can be closed
     ///
     /// If document edited it will show dialog where user can save document before closing or cancel.
     private func canCloseTab(file: CEWorkspaceFile) -> Bool {
-        guard let codeFile = file.fileDocument else { return true }
+        guard let codeFile = editorManager?.document(for: file) else { return true }
 
         if codeFile.isDocumentEdited {
             let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)

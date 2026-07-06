@@ -37,12 +37,13 @@ extension CodeEditWindowController {
 
     // Listen to changes in all tabs/files
     internal func listenToDocumentEdited(workspace: Workspace) {
-        workspace.editorManager?.$activeEditor
+        guard let editorManager = workspace.editorManager else { return }
+        editorManager.$activeEditor
             .flatMap({ editor in
                 editor.$tabs
             })
             .compactMap({ tab in
-                Publishers.MergeMany(tab.elements.compactMap({ $0.file.fileDocumentPublisher }))
+                Publishers.MergeMany(tab.elements.map({ editorManager.documentPublisher(for: $0.file) }))
             })
             .switchToLatest()
             .compactMap({ fileDocument in
@@ -61,7 +62,7 @@ extension CodeEditWindowController {
 
         // Listen to change of tabs, if closed tab without saving content,
         // we also need to recalculate isDocumentEdited
-        workspace.editorManager?.$activeEditor
+        editorManager.$activeEditor
             .flatMap({ editor in
                 editor.$tabs
             })
@@ -74,10 +75,13 @@ extension CodeEditWindowController {
     // Recalculate documentEdited by checking if any tab/file is edited
     private func updateDocumentEdited(workspace: Workspace) {
         let hasEditedDocuments = !(workspace
-            .editorManager?
-            .editorLayout
-            .gatherOpenFiles()
-            .filter({ $0.fileDocument?.isDocumentEdited == true })
+            .editorManager
+            .map({ editorManager in
+                editorManager
+                    .editorLayout
+                    .gatherOpenFiles()
+                    .filter({ editorManager.document(for: $0)?.isDocumentEdited == true })
+            })?
             .isEmpty ?? true)
         self.setDocumentEdited(hasEditedDocuments)
     }

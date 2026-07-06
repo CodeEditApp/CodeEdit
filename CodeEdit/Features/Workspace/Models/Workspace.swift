@@ -87,20 +87,22 @@ final class Workspace: ObservableObject, WorkspaceManaging {
     // MARK: - Unsaved Changes
 
     func hasUnsavedChanges() -> Bool {
-        let editedFiles = editorManager?.editorLayout
+        guard let editorManager else { return false }
+        let editedFiles = editorManager.editorLayout
             .gatherOpenFiles()
-            .compactMap(\.fileDocument)
-            .filter(\.isDocumentEdited) ?? []
+            .compactMap { editorManager.document(for: $0) }
+            .filter(\.isDocumentEdited)
         return !editedFiles.isEmpty
     }
 
     /// Prompts the user to save any unsaved files before closing.
     /// Returns `true` if all files are clean and the workspace can close, `false` if the user cancelled.
     func promptSaveUnsavedFiles() -> Bool {
-        let editedCodeFiles = editorManager?.editorLayout
+        guard let editorManager else { return true }
+        let editedCodeFiles = editorManager.editorLayout
             .gatherOpenFiles()
-            .compactMap(\.fileDocument)
-            .filter(\.isDocumentEdited) ?? []
+            .compactMap { editorManager.document(for: $0) }
+            .filter(\.isDocumentEdited)
 
         for editedCodeFile in editedCodeFiles {
             let shouldClose = UnsafeMutablePointer<Bool>.allocate(capacity: 1)
@@ -119,9 +121,9 @@ final class Workspace: ObservableObject, WorkspaceManaging {
             }
         }
 
-        let areAllClean = editorManager?.editorLayout.gatherOpenFiles()
-            .compactMap(\.fileDocument)
-            .allSatisfy { !$0.isDocumentEdited } ?? true
+        let areAllClean = editorManager.editorLayout.gatherOpenFiles()
+            .compactMap { editorManager.document(for: $0) }
+            .allSatisfy { !$0.isDocumentEdited }
         return areAllClean
     }
 

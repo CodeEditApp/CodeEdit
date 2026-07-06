@@ -22,6 +22,8 @@ struct EditorFileTabCloseButton: View {
     @State private var isDocumentEdited: Bool = false
     @State private var id: Int = 0
 
+    @EnvironmentObject private var editorManager: EditorManager
+
     var body: some View {
         EditorTabCloseButton(
             isActive: isActive,
@@ -33,13 +35,14 @@ struct EditorFileTabCloseButton: View {
             isHoveringClose: $isHoveringClose
         )
         .id(id)
-        // Detects if file document changed, when this view created item.fileDocument is nil
-        .onReceive(item.fileDocumentPublisher, perform: { _ in
+        // Detects if the file's document changed; when this view is created the document may be nil
+        .onReceive(editorManager.documentPublisher(for: item), perform: { _ in
             // Force re-render so isDocumentEdited publisher is updated
             self.id += 1
         })
         .onReceive(
-            item.fileDocument?.isDocumentEditedPublisher.eraseToAnyPublisher() ?? Empty().eraseToAnyPublisher()
+            editorManager.document(for: item)?.isDocumentEditedPublisher.eraseToAnyPublisher()
+                ?? Empty().eraseToAnyPublisher()
         ) { newValue in
             self.isDocumentEdited = newValue
         }

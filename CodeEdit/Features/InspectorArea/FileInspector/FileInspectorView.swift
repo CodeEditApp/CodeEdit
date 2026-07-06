@@ -34,15 +34,16 @@ struct FileInspectorView: View {
 
     func updateFileOptions(_ textEditingOverride: SettingsData.TextEditingSettings? = nil) {
         let textEditingSettings = textEditingOverride ?? textEditing
-        indentOption = file?.fileDocument?.indentOption ?? textEditingSettings.indentOption
-        defaultTabWidth = file?.fileDocument?.defaultTabWidth ?? textEditingSettings.defaultTabWidth
-        wrapLines = file?.fileDocument?.wrapLines ?? textEditingSettings.wrapLinesToEditorWidth
+        let document = file.flatMap { editorManager.document(for: $0) }
+        indentOption = document?.indentOption ?? textEditingSettings.indentOption
+        defaultTabWidth = document?.defaultTabWidth ?? textEditingSettings.defaultTabWidth
+        wrapLines = document?.wrapLines ?? textEditingSettings.wrapLinesToEditorWidth
     }
 
     func updateInspectorSource() {
         file = editorManager.activeEditor.selectedTab?.file
         fileName = file?.name ?? ""
-        language = file?.fileDocument?.language
+        language = file.flatMap { editorManager.document(for: $0) }?.language
         updateFileOptions()
     }
 
@@ -130,7 +131,7 @@ struct FileInspectorView: View {
             }
         }
         .onChange(of: language) { _, newValue in
-            file?.fileDocument?.language = newValue
+            file.flatMap { editorManager.document(for: $0) }?.language = newValue
         }
     }
 
@@ -175,7 +176,8 @@ struct FileInspectorView: View {
             Text("Tabs").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
         }
         .onChange(of: indentOption) { _, newValue in
-            file?.fileDocument?.indentOption = newValue == textEditing.indentOption ? nil : newValue
+            file.flatMap { editorManager.document(for: $0) }?.indentOption =
+                newValue == textEditing.indentOption ? nil : newValue
         }
     }
 
@@ -219,14 +221,16 @@ struct FileInspectorView: View {
             }
         }
         .onChange(of: defaultTabWidth) { _, newValue in
-            file?.fileDocument?.defaultTabWidth = newValue == textEditing.defaultTabWidth ? nil : newValue
+            file.flatMap { editorManager.document(for: $0) }?.defaultTabWidth =
+                newValue == textEditing.defaultTabWidth ? nil : newValue
         }
     }
 
     private var wrapLinesToggle: some View {
         Toggle("Wrap lines", isOn: $wrapLines)
             .onChange(of: wrapLines) { _, newValue in
-                file?.fileDocument?.wrapLines = newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue
+                file.flatMap { editorManager.document(for: $0) }?.wrapLines =
+                    newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue
             }
     }
 

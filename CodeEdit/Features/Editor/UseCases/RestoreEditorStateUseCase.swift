@@ -30,7 +30,8 @@ final class RestoreEditorStateUseCase {
     func execute(
         statePersistence: any WorkspaceStatePersisting,
         fileManager: CEWorkspaceFileManager?,
-        searchState: SearchState?
+        searchState: SearchState?,
+        editorManager: EditorManager
     ) -> Outcome {
         guard let data = statePersistence.get(.openTabs) as? Data else {
             return .noChange
@@ -51,7 +52,12 @@ final class RestoreEditorStateUseCase {
                 return .shouldInitCleanState
             }
 
-            try fixRestoredEditorLayout(state.groups, fileManager: fileManager, searchState: searchState)
+            try fixRestoredEditorLayout(
+                state.groups,
+                fileManager: fileManager,
+                searchState: searchState,
+                editorManager: editorManager
+            )
 
             return .restored(layout: state.groups, activeEditor: activeEditor)
         } catch {
@@ -66,18 +72,23 @@ final class RestoreEditorStateUseCase {
     private func fixRestoredEditorLayout(
         _ group: EditorLayout,
         fileManager: CEWorkspaceFileManager?,
-        searchState: SearchState?
+        searchState: SearchState?,
+        editorManager: EditorManager
     ) throws {
         switch group {
         case let .one(data):
-            try fixEditor(data, fileManager: fileManager, searchState: searchState)
+            try fixEditor(data, fileManager: fileManager, searchState: searchState, editorManager: editorManager)
         case let .vertical(splitData):
             try splitData.editorLayouts.forEach { group in
-                try fixRestoredEditorLayout(group, fileManager: fileManager, searchState: searchState)
+                try fixRestoredEditorLayout(
+                    group, fileManager: fileManager, searchState: searchState, editorManager: editorManager
+                )
             }
         case let .horizontal(splitData):
             try splitData.editorLayouts.forEach { group in
-                try fixRestoredEditorLayout(group, fileManager: fileManager, searchState: searchState)
+                try fixRestoredEditorLayout(
+                    group, fileManager: fileManager, searchState: searchState, editorManager: editorManager
+                )
             }
         }
     }
@@ -87,7 +98,8 @@ final class RestoreEditorStateUseCase {
     private func fixEditor(
         _ editor: Editor,
         fileManager: CEWorkspaceFileManager?,
-        searchState: SearchState?
+        searchState: SearchState?,
+        editorManager: EditorManager
     ) throws {
         guard let fileManager else { return }
         let resolvedTabs = editor
@@ -96,10 +108,11 @@ final class RestoreEditorStateUseCase {
             .map({ EditorInstance(searchState: searchState, file: $0) })
 
         for tab in resolvedTabs {
-            try tab.file.loadCodeFile()
+            try editorManager.loadDocument(for: tab.file)
         }
 
         editor.searchState = searchState
+        editor.editorManager = editorManager
         editor.isAttachedToWorkspace = true
         editor.tabs = OrderedSet(resolvedTabs)
 
