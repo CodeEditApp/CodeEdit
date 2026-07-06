@@ -56,6 +56,7 @@ class EditorManager: ObservableObject {
         self.activeEditorHistory.prepend { [weak tab] in tab }
         self.editorLayout = .horizontal(.init(.horizontal, editorLayouts: [.one(tab)]))
         self.isFocusingActiveEditor = false
+        tab.editorManager = self
         switchToActiveEditor()
     }
 
@@ -68,6 +69,7 @@ class EditorManager: ObservableObject {
         self.activeEditorHistory.prepend { [weak tab] in tab }
         self.editorLayout = .horizontal(.init(.horizontal, editorLayouts: [.one(tab)]))
         self.isFocusingActiveEditor = false
+        tab.editorManager = self
         switchToActiveEditor()
     }
 

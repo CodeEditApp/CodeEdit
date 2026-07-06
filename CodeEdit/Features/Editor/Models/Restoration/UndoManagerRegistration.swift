@@ -20,6 +20,9 @@ import CodeEditTextView
 final class UndoManagerRegistration: ObservableObject {
     private var managerMap: [String: CEUndoManager] = [:]
 
+    /// Used to check whether a file still has an open document. Wired by `WorkspaceFactory`.
+    weak var editorManager: EditorManager?
+
     init() { }
 
     /// Find or create a new undo manager.

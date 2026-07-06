@@ -102,6 +102,7 @@ struct EditorTabBarTrailingAccessories: View {
         } else {
             newEditor = .init()
         }
+        newEditor.editorManager = editorManager
         splitEditor(edge, newEditor)
         editorManager.updateCachedFlattenedEditors = true
         editorManager.activeEditor = newEditor

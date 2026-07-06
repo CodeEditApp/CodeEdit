@@ -27,6 +27,7 @@ extension EditorManager {
             // No matter what, set up each editor. Even if we fail to read data.
             flattenedEditors.forEach { editor in
                 editor.searchState = searchState
+                editor.editorManager = self
                 editor.isAttachedToWorkspace = true
             }
         }

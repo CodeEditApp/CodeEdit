@@ -63,6 +63,7 @@ final class Editor: ObservableObject, Identifiable {
 
     weak var parent: SplitViewData?
     weak var searchState: SearchState?
+    weak var editorManager: EditorManager?
 
     /// Whether this editor is attached to a workspace. Used to guard file loading operations.
     var isAttachedToWorkspace: Bool = false

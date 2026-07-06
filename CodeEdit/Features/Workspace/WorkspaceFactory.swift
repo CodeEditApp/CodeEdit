@@ -85,6 +85,7 @@ enum WorkspaceFactory {
 
         // --- Phase 3: Observer registration ---
         workspaceFileManager.addObserver(workspace.undoRegistration)
+        workspace.undoRegistration.editorManager = editorManager
 
         // --- Phase 4: State restoration ---
         if let statePersistence = workspace.statePersistence {
