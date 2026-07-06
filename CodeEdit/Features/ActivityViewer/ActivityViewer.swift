@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CEWorkspaceFileManager
 
 /// A view that shows the activity bar and the current status of any executed task
 struct ActivityViewer: View {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CEWorkspaceFileManager
 
 struct SourceControlFetchView: View {
     @Environment(\.dismiss)

@@ -15,7 +15,7 @@ extension CEWorkspaceFileManager {
     ///   - file: The file to add the new folder to.
     /// - Returns: The ``CEWorkspaceFile`` representing the folder in the file manager's cache.
     /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja. *Moved from 7c27b1e*
-    func addFolder(folderName: String, toFile file: CEWorkspaceFile) throws -> CEWorkspaceFile {
+    public func addFolder(folderName: String, toFile file: CEWorkspaceFile) throws -> CEWorkspaceFile {
         // Check if folder, if it is create folder under self, else create on same level.
         var folderUrl = (
             file.isFolder ? file.url.appending(path: folderName)
@@ -59,7 +59,7 @@ extension CEWorkspaceFileManager {
     /// - Throws: Throws a `CocoaError.fileWriteUnknown` with the file url if creating the file fails, and calls
     ///           ``rebuildFiles(fromItem:deep:)`` which throws other `FileManager` errors.
     /// - Returns: The ``CEWorkspaceFile`` representing the new file in the file manager's cache.
-    func addFile(
+    public func addFile(
         fileName: String,
         toFile file: CEWorkspaceFile,
         useExtension: String? = nil,

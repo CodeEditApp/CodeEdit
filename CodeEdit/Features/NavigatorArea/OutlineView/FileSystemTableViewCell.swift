@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CEWorkspaceFileManager
 import CodeEditCore
 
 class FileSystemTableViewCell: StandardTableViewCell {

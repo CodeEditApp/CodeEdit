@@ -120,13 +120,13 @@ extension CEWorkspaceFileManager {
 
     /// Add an observer for file system events.
     /// - Parameter observer: The observer to add.
-    func addObserver(_ observer: CEWorkspaceFileManagerObserver) {
+    public func addObserver(_ observer: CEWorkspaceFileManagerObserver) {
         observers.add(observer as AnyObject)
     }
 
     /// Remove an observer for file system events.
     /// - Parameter observer: The observer to remove.
-    func removeObserver(_ observer: CEWorkspaceFileManagerObserver) {
+    public func removeObserver(_ observer: CEWorkspaceFileManagerObserver) {
         observers.remove(observer as AnyObject)
     }
 }

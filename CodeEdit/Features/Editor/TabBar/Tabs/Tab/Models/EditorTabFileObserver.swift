@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CEWorkspaceFileManager
 import CodeEditCore
 import SwiftUI
 

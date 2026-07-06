@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CEWorkspaceFileManager
 import Foundation
 import OSLog
 import CodeEditCore

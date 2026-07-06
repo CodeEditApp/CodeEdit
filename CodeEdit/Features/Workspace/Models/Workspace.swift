@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CEWorkspaceFileManager
 import Notifications
 import Search
 import SwiftUI

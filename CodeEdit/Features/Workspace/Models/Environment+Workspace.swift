@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CEWorkspaceFileManager
 
 private struct WorkspaceFileManagerKey: EnvironmentKey {
     static let defaultValue: CEWorkspaceFileManager? = nil

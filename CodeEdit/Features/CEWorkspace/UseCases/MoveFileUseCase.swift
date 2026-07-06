@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CEWorkspaceFileManager
 import CodeEditCore
 
 /// Moves a file within a workspace, closing any open tabs for it and reopening the new location.

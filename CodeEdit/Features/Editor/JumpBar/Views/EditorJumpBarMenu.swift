@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CEWorkspaceFileManager
 import CodeEditCore
 
 final class EditorJumpBarMenu: NSMenu, NSMenuDelegate {
