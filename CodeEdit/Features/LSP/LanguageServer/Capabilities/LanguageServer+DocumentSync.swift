@@ -108,7 +108,7 @@ extension LanguageServer {
 
             // Let the semantic token provider know about the update.
             // Note for future: If a related LSP object need notifying about document changes, do it here.
-            try await document.languageServerObjects.highlightProvider.documentDidChange()
+            try await notifyHighlightProviderDidChange(document)
         } catch {
             logger.warning("closeDocument: Error \(error)")
             throw error
@@ -129,12 +129,21 @@ extension LanguageServer {
 
     @MainActor
     private func updateIsolatedDocument(_ document: DocumentType) {
-        document.languageServerObjects.setUp(server: self, document: document)
+        provideObjects(document).setUp(server: self, document: document)
     }
 
     @MainActor
     private func clearIsolatedDocument(_ document: DocumentType) {
-        document.languageServerObjects = LanguageServerDocumentObjects()
+        if let uri = document.languageServerURI {
+            clearObjects(uri)
+        }
+    }
+
+    /// Notifies the document's highlight provider of a change. Kept `@MainActor` so the
+    /// non-`Sendable` `LanguageServerDocumentObjects` never crosses an actor boundary.
+    @MainActor
+    private func notifyHighlightProviderDidChange(_ document: DocumentType) async throws {
+        try await provideObjects(document).highlightProvider.documentDidChange()
     }
 
     // swiftlint:disable line_length

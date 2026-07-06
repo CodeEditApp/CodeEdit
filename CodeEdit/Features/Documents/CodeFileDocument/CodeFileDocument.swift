@@ -64,9 +64,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// Document-specific overridden line wrap preference.
     @Published var wrapLines: Bool?
 
-    /// Set up by ``LanguageServer``, conforms this type to ``LanguageServerDocument``.
-    @Published var languageServerObjects: LanguageServerDocumentObjects<CodeFileDocument> = .init()
-
     /// The type of data this file document contains.
     ///
     /// If its text content is not nil, a `text` UTType is returned.

@@ -12,6 +12,7 @@ import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages
 import Combine
+import Factory
 
 /// CodeFileView is just a wrapper of the `CodeEditor` dependency
 struct CodeFileView: View {
@@ -83,10 +84,14 @@ struct CodeFileView: View {
         self._editorInstance = .init(wrappedValue: editorInstance)
         self._codeFile = .init(wrappedValue: codeFile)
 
+        // The per-document LSP objects are owned by `LSPService` (keyed by URI); fetch the same
+        // instance the language server configures via `setUp`.
+        let lspObjects = Container.shared.lspService().languageServerObjects(for: codeFile)
+
         self.textViewCoordinators = textViewCoordinators
             + [editorInstance.rangeTranslator]
             + [codeFile.contentCoordinator]
-            + [codeFile.languageServerObjects.textCoordinator]
+            + [lspObjects.textCoordinator]
         self.isEditable = isEditable
 
         if let openOptions = codeFile.openOptions {
@@ -94,7 +99,7 @@ struct CodeFileView: View {
             editorInstance.cursorPositions = openOptions.cursorPositions
         }
 
-        highlightProviders = [codeFile.languageServerObjects.highlightProvider] + [treeSitterClient]
+        highlightProviders = [lspObjects.highlightProvider] + [treeSitterClient]
 
         codeFile
             .contentCoordinator

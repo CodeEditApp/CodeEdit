@@ -21,10 +21,13 @@ struct LanguageServerDocumentObjects<DocumentType: LanguageServerDocument> {
     }
 }
 
-/// A protocol that allows a language server to register objects on a text document.
+/// A protocol that allows a language server to work with a text document.
+///
+/// Deliberately holds no LSP-typed state: the per-document objects
+/// (``LanguageServerDocumentObjects``) are owned by `LSPService`, keyed by URI, so conformers
+/// (e.g. `CodeFileDocument`) need not depend on LSP types.
 protocol LanguageServerDocument: AnyObject {
     var content: NSTextStorage? { get }
     var languageServerURI: String? { get }
-    var languageServerObjects: LanguageServerDocumentObjects<Self> { get set }
     func getLanguage() -> CodeLanguage
 }
