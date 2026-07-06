@@ -200,7 +200,13 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
         let server = try await LanguageServerType.createServer(
             for: languageId,
             with: serverBinary,
-            workspacePath: workspacePath
+            workspacePath: workspacePath,
+            provideObjects: { [weak self] document in
+                self?.languageServerObjects(for: document) ?? LanguageServerDocumentObjects<CodeFileDocument>()
+            },
+            clearObjects: { [weak self] uri in
+                self?.removeLanguageServerObjects(for: uri)
+            }
         )
         languageClients[ClientKey(languageId, workspacePath)] = server
         logger.info("Successfully started \(languageId.rawValue) language server")

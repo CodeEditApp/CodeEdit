@@ -30,6 +30,12 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     /// language server and a document. For example, the content coordinator.
     let openFiles: LanguageServerFileMap<DocumentType>
 
+    /// Resolves the per-document LSP objects (owned by `LSPService`). Injected at creation so the
+    /// document itself need not store them.
+    let provideObjects: @MainActor (DocumentType) -> LanguageServerDocumentObjects<DocumentType>
+    /// Drops the per-document LSP objects for a URI when a document closes.
+    let clearObjects: @MainActor (String) -> Void
+
     /// Maps the language server's highlight config to one CodeEdit can read. See ``SemanticTokenMap``.
     let highlightMap: SemanticTokenMap?
 
@@ -52,8 +58,13 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
         lspPid: pid_t,
         serverCapabilities: ServerCapabilities,
         rootPath: URL,
-        logContainer: LanguageServerLogContainer
+        logContainer: LanguageServerLogContainer,
+        provideObjects: @escaping @MainActor (DocumentType) -> LanguageServerDocumentObjects<DocumentType>
+            = { _ in LanguageServerDocumentObjects<DocumentType>() },
+        clearObjects: @escaping @MainActor (String) -> Void = { _ in }
     ) {
+        self.provideObjects = provideObjects
+        self.clearObjects = clearObjects
         self.languageId = languageId
         self.binary = binary
         self.lspInstance = lspInstance
@@ -82,7 +93,10 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     static func createServer(
         for languageId: LanguageIdentifier,
         with binary: LanguageServerBinary,
-        workspacePath: String
+        workspacePath: String,
+        provideObjects: @escaping @MainActor (DocumentType) -> LanguageServerDocumentObjects<DocumentType>
+            = { _ in LanguageServerDocumentObjects<DocumentType>() },
+        clearObjects: @escaping @MainActor (String) -> Void = { _ in }
     ) async throws -> LanguageServer {
         let executionParams = Process.ExecutionParameters(
             path: binary.execPath,
@@ -109,7 +123,9 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
             lspPid: process.processIdentifier,
             serverCapabilities: initializationResponse.capabilities,
             rootPath: URL(filePath: workspacePath),
-            logContainer: logContainer
+            logContainer: logContainer,
+            provideObjects: provideObjects,
+            clearObjects: clearObjects
         )
     }
 
