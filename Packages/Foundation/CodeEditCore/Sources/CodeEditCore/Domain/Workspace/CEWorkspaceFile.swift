@@ -7,7 +7,6 @@
 
 import Foundation
 import UniformTypeIdentifiers
-import Combine
 
 /// A file, folder, or symlink in the workspace. This is the UI-free model; presentation,
 /// AppKit intents, name-labeling, and editor-document coupling live in app-side extensions.
@@ -40,19 +39,6 @@ public final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable 
 
     /// Returns a parent ``CEWorkspaceFile``. `nil` for the top-level item.
     public weak var parent: CEWorkspaceFile?
-
-    private let fileDocumentSubject = PassthroughSubject<AnyObject?, Never>()
-
-    /// Type-erased weak reference to the file's open document (a `CodeFileDocument` in the app).
-    /// The app's `CEWorkspaceFile+Editor` extension provides a typed `fileDocument` accessor.
-    public weak var fileDocumentObject: AnyObject? {
-        didSet { fileDocumentSubject.send(fileDocumentObject) }
-    }
-
-    /// Publisher for ``fileDocumentObject``.
-    public var fileDocumentObjectPublisher: AnyPublisher<AnyObject?, Never> {
-        fileDocumentSubject.eraseToAnyPublisher()
-    }
 
     public var fileIdentifier = UUID().uuidString
 
