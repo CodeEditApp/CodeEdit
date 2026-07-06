@@ -210,8 +210,26 @@ extension ProjectNavigatorMenu {
     /// Action that deletes the item immediately.
     @objc
     func delete() {
+        let selectedItems = selectedItems()
+
+        let confirmation = NSAlert()
+        confirmation.alertStyle = .critical
+        confirmation.addButton(withTitle: "Delete")
+        confirmation.buttons.last?.hasDestructiveAction = true
+        confirmation.addButton(withTitle: "Cancel")
+        if selectedItems.count == 1, let only = selectedItems.first {
+            confirmation.messageText = "Do you want to delete \u{201C}\(only.name)\u{201D}?"
+            confirmation.informativeText = "This item will be deleted immediately. You can't undo this action."
+        } else {
+            confirmation.messageText =
+                "Are you sure you want to delete the \(selectedItems.count) selected items?"
+            // swiftlint:disable:next line_length
+            confirmation.informativeText = "\(selectedItems.count) items will be deleted immediately. You cannot undo this action."
+        }
+
+        guard confirmation.runModal() == .alertFirstButtonReturn else { return }
+
         do {
-            let selectedItems = selectedItems()
             if selectedItems.count == 1 {
                 try selectedItems.forEach { item in
                     try workspace?.workspaceFileManager?.delete(file: item)

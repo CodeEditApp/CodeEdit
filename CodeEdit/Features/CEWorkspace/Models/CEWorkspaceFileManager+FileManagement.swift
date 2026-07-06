@@ -7,7 +7,6 @@
 
 import Foundation
 import CodeEditCore
-import AppKit
 
 extension CEWorkspaceFileManager {
     /// This function allows creation of folders in the main directory or sub-folders
@@ -160,46 +159,23 @@ extension CEWorkspaceFileManager {
     }
 
     /// This function deletes the item or folder from the current project by erasing immediately.
-    /// - Parameters:
-    ///   - file: The file to delete
-    ///   - confirmDelete: True to present an alert to confirm the delete.
+    /// - Parameter file: The file to delete
+    /// - Note: Presenting a confirmation is the caller's responsibility.
     /// - Authors: Mattijs Eikelenboom, KaiTheRedNinja., Paul Ebose *Moved from 7c27b1e*
-    public func delete(file: CEWorkspaceFile, confirmDelete: Bool = true) throws {
+    public func delete(file: CEWorkspaceFile) throws {
         // This function also has to account for how the
         // - file system can change outside of the editor
-        let fileName = file.name
-
-        let deleteConfirmation = NSAlert()
-        deleteConfirmation.messageText = "Do you want to delete “\(fileName)”?"
-        deleteConfirmation.informativeText = "This item will be deleted immediately. You can't undo this action."
-        deleteConfirmation.alertStyle = .critical
-        deleteConfirmation.addButton(withTitle: "Delete")
-        deleteConfirmation.buttons.last?.hasDestructiveAction = true
-        deleteConfirmation.addButton(withTitle: "Cancel")
-        if !confirmDelete || deleteConfirmation.runModal() == .alertFirstButtonReturn { // "Delete" button
-            if fileManager.fileExists(atPath: file.url.path) {
-                try deleteFile(at: file.url)
-            }
+        if fileManager.fileExists(atPath: file.url.path) {
+            try deleteFile(at: file.url)
         }
     }
 
     /// This function deletes multiple files or folders from the current project by erasing immediately.
-    /// - Parameters:
-    ///   - files: The files to delete
-    ///   - confirmDelete: True to present an alert to confirm the delete.
-    public func batchDelete(files: Set<CEWorkspaceFile>, confirmDelete: Bool = true) throws {
-        let deleteConfirmation = NSAlert()
-        deleteConfirmation.messageText = "Are you sure you want to delete the \(files.count) selected items?"
-        // swiftlint:disable:next line_length
-        deleteConfirmation.informativeText = "\(files.count) items will be deleted immediately. You cannot undo this action."
-        deleteConfirmation.alertStyle = .critical
-        deleteConfirmation.addButton(withTitle: "Delete")
-        deleteConfirmation.buttons.last?.hasDestructiveAction = true
-        deleteConfirmation.addButton(withTitle: "Cancel")
-        if !confirmDelete || deleteConfirmation.runModal() == .alertFirstButtonReturn {
-            for file in files where fileManager.fileExists(atPath: file.url.path) {
-                try deleteFile(at: file.url)
-            }
+    /// - Parameter files: The files to delete
+    /// - Note: Presenting a confirmation is the caller's responsibility.
+    public func batchDelete(files: Set<CEWorkspaceFile>) throws {
+        for file in files where fileManager.fileExists(atPath: file.url.path) {
+            try deleteFile(at: file.url)
         }
     }
 

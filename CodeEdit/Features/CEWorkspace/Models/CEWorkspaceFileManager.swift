@@ -8,7 +8,6 @@
 import Combine
 import CodeEditCore
 import Foundation
-import AppKit
 import OSLog
 
 protocol CEWorkspaceFileManagerObserver: AnyObject {
