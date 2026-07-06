@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum GitStatus: String, Codable {
+public enum GitStatus: String, Codable, Sendable {
     case none = "."
     case modified = "M"
     case untracked = "?"
