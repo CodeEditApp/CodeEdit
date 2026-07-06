@@ -14,6 +14,9 @@ import os
 class EditorManager: ObservableObject {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "EditorManager")
 
+    /// Owns the file→document association for this workspace.
+    let documents = DocumentRegistry()
+
     /// The complete editor layout.
     @Published var editorLayout: EditorLayout
 
@@ -152,5 +155,24 @@ class EditorManager: ObservableObject {
             activeEditor = editor
         }
         isFocusingActiveEditor.toggle()
+    }
+
+    // MARK: - Documents
+
+    func document(for file: CEWorkspaceFile) -> CodeFileDocument? {
+        documents.document(for: file)
+    }
+
+    func setDocument(_ document: CodeFileDocument?, for file: CEWorkspaceFile) {
+        documents.setDocument(document, for: file)
+    }
+
+    @discardableResult
+    func loadDocument(for file: CEWorkspaceFile) throws -> CodeFileDocument {
+        try documents.loadDocument(for: file)
+    }
+
+    func documentPublisher(for file: CEWorkspaceFile) -> AnyPublisher<CodeFileDocument?, Never> {
+        documents.documentPublisher(for: file)
     }
 }
