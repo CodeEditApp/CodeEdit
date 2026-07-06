@@ -5,6 +5,7 @@
 //  Created by Khan Winter on 9/9/24.
 //
 
+import CEWorkspaceFileManager
 import XCTest
 import CodeEditCore
 import CodeEditTextView

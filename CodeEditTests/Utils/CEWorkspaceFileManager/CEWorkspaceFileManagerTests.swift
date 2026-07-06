@@ -4,6 +4,7 @@
 //
 //  Created by Marco Carnevali on 16/03/22.
 //
+import CEWorkspaceFileManager
 import Combine
 import CodeEditCore
 import Foundation

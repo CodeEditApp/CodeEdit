@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 06/07/2026.
 //
 
+import CEWorkspaceFileManager
 import XCTest
 import CodeEditCore
 @testable import CodeEdit

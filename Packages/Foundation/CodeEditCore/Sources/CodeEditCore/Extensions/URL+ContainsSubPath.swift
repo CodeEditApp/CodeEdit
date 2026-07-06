@@ -1,6 +1,6 @@
 //
 //  URL+ContainsSubPath.swift
-//  CEWorkspaceFileManager
+//  CodeEditCore
 //
 //  Created by Khan Winter on 10/22/24.
 //
@@ -20,7 +20,7 @@ extension URL {
     ///
     /// - Parameter other: The URL to compare.
     /// - Returns: True, if the other URL is lower in the file system.
-    func containsSubPath(_ other: URL) -> Bool {
+    public func containsSubPath(_ other: URL) -> Bool {
         other.absoluteString.starts(with: absoluteString)
         && other.pathComponents.count > pathComponents.count
     }
