@@ -18,12 +18,13 @@ final class LanguageServerDocumentObjectsTests: XCTestCase {
     final class MockDocumentType: LanguageServerDocument {
         var content: NSTextStorage?
         var languageServerURI: String?
-        var languageServerObjects: LanguageServerDocumentObjects<MockDocumentType>
+        /// Test-local store (the protocol no longer requires it; `LSPService` owns it in production).
+        /// The server's `provideObjects`/`clearObjects` closures are wired to this in `setUp`.
+        var languageServerObjects = LanguageServerDocumentObjects<MockDocumentType>()
 
         init() {
             self.content = NSTextStorage(string: "hello world")
             self.languageServerURI = "/test/file/path"
-            self.languageServerObjects = .init()
         }
 
         func getLanguage() -> CodeLanguage {
@@ -42,6 +43,8 @@ final class LanguageServerDocumentObjectsTests: XCTestCase {
         var capabilities = ServerCapabilities()
         capabilities.textDocumentSync = .optionA(.init(openClose: true, change: .full))
         capabilities.semanticTokensProvider = .optionA(.init(legend: .init(tokenTypes: [], tokenModifiers: [])))
+        let document = MockDocumentType()
+        self.document = document
         server = LanguageServerType(
             languageId: .swift,
             binary: .init(execPath: "", args: [], env: nil),
@@ -52,10 +55,11 @@ final class LanguageServerDocumentObjectsTests: XCTestCase {
             lspPid: -1,
             serverCapabilities: capabilities,
             rootPath: URL(fileURLWithPath: ""),
-            logContainer: LanguageServerLogContainer(language: .swift)
+            logContainer: LanguageServerLogContainer(language: .swift),
+            provideObjects: { $0.languageServerObjects },
+            clearObjects: { [weak document] _ in document?.languageServerObjects = .init() }
         )
         _ = try await server.lspInstance.initializeIfNeeded()
-        document = MockDocumentType()
     }
 
     // MARK: - Tests

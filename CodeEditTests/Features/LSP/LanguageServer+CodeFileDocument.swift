@@ -75,7 +75,9 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             lspPid: -1,
             serverCapabilities: capabilities,
             rootPath: tempTestDir,
-            logContainer: LanguageServerLogContainer(language: .swift)
+            logContainer: LanguageServerLogContainer(language: .swift),
+            provideObjects: { Container.shared.lspService().languageServerObjects(for: $0) },
+            clearObjects: { Container.shared.lspService().removeLanguageServerObjects(for: $0) }
         )
         _ = try await server.lspInstance.initializeIfNeeded()
         return (connection: bufferingConnection, server: server)
@@ -241,13 +243,14 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             let (connection, server) = try await makeTestServer()
             // Create a CodeFileDocument to test with, attach it to the workspace and file
             let codeFile = try await openCodeFile(for: server, connection: connection, file: file, syncOption: option)
-            XCTAssertNotNil(codeFile.languageServerObjects.textCoordinator.languageServer)
-            codeFile.languageServerObjects.textCoordinator.setUpUpdatesTask()
+            let lspObjects = Container.shared.lspService().languageServerObjects(for: codeFile)
+            XCTAssertNotNil(lspObjects.textCoordinator.languageServer)
+            lspObjects.textCoordinator.setUpUpdatesTask()
             codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
 
             let textView = TextView(string: "")
             textView.setTextStorage(codeFile.content!)
-            textView.delegate = codeFile.languageServerObjects.textCoordinator
+            textView.delegate = lspObjects.textCoordinator
 
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "Worlld")
             textView.replaceCharacters(in: NSRange(location: 39, length: 6), with: "")
@@ -298,14 +301,15 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             // Set up test server
             let (connection, server) = try await makeTestServer()
             let codeFile = try await openCodeFile(for: server, connection: connection, file: file, syncOption: option)
+            let lspObjects = Container.shared.lspService().languageServerObjects(for: codeFile)
 
-            XCTAssertNotNil(codeFile.languageServerObjects.textCoordinator.languageServer)
-            codeFile.languageServerObjects.textCoordinator.setUpUpdatesTask()
+            XCTAssertNotNil(lspObjects.textCoordinator.languageServer)
+            lspObjects.textCoordinator.setUpUpdatesTask()
             codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
 
             let textView = TextView(string: "")
             textView.setTextStorage(codeFile.content!)
-            textView.delegate =  codeFile.languageServerObjects.textCoordinator
+            textView.delegate =  lspObjects.textCoordinator
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "Worlld")
             textView.replaceCharacters(in: NSRange(location: 39, length: 6), with: "")
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "World")
