@@ -123,11 +123,35 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
     /// Holds all the event listeners for each active language client
     var eventListeningTasks: [ClientKey: Task<Void, Never>] = [:]
 
+    /// Per-document language-server objects (content coordinator + highlight provider), keyed by
+    /// document URI. Owned here so `CodeFileDocument` need not depend on LSP types. Entries are
+    /// created on demand and removed when the document closes.
+    private var documentObjects: [String: LanguageServerDocumentObjects<CodeFileDocument>] = [:]
+
     @AppSettings(\.developerSettings.lspBinaries)
     var lspBinaries
 
     @Environment(\.openWindow)
     private var openWindow
+
+    /// Returns the language-server objects for a document, creating and storing them on first use.
+    /// A document without a URI (e.g. untitled) gets a fresh, unstored instance — it has no server.
+    func languageServerObjects(for document: CodeFileDocument) -> LanguageServerDocumentObjects<CodeFileDocument> {
+        guard let uri = document.languageServerURI else {
+            return LanguageServerDocumentObjects<CodeFileDocument>()
+        }
+        if let existing = documentObjects[uri] {
+            return existing
+        }
+        let created = LanguageServerDocumentObjects<CodeFileDocument>()
+        documentObjects[uri] = created
+        return created
+    }
+
+    /// Drops the stored objects for a document URI. Called when a document closes.
+    func removeLanguageServerObjects(for uri: String) {
+        documentObjects[uri] = nil
+    }
 
     init() {
         // Load the LSP binaries from the developer menu
@@ -223,6 +247,7 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
     /// Notify all relevant language clients that a document was closed.
     /// - Parameter url: The url of the document that was closed
     func closeDocument(_ url: URL) {
+        removeLanguageServerObjects(for: url.lspURI)
         guard let languageClient = languageClient(forDocument: url) else { return }
         Task {
             do {
