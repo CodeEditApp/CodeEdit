@@ -1,6 +1,6 @@
 //
-//  FileSystemClient.swift
-//  CodeEdit
+//  CEWorkspaceFileManager.swift
+//  CEWorkspaceFileManager
 //
 //  Created by Matthijs Eikelenboom on 04/02/2023.
 //
@@ -38,7 +38,11 @@ protocol CEWorkspaceFileManagerObserver: AnyObject {
 /// files under the ``CEWorkspaceFileManager/folderUrl`` url. Those can be passed on to listeners that conform to the
 /// ``CEWorkspaceFileManagerObserver`` protocol. Use the ``CEWorkspaceFileManager/addObserver(_:)``
 /// and ``CEWorkspaceFileManager/removeObserver(_:)`` to add or remove observers. Observers are kept as weak references.
-final class CEWorkspaceFileManager {
+/// `@unchecked Sendable`: the mutable cache (`flattenedFileItems`, `childrenMap`, `observers`) is
+/// main-thread-confined — filesystem events hop to the main queue before mutating, and all consumers
+/// (UI, use cases) call in on the main thread. The reference is shared across threads (the FSEvents
+/// callback thread invokes `fileSystemEventReceived`), which is why the annotation is required.
+final class CEWorkspaceFileManager: @unchecked Sendable {
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CEWorkspaceFileManager")
     private(set) var fileManager: FileManager
     private(set) var ignoredFilesAndFolders: Set<String>

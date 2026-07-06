@@ -1,6 +1,6 @@
 //
-//  CEWorkspaceFileManager+FileSystem.swift
-//  CodeEdit
+//  CEWorkspaceFileManager+FileManagement.swift
+//  CEWorkspaceFileManager
 //
 //  Created by Khan Winter on 9/30/23.
 //

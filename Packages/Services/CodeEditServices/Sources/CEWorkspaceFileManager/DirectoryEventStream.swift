@@ -1,6 +1,6 @@
 //
 //  DirectoryEventStream.swift
-//  CodeEdit
+//  CEWorkspaceFileManager
 //
 //  Created by Khan Winter on 6/26/23.
 //

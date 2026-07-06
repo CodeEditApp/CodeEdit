@@ -1,6 +1,6 @@
 //
 //  CEWorkspaceFileManager+DirectoryEvents.swift
-//  CodeEdit
+//  CEWorkspaceFileManager
 //
 //  Created by Axel Martinez on 5/8/24.
 //

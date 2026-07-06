@@ -1,6 +1,6 @@
 //
 //  CEWorkspaceFileManager+Error.swift
-//  CodeEdit
+//  CEWorkspaceFileManager
 //
 //  Created by Khan Winter on 1/13/25.
 //

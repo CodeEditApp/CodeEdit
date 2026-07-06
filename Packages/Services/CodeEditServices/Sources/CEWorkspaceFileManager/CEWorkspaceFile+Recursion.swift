@@ -1,6 +1,6 @@
 //
 //  CEWorkspaceFile+Recursion.swift
-//  CodeEdit
+//  CEWorkspaceFileManager
 //
 //  Created by Matthijs Eikelenboom on 30/04/2023.
 //

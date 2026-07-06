@@ -7,9 +7,9 @@ let package = Package(
     platforms: [.macOS(.v14)],
     products: [
         // Umbrella product: the app links this once; each service target is
-        // its own module (`import ShellClient`). Adding a service later is a
-        // manifest-only change.
-        .library(name: "CodeEditServices", targets: ["ShellClient"])
+        // its own module (`import ShellClient`, `import CEWorkspaceFileManager`).
+        // Adding a service later is a manifest-only change.
+        .library(name: "CodeEditServices", targets: ["ShellClient", "CEWorkspaceFileManager"])
     ],
     dependencies: [
         .package(path: "../../Foundation/CodeEditCore")
@@ -19,6 +19,10 @@ let package = Package(
         // never on sibling targets, CodeEditUI, features, or Factory.
         .target(
             name: "ShellClient",
+            dependencies: [.product(name: "CodeEditCore", package: "CodeEditCore")]
+        ),
+        .target(
+            name: "CEWorkspaceFileManager",
             dependencies: [.product(name: "CodeEditCore", package: "CodeEditCore")]
         )
     ]
