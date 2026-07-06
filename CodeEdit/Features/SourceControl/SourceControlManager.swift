@@ -5,6 +5,7 @@
 //  Created by Nanashi Li on 2022/05/20.
 //
 
+import Combine
 import Foundation
 import OSLog
 import CodeEditCore
@@ -25,6 +26,8 @@ final class SourceControlManager: ObservableObject {
 
     /// The base URL of the workspace
     let workspaceURL: URL
+
+    let eventBus: EventBus
 
     weak var fileManager: CEWorkspaceFileManager?
 
@@ -65,9 +68,11 @@ final class SourceControlManager: ObservableObject {
 
     init(
         workspaceURL: URL,
-        shellClient: ShellClientProtocol
+        shellClient: ShellClientProtocol,
+        eventBus: EventBus
     ) {
         self.workspaceURL = workspaceURL
+        self.eventBus = eventBus
         gitClient = GitClient(directoryURL: workspaceURL, shellClient: shellClient)
     }
 }

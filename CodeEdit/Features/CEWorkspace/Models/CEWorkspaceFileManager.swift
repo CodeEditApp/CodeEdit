@@ -51,6 +51,8 @@ final class CEWorkspaceFileManager {
 
     let folderUrl: URL
     let workspaceItem: CEWorkspaceFile
+    let eventBus: EventBus
+    private var eventCancellables: Set<AnyCancellable> = []
     weak var sourceControlManager: SourceControlManager?
 
     /// Create a file  manager object with a root and a set of files to ignore.
@@ -62,6 +64,7 @@ final class CEWorkspaceFileManager {
         folderUrl: URL,
         ignoredFilesAndFolders: Set<String>,
         fileManager: FileManager = FileManager.default,
+        eventBus: EventBus,
         sourceControlManager: SourceControlManager?
     ) {
         self.folderUrl = folderUrl
@@ -71,6 +74,9 @@ final class CEWorkspaceFileManager {
         self.flattenedFileItems = [workspaceItem.id: workspaceItem]
         self.sourceControlManager = sourceControlManager
         self.fileManager = fileManager
+        self.eventBus = eventBus
+
+        subscribeToGitStatusEvents()
 
         self.loadChildrenForFile(self.workspaceItem)
 
@@ -81,6 +87,37 @@ final class CEWorkspaceFileManager {
         Task {
             try await self.sourceControlManager?.validate()
         }
+    }
+
+    /// Applies git statuses published by source control onto the cached files.
+    private func subscribeToGitStatusEvents() {
+        eventBus.subscribe(GitStatusChangedEvent.self)
+            .filter { [weak self] in $0.workspaceURL == self?.folderUrl }
+            .receive(on: RunLoop.main)
+            .sink { [weak self] event in
+                self?.applyGitStatuses(event.changed)
+            }
+            .store(in: &eventCancellables)
+    }
+
+    /// Applies the given fileKey → status map onto cached files, clears any cached
+    /// file not present in the map, and notifies observers of the union.
+    private func applyGitStatuses(_ changed: [String: GitStatus]) {
+        var updatedStatusFor: Set<CEWorkspaceFile> = []
+        for (key, status) in changed {
+            guard let file = getFile(key) else { continue }
+            if file.gitStatus != status {
+                file.gitStatus = status
+            }
+            updatedStatusFor.insert(file)
+        }
+        for (_, file) in flattenedFileItems
+        where !updatedStatusFor.contains(file) && file.gitStatus != nil {
+            file.gitStatus = nil
+            updatedStatusFor.insert(file)
+        }
+        guard !updatedStatusFor.isEmpty else { return }
+        notifyObservers(updatedItems: updatedStatusFor)
     }
 
     // MARK: - Public API

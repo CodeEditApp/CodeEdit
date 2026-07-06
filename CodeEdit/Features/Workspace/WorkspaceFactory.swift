@@ -52,14 +52,17 @@ enum WorkspaceFactory {
         }
 
         let shellClient = Container.shared.shellClient()
+        let eventBus = Container.shared.eventBus()
         let sourceControlManager = SourceControlManager(
             workspaceURL: url,
-            shellClient: shellClient
+            shellClient: shellClient,
+            eventBus: eventBus
         )
 
         let workspaceFileManager = CEWorkspaceFileManager(
             folderUrl: url,
             ignoredFilesAndFolders: ignoredFilesAndDirectories,
+            eventBus: eventBus,
             sourceControlManager: sourceControlManager
         )
 

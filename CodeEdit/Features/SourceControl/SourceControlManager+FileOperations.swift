@@ -101,35 +101,14 @@ extension SourceControlManager {
         self.changedFiles = files
     }
 
-    /// Refresh git status for files in project navigator
+    /// Publish the current git status snapshot for the workspace's files. The
+    /// file manager applies these statuses onto its cached files.
     @MainActor
     private func refreshStatusInFileManager() {
-        guard let fileManager = fileManager else {
-            return
-        }
-
-        var updatedStatusFor: Set<CEWorkspaceFile> = []
-        // Refresh status of file manager files
-        for changedFile in changedFiles {
-            guard let file = fileManager.getFile(changedFile.ceFileKey) else {
-                continue
-            }
-            if file.gitStatus != changedFile.anyStatus() {
-                file.gitStatus = changedFile.anyStatus()
-            }
-            updatedStatusFor.insert(file)
-        }
-
-        for (_, file) in fileManager.flattenedFileItems
-        where !updatedStatusFor.contains(file) && file.gitStatus != nil {
-            file.gitStatus = nil
-            updatedStatusFor.insert(file)
-        }
-
-        if updatedStatusFor.isEmpty {
-            return
-        }
-
-        fileManager.notifyObservers(updatedItems: updatedStatusFor)
+        let changed = Dictionary(
+            changedFiles.map { ($0.ceFileKey, $0.anyStatus()) },
+            uniquingKeysWith: { _, latest in latest }
+        )
+        eventBus.publish(GitStatusChangedEvent(workspaceURL: workspaceURL, changed: changed))
     }
 }

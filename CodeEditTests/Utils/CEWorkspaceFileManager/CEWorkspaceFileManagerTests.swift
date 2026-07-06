@@ -55,6 +55,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let client = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
+            eventBus: EventBus(),
             sourceControlManager: nil
         )
 
@@ -67,6 +68,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let client = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
+            eventBus: EventBus(),
             sourceControlManager: nil
         )
 
@@ -119,6 +121,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
+            eventBus: EventBus(),
             sourceControlManager: nil
         )
 
@@ -135,11 +138,12 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
+            eventBus: EventBus(),
             sourceControlManager: nil
         )
         XCTAssert(fileManager.getFile(testFileURL.path()) != nil)
         XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == true)
-        try fileManager.delete(file: CEWorkspaceFile(url: testFileURL), confirmDelete: false)
+        try fileManager.delete(file: CEWorkspaceFile(url: testFileURL))
         XCTAssert(FileManager.default.fileExists(atPath: testFileURL.path()) == false)
     }
 
@@ -151,6 +155,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
+            eventBus: EventBus(),
             sourceControlManager: nil
         )
         XCTAssert(fileManager.getFile(testFileURL.path()) != nil)
@@ -165,6 +170,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
         let fileManager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
+            eventBus: EventBus(),
             sourceControlManager: nil
         )
 

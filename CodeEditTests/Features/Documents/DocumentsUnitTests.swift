@@ -31,7 +31,8 @@ final class DocumentsUnitTests: XCTestCase {
         )
         workspace.sourceControlManager = SourceControlManager(
             workspaceURL: URL(filePath: "/tmp"),
-            shellClient: Container.shared.shellClient()
+            shellClient: Container.shared.shellClient(),
+            eventBus: Container.shared.eventBus()
         )
         workspace.sourceControlViewModel = SourceControlViewModel()
         workspace.searchState = SearchState(workspaceURL: URL(filePath: "/tmp"))
