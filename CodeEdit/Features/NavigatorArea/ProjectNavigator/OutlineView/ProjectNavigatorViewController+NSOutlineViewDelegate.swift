@@ -8,6 +8,7 @@
 import AppKit
 import CEWorkspaceFileManager
 import CodeEditCore
+import Factory
 
 extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineView(
@@ -49,7 +50,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         if !item.isFolder && shouldSendSelectionUpdate {
             shouldSendSelectionUpdate = false
             if workspace?.editorManager?.activeEditor.selectedTab?.file != item {
-                workspace?.editorManager?.activeEditor.openTab(file: item, asTemporary: true)
+                Container.shared.workspaceNavigator().open(file: item, asTemporary: true)
             }
             shouldSendSelectionUpdate = true
         }

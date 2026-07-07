@@ -8,6 +8,7 @@ import SwiftUI
 import CEWorkspaceFileManager
 import CodeEditCore
 import CodeEditLanguages
+import Factory
 
 struct FileInspectorView: View {
     @Environment(\.workspaceFileManager)
@@ -104,7 +105,7 @@ struct FileInspectorView: View {
                                 ),
                                    !newItem.isFolder {
                                     editorManager.editorLayout.closeAllTabs(of: file)
-                                    editorManager.openTab(item: newItem)
+                                    Container.shared.workspaceNavigator().open(file: newItem, asTemporary: false)
                                 }
                             } catch {
                                 let alert = NSAlert(error: error)
@@ -152,7 +153,7 @@ struct FileInspectorView: View {
                                     return
                                 }
                                 editorManager.editorLayout.closeAllTabs(of: file)
-                                editorManager.openTab(item: newItem)
+                                Container.shared.workspaceNavigator().open(file: newItem, asTemporary: false)
                             } catch {
                                 let alert = NSAlert(error: error)
                                 alert.addButton(withTitle: "Dismiss")

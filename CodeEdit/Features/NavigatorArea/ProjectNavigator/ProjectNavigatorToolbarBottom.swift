@@ -8,6 +8,8 @@
 import SwiftUI
 import CEWorkspaceFileManager
 import CodeEditUI
+import CodeEditCore
+import Factory
 
 struct ProjectNavigatorToolbarBottom: View {
     @Environment(\.controlActiveState)
@@ -115,7 +117,7 @@ struct ProjectNavigatorToolbarBottom: View {
                         toFile: rootFile
                     ) {
                         listenerModel.highlightedFileItem = newFile
-                        editorManager.openTab(item: newFile)
+                        Container.shared.workspaceNavigator().open(file: newFile, asTemporary: false)
                     }
                 } catch {
                     let alert = NSAlert(error: error)

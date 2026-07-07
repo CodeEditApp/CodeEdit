@@ -10,6 +10,7 @@ import CEWorkspaceFileManager
 import SwiftUI
 import OSLog
 import CodeEditCore
+import Factory
 
 /// A `NSViewController` that handles the **ProjectNavigatorView** in the **NavigatorArea**.
 ///
@@ -180,7 +181,7 @@ final class ProjectNavigatorViewController: NSViewController {
                 outlineView.expandItem(item)
             }
         } else if Settings[\.navigation].navigationStyle == .openInTabs {
-            workspace?.editorManager?.activeEditor.openTab(file: item, asTemporary: false)
+            Container.shared.workspaceNavigator().open(file: item, asTemporary: false)
         }
     }
 

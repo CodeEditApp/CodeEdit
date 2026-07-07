@@ -9,6 +9,7 @@ import AppKit
 import CEWorkspaceFileManager
 import CodeEditCore
 import SwiftUI
+import Factory
 
 extension ProjectNavigatorMenu {
     /// - Returns: the currently selected `CEWorkspaceFile` items in the outline view.
@@ -69,7 +70,7 @@ extension ProjectNavigatorMenu {
 
         /// Open the items in order.
         sortedItems.forEach { item in
-            workspace?.editorManager?.openTab(item: item)
+            Container.shared.workspaceNavigator().open(file: item, asTemporary: false)
         }
     }
 
@@ -91,7 +92,7 @@ extension ProjectNavigatorMenu {
         do {
             if let newFile = try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item) {
                 workspace?.listenerModel.highlightedFileItem = newFile
-                workspace?.editorManager?.openTab(item: newFile)
+                Container.shared.workspaceNavigator().open(file: newFile, asTemporary: false)
             }
         } catch {
             let alert = NSAlert(error: error)
@@ -131,7 +132,7 @@ extension ProjectNavigatorMenu {
                     contents: clipBoardContent
                 ) {
                 workspace?.listenerModel.highlightedFileItem = newFile
-                workspace?.editorManager?.openTab(item: newFile)
+                Container.shared.workspaceNavigator().open(file: newFile, asTemporary: false)
                 renameFile()
             }
         } catch {
