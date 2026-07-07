@@ -12,6 +12,7 @@ import UniformTypeIdentifiers
 import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages
+import CodeEditCore
 import Combine
 import OSLog
 import TextStory
@@ -56,7 +57,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     @Published var language: CodeLanguage?
 
     /// Document-specific overridden indent option.
-    @Published var indentOption: SettingsData.TextEditingSettings.IndentOption?
+    @Published var indentOption: CodeEditCore.IndentOption?
 
     /// Document-specific overridden tab width.
     @Published var defaultTabWidth: Int?

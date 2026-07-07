@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Testing
+import CodeEditCore
 @testable import CodeEdit
 
 @Suite
@@ -27,6 +28,14 @@ struct CodeFileDocumentTests {
             let codeFile = try CodeFileDocument(contentsOf: fileURL, ofType: "public.source-code")
             try operation(codeFile)
         }
+    }
+
+    @Test
+    func indentOptionOverrideUsesCoreType() {
+        let codeFile = CodeFileDocument()
+        codeFile.indentOption = CodeEditCore.IndentOption(indentType: .spaces, spaceCount: 2)
+        #expect(codeFile.indentOption?.indentType == .spaces)
+        #expect(codeFile.indentOption?.spaceCount == 2)
     }
 
     @Test

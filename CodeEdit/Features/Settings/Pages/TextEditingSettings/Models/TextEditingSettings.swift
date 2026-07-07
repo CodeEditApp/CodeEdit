@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditCore
 import Factory
 import Foundation
 
@@ -213,17 +214,9 @@ extension SettingsData {
             }
         }
 
-        struct IndentOption: Codable, Hashable {
-            var indentType: IndentType
-            // Kept even when `indentType` is `.tab` to retain the user's
-            // settings when changing `indentType`.
-            var spaceCount: Int = 4
-
-            enum IndentType: String, Codable {
-                case tab
-                case spaces
-            }
-        }
+        /// Re-exported from `CodeEditCore`. Keeps `SettingsData.TextEditingSettings.IndentOption`
+        /// valid for all existing call sites while the underlying type lives in the Core package.
+        typealias IndentOption = CodeEditCore.IndentOption
 
         struct BracketPairEmphasis: Codable, Hashable {
             /// The type of highlight to use

@@ -11,6 +11,7 @@ import CodeEditUI
 import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages
+import CodeEditCore
 import Combine
 import Factory
 
@@ -218,12 +219,12 @@ struct CodeFileView: View {
 // This extension is kept here because it should not be used elsewhere in the app and may cause confusion
 // due to the similar type name from the CETV module.
 private extension SettingsData.TextEditingSettings.IndentOption {
-    func textViewOption() -> IndentOption {
+    func textViewOption() -> CodeEditSourceEditor.IndentOption {
         switch self.indentType {
         case .spaces:
-            return IndentOption.spaces(count: spaceCount)
+            return CodeEditSourceEditor.IndentOption.spaces(count: spaceCount)
         case .tab:
-            return IndentOption.tab
+            return CodeEditSourceEditor.IndentOption.tab
         }
     }
 }
