@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditDocument
 
 /// Determines what type of file is passed in, and previews it accordingly.
 ///

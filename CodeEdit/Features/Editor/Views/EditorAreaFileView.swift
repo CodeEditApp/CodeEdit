@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditDocument
 import AVKit
 import CodeEditSourceEditor
 import SwiftUI

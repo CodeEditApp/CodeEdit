@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import CodeEditDocument
 import Combine
 import CodeEditCore
 @testable import CodeEdit

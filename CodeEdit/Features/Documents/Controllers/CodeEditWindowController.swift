@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import CodeEditDocument
 import SwiftUI
 import CodeEditUI
 import Factory

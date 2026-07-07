@@ -13,7 +13,6 @@ import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages
 import CodeEditCore
-import CodeEditDocument
 import Combine
 import OSLog
 import TextStory
@@ -26,9 +25,13 @@ enum CodeFileError: Error {
 }
 
 @objc(CodeFileDocument)
-final class CodeFileDocument: NSDocument, ObservableObject {
-    struct OpenOptions {
-        let cursorPositions: [CursorPosition]
+public final class CodeFileDocument: NSDocument, ObservableObject {
+    public struct OpenOptions {
+        public let cursorPositions: [CursorPosition]
+
+        public init(cursorPositions: [CursorPosition]) {
+            self.cursorPositions = cursorPositions
+        }
     }
 
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CodeFileDocument")
@@ -46,26 +49,26 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// enough.
     ///
     /// To receive notifications for content updates, subscribe to one of the publishers on ``contentCoordinator``.
-    var content: NSTextStorage?
+    public var content: NSTextStorage?
 
     /// The string encoding of the original file. Used to save the file back to the encoding it was loaded from.
-    var sourceEncoding: FileEncoding?
+    public var sourceEncoding: FileEncoding?
 
     /// The coordinator to use to subscribe to edit events and cursor location events.
     /// See ``CodeEditSourceEditor/CombineCoordinator``.
-    @Published var contentCoordinator: CombineCoordinator = CombineCoordinator()
+    @Published public var contentCoordinator: CombineCoordinator = CombineCoordinator()
 
     /// Used to override detected languages.
-    @Published var language: CodeLanguage?
+    @Published public var language: CodeLanguage?
 
     /// Document-specific overridden indent option.
-    @Published var indentOption: CodeEditCore.IndentOption?
+    @Published public var indentOption: CodeEditCore.IndentOption?
 
     /// Document-specific overridden tab width.
-    @Published var defaultTabWidth: Int?
+    @Published public var defaultTabWidth: Int?
 
     /// Document-specific overridden line wrap preference.
-    @Published var wrapLines: Bool?
+    @Published public var wrapLines: Bool?
 
     /// The type of data this file document contains.
     ///
@@ -73,7 +76,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     ///
     /// - Note: The UTType doesn't necessarily mean the file extension, it can be the MIME
     /// type or any other form of data representation.
-    var utType: UTType? {
+    public var utType: UTType? {
         if content != nil {
             return .text
         }
@@ -87,12 +90,12 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     /// Specify options for opening the file such as the initial cursor positions.
     /// Nulled by ``CodeFileView`` on first load.
-    var openOptions: OpenOptions?
+    public var openOptions: OpenOptions?
 
     private let isDocumentEditedSubject = PassthroughSubject<Bool, Never>()
 
     /// Publisher for isDocumentEdited property
-    var isDocumentEditedPublisher: AnyPublisher<Bool, Never> {
+    public var isDocumentEditedPublisher: AnyPublisher<Bool, Never> {
         isDocumentEditedSubject.eraseToAnyPublisher()
     }
 
@@ -104,19 +107,19 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// Provides the current "autosave enabled" preference without coupling this type to the
     /// Settings feature. Wired by the app at launch (see `AppDelegate`). Defaults to `false`
     /// so the type stays self-contained for packaging and predictable in tests that don't wire it.
-    static var isAutoSaveOnProvider: () -> Bool = { false }
+    nonisolated(unsafe) public static var isAutoSaveOnProvider: () -> Bool = { false }
 
     // MARK: - NSDocument
 
-    override static var autosavesInPlace: Bool {
+    public override static var autosavesInPlace: Bool {
         isAutoSaveOnProvider()
     }
 
-    override var autosavingFileType: String? {
+    public override var autosavingFileType: String? {
         Self.isAutoSaveOnProvider() ? fileType : nil
     }
 
-    override func makeWindowControllers() {
+    public override func makeWindowControllers() {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 750, height: 800),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
@@ -142,7 +145,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     // MARK: - Data
 
-    override func data(ofType _: String) throws -> Data {
+    public override func data(ofType _: String) throws -> Data {
         guard let sourceEncoding, let data = (content?.string as NSString?)?.data(using: sourceEncoding.nsValue) else {
             Self.logger.error("Failed to encode contents to \(self.sourceEncoding.debugDescription)")
             throw CodeFileError.failedToEncode
@@ -154,7 +157,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     /// This function is used for decoding files.
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
-    override func read(from data: Data, ofType _: String) throws {
+    public override func read(from data: Data, ofType _: String) throws {
         var nsString: NSString?
         let rawEncoding = NSString.stringEncoding(
             for: data,
@@ -206,22 +209,32 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// - Note: This is inefficient memory-wise. We could do a diff of the file and only register the
     ///         mutations that would recreate the diff. However, that would instead be CPU intensive.
     ///         Tradeoffs.
-    private func registerContentChangeUndo(fileURL: URL?, nsString: NSString, content: NSTextStorage) {
+    private nonisolated func registerContentChangeUndo(fileURL: URL?, nsString: NSString, content: NSTextStorage) {
         guard let fileURL else { return }
-        // If there's an undo manager, register a mutation replacing the entire contents.
-        let mutation = TextMutation(
-            string: nsString as String,
-            range: NSRange(location: 0, length: content.length),
-            limit: content.length
-        )
-        let undoManager = delegate?.undoManager(forFile: fileURL)
-        undoManager?.registerMutation(mutation)
+        // The delegate's undo registry is main-actor isolated. Capture only Sendable primitives and build
+        // the (non-Sendable) `TextMutation` on the main actor so nothing non-Sendable crosses the boundary.
+        // Re-reads reach here on the main thread; mirror the `queue: .main` bridge used for LSP notifications.
+        let string = nsString as String
+        let length = content.length
+        let register: @MainActor () -> Void = { [weak self] in
+            let mutation = TextMutation(
+                string: string,
+                range: NSRange(location: 0, length: length),
+                limit: length
+            )
+            self?.delegate?.undoManager(forFile: fileURL)?.registerMutation(mutation)
+        }
+        if Thread.isMainThread {
+            MainActor.assumeIsolated { register() }
+        } else {
+            DispatchQueue.main.async { register() }
+        }
     }
 
     // MARK: - Autosave
 
     /// Triggered when change occurred
-    override func updateChangeCount(_ change: NSDocument.ChangeType) {
+    public override func updateChangeCount(_ change: NSDocument.ChangeType) {
         super.updateChangeCount(change)
 
         if CodeFileDocument.autosavesInPlace {
@@ -232,7 +245,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     /// Triggered when changes saved
-    override func updateChangeCount(withToken changeCountToken: Any, for saveOperation: NSDocument.SaveOperationType) {
+    public override func updateChangeCount(withToken changeCountToken: Any, for saveOperation: NSDocument.SaveOperationType) {
         super.updateChangeCount(withToken: changeCountToken, for: saveOperation)
 
         if CodeFileDocument.autosavesInPlace {
@@ -247,7 +260,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     ///
     /// All operations are done with the ``autosaveTimerLock`` acquired (including the scheduled autosave) to ensure
     /// correct timing when scheduling or cancelling timers.
-    override func scheduleAutosaving() {
+    public override func scheduleAutosaving() {
         autosaveTimerLock.withLock {
             if self.hasUnautosavedChanges {
                 guard autosaveTimer == nil else { return }
@@ -274,7 +287,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// we continue.
     /// To determine if we can reload the file, we check if the document has outstanding edits. If not, we reload the
     /// file.
-    override func presentedItemDidChange() {
+    public override func presentedItemDidChange() {
         if fileModificationDate != getModificationDate() {
             guard isDocumentEdited else {
                 fileModificationDate = getModificationDate()
@@ -308,14 +321,14 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     // MARK: - Close
 
-    override func close() {
+    public override func close() {
         super.close()
         if let fileURL {
             notifyLSPDidClose(fileURL)
         }
     }
 
-    override func save(_ sender: Any?) {
+    public override func save(_ sender: Any?) {
         guard let fileURL else {
             super.save(sender)
             return
@@ -332,7 +345,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         }
     }
 
-    override func fileNameExtension(
+    public override func fileNameExtension(
         forType typeName: String,
         saveOperation: NSDocument.SaveOperationType
     ) -> String? {
@@ -346,7 +359,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// Use ``CodeFileDocument/language`` for the default value before using this. That property is used to override
     /// the file's language.
     /// - Returns: The detected code language.
-    func getLanguage() -> CodeLanguage {
+    public func getLanguage() -> CodeLanguage {
         guard let url = fileURL else {
             return .default
         }
@@ -357,16 +370,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         )
     }
 
-}
-
-// MARK: LanguageServerDocument
-
-extension CodeFileDocument: LanguageServerDocument {
-    /// A stable string to use when identifying documents with language servers.
-    /// Needs to be a valid URI, so always returns with the `file://` prefix to indicate it's a file URI.
-    var languageServerURI: String? {
-        fileURL?.lspURI
-    }
 }
 
 private extension CodeFileDocument {

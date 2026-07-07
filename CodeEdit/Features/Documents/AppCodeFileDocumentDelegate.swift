@@ -9,6 +9,7 @@ import AppKit
 import SwiftUI
 import Factory
 import CodeEditTextView
+import CodeEditDocument
 
 /// App-side implementation of ``CodeFileDocumentDelegate``. Bridges a packaged
 /// `CodeFileDocument` back to the app's `Workspace` undo registry, Settings-injected

@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditDocument
 import AsyncAlgorithms
 import CodeEditSourceEditor
 import CodeEditTextView

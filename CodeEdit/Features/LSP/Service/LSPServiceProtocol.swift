@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditDocument
 
 /// Protocol for managing Language Server Protocol services.
 ///

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditDocument
 import CodeEditCore
 import SwiftUI
 

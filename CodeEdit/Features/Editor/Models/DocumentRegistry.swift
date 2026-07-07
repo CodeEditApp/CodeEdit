@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CodeEditDocument
 import Foundation
 import CodeEditCore
 

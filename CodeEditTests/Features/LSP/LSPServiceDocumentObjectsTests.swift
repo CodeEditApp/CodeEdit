@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import CodeEditDocument
 @testable import CodeEdit
 
 @MainActor

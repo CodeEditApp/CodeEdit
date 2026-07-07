@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditDocument
 
 struct EditorTabBarView: View {
     let hasTopInsets: Bool

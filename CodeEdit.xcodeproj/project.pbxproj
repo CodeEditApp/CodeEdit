@@ -15,7 +15,6 @@
 		30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64902C16CA8100CC8A9E /* LanguageServerProtocol */; };
 		30CB64942C16CA9100CC8A9E /* LanguageClient in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64932C16CA9100CC8A9E /* LanguageClient */; };
 		5800E2F82FF843390085ECF1 /* CodeEditUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5800E2F72FF843390085ECF1 /* CodeEditUI */; };
-		5AD0C0DE2D00000000000001 /* CodeEditDocument in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD0C0DE2D00000000000002 /* CodeEditDocument */; };
 		583E529C29361BAB001AB554 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 583E529B29361BAB001AB554 /* SnapshotTesting */; };
 		588950C52FFA5C05004BE116 /* Search in Frameworks */ = {isa = PBXBuildFile; productRef = 588950C42FFA5C05004BE116 /* Search */; };
 		588957132FFA679E004BE116 /* CodeEditServices in Frameworks */ = {isa = PBXBuildFile; productRef = 588957122FFA679E004BE116 /* CodeEditServices */; };
@@ -25,6 +24,7 @@
 		58CFC49B2F8BE799009F4AA7 /* CodeEditCore in Frameworks */ = {isa = PBXBuildFile; productRef = 58CFC49A2F8BE799009F4AA7 /* CodeEditCore */; };
 		58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACE292FB2B0004A9BDE /* Documentation.docc */; };
 		58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB1D292FB954004A9BDE /* Sparkle */; };
+		5AD0C0DE2D00000000000001 /* CodeEditDocument in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD0C0DE2D00000000000002 /* CodeEditDocument */; };
 		5E4485612DF600D9008BBE69 /* AboutWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 5E4485602DF600D9008BBE69 /* AboutWindow */; };
 		5EACE6222DF4BF08005E08B8 /* WelcomeWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 5EACE6212DF4BF08005E08B8 /* WelcomeWindow */; };
 		6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0617D52BDB4432008C9C42 /* LogStream */; };
@@ -1906,10 +1906,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditUI;
 		};
-		5AD0C0DE2D00000000000002 /* CodeEditDocument */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CodeEditDocument;
-		};
 		583E529B29361BAB001AB554 /* SnapshotTesting */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
@@ -1945,6 +1941,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */;
 			productName = Sparkle;
+		};
+		5AD0C0DE2D00000000000002 /* CodeEditDocument */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditDocument;
 		};
 		5E4485602DF600D9008BBE69 /* AboutWindow */ = {
 			isa = XCSwiftPackageProductDependency;

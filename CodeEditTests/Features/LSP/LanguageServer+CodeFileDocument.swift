@@ -6,6 +6,7 @@
 //
 
 import CEWorkspaceFileManager
+import CodeEditDocument
 import XCTest
 import CodeEditCore
 import CodeEditTextView

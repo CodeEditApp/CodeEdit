@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditDocument
 import CodeEditUI
 
 struct EditorTabBarTrailingAccessories: View {

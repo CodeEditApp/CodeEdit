@@ -18,7 +18,7 @@ import CodeEditTextView
 /// documents (`init()` → `read()` fires `documentDidOpen` before any completion handler could
 /// set a per-instance delegate) get correct timing without a custom `NSDocumentController`.
 @MainActor
-protocol CodeFileDocumentDelegate: AnyObject {
+public protocol CodeFileDocumentDelegate: AnyObject {
     /// The undo manager already registered for a file, if any (nil if none exists yet).
     func undoManager(forFile url: URL) -> CEUndoManager?
     /// The content view for a standalone single-file window (`makeWindowControllers`).
@@ -32,5 +32,5 @@ protocol CodeFileDocumentDelegate: AnyObject {
 extension Container {
     /// App shell registers the real delegate in `CodeEditApp.init`; defaults to `nil`
     /// (no-op) so tests and pre-launch contexts are safe.
-    var codeFileDocumentDelegate: Factory<CodeFileDocumentDelegate?> { self { nil } }
+    public var codeFileDocumentDelegate: Factory<CodeFileDocumentDelegate?> { self { nil } }
 }
