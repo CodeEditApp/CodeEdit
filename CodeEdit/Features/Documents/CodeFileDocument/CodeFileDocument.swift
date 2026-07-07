@@ -128,9 +128,9 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         }
         addWindowController(windowController)
 
-        window.contentView = NSHostingView(rootView: SettingsInjector {
-            WindowCodeFileView(codeFile: self)
-        })
+        if let delegate {
+            window.contentView = delegate.makeWindowContentView(for: self)
+        }
 
         window.makeKeyAndOrderFront(nil)
 
@@ -213,7 +213,7 @@ final class CodeFileDocument: NSDocument, ObservableObject {
             range: NSRange(location: 0, length: content.length),
             limit: content.length
         )
-        let undoManager = self.findWorkspace()?.undoRegistration.managerIfExists(forFile: fileURL)
+        let undoManager = delegate?.undoManager(forFile: fileURL)
         undoManager?.registerMutation(mutation)
     }
 
@@ -356,10 +356,6 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         )
     }
 
-    @MainActor
-    func findWorkspace() -> Workspace? {
-        fileURL?.findWorkspace()
-    }
 }
 
 // MARK: LanguageServerDocument

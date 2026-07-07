@@ -34,6 +34,22 @@ struct CodeFileDocumentTests {
 
     @MainActor
     @Test
+    func delegateConsultedForUndoOnReread() throws {
+        let mock = MockDelegate()
+        Container.shared.codeFileDocumentDelegate.register { mock }
+        defer { Container.shared.codeFileDocumentDelegate.reset() }
+
+        try withCodeFile { codeFile in
+            // First read happened in `withCodeFile` (content now loaded). A second read
+            // takes the re-read branch, which consults the delegate for an undo manager.
+            let data = Data("different contents".utf8)
+            try codeFile.read(from: data, ofType: "public.source-code")
+            #expect(codeFile.fileURL != nil && mock.undoRequestedURLs.contains(codeFile.fileURL!))
+        }
+    }
+
+    @MainActor
+    @Test
     func delegateReceivesOpenAndCloseNotifications() throws {
         let mock = MockDelegate()
         Container.shared.codeFileDocumentDelegate.register { mock }
