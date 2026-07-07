@@ -78,14 +78,14 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
     /// Attempts to open a file URL in an existing workspace, finding the nearest workspace.
     /// Returns `true` if the file was opened in a workspace.
-    func openFileInWorkspace(url: URL) -> Bool {
+    func openFileInWorkspace(url: URL, asTemporary: Bool) -> Bool {
         guard !url.isFolder else { return false }
 
         for workspace in openWorkspaces.sorted(by: {
             ($0.fileURL?.sharedComponents(url) ?? 0) > ($1.fileURL?.sharedComponents(url) ?? 0)
         }) {
             if let newFile = workspace.workspaceFileManager?.getFile(url.absolutePath, createIfNotFound: true) {
-                workspace.editorManager?.openTab(item: newFile)
+                workspace.editorManager?.openTab(item: newFile, asTemporary: asTemporary)
                 focusWorkspace(workspace)
                 return true
             }
