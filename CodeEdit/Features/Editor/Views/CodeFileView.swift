@@ -132,14 +132,14 @@ struct CodeFileView: View {
                     font: font,
                     lineHeightMultiple: lineHeightMultiple,
                     letterSpacing: letterSpacing,
-                    wrapLines: wrapLinesToEditorWidth,
+                    wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
                     useSystemCursor: useSystemCursor,
-                    tabWidth: defaultTabWidth,
+                    tabWidth: codeFile.defaultTabWidth ?? defaultTabWidth,
                     bracketPairEmphasis: getBracketPairEmphasis()
                 ),
                 behavior: .init(
                     isEditable: isEditable,
-                    indentOption: indentOption.textViewOption(),
+                    indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
                     reformatAtColumn: reformatAtColumn
                 ),
                 layout: .init(
