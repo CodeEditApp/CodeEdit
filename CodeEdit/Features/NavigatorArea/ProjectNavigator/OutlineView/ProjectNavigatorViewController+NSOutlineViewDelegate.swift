@@ -49,7 +49,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
         if !item.isFolder && shouldSendSelectionUpdate {
             shouldSendSelectionUpdate = false
-            if workspace?.editorManager?.activeEditor.selectedTab?.file != item {
+            if activeEditorState?.selectedFile != item {
                 Container.shared.workspaceNavigator().open(file: item, asTemporary: true)
             }
             shouldSendSelectionUpdate = true
@@ -68,7 +68,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             expandedItems.insert(item)
         }
 
-        guard let id = workspace.editorManager?.activeEditor.selectedTab?.file.id,
+        guard let id = activeEditorState?.selectedFile?.id,
               let item = workspace.workspaceFileManager?.getFile(id, createIfNotFound: true),
               /// update outline selection only if the parent of selected item match with expanded item
               item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else {

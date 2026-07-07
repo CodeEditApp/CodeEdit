@@ -16,6 +16,8 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
     @EnvironmentObject var workspace: Workspace
     @EnvironmentObject var editorManager: EditorManager
 
+    @Environment(\.activeEditorState) private var activeEditorState
+
     @StateObject var prefs: Settings = .shared
 
     typealias NSViewControllerType = ProjectNavigatorViewController
@@ -25,9 +27,11 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         controller.workspace = workspace
         controller.iconColor = prefs.preferences.general.fileIconStyle
         controller.editor = editorManager.activeEditor
+        controller.activeEditorState = activeEditorState
         workspace.workspaceFileManager?.addObserver(context.coordinator)
 
         context.coordinator.controller = controller
+        context.coordinator.observeActiveFile(activeEditorState)
 
         return controller
     }
@@ -39,7 +43,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
         nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
         /// if the window becomes active from background, it will restore the selection to outline view.
-        nsViewController.updateSelection(itemID: workspace.editorManager?.activeEditor.selectedTab?.file.id)
+        nsViewController.updateSelection(itemID: activeEditorState.selectedFile?.id)
         return
     }
 
@@ -62,11 +66,6 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
                     self?.controller?.reveal(fileItem)
                 })
                 .store(in: &cancellables)
-            workspace.editorManager?.tabBarTabIdSubject
-                .sink { [weak self] editorInstance in
-                    self?.controller?.updateSelection(itemID: editorInstance?.file.id)
-                }
-                .store(in: &cancellables)
             if let projectNavigatorViewModel = workspace.projectNavigatorViewModel {
                 projectNavigatorViewModel.$navigatorFilter
                     .throttle(for: 0.1, scheduler: RunLoop.main, latest: true)
@@ -87,9 +86,24 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         }
 
         var cancellables: Set<AnyCancellable> = []
+        private var selectionCancellable: AnyCancellable?
         weak var workspace: Workspace?
         weak var fileManager: CEWorkspaceFileManager?
         weak var controller: ProjectNavigatorViewController?
+
+        /// Subscribe to the active-file read-model so the outline highlights the active file.
+        /// Wired from `makeNSViewController`, where the `@Environment` value is reliably populated.
+        func observeActiveFile(_ state: ActiveEditorState) {
+            // React to *changes* only. `selectedFilePublisher` is a `CurrentValueSubject` that
+            // replays the current value on subscribe; skip it so we don't call `updateSelection`
+            // (which touches the IUO `outlineView`) during `makeNSViewController`, before the view
+            // has loaded. The initial selection is set by `updateNSViewController`.
+            selectionCancellable = state.selectedFilePublisher
+                .dropFirst()
+                .sink { [weak self] file in
+                    self?.controller?.updateSelection(itemID: file?.id)
+                }
+        }
 
         func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>) {
             guard let outlineView = controller?.outlineView else { return }

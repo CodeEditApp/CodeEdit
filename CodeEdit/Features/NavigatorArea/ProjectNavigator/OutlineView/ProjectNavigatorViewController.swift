@@ -40,6 +40,7 @@ final class ProjectNavigatorViewController: NSViewController {
 
     weak var workspace: Workspace?
     weak var editor: Editor?
+    weak var activeEditorState: (any ActiveEditorState)?
 
     var iconColor: SettingsData.FileIconStyle = .color {
         willSet {
@@ -150,7 +151,7 @@ final class ProjectNavigatorViewController: NSViewController {
     /// Forces to reveal the selected file through the command regardless of the auto reveal setting
     @objc
     func revealFile(_ sender: Any) {
-        updateSelection(itemID: workspace?.editorManager?.activeEditor.selectedTab?.file.id, forcesReveal: true)
+        updateSelection(itemID: activeEditorState?.selectedFile?.id, forcesReveal: true)
     }
 
     /// Updates the selection of the ``outlineView`` whenever it changes.
