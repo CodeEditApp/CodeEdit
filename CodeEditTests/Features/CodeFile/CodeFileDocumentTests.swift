@@ -10,6 +10,7 @@ import SwiftUI
 import AppKit
 import Testing
 import CodeEditCore
+import CodeEditDocument
 import Factory
 import CodeEditTextView
 @testable import CodeEdit

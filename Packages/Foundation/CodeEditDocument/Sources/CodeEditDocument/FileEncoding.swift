@@ -7,12 +7,12 @@
 
 import Foundation
 
-enum FileEncoding: CaseIterable {
+public enum FileEncoding: CaseIterable {
     case utf8
     case utf16BE
     case utf16LE
 
-    var nsValue: UInt {
+    public var nsValue: UInt {
         switch self {
         case .utf8:
             return NSUTF8StringEncoding
@@ -23,7 +23,7 @@ enum FileEncoding: CaseIterable {
         }
     }
 
-    init?(_ int: UInt) {
+    public init?(_ int: UInt) {
         switch int {
         case NSUTF8StringEncoding:
             self = .utf8

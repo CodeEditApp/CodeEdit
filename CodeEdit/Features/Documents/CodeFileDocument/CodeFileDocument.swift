@@ -13,6 +13,7 @@ import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages
 import CodeEditCore
+import CodeEditDocument
 import Combine
 import OSLog
 import TextStory
