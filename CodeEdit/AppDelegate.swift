@@ -35,6 +35,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        CodeFileDocument.isAutoSaveOnProvider = {
+            Settings.shared.preferences.general.isAutoSaveOn
+        }
         enableWindowSizeSaveOnQuit()
         Settings.shared.preferences.general.appAppearance.applyAppearance()
         checkForFilesToOpen()

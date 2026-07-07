@@ -99,16 +99,19 @@ final class CodeFileDocument: NSDocument, ObservableObject {
     /// Timer used to schedule autosave intervals.
     private var autosaveTimer: Timer?
 
+    /// Provides the current "autosave enabled" preference without coupling this type to the
+    /// Settings feature. Wired by the app at launch (see `AppDelegate`). Defaults to `false`
+    /// so the type stays self-contained for packaging and predictable in tests that don't wire it.
+    static var isAutoSaveOnProvider: () -> Bool = { false }
+
     // MARK: - NSDocument
 
     override static var autosavesInPlace: Bool {
-        Settings.shared.preferences.general.isAutoSaveOn
+        isAutoSaveOnProvider()
     }
 
     override var autosavingFileType: String? {
-        Settings.shared.preferences.general.isAutoSaveOn
-            ? fileType
-            : nil
+        Self.isAutoSaveOnProvider() ? fileType : nil
     }
 
     override func makeWindowControllers() {

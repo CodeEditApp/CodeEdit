@@ -31,6 +31,18 @@ struct CodeFileDocumentTests {
     }
 
     @Test
+    func autosavesInPlaceReflectsProvider() {
+        let original = CodeFileDocument.isAutoSaveOnProvider
+        defer { CodeFileDocument.isAutoSaveOnProvider = original }
+
+        CodeFileDocument.isAutoSaveOnProvider = { true }
+        #expect(CodeFileDocument.autosavesInPlace == true)
+
+        CodeFileDocument.isAutoSaveOnProvider = { false }
+        #expect(CodeFileDocument.autosavesInPlace == false)
+    }
+
+    @Test
     func indentOptionOverrideUsesCoreType() {
         let codeFile = CodeFileDocument()
         codeFile.indentOption = CodeEditCore.IndentOption(indentType: .spaces, spaceCount: 2)
