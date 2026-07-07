@@ -18,4 +18,8 @@ extension Container {
     public var workspaceFileOpener: Factory<WorkspaceFileOpener> {
         self { NoOpWorkspaceFileOpener() }.singleton
     }
+
+    public var workspaceNavigator: Factory<WorkspaceNavigator> {
+        self { NoOpWorkspaceNavigator() }.singleton
+    }
 }
