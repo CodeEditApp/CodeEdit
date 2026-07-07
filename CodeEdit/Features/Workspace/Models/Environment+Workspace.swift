@@ -7,9 +7,14 @@
 
 import SwiftUI
 import CEWorkspaceFileManager
+import CodeEditCore
 
 private struct WorkspaceFileManagerKey: EnvironmentKey {
     static let defaultValue: CEWorkspaceFileManager? = nil
+}
+
+private struct ActiveEditorStateKey: EnvironmentKey {
+    static let defaultValue: ActiveEditorState = NoOpActiveEditorState()
 }
 
 private struct WorkspaceFileURLKey: EnvironmentKey {
@@ -34,5 +39,10 @@ extension EnvironmentValues {
     var workspaceStatePersistence: (any WorkspaceStatePersisting)? {
         get { self[WorkspaceStatePersistenceKey.self] }
         set { self[WorkspaceStatePersistenceKey.self] = newValue }
+    }
+
+    var activeEditorState: ActiveEditorState {
+        get { self[ActiveEditorStateKey.self] }
+        set { self[ActiveEditorStateKey.self] = newValue }
     }
 }

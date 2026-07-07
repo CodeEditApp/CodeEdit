@@ -21,6 +21,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
     private weak var statePersistence: (any WorkspaceStatePersisting)?
     private unowned var hapticPerformer: NSHapticFeedbackPerformer
 
+    /// Per-window active-file read-model, retained so its Combine subscription lives with the window.
+    private var activeEditorState: AppActiveEditorState?
+
     // MARK: - Initialization
 
     init(
@@ -67,6 +70,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
 
         splitView.translatesAutoresizingMaskIntoConstraints = false
 
+        let activeEditorState = AppActiveEditorState(editorManager: editorManager)
+        self.activeEditorState = activeEditorState
+
         let navigator = makeNavigator(view: SettingsInjector {
             NavigatorAreaView(workspace: workspace, viewModel: navigatorViewModel)
                 .environmentObject(workspace)
@@ -78,6 +84,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .environmentObject(searchState)
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                 .environment(\.workspaceFileURL, workspace.fileURL)
+                .environment(\.activeEditorState, activeEditorState)
         })
 
         addSplitViewItem(navigator)
@@ -97,6 +104,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                     .environment(\.workspaceFileURL, workspace.fileURL)
                     .environment(\.workspaceStatePersistence, workspace.statePersistence)
+                    .environment(\.activeEditorState, activeEditorState)
             }
         }
 
