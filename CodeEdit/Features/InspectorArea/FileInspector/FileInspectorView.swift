@@ -16,6 +16,8 @@ struct FileInspectorView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
+    @Environment(\.activeEditorState) private var activeEditorState
+
     @AppSettings(\.textEditing)
     private var textEditing
 
@@ -42,7 +44,7 @@ struct FileInspectorView: View {
     }
 
     func updateInspectorSource() {
-        file = editorManager.activeEditor.selectedTab?.file
+        file = activeEditorState.selectedFile
         fileName = file?.name ?? ""
         language = file.flatMap { editorManager.document(for: $0) }?.language
         updateFileOptions()
@@ -72,13 +74,7 @@ struct FileInspectorView: View {
         .onAppear {
             updateInspectorSource()
         }
-        .onReceive(editorManager.activeEditor.objectWillChange) { _ in
-            updateInspectorSource()
-        }
-        .onChange(of: editorManager.activeEditor) { _, _ in
-            updateInspectorSource()
-        }
-        .onChange(of: editorManager.activeEditor.selectedTab) { _, _ in
+        .onReceive(activeEditorState.selectedFilePublisher) { _ in
             updateInspectorSource()
         }
         .onChange(of: textEditing) { _, newValue in

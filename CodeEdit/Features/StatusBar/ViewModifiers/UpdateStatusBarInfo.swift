@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 
 /// Updates ``StatusBarFileInfoView``'s `fileSize` and `dimensions`.
 /// ```swift
@@ -21,7 +22,7 @@ struct UpdateStatusBarInfo: ViewModifier {
         self.fileURL = fileURL
     }
 
-    @EnvironmentObject private var editorManager: EditorManager
+    @Environment(\.activeEditorState) private var activeEditorState
     @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
 
     /// This is returned by ``UpdateStatusBarInfo`` `.computeStatusBarInfo`.
@@ -57,9 +58,9 @@ struct UpdateStatusBarInfo: ViewModifier {
                     statusBarViewModel.fileSize = statusBarInfo?.fileSize
                     statusBarViewModel.dimensions = statusBarInfo?.dimensions
                 }
-                .onChange(of: editorManager.activeEditor.selectedTab) { _, newTab in
-                    guard let newTab else { return }
-                    let statusBarInfo = computeStatusBarInfo(with: newTab.file.url)
+                .onReceive(activeEditorState.selectedFilePublisher) { newFile in
+                    guard let newFile else { return }
+                    let statusBarInfo = computeStatusBarInfo(with: newFile.url)
                     statusBarViewModel.fileSize = statusBarInfo?.fileSize
                     statusBarViewModel.dimensions = statusBarInfo?.dimensions
                 }

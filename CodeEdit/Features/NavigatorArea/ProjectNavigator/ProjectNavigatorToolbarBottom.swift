@@ -18,7 +18,7 @@ struct ProjectNavigatorToolbarBottom: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject var editorManager: EditorManager
+    @Environment(\.activeEditorState) private var activeEditorState
     @EnvironmentObject var listenerModel: WorkspaceNotificationModel
     @EnvironmentObject var projectNavigatorViewModel: ProjectNavigatorViewModel
 
@@ -85,14 +85,14 @@ struct ProjectNavigatorToolbarBottom: View {
     /// Retrieves the active tab URL from the underlying editor instance, if theres no
     /// active tab, fallbacks to the workspace's root directory
     private func activeTabURL() -> URL {
-        if let selectedTab = editorManager.activeEditor.selectedTab {
-            if selectedTab.file.isFolder {
-                return selectedTab.file.url
+        if let file = activeEditorState.selectedFile {
+            if file.isFolder {
+                return file.url
             }
 
             // If the current active tab belongs to a file, pop the filename from
             // the path URL to retrieve the folder URL
-            let activeTabFileURL = selectedTab.file.url
+            let activeTabFileURL = file.url
 
             if URLComponents(url: activeTabFileURL, resolvingAgainstBaseURL: false) != nil {
                 var pathComponents = activeTabFileURL.pathComponents

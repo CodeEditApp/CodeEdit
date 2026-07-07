@@ -14,7 +14,7 @@ struct HistoryInspectorView: View {
 
     @EnvironmentObject private var sourceControlManager: SourceControlManager
 
-    @EnvironmentObject private var editorManager: EditorManager
+    @Environment(\.activeEditorState) private var activeEditorState
 
     @ObservedObject private var model: HistoryInspectorModel
 
@@ -46,24 +46,14 @@ struct HistoryInspectorView: View {
                 NoSelectionInspectorView()
             }
         }
-        .onReceive(editorManager.activeEditor.objectWillChange) { _ in
+        .onReceive(activeEditorState.selectedFilePublisher) { file in
             Task {
-                await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
-            }
-        }
-        .onChange(of: editorManager.activeEditor) { _, _ in
-            Task {
-                await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
-            }
-        }
-        .onChange(of: editorManager.activeEditor.selectedTab) { _, _ in
-            Task {
-                await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path())
+                await model.setFile(url: file?.url.path())
             }
         }
         .task {
             await model.setWorkspace(sourceControlManager: sourceControlManager)
-            await model.setFile(url: editorManager.activeEditor.selectedTab?.file.url.path)
+            await model.setFile(url: activeEditorState.selectedFile?.url.path())
         }
         .onChange(of: showMergeCommitsPerFileLog) { _, _ in
             Task {
