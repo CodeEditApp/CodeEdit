@@ -29,6 +29,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
     var tempTestDir: URL!
 
     override func setUp() {
+        Container.shared.codeFileDocumentDelegate.register { AppCodeFileDocumentDelegate() }
         continueAfterFailure = false
         do {
             let tempDir = FileManager.default.temporaryDirectory.appending(

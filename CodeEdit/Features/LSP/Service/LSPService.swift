@@ -221,7 +221,7 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
     /// - Note: Must be invoked after the contents of the file are available.
     /// - Parameter document: The code document that was opened.
     func openDocument(_ document: CodeFileDocument) {
-        guard let workspace = document.findWorkspace(),
+        guard let workspace = document.fileURL?.findWorkspace(),
               let workspacePath = workspace.fileURL?.absolutePath,
               let lspLanguage = document.getLanguage().lspLanguage else {
             return

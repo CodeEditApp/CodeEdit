@@ -32,10 +32,11 @@ final class CodeFileDocument: NSDocument, ObservableObject {
 
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CodeFileDocument")
 
-    /// Notified when this document is opened (contents available) or closed,
-    /// so language servers can track the document's lifecycle.
-    @LazyInjected(\.lspService)
-    private var lspService
+    /// The app-registered delegate (see ``CodeFileDocumentDelegate``). Provides LSP lifecycle
+    /// notifications, the standalone-window content view, and undo-manager lookup, keeping this
+    /// document free of app-tier types. `nil` when unhosted (e.g. tests that don't register one).
+    @LazyInjected(\.codeFileDocumentDelegate)
+    private var delegate
 
     /// The text content of the document, stored as a text storage
     ///
@@ -178,22 +179,22 @@ final class CodeFileDocument: NSDocument, ObservableObject {
         notifyLSPDidOpen()
     }
 
-    /// `LSPService` is main-actor isolated, but document reads and closes can happen off the main
+    /// The delegate is main-actor isolated, but document reads and closes can happen off the main
     /// thread (AppKit concurrent reads, Swift Testing). Mirrors the NotificationCenter `queue: .main`
     /// delivery this replaced: synchronous on main, async hop otherwise.
     private func notifyLSPDidOpen() {
         if Thread.isMainThread {
-            MainActor.assumeIsolated { lspService.openDocument(self) }
+            MainActor.assumeIsolated { delegate?.documentDidOpen(self) }
         } else {
-            DispatchQueue.main.async { self.lspService.openDocument(self) }
+            DispatchQueue.main.async { self.delegate?.documentDidOpen(self) }
         }
     }
 
     private func notifyLSPDidClose(_ url: URL) {
         if Thread.isMainThread {
-            MainActor.assumeIsolated { lspService.closeDocument(url) }
+            MainActor.assumeIsolated { delegate?.documentDidClose(at: url) }
         } else {
-            DispatchQueue.main.async { self.lspService.closeDocument(url) }
+            DispatchQueue.main.async { self.delegate?.documentDidClose(at: url) }
         }
     }
 

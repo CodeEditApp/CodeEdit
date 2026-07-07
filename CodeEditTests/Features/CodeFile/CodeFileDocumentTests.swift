@@ -7,13 +7,45 @@
 
 import Foundation
 import SwiftUI
+import AppKit
 import Testing
 import CodeEditCore
+import Factory
+import CodeEditTextView
 @testable import CodeEdit
 
 @Suite
 struct CodeFileDocumentTests {
     let defaultString = "func test() { }"
+
+    @MainActor
+    final class MockDelegate: CodeFileDocumentDelegate {
+        var openedDocuments: [CodeFileDocument] = []
+        var closedURLs: [URL] = []
+        var undoRequestedURLs: [URL] = []
+        func undoManager(forFile url: URL) -> CEUndoManager? {
+            undoRequestedURLs.append(url)
+            return nil
+        }
+        func makeWindowContentView(for document: CodeFileDocument) -> NSView { NSView() }
+        func documentDidOpen(_ document: CodeFileDocument) { openedDocuments.append(document) }
+        func documentDidClose(at url: URL) { closedURLs.append(url) }
+    }
+
+    @MainActor
+    @Test
+    func delegateReceivesOpenAndCloseNotifications() throws {
+        let mock = MockDelegate()
+        Container.shared.codeFileDocumentDelegate.register { mock }
+        defer { Container.shared.codeFileDocumentDelegate.reset() }
+
+        try withCodeFile { codeFile in
+            #expect(mock.openedDocuments.contains { $0 === codeFile })
+            let url = codeFile.fileURL
+            codeFile.close()
+            #expect(url != nil && mock.closedURLs.contains(url!))
+        }
+    }
 
     private func withFile(_ operation: (URL) throws -> Void) throws {
         try withTempDir { dir in

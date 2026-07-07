@@ -22,6 +22,7 @@ struct CodeEditApp: App {
         NSMenuItem.swizzle()
         NSSplitViewItem.swizzle()
         Container.shared.workspaceFileOpener.register { AppWorkspaceFileOpener() }
+        Container.shared.codeFileDocumentDelegate.register { AppCodeFileDocumentDelegate() }
     }
 
     var body: some Scene {
