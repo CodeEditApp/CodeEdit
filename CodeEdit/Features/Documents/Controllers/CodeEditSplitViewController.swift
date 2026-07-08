@@ -27,6 +27,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
     /// Per-window active-cursor read-model, retained so its Combine subscription lives with the window.
     private var activeCursorState: AppActiveCursorState?
 
+    /// Per-window file-override read/write seam, retained for the window's lifetime.
+    private var fileEditorOverrides: AppFileEditorOverrides?
+
     // MARK: - Initialization
 
     init(
@@ -79,6 +82,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
         let activeCursorState = AppActiveCursorState(editorManager: editorManager)
         self.activeCursorState = activeCursorState
 
+        let fileEditorOverrides = AppFileEditorOverrides(editorManager: editorManager)
+        self.fileEditorOverrides = fileEditorOverrides
+
         let navigator = makeNavigator(view: SettingsInjector {
             NavigatorAreaView(workspace: workspace, viewModel: navigatorViewModel)
                 .environmentObject(workspace)
@@ -127,6 +133,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .environmentObject(sourceControlManager)
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                 .environment(\.activeEditorState, activeEditorState)
+                .environment(\.fileEditorOverrides, fileEditorOverrides)
         })
 
         addSplitViewItem(inspector)

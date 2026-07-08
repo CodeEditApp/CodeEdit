@@ -21,6 +21,10 @@ private struct ActiveCursorStateKey: EnvironmentKey {
     static let defaultValue: ActiveCursorState = NoOpActiveCursorState()
 }
 
+private struct FileEditorOverridesKey: EnvironmentKey {
+    static let defaultValue: FileEditorOverrides = NoOpFileEditorOverrides()
+}
+
 private struct WorkspaceFileURLKey: EnvironmentKey {
     static let defaultValue: URL? = nil
 }
@@ -53,5 +57,10 @@ extension EnvironmentValues {
     var activeCursorState: ActiveCursorState {
         get { self[ActiveCursorStateKey.self] }
         set { self[ActiveCursorStateKey.self] = newValue }
+    }
+
+    var fileEditorOverrides: FileEditorOverrides {
+        get { self[FileEditorOverridesKey.self] }
+        set { self[FileEditorOverridesKey.self] = newValue }
     }
 }
