@@ -24,6 +24,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
     /// Per-window active-file read-model, retained so its Combine subscription lives with the window.
     private var activeEditorState: AppActiveEditorState?
 
+    /// Per-window active-cursor read-model, retained so its Combine subscription lives with the window.
+    private var activeCursorState: AppActiveCursorState?
+
     // MARK: - Initialization
 
     init(
@@ -73,6 +76,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
         let activeEditorState = AppActiveEditorState(editorManager: editorManager)
         self.activeEditorState = activeEditorState
 
+        let activeCursorState = AppActiveCursorState(editorManager: editorManager)
+        self.activeCursorState = activeCursorState
+
         let navigator = makeNavigator(view: SettingsInjector {
             NavigatorAreaView(workspace: workspace, viewModel: navigatorViewModel)
                 .environmentObject(workspace)
@@ -105,6 +111,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environment(\.workspaceFileURL, workspace.fileURL)
                     .environment(\.workspaceStatePersistence, workspace.statePersistence)
                     .environment(\.activeEditorState, activeEditorState)
+                    .environment(\.activeCursorState, activeCursorState)
             }
         }
 
