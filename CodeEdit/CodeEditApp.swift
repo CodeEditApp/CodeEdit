@@ -27,6 +27,7 @@ struct CodeEditApp: App {
         Container.shared.workspaceNavigator.register { AppWorkspaceNavigator() }
         Container.shared.fileRelocator.register { AppFileRelocator() }
         SettingsData.TextEditingSettings.registerCommands()
+        SettingsData.reconcileDefaultKeybindings()
     }
 
     var body: some Scene {
