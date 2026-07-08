@@ -25,6 +25,7 @@
 		58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACE292FB2B0004A9BDE /* Documentation.docc */; };
 		58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB1D292FB954004A9BDE /* Sparkle */; };
 		5AD0C0DE2D00000000000001 /* CodeEditDocument in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD0C0DE2D00000000000002 /* CodeEditDocument */; };
+		5AD0C0DE2D00000000000011 /* CodeEditSettings in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD0C0DE2D00000000000012 /* CodeEditSettings */; };
 		5E4485612DF600D9008BBE69 /* AboutWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 5E4485602DF600D9008BBE69 /* AboutWindow */; };
 		5EACE6222DF4BF08005E08B8 /* WelcomeWindow in Frameworks */ = {isa = PBXBuildFile; productRef = 5EACE6212DF4BF08005E08B8 /* WelcomeWindow */; };
 		6C0617D62BDB4432008C9C42 /* LogStream in Frameworks */ = {isa = PBXBuildFile; productRef = 6C0617D52BDB4432008C9C42 /* LogStream */; };
@@ -184,6 +185,7 @@
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
 				5800E2F82FF843390085ECF1 /* CodeEditUI in Frameworks */,
 				5AD0C0DE2D00000000000001 /* CodeEditDocument in Frameworks */,
+				5AD0C0DE2D00000000000011 /* CodeEditSettings in Frameworks */,
 				6C147C4529A329350089B630 /* OrderedCollections in Frameworks */,
 				6CE21E872C650D2C0031B056 /* SwiftTerm in Frameworks */,
 				6C76D6D42E15B91E00EF52C3 /* CodeEditSourceEditor in Frameworks */,
@@ -357,6 +359,7 @@
 				58CFC49A2F8BE799009F4AA7 /* CodeEditCore */,
 				5800E2F72FF843390085ECF1 /* CodeEditUI */,
 				5AD0C0DE2D00000000000002 /* CodeEditDocument */,
+				5AD0C0DE2D00000000000012 /* CodeEditSettings */,
 				588950C42FFA5C05004BE116 /* Search */,
 				588957122FFA679E004BE116 /* CodeEditServices */,
 				5889639D2FFA9A87004BE116 /* Notifications */,
@@ -1945,6 +1948,10 @@
 		5AD0C0DE2D00000000000002 /* CodeEditDocument */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditDocument;
+		};
+		5AD0C0DE2D00000000000012 /* CodeEditSettings */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditSettings;
 		};
 		5E4485602DF600D9008BBE69 /* AboutWindow */ = {
 			isa = XCSwiftPackageProductDependency;

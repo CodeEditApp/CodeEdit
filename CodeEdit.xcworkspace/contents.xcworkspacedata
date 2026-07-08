@@ -16,6 +16,9 @@
       <FileRef
          location = "group:CodeEditDocument">
       </FileRef>
+      <FileRef
+         location = "group:CodeEditSettings">
+      </FileRef>
    </Group>
    <Group
       location = "group:Packages/Services"
