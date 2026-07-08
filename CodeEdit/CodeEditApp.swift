@@ -25,6 +25,7 @@ struct CodeEditApp: App {
         Container.shared.workspaceFileOpener.register { AppWorkspaceFileOpener() }
         Container.shared.codeFileDocumentDelegate.register { AppCodeFileDocumentDelegate() }
         Container.shared.workspaceNavigator.register { AppWorkspaceNavigator() }
+        Container.shared.fileRelocator.register { AppFileRelocator() }
     }
 
     var body: some Scene {
