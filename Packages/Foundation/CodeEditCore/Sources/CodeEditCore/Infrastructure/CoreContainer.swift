@@ -22,4 +22,8 @@ extension Container {
     public var workspaceNavigator: Factory<WorkspaceNavigator> {
         self { NoOpWorkspaceNavigator() }.singleton
     }
+
+    public var fileRelocator: Factory<FileRelocator> {
+        self { NoOpFileRelocator() }.singleton
+    }
 }
