@@ -18,6 +18,8 @@ struct FileInspectorView: View {
 
     @Environment(\.activeEditorState) private var activeEditorState
 
+    @Environment(\.fileEditorOverrides) private var fileEditorOverrides
+
     @AppSettings(\.textEditing)
     private var textEditing
 
@@ -27,7 +29,7 @@ struct FileInspectorView: View {
 
     // File settings overrides
 
-    @State private var language: CodeLanguage?
+    @State private var languageId: String?
 
     @State var indentOption: SettingsData.TextEditingSettings.IndentOption = .init(indentType: .tab)
 
@@ -37,16 +39,16 @@ struct FileInspectorView: View {
 
     func updateFileOptions(_ textEditingOverride: SettingsData.TextEditingSettings? = nil) {
         let textEditingSettings = textEditingOverride ?? textEditing
-        let document = file.flatMap { editorManager.document(for: $0) }
-        indentOption = document?.indentOption ?? textEditingSettings.indentOption
-        defaultTabWidth = document?.defaultTabWidth ?? textEditingSettings.defaultTabWidth
-        wrapLines = document?.wrapLines ?? textEditingSettings.wrapLinesToEditorWidth
+        let values = file.map { fileEditorOverrides.overrides(for: $0) }
+        indentOption = values?.indentOption ?? textEditingSettings.indentOption
+        defaultTabWidth = values?.defaultTabWidth ?? textEditingSettings.defaultTabWidth
+        wrapLines = values?.wrapLines ?? textEditingSettings.wrapLinesToEditorWidth
     }
 
     func updateInspectorSource() {
         file = activeEditorState.selectedFile
         fileName = file?.name ?? ""
-        language = file.flatMap { editorManager.document(for: $0) }?.language
+        languageId = file.flatMap { fileEditorOverrides.overrides(for: $0).languageId }
         updateFileOptions()
     }
 
@@ -119,16 +121,18 @@ struct FileInspectorView: View {
     @ViewBuilder private var fileType: some View {
         Picker(
             "Type",
-            selection: $language
+            selection: $languageId
         ) {
-            Text("Default - Detected").tag(nil as CodeLanguage?)
+            Text("Default - Detected").tag(nil as String?)
             Divider()
             ForEach(CodeLanguage.allLanguages, id: \.id) { language in
-                Text(language.id.rawValue.capitalized).tag(language as CodeLanguage?)
+                Text(language.id.rawValue.capitalized).tag(language.id.rawValue as String?)
             }
         }
-        .onChange(of: language) { _, newValue in
-            file.flatMap { editorManager.document(for: $0) }?.language = newValue
+        .onChange(of: languageId) { _, newValue in
+            if let file {
+                fileEditorOverrides.setLanguageId(newValue, for: file)
+            }
         }
     }
 
@@ -173,8 +177,9 @@ struct FileInspectorView: View {
             Text("Tabs").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
         }
         .onChange(of: indentOption) { _, newValue in
-            file.flatMap { editorManager.document(for: $0) }?.indentOption =
-                newValue == textEditing.indentOption ? nil : newValue
+            if let file {
+                fileEditorOverrides.setIndentOption(newValue == textEditing.indentOption ? nil : newValue, for: file)
+            }
         }
     }
 
@@ -218,16 +223,18 @@ struct FileInspectorView: View {
             }
         }
         .onChange(of: defaultTabWidth) { _, newValue in
-            file.flatMap { editorManager.document(for: $0) }?.defaultTabWidth =
-                newValue == textEditing.defaultTabWidth ? nil : newValue
+            if let file {
+                fileEditorOverrides.setDefaultTabWidth(newValue == textEditing.defaultTabWidth ? nil : newValue, for: file)
+            }
         }
     }
 
     private var wrapLinesToggle: some View {
         Toggle("Wrap lines", isOn: $wrapLines)
             .onChange(of: wrapLines) { _, newValue in
-                file.flatMap { editorManager.document(for: $0) }?.wrapLines =
-                    newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue
+                if let file {
+                    fileEditorOverrides.setWrapLines(newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue, for: file)
+                }
             }
     }
 
