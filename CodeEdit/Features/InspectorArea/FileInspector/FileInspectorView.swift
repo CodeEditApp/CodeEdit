@@ -5,17 +5,11 @@
 //  Created by Nanashi Li on 2022/03/24.
 //
 import SwiftUI
-import CEWorkspaceFileManager
 import CodeEditCore
 import CodeEditLanguages
 import Factory
 
 struct FileInspectorView: View {
-    @Environment(\.workspaceFileManager)
-    private var workspaceFileManager
-
-    @EnvironmentObject private var editorManager: EditorManager
-
     @Environment(\.activeEditorState) private var activeEditorState
 
     @Environment(\.fileEditorOverrides) private var fileEditorOverrides
@@ -95,16 +89,9 @@ struct FileInspectorView: View {
                         let destinationURL = file.url
                             .deletingLastPathComponent()
                             .appending(path: fileName)
-                        DispatchQueue.main.async { [weak workspaceFileManager] in
+                        DispatchQueue.main.async {
                             do {
-                                if let newItem = try workspaceFileManager?.move(
-                                    file: file,
-                                    to: destinationURL
-                                ),
-                                   !newItem.isFolder {
-                                    editorManager.editorLayout.closeAllTabs(of: file)
-                                    Container.shared.workspaceNavigator().open(file: newItem, asTemporary: false)
-                                }
+                                _ = try Container.shared.fileRelocator().relocate(file: file, to: destinationURL)
                             } catch {
                                 let alert = NSAlert(error: error)
                                 alert.addButton(withTitle: "Dismiss")
@@ -146,14 +133,9 @@ struct FileInspectorView: View {
                         }
                         // This is ugly but if the tab is opened at the same time as closing the others, it doesn't open
                         // And if the files are re-built at the same time as the tab is opened, it causes a memory error
-                        DispatchQueue.main.async { [weak workspaceFileManager] in
+                        DispatchQueue.main.async {
                             do {
-                                guard let newItem = try workspaceFileManager?.move(file: file, to: newURL),
-                                      !newItem.isFolder else {
-                                    return
-                                }
-                                editorManager.editorLayout.closeAllTabs(of: file)
-                                Container.shared.workspaceNavigator().open(file: newItem, asTemporary: false)
+                                _ = try Container.shared.fileRelocator().relocate(file: file, to: newURL)
                             } catch {
                                 let alert = NSAlert(error: error)
                                 alert.addButton(withTitle: "Dismiss")
