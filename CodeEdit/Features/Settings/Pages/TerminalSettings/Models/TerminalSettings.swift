@@ -11,21 +11,7 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for the terminal emulator
-    struct TerminalSettings: Codable, Hashable, SearchableSettingsPage {
-
-        /// The search keys
-        var searchKeys: [String] {
-            [
-                "Shell",
-                "Use \"Option\" key as \"Meta\"",
-                "Use text editor font",
-                "Font",
-                "Font Size",
-                "Terminal Cursor Style",
-                "Blink Cursor"
-            ]
-            .map { NSLocalizedString($0, comment: "") }
-        }
+    struct TerminalSettings: Codable, Hashable {
 
         /// If true terminal will use editor theme.
         @CodableDefault<DefaultTrue> var useEditorTheme = true

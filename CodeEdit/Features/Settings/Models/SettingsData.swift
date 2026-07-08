@@ -84,43 +84,4 @@ struct SettingsData: Codable, Hashable {
             DeveloperSettings.self, forKey: .developerSettings
         ) ?? .init()
     }
-
-    // swiftlint:disable cyclomatic_complexity
-    func propertiesOf(_ name: SettingsPage.Name) -> [SettingsPage] {
-        var settings: [SettingsPage] = []
-
-        switch name {
-        case .general:
-            general.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .accounts:
-            accounts.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .navigation:
-            navigation.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .theme:
-            theme.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .textEditing:
-            textEditing.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .terminal:
-            terminal.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .search:
-            search.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .sourceControl:
-            sourceControl.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .location:
-            LocationsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .languageServers:
-            LanguageServerSettings().searchKeys.forEach {
-                settings.append(.init(name, isSetting: true, settingName: $0))
-            }
-        case .developer:
-            developerSettings.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
-        case .behavior: return [.init(name, settingName: "Error")]
-        case .components: return [.init(name, settingName: "Error")]
-        case .keybindings: return [.init(name, settingName: "Error")]
-        case .advanced: return [.init(name, settingName: "Error")]
-        }
-
-        return settings
-    }
-    // swiftlint:enable cyclomatic_complexity
 }

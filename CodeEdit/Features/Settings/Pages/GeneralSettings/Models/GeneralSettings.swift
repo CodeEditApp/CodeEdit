@@ -10,7 +10,7 @@ import SwiftUI
 extension SettingsData {
 
     /// The general global setting
-    struct GeneralSettings: Codable, Hashable, SearchableSettingsPage {
+    struct GeneralSettings: Codable, Hashable {
 
         /// The appearance of the app
         @CodableDefault<DefaultAppearance> var appAppearance: Appearances = .system
@@ -20,36 +20,6 @@ extension SettingsData {
 
         /// The show live issues behavior of the app
         @CodableDefault<DefaultTrue> var showLiveIssues = true
-
-        /// The search keys
-        var searchKeys: [String] {
-            [
-                "Appearance",
-                "File Icon Style",
-                "Tab Bar Style",
-                "Show Jump Bar",
-                "Dim editors without focus",
-                "Navigator Tab Bar Position",
-                "Inspector Tab Bar Position",
-                "Show Issues",
-                "Show Live Issues",
-                "Automatically save change to disk",
-                "Automatically reveal in project navigator",
-                "Reopen Behavior",
-                "After the last window is closed",
-                "File Extensions",
-                "Project Navigator Size",
-                "Find Navigator Detail",
-                "Issue Navigator Detail",
-                "Show “Open With CodeEdit“ option in Finder",
-                "'codeedit' Shell command",
-                "Dialog Warnings",
-                "Check for updates",
-                "Automatically check for app updates",
-                "Include pre-release versions"
-            ]
-            .map { NSLocalizedString($0, comment: "") }
-        }
 
         /// Show editor jump bar
         @CodableDefault<DefaultTrue> var showEditorJumpBar = true

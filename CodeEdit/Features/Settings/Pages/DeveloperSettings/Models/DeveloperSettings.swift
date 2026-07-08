@@ -8,18 +8,7 @@
 import Foundation
 
 extension SettingsData {
-    struct DeveloperSettings: Codable, Hashable, SearchableSettingsPage {
-
-        /// The search keys
-        var searchKeys: [String] {
-            [
-                "Developer",
-                "Language Server Protocol",
-                "LSP Binaries",
-                "Show Internal Development Inspector"
-            ]
-            .map { NSLocalizedString($0, comment: "") }
-        }
+    struct DeveloperSettings: Codable, Hashable {
 
         /// A dictionary that stores a file type and a path to an LSP binary
         @CodableDefault<DefaultEmptyStringDictionary> var lspBinaries: [String: String] = [:]

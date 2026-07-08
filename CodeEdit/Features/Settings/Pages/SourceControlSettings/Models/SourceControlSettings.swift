@@ -9,29 +9,7 @@ import Foundation
 
 extension SettingsData {
     /// The global settings for source control
-    struct SourceControlSettings: Codable, Hashable, SearchableSettingsPage {
-
-        var searchKeys: [String] {
-            [
-                "General",
-                "Enable source control",
-                "Refresh local status automatically",
-                "Fetch and refresh server status automatically",
-                "Add and remove files automatically",
-                "Select files to commit automatically",
-                "Show source control changes",
-                "Include upstream changes",
-                "Comparison view",
-                "Source control navigator",
-                "Default branch name",
-                "Git",
-                "Author Name",
-                "Author Email",
-                "Prefer to rebase when pulling",
-                "Show merge commits in per-file log"
-            ]
-            .map { NSLocalizedString($0, comment: "") }
-        }
+    struct SourceControlSettings: Codable, Hashable {
 
         /// The general source control settings
         var general: SourceControlGeneral = .init()

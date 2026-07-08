@@ -12,35 +12,7 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for text editing
-    struct TextEditingSettings: Codable, Hashable, SearchableSettingsPage {
-
-        var searchKeys: [String] {
-            var keys = [
-                "Prefer Indent Using",
-                "Tab Width",
-                "Wrap lines to editor width",
-                "Editor Overscroll",
-                "Font",
-                "Font Size",
-                "Font Weight",
-                "Line Height",
-                "Letter Spacing",
-                "Autocomplete braces",
-                "Enable type-over completion",
-                "Bracket Pair Emphasis",
-                "Bracket Pair Highlight",
-                "Show Gutter",
-                "Show Minimap",
-                "Reformat at Column",
-                "Show Reformatting Guide",
-                "Invisibles",
-                "Warning Characters"
-            ]
-            if #available(macOS 14.0, *) {
-                keys.append("System Cursor")
-            }
-            return keys.map { NSLocalizedString($0, comment: "") }
-        }
+    struct TextEditingSettings: Codable, Hashable {
 
         /// An integer indicating how many spaces a `tab` will appear as visually.
         var defaultTabWidth: Int = 4

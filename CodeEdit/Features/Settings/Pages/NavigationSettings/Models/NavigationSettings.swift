@@ -10,15 +10,7 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for the terminal emulator
-    struct NavigationSettings: Codable, Hashable, SearchableSettingsPage {
-
-        /// The search keys
-        var searchKeys: [String] {
-            [
-                "Navigation Style",
-            ]
-            .map { NSLocalizedString($0, comment: "") }
-        }
+    struct NavigationSettings: Codable, Hashable {
 
         /// Navigation style used
         @CodableDefault<DefaultNavigationStyle> var navigationStyle: NavigationStyle = .openInTabs
