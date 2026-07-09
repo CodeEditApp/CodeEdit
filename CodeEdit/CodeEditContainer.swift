@@ -6,12 +6,17 @@
 //
 
 import CodeEditCore
+import CodeEditDocument
 import ShellClient
 import Factory
 
 extension Container {
     var lspService: Factory<LSPService> {
         self { @MainActor in LSPService() }.singleton
+    }
+
+    var languageServicesProvider: Factory<LanguageServicesProvider> {
+        self { @MainActor in AppLanguageServicesProvider() as LanguageServicesProvider }.singleton
     }
 
     var workspaceWindowManager: Factory<WorkspaceWindowManager> {
