@@ -14,10 +14,14 @@ public protocol WorkspaceNavigator: AnyObject {
     /// - Parameter asTemporary: open as a temporary (preview) tab, replaced by the next
     ///   temporary open, rather than a pinned tab.
     @MainActor func open(file: CEWorkspaceFile, asTemporary: Bool)
+
+    /// Highlight `file` in the project navigator without opening it.
+    @MainActor func reveal(file: CEWorkspaceFile)
 }
 
 /// Default no-op used until the app registers a real implementation.
 public final class NoOpWorkspaceNavigator: WorkspaceNavigator {
     public init() {}
     @MainActor public func open(file: CEWorkspaceFile, asTemporary: Bool) {}
+    @MainActor public func reveal(file: CEWorkspaceFile) {}
 }

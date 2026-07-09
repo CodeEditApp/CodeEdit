@@ -24,4 +24,9 @@ final class AppWorkspaceNavigator: WorkspaceNavigator {
     func open(file: CEWorkspaceFile, asTemporary: Bool) {
         _ = windowManager.openFileInWorkspace(url: file.url, asTemporary: asTemporary)
     }
+
+    @MainActor
+    func reveal(file: CEWorkspaceFile) {
+        windowManager.workspace(containing: file.url)?.listenerModel.highlightedFileItem = file
+    }
 }

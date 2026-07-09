@@ -16,9 +16,10 @@ struct AppWorkspaceNavigatorTests {
     final class MockWindowManager: WorkspaceWindowManaging {
         var opened: [(url: URL, asTemporary: Bool)] = []
         var openWorkspaces: [Workspace] = []
+        var stubbedWorkspace: Workspace?
         func openWorkspace(at url: URL) throws {}
         func closeWorkspace(_ workspace: Workspace) {}
-        func workspace(containing url: URL) -> Workspace? { nil }
+        func workspace(containing url: URL) -> Workspace? { stubbedWorkspace }
         func openFileInWorkspace(url: URL, asTemporary: Bool) -> Bool {
             opened.append((url, asTemporary))
             return true
@@ -37,5 +38,19 @@ struct AppWorkspaceNavigatorTests {
         #expect(mock.opened.count == 1)
         #expect(mock.opened.first?.url == file.url)
         #expect(mock.opened.first?.asTemporary == true)
+    }
+
+    @MainActor
+    @Test
+    func revealSetsHighlightedFileItemOnCorrectWorkspace() {
+        let workspace = Workspace()
+        let mock = MockWindowManager()
+        mock.stubbedWorkspace = workspace
+        let navigator = AppWorkspaceNavigator(windowManager: mock)
+        let file = CEWorkspaceFile(url: URL(fileURLWithPath: "/tmp/example.swift"))
+
+        navigator.reveal(file: file)
+
+        #expect(workspace.listenerModel.highlightedFileItem === file)
     }
 }
