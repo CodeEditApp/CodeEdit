@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct EditorLayoutView: View {
     var layout: EditorLayout
@@ -31,11 +32,11 @@ struct EditorLayoutView: View {
                         switch isAtEdge {
                         case .all:
                             insets.top += toolbarHeight
-                            insets.bottom += StatusBarView.height + 5
+                            insets.bottom += LayoutMetrics.statusBarHeight + 5
                         case .top:
                             insets.top += toolbarHeight
                         case .bottom:
-                            insets.bottom += StatusBarView.height + 5
+                            insets.bottom += LayoutMetrics.statusBarHeight + 5
                         default:
                             return
                         }

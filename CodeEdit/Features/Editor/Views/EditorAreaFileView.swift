@@ -7,6 +7,7 @@
 
 import AppKit
 import CodeEditDocument
+import CodeEditUI
 import AVKit
 import CodeEditSourceEditor
 import SwiftUI
@@ -32,7 +33,7 @@ struct EditorAreaFileView: View {
         } else {
             NonTextFileView(fileDocument: codeFile)
                 .padding(.top, edgeInsets.top - 1.74)
-                .padding(.bottom, StatusBarView.height + 1.26)
+                .padding(.bottom, LayoutMetrics.statusBarHeight + 1.26)
                 .modifier(UpdateStatusBarInfo(with: codeFile.fileURL))
                 .onDisappear {
                     statusBarViewModel.dimensions = nil

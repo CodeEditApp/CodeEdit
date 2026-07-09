@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 /// # StatusBarView
 ///
@@ -22,7 +23,7 @@ struct StatusBarView: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
-    static let height = 28.0
+    static let height = LayoutMetrics.statusBarHeight
 
     @Environment(\.colorScheme)
     private var colorScheme
