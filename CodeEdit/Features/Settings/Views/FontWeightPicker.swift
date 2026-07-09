@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct FontWeightPicker: View {
     @Binding var selection: NSFont.Weight

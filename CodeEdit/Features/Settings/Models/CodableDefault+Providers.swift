@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditSettings
 
 // MARK: - Bool Defaults
 

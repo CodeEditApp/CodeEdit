@@ -10,7 +10,7 @@ import SwiftUI
 extension NSFont {
     /// Rough mapping from behavior of .systemFont(…weight:)
     /// to NSFontManager's Int-based weight, as of 13.4 Ventura
-    func withWeight(weight: NSFont.Weight) -> NSFont? {
+    public func withWeight(weight: NSFont.Weight) -> NSFont? {
         let fontManager = NSFontManager.shared
         var intWeight: Int
 

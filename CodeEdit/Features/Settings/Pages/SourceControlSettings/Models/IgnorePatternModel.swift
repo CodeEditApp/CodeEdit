@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 import Factory
 
 /// A model to manage Git ignore patterns for a file, including loading, saving, and monitoring changes.

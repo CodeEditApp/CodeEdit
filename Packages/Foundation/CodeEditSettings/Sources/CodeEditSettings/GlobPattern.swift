@@ -11,10 +11,15 @@ import Foundation
 ///
 /// This type does not interpret or validate the glob pattern itself.
 /// It is simply an identifier (`id`) and the glob pattern string (`value`) associated with it.
-struct GlobPattern: Identifiable, Hashable, Decodable, Encodable {
+public struct GlobPattern: Identifiable, Hashable, Decodable, Encodable {
     /// Ephemeral UUID used to uniquely identify this instance in the UI
-    var id = UUID()
+    public var id = UUID()
 
     /// The Glob Pattern string
-    var value: String
+    public var value: String
+
+    public init(id: UUID = UUID(), value: String) {
+        self.id = id
+        self.value = value
+    }
 }

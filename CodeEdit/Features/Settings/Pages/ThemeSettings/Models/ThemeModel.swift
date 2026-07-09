@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 import UniformTypeIdentifiers
 
 /// The Theme View Model. Accessible via the singleton "``ThemeModel/shared``".

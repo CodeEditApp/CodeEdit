@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 
 /// Protocol for managing keyboard shortcuts.
 protocol KeybindingManaging: AnyObject {

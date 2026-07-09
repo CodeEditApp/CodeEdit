@@ -6,6 +6,7 @@
 
 import Foundation
 import SwiftUI
+import CodeEditSettings
 
 final class KeybindingManager: KeybindingManaging {
     /// Array which contains all available keyboard shortcuts
@@ -54,60 +55,4 @@ final class KeybindingManager: KeybindingManaging {
         return foundElement != nil ? foundElement! : fallbackShortcut
     }
 
-}
-
-/// Wrapper for KeyboardShortcut. It contains name, keybindings.
-struct KeyboardShortcutWrapper: Codable, Hashable {
-    var keyboardShortcut: KeyboardShortcut {
-        return KeyboardShortcut.init(.init(Character(keybinding)), modifiers: parsedModifier)
-    }
-
-    var parsedModifier: EventModifiers {
-        switch modifier {
-        case "command":
-            return EventModifiers.command
-        case "shift":
-            return EventModifiers.shift
-        case "option":
-            return EventModifiers.option
-        case "control":
-            return EventModifiers.control
-        default:
-            return EventModifiers.command
-        }
-    }
-    var name: String
-    var description: String
-    var context: String
-    var keybinding: String
-    var modifier: String
-    var id: String
-
-    enum CodingKeys: String, CodingKey {
-        case name
-        case description
-        case context
-        case keybinding
-        case modifier
-        case id
-    }
-
-    init(name: String, description: String, context: String, keybinding: String, modifier: String, id: String) {
-        self.name = name
-        self.description = description
-        self.context = context
-        self.keybinding = keybinding
-        self.modifier = modifier
-        self.id = id
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        name = try container.decode(String.self, forKey: .name)
-        description = try container.decode(String.self, forKey: .description)
-        context = try container.decode(String.self, forKey: .context)
-        keybinding = try container.decode(String.self, forKey: .keybinding)
-        modifier = try container.decode(String.self, forKey: .modifier)
-        id = try container.decode(String.self, forKey: .id)
-    }
 }

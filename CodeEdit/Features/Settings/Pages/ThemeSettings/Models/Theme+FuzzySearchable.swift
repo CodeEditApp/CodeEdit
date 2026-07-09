@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 
 extension Theme: FuzzySearchable {
     var searchableString: String {

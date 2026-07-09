@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 import CodeEditUI
 
 /// A view that implements the `Theme` preference section

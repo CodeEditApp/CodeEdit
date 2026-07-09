@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct ThemeSettingsThemeDetails: View {
     @Environment(\.dismiss)

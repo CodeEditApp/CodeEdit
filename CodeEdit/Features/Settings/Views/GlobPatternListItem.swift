@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct GlobPatternListItem: View {
     @Binding var pattern: GlobPattern

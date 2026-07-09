@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct ThemeSettingsColorPreview: View {
     var theme: Theme

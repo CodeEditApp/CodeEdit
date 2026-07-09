@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 import UniformTypeIdentifiers
 
 /// Export dialog methods for themes.

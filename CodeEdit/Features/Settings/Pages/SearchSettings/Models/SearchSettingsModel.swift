@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 /// The Search Settings View Model. Accessible via the singleton "``SearchSettings/shared``".
 ///

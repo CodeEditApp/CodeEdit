@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 
 extension SettingsData {
     struct SearchSettings: Codable, Hashable {

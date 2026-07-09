@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditSettings
 import Foundation
 
 extension SettingsData {

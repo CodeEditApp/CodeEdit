@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 import CodeEditSourceEditor
 
 /// Color conversion extensions for Theme types.

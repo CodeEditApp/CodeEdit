@@ -12,59 +12,59 @@ import Foundation
 /// # Theme
 ///
 /// The model structure of themes for the editor & terminal emulator
-struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
+public struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
     enum CodingKeys: String, CodingKey {
         case author, license, distributionURL, name, displayName, editor, terminal, version
         case appearance = "type"
         case metadataDescription = "description"
     }
 
-    static func == (lhs: Theme, rhs: Theme) -> Bool {
+    public static func == (lhs: Theme, rhs: Theme) -> Bool {
         lhs.id == rhs.id
     }
 
     /// The `id` of the theme
-    var id: String { self.name }
+    public var id: String { self.name }
 
     /// The `author` of the theme
-    var author: String
+    public var author: String
 
     /// The `license` of the theme
-    var license: String
+    public var license: String
 
     /// A short `description` of the theme
-    var metadataDescription: String
+    public var metadataDescription: String
 
     /// An URL for reference
-    var distributionURL: String
+    public var distributionURL: String
 
     /// If the theme is bundled with CodeEdit or not
-    var isBundled: Bool = false
+    public var isBundled: Bool = false
 
     /// The URL for the theme file
-    var fileURL: URL?
+    public var fileURL: URL?
 
     /// The `unique name` of the theme
-    var name: String
+    public var name: String
 
     /// The `display name` of the theme
-    var displayName: String
+    public var displayName: String
 
     /// The `version` of the theme
-    var version: String
+    public var version: String
 
     /// The ``ThemeType`` of the theme
     ///
     /// Appears as `"type"` in the `settings.json`
-    var appearance: ThemeType
+    public var appearance: ThemeType
 
     /// Editor colors of the theme
-    var editor: EditorColors
+    public var editor: EditorColors
 
     /// Terminal colors of the theme
-    var terminal: TerminalColors
+    public var terminal: TerminalColors
 
-    init(
+    public init(
         editor: EditorColors,
         terminal: TerminalColors,
         author: String,
@@ -95,7 +95,7 @@ extension Theme {
     /// The type of the theme
     /// - **dark**: this is a theme for dark system appearance
     /// - **light**: this is a theme for light system appearance
-    enum ThemeType: String, Codable, Hashable {
+    public enum ThemeType: String, Codable, Hashable {
         case dark
         case light
     }
@@ -107,27 +107,27 @@ extension Theme {
     ///
     /// As of now it only includes the colors `hex` string and
     /// an accessor for a `SwiftUI` `Color`.
-    struct Attributes: Codable, Equatable, Hashable, Loopable {
+    public struct Attributes: Codable, Equatable, Hashable, Loopable {
 
         /// The 24-bit hex string of the color (e.g. #123456)
-        var color: String
-        var bold: Bool
-        var italic: Bool
+        public var color: String
+        public var bold: Bool
+        public var italic: Bool
 
-        init(color: String, bold: Bool = false, italic: Bool = false) {
+        public init(color: String, bold: Bool = false, italic: Bool = false) {
             self.color = color
             self.bold = bold
             self.italic = italic
         }
 
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.color = try container.decode(String.self, forKey: .color)
             self.bold = try container.decodeIfPresent(Bool.self, forKey: .bold) ?? false
             self.italic = try container.decodeIfPresent(Bool.self, forKey: .italic) ?? false
         }
 
-        func encode(to encoder: Encoder) throws {
+        public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(color, forKey: .color)
 
@@ -150,23 +150,23 @@ extension Theme {
 
 extension Theme {
     /// The editor colors of the theme
-    struct EditorColors: Codable, Hashable, Loopable {
-        var text: Attributes
-        var insertionPoint: Attributes
-        var invisibles: Attributes
-        var background: Attributes
-        var lineHighlight: Attributes
-        var selection: Attributes
-        var keywords: Attributes
-        var commands: Attributes
-        var types: Attributes
-        var attributes: Attributes
-        var variables: Attributes
-        var values: Attributes
-        var numbers: Attributes
-        var strings: Attributes
-        var characters: Attributes
-        var comments: Attributes
+    public struct EditorColors: Codable, Hashable, Loopable {
+        public var text: Attributes
+        public var insertionPoint: Attributes
+        public var invisibles: Attributes
+        public var background: Attributes
+        public var lineHighlight: Attributes
+        public var selection: Attributes
+        public var keywords: Attributes
+        public var commands: Attributes
+        public var types: Attributes
+        public var attributes: Attributes
+        public var variables: Attributes
+        public var values: Attributes
+        public var numbers: Attributes
+        public var strings: Attributes
+        public var characters: Attributes
+        public var comments: Attributes
 
         /// Allows to look up properties by their name
         ///
@@ -176,7 +176,7 @@ extension Theme {
         /// // equal to calling
         /// editor.text
         /// ```
-        subscript(key: String) -> Attributes {
+        public subscript(key: String) -> Attributes {
             get {
                 switch key {
                 case "text": return self.text
@@ -221,7 +221,7 @@ extension Theme {
             }
         }
 
-        init(
+        public init(
             text: Attributes,
             insertionPoint: Attributes,
             invisibles: Attributes,
@@ -261,30 +261,30 @@ extension Theme {
 
 extension Theme {
     /// The terminal emulator colors of the theme
-    struct TerminalColors: Codable, Hashable, Loopable {
-        var text: Attributes
-        var boldText: Attributes
-        var cursor: Attributes
-        var background: Attributes
-        var selection: Attributes
-        var black: Attributes
-        var red: Attributes
-        var green: Attributes
-        var yellow: Attributes
-        var blue: Attributes
-        var magenta: Attributes
-        var cyan: Attributes
-        var white: Attributes
-        var brightBlack: Attributes
-        var brightRed: Attributes
-        var brightGreen: Attributes
-        var brightYellow: Attributes
-        var brightBlue: Attributes
-        var brightMagenta: Attributes
-        var brightCyan: Attributes
-        var brightWhite: Attributes
+    public struct TerminalColors: Codable, Hashable, Loopable {
+        public var text: Attributes
+        public var boldText: Attributes
+        public var cursor: Attributes
+        public var background: Attributes
+        public var selection: Attributes
+        public var black: Attributes
+        public var red: Attributes
+        public var green: Attributes
+        public var yellow: Attributes
+        public var blue: Attributes
+        public var magenta: Attributes
+        public var cyan: Attributes
+        public var white: Attributes
+        public var brightBlack: Attributes
+        public var brightRed: Attributes
+        public var brightGreen: Attributes
+        public var brightYellow: Attributes
+        public var brightBlue: Attributes
+        public var brightMagenta: Attributes
+        public var brightCyan: Attributes
+        public var brightWhite: Attributes
 
-        var ansiColors: [String] {
+        public var ansiColors: [String] {
             [
                 black.color,
                 red.color,
@@ -313,7 +313,7 @@ extension Theme {
         /// // equal to calling
         /// terminal.text
         /// ```
-        subscript(key: String) -> Attributes {
+        public subscript(key: String) -> Attributes {
             get {
                 switch key {
                 case "text": return self.text
@@ -368,7 +368,7 @@ extension Theme {
             }
         }
 
-        init(
+        public init(
             text: Attributes,
             boldText: Attributes,
             cursor: Attributes,
