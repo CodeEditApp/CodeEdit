@@ -26,6 +26,18 @@ final class FindReplaceQueryBridgeTests: XCTestCase {
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
         searchState = SearchState(workspaceURL: directory)
+
+        // Wait for indexing to settle before the test starts mutating state, to avoid racing
+        // background indexing work against the next test's setUp/tearDown on the same directory.
+        let startTime = Date()
+        let timeoutInSeconds = 2.0
+        while searchState.indexStatus != .done {
+            try? await Task.sleep(nanoseconds: 100_000_000)
+            if Date().timeIntervalSince(startTime) > timeoutInSeconds {
+                XCTFail("TIMEOUT: Indexing took too long or did not complete.")
+                return
+            }
+        }
     }
 
     override func tearDown() {
@@ -40,25 +52,38 @@ final class FindReplaceQueryBridgeTests: XCTestCase {
 
     func testSearchQuerySyncsToFindReplaceQuery() async {
         searchState.searchQuery = "hello"
-        try? await Task.sleep(nanoseconds: 100_000_000)
+        await waitUntil { self.searchState.query.searchQuery == "hello" }
         XCTAssertEqual(searchState.query.searchQuery, "hello")
     }
 
     func testFindReplaceQuerySyncsBackToSearchQuery() async {
         searchState.query.searchQuery = "world"
-        try? await Task.sleep(nanoseconds: 100_000_000)
+        await waitUntil { self.searchState.searchQuery == "world" }
         XCTAssertEqual(searchState.searchQuery, "world")
     }
 
     func testReplaceTextSyncsToFindReplaceQuery() async {
         searchState.replaceText = "replacement"
-        try? await Task.sleep(nanoseconds: 100_000_000)
+        await waitUntil { self.searchState.query.replaceText == "replacement" }
         XCTAssertEqual(searchState.query.replaceText, "replacement")
     }
 
     func testFindReplaceQueryReplaceTextSyncsBack() async {
         searchState.query.replaceText = "other"
-        try? await Task.sleep(nanoseconds: 100_000_000)
+        await waitUntil { self.searchState.replaceText == "other" }
         XCTAssertEqual(searchState.replaceText, "other")
+    }
+
+    /// Polls `condition` until it's true or 2 seconds elapse, yielding to the run loop between checks so
+    /// `.receive(on: RunLoop.main)`-scheduled Combine work actually gets a chance to run.
+    private func waitUntil(timeout: TimeInterval = 2, _ condition: @escaping () -> Bool) async {
+        let startTime = Date()
+        while !condition() {
+            try? await Task.sleep(nanoseconds: 20_000_000)
+            if Date().timeIntervalSince(startTime) > timeout {
+                XCTFail("TIMEOUT: Condition did not become true within \(timeout) seconds.")
+                return
+            }
+        }
     }
 }
