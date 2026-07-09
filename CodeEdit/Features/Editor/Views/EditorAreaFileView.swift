@@ -16,7 +16,6 @@ struct EditorAreaFileView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
     @EnvironmentObject private var editor: Editor
-    @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
 
     @Environment(\.edgeInsets)
     private var edgeInsets
@@ -34,11 +33,6 @@ struct EditorAreaFileView: View {
             NonTextFileView(fileDocument: codeFile)
                 .padding(.top, edgeInsets.top - 1.74)
                 .padding(.bottom, LayoutMetrics.statusBarHeight + 1.26)
-                .modifier(UpdateStatusBarInfo(with: codeFile.fileURL))
-                .onDisappear {
-                    statusBarViewModel.dimensions = nil
-                    statusBarViewModel.fileSize = nil
-                }
         }
     }
 
