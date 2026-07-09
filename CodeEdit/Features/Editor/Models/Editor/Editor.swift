@@ -7,7 +7,6 @@
 
 import Foundation
 import CodeEditCore
-import Search
 import OrderedCollections
 import DequeModule
 import AppKit
@@ -62,7 +61,7 @@ final class Editor: ObservableObject, Identifiable {
     var id = UUID()
 
     weak var parent: SplitViewData?
-    weak var searchState: SearchState?
+    weak var findReplaceQuery: FindReplaceQuery?
     weak var editorManager: EditorManager?
 
     /// Whether this editor is attached to a workspace. Used to guard file loading operations.
@@ -74,7 +73,7 @@ final class Editor: ObservableObject, Identifiable {
         self.tabs = []
         self.temporaryTab = nil
         self.parent = nil
-        self.searchState = nil
+        self.findReplaceQuery = nil
     }
 
     init(
@@ -82,17 +81,19 @@ final class Editor: ObservableObject, Identifiable {
         selectedTab: Tab? = nil,
         temporaryTab: Tab? = nil,
         parent: SplitViewData? = nil,
-        searchState: SearchState? = nil
+        findReplaceQuery: FindReplaceQuery? = nil
     ) {
         self.parent = parent
-        self.searchState = searchState
+        self.findReplaceQuery = findReplaceQuery
         // If we open the files without a valid workspace, we risk creating a file we lose track of but stays in memory
         if isAttachedToWorkspace {
             files.forEach { openTab(file: $0) }
         } else {
-            self.tabs = OrderedSet(files.map { EditorInstance(searchState: searchState, file: $0) })
+            self.tabs = OrderedSet(files.map { EditorInstance(findReplaceQuery: findReplaceQuery, file: $0) })
         }
-        self.selectedTab = selectedTab ?? (files.isEmpty ? nil : Tab(searchState: searchState, file: files.first!))
+        self.selectedTab = selectedTab ?? (
+            files.isEmpty ? nil : Tab(findReplaceQuery: findReplaceQuery, file: files.first!)
+        )
         self.temporaryTab = temporaryTab
     }
 
@@ -101,11 +102,11 @@ final class Editor: ObservableObject, Identifiable {
         selectedTab: Tab? = nil,
         temporaryTab: Tab? = nil,
         parent: SplitViewData? = nil,
-        searchState: SearchState? = nil
+        findReplaceQuery: FindReplaceQuery? = nil
     ) {
         self.tabs = []
         self.parent = parent
-        self.searchState = searchState
+        self.findReplaceQuery = findReplaceQuery
         files.forEach { openTab(file: $0.file) }
         self.selectedTab = selectedTab ?? tabs.first
         self.temporaryTab = temporaryTab
@@ -158,7 +159,7 @@ final class Editor: ObservableObject, Identifiable {
             clearFuture()
         }
         if file != selectedTab?.file {
-            addToHistory(EditorInstance(searchState: searchState, file: file))
+            addToHistory(EditorInstance(findReplaceQuery: findReplaceQuery, file: file))
         }
         removeTab(file)
         if let selectedTab {
@@ -188,7 +189,7 @@ final class Editor: ObservableObject, Identifiable {
     ///   - file: the file to open.
     ///   - asTemporary: indicates whether the tab should be opened as a temporary tab or a permanent tab.
     func openTab(file: CEWorkspaceFile, asTemporary: Bool) {
-        let item = EditorInstance(searchState: searchState, file: file)
+        let item = EditorInstance(findReplaceQuery: findReplaceQuery, file: file)
         // Item is already opened in a tab.
         guard !tabs.contains(item) || !asTemporary else {
             selectedTab = item
@@ -246,7 +247,7 @@ final class Editor: ObservableObject, Identifiable {
     ///   - index: Index where the tab needs to be added. If nil, it is added to the back.
     ///   - fromHistory: Indicates whether the tab has been opened from going back in history.
     func openTab(file: CEWorkspaceFile, at index: Int? = nil, fromHistory: Bool = false) {
-        let item = Tab(searchState: searchState, file: file)
+        let item = Tab(findReplaceQuery: findReplaceQuery, file: file)
         if let index {
             tabs.insert(item, at: index)
         } else {

@@ -100,7 +100,7 @@ struct EditorTabBarTrailingAccessories: View {
     func split(edge: Edge) {
         let newEditor: Editor
         if let tab = editor.selectedTab {
-            newEditor = .init(files: [tab], temporaryTab: tab, searchState: editor.searchState)
+            newEditor = .init(files: [tab], temporaryTab: tab, findReplaceQuery: editor.findReplaceQuery)
         } else {
             newEditor = .init()
         }

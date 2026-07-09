@@ -144,7 +144,7 @@ struct EditorTabBarContextMenu: ViewModifier {
     }
 
     func moveToNewSplit(_ edge: Edge) {
-        let newEditor = Editor(files: [item], searchState: tabs.searchState)
+        let newEditor = Editor(files: [item], findReplaceQuery: tabs.findReplaceQuery)
         newEditor.editorManager = editorManager
         splitEditor(edge, newEditor)
         tabs.closeTab(file: item)

@@ -97,7 +97,7 @@ struct EditorTabView: View {
         // Only set the `selectedId` when they are not equal to avoid performance issue for now.
         editorManager.activeEditor = editor
         if editor.selectedTab?.file != tabFile {
-            let tabItem = EditorInstance(searchState: editor.searchState, file: tabFile)
+            let tabItem = EditorInstance(findReplaceQuery: editor.findReplaceQuery, file: tabFile)
             editor.setSelectedTab(tabFile)
             editor.clearFuture()
             editor.addToHistory(tabItem)

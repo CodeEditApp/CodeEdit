@@ -92,7 +92,7 @@ enum WorkspaceFactory {
             editorManager.restoreFromState(
                 statePersistence: statePersistence,
                 fileManager: workspaceFileManager,
-                searchState: workspace.searchState
+                findReplaceQuery: workspace.searchState?.query
             )
             workspace.utilityAreaModel?.restoreFromState(statePersistence)
         }

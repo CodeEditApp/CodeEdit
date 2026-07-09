@@ -7,7 +7,6 @@
 
 import Foundation
 import CodeEditCore
-import Search
 import AppKit
 import Combine
 import CodeEditTextView
@@ -35,14 +34,14 @@ class EditorInstance: ObservableObject, Hashable {
 
     // MARK: - Init
 
-    init(searchState: SearchState?, file: CEWorkspaceFile, cursorPositions: [CursorPosition]? = nil) {
+    init(findReplaceQuery: FindReplaceQuery?, file: CEWorkspaceFile, cursorPositions: [CursorPosition]? = nil) {
         self.file = file
         let url = file.url
         let editorState = EditorStateRestoration.shared?.restorationState(for: url)
 
-        findText = searchState?.searchQuery
+        findText = findReplaceQuery?.searchQuery
         findTextSubject = PassthroughSubject()
-        replaceText = searchState?.replaceText
+        replaceText = findReplaceQuery?.replaceText
         replaceTextSubject = PassthroughSubject()
 
         self.cursorPositions = (
@@ -66,14 +65,14 @@ class EditorInstance: ObservableObject, Hashable {
         }
         .store(in: &cancellables)
 
-        listenToFindText(searchState: searchState)
-        listenToReplaceText(searchState: searchState)
+        listenToFindText(findReplaceQuery: findReplaceQuery)
+        listenToReplaceText(findReplaceQuery: findReplaceQuery)
     }
 
     // MARK: - Find/Replace Listeners
 
-    func listenToFindText(searchState: SearchState?) {
-        searchState?.$searchQuery
+    func listenToFindText(findReplaceQuery: FindReplaceQuery?) {
+        findReplaceQuery?.$searchQuery
             .receive(on: RunLoop.main)
             .sink { [weak self] newQuery in
                 if self?.findText != newQuery {
@@ -83,17 +82,17 @@ class EditorInstance: ObservableObject, Hashable {
             .store(in: &cancellables)
         findTextSubject
             .receive(on: RunLoop.main)
-            .sink { [weak searchState, weak self] newFindText in
-                if let newFindText, searchState?.searchQuery != newFindText {
-                    searchState?.searchQuery = newFindText
+            .sink { [weak findReplaceQuery, weak self] newFindText in
+                if let newFindText, findReplaceQuery?.searchQuery != newFindText {
+                    findReplaceQuery?.searchQuery = newFindText
                 }
-                self?.findText = searchState?.searchQuery
+                self?.findText = findReplaceQuery?.searchQuery
             }
             .store(in: &cancellables)
     }
 
-    func listenToReplaceText(searchState: SearchState?) {
-        searchState?.$replaceText
+    func listenToReplaceText(findReplaceQuery: FindReplaceQuery?) {
+        findReplaceQuery?.$replaceText
             .receive(on: RunLoop.main)
             .sink { [weak self] newText in
                 if self?.replaceText != newText {
@@ -103,11 +102,11 @@ class EditorInstance: ObservableObject, Hashable {
             .store(in: &cancellables)
         replaceTextSubject
             .receive(on: RunLoop.main)
-            .sink { [weak searchState, weak self] newReplaceText in
-                if let newReplaceText, searchState?.replaceText != newReplaceText {
-                    searchState?.replaceText = newReplaceText
+            .sink { [weak findReplaceQuery, weak self] newReplaceText in
+                if let newReplaceText, findReplaceQuery?.replaceText != newReplaceText {
+                    findReplaceQuery?.replaceText = newReplaceText
                 }
-                self?.replaceText = searchState?.replaceText
+                self?.replaceText = findReplaceQuery?.replaceText
             }
             .store(in: &cancellables)
     }

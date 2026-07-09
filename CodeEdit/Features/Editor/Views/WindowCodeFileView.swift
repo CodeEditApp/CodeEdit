@@ -20,7 +20,7 @@ struct WindowCodeFileView: View {
     init(codeFile: CodeFileDocument) {
         self._editorInstance = .init(
             wrappedValue: EditorInstance(
-                searchState: nil,
+                findReplaceQuery: nil,
                 file: CEWorkspaceFile(url: codeFile.fileURL ?? URL(fileURLWithPath: ""))
             )
         )

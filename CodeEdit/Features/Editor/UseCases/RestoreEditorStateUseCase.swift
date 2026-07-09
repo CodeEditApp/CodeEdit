@@ -8,7 +8,6 @@
 import Foundation
 import CEWorkspaceFileManager
 import CodeEditCore
-import Search
 import OSLog
 import OrderedCollections
 
@@ -30,7 +29,7 @@ final class RestoreEditorStateUseCase {
     func execute(
         statePersistence: any WorkspaceStatePersisting,
         fileManager: CEWorkspaceFileManager?,
-        searchState: SearchState?,
+        findReplaceQuery: FindReplaceQuery?,
         editorManager: EditorManager
     ) -> Outcome {
         guard let data = statePersistence.get(.openTabs) as? Data else {
@@ -55,7 +54,7 @@ final class RestoreEditorStateUseCase {
             try fixRestoredEditorLayout(
                 state.groups,
                 fileManager: fileManager,
-                searchState: searchState,
+                findReplaceQuery: findReplaceQuery,
                 editorManager: editorManager
             )
 
@@ -72,22 +71,24 @@ final class RestoreEditorStateUseCase {
     private func fixRestoredEditorLayout(
         _ group: EditorLayout,
         fileManager: CEWorkspaceFileManager?,
-        searchState: SearchState?,
+        findReplaceQuery: FindReplaceQuery?,
         editorManager: EditorManager
     ) throws {
         switch group {
         case let .one(data):
-            try fixEditor(data, fileManager: fileManager, searchState: searchState, editorManager: editorManager)
+            try fixEditor(
+                data, fileManager: fileManager, findReplaceQuery: findReplaceQuery, editorManager: editorManager
+            )
         case let .vertical(splitData):
             try splitData.editorLayouts.forEach { group in
                 try fixRestoredEditorLayout(
-                    group, fileManager: fileManager, searchState: searchState, editorManager: editorManager
+                    group, fileManager: fileManager, findReplaceQuery: findReplaceQuery, editorManager: editorManager
                 )
             }
         case let .horizontal(splitData):
             try splitData.editorLayouts.forEach { group in
                 try fixRestoredEditorLayout(
-                    group, fileManager: fileManager, searchState: searchState, editorManager: editorManager
+                    group, fileManager: fileManager, findReplaceQuery: findReplaceQuery, editorManager: editorManager
                 )
             }
         }
@@ -98,20 +99,20 @@ final class RestoreEditorStateUseCase {
     private func fixEditor(
         _ editor: Editor,
         fileManager: CEWorkspaceFileManager?,
-        searchState: SearchState?,
+        findReplaceQuery: FindReplaceQuery?,
         editorManager: EditorManager
     ) throws {
         guard let fileManager else { return }
         let resolvedTabs = editor
             .tabs
             .compactMap({ fileManager.getFile($0.file.url.path(percentEncoded: false), createIfNotFound: true) })
-            .map({ EditorInstance(searchState: searchState, file: $0) })
+            .map({ EditorInstance(findReplaceQuery: findReplaceQuery, file: $0) })
 
         for tab in resolvedTabs {
             try editorManager.loadDocument(for: tab.file)
         }
 
-        editor.searchState = searchState
+        editor.findReplaceQuery = findReplaceQuery
         editor.editorManager = editorManager
         editor.isAttachedToWorkspace = true
         editor.tabs = OrderedSet(resolvedTabs)

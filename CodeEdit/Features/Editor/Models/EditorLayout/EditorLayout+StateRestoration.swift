@@ -8,7 +8,6 @@
 import Foundation
 import CEWorkspaceFileManager
 import CodeEditCore
-import Search
 import SwiftUI
 import OrderedCollections
 
@@ -17,16 +16,16 @@ extension EditorManager {
     /// - Parameters:
     ///   - statePersistence: The persistence service to retrieve saved state from.
     ///   - fileManager: The file manager to resolve file references.
-    ///   - searchState: The search state for editor instances.
+    ///   - findReplaceQuery: The shared find/replace query for editor instances.
     func restoreFromState(
         statePersistence: any WorkspaceStatePersisting,
         fileManager: CEWorkspaceFileManager?,
-        searchState: SearchState?
+        findReplaceQuery: FindReplaceQuery?
     ) {
         defer {
             // No matter what, set up each editor. Even if we fail to read data.
             flattenedEditors.forEach { editor in
-                editor.searchState = searchState
+                editor.findReplaceQuery = findReplaceQuery
                 editor.editorManager = self
                 editor.isAttachedToWorkspace = true
             }
@@ -36,7 +35,7 @@ extension EditorManager {
         switch useCase.execute(
             statePersistence: statePersistence,
             fileManager: fileManager,
-            searchState: searchState,
+            findReplaceQuery: findReplaceQuery,
             editorManager: self
         ) {
         case .restored(let layout, let activeEditor):
@@ -163,11 +162,11 @@ extension Editor: Codable {
         self.init(
             files: OrderedSet(fileURLs.map { CEWorkspaceFile(url: $0) }),
             selectedTab: selectedTab == nil ? nil : EditorInstance(
-                searchState: nil,
+                findReplaceQuery: nil,
                 file: CEWorkspaceFile(url: selectedTab!)
             ),
             parent: nil,
-            searchState: nil
+            findReplaceQuery: nil
         )
         self.id = id
     }

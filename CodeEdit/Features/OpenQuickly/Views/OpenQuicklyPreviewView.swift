@@ -26,7 +26,7 @@ struct OpenQuicklyPreviewView: View {
             withContentsOf: item.url,
             ofType: item.contentType?.identifier ?? "public.source-code"
         )
-        self._editorInstance = .init(wrappedValue: EditorInstance(searchState: nil, file: item))
+        self._editorInstance = .init(wrappedValue: EditorInstance(findReplaceQuery: nil, file: item))
         self._document = .init(wrappedValue: doc ?? .init())
     }
 
