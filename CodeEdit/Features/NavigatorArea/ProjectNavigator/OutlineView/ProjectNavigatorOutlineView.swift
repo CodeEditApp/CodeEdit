@@ -27,7 +27,6 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         let controller = ProjectNavigatorViewController()
         controller.workspace = workspace
         controller.iconColor = prefs.preferences.general.fileIconStyle
-        controller.editor = editorManager.activeEditor
         controller.activeEditorState = activeEditorState
         workspace.workspaceFileManager?.addObserver(context.coordinator)
 

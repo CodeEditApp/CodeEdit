@@ -53,4 +53,22 @@ struct AppWorkspaceNavigatorTests {
 
         #expect(workspace.listenerModel.highlightedFileItem === file)
     }
+
+    @MainActor
+    @Test
+    func closeTabClosesFileInEditorLayout() {
+        let workspace = Workspace()
+        let editorManager = EditorManager()
+        workspace.editorManager = editorManager
+        let mock = MockWindowManager()
+        mock.stubbedWorkspace = workspace
+        let navigator = AppWorkspaceNavigator(windowManager: mock)
+        let file = CEWorkspaceFile(url: URL(fileURLWithPath: "/tmp/example.swift"))
+
+        editorManager.activeEditor.openTab(file: file, asTemporary: false)
+        #expect(editorManager.activeEditor.tabs.contains(where: { $0.file == file }))
+
+        navigator.closeTab(file: file)
+        #expect(!editorManager.activeEditor.tabs.contains(where: { $0.file == file }))
+    }
 }

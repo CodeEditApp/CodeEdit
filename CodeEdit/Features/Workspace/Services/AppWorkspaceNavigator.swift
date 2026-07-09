@@ -29,4 +29,9 @@ final class AppWorkspaceNavigator: WorkspaceNavigator {
     func reveal(file: CEWorkspaceFile) {
         windowManager.workspace(containing: file.url)?.listenerModel.highlightedFileItem = file
     }
+
+    @MainActor
+    func closeTab(file: CEWorkspaceFile) {
+        windowManager.workspace(containing: file.url)?.editorManager?.editorLayout.closeAllTabs(of: file)
+    }
 }

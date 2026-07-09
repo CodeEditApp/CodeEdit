@@ -40,7 +40,6 @@ final class ProjectNavigatorViewController: NSViewController {
     var expandedItems: Set<CEWorkspaceFile> = []
 
     weak var workspace: Workspace?
-    weak var editor: Editor?
     weak var activeEditorState: (any ActiveEditorState)?
 
     var iconColor: SettingsData.FileIconStyle = .color {

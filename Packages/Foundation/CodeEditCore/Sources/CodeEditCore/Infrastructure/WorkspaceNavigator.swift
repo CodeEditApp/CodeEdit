@@ -17,6 +17,9 @@ public protocol WorkspaceNavigator: AnyObject {
 
     /// Highlight `file` in the project navigator without opening it.
     @MainActor func reveal(file: CEWorkspaceFile)
+
+    /// Close all tabs showing `file` across every editor split.
+    @MainActor func closeTab(file: CEWorkspaceFile)
 }
 
 /// Default no-op used until the app registers a real implementation.
@@ -24,4 +27,5 @@ public final class NoOpWorkspaceNavigator: WorkspaceNavigator {
     public init() {}
     @MainActor public func open(file: CEWorkspaceFile, asTemporary: Bool) {}
     @MainActor public func reveal(file: CEWorkspaceFile) {}
+    @MainActor public func closeTab(file: CEWorkspaceFile) {}
 }

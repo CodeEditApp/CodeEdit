@@ -193,7 +193,7 @@ extension ProjectNavigatorMenu {
         do {
             try selectedItems().forEach { item in
                 withAnimation {
-                    sender.editor?.closeTab(file: item)
+                    Container.shared.workspaceNavigator().closeTab(file: item)
                 }
                 guard FileManager.default.fileExists(atPath: item.url.path) else {
                     // Was likely already trashed (eg selecting files in a folder and deleting the folder and files)
@@ -242,7 +242,7 @@ extension ProjectNavigatorMenu {
 
             withAnimation {
                 selectedItems.forEach { item in
-                    sender.editor?.closeTab(file: item)
+                    Container.shared.workspaceNavigator().closeTab(file: item)
                 }
             }
 
