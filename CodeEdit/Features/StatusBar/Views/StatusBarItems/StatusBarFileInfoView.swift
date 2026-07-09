@@ -15,20 +15,23 @@ struct StatusBarFileInfoView: View {
     @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
     @Environment(\.activeEditorState) private var activeEditorState
 
+    @State private var fileSize: Int?
+    @State private var dimensions: ImageDimensions?
+
     private let dimensionsNumberStyle = IntegerFormatStyle<Int>(locale: Locale(identifier: "en_US")).grouping(.never)
 
     var body: some View {
 
         HStack(spacing: 15) {
 
-            if let dimensions = statusBarViewModel.dimensions {
+            if let dimensions {
                 let width = dimensionsNumberStyle.format(dimensions.width)
                 let height = dimensionsNumberStyle.format(dimensions.height)
 
                 Text("\(width) × \(height)")
             }
 
-            if let fileSize = statusBarViewModel.fileSize {
+            if let fileSize {
                 Text(fileSize.formatted(.byteCount(style: .memory)))
             }
 
@@ -44,24 +47,24 @@ struct StatusBarFileInfoView: View {
         guard let file,
               let resourceValues = try? file.url.resourceValues(forKeys: [.contentTypeKey, .fileSizeKey]),
               let contentType = resourceValues.contentType,
-              let fileSize = resourceValues.fileSize,
+              let newFileSize = resourceValues.fileSize,
               !contentType.conforms(to: .text)
         else {
-            statusBarViewModel.fileSize = nil
-            statusBarViewModel.dimensions = nil
+            fileSize = nil
+            dimensions = nil
             return
         }
 
-        statusBarViewModel.fileSize = fileSize
+        fileSize = newFileSize
 
         if contentType.conforms(to: .image),
            let imageReps = NSImage(contentsOf: file.url)?.representations.first {
-            statusBarViewModel.dimensions = ImageDimensions(
+            dimensions = ImageDimensions(
                 width: imageReps.pixelsWide,
                 height: imageReps.pixelsHigh
             )
         } else {
-            statusBarViewModel.dimensions = nil
+            dimensions = nil
         }
     }
 }
