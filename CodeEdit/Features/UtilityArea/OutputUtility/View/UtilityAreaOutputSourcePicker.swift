@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 import Factory
 
 struct UtilityAreaOutputSourcePicker: View {

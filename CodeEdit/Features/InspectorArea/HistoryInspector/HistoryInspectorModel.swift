@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 import CodeEditCore
 
 final class HistoryInspectorModel: ObservableObject {

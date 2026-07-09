@@ -16,10 +16,10 @@ import Combine
 /// @StateObject
 /// private var prefs: SettingsModel = .shared
 /// ```
-final class Settings: ObservableObject {
+public final class Settings: ObservableObject {
 
     /// The publicly available singleton instance of ``SettingsModel``
-    static let shared: Settings = .init()
+    nonisolated(unsafe) public static let shared: Settings = .init()
 
     private var storeTask: AnyCancellable!
 
@@ -32,7 +32,7 @@ final class Settings: ObservableObject {
         }
     }
 
-    static subscript<T>(_ path: WritableKeyPath<SettingsData, T>, suite: Settings = .shared) -> T {
+    public static subscript<T>(_ path: WritableKeyPath<SettingsData, T>, suite: Settings = .shared) -> T {
         get {
             suite.preferences[keyPath: path]
         }
@@ -44,7 +44,7 @@ final class Settings: ObservableObject {
     /// Published instance of the ``Settings`` model.
     ///
     /// Changes are saved automatically.
-    @Published var preferences: SettingsData
+    @Published public var preferences: SettingsData
 
     /// Load and construct ``Settings`` model from
     /// `~/Library/Application Support/CodeEdit/settings.json`
@@ -77,7 +77,7 @@ final class Settings: ObservableObject {
     /// The base URL of settings.
     ///
     /// Points to `~/Library/Application Support/CodeEdit/`
-    internal var baseURL: URL {
+    public var baseURL: URL {
         filemanager
             .homeDirectoryForCurrentUser
             .appending(path: "Library/Application Support/CodeEdit", directoryHint: .isDirectory)

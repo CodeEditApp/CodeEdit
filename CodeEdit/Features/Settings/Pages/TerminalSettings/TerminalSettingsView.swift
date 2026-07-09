@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct TerminalSettingsView: View {
     @AppSettings(\.terminal)

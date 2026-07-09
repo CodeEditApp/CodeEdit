@@ -11,7 +11,7 @@ import Foundation
 ///
 /// Conform to this protocol to define a default value that will be used
 /// when decoding fails or the key is missing from the JSON.
-protocol DefaultValueProvider {
+public protocol DefaultValueProvider {
     associatedtype Value: Codable & Hashable
     static var defaultValue: Value { get }
 }
@@ -30,19 +30,19 @@ protocol DefaultValueProvider {
 /// With this wrapper, you no longer need a custom `init(from:)` for handling
 /// missing keys — Swift's auto-synthesized decoder handles it automatically.
 @propertyWrapper
-struct CodableDefault<Provider: DefaultValueProvider>: Codable, Hashable {
-    var wrappedValue: Provider.Value
+public struct CodableDefault<Provider: DefaultValueProvider>: Codable, Hashable {
+    public var wrappedValue: Provider.Value
 
-    init(wrappedValue: Provider.Value) {
+    public init(wrappedValue: Provider.Value) {
         self.wrappedValue = wrappedValue
     }
 
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         wrappedValue = (try? container.decode(Provider.Value.self)) ?? Provider.defaultValue
     }
 
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(wrappedValue)
     }

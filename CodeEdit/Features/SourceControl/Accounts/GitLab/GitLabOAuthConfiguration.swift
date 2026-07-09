@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 
 struct GitLabOAuthConfiguration: GitRouterConfiguration {
     let provider = SourceControlAccount.Provider.gitlab

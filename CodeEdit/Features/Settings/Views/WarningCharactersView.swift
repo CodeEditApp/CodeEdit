@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct WarningCharactersView: View {
     typealias Config = SettingsData.TextEditingSettings.WarningCharacters

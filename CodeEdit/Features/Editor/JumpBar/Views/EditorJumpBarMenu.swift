@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditSettings
 import CEWorkspaceFileManager
 import CodeEditCore
 

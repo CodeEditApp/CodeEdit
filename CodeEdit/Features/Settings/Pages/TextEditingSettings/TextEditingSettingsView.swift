@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 /// A view that implements the `Text Editing` settings page
 struct TextEditingSettingsView: View {

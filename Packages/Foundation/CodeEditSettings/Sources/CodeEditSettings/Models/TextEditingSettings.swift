@@ -6,75 +6,74 @@
 //
 
 import AppKit
-import CodeEditSettings
 import CodeEditCore
 import Foundation
 
 extension SettingsData {
 
     /// The global settings for text editing
-    struct TextEditingSettings: Codable, Hashable {
+    public struct TextEditingSettings: Codable, Hashable {
 
         /// An integer indicating how many spaces a `tab` will appear as visually.
-        var defaultTabWidth: Int = 4
+        public var defaultTabWidth: Int = 4
 
         /// The behavior of a `tab` keypress. If `.tab`, will insert a tab character. If `.spaces` will insert
         /// `.spaceCount` spaces instead.
-        var indentOption: IndentOption = IndentOption(indentType: .spaces, spaceCount: 4)
+        public var indentOption: IndentOption = IndentOption(indentType: .spaces, spaceCount: 4)
 
         /// The font to use in editor.
-        var font: EditorFont = .init()
+        public var font: EditorFont = .init()
 
         /// A flag indicating whether type-over completion is enabled
-        var enableTypeOverCompletion: Bool = true
+        public var enableTypeOverCompletion: Bool = true
 
         /// A flag indicating whether braces are automatically completed
-        var autocompleteBraces: Bool = true
+        public var autocompleteBraces: Bool = true
 
         /// A flag indicating whether to wrap lines to editor width
-        var wrapLinesToEditorWidth: Bool = true
+        public var wrapLinesToEditorWidth: Bool = true
 
         /// The percentage of overscroll to apply to the text view
-        var overscroll: OverscrollOption = .medium
+        public var overscroll: OverscrollOption = .medium
 
         /// A multiplier for setting the line height. Defaults to `1.2`
-        var lineHeightMultiple: Double = 1.2
+        public var lineHeightMultiple: Double = 1.2
 
         /// A multiplier for setting the letter spacing, `1` being no spacing and
         /// `2` is one character of spacing between letters, defaults to `1`.
-        var letterSpacing: Double = 1.0
+        public var letterSpacing: Double = 1.0
 
         /// The behavior of bracket pair highlights.
-        var bracketEmphasis: BracketPairEmphasis = BracketPairEmphasis()
+        public var bracketEmphasis: BracketPairEmphasis = BracketPairEmphasis()
 
         /// Use the system cursor for the source editor.
-        var useSystemCursor: Bool = true
+        public var useSystemCursor: Bool = true
 
         /// Toggle the gutter in the editor.
-        var showGutter: Bool = true
+        public var showGutter: Bool = true
 
         /// Toggle the minimap in the editor.
-        var showMinimap: Bool = true
+        public var showMinimap: Bool = true
 
         /// Toggle the code folding ribbon.
-        var showFoldingRibbon: Bool = true
+        public var showFoldingRibbon: Bool = true
 
         /// The column at which to reformat text
-        var reformatAtColumn: Int = 80
+        public var reformatAtColumn: Int = 80
 
         /// Show the reformatting guide in the editor
-        var showReformattingGuide: Bool = false
+        public var showReformattingGuide: Bool = false
 
-        var invisibleCharacters: InvisibleCharactersConfig = .default
+        public var invisibleCharacters: InvisibleCharactersConfig = .default
 
         /// Map of unicode character codes to a note about them
-        var warningCharacters: WarningCharacters = .default
+        public var warningCharacters: WarningCharacters = .default
 
         /// Default initializer
-        init() {}
+        public init() {}
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws { // swiftlint:disable:this function_body_length
+        public init(from decoder: Decoder) throws { // swiftlint:disable:this function_body_length
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.defaultTabWidth = try container.decodeIfPresent(Int.self, forKey: .defaultTabWidth) ?? 4
             self.indentOption = try container.decodeIfPresent(
@@ -136,16 +135,16 @@ extension SettingsData {
 
         /// Re-exported from `CodeEditCore`. Keeps `SettingsData.TextEditingSettings.IndentOption`
         /// valid for all existing call sites while the underlying type lives in the Core package.
-        typealias IndentOption = CodeEditCore.IndentOption
+        public typealias IndentOption = CodeEditCore.IndentOption
 
-        struct BracketPairEmphasis: Codable, Hashable {
+        public struct BracketPairEmphasis: Codable, Hashable {
             /// The type of highlight to use
-            var highlightType: HighlightType = .flash
-            var useCustomColor: Bool = false
+            public var highlightType: HighlightType = .flash
+            public var useCustomColor: Bool = false
             /// The color to use for the highlight.
-            var color: Theme.Attributes = Theme.Attributes(color: "FFFFFF", bold: false, italic: false)
+            public var color: Theme.Attributes = Theme.Attributes(color: "FFFFFF", bold: false, italic: false)
 
-            enum HighlightType: String, Codable {
+            public enum HighlightType: String, Codable {
                 case disabled
                 case bordered
                 case flash
@@ -153,13 +152,13 @@ extension SettingsData {
             }
         }
 
-        enum OverscrollOption: String, Codable {
+        public enum OverscrollOption: String, Codable {
             case none
             case small
             case medium
             case large
 
-            var overscrollPercentage: CGFloat {
+            public var overscrollPercentage: CGFloat {
                 switch self {
                 case .none: return 0
                 case .small: return 0.25
@@ -169,8 +168,8 @@ extension SettingsData {
             }
         }
 
-        struct InvisibleCharactersConfig: Equatable, Hashable, Codable {
-            static var `default`: InvisibleCharactersConfig = {
+        public struct InvisibleCharactersConfig: Equatable, Hashable, Codable {
+            nonisolated(unsafe) public static var `default`: InvisibleCharactersConfig  = {
                 InvisibleCharactersConfig(
                     enabled: false,
                     showSpaces: true,
@@ -179,24 +178,24 @@ extension SettingsData {
                 )
             }()
 
-            var enabled: Bool
+            public var enabled: Bool
 
-            var showSpaces: Bool
-            var showTabs: Bool
-            var showLineEndings: Bool
+            public var showSpaces: Bool
+            public var showTabs: Bool
+            public var showLineEndings: Bool
 
-            var spaceReplacement: String = "·"
-            var tabReplacement: String = "→"
+            public var spaceReplacement: String = "·"
+            public var tabReplacement: String = "→"
 
             // Controlled by `showLineEndings`
-            var carriageReturnReplacement: String = "↵"
-            var lineFeedReplacement: String = "¬"
-            var paragraphSeparatorReplacement: String = "¶"
-            var lineSeparatorReplacement: String = "⏎"
+            public var carriageReturnReplacement: String = "↵"
+            public var lineFeedReplacement: String = "¬"
+            public var paragraphSeparatorReplacement: String = "¶"
+            public var lineSeparatorReplacement: String = "⏎"
         }
 
-        struct WarningCharacters: Equatable, Hashable, Codable {
-            static let `default`: WarningCharacters = WarningCharacters(enabled: true, characters: [
+        public struct WarningCharacters: Equatable, Hashable, Codable {
+            nonisolated(unsafe) public static let `default`: WarningCharacters  = WarningCharacters(enabled: true, characters: [
                 0x0003: "End of text",
 
                 0x00A0: "Non-breaking space",
@@ -216,26 +215,26 @@ extension SettingsData {
                 0x037E: "Greek Question Mark"
             ])
 
-            var enabled: Bool
-            var characters: [UInt16: String]
+            public var enabled: Bool
+            public var characters: [UInt16: String]
         }
     }
 
-    struct EditorFont: Codable, Hashable {
+    public struct EditorFont: Codable, Hashable {
         /// The font size for the font
-        var size: Double = 12
+        public var size: Double = 12
 
         /// The name of the custom font
-        var name: String = "SF Mono"
+        public var name: String = "SF Mono"
 
         /// The weight of the custom font
-        var weight: NSFont.Weight = .medium
+        public var weight: NSFont.Weight = .medium
 
         /// Default initializer
-        init() {}
+        public init() {}
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.size = try container.decodeIfPresent(Double.self, forKey: .size) ?? size
             self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? name
@@ -246,7 +245,7 @@ extension SettingsData {
         ///
         /// Returns the custom font, if enabled and able to be instantiated.
         /// Otherwise returns a default system font monospaced.
-        var current: NSFont {
+        public var current: NSFont {
             let customFont = NSFont(name: name, size: size)?.withWeight(weight: weight)
             return customFont ?? NSFont.monospacedSystemFont(ofSize: size, weight: .medium)
         }

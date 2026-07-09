@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct StatusBarIndentSelector: View {
     @AppSettings(\.textEditing.defaultTabWidth)

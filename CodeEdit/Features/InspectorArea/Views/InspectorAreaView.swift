@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct InspectorAreaView: View {
     @ObservedObject private var extensionManager = ExtensionManager.shared

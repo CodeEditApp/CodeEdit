@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 /// A struct for settings
 struct SettingsView: View {
@@ -101,7 +102,7 @@ struct SettingsView: View {
         ),
     ]
 
-    @ObservedObject private var settings: Settings = .shared
+    @ObservedObject private var settings: CodeEditSettings.Settings = .shared
 
     let updater: SoftwareUpdater
 

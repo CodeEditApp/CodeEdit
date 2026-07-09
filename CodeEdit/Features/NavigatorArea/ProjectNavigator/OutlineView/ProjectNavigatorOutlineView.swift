@@ -8,6 +8,7 @@
 import SwiftUI
 import CEWorkspaceFileManager
 import CodeEditCore
+import CodeEditSettings
 import Combine
 
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`
@@ -18,7 +19,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
     @Environment(\.activeEditorState) private var activeEditorState
 
-    @StateObject var prefs: Settings = .shared
+    @StateObject var prefs: CodeEditSettings.Settings = .shared
 
     typealias NSViewControllerType = ProjectNavigatorViewController
 

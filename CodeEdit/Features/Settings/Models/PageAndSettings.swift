@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 
 struct PageAndSettings: Identifiable, Equatable {
     let id: UUID = UUID()

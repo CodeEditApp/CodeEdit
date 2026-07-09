@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct SourceControlNavigatorRepositoryItem: View {
     @AppSettings(\.general.fileIconStyle)

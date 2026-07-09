@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 import CodeEditCore
 
 /// Protocol for managing the language server registry.

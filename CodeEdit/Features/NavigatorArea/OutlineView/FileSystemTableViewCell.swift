@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 import CEWorkspaceFileManager
 import CodeEditCore
 

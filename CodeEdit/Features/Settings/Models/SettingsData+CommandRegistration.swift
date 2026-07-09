@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 import Factory
 
 extension SettingsData.TextEditingSettings {

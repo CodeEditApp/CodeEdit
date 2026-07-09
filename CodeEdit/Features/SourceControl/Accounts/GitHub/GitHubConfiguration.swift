@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif

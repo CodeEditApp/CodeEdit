@@ -10,16 +10,16 @@ import Foundation
 extension SettingsData {
 
     /// The global settings for the terminal emulator
-    struct NavigationSettings: Codable, Hashable {
+    public struct NavigationSettings: Codable, Hashable {
 
         /// Navigation style used
-        @CodableDefault<DefaultNavigationStyle> var navigationStyle: NavigationStyle = .openInTabs
+        @CodableDefault<DefaultNavigationStyle> public var navigationStyle: NavigationStyle = .openInTabs
 
         /// Default initializer
-        init() {}
+        public init() {}
     }
 
-    enum NavigationStyle: String, Codable, Hashable {
+    public enum NavigationStyle: String, Codable, Hashable {
         case openInTabs
         case openInPlace
     }

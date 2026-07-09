@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 /// A view that implements the `Locations` settings section
 struct LocationsSettingsView: View {

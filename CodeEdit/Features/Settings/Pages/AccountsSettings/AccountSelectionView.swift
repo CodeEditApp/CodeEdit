@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct AccountSelectionView: View {
     @Environment(\.dismiss)

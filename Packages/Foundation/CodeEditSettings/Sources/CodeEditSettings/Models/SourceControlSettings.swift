@@ -9,50 +9,50 @@ import Foundation
 
 extension SettingsData {
     /// The global settings for source control
-    struct SourceControlSettings: Codable, Hashable {
+    public struct SourceControlSettings: Codable, Hashable {
 
         /// The general source control settings
-        var general: SourceControlGeneral = .init()
+        public var general: SourceControlGeneral = .init()
 
         /// The source control git settings
-        var git: SourceControlGit = .init()
+        public var git: SourceControlGit = .init()
 
         /// Default initializer
-        init() {}
+        public init() {}
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.general = try container.decodeIfPresent(SourceControlGeneral.self, forKey: .general) ?? .init()
             self.git = try container.decodeIfPresent(SourceControlGit.self, forKey: .git) ?? .init()
         }
     }
 
-    struct SourceControlGeneral: Codable, Hashable {
+    public struct SourceControlGeneral: Codable, Hashable {
         /// Indicates whether or not the source control is active
-        var sourceControlIsEnabled: Bool = true
+        public var sourceControlIsEnabled: Bool = true
         /// Indicates whether the status should be refreshed locally without fetching updates from the server.
-        var refreshStatusLocally: Bool = true
+        public var refreshStatusLocally: Bool = true
         /// Indicates whether the application should automatically fetch updates from the server and refresh the status.
-        var fetchRefreshServerStatus: Bool = true
+        public var fetchRefreshServerStatus: Bool = true
         /// Indicates whether new and deleted files should be automatically staged for commit.
-        var addRemoveAutomatically: Bool = true
+        public var addRemoveAutomatically: Bool = true
         /// Indicates whether the application should automatically select files to commit.
-        var selectFilesToCommit: Bool = true
+        public var selectFilesToCommit: Bool = true
         /// Indicates whether or not to show the source control changes
-        var showSourceControlChanges: Bool = true
+        public var showSourceControlChanges: Bool = true
         /// Indicates whether or not we should include the upstream
-        var includeUpstreamChanges: Bool = true
+        public var includeUpstreamChanges: Bool = true
         /// Indicates whether or not we should open the reported feedback in the browser
-        var openFeedbackInBrowser: Bool = true
+        public var openFeedbackInBrowser: Bool = true
         /// The selected value of the comparison view
-        var revisionComparisonLayout: RevisionComparisonLayout = .localLeft
+        public var revisionComparisonLayout: RevisionComparisonLayout = .localLeft
         /// The selected value of the control navigator
-        var controlNavigatorOrder: ControlNavigatorOrder = .sortByName
+        public var controlNavigatorOrder: ControlNavigatorOrder = .sortByName
         /// Default initializer
-        init() {}
+        public init() {}
         /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.sourceControlIsEnabled = try container.decodeIfPresent(
                 Bool.self,
@@ -94,7 +94,7 @@ extension SettingsData {
     /// The style for comparison View
     /// - **localLeft**: Local Revision on Left Side
     /// - **localRight**: Local Revision on Right Side
-    enum RevisionComparisonLayout: String, Codable {
+    public enum RevisionComparisonLayout: String, Codable {
         case localLeft
         case localRight
     }
@@ -102,18 +102,18 @@ extension SettingsData {
     /// The style for control Navigator
     /// - **sortName**: They are sorted by Name
     /// - **sortDate**: They are sorted by Date
-    enum ControlNavigatorOrder: String, Codable {
+    public enum ControlNavigatorOrder: String, Codable {
         case sortByName
         case sortByDate
     }
 
-    struct SourceControlGit: Codable, Hashable {
+    public struct SourceControlGit: Codable, Hashable {
         /// Indicates whether we should rebase when pulling commits
-        var showMergeCommitsPerFileLog: Bool = false
+        public var showMergeCommitsPerFileLog: Bool = false
         /// Default initializer
-        init() {}
+        public init() {}
         /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.showMergeCommitsPerFileLog = try container.decodeIfPresent(
                 Bool.self,

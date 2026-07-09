@@ -10,77 +10,77 @@ import SwiftUI
 extension SettingsData {
 
     /// The general global setting
-    struct GeneralSettings: Codable, Hashable {
+    public struct GeneralSettings: Codable, Hashable {
 
         /// The appearance of the app
-        @CodableDefault<DefaultAppearance> var appAppearance: Appearances = .system
+        @CodableDefault<DefaultAppearance> public var appAppearance: Appearances = .system
 
         /// The show issues behavior of the app
-        @CodableDefault<DefaultIssues> var showIssues: Issues = .inline
+        @CodableDefault<DefaultIssues> public var showIssues: Issues = .inline
 
         /// The show live issues behavior of the app
-        @CodableDefault<DefaultTrue> var showLiveIssues = true
+        @CodableDefault<DefaultTrue> public var showLiveIssues = true
 
         /// Show editor jump bar
-        @CodableDefault<DefaultTrue> var showEditorJumpBar = true
+        @CodableDefault<DefaultTrue> public var showEditorJumpBar = true
 
         /// Dims editors without focus
-        @CodableDefault<DefaultFalse> var dimEditorsWithoutFocus = false
+        @CodableDefault<DefaultFalse> public var dimEditorsWithoutFocus = false
 
         /// The show file extensions behavior of the app
-        @CodableDefault<DefaultFileExtensionsVisibility> var fileExtensionsVisibility: FileExtensionsVisibility = .showAll
+        @CodableDefault<DefaultFileExtensionsVisibility> public var fileExtensionsVisibility: FileExtensionsVisibility = .showAll
 
         /// The file extensions collection to display
-        @CodableDefault<DefaultFileExtensions> var shownFileExtensions: FileExtensions = .default
+        @CodableDefault<DefaultFileExtensions> public var shownFileExtensions: FileExtensions = .default
 
         /// The file extensions collection to hide
-        @CodableDefault<DefaultFileExtensions> var hiddenFileExtensions: FileExtensions = .default
+        @CodableDefault<DefaultFileExtensions> public var hiddenFileExtensions: FileExtensions = .default
 
         /// The style for file icons
-        @CodableDefault<DefaultFileIconStyle> var fileIconStyle: FileIconStyle = .color
+        @CodableDefault<DefaultFileIconStyle> public var fileIconStyle: FileIconStyle = .color
 
         /// The position for the navigator sidebar tab bar
-        @CodableDefault<DefaultSidebarTabBarPositionTop> var navigatorTabBarPosition: SidebarTabBarPosition = .top
+        @CodableDefault<DefaultSidebarTabBarPositionTop> public var navigatorTabBarPosition: SidebarTabBarPosition = .top
 
         /// The position for the inspector sidebar tab bar
-        @CodableDefault<DefaultSidebarTabBarPositionTop> var inspectorTabBarPosition: SidebarTabBarPosition = .top
+        @CodableDefault<DefaultSidebarTabBarPositionTop> public var inspectorTabBarPosition: SidebarTabBarPosition = .top
 
         /// The reopen behavior of the app
-        @CodableDefault<DefaultReopenBehavior> var reopenBehavior: ReopenBehavior = .welcome
+        @CodableDefault<DefaultReopenBehavior> public var reopenBehavior: ReopenBehavior = .welcome
 
         /// Decides what the app does after a workspace is closed
-        @CodableDefault<DefaultReopenWindowBehavior> var reopenWindowAfterClose: ReopenWindowBehavior = .doNothing
+        @CodableDefault<DefaultReopenWindowBehavior> public var reopenWindowAfterClose: ReopenWindowBehavior = .doNothing
 
         /// The size of the project navigator
-        @CodableDefault<DefaultProjectNavigatorSize> var projectNavigatorSize: ProjectNavigatorSize = .medium
+        @CodableDefault<DefaultProjectNavigatorSize> public var projectNavigatorSize: ProjectNavigatorSize = .medium
 
         /// The Find Navigator Detail line limit
-        @CodableDefault<DefaultNavigatorDetail> var findNavigatorDetail: NavigatorDetail = .upTo3
+        @CodableDefault<DefaultNavigatorDetail> public var findNavigatorDetail: NavigatorDetail = .upTo3
 
         /// The Issue Navigator Detail line limit
-        @CodableDefault<DefaultNavigatorDetail> var issueNavigatorDetail: NavigatorDetail = .upTo3
+        @CodableDefault<DefaultNavigatorDetail> public var issueNavigatorDetail: NavigatorDetail = .upTo3
 
         /// The reveal file in navigator when focus changes behavior of the app.
-        @CodableDefault<DefaultFalse> var revealFileOnFocusChange = false
+        @CodableDefault<DefaultFalse> public var revealFileOnFocusChange = false
 
         /// Auto save behavior toggle
-        @CodableDefault<DefaultTrue> var isAutoSaveOn = true
+        @CodableDefault<DefaultTrue> public var isAutoSaveOn = true
 
         /// Default initializer
-        init() {}
+        public init() {}
     }
 
     /// The appearance of the app
     /// - **system**: uses the system appearance
     /// - **dark**: always uses dark appearance
     /// - **light**: always uses light appearance
-    enum Appearances: String, Codable {
+    public enum Appearances: String, Codable {
         case system
         case light
         case dark
 
         /// Applies the selected appearance
-        func applyAppearance() {
+        public func applyAppearance() {
             switch self {
             case .system:
                 NSApp.appearance = nil
@@ -97,7 +97,7 @@ extension SettingsData {
     /// The style for issues display
     ///  - **inline**: Issues show inline
     ///  - **minimized** Issues show minimized
-    enum Issues: String, Codable {
+    public enum Issues: String, Codable {
         case inline
         case minimized
     }
@@ -107,7 +107,7 @@ extension SettingsData {
     ///  - **showAll** File extensions are visible
     ///  - **showOnly** Specific file extensions are visible
     ///  - **hideOnly** Specific file extensions are hidden
-    enum FileExtensionsVisibility: Codable, Hashable {
+    public enum FileExtensionsVisibility: Codable, Hashable {
         case hideAll
         case showAll
         case showOnly
@@ -116,10 +116,10 @@ extension SettingsData {
 
     /// The collection of file extensions used by
     /// ``FileExtensionsVisibility/showOnly`` or  ``FileExtensionsVisibility/hideOnly`` preference
-    struct FileExtensions: Codable, Hashable {
-        var extensions: [String]
+    public struct FileExtensions: Codable, Hashable {
+        public var extensions: [String]
 
-        var string: String {
+        public var string: String {
             get {
                 extensions.joined(separator: ", ")
             }
@@ -131,7 +131,7 @@ extension SettingsData {
             }
         }
 
-        static var `default` = FileExtensions(extensions: [
+        nonisolated(unsafe) public static var `default` = FileExtensions(extensions: [
             "c", "cc", "cpp", "h", "hpp", "m", "mm", "gif",
             "icns", "jpeg", "jpg", "png", "tiff", "swift"
         ])
@@ -139,7 +139,7 @@ extension SettingsData {
     /// The style for file icons
     /// - **color**: File icons appear in their default colors
     /// - **monochrome**: File icons appear monochromatic
-    enum FileIconStyle: String, Codable {
+    public enum FileIconStyle: String, Codable {
         case color
         case monochrome
     }
@@ -147,7 +147,7 @@ extension SettingsData {
     /// The position for a sidebar tab bar
     /// - **top**: Tab bar is positioned at the top of the sidebar
     /// - **side**: Tab bar is positioned to the side of the sidebar
-    enum SidebarTabBarPosition: String, Codable {
+    public enum SidebarTabBarPosition: String, Codable {
         case top, side
     }
 
@@ -155,19 +155,19 @@ extension SettingsData {
     /// - **welcome**: On restart the app will show the welcome screen
     /// - **openPanel**: On restart the app will show an open panel
     /// - **newDocument**: On restart a new empty document will be created
-    enum ReopenBehavior: String, Codable {
+    public enum ReopenBehavior: String, Codable {
         case welcome
         case openPanel
         case newDocument
     }
 
-    enum ReopenWindowBehavior: String, Codable {
+    public enum ReopenWindowBehavior: String, Codable {
         case showWelcomeWindow
         case doNothing
         case quit
     }
 
-    enum ProjectNavigatorSize: String, Codable {
+    public enum ProjectNavigatorSize: String, Codable {
         case small
         case medium
         case large
@@ -177,7 +177,7 @@ extension SettingsData {
         /// * `small`: 20
         /// * `medium`: 22
         /// * `large`: 24
-        var rowHeight: Double {
+        public var rowHeight: Double {
             switch self {
             case .small: return 20
             case .medium: return 22
@@ -188,7 +188,7 @@ extension SettingsData {
 
     /// The Navigation Detail behavior of the app
     ///  - Use **rawValue** to set lineLimit
-    enum NavigatorDetail: Int, Codable, CaseIterable {
+    public enum NavigatorDetail: Int, Codable, CaseIterable {
         case upTo1 = 1
         case upTo2 = 2
         case upTo3 = 3
@@ -197,7 +197,7 @@ extension SettingsData {
         case upTo10 = 10
         case upTo30 = 30
 
-        var label: String {
+        public var label: String {
             switch self {
             case .upTo1:
                 return "One Line"

@@ -6,6 +6,7 @@
 //
 
 import OSLog
+import CodeEditSettings
 import Foundation
 import ZIPFoundation
 import Combine

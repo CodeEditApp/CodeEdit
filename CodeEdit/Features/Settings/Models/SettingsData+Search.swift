@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 
 // App-side settings-search support. `searchKeys` are localized UI labels for the
 // settings search feature (presentation, not preference data), so they live in the

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 import CodeEditUI
 import CodeEditCore
 import CodeEditSymbols

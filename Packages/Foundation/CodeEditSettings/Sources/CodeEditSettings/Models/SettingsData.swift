@@ -21,46 +21,46 @@ import Foundation
 ///  all properties with
 ///  [`decodeIfPresent`](https://developer.apple.com/documentation/swift/keyeddecodingcontainer/2921389-decodeifpresent)
 ///  and providing a default value. Otherwise all settings get overridden.
-struct SettingsData: Codable, Hashable {
+public struct SettingsData: Codable, Hashable {
 
     /// The general global settings
-    var general: GeneralSettings = .init()
+    public var general: GeneralSettings = .init()
 
     /// The global settings for accounts
-    var accounts: AccountsSettings = .init()
+    public var accounts: AccountsSettings = .init()
 
     /// The global settings for themes
-    var navigation: NavigationSettings = .init()
+    public var navigation: NavigationSettings = .init()
 
     /// The global settings for themes
-    var theme: ThemeSettings = .init()
+    public var theme: ThemeSettings = .init()
 
     /// The global settings for text editing
-    var textEditing: TextEditingSettings = .init()
+    public var textEditing: TextEditingSettings = .init()
 
     /// The global settings for the terminal emulator
-    var terminal: TerminalSettings = .init()
+    public var terminal: TerminalSettings = .init()
 
     /// The global settings for source control
-    var sourceControl: SourceControlSettings = .init()
+    public var sourceControl: SourceControlSettings = .init()
 
     /// The global settings for keybindings
-    var keybindings: KeybindingsSettings = .init()
+    public var keybindings: KeybindingsSettings = .init()
 
     /// Search Settings
-    var search: SearchSettings = .init()
+    public var search: SearchSettings = .init()
 
     /// Language Server Settings
-    var languageServers: LanguageServerSettings = .init()
+    public var languageServers: LanguageServerSettings = .init()
 
     /// Developer settings for CodeEdit developers
-    var developerSettings: DeveloperSettings = .init()
+    public var developerSettings: DeveloperSettings = .init()
 
     /// Default initializer
-    init() {}
+    public init() {}
 
     /// Explicit decoder init for setting default values when key is not present in `JSON`
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.general = try container.decodeIfPresent(GeneralSettings.self, forKey: .general) ?? .init()
         self.accounts = try container.decodeIfPresent(AccountsSettings.self, forKey: .accounts) ?? .init()

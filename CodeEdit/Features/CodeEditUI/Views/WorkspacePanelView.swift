@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 import CodeEditUI
 
 struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: View {

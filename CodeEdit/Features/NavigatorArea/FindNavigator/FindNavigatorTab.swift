@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 import Search
 
 /// App-side wrapper for the Search package's find navigator: reads Settings

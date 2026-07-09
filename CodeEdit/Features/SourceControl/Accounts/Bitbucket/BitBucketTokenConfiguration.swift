@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditSettings
 
 struct BitBucketTokenConfiguration: GitRouterConfiguration {
     let provider = SourceControlAccount.Provider.bitbucketCloud

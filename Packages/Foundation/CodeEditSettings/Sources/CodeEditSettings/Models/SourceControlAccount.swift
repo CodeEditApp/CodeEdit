@@ -5,27 +5,47 @@
 //  Created by Austin Condiff on 4/6/23.
 //
 
-import SwiftUI
+import Foundation
 
-struct SourceControlAccount: Codable, Identifiable, Hashable {
+public struct SourceControlAccount: Codable, Identifiable, Hashable {
 
-    var id: String
-    var name: String
-    var description: String
-    var provider: Provider
-    var serverURL: String
+    public var id: String
+    public var name: String
+    public var description: String
+    public var provider: Provider
+    public var serverURL: String
     // TODO: Should we use an enum instead of a boolean here:
     // If true we use the HTTP protocol else if false we use SSH
-    var urlProtocol: URLProtocol
-    var sshKey: String
-    var isTokenValid: Bool
+    public var urlProtocol: URLProtocol
+    public var sshKey: String
+    public var isTokenValid: Bool
 
-    enum URLProtocol: String, Codable, CaseIterable {
+    public init(
+        id: String,
+        name: String,
+        description: String,
+        provider: Provider,
+        serverURL: String,
+        urlProtocol: URLProtocol,
+        sshKey: String,
+        isTokenValid: Bool
+    ) {
+        self.id = id
+        self.name = name
+        self.description = description
+        self.provider = provider
+        self.serverURL = serverURL
+        self.urlProtocol = urlProtocol
+        self.sshKey = sshKey
+        self.isTokenValid = isTokenValid
+    }
+
+    public enum URLProtocol: String, Codable, CaseIterable {
         case https = "HTTPS"
         case ssh = "SSH"
     }
 
-    enum Provider: Codable, CaseIterable, Identifiable {
+    public enum Provider: Codable, CaseIterable, Identifiable {
         case bitbucketCloud
         case bitbucketServer
         case github
@@ -33,7 +53,7 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
         case gitlab
         case gitlabSelfHosted
 
-        var id: String {
+        public var id: String {
             switch self {
             case .bitbucketCloud:
                 return "bitbucketCloud"
@@ -50,7 +70,7 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
             }
         }
 
-        var name: String {
+        public var name: String {
             switch self {
             case .bitbucketCloud:
                 return "BitBucket Cloud"
@@ -67,7 +87,7 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
             }
         }
 
-        var baseURL: URL? {
+        public var baseURL: URL? {
             switch self {
             case .bitbucketCloud:
                 return URL(string: "https://www.bitbucket.com/")!
@@ -84,7 +104,7 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
             }
         }
 
-        var apiURL: URL? {
+        public var apiURL: URL? {
             switch self {
             case .bitbucketCloud:
                 return URL(string: "https://api.bitbucket.org/2.0/")!
@@ -101,18 +121,7 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
             }
         }
 
-        var iconResource: ImageResource {
-            switch self {
-            case .bitbucketCloud, .bitbucketServer:
-                return .bitBucketIcon
-            case .github, .githubEnterprise:
-                return .gitHubIcon
-            case .gitlab, .gitlabSelfHosted:
-                return .gitLabIcon
-            }
-        }
-
-        var authHelpURL: URL {
+        public var authHelpURL: URL {
             switch self {
             case .bitbucketCloud:
                 return URL(string: "https://support.atlassian.com/bitbucket-cloud/docs/app-passwords/")!
@@ -130,7 +139,7 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
             }
         }
 
-        var authType: AuthType {
+        public var authType: AuthType {
             switch self {
             case .bitbucketCloud:
                 return .password
@@ -148,7 +157,7 @@ struct SourceControlAccount: Codable, Identifiable, Hashable {
         }
     }
 
-    enum AuthType {
+    public enum AuthType {
         case token
         case password
     }

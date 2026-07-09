@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CodeEditSettings
 
 extension SettingsData {
 
@@ -28,25 +27,25 @@ extension SettingsData {
     ///   }
     /// }
     /// ```
-    typealias ThemeOverrides = [String: [String: Theme.Attributes]]
+    public typealias ThemeOverrides = [String: [String: Theme.Attributes]]
 
     /// The global settings for themes
-    struct ThemeSettings: Codable, Hashable {
+    public struct ThemeSettings: Codable, Hashable {
 
         /// The name of the currently selected dark theme
-        var selectedDarkTheme: String = "Default (Dark)"
+        public var selectedDarkTheme: String = "Default (Dark)"
 
         /// The name of the currently selected light theme
-        var selectedLightTheme: String = "Default (Light)"
+        public var selectedLightTheme: String = "Default (Light)"
 
         /// The name of the currently selected theme
-        var selectedTheme: String?
+        public var selectedTheme: String?
 
         /// Use the system background that matches the appearance setting
-        var useThemeBackground: Bool = true
+        public var useThemeBackground: Bool = true
 
         /// Automatically change theme based on system appearance
-        var matchAppearance: Bool = true
+        public var matchAppearance: Bool = true
 
         /// Dictionary of themes containing overrides
         ///
@@ -73,13 +72,13 @@ extension SettingsData {
         ///   ...
         /// }
         /// ```
-        var overrides: [String: ThemeOverrides] = [:]
+        public var overrides: [String: ThemeOverrides] = [:]
 
         /// Default initializer
-        init() {}
+        public init() {}
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.selectedDarkTheme = try container.decodeIfPresent(
                 String.self, forKey: .selectedDarkTheme

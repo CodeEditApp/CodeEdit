@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CodeEditSettings
 import CodeEditDocument
 import SwiftUI
 import Factory

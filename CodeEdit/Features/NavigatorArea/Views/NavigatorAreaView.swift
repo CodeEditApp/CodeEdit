@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct NavigatorAreaView: View {
     @ObservedObject private var workspace: Workspace

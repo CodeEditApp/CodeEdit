@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct AccountsSettingsView: View {
     @AppSettings(\.accounts.sourceControlAccounts.gitAccounts)

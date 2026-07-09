@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditSettings
 import SwiftTerm
 
 class CEActiveTaskTerminalView: CELocalShellTerminalView {

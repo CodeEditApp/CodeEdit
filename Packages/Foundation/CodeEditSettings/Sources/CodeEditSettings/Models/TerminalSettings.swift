@@ -6,82 +6,81 @@
 //
 
 import AppKit
-import CodeEditSettings
 import Foundation
 
 extension SettingsData {
 
     /// The global settings for the terminal emulator
-    struct TerminalSettings: Codable, Hashable {
+    public struct TerminalSettings: Codable, Hashable {
 
         /// If true terminal will use editor theme.
-        @CodableDefault<DefaultTrue> var useEditorTheme = true
+        @CodableDefault<DefaultTrue> public var useEditorTheme = true
 
         /// If true terminal appearance will always be `dark`. Otherwise it adapts to the system setting.
-        @CodableDefault<DefaultFalse> var darkAppearance = false
+        @CodableDefault<DefaultFalse> public var darkAppearance = false
 
         /// If true, the terminal uses the background color of the theme, otherwise it is clear
-        @CodableDefault<DefaultTrue> var useThemeBackground = true
+        @CodableDefault<DefaultTrue> public var useThemeBackground = true
 
         /// If true, the terminal treats the `Option` key as the `Meta` key
-        @CodableDefault<DefaultFalse> var optionAsMeta = false
+        @CodableDefault<DefaultFalse> public var optionAsMeta = false
 
         /// The selected shell to use.
-        @CodableDefault<DefaultTerminalShell> var shell: TerminalShell = .system
+        @CodableDefault<DefaultTerminalShell> public var shell: TerminalShell = .system
 
         /// The font to use in terminal.
-        @CodableDefault<DefaultTerminalFont> var font: TerminalFont = .init()
+        @CodableDefault<DefaultTerminalFont> public var font: TerminalFont = .init()
 
         // The cursor style to use in terminal
-        @CodableDefault<DefaultTerminalCursorStyle> var cursorStyle: TerminalCursorStyle = .block
+        @CodableDefault<DefaultTerminalCursorStyle> public var cursorStyle: TerminalCursorStyle = .block
 
         // Toggle for blinking cursor or not
-        @CodableDefault<DefaultFalse> var cursorBlink = false
+        @CodableDefault<DefaultFalse> public var cursorBlink = false
 
         // Use font settings from Text Editing
-        @CodableDefault<DefaultTrue> var useTextEditorFont = true
+        @CodableDefault<DefaultTrue> public var useTextEditorFont = true
 
         /// If `true`, use injection scripts for terminal features like automatic tab title.
-        @CodableDefault<DefaultTrue> var useShellIntegration = true
+        @CodableDefault<DefaultTrue> public var useShellIntegration = true
 
         /// If `true`, use a login shell.
-        @CodableDefault<DefaultTrue> var useLoginShell = true
+        @CodableDefault<DefaultTrue> public var useLoginShell = true
 
         /// Default initializer
-        init() {}
+        public init() {}
     }
 
     /// The shell options.
     /// - **bash**: uses the default bash shell
     /// - **zsh**: uses the ZSH shell
     /// - **system**: uses the system default shell (most likely ZSH)
-    enum TerminalShell: String, Codable, Hashable {
+    public enum TerminalShell: String, Codable, Hashable {
         case bash
         case zsh
         case system
     }
 
-    enum TerminalCursorStyle: String, Codable, Hashable {
+    public enum TerminalCursorStyle: String, Codable, Hashable {
         case block
         case underline
         case bar
     }
 
-    struct TerminalFont: Codable, Hashable {
+    public struct TerminalFont: Codable, Hashable {
         /// The font size for the custom font
-        var size: Double = 12
+        public var size: Double = 12
 
         /// The name of the custom font
-        var name: String = "SF Mono"
+        public var name: String = "SF Mono"
 
         /// The weight of the custom font
-        var weight: NSFont.Weight = .medium
+        public var weight: NSFont.Weight = .medium
 
         /// Default initializer
-        init() {}
+        public init() {}
 
         /// Explicit decoder init for setting default values when key is not present in `JSON`
-        init(from decoder: Decoder) throws {
+        public init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.size = try container.decodeIfPresent(Double.self, forKey: .size) ?? size
             self.name = try container.decodeIfPresent(String.self, forKey: .name) ?? name
@@ -92,7 +91,7 @@ extension SettingsData {
         ///
         /// Returns the custom font, if enabled and able to be instantiated.
         /// Otherwise returns a default system font monospaced.
-        var current: NSFont {
+        public var current: NSFont {
             let customFont = NSFont(name: name, size: size)?.withWeight(weight: weight)
             return customFont ?? NSFont.monospacedSystemFont(ofSize: size, weight: .medium)
         }

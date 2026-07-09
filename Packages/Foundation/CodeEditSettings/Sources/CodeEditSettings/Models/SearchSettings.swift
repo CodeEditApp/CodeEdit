@@ -6,15 +6,14 @@
 //
 
 import Foundation
-import CodeEditSettings
 
 extension SettingsData {
-    struct SearchSettings: Codable, Hashable {
+    public struct SearchSettings: Codable, Hashable {
 
         /// List of Glob Patterns that determine which files or directories to ignore
-        @CodableDefault<DefaultEmptyGlobPatterns> var ignoreGlobPatterns: [GlobPattern] = []
+        @CodableDefault<DefaultEmptyGlobPatterns> public var ignoreGlobPatterns: [GlobPattern] = []
 
         /// Default initializer
-        init() {}
+        public init() {}
     }
 }

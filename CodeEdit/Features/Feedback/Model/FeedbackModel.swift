@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 public class FeedbackModel: ObservableObject {
 

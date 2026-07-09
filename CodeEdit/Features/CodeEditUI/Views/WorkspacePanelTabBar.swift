@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 protocol WorkspacePanelTab: View, Identifiable, Hashable {
     var title: String { get }

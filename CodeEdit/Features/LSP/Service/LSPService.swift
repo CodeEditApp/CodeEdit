@@ -6,6 +6,7 @@
 //
 
 import os.log
+import CodeEditSettings
 import CodeEditDocument
 import JSONRPC
 import SwiftUI

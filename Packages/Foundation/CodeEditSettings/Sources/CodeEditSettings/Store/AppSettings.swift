@@ -9,19 +9,19 @@ import Foundation
 import SwiftUI
 
 @propertyWrapper
-struct AppSettings<T>: DynamicProperty where T: Equatable {
+public struct AppSettings<T>: DynamicProperty where T: Equatable {
 
     var settings: Environment<T>
 
     let keyPath: WritableKeyPath<SettingsData, T>
 
-    init(_ keyPath: WritableKeyPath<SettingsData, T>) {
+    public init(_ keyPath: WritableKeyPath<SettingsData, T>) {
         self.keyPath = keyPath
         let settingsKeyPath = (\EnvironmentValues.settings).appending(path: keyPath)
         self.settings = Environment(settingsKeyPath)
     }
 
-    var wrappedValue: T {
+    public var wrappedValue: T {
         get {
             Settings.shared.preferences[keyPath: keyPath]
         }
@@ -30,7 +30,7 @@ struct AppSettings<T>: DynamicProperty where T: Equatable {
         }
     }
 
-    var projectedValue: Binding<T> {
+    public var projectedValue: Binding<T> {
         Binding {
             Settings.shared.preferences[keyPath: keyPath]
         } set: {
@@ -39,11 +39,11 @@ struct AppSettings<T>: DynamicProperty where T: Equatable {
     }
 }
 
-struct SettingsDataEnvironmentKey: EnvironmentKey {
-    static var defaultValue: SettingsData = .init()
+public struct SettingsDataEnvironmentKey: EnvironmentKey {
+    nonisolated(unsafe) public static var defaultValue: SettingsData = .init()
 }
 
-extension EnvironmentValues {
+public extension EnvironmentValues {
     var settings: SettingsDataEnvironmentKey.Value {
         get { self[SettingsDataEnvironmentKey.self] }
         set { self[SettingsDataEnvironmentKey.self] = newValue }

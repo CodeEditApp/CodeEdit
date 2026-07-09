@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 
 struct CodeEditCommands: Commands {
     @AppSettings(\.sourceControl.general.sourceControlIsEnabled)
