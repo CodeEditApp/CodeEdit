@@ -7,6 +7,7 @@
 
 import Foundation
 import CodeEditCore
+import Combine
 import Factory
 
 /// Manages the search/find state for a workspace, including indexing, search results,
@@ -35,6 +36,12 @@ public final class SearchState: ObservableObject {
     @Published public var searchQuery: String = ""
     @Published public var replaceText: String = ""
 
+    /// The find/replace primitive shared with the Editor feature, kept in sync with
+    /// `searchQuery`/`replaceText` below. See `Packages/Foundation/CodeEditCore`.
+    public let query = FindReplaceQuery()
+
+    private var queryBridgeCancellables: Set<AnyCancellable> = []
+
     @Published public var indexStatus: IndexStatus = .none
 
     @Published public var findNavigatorStatus: FindNavigatorStatus = .none
@@ -59,6 +66,45 @@ public final class SearchState: ObservableObject {
         self.workspaceURL = workspaceURL
         self.indexer = SearchIndexer.Memory.create()
         addProjectToIndex()
+        bridgeFindReplaceQuery()
+    }
+
+    /// Keeps `searchQuery`/`replaceText` and `query` in sync in both directions, so Editor can
+    /// depend on `query` (a `CodeEditCore` type) without importing this feature.
+    private func bridgeFindReplaceQuery() {
+        query.$searchQuery
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newQuery in
+                if self?.searchQuery != newQuery {
+                    self?.searchQuery = newQuery
+                }
+            }
+            .store(in: &queryBridgeCancellables)
+        $searchQuery
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newQuery in
+                if self?.query.searchQuery != newQuery {
+                    self?.query.searchQuery = newQuery
+                }
+            }
+            .store(in: &queryBridgeCancellables)
+
+        query.$replaceText
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newText in
+                if self?.replaceText != newText {
+                    self?.replaceText = newText
+                }
+            }
+            .store(in: &queryBridgeCancellables)
+        $replaceText
+            .receive(on: RunLoop.main)
+            .sink { [weak self] newText in
+                if self?.query.replaceText != newText {
+                    self?.query.replaceText = newText
+                }
+            }
+            .store(in: &queryBridgeCancellables)
     }
 
     /// Represents the compare options to be used for find and replace.
