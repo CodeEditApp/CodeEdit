@@ -33,6 +33,10 @@ private struct WorkspaceStatePersistenceKey: EnvironmentKey {
     static let defaultValue: (any WorkspaceStatePersisting)? = nil
 }
 
+private struct FilePreviewFactoryKey: EnvironmentKey {
+    static let defaultValue: (CEWorkspaceFile) -> AnyView = { _ in AnyView(EmptyView()) }
+}
+
 extension EnvironmentValues {
     var workspaceFileManager: CEWorkspaceFileManager? {
         get { self[WorkspaceFileManagerKey.self] }
@@ -62,5 +66,10 @@ extension EnvironmentValues {
     var fileEditorOverrides: FileEditorOverrides {
         get { self[FileEditorOverridesKey.self] }
         set { self[FileEditorOverridesKey.self] = newValue }
+    }
+
+    var filePreview: (CEWorkspaceFile) -> AnyView {
+        get { self[FilePreviewFactoryKey.self] }
+        set { self[FilePreviewFactoryKey.self] = newValue }
     }
 }

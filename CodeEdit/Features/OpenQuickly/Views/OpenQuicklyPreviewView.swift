@@ -1,41 +1,19 @@
 //
 //  OpenQuicklyPreviewView.swift
-//  CodeEditModules/QuickOpen
+//  CodeEdit
 //
 //  Created by Pavel Kasila on 20.03.22.
 //
 
 import SwiftUI
-import CodeEditDocument
 import CodeEditCore
 
 struct OpenQuicklyPreviewView: View {
+    let item: CEWorkspaceFile
 
-    private let queue = DispatchQueue(label: "app.codeedit.CodeEdit.quickOpen.preview")
-    private let item: CEWorkspaceFile
-
-    @StateObject var editorInstance: EditorInstance
-    @StateObject var document: CodeFileDocument
-
-    @StateObject var undoRegistration: UndoManagerRegistration = UndoManagerRegistration()
-
-    init(item: CEWorkspaceFile) {
-        self.item = item
-        let doc = try? CodeFileDocument(
-            for: item.url,
-            withContentsOf: item.url,
-            ofType: item.contentType?.identifier ?? "public.source-code"
-        )
-        self._editorInstance = .init(wrappedValue: EditorInstance(findReplaceQuery: nil, file: item))
-        self._document = .init(wrappedValue: doc ?? .init())
-    }
+    @Environment(\.filePreview) private var filePreview
 
     var body: some View {
-        if let utType = document.utType, utType.conforms(to: .text) {
-            CodeFileView(editorInstance: editorInstance, codeFile: document, isEditable: false)
-                .environmentObject(undoRegistration)
-        } else {
-            NonTextFileView(fileDocument: document)
-        }
+        filePreview(item)
     }
 }

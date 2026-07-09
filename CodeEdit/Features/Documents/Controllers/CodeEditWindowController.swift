@@ -184,7 +184,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     self.panelOpen = false
                 } openFile: { file in
                     workspace.editorManager?.openTab(item: file)
-                }.environment(\.workspaceFileManager, workspace.workspaceFileManager)
+                }
+                .environment(\.workspaceFileManager, workspace.workspaceFileManager)
+                .environment(\.filePreview) { file in AnyView(FilePreviewView(item: file)) }
 
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)
