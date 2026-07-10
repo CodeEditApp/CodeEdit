@@ -6,6 +6,7 @@
 //
 
 import Cocoa
+import CodeEditCore
 import SwiftUI
 import Notifications
 

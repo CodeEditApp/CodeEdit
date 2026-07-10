@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 25.03.26.
 //
 
+import CodeEditCore
 import Foundation
 
 /// A standalone service for persisting workspace-specific UI state (window size, collapsed panels, etc.)

@@ -1,11 +1,13 @@
 //
 //  WorkspaceStateKey.swift
-//  CodeEdit
+//  CodeEditCore
 //
 //  Created by Khan Winter on 7/3/23.
 //
 
-enum WorkspaceStateKey: String {
+import Foundation
+
+public enum WorkspaceStateKey: String {
     case utilityAreaCollapsed
     case utilityAreaMaximized
     case utilityAreaHeight
