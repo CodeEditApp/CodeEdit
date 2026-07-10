@@ -9,6 +9,7 @@
 import CodeEditTextView
 import CodeEditLanguages
 import AppKit
+import Factory
 
 public struct LanguageServices {
     public let textCoordinator: TextViewCoordinator
@@ -17,6 +18,12 @@ public struct LanguageServices {
     public init(textCoordinator: TextViewCoordinator, highlightProvider: any HighlightProviding) {
         self.textCoordinator = textCoordinator
         self.highlightProvider = highlightProvider
+    }
+}
+
+extension Container {
+    public var languageServicesProvider: Factory<LanguageServicesProvider> {
+        self { @MainActor in NoOpLanguageServicesProvider() }.singleton
     }
 }
 

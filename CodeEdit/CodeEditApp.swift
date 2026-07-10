@@ -27,6 +27,7 @@ struct CodeEditApp: App {
         Container.shared.codeFileDocumentDelegate.register { AppCodeFileDocumentDelegate() }
         Container.shared.workspaceNavigator.register { AppWorkspaceNavigator() }
         Container.shared.fileRelocator.register { AppFileRelocator() }
+        Container.shared.languageServicesProvider.register { @MainActor in AppLanguageServicesProvider() }
         SettingsData.TextEditingSettings.registerCommands()
         SettingsData.reconcileDefaultKeybindings()
     }

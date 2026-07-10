@@ -15,10 +15,6 @@ extension Container {
         self { @MainActor in LSPService() }.singleton
     }
 
-    var languageServicesProvider: Factory<LanguageServicesProvider> {
-        self { @MainActor in AppLanguageServicesProvider() as LanguageServicesProvider }.singleton
-    }
-
     var workspaceWindowManager: Factory<WorkspaceWindowManager> {
         self { @MainActor in WorkspaceWindowManager() }.singleton
     }
