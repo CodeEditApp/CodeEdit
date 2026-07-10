@@ -63,7 +63,7 @@ final class FindAndReplaceTests: XCTestCase { // swiftlint:disable:this type_bod
         files[2].parent = folder2File
 
         // SearchState indexes the workspace as part of its initializer.
-        searchState = SearchState(workspaceURL: directory)
+        searchState = SearchState(workspaceURL: directory, eventBus: EventBus())
 
         // NOTE: This is a temporary solution. In the future, a file watcher should track file updates
         // and trigger an index update.

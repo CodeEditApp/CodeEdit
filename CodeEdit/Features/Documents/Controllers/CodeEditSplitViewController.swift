@@ -18,6 +18,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
     static let snapWidth: CGFloat = 272
     static let minSnapWidth: CGFloat = snapWidth - 10
 
+    private let dependencies: AppDependencies
+
     private weak var workspace: Workspace?
     private weak var navigatorViewModel: NavigatorAreaViewModel?
     private weak var windowRef: NSWindow?
@@ -39,8 +41,10 @@ final class CodeEditSplitViewController: NSSplitViewController {
         workspace: Workspace,
         navigatorViewModel: NavigatorAreaViewModel,
         windowRef: NSWindow,
+        dependencies: AppDependencies,
         hapticPerformer: NSHapticFeedbackPerformer = NSHapticFeedbackManager.defaultPerformer
     ) {
+        self.dependencies = dependencies
         self.workspace = workspace
         self.navigatorViewModel = navigatorViewModel
         self.windowRef = windowRef
@@ -100,6 +104,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                 .environment(\.workspaceFileURL, workspace.fileURL)
                 .environment(\.activeEditorState, activeEditorState)
+                .environment(\.workspaceFileOpener, dependencies.workspaceFileOpener)
         })
 
         addSplitViewItem(navigator)

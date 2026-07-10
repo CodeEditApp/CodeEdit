@@ -7,12 +7,10 @@
 
 import SwiftUI
 import CodeEditCore
-import Factory
 
 final class FindNavigatorListViewController: NSViewController {
 
-    @LazyInjected(\.workspaceFileOpener)
-    private var fileOpener
+    private let fileOpener: WorkspaceFileOpener
 
     var configuration: FindNavigatorConfiguration
 
@@ -49,8 +47,9 @@ final class FindNavigatorListViewController: NSViewController {
         self.scrollView.contentView.contentInsets = .init(top: 0, left: 0, bottom: 0, right: 0)
     }
 
-    init(configuration: FindNavigatorConfiguration) {
+    init(configuration: FindNavigatorConfiguration, fileOpener: WorkspaceFileOpener) {
         self.configuration = configuration
+        self.fileOpener = fileOpener
         super.init(nibName: nil, bundle: nil)
     }
 

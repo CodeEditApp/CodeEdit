@@ -25,7 +25,7 @@ final class FindReplaceQueryBridgeTests: XCTestCase {
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
 
-        searchState = SearchState(workspaceURL: directory)
+        searchState = SearchState(workspaceURL: directory, eventBus: EventBus())
 
         // Wait for indexing to settle before the test starts mutating state, to avoid racing
         // background indexing work against the next test's setUp/tearDown on the same directory.

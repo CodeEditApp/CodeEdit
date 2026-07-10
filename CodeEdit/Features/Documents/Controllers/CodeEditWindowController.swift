@@ -108,7 +108,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         return CodeEditSplitViewController(
             workspace: workspace,
             navigatorViewModel: navigatorModel,
-            windowRef: window
+            windowRef: window,
+            dependencies: dependencies
         )
     }
 

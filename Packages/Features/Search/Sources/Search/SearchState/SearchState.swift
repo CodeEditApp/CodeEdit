@@ -8,7 +8,6 @@
 import Foundation
 import CodeEditCore
 import Combine
-import Factory
 
 /// Manages the search/find state for a workspace, including indexing, search results,
 /// and find-and-replace operations. Extracted from Workspace to be independently
@@ -50,8 +49,7 @@ public final class SearchState: ObservableObject {
 
     public let workspaceURL: URL
 
-    @LazyInjected(\.eventBus)
-    var eventBus
+    let eventBus: EventBus
 
     var tempSearchResults = [SearchResultModel]()
     public var caseSensitive: Bool = false
@@ -62,8 +60,9 @@ public final class SearchState: ObservableObject {
         .Containing
     ]
 
-    public init(workspaceURL: URL) {
+    public init(workspaceURL: URL, eventBus: EventBus) {
         self.workspaceURL = workspaceURL
+        self.eventBus = eventBus
         self.indexer = SearchIndexer.Memory.create()
         addProjectToIndex()
         bridgeFindReplaceQuery()

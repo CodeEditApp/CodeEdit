@@ -7,14 +7,16 @@
 
 import Foundation
 import CodeEditCore
-import Factory
 
 /// App-shell binding of the `WorkspaceFileOpener` command interface.
 /// Delegates to `WorkspaceWindowManager.openFileInWorkspace(url:)`, which maps the
 /// URL to the workspace that owns it, opens the tab, and focuses that workspace.
 final class AppWorkspaceFileOpener: WorkspaceFileOpener {
-    @LazyInjected(\.workspaceWindowManager)
-    private var windowManager
+    private let windowManager: WorkspaceWindowManaging
+
+    init(windowManager: WorkspaceWindowManaging) {
+        self.windowManager = windowManager
+    }
 
     @MainActor
     func openFile(at url: URL) {

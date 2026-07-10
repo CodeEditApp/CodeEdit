@@ -7,6 +7,7 @@
 
 import XCTest
 import Factory
+import CodeEditCore
 import Search
 @testable import CodeEdit
 
@@ -35,12 +36,13 @@ final class DocumentsUnitTests: XCTestCase {
             eventBus: Container.shared.eventBus()
         )
         workspace.sourceControlViewModel = SourceControlViewModel()
-        workspace.searchState = SearchState(workspaceURL: URL(filePath: "/tmp"))
+        workspace.searchState = SearchState(workspaceURL: URL(filePath: "/tmp"), eventBus: EventBus())
         window = NSWindow()
         splitViewController = .init(
             workspace: workspace,
             navigatorViewModel: navigatorViewModel,
             windowRef: window,
+            dependencies: AppDependencies(),
             hapticPerformer: hapticFeedbackPerformerMock
         )
         splitViewController.viewDidLoad()

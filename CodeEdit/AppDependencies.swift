@@ -36,4 +36,9 @@ final class AppDependencies {
     private(set) lazy var lspService: LSPService = Container.shared.lspService()
     private(set) lazy var registryManager: RegistryManager = Container.shared.registryManager()
     private(set) lazy var workspaceWindowManager: WorkspaceWindowManager = Container.shared.workspaceWindowManager()
+
+    // MARK: - Command-interface adapters (stateless routers over the window manager)
+
+    private(set) lazy var workspaceFileOpener: WorkspaceFileOpener =
+        AppWorkspaceFileOpener(windowManager: workspaceWindowManager)
 }

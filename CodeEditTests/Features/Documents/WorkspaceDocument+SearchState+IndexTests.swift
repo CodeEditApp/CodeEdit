@@ -62,7 +62,7 @@ final class WorkspaceIndexTests: XCTestCase {
         files[2].parent = folder2File
 
         // SearchState indexes the workspace as part of its initializer.
-        searchState = SearchState(workspaceURL: directory)
+        searchState = SearchState(workspaceURL: directory, eventBus: EventBus())
 
         // The following code also tests whether the workspace is indexed correctly
         // Wait until the index is up to date and flushed

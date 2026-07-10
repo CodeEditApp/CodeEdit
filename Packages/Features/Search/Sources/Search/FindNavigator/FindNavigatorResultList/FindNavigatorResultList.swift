@@ -11,13 +11,14 @@ import Combine
 struct FindNavigatorResultList: NSViewControllerRepresentable {
 
     @EnvironmentObject var state: SearchState
+    @Environment(\.workspaceFileOpener) private var fileOpener
 
     let configuration: FindNavigatorConfiguration
 
     typealias NSViewControllerType = FindNavigatorListViewController
 
     func makeNSViewController(context: Context) -> FindNavigatorListViewController {
-        let controller = FindNavigatorListViewController(configuration: configuration)
+        let controller = FindNavigatorListViewController(configuration: configuration, fileOpener: fileOpener)
         controller.setSearchResults(state.searchResult)
         controller.rowHeight = configuration.rowHeight
         context.coordinator.controller = controller

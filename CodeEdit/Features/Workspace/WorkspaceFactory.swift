@@ -71,7 +71,7 @@ enum WorkspaceFactory {
         workspace.workspaceFileManager = workspaceFileManager
 
         // --- Phase 2: Independent managers ---
-        workspace.searchState = SearchState(workspaceURL: url)
+        workspace.searchState = SearchState(workspaceURL: url, eventBus: eventBus)
         workspace.openQuicklyViewModel = OpenQuicklyViewModel(fileURL: url)
         workspace.commandsPaletteState = QuickActionsViewModel()
         workspace.workspaceSettingsManager = CEWorkspaceSettings(workspaceURL: url)
