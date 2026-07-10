@@ -13,7 +13,11 @@ import Factory
 extension Container {
     var lspService: Factory<LSPService> {
         self { @MainActor in
-            LSPService(notificationManager: AppDependencies.bridgeShared.notificationManager)
+            let service = LSPService(notificationManager: AppDependencies.bridgeShared.notificationManager)
+            service.workspaceFinder = { url in
+                AppDependencies.bridgeShared.workspaceWindowManager.workspace(containing: url)
+            }
+            return service
         }.singleton
     }
 
@@ -37,7 +41,8 @@ extension Container {
         self { @MainActor in
             RegistryManager(
                 eventBus: AppDependencies.bridgeShared.eventBus,
-                notificationManager: AppDependencies.bridgeShared.notificationManager
+                notificationManager: AppDependencies.bridgeShared.notificationManager,
+                shellClient: AppDependencies.bridgeShared.shellClient
             )
         }.singleton
     }

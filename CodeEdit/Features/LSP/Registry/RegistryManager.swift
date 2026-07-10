@@ -52,10 +52,12 @@ final class RegistryManager: ObservableObject, RegistryManaging {
 
     private let eventBus: EventBus
     private let notificationManager: NotificationManaging
+    private let shellClient: ShellClientProtocol
 
-    init(eventBus: EventBus, notificationManager: NotificationManaging) {
+    init(eventBus: EventBus, notificationManager: NotificationManaging, shellClient: ShellClientProtocol) {
         self.eventBus = eventBus
         self.notificationManager = notificationManager
+        self.shellClient = shellClient
         // Load the registry items from disk again after cache expires
         if let items = loadItemsFromDisk() {
             setRegistryItems(items)
@@ -110,11 +112,11 @@ final class RegistryManager: ObservableObject, RegistryManaging {
             throw RegistryManagerError.installationRunning
         }
         guard let method = package.installMethod,
-              let manager = method.packageManager(installPath: installPath) else {
+              let manager = method.packageManager(installPath: installPath, shellClient: shellClient) else {
             throw PackageManagerError.invalidConfiguration
         }
         let installSteps = try manager.install(method: method)
-        return PackageManagerInstallOperation(package: package, steps: installSteps)
+        return PackageManagerInstallOperation(package: package, steps: installSteps, shellClient: shellClient)
     }
 
     /// Starts the actual installation process for a package

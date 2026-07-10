@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Factory
 import Combine
 import CodeEditCore
 
@@ -66,7 +65,7 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     /// If non-nil, indicates that this operation has halted and requires confirmation.
     @Published public private(set) var waitingForConfirmation: String?
 
-    private let shellClient: ShellClientProtocol = Container.shared.shellClient()
+    private let shellClient: ShellClientProtocol
     private var operationTask: Task<Void, Error>?
     private var confirmationContinuation: CheckedContinuation<Void, Never>?
     private var outputIdx = 0
@@ -76,7 +75,8 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     /// - Parameters:
     ///   - package: The package to install.
     ///   - steps: The steps that make up the operation.
-    init(package: RegistryItem, steps: [PackageManagerInstallStep]) {
+    init(package: RegistryItem, steps: [PackageManagerInstallStep], shellClient: ShellClientProtocol) {
+        self.shellClient = shellClient
         self.package = package
         self.steps = steps
         self.progress = Progress(totalUnitCount: Int64(steps.count))

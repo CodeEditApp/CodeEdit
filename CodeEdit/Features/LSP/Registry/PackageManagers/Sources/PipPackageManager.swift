@@ -5,7 +5,6 @@
 //  Created by Abe Malla on 2/3/25.
 //
 
-import Factory
 import Foundation
 import CodeEditCore
 
@@ -14,9 +13,9 @@ final class PipPackageManager: PackageManagerProtocol {
 
     let shellClient: ShellClientProtocol
 
-    init(installationDirectory: URL) {
+    init(installationDirectory: URL, shellClient: ShellClientProtocol) {
         self.installationDirectory = installationDirectory
-        self.shellClient = Container.shared.shellClient()
+        self.shellClient = shellClient
     }
 
     // MARK: - PackageManagerProtocol
