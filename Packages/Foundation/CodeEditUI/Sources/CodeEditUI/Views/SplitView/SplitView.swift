@@ -1,18 +1,18 @@
 //
 //  SplitView.swift
-//  CodeEdit
+//  CodeEditUI
 //
 //  Created by Wouter Hennen on 22/02/2023.
 //
 
 import SwiftUI
 
-struct SplitView<Content: View>: View {
+public struct SplitView<Content: View>: View {
     var axis: Axis
     var dividerStyle: CodeEditDividerStyle
     var content: Content
 
-    init(axis: Axis, dividerStyle: CodeEditDividerStyle = .system(.thin), @ViewBuilder content: () -> Content) {
+    public init(axis: Axis, dividerStyle: CodeEditDividerStyle = .system(.thin), @ViewBuilder content: () -> Content) {
         self.axis = axis
         self.dividerStyle = dividerStyle
         self.content = content()
@@ -20,7 +20,7 @@ struct SplitView<Content: View>: View {
 
     @State private var viewController: () -> SplitViewController? = { nil }
 
-    var body: some View {
+    public var body: some View {
         VStack {
             content.variadic { children in
                 SplitViewControllerView(

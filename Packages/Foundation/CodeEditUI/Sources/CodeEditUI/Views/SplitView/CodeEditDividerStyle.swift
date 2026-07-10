@@ -1,22 +1,17 @@
 //
 //  CodeEditDividerStyle.swift
-//  CodeEdit
+//  CodeEditUI
 //
 //  Created by Khan Winter on 5/30/25.
 //
 
 import AppKit
 
-/// The style of divider used by ``SplitView``.
-///
-/// To add a new style, add another case to this enum and fill in the ``customColor`` and ``customThickness``
-/// variables. When passed to ``SplitView``, the custom styles will be used instead of the default styles. Leave
-/// values as `nil` to use default styles.
-enum CodeEditDividerStyle: Equatable {
+public enum CodeEditDividerStyle: Equatable, Sendable {
     case system(NSSplitView.DividerStyle)
     case editorDivider
 
-    var customColor: NSColor? {
+    public var customColor: NSColor? {
         switch self {
         case .system:
             return nil
@@ -31,7 +26,7 @@ enum CodeEditDividerStyle: Equatable {
         }
     }
 
-    var customThickness: CGFloat? {
+    public var customThickness: CGFloat? {
         switch self {
         case .system:
             return nil

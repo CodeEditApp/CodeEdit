@@ -1,6 +1,6 @@
 //
 //  SplitViewItem.swift
-//  CodeEdit
+//  CodeEditUI
 //
 //  Created by Wouter Hennen on 05/03/2023.
 //
@@ -8,10 +8,11 @@
 import SwiftUI
 import Combine
 
-class SplitViewItem: ObservableObject {
+@MainActor
+public class SplitViewItem: ObservableObject {
 
-    var id: AnyHashable
-    var item: NSSplitViewItem
+    public var id: AnyHashable
+    public var item: NSSplitViewItem
 
     var collapsed: Binding<Bool>
 
@@ -19,14 +20,13 @@ class SplitViewItem: ObservableObject {
 
     var observers: [NSKeyValueObservation] = []
 
-    init(child: _VariadicView.Children.Element) {
+    public init(child: _VariadicView.Children.Element) {
         self.id = child.id
         self.item = NSSplitViewItem(viewController: NSHostingController(rootView: child))
         self.collapsed = child[SplitViewItemCollapsedViewTraitKey.self]
         self.item.canCollapse = child[SplitViewItemCanCollapseViewTraitKey.self]
         self.item.isCollapsed = self.collapsed.wrappedValue
         self.item.holdingPriority = child[SplitViewHoldingPriorityTraitKey.self]
-        // Skip the initial observation via a dispatch to avoid a "updating during view update" error
         DispatchQueue.main.async {
             self.observers = self.createObservers()
         }
@@ -40,10 +40,7 @@ class SplitViewItem: ObservableObject {
         ]
     }
 
-    /// Updates a SplitViewItem.
-    /// This will fetch updated binding values and update them if needed.
-    /// - Parameter child: the view corresponding to the SplitViewItem.
-    func update(child: _VariadicView.Children.Element) {
+    public func update(child: _VariadicView.Children.Element) {
         self.item.canCollapse = child[SplitViewItemCanCollapseViewTraitKey.self]
         let canAnimate = child[SplitViewItemCanAnimateViewTraitKey.self]
         DispatchQueue.main.async {
