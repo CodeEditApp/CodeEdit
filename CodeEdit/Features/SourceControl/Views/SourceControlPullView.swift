@@ -5,8 +5,9 @@
 //  Created by Austin Condiff on 6/28/24.
 //
 
+import CodeEditCore
 import SwiftUI
-import Factory
+import ShellClient
 
 struct SourceControlPullView: View {
     @Environment(\.dismiss)
@@ -15,7 +16,9 @@ struct SourceControlPullView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
     @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 
-    let gitConfig = GitConfigClient(shellClient: Container.shared.shellClient())
+    @Environment(\.shellClient) private var shellClient
+
+    private var gitConfig: GitConfigClient { GitConfigClient(shellClient: shellClient ?? ShellClient()) }
 
     @State var loading: Bool = false
 

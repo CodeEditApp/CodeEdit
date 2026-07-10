@@ -73,12 +73,13 @@ enum WorkspaceFactory {
         // --- Phase 2: Independent managers ---
         workspace.searchState = SearchState(workspaceURL: url, eventBus: eventBus)
         workspace.openQuicklyViewModel = OpenQuicklyViewModel(fileURL: url)
-        workspace.commandsPaletteState = QuickActionsViewModel()
+        workspace.commandsPaletteState = QuickActionsViewModel(commandManager: dependencies.commandManager)
         workspace.workspaceSettingsManager = CEWorkspaceSettings(workspaceURL: url)
         if let workspaceSettingsManager = workspace.workspaceSettingsManager {
             workspace.taskManager = TaskManager(
                 settingsStore: workspaceSettingsManager,
-                workspaceURL: url
+                workspaceURL: url,
+                eventBus: eventBus
             )
         }
         workspace.taskNotificationHandler.workspaceURL = url

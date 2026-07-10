@@ -5,7 +5,9 @@
 //  Created by Albert Vinizhanau on 10/17/23.
 //
 
+import CodeEditCore
 import Foundation
+import ShellClient
 import AppKit
 
 class GitCloneViewModel: ObservableObject {
@@ -15,7 +17,13 @@ class GitCloneViewModel: ObservableObject {
 
     var cloningTask: Task<Void, Error>?
 
-    private let useCase = CloneRepositoryUseCase()
+    let shellClient: ShellClientProtocol
+    private let useCase: CloneRepositoryUseCase
+
+    init(shellClient: ShellClientProtocol) {
+        self.shellClient = shellClient
+        self.useCase = CloneRepositoryUseCase(shellClient: shellClient)
+    }
 
     /// Check if url is valid
     /// - Parameter url: Url to check

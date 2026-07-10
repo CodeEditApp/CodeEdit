@@ -5,15 +5,19 @@
 //  Created by Raymond Vleeshouwer on 02/04/23.
 //
 
+import CodeEditCore
 import SwiftUI
+import ShellClient
 import CodeEditSettings
-import Factory
 
 struct SourceControlGitView: View {
     @AppSettings(\.sourceControl.git)
     var git
 
-    let gitConfig = GitConfigClient(shellClient: Container.shared.shellClient())
+    @Environment(\.shellClient) private var shellClient
+    @Environment(\.workspaceWindowManager) private var windowManager
+
+    private var gitConfig: GitConfigClient { GitConfigClient(shellClient: shellClient ?? ShellClient()) }
 
     @State private var authorName: String = ""
     @State private var authorEmail: String = ""
@@ -204,8 +208,7 @@ private extension SourceControlGitView {
             FileManager.default.createFile(atPath: fileURL.path, contents: nil)
         }
 
-        let windowManager = Container.shared.workspaceWindowManager()
-        windowManager.openDocument(at: fileURL, onCompletion: {})
+        windowManager?.openDocument(at: fileURL, onCompletion: {})
     }
 
     private func openGitIgnoreFile() {
@@ -219,8 +222,7 @@ private extension SourceControlGitView {
                 }
 
                 // Open the file in the editor
-                let windowManager = Container.shared.workspaceWindowManager()
-                windowManager.openDocument(at: fileURL, onCompletion: {})
+                windowManager?.openDocument(at: fileURL, onCompletion: {})
             } catch {
                 print("Failed to open document: \(error.localizedDescription)")
             }

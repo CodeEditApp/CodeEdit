@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 import CodeEditCore
-import Factory
 
 /// Maintains the list of task notifications shown in the activity viewer.
 ///
@@ -28,7 +27,7 @@ import Factory
 ///
 /// ## Example
 /// ```swift
-/// @LazyInjected(\.eventBus) private var eventBus
+/// let eventBus: EventBus  // injected via the initializer
 ///
 /// eventBus.publish(TaskNotificationEvent(
 ///     .create(TaskNotificationModel(id: UUID().uuidString, title: "Indexing"))
@@ -39,12 +38,12 @@ final class TaskNotificationHandler: ObservableObject {
     var workspaceURL: URL?
     var cancellables: Set<AnyCancellable> = []
 
-    @LazyInjected(\.eventBus)
-    private var eventBus
+    private let eventBus: EventBus
 
     /// Initialises a new `TaskNotificationHandler` and starts observing for task notification events.
-    init(workspaceURL: URL? = nil) {
+    init(workspaceURL: URL? = nil, eventBus: EventBus) {
         self.workspaceURL = workspaceURL
+        self.eventBus = eventBus
 
         eventBus.subscribe(TaskNotificationEvent.self)
             .receive(on: DispatchQueue.main)

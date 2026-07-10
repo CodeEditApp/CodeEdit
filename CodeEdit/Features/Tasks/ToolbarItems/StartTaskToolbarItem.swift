@@ -6,18 +6,19 @@
 //
 
 import AppKit
-import Factory
 
 @available(macOS 26, *)
 final class StartTaskToolbarItem: NSToolbarItem {
     private weak var workspace: Workspace?
+    private let commandManager: CommandManaging
 
     private var utilityAreaCollapsed: Bool {
         workspace?.utilityAreaModel?.isCollapsed ?? true
     }
 
-    init(workspace: Workspace) {
+    init(workspace: Workspace, commandManager: CommandManaging) {
         self.workspace = workspace
+        self.commandManager = commandManager
         super.init(itemIdentifier: NSToolbarItem.Identifier("StartTaskToolbarItem"))
 
         image = NSImage(systemSymbolName: "play.fill", accessibilityDescription: nil)
@@ -37,7 +38,7 @@ final class StartTaskToolbarItem: NSToolbarItem {
 
         taskManager.executeActiveTask()
         if utilityAreaCollapsed {
-            Container.shared.commandManager().executeCommand("open.drawer")
+            commandManager.executeCommand("open.drawer")
         }
         workspace?.utilityAreaModel?.selectedTab = .debugConsole
         taskManager.taskShowingOutput = taskManager.selectedTaskID

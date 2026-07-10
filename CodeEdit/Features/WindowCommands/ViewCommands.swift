@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CodeEditSettings
-import Factory
 import Combine
 
 struct ViewCommands: Commands {
@@ -136,7 +135,7 @@ extension ViewCommands {
             .keyboardShortcut("i", modifiers: [.control, .command])
 
             Button("\(utilityAreaCollapsed ? "Show" : "Hide") Utility Area") {
-                Container.shared.commandManager().executeCommand("open.drawer")
+                windowController?.dependencies.commandManager.executeCommand("open.drawer")
             }
             .disabled(windowController == nil)
             .keyboardShortcut("y", modifiers: [.shift, .command])

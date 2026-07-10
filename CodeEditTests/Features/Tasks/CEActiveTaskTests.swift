@@ -21,7 +21,7 @@ class CEActiveTaskTests {
             command: "echo $STATE",
             environmentVariables: [CETask.EnvironmentVariable(key: "STATE", value: "Testing")]
         )
-        activeTask = CEActiveTask(task: task)
+        activeTask = CEActiveTask(task: task, eventBus: EventBus())
     }
 
     @Test
@@ -53,7 +53,7 @@ class CEActiveTaskTests {
     func testHandleProcessFinished(_ shell: Shell) async throws {
         // CETask is a value type, so build a fresh active task around the failing command
         // rather than mutating `task` after `activeTask` already copied it.
-        let activeTask = CEActiveTask(task: CETask(name: "Test Task", command: "aNon-existentCommand"))
+        let activeTask = CEActiveTask(task: CETask(name: "Test Task", command: "aNon-existentCommand"), eventBus: EventBus())
         activeTask.run(workspaceURL: nil, shell: shell)
         activeTask.waitForExit()
 

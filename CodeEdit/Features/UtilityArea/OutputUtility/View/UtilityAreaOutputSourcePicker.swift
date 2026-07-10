@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
+import Combine
 import CodeEditSettings
-import Factory
 
 struct UtilityAreaOutputSourcePicker: View {
     typealias Sources = UtilityAreaOutputView.Sources
@@ -22,7 +22,7 @@ struct UtilityAreaOutputSourcePicker: View {
 
     @ObservedObject var extensionManager = ExtensionManager.shared
 
-    @Injected(\.lspService) var lspService
+    @Environment(\.lspService) var lspService
     @State private var updater: UUID = UUID()
     @State private var languageServerClients: [LSPService.LanguageServerType] = []
 
@@ -66,9 +66,11 @@ struct UtilityAreaOutputSourcePicker: View {
         .labelsHidden()
         .controlSize(.small)
         .onAppear {
-            updateLanguageServers(lspService.languageClients)
+            updateLanguageServers(lspService?.languageClients ?? [:])
         }
-        .onReceive(lspService.$languageClients) { clients in
+        .onReceive(
+            lspService?.$languageClients.eraseToAnyPublisher() ?? Just([:]).eraseToAnyPublisher()
+        ) { clients in
             updateLanguageServers(clients)
         }
         .onReceive(extensionManager.$extensions) { _ in

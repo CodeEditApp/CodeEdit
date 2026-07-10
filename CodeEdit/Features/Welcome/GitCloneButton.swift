@@ -5,14 +5,18 @@
 //  Created by Giorgi Tchelidze on 07.06.25.
 //
 
+import CodeEditCore
 import SwiftUI
-import Factory
+import ShellClient
 import WelcomeWindow
 
 struct GitCloneButton: View {
 
     @State private var showGitClone = false
     @State private var showCheckoutBranchItem: URL?
+
+    let windowManager: WorkspaceWindowManager
+    let shellClient: ShellClientProtocol
 
     var dismissWindow: () -> Void
 
@@ -26,11 +30,11 @@ struct GitCloneButton: View {
         )
         .sheet(isPresented: $showGitClone) {
             GitCloneView(
+                shellClient: shellClient,
                 openBranchView: { url in
                     showCheckoutBranchItem = url
                 },
                 openDocument: { url in
-                    let windowManager = Container.shared.workspaceWindowManager()
                     windowManager.openDocument(at: url, onCompletion: { dismissWindow() })
                 }
             )
@@ -38,8 +42,8 @@ struct GitCloneButton: View {
         .sheet(item: $showCheckoutBranchItem) { url in
             GitCheckoutBranchView(
                 repoLocalPath: url,
+                shellClient: shellClient,
                 openDocument: { url in
-                    let windowManager = Container.shared.workspaceWindowManager()
                     windowManager.openDocument(at: url, onCompletion: { dismissWindow() })
                 }
             )

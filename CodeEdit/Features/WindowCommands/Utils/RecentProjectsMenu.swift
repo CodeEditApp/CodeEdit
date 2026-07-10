@@ -6,7 +6,6 @@
 //
 
 import AppKit
-import Factory
 import WelcomeWindow
 
 @MainActor
@@ -127,7 +126,11 @@ final class RecentProjectsMenu: NSObject, NSMenuDelegate {
     @objc
     private func recentProjectItemClicked(_ sender: NSMenuItem) {
         guard let projectURL = sender.representedObject as? URL else { return }
-        let windowManager = Container.shared.workspaceWindowManager()
+        // This menu is installed via a hidden AppKit API (see CommandsFixes.swift), outside any
+        // injectable construction flow, so it reaches the composition root through the app delegate.
+        guard let windowManager = (NSApp.delegate as? AppDelegate)?.dependencies.workspaceWindowManager else {
+            return
+        }
         windowManager.openDocument(at: projectURL, onCompletion: {})
     }
 

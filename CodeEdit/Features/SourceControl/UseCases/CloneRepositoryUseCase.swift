@@ -5,11 +5,18 @@
 //  Created by Matthijs Eikelenboom on 15/04/26.
 //
 
+import CodeEditCore
 import Foundation
-import Factory
+import ShellClient
 
 /// Validates and orchestrates a `git clone` operation, streaming progress to the caller.
 final class CloneRepositoryUseCase {
+    private let shellClient: ShellClientProtocol
+
+    init(shellClient: ShellClientProtocol) {
+        self.shellClient = shellClient
+    }
+
 
     enum Failure: Error, LocalizedError {
         case gitNotInstalled
@@ -86,7 +93,7 @@ final class CloneRepositoryUseCase {
             throw Failure.directoryCreationFailed(error)
         }
 
-        let gitClient = GitClient(directoryURL: localPath, shellClient: Container.shared.shellClient())
+        let gitClient = GitClient(directoryURL: localPath, shellClient: shellClient)
         return gitClient.cloneRepository(remoteUrl: remoteUrl, localPath: localPath)
     }
 

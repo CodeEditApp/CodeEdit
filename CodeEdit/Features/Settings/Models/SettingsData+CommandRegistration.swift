@@ -6,14 +6,13 @@
 //
 
 import Foundation
+import CodeEditCore
 import CodeEditSettings
-import Factory
 
 extension SettingsData.TextEditingSettings {
     /// Registers toggle-able text-editing preferences with the command palette.
     /// Invoked once at app startup (previously ran as a side effect of decoding).
-    static func registerCommands() {
-        let mgr = Container.shared.commandManager()
+    static func registerCommands(in mgr: CommandManaging) {
 
         mgr.addCommand(
             name: "Toggle Type-Over Completion",

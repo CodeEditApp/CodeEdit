@@ -7,8 +7,8 @@
 import Foundation
 import CodeEditCore
 
-/// Registry backing the command palette. Registered as a singleton in the Factory container
-/// (`Container.shared.commandManager`); inject via `@LazyInjected(\.commandManager)`.
+/// Registry backing the command palette. Owned by `AppDependencies`; objects receive it
+/// through their initializer, views through the `\.commandManager` environment key.
 final class CommandManager: CommandManaging {
     private var commandsList: [String: Command]
 

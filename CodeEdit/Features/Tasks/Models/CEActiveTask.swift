@@ -9,7 +9,6 @@ import SwiftUI
 import Combine
 import SwiftTerm
 import CodeEditCore
-import Factory
 
 /// Stores the state of a task once it's executed
 class CEActiveTask: ObservableObject, Identifiable, Hashable {
@@ -35,11 +34,11 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
 
     var workspaceURL: URL?
 
-    @LazyInjected(\.eventBus)
-    private var eventBus
+    private let eventBus: EventBus
 
-    init(task: CETask) {
+    init(task: CETask, eventBus: EventBus) {
         self.task = task
+        self.eventBus = eventBus
     }
 
     @MainActor

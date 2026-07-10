@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
+import ShellClient
 import CEWorkspaceFileManager
-import Factory
 import CodeEditCore
 
 struct GitChangedFileLabel: View {
@@ -43,7 +43,7 @@ struct GitChangedFileLabel: View {
             fileURL: URL(filePath: "/Users/CodeEdit/app.jsx"),
             originalFilename: nil
         ))
-        .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), shellClient: Container.shared.shellClient(), eventBus: Container.shared.eventBus()))
+        .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), shellClient: ShellClient(), eventBus: EventBus()))
         .environmentObject(Workspace())
 
         GitChangedFileLabel(file: GitChangedFile(
@@ -52,7 +52,7 @@ struct GitChangedFileLabel: View {
             fileURL: URL(filePath: "/Users/CodeEdit/app.jsx"),
             originalFilename: "app2.jsx"
         ))
-        .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), shellClient: Container.shared.shellClient(), eventBus: Container.shared.eventBus()))
+        .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), shellClient: ShellClient(), eventBus: EventBus()))
         .environmentObject(Workspace())
     }.padding()
 }

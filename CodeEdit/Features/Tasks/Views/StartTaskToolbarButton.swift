@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
-import Factory
 
 struct StartTaskToolbarButton: View {
     @Environment(\.controlActiveState)
     private var activeState
+
+    @Environment(\.commandManager)
+    private var commandManager
 
     @ObservedObject var taskManager: TaskManager
     @EnvironmentObject var utilityAreaModel: UtilityAreaViewModel
@@ -23,7 +25,7 @@ struct StartTaskToolbarButton: View {
         Button {
             taskManager.executeActiveTask()
             if utilityAreaCollapsed {
-                Container.shared.commandManager().executeCommand("open.drawer")
+                commandManager?.executeCommand("open.drawer")
             }
             utilityAreaModel.selectedTab = .debugConsole
             taskManager.taskShowingOutput = taskManager.selectedTaskID

@@ -21,7 +21,10 @@ class TaskManager: ObservableObject {
     private var workspaceURL: URL?
     private var settingsListener: AnyCancellable?
 
-    init(settingsStore: CEWorkspaceSettings, workspaceURL: URL?) {
+    private let eventBus: EventBus
+
+    init(settingsStore: CEWorkspaceSettings, workspaceURL: URL?, eventBus: EventBus) {
+        self.eventBus = eventBus
         self.workspaceURL = workspaceURL
         self.settingsStore = settingsStore
 
@@ -82,7 +85,7 @@ class TaskManager: ObservableObject {
             }
             activeTask.run(workspaceURL: workspaceURL)
         } else {
-            let runningTask = CEActiveTask(task: task)
+            let runningTask = CEActiveTask(task: task, eventBus: eventBus)
             runningTask.run(workspaceURL: workspaceURL)
             await MainActor.run {
                 activeTasks[task.id] = runningTask

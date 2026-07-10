@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import Factory
 import CodeEditCore
+import ShellClient
 
 class GitCheckoutBranchViewModel: ObservableObject {
     @Published var selectedBranch: GitBranch?
@@ -16,9 +16,9 @@ class GitCheckoutBranchViewModel: ObservableObject {
     let repoPath: URL
     private let gitClient: GitClient
 
-    init(repoPath: URL) {
+    init(repoPath: URL, shellClient: ShellClientProtocol) {
         self.repoPath = repoPath
-        gitClient = .init(directoryURL: repoPath, shellClient: Container.shared.shellClient())
+        gitClient = .init(directoryURL: repoPath, shellClient: shellClient)
     }
 
     func loadBranches() async {

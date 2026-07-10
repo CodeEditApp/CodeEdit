@@ -7,7 +7,6 @@
 
 import XCTest
 import CodeEditCore
-import Factory
 @testable import CodeEdit
 
 private final class MockCommandManager: CommandManaging {
@@ -31,13 +30,11 @@ final class QuickActionsViewModelTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        Container.shared.commandManager.register { MockCommandManager() }
-        viewModel = QuickActionsViewModel()
+        viewModel = QuickActionsViewModel(commandManager: MockCommandManager())
     }
 
     override func tearDown() {
         viewModel = nil
-        Container.shared.commandManager.reset()
         super.tearDown()
     }
 

@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import CodeEditCore
+import ShellClient
 
 struct GitCheckoutBranchView: View {
     @Environment(\.dismiss)
@@ -18,9 +19,10 @@ struct GitCheckoutBranchView: View {
 
     init(
         repoLocalPath: URL,
+        shellClient: ShellClientProtocol,
         openDocument: @escaping (URL) -> Void
     ) {
-        _viewModel = .init(wrappedValue: GitCheckoutBranchViewModel(repoPath: repoLocalPath))
+        _viewModel = .init(wrappedValue: GitCheckoutBranchViewModel(repoPath: repoLocalPath, shellClient: shellClient))
         self.openDocument = openDocument
     }
     var body: some View {

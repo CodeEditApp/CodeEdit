@@ -5,15 +5,18 @@
 //  Created by Raymond Vleeshouwer on 02/04/23.
 //
 
+import CodeEditCore
 import SwiftUI
+import ShellClient
 import CodeEditSettings
-import Factory
 
 struct SourceControlGeneralView: View {
     @AppSettings(\.sourceControl.general)
     var settings
 
-    let gitConfig = GitConfigClient(shellClient: Container.shared.shellClient())
+    @Environment(\.shellClient) private var shellClient
+
+    private var gitConfig: GitConfigClient { GitConfigClient(shellClient: shellClient ?? ShellClient()) }
 
     var body: some View {
         Group {

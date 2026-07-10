@@ -36,7 +36,7 @@ final class Workspace: ObservableObject, WorkspaceManaging {
 
     var taskManager: TaskManager?
     var workspaceSettingsManager: CEWorkspaceSettings?
-    var taskNotificationHandler: TaskNotificationHandler = TaskNotificationHandler()
+    var taskNotificationHandler: TaskNotificationHandler
 
     var statePersistence: WorkspaceStatePersistence?
 
@@ -52,6 +52,7 @@ final class Workspace: ObservableObject, WorkspaceManaging {
     // MARK: - Initialization
 
     init(url: URL, dependencies: AppDependencies) {
+        self.taskNotificationHandler = TaskNotificationHandler(eventBus: dependencies.eventBus)
         self.notificationPanel = NotificationPanelViewModel(
             notificationManager: dependencies.notificationManager,
             eventBus: dependencies.eventBus
@@ -62,6 +63,7 @@ final class Workspace: ObservableObject, WorkspaceManaging {
     /// Minimal initializer for testing. Does not set up workspace state.
     internal init() {
         let eventBus = EventBus()
+        self.taskNotificationHandler = TaskNotificationHandler(eventBus: eventBus)
         self.notificationPanel = NotificationPanelViewModel(
             notificationManager: NotificationManager(eventBus: eventBus),
             eventBus: eventBus

@@ -26,8 +26,8 @@ struct CodeEditApp: App {
         CodeFileDocument.delegateProvider = { [dependencies = appdelegate.dependencies] in
             dependencies.codeFileDocumentDelegate
         }
-        SettingsData.TextEditingSettings.registerCommands()
-        SettingsData.reconcileDefaultKeybindings()
+        SettingsData.TextEditingSettings.registerCommands(in: appdelegate.dependencies.commandManager)
+        SettingsData.reconcileDefaultKeybindings(keybindingManager: appdelegate.dependencies.keybindingManager)
     }
 
     var body: some Scene {
@@ -35,9 +35,19 @@ struct CodeEditApp: App {
             WelcomeWindow(
                 subtitleView: { WelcomeSubtitleView() },
                 actions: { dismissWindow in
-                    NewFileButton(dismissWindow: dismissWindow)
-                    GitCloneButton(dismissWindow: dismissWindow)
-                    OpenFileOrFolderButton(dismissWindow: dismissWindow)
+                    NewFileButton(
+                        windowManager: appdelegate.dependencies.workspaceWindowManager,
+                        dismissWindow: dismissWindow
+                    )
+                    GitCloneButton(
+                        windowManager: appdelegate.dependencies.workspaceWindowManager,
+                        shellClient: appdelegate.dependencies.shellClient,
+                        dismissWindow: dismissWindow
+                    )
+                    OpenFileOrFolderButton(
+                        windowManager: appdelegate.dependencies.workspaceWindowManager,
+                        dismissWindow: dismissWindow
+                    )
                 },
                 onDrop: { url, dismissWindow in
                     let windowManager = appdelegate.dependencies.workspaceWindowManager
@@ -76,10 +86,10 @@ struct CodeEditApp: App {
 
             SettingsWindow()
                 .commands {
-                    CodeEditCommands()
+                    CodeEditCommands(dependencies: appdelegate.dependencies)
                 }
         }
         .environment(\.settings, settings.preferences) // Add settings to each window environment
-        .environment(\.notificationManager, appdelegate.dependencies.notificationManager)
+        .appServices(appdelegate.dependencies)
     }
 }

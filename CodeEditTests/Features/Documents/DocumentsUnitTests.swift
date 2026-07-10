@@ -6,8 +6,8 @@
 //
 
 import XCTest
-import Factory
 import CodeEditCore
+import ShellClient
 import Search
 @testable import CodeEdit
 
@@ -28,12 +28,13 @@ final class DocumentsUnitTests: XCTestCase {
         navigatorViewModel = .init()
         workspace.taskManager = TaskManager(
             settingsStore: CEWorkspaceSettings(workspaceURL: URL(filePath: NSTemporaryDirectory())),
-            workspaceURL: nil
+            workspaceURL: nil,
+            eventBus: EventBus()
         )
         workspace.sourceControlManager = SourceControlManager(
             workspaceURL: URL(filePath: "/tmp"),
-            shellClient: Container.shared.shellClient(),
-            eventBus: Container.shared.eventBus()
+            shellClient: ShellClient(),
+            eventBus: EventBus()
         )
         workspace.sourceControlViewModel = SourceControlViewModel()
         workspace.searchState = SearchState(workspaceURL: URL(filePath: "/tmp"), eventBus: EventBus())

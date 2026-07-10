@@ -88,5 +88,5 @@ struct TaskNotificationView: View {
 }
 
 #Preview {
-    TaskNotificationView(taskNotificationHandler: TaskNotificationHandler())
+    TaskNotificationView(taskNotificationHandler: TaskNotificationHandler(eventBus: EventBus()))
 }

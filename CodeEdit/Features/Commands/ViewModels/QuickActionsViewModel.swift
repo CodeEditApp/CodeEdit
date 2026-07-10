@@ -6,15 +6,13 @@
 //
 
 import SwiftUI
-import Factory
 import CodeEditCore
 
 /// Simple state class for command palette view. Contains currently selected command,
 /// query text and list of filtered commands
 final class QuickActionsViewModel: ObservableObject {
 
-    @LazyInjected(\.commandManager)
-    private var commandManager
+    private let commandManager: CommandManaging
 
     @Published var commandQuery: String = ""
 
@@ -24,7 +22,9 @@ final class QuickActionsViewModel: ObservableObject {
 
     @Published var filteredCommands: [Command] = []
 
-    init() {}
+    init(commandManager: CommandManaging) {
+        self.commandManager = commandManager
+    }
 
     func reset() {
         commandQuery = ""

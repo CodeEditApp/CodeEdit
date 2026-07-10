@@ -9,13 +9,15 @@ import SwiftUI
 import CodeEditSettings
 
 struct CodeEditCommands: Commands {
+    let dependencies: AppDependencies
+
     @AppSettings(\.sourceControl.general.sourceControlIsEnabled)
     private var sourceControlIsEnabled
 
     var body: some Commands {
         Group { // SwiftUI limits to 9 items in an initializer, so we have to group every 9 items.
             MainCommands()
-            FileCommands()
+            FileCommands(windowManager: dependencies.workspaceWindowManager)
             ViewCommands()
             FindCommands()
             NavigateCommands()

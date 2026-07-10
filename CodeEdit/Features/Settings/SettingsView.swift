@@ -10,6 +10,8 @@ import CodeEditSettings
 
 /// A struct for settings
 struct SettingsView: View {
+    @Environment(\.registryManager) private var registryManager
+
     @StateObject var model = SettingsViewModel()
     @Environment(\.colorScheme)
     private var colorScheme
@@ -200,7 +202,9 @@ struct SettingsView: View {
                 case .location:
                     LocationsSettingsView()
                 case .languageServers:
-                    LanguageServersView()
+                    if let registryManager {
+                        LanguageServersView(registryManager: registryManager)
+                    }
                 case .developer:
                     DeveloperSettingsView()
                 default:

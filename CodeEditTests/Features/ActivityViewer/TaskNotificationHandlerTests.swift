@@ -7,7 +7,6 @@
 
 import XCTest
 import CodeEditCore
-import Factory
 @testable import CodeEdit
 
 final class TaskNotificationHandlerTests: XCTestCase {
@@ -16,8 +15,8 @@ final class TaskNotificationHandlerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        eventBus = Container.shared.eventBus()
-        taskNotificationHandler = TaskNotificationHandler()
+        eventBus = EventBus()
+        taskNotificationHandler = TaskNotificationHandler(eventBus: eventBus)
     }
 
     override func tearDown() {

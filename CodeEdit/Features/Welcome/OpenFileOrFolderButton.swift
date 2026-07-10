@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
-import Factory
 import WelcomeWindow
 
 struct OpenFileOrFolderButton: View {
 
     @Environment(\.openWindow)
     private var openWindow
+
+    let windowManager: WorkspaceWindowManager
 
     var dismissWindow: () -> Void
 
@@ -21,7 +22,6 @@ struct OpenFileOrFolderButton: View {
             iconName: "folder",
             title: "Open File or Folder...",
             action: {
-                let windowManager = Container.shared.workspaceWindowManager()
                 windowManager.openDocumentWithDialog(
                     canChooseFiles: true,
                     canChooseDirectories: true,

@@ -186,7 +186,7 @@ extension CodeEditWindowController {
                     let stop = StopTaskToolbarItem(workspace: workspace) else {
                 return nil
             }
-            let start = StartTaskToolbarItem(workspace: workspace)
+            let start = StartTaskToolbarItem(workspace: workspace, commandManager: dependencies.commandManager)
 
             let group = NSToolbarItemGroup(itemIdentifier: .taskSidebarItem)
             group.isBordered = true

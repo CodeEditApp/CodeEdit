@@ -20,7 +20,7 @@ class TaskManagerTests {
     init() throws {
         settingsStore = CEWorkspaceSettings(workspaceURL: URL(filePath: NSTemporaryDirectory()))
         settingsStore.settings = try JSONDecoder().decode(CEWorkspaceSettingsData.self, from: Data("{}".utf8))
-        taskManager = TaskManager(settingsStore: settingsStore, workspaceURL: nil)
+        taskManager = TaskManager(settingsStore: settingsStore, workspaceURL: nil, eventBus: EventBus())
     }
 
     func testInitialization() {

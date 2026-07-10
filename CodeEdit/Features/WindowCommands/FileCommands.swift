@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
-import Factory
 
 struct FileCommands: Commands {
     static let recentProjectsMenu = RecentProjectsMenu()
+
+    let windowManager: WorkspaceWindowManager
 
     @Environment(\.openWindow)
     private var openWindow
@@ -22,13 +23,11 @@ struct FileCommands: Commands {
         CommandGroup(replacing: .newItem) {
             Group {
                 Button("New") {
-                    let windowManager = Container.shared.workspaceWindowManager()
                     windowManager.newDocumentFromPanel()
                 }
                 .keyboardShortcut("n")
 
                 Button("Open...") {
-                    let windowManager = Container.shared.workspaceWindowManager()
                     windowManager.openDocumentFromPanel()
                 }
                 .keyboardShortcut("o")

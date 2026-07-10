@@ -7,11 +7,13 @@
 
 import SwiftUI
 import CodeEditUI
-import Factory
 
 internal struct StatusBarToggleUtilityAreaButton: View {
     @Environment(\.controlActiveState)
     var controlActiveState
+
+    @Environment(\.commandManager)
+    private var commandManager
 
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
@@ -27,7 +29,7 @@ internal struct StatusBarToggleUtilityAreaButton: View {
         .onHover { isHovering($0) }
         .onChange(of: controlActiveState) { _, newValue in
             if newValue == .key {
-                Container.shared.commandManager().addCommand(
+                commandManager?.addCommand(
                     name: "Toggle Utility Area",
                     title: "Toggle Utility Area",
                     id: "open.drawer",
@@ -36,7 +38,7 @@ internal struct StatusBarToggleUtilityAreaButton: View {
             }
         }
         .onAppear {
-            Container.shared.commandManager().addCommand(
+            commandManager?.addCommand(
                 name: "Toggle Utility Area",
                 title: "Toggle Utility Area",
                 id: "open.drawer",

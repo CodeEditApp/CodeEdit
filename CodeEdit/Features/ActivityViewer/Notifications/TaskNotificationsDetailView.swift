@@ -5,6 +5,7 @@
 //  Created by Tommy Ludwig on 21.06.24.
 //
 
+import CodeEditCore
 import SwiftUI
 
 struct TaskNotificationsDetailView: View {
@@ -44,5 +45,5 @@ struct TaskNotificationsDetailView: View {
 }
 
 #Preview {
-    TaskNotificationsDetailView(taskNotificationHandler: TaskNotificationHandler())
+    TaskNotificationsDetailView(taskNotificationHandler: TaskNotificationHandler(eventBus: EventBus()))
 }
