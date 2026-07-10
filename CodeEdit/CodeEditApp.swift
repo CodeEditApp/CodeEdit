@@ -9,7 +9,6 @@ import SwiftUI
 import CodeEditSettings
 import CodeEditDocument
 import CodeEditCore
-import Factory
 import WelcomeWindow
 import AboutWindow
 

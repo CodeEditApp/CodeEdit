@@ -22,11 +22,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @Environment(\.openWindow)
     var openWindow
 
-    let dependencies: AppDependencies = {
-        let dependencies = AppDependencies()
-        AppDependencies.bridgeShared = dependencies
-        return dependencies
-    }()
+    let dependencies = AppDependencies()
 
     var lspService: LSPService { dependencies.lspService }
     var windowManager: WorkspaceWindowManager { dependencies.workspaceWindowManager }
