@@ -7,6 +7,7 @@
 
 import AppKit
 import CEWorkspaceFileManager
+import CodeEditCore
 import Editor
 import Notifications
 import Search
@@ -41,7 +42,7 @@ final class Workspace: ObservableObject, WorkspaceManaging {
 
     var undoRegistration: UndoManagerRegistration = UndoManagerRegistration()
 
-    var notificationPanel = NotificationPanelViewModel()
+    var notificationPanel: NotificationPanelViewModel
 
     /// The original (possibly bookmark-derived) security-scoped URL whose access is held for this
     /// workspace's lifetime. Set by `WorkspaceFactory` when the URL is security-scoped (e.g. opened
@@ -51,11 +52,21 @@ final class Workspace: ObservableObject, WorkspaceManaging {
     // MARK: - Initialization
 
     init(url: URL, dependencies: AppDependencies) {
+        self.notificationPanel = NotificationPanelViewModel(
+            notificationManager: dependencies.notificationManager,
+            eventBus: dependencies.eventBus
+        )
         WorkspaceFactory.populate(self, url: url, dependencies: dependencies)
     }
 
     /// Minimal initializer for testing. Does not set up workspace state.
-    internal init() {}
+    internal init() {
+        let eventBus = EventBus()
+        self.notificationPanel = NotificationPanelViewModel(
+            notificationManager: NotificationManager(eventBus: eventBus),
+            eventBus: eventBus
+        )
+    }
 
     // MARK: - Tear Down
 

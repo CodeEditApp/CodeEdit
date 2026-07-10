@@ -10,7 +10,6 @@ import CodeEditSettings
 import Foundation
 import ZIPFoundation
 import Combine
-import Factory
 import CodeEditCore
 import Notifications
 
@@ -51,10 +50,12 @@ final class RegistryManager: ObservableObject, RegistryManaging {
     @AppSettings(\.languageServers.installedLanguageServers)
     var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
 
-    @LazyInjected(\.eventBus)
-    private var eventBus
+    private let eventBus: EventBus
+    private let notificationManager: NotificationManaging
 
-    init() {
+    init(eventBus: EventBus, notificationManager: NotificationManaging) {
+        self.eventBus = eventBus
+        self.notificationManager = notificationManager
         // Load the registry items from disk again after cache expires
         if let items = loadItemsFromDisk() {
             setRegistryItems(items)
@@ -179,7 +180,7 @@ final class RegistryManager: ObservableObject, RegistryManaging {
         fail failed: Bool
     ) {
         if failed {
-            Container.shared.notificationManager().post(
+            notificationManager.post(
                 iconSymbol: "xmark.circle",
                 iconColor: .clear,
                 title: "Could not install \(activityName)",

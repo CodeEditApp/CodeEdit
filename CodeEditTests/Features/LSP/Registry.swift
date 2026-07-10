@@ -8,12 +8,16 @@
 import Testing
 import Foundation
 import CodeEditCore
+import Notifications
 @testable import CodeEdit
 
 @MainActor
 @Suite()
 struct RegistryTests {
-    var registry: RegistryManager = RegistryManager()
+    var registry: RegistryManager = RegistryManager(
+        eventBus: EventBus(),
+        notificationManager: NotificationManager(eventBus: EventBus())
+    )
 
     // MARK: - Download Tests
 

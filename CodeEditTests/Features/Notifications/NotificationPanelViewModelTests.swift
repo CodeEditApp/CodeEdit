@@ -7,27 +7,28 @@
 
 import XCTest
 import CodeEditCore
-import Factory
 @testable import Notifications
 @testable import CodeEdit
 
 @MainActor
 final class NotificationPanelViewModelTests: XCTestCase {
+    var eventBus: EventBus!
     var notificationManager: (any NotificationManaging)!
     var viewModel: NotificationPanelViewModel!
 
     override func setUp() {
         super.setUp()
-        // Fresh manager so the view model doesn't preload notifications from earlier tests.
-        Container.shared.notificationManager.reset()
-        notificationManager = Container.shared.notificationManager()
-        viewModel = NotificationPanelViewModel()
+        // Fresh manager and bus so the view model doesn't preload notifications from earlier tests.
+        // Manager and view model must share one bus: posts flow manager → bus → view model.
+        eventBus = EventBus()
+        notificationManager = NotificationManager(eventBus: eventBus)
+        viewModel = NotificationPanelViewModel(notificationManager: notificationManager, eventBus: eventBus)
     }
 
     override func tearDown() {
         viewModel = nil
         notificationManager = nil
-        Container.shared.notificationManager.reset()
+        eventBus = nil
         super.tearDown()
     }
 

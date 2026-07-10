@@ -8,7 +8,6 @@
 import SwiftUI
 import Combine
 import UserNotifications
-import Factory
 import CodeEditCore
 
 /// Manages the application's notification system, handling both in-app notifications and system notifications.
@@ -17,7 +16,7 @@ import CodeEditCore
 /// - Tracking notification read status
 /// - Broadcasting notifications to workspaces
 @MainActor
-final class NotificationManager: NSObject, NotificationManaging {
+public final class NotificationManager: NSObject, NotificationManaging {
 
     /// Collection of all notifications, both read and unread
     @Published public private(set) var notifications: [CENotification] = []
@@ -27,8 +26,7 @@ final class NotificationManager: NSObject, NotificationManaging {
         $notifications.eraseToAnyPublisher()
     }
 
-    @LazyInjected(\.eventBus)
-    private var eventBus
+    private let eventBus: EventBus
 
     private var isAppActive: Bool = true
 
@@ -51,7 +49,8 @@ final class NotificationManager: NSObject, NotificationManaging {
         }
     }
 
-    override init() {
+    public init(eventBus: EventBus) {
+        self.eventBus = eventBus
         super.init()
         setupNotificationDelegate()
 

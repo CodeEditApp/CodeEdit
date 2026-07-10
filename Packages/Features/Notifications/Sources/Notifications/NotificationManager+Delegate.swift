@@ -10,7 +10,7 @@ import UserNotifications
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
     // System-invoked (not guaranteed main); `nonisolated` + hop to the main actor for state.
-    nonisolated func userNotificationCenter(
+    nonisolated public func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void
@@ -42,7 +42,7 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         completionHandler()
     }
 
-    nonisolated func userNotificationCenter(
+    nonisolated public func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void

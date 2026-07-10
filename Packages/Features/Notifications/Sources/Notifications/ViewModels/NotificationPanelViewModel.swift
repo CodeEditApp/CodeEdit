@@ -7,7 +7,6 @@
 
 import SwiftUI
 import Combine
-import Factory
 import CodeEditCore
 
 /// Coordinates notification display, auto-hide timers, panel visibility, and toolbar integration.
@@ -42,11 +41,10 @@ public final class NotificationPanelViewModel: ObservableObject {
     /// Whether notifications are paused
     var isPaused: Bool = false
 
-    @LazyInjected(\.notificationManager)
-    var notificationManager
+    /// Non-private so the app shell's toolbar extension can read `unreadCount` through it.
+    public let notificationManager: NotificationManaging
 
-    @LazyInjected(\.eventBus)
-    var eventBus
+    let eventBus: EventBus
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -62,7 +60,10 @@ public final class NotificationPanelViewModel: ObservableObject {
     /// app-defined `NSToolbarItem.Identifier`s), so the package only signals; the app acts.
     public var onToolbarUpdateRequested: (() -> Void)?
 
-    public init() {
+    public init(notificationManager: NotificationManaging, eventBus: EventBus) {
+        self.notificationManager = notificationManager
+        self.eventBus = eventBus
+
         // Observe notification additions and dismissals
         eventBus.subscribe(CENotificationEvent.self)
             .receive(on: RunLoop.main)

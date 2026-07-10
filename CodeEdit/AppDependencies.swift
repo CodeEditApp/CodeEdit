@@ -32,7 +32,7 @@ final class AppDependencies {
     private(set) lazy var shellClient: ShellClientProtocol = Container.shared.shellClient()
     private(set) lazy var commandManager: CommandManaging = Container.shared.commandManager()
     private(set) lazy var keybindingManager: KeybindingManaging = Container.shared.keybindingManager()
-    private(set) lazy var notificationManager: NotificationManaging = Container.shared.notificationManager()
+    private(set) lazy var notificationManager: NotificationManaging = NotificationManager(eventBus: eventBus)
     private(set) lazy var lspService: LSPService = Container.shared.lspService()
     private(set) lazy var registryManager: RegistryManager = Container.shared.registryManager()
     private(set) lazy var workspaceWindowManager: WorkspaceWindowManager = Container.shared.workspaceWindowManager()

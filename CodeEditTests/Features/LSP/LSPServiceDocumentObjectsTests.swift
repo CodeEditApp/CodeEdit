@@ -6,12 +6,16 @@
 //
 
 import XCTest
+import CodeEditCore
 import CodeEditDocument
+import Notifications
 @testable import CodeEdit
 
 @MainActor
 final class LSPServiceDocumentObjectsTests: XCTestCase {
-    private func makeService() -> LSPService { LSPService() }
+    private func makeService() -> LSPService {
+        LSPService(notificationManager: NotificationManager(eventBus: EventBus()))
+    }
 
     private func makeDocument(path: String) throws -> CodeFileDocument {
         let url = FileManager.default.temporaryDirectory

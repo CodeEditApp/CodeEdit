@@ -6,7 +6,6 @@
 //
 
 import AppKit
-import Factory
 import Notifications
 
 /// App-shell integration for the notification toolbar badge.
@@ -23,7 +22,7 @@ extension NotificationPanelViewModel {
             }
 
             let shouldShow = !visibleNotifications.isEmpty
-                || Container.shared.notificationManager().unreadCount > 0
+                || notificationManager.unreadCount > 0
             if shouldShow && toolbar.items.filter({ $0.itemIdentifier == .notificationItem }).first == nil {
                 guard let activityItemIdx = toolbar.items
                     .firstIndex(where: { $0.itemIdentifier == .activityViewer }) else {

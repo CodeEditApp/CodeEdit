@@ -142,6 +142,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                 .environment(\.activeEditorState, activeEditorState)
                 .environment(\.fileEditorOverrides, fileEditorOverrides)
+                .environment(\.notificationManager, dependencies.notificationManager)
         })
 
         addSplitViewItem(inspector)

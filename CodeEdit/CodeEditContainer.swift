@@ -12,7 +12,9 @@ import Factory
 
 extension Container {
     var lspService: Factory<LSPService> {
-        self { @MainActor in LSPService() }.singleton
+        self { @MainActor in
+            LSPService(notificationManager: AppDependencies.bridgeShared.notificationManager)
+        }.singleton
     }
 
     var workspaceWindowManager: Factory<WorkspaceWindowManager> {
@@ -32,6 +34,11 @@ extension Container {
     }
 
     var registryManager: Factory<RegistryManager> {
-        self { @MainActor in RegistryManager() }.singleton
+        self { @MainActor in
+            RegistryManager(
+                eventBus: AppDependencies.bridgeShared.eventBus,
+                notificationManager: AppDependencies.bridgeShared.notificationManager
+            )
+        }.singleton
     }
 }

@@ -10,16 +10,14 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../../Foundation/CodeEditCore"),
-        .package(path: "../../Foundation/CodeEditUI"),
-        .package(url: "https://github.com/hmlongco/Factory", exact: "2.5.3")
+        .package(path: "../../Foundation/CodeEditUI")
     ],
     targets: [
         .target(
             name: "Notifications",
             dependencies: [
                 .product(name: "CodeEditCore", package: "CodeEditCore"),
-                .product(name: "CodeEditUI", package: "CodeEditUI"),
-                .product(name: "Factory", package: "Factory")
+                .product(name: "CodeEditUI", package: "CodeEditUI")
             ]
         )
     ]

@@ -11,7 +11,6 @@ import CodeEditDocument
 import JSONRPC
 import SwiftUI
 import Foundation
-import Factory
 import LanguageClient
 import LanguageServerProtocol
 import CodeEditLanguages
@@ -155,7 +154,10 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
         documentObjects[uri] = nil
     }
 
-    init() {
+    private let notificationManager: NotificationManaging
+
+    init(notificationManager: NotificationManaging) {
+        self.notificationManager = notificationManager
         // Load the LSP binaries from the developer menu
         for binary in lspBinaries {
             if let language = LanguageIdentifier(rawValue: binary.key) {
@@ -353,11 +355,11 @@ extension LSPService {
         let lspLanguageTitle = lspLanguage.rawValue.capitalized
         let notificationTitle = "Install \(lspLanguageTitle) Language Server"
         // Make sure the user doesn't have the same existing notification
-        guard !Container.shared.notificationManager().notifications.contains(where: { $0.title == notificationTitle }) else {
+        guard !notificationManager.notifications.contains(where: { $0.title == notificationTitle }) else {
             return
         }
 
-        Container.shared.notificationManager().post(
+        notificationManager.post(
             iconSymbol: "arrow.down.circle",
             iconColor: .clear,
             title: notificationTitle,

@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
-import Factory
 import Notifications
 
 struct InternalDevelopmentNotificationsView: View {
+    @Environment(\.notificationManager) private var notificationManager
+
     enum IconType: String, CaseIterable {
         case symbol = "Symbol"
         case image = "Image"
@@ -131,7 +132,7 @@ struct InternalDevelopmentNotificationsView: View {
                         let iconSymbol = selectedSymbol ?? availableSymbols.randomElement() ?? "bell.fill"
                         let iconColor = selectedColor ?? availableColors.randomElement()?.1 ?? .blue
 
-                        Container.shared.notificationManager().post(
+                        notificationManager?.post(
                             iconSymbol: iconSymbol,
                             iconColor: iconColor,
                             title: notificationTitle,
@@ -145,7 +146,7 @@ struct InternalDevelopmentNotificationsView: View {
                     case .image:
                         let imageName = selectedImage ?? availableImages.randomElement() ?? "GitHubIcon"
 
-                        Container.shared.notificationManager().post(
+                        notificationManager?.post(
                             iconImage: Image(imageName),
                             title: notificationTitle,
                             description: notificationDescription,
@@ -159,7 +160,7 @@ struct InternalDevelopmentNotificationsView: View {
                         let text = selectedText ?? randomLetter()
                         let iconColor = selectedColor ?? availableColors.randomElement()?.1 ?? .blue
 
-                        Container.shared.notificationManager().post(
+                        notificationManager?.post(
                             iconText: text,
                             iconTextColor: .white,
                             iconColor: iconColor,
@@ -175,7 +176,7 @@ struct InternalDevelopmentNotificationsView: View {
                         let emoji = selectedEmoji ?? availableEmojis.randomElement() ?? "🔔"
                         let iconColor = selectedColor ?? availableColors.randomElement()?.1 ?? .blue
 
-                        Container.shared.notificationManager().post(
+                        notificationManager?.post(
                             iconText: emoji,
                             iconTextColor: .white,
                             iconColor: iconColor,

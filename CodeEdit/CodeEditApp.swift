@@ -81,5 +81,6 @@ struct CodeEditApp: App {
                 }
         }
         .environment(\.settings, settings.preferences) // Add settings to each window environment
+        .environment(\.notificationManager, appdelegate.dependencies.notificationManager)
     }
 }
