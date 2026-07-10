@@ -7,6 +7,7 @@
 
 import Cocoa
 import CodeEditDocument
+import CodeEditSettings
 import SwiftUI
 import CodeEditUI
 import Factory
@@ -187,6 +188,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 }
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                 .environment(\.filePreview) { file in AnyView(FilePreviewView(item: file)) }
+                .environment(\.currentTheme, ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!)
 
                 panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
                 window?.addChildWindow(panel, ordered: .above)

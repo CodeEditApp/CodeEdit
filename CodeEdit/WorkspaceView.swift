@@ -165,6 +165,7 @@ struct WorkspaceView: View {
             }
         }
         .frame(minHeight: 170 + 29 + 29)
+        .environment(\.currentTheme, themeModel.selectedTheme ?? themeModel.themes.first!)
         .collapsable()
         .collapsed($utilityAreaViewModel.isMaximized)
         .holdingPriority(.init(1))

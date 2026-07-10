@@ -70,7 +70,7 @@ struct CodeFileView: View {
 
     @EnvironmentObject var undoRegistration: UndoManagerRegistration
 
-    @ObservedObject private var themeModel: ThemeModel = .shared
+    @Environment(\.currentTheme) private var injectedTheme
 
     @State private var treeSitter = TreeSitterClient()
 
@@ -112,7 +112,7 @@ struct CodeFileView: View {
     }
 
     private var currentTheme: Theme {
-        themeModel.selectedTheme ?? themeModel.themes.first!
+        injectedTheme!
     }
 
     @State private var font: NSFont = Settings[\.textEditing].font.current
