@@ -10,6 +10,7 @@ import CodeEditSettings
 import CEWorkspaceFileManager
 import CodeEditCore
 import CodeEditSymbols
+import CodeEditUI
 import Combine
 
 /// A view that pops up a branch picker.

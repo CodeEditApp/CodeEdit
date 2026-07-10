@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct WindowObserver<Content: View>: View {
 

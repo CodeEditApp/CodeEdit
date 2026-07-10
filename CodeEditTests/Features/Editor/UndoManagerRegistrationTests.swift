@@ -6,6 +6,7 @@
 //
 
 @testable import CodeEdit
+@testable import Editor
 import Testing
 import CodeEditCore
 import Foundation

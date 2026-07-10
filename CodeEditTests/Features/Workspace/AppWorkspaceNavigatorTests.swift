@@ -9,6 +9,7 @@ import Foundation
 import Testing
 import CodeEditCore
 @testable import CodeEdit
+@testable import Editor
 
 @Suite
 struct AppWorkspaceNavigatorTests {

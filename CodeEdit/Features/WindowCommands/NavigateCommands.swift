@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Editor
 
 struct NavigateCommands: Commands {
 

@@ -8,17 +8,6 @@
 import SwiftUI
 import Combine
 
-struct EventModifierEnvironmentKey: EnvironmentKey {
-    static var defaultValue: NSEvent.ModifierFlags = []
-}
-
-extension EnvironmentValues {
-    var modifierKeys: EventModifierEnvironmentKey.Value {
-        get { self[EventModifierEnvironmentKey.self] }
-        set { self[EventModifierEnvironmentKey.self] = newValue }
-    }
-}
-
 extension NSEvent {
     static func publisher(scope: Publisher.Scope, matching: EventTypeMask) -> Publisher {
         return Publisher(scope: scope, matching: matching)

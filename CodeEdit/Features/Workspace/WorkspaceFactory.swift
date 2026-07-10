@@ -7,6 +7,7 @@
 
 import Foundation
 import CEWorkspaceFileManager
+import Editor
 import Search
 import Factory
 

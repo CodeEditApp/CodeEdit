@@ -10,6 +10,7 @@ import Combine
 import Testing
 import CodeEditCore
 import CEWorkspaceFileManager
+@testable import Editor
 @testable import CodeEdit
 
 @Suite

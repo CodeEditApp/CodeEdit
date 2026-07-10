@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import XCTest
 import CodeEditCore
+import CodeEditSettings
 @testable import CodeEdit
 
 final class CodeEditUtilsExtensionsUnitTests: XCTestCase {

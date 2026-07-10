@@ -10,6 +10,7 @@ import Testing
 import CodeEditCore
 import CEWorkspaceFileManager
 import CodeEditDocument
+@testable import Editor
 import CodeEditLanguages
 @testable import CodeEdit
 

@@ -8,6 +8,7 @@
 import Cocoa
 import CodeEditCore
 import CodeEditUI
+import Editor
 import SwiftUI
 import Notifications
 

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeEditCore
+import CodeEditUI
 
 struct StatusBarCursorPositionLabel: View {
     @Environment(\.activeCursorState)

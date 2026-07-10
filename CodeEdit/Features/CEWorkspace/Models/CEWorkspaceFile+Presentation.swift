@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
-import CodeEditSettings
 import CodeEditCore
+import CodeEditSettings
+import CodeEditSymbols
 
 extension CEWorkspaceFile {
-    /// The file's icon as a SwiftUI `Image`.
+    // MARK: Icons
+
     var icon: Image {
         if let customImage = NSImage.symbol(named: systemImage) {
             return Image(nsImage: customImage)
@@ -19,7 +21,6 @@ extension CEWorkspaceFile {
         }
     }
 
-    /// The file's icon as an `NSImage`.
     var nsIcon: NSImage {
         if let customImage = NSImage.symbol(named: systemImage) {
             return customImage
@@ -29,25 +30,18 @@ extension CEWorkspaceFile {
         }
     }
 
-    /// SF Symbol name for the file/folder.
-    var systemImage: String {
-        if isFolder {
-            return folderIcon()
-        } else {
-            return FileIcon.fileIcon(fileType: type)
-        }
-    }
-
-    /// Icon tint color for the file type.
     var iconColor: Color {
         FileIcon.iconColor(fileType: type)
     }
 
-    /// SF Symbol name for folders (root / `.codeedit` / populated / empty).
-    private func folderIcon() -> String {
-        if self.parent == nil { return "folder.fill.badge.gearshape" }
-        if self.name == ".codeedit" { return "folder.fill.badge.gearshape" }
-        return isEmptyFolder ? "folder" : "folder.fill"
+    var systemImage: String {
+        if isFolder {
+            if self.parent == nil { return "folder.fill.badge.gearshape" }
+            if self.name == ".codeedit" { return "folder.fill.badge.gearshape" }
+            return isEmptyFolder ? "folder" : "folder.fill"
+        } else {
+            return FileIcon.fileIcon(fileType: type)
+        }
     }
 
     // MARK: Intents

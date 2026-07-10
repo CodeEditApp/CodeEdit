@@ -1,0 +1,19 @@
+//
+//  Environment+IsFullscreen.swift
+//  CodeEditUI
+//
+//  Created by Wouter Hennen on 14/01/2023.
+//
+
+import SwiftUI
+
+private struct WorkspaceFullscreenStateEnvironmentKey: EnvironmentKey {
+    nonisolated(unsafe) static let defaultValue: Bool = false
+}
+
+public extension EnvironmentValues {
+    var isFullscreen: Bool {
+        get { self[WorkspaceFullscreenStateEnvironmentKey.self] }
+        set { self[WorkspaceFullscreenStateEnvironmentKey.self] = newValue }
+    }
+}

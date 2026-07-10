@@ -36,5 +36,8 @@
       <FileRef
          location = "group:Notifications">
       </FileRef>
+      <FileRef
+         location = "group:Editor">
+      </FileRef>
    </Group>
 </Workspace>

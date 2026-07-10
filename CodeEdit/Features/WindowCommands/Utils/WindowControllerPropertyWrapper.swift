@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import Editor
 import SwiftUI
 import Combine
 

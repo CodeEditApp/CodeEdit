@@ -8,6 +8,7 @@
 import Foundation
 import CodeEditCore
 import CEWorkspaceFileManager
+import Editor
 import Factory
 
 /// App-shell binding of the `WorkspaceNavigator` command interface.

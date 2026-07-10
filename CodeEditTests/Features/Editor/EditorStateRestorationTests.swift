@@ -8,6 +8,7 @@
 import Testing
 import Foundation
 @testable import CodeEdit
+@testable import Editor
 
 @Suite
 struct EditorStateRestorationTests {

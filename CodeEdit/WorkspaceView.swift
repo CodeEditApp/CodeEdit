@@ -9,6 +9,7 @@ import SwiftUI
 import CodeEditSettings
 import CodeEditCore
 import CodeEditUI
+import Editor
 import Notifications
 import UniformTypeIdentifiers
 

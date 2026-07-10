@@ -8,6 +8,7 @@
 import Cocoa
 import CodeEditDocument
 import CodeEditSettings
+import Editor
 import SwiftUI
 import CodeEditUI
 import Factory
