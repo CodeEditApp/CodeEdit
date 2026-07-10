@@ -6,13 +6,12 @@
 //
 
 import SwiftUI
-import Factory
 import Combine
 
 extension CodeEditWindowController {
     /// These are example items that added as commands to command palette
     func registerCommands() {
-        let commandManager = Container.shared.commandManager()
+        let commandManager = dependencies.commandManager
         commandManager.addCommand(
             name: "Quick Open",
             title: "Quick Open",

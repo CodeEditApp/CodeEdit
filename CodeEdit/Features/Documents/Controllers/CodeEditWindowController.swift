@@ -11,7 +11,6 @@ import CodeEditSettings
 import Editor
 import SwiftUI
 import CodeEditUI
-import Factory
 import Combine
 
 final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, ObservableObject, NSWindowDelegate {
@@ -29,6 +28,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     var observers: [NSKeyValueObservation] = []
 
+    let dependencies: AppDependencies
+
     var workspace: Workspace?
     var workspaceSettingsWindow: NSWindow?
     var quickOpenPanel: SearchPanel?
@@ -43,8 +44,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     init(
         window: NSWindow?,
-        workspace: Workspace?
+        workspace: Workspace?,
+        dependencies: AppDependencies
     ) {
+        self.dependencies = dependencies
         super.init(window: window)
         window?.delegate = self
         guard let workspace else { return }
@@ -243,8 +246,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
         // Notify the window manager to clean up workspace state
         if let workspace {
-            let windowManager = Container.shared.workspaceWindowManager()
-            windowManager.closeWorkspace(workspace)
+            dependencies.workspaceWindowManager.closeWorkspace(workspace)
         }
         workspace = nil
         return true

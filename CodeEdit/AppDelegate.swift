@@ -22,13 +22,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @Environment(\.openWindow)
     var openWindow
 
-    let dependencies = AppDependencies()
+    let dependencies: AppDependencies = {
+        let dependencies = AppDependencies()
+        AppDependencies.bridgeShared = dependencies
+        return dependencies
+    }()
 
     var lspService: LSPService { dependencies.lspService }
     var windowManager: WorkspaceWindowManager { dependencies.workspaceWindowManager }
     var eventBus: EventBus { dependencies.eventBus }
 
-    private let shutdownUseCase = ShutdownApplicationUseCase()
+    private lazy var shutdownUseCase = ShutdownApplicationUseCase(
+        windowManager: dependencies.workspaceWindowManager,
+        eventBus: dependencies.eventBus
+    )
 
     private var cancellables = Set<AnyCancellable>()
 

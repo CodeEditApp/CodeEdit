@@ -9,7 +9,6 @@ import Foundation
 import CEWorkspaceFileManager
 import Editor
 import Search
-import Factory
 
 /// Constructs and wires the manager/service object graph for a ``Workspace``.
 ///
@@ -28,7 +27,7 @@ enum WorkspaceFactory {
     ///     must already be initialized (they are set at declaration time).
     ///   - url: The root URL of the workspace folder.
     @MainActor
-    static func populate(_ workspace: Workspace, url: URL) {
+    static func populate(_ workspace: Workspace, url: URL, dependencies: AppDependencies) {
         // Begin security-scoped access on the original (possibly bookmark-derived) URL so a
         // sandboxed build can read a workspace opened from recents. `startAccessingSecurityScopedResource`
         // returns `false` for non-scoped URLs (e.g. from the open panel / Powerbox), which access
@@ -53,8 +52,8 @@ enum WorkspaceFactory {
             return
         }
 
-        let shellClient = Container.shared.shellClient()
-        let eventBus = Container.shared.eventBus()
+        let shellClient = dependencies.shellClient
+        let eventBus = dependencies.eventBus
         let sourceControlManager = SourceControlManager(
             workspaceURL: url,
             shellClient: shellClient,

@@ -9,7 +9,6 @@ import AppKit
 import CodeEditSettings
 import CEWorkspaceFileManager
 import CodeEditCore
-import Factory
 import Notifications
 import SwiftUI
 import WelcomeWindow
@@ -18,11 +17,18 @@ import WelcomeWindow
 @MainActor
 final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
-    @LazyInjected(\.eventBus) private var eventBus
+    private let dependencies: AppDependencies
+    private var eventBus: EventBus { dependencies.eventBus }
 
-    private let openWorkspaceUseCase = OpenWorkspaceUseCase()
-    private let closeWorkspaceUseCase = CloseWorkspaceUseCase()
+    private let openWorkspaceUseCase: OpenWorkspaceUseCase
+    private let closeWorkspaceUseCase: CloseWorkspaceUseCase
     private lazy var openDocumentUseCase = OpenDocumentUseCase(windowManager: self)
+
+    init(dependencies: AppDependencies) {
+        self.dependencies = dependencies
+        self.openWorkspaceUseCase = OpenWorkspaceUseCase(dependencies: dependencies)
+        self.closeWorkspaceUseCase = CloseWorkspaceUseCase(lspService: dependencies.lspService)
+    }
 
     /// All currently open workspaces.
     private(set) var openWorkspaces: [Workspace] = []

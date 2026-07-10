@@ -50,8 +50,8 @@ final class Workspace: ObservableObject, WorkspaceManaging {
 
     // MARK: - Initialization
 
-    init(url: URL) {
-        WorkspaceFactory.populate(self, url: url)
+    init(url: URL, dependencies: AppDependencies) {
+        WorkspaceFactory.populate(self, url: url, dependencies: dependencies)
     }
 
     /// Minimal initializer for testing. Does not set up workspace state.

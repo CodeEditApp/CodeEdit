@@ -23,6 +23,11 @@ import ShellClient
 /// first touch) and to allow adapters to reference sibling properties.
 @MainActor
 final class AppDependencies {
+    /// Bridge-phase backdoor so the container registration can construct the
+    /// window manager without creating a second dependency graph. AppDelegate
+    /// assigns this before anything resolves the key. Deleted with the container.
+    nonisolated(unsafe) static var bridgeShared: AppDependencies!
+
     private(set) lazy var eventBus: EventBus = Container.shared.eventBus()
     private(set) lazy var shellClient: ShellClientProtocol = Container.shared.shellClient()
     private(set) lazy var commandManager: CommandManaging = Container.shared.commandManager()

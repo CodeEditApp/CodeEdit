@@ -6,13 +6,14 @@
 //
 
 import Foundation
-import Factory
 
 extension URL {
     /// Finds a workspace that contains the url.
+    ///
+    /// Bridge-phase shim: remaining callers (LSP cluster) receive an injected
+    /// window manager in a later migration task, after which this file is deleted.
     @MainActor
     func findWorkspace() -> Workspace? {
-        let windowManager = Container.shared.workspaceWindowManager()
-        return windowManager.workspace(containing: self)
+        AppDependencies.bridgeShared.workspaceWindowManager.workspace(containing: self)
     }
 }

@@ -16,7 +16,7 @@ extension Container {
     }
 
     var workspaceWindowManager: Factory<WorkspaceWindowManager> {
-        self { @MainActor in WorkspaceWindowManager() }.singleton
+        self { @MainActor in WorkspaceWindowManager(dependencies: AppDependencies.bridgeShared) }.singleton
     }
 
     var shellClient: Factory<ShellClientProtocol> {

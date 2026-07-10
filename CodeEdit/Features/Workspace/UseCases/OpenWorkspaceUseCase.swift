@@ -10,6 +10,11 @@ import AppKit
 /// Creates and configures a workspace, window, and window controller for a given URL.
 @MainActor
 final class OpenWorkspaceUseCase {
+    private let dependencies: AppDependencies
+
+    init(dependencies: AppDependencies) {
+        self.dependencies = dependencies
+    }
 
     struct Result {
         let workspace: Workspace
@@ -18,7 +23,7 @@ final class OpenWorkspaceUseCase {
     }
 
     func execute(url: URL) -> Result {
-        let workspace = Workspace(url: url)
+        let workspace = Workspace(url: url, dependencies: dependencies)
 
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 1400, height: 900),
@@ -29,7 +34,8 @@ final class OpenWorkspaceUseCase {
 
         let windowController = CodeEditWindowController(
             window: window,
-            workspace: workspace
+            workspace: workspace,
+            dependencies: dependencies
         )
 
         // Restore saved window geometry, or use default centered frame

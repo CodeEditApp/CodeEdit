@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Factory
 import CodeEditCore
 
 /// Orchestrates application shutdown: saves workspace paths, checks for unsaved changes,
@@ -18,11 +17,13 @@ import CodeEditCore
 @MainActor
 final class ShutdownApplicationUseCase {
 
-    @LazyInjected(\.workspaceWindowManager)
-    private var windowManager
+    private let windowManager: WorkspaceWindowManaging
+    private let eventBus: EventBus
 
-    @LazyInjected(\.eventBus)
-    private var eventBus
+    init(windowManager: WorkspaceWindowManaging, eventBus: EventBus) {
+        self.windowManager = windowManager
+        self.eventBus = eventBus
+    }
 
     /// - Returns: `true` if the app should proceed with termination, `false` if the user cancelled.
     func execute() -> Bool {

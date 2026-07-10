@@ -6,14 +6,16 @@
 //
 
 import Foundation
-import Factory
 
 /// Coordinates cleanup when a workspace is closed (LSP shutdown + workspace teardown).
 @MainActor
 final class CloseWorkspaceUseCase {
 
-    @LazyInjected(\.lspService)
-    private var lspService
+    private let lspService: LSPService
+
+    init(lspService: LSPService) {
+        self.lspService = lspService
+    }
 
     func execute(workspace: Workspace) {
         if let path = workspace.fileURL?.absoluteURL.path() {
