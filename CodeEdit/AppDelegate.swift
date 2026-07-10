@@ -9,7 +9,6 @@ import Combine
 import CodeEditSettings
 import CodeEditDocument
 import SwiftUI
-import Factory
 import CodeEditCore
 import CodeEditSymbols
 import CodeEditSourceEditor
@@ -23,14 +22,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @Environment(\.openWindow)
     var openWindow
 
-    @LazyInjected(\.lspService)
-    var lspService
+    let dependencies = AppDependencies()
 
-    @LazyInjected(\.workspaceWindowManager)
-    var windowManager
-
-    @LazyInjected(\.eventBus)
-    var eventBus
+    var lspService: LSPService { dependencies.lspService }
+    var windowManager: WorkspaceWindowManager { dependencies.workspaceWindowManager }
+    var eventBus: EventBus { dependencies.eventBus }
 
     private let shutdownUseCase = ShutdownApplicationUseCase()
 

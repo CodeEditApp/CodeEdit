@@ -42,7 +42,7 @@ struct CodeEditApp: App {
                     OpenFileOrFolderButton(dismissWindow: dismissWindow)
                 },
                 onDrop: { url, dismissWindow in
-                    let windowManager = Container.shared.workspaceWindowManager()
+                    let windowManager = appdelegate.dependencies.workspaceWindowManager
                     Task {
                         do {
                             try windowManager.openWorkspace(at: url)
@@ -53,7 +53,7 @@ struct CodeEditApp: App {
                     }
                 },
                 openHandler: { urls, dismissWindow in
-                    let windowManager = Container.shared.workspaceWindowManager()
+                    let windowManager = appdelegate.dependencies.workspaceWindowManager
                     for url in urls {
                         windowManager.openDocument(at: url, onCompletion: {})
                     }
