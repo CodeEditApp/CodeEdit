@@ -8,7 +8,6 @@
 import Foundation
 import CodeEditCore
 import CEWorkspaceFileManager
-import Factory
 
 /// App-shell binding of the `FileRelocator` command. Resolves the workspace that
 /// owns the file and delegates to `MoveFileUseCase`, which moves the file and
@@ -16,7 +15,7 @@ import Factory
 final class AppFileRelocator: FileRelocator {
     private let windowManager: WorkspaceWindowManaging
 
-    init(windowManager: WorkspaceWindowManaging = Container.shared.workspaceWindowManager()) {
+    init(windowManager: WorkspaceWindowManaging) {
         self.windowManager = windowManager
     }
 

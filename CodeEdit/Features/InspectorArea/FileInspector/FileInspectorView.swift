@@ -8,12 +8,12 @@ import SwiftUI
 import CodeEditSettings
 import CodeEditCore
 import CodeEditLanguages
-import Factory
 
 struct FileInspectorView: View {
     @Environment(\.activeEditorState) private var activeEditorState
 
     @Environment(\.fileEditorOverrides) private var fileEditorOverrides
+    @Environment(\.fileRelocator) private var fileRelocator
 
     @AppSettings(\.textEditing)
     private var textEditing
@@ -92,7 +92,7 @@ struct FileInspectorView: View {
                             .appending(path: fileName)
                         DispatchQueue.main.async {
                             do {
-                                _ = try Container.shared.fileRelocator().relocate(file: file, to: destinationURL)
+                                _ = try fileRelocator.relocate(file: file, to: destinationURL)
                             } catch {
                                 let alert = NSAlert(error: error)
                                 alert.addButton(withTitle: "Dismiss")
@@ -136,7 +136,7 @@ struct FileInspectorView: View {
                         // And if the files are re-built at the same time as the tab is opened, it causes a memory error
                         DispatchQueue.main.async {
                             do {
-                                _ = try Container.shared.fileRelocator().relocate(file: file, to: newURL)
+                                _ = try fileRelocator.relocate(file: file, to: newURL)
                             } catch {
                                 let alert = NSAlert(error: error)
                                 alert.addButton(withTitle: "Dismiss")

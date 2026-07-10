@@ -23,10 +23,9 @@ struct CodeEditApp: App {
     init() {
         NSMenuItem.swizzle()
         NSSplitViewItem.swizzle()
-        Container.shared.codeFileDocumentDelegate.register { AppCodeFileDocumentDelegate() }
-        Container.shared.workspaceNavigator.register { AppWorkspaceNavigator() }
-        Container.shared.fileRelocator.register { AppFileRelocator() }
-        Container.shared.languageServicesProvider.register { @MainActor in AppLanguageServicesProvider() }
+        CodeFileDocument.delegateProvider = { [dependencies = appdelegate.dependencies] in
+            dependencies.codeFileDocumentDelegate
+        }
         SettingsData.TextEditingSettings.registerCommands()
         SettingsData.reconcileDefaultKeybindings()
     }

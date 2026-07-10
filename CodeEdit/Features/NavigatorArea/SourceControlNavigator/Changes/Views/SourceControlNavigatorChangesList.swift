@@ -9,10 +9,10 @@ import AppKit
 import CEWorkspaceFileManager
 import SwiftUI
 import CodeEditCore
-import Factory
 
 struct SourceControlNavigatorChangesList: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
+    @Environment(\.workspaceNavigator) private var workspaceNavigator
 
     @Environment(\.workspaceFileManager)
     private var workspaceFileManager
@@ -81,7 +81,7 @@ struct SourceControlNavigatorChangesList: View {
             return
         }
         DispatchQueue.main.async {
-            Container.shared.workspaceNavigator().open(file: ceFile, asTemporary: true)
+            workspaceNavigator.open(file: ceFile, asTemporary: true)
         }
     }
 }

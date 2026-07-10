@@ -11,7 +11,6 @@ import AppKit
 import Testing
 import CodeEditCore
 import CodeEditDocument
-import Factory
 import CodeEditTextView
 @testable import CodeEdit
 
@@ -37,8 +36,9 @@ struct CodeFileDocumentTests {
     @Test
     func delegateConsultedForUndoOnReread() throws {
         let mock = MockDelegate()
-        Container.shared.codeFileDocumentDelegate.register { mock }
-        defer { Container.shared.codeFileDocumentDelegate.reset() }
+        let previousProvider = CodeFileDocument.delegateProvider
+        CodeFileDocument.delegateProvider = { mock }
+        defer { CodeFileDocument.delegateProvider = previousProvider }
 
         try withCodeFile { codeFile in
             // First read happened in `withCodeFile` (content now loaded). A second read
@@ -53,8 +53,9 @@ struct CodeFileDocumentTests {
     @Test
     func delegateReceivesOpenAndCloseNotifications() throws {
         let mock = MockDelegate()
-        Container.shared.codeFileDocumentDelegate.register { mock }
-        defer { Container.shared.codeFileDocumentDelegate.reset() }
+        let previousProvider = CodeFileDocument.delegateProvider
+        CodeFileDocument.delegateProvider = { mock }
+        defer { CodeFileDocument.delegateProvider = previousProvider }
 
         try withCodeFile { codeFile in
             #expect(mock.openedDocuments.contains { $0 === codeFile })
@@ -71,6 +72,7 @@ struct CodeFileDocumentTests {
         }
     }
 
+    @MainActor
     private func withCodeFile(_ operation: (CodeFileDocument) throws -> Void) throws {
         try withFile { fileURL in
             try defaultString.write(to: fileURL, atomically: true, encoding: .utf8)
@@ -79,6 +81,7 @@ struct CodeFileDocumentTests {
         }
     }
 
+    @MainActor
     @Test
     func autosavesInPlaceReflectsProvider() {
         let original = CodeFileDocument.isAutoSaveOnProvider
@@ -91,6 +94,7 @@ struct CodeFileDocumentTests {
         #expect(CodeFileDocument.autosavesInPlace == false)
     }
 
+    @MainActor
     @Test
     func indentOptionOverrideUsesCoreType() {
         let codeFile = CodeFileDocument()
@@ -99,6 +103,7 @@ struct CodeFileDocumentTests {
         #expect(codeFile.indentOption?.spaceCount == 2)
     }
 
+    @MainActor
     @Test
     func testLoadUTF8Encoding() throws {
         try withFile { fileURL in
@@ -113,6 +118,7 @@ struct CodeFileDocumentTests {
         }
     }
 
+    @MainActor
     @Test
     func testWriteUTF8Encoding() throws {
         try withFile { fileURL in
@@ -138,6 +144,7 @@ struct CodeFileDocumentTests {
         }
     }
 
+    @MainActor
     @Test
     func ignoresExternalUpdatesWithOutstandingChanges() throws {
         try withCodeFile { codeFile in
@@ -156,18 +163,29 @@ struct CodeFileDocumentTests {
         }
     }
 
+    // Deliberately NOT @MainActor: `presentedItemDidChange` is a file-presenter callback that
+    // performs `DispatchQueue.main.sync` internally, so it must be invoked off the main thread
+    // (as NSFileCoordinator does in production). The document itself is created on main.
     @Test
-    func loadsExternalUpdatesWithNoOutstandingChanges() throws {
-        try withCodeFile { codeFile in
-            // Update the modification date
-            try "different contents".write(to: codeFile.fileURL!, atomically: true, encoding: .utf8)
+    func loadsExternalUpdatesWithNoOutstandingChanges() async throws {
+        try await withTempDir { dir in
+            let fileURL = dir.appending(path: "file.swift")
+            try defaultString.write(to: fileURL, atomically: true, encoding: .utf8)
+            let codeFile = try await MainActor.run {
+                try CodeFileDocument(contentsOf: fileURL, ofType: "public.source-code")
+            }
 
-            // Tell the file the disk representation changed
+            // Update the modification date
+            try "different contents".write(to: fileURL, atomically: true, encoding: .utf8)
+
+            // Tell the file the disk representation changed (off-main, like a real presenter callback)
             codeFile.presentedItemDidChange()
 
             // The file should have reloaded (it was clean)
-            #expect(codeFile.content?.string == "different contents")
-            #expect(codeFile.isDocumentEdited == false)
+            await MainActor.run {
+                #expect(codeFile.content?.string == "different contents")
+                #expect(codeFile.isDocumentEdited == false)
+            }
         }
     }
 }

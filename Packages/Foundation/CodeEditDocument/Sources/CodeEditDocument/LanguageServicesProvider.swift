@@ -9,7 +9,6 @@
 import CodeEditTextView
 import CodeEditLanguages
 import AppKit
-import Factory
 
 public struct LanguageServices {
     public let textCoordinator: TextViewCoordinator
@@ -21,19 +20,13 @@ public struct LanguageServices {
     }
 }
 
-extension Container {
-    public var languageServicesProvider: Factory<LanguageServicesProvider> {
-        self { @MainActor in NoOpLanguageServicesProvider() }.singleton
-    }
-}
-
 @MainActor
 public protocol LanguageServicesProvider: AnyObject {
     func languageServices(for document: CodeFileDocument) -> LanguageServices
 }
 
 public final class NoOpLanguageServicesProvider: LanguageServicesProvider {
-    public init() {}
+    public nonisolated init() {}
 
     @MainActor
     public func languageServices(for document: CodeFileDocument) -> LanguageServices {

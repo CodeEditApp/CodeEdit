@@ -16,7 +16,6 @@ import CodeEditCore
 import Combine
 import OSLog
 import TextStory
-import Factory
 
 enum CodeFileError: Error {
     case failedToDecode
@@ -36,11 +35,17 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
 
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CodeFileDocument")
 
-    /// The app-registered delegate (see ``CodeFileDocumentDelegate``). Provides LSP lifecycle
-    /// notifications, the standalone-window content view, and undo-manager lookup, keeping this
-    /// document free of app-tier types. `nil` when unhosted (e.g. tests that don't register one).
-    @LazyInjected(\.codeFileDocumentDelegate)
-    private var delegate
+    /// Vends the app-registered delegate (see ``CodeFileDocumentDelegate``). A static provider —
+    /// not a per-instance property — because framework-created documents fire `documentDidOpen`
+    /// from `read()` during `init(contentsOf:)`, before any caller could set an instance property.
+    /// Wired by the app at launch (like ``isAutoSaveOnProvider``); defaults to `nil` so tests and
+    /// previews are safe. Call sites handle main-actor hops themselves.
+    nonisolated(unsafe) public static var delegateProvider: () -> CodeFileDocumentDelegate? = { nil }
+
+    /// The app-registered delegate. Provides LSP lifecycle notifications, the standalone-window
+    /// content view, and undo-manager lookup, keeping this document free of app-tier types.
+    /// `nil` when unhosted (e.g. tests that don't wire a provider).
+    private var delegate: CodeFileDocumentDelegate? { Self.delegateProvider() }
 
     /// The text content of the document, stored as a text storage
     ///

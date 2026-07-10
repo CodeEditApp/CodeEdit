@@ -13,7 +13,6 @@ import CodeEditTextView
 import CodeEditSourceEditor
 import LanguageClient
 import LanguageServerProtocol
-import Factory
 
 @testable import CodeEdit
 
@@ -29,8 +28,12 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
 
     var tempTestDir: URL!
 
+    /// The host app's live dependency graph (the test bundle runs inside CodeEdit).
+    @MainActor var appDependencies: AppDependencies {
+        (NSApplication.shared.delegate as! AppDelegate).dependencies // swiftlint:disable:this force_cast
+    }
+
     override func setUp() {
-        Container.shared.codeFileDocumentDelegate.register { AppCodeFileDocumentDelegate() }
         continueAfterFailure = false
         do {
             let tempDir = FileManager.default.temporaryDirectory.appending(
@@ -78,8 +81,8 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             serverCapabilities: capabilities,
             rootPath: tempTestDir,
             logContainer: LanguageServerLogContainer(language: .swift),
-            provideObjects: { Container.shared.lspService().languageServerObjects(for: $0) },
-            clearObjects: { Container.shared.lspService().removeLanguageServerObjects(for: $0) }
+            provideObjects: { self.appDependencies.lspService.languageServerObjects(for: $0) },
+            clearObjects: { self.appDependencies.lspService.removeLanguageServerObjects(for: $0) }
         )
         _ = try await server.lspInstance.initializeIfNeeded()
         return (connection: bufferingConnection, server: server)
@@ -87,7 +90,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
 
     @MainActor
     func makeTestWorkspace() throws -> (Workspace, CEWorkspaceFileManager) {
-        let windowManager = Container.shared.workspaceWindowManager()
+        let windowManager = appDependencies.workspaceWindowManager
         try windowManager.openWorkspace(at: tempTestDir)
         guard let workspace = windowManager.openWorkspaces.first(where: {
             $0.fileURL?.standardizedFileURL.path() == tempTestDir.standardizedFileURL.path()
@@ -160,7 +163,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         let (connection, server) = try await makeTestServer()
 
         // This service should receive the didOpen/didClose notifications
-        let lspService = Container.shared.lspService()
+        let lspService = appDependencies.lspService
         lspService.languageClients[.init(.swift, tempTestDir.path() + "/")] = server
 
         // Set up workspace. Registers it with the workspace window manager.
@@ -245,7 +248,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             let (connection, server) = try await makeTestServer()
             // Create a CodeFileDocument to test with, attach it to the workspace and file
             let codeFile = try await openCodeFile(for: server, connection: connection, file: file, syncOption: option)
-            let lspObjects = Container.shared.lspService().languageServerObjects(for: codeFile)
+            let lspObjects = appDependencies.lspService.languageServerObjects(for: codeFile)
             XCTAssertNotNil(lspObjects.textCoordinator.languageServer)
             lspObjects.textCoordinator.setUpUpdatesTask()
             codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
@@ -303,7 +306,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             // Set up test server
             let (connection, server) = try await makeTestServer()
             let codeFile = try await openCodeFile(for: server, connection: connection, file: file, syncOption: option)
-            let lspObjects = Container.shared.lspService().languageServerObjects(for: codeFile)
+            let lspObjects = appDependencies.lspService.languageServerObjects(for: codeFile)
 
             XCTAssertNotNil(lspObjects.textCoordinator.languageServer)
             lspObjects.textCoordinator.setUpUpdatesTask()

@@ -15,7 +15,6 @@ import CodeEditTextView
 import CodeEditLanguages
 import CodeEditCore
 import Combine
-import Factory
 
 /// CodeFileView is just a wrapper of the `CodeEditor` dependency
 struct CodeFileView: View {
@@ -81,13 +80,14 @@ struct CodeFileView: View {
     init(
         editorInstance: EditorInstance,
         codeFile: CodeFileDocument,
+        languageServices languageServicesProvider: LanguageServicesProvider,
         textViewCoordinators: [TextViewCoordinator] = [],
         isEditable: Bool = true
     ) {
         self._editorInstance = .init(wrappedValue: editorInstance)
         self._codeFile = .init(wrappedValue: codeFile)
 
-        let languageServices = Container.shared.languageServicesProvider().languageServices(for: codeFile)
+        let languageServices = languageServicesProvider.languageServices(for: codeFile)
 
         self.textViewCoordinators = textViewCoordinators
             + [editorInstance.rangeTranslator]

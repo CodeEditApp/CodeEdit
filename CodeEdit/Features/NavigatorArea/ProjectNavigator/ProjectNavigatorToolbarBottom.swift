@@ -9,7 +9,6 @@ import SwiftUI
 import CEWorkspaceFileManager
 import CodeEditUI
 import CodeEditCore
-import Factory
 
 struct ProjectNavigatorToolbarBottom: View {
     @Environment(\.controlActiveState)
@@ -19,6 +18,7 @@ struct ProjectNavigatorToolbarBottom: View {
     private var colorScheme
 
     @Environment(\.activeEditorState) private var activeEditorState
+    @Environment(\.workspaceNavigator) private var workspaceNavigator
     @EnvironmentObject var listenerModel: WorkspaceNotificationModel
     @EnvironmentObject var projectNavigatorViewModel: ProjectNavigatorViewModel
 
@@ -117,7 +117,7 @@ struct ProjectNavigatorToolbarBottom: View {
                         toFile: rootFile
                     ) {
                         listenerModel.highlightedFileItem = newFile
-                        Container.shared.workspaceNavigator().open(file: newFile, asTemporary: false)
+                        workspaceNavigator.open(file: newFile, asTemporary: false)
                     }
                 } catch {
                     let alert = NSAlert(error: error)

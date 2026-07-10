@@ -8,7 +8,6 @@
 import AppKit
 import Editor
 import SwiftUI
-import Factory
 import CodeEditTextView
 import CodeEditDocument
 
@@ -17,19 +16,28 @@ import CodeEditDocument
 /// standalone-window view, and `LSPService` lifecycle notifications.
 @MainActor
 final class AppCodeFileDocumentDelegate: CodeFileDocumentDelegate {
-    @LazyInjected(\.lspService) private var lspService
+    private let lspService: LSPService
+    private let windowManager: WorkspaceWindowManaging
+    private let languageServices: LanguageServicesProvider
 
-    /// `nonisolated` so the Factory registration closure can construct it from any context
-    /// (e.g. a non-isolated test `setUp`); the init touches no main-actor state.
-    nonisolated init() {}
+    init(
+        lspService: LSPService,
+        windowManager: WorkspaceWindowManaging,
+        languageServices: LanguageServicesProvider
+    ) {
+        self.lspService = lspService
+        self.windowManager = windowManager
+        self.languageServices = languageServices
+    }
 
     func undoManager(forFile url: URL) -> CEUndoManager? {
-        url.findWorkspace()?.undoRegistration.managerIfExists(forFile: url)
+        windowManager.workspace(containing: url)?.undoRegistration.managerIfExists(forFile: url)
     }
 
     func makeWindowContentView(for document: CodeFileDocument) -> NSView {
         NSHostingView(rootView: SettingsInjector {
             WindowCodeFileView(codeFile: document)
+                .environment(\.languageServices, languageServices)
         })
     }
 

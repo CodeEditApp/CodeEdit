@@ -27,9 +27,11 @@ public struct FilePreviewView: View {
         self._document = .init(wrappedValue: doc ?? .init())
     }
 
+    @Environment(\.languageServices) private var languageServices
+
     public var body: some View {
         if let utType = document.utType, utType.conforms(to: .text) {
-            CodeFileView(editorInstance: editorInstance, codeFile: document, isEditable: false)
+            CodeFileView(editorInstance: editorInstance, codeFile: document, languageServices: languageServices, isEditable: false)
                 .environmentObject(undoRegistration)
         } else {
             NonTextFileView(fileDocument: document)

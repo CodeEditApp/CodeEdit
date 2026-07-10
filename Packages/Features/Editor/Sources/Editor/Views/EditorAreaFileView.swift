@@ -20,6 +20,9 @@ struct EditorAreaFileView: View {
     @Environment(\.edgeInsets)
     private var edgeInsets
 
+    @Environment(\.languageServices)
+    private var languageServices
+
     var editorInstance: EditorInstance
     var codeFile: CodeFileDocument
 
@@ -27,7 +30,8 @@ struct EditorAreaFileView: View {
         if let utType = codeFile.utType, utType.conforms(to: .text) {
             CodeFileView(
                 editorInstance: editorInstance,
-                codeFile: codeFile
+                codeFile: codeFile,
+                languageServices: languageServices
             )
         } else {
             NonTextFileView(fileDocument: codeFile)

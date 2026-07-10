@@ -105,6 +105,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .environment(\.workspaceFileURL, workspace.fileURL)
                 .environment(\.activeEditorState, activeEditorState)
                 .environment(\.workspaceFileOpener, dependencies.workspaceFileOpener)
+                .environment(\.workspaceNavigator, dependencies.workspaceNavigator)
         })
 
         addSplitViewItem(navigator)
@@ -126,6 +127,8 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environment(\.workspaceStatePersistence, workspace.statePersistence)
                     .environment(\.activeEditorState, activeEditorState)
                     .environment(\.activeCursorState, activeCursorState)
+                    .environment(\.workspaceNavigator, dependencies.workspaceNavigator)
+                    .environment(\.languageServices, dependencies.languageServicesProvider)
             }
         }
 
@@ -143,6 +146,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                 .environment(\.activeEditorState, activeEditorState)
                 .environment(\.fileEditorOverrides, fileEditorOverrides)
                 .environment(\.notificationManager, dependencies.notificationManager)
+                .environment(\.fileRelocator, dependencies.fileRelocator)
         })
 
         addSplitViewItem(inspector)

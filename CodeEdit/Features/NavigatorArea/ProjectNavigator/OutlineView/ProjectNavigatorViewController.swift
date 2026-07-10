@@ -11,7 +11,6 @@ import CEWorkspaceFileManager
 import SwiftUI
 import OSLog
 import CodeEditCore
-import Factory
 
 /// A `NSViewController` that handles the **ProjectNavigatorView** in the **NavigatorArea**.
 ///
@@ -40,6 +39,10 @@ final class ProjectNavigatorViewController: NSViewController {
     var expandedItems: Set<CEWorkspaceFile> = []
 
     weak var workspace: Workspace?
+
+    /// The navigation command interface; assigned by `ProjectNavigatorOutlineView` from the
+    /// environment. No-op until set so the controller stays constructible in isolation.
+    var workspaceNavigator: WorkspaceNavigator = NoOpWorkspaceNavigator()
     weak var activeEditorState: (any ActiveEditorState)?
 
     var iconColor: SettingsData.FileIconStyle = .color {
@@ -182,7 +185,7 @@ final class ProjectNavigatorViewController: NSViewController {
                 outlineView.expandItem(item)
             }
         } else if Settings[\.navigation].navigationStyle == .openInTabs {
-            Container.shared.workspaceNavigator().open(file: item, asTemporary: false)
+            workspaceNavigator.open(file: item, asTemporary: false)
         }
     }
 

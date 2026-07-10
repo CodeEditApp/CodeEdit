@@ -10,15 +10,13 @@ let package = Package(
     ],
     dependencies: [
         // Pins match the app's Package.resolved to avoid a second resolved copy.
-        .package(path: "../CodeEditCore"),
-        .package(url: "https://github.com/hmlongco/Factory", exact: "2.5.3")
+        .package(path: "../CodeEditCore")
     ],
     targets: [
         .target(
             name: "CodeEditSettings",
             dependencies: [
-                .product(name: "CodeEditCore", package: "CodeEditCore"),
-                .product(name: "Factory", package: "Factory")
+                .product(name: "CodeEditCore", package: "CodeEditCore")
             ]
         )
     ]

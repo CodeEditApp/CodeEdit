@@ -6,11 +6,14 @@
 //
 
 import CodeEditDocument
-import Factory
 
 @MainActor
 final class AppLanguageServicesProvider: LanguageServicesProvider {
-    @LazyInjected(\.lspService) private var lspService
+    private let lspService: LSPService
+
+    init(lspService: LSPService) {
+        self.lspService = lspService
+    }
 
     func languageServices(for document: CodeFileDocument) -> LanguageServices {
         let objects = lspService.languageServerObjects(for: document)

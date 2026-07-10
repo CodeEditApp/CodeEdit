@@ -8,7 +8,6 @@
 import SwiftUI
 import CEWorkspaceFileManager
 import CodeEditCore
-import Factory
 import Foundation
 
 extension View {
@@ -27,6 +26,9 @@ struct EditorTabBarContextMenu: ViewModifier {
     }
 
     @EnvironmentObject var editorManager: EditorManager
+
+    @Environment(\.workspaceNavigator)
+    private var workspaceNavigator
 
     @Environment(\.workspaceFileManager)
     private var workspaceFileManager
@@ -107,7 +109,7 @@ struct EditorTabBarContextMenu: ViewModifier {
                 }
 
                 Button("Reveal in Project Navigator") {
-                    Container.shared.workspaceNavigator().reveal(file: item)
+                    workspaceNavigator.reveal(file: item)
                 }
 
                 Button("Open in New Window") {

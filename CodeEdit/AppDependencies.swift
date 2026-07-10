@@ -41,4 +41,20 @@ final class AppDependencies {
 
     private(set) lazy var workspaceFileOpener: WorkspaceFileOpener =
         AppWorkspaceFileOpener(windowManager: workspaceWindowManager)
+
+    private(set) lazy var workspaceNavigator: WorkspaceNavigator =
+        AppWorkspaceNavigator(windowManager: workspaceWindowManager)
+
+    private(set) lazy var fileRelocator: FileRelocator =
+        AppFileRelocator(windowManager: workspaceWindowManager)
+
+    private(set) lazy var languageServicesProvider: LanguageServicesProvider =
+        AppLanguageServicesProvider(lspService: lspService)
+
+    private(set) lazy var codeFileDocumentDelegate: CodeFileDocumentDelegate =
+        AppCodeFileDocumentDelegate(
+            lspService: lspService,
+            windowManager: workspaceWindowManager,
+            languageServices: languageServicesProvider
+        )
 }

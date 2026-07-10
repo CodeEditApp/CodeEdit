@@ -19,6 +19,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
     @EnvironmentObject var editorManager: EditorManager
 
     @Environment(\.activeEditorState) private var activeEditorState
+    @Environment(\.workspaceNavigator) private var workspaceNavigator
 
     @StateObject var prefs: CodeEditSettings.Settings = .shared
 
@@ -29,6 +30,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         controller.workspace = workspace
         controller.iconColor = prefs.preferences.general.fileIconStyle
         controller.activeEditorState = activeEditorState
+        controller.workspaceNavigator = workspaceNavigator
         workspace.workspaceFileManager?.addObserver(context.coordinator)
 
         context.coordinator.controller = controller

@@ -9,7 +9,6 @@ import AppKit
 import CEWorkspaceFileManager
 import CodeEditCore
 import SwiftUI
-import Factory
 
 extension ProjectNavigatorMenu {
     /// - Returns: the currently selected `CEWorkspaceFile` items in the outline view.
@@ -70,7 +69,7 @@ extension ProjectNavigatorMenu {
 
         /// Open the items in order.
         sortedItems.forEach { item in
-            Container.shared.workspaceNavigator().open(file: item, asTemporary: false)
+            sender.workspaceNavigator.open(file: item, asTemporary: false)
         }
     }
 
@@ -92,7 +91,7 @@ extension ProjectNavigatorMenu {
         do {
             if let newFile = try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item) {
                 workspace?.listenerModel.highlightedFileItem = newFile
-                Container.shared.workspaceNavigator().open(file: newFile, asTemporary: false)
+                sender.workspaceNavigator.open(file: newFile, asTemporary: false)
             }
         } catch {
             let alert = NSAlert(error: error)
@@ -132,7 +131,7 @@ extension ProjectNavigatorMenu {
                     contents: clipBoardContent
                 ) {
                 workspace?.listenerModel.highlightedFileItem = newFile
-                Container.shared.workspaceNavigator().open(file: newFile, asTemporary: false)
+                sender.workspaceNavigator.open(file: newFile, asTemporary: false)
                 renameFile()
             }
         } catch {
@@ -193,7 +192,7 @@ extension ProjectNavigatorMenu {
         do {
             try selectedItems().forEach { item in
                 withAnimation {
-                    Container.shared.workspaceNavigator().closeTab(file: item)
+                    sender.workspaceNavigator.closeTab(file: item)
                 }
                 guard FileManager.default.fileExists(atPath: item.url.path) else {
                     // Was likely already trashed (eg selecting files in a folder and deleting the folder and files)
@@ -242,7 +241,7 @@ extension ProjectNavigatorMenu {
 
             withAnimation {
                 selectedItems.forEach { item in
-                    Container.shared.workspaceNavigator().closeTab(file: item)
+                    sender.workspaceNavigator.closeTab(file: item)
                 }
             }
 
