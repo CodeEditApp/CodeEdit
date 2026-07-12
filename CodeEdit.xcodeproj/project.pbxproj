@@ -18,6 +18,7 @@
 		583E529C29361BAB001AB554 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 583E529B29361BAB001AB554 /* SnapshotTesting */; };
 		588950C52FFA5C05004BE116 /* CESearch in Frameworks */ = {isa = PBXBuildFile; productRef = 588950C42FFA5C05004BE116 /* CESearch */; };
 		58CE15A100000001004BE201 /* CELSP in Frameworks */ = {isa = PBXBuildFile; productRef = 58CE15A000000001004BE200 /* CELSP */; };
+		58CE50C200000002004BE302 /* CESourceControl in Frameworks */ = {isa = PBXBuildFile; productRef = 58CE50C100000002004BE301 /* CESourceControl */; };
 		588957132FFA679E004BE116 /* ShellClient in Frameworks */ = {isa = PBXBuildFile; productRef = 588957122FFA679E004BE116 /* ShellClient */; };
 		5889571530CE12AB004BE116 /* CEWorkspaceFileManager in Frameworks */ = {isa = PBXBuildFile; productRef = 5889571430CE12AB004BE116 /* CEWorkspaceFileManager */; };
 		5889639E2FFA9A87004BE116 /* CENotifications in Frameworks */ = {isa = PBXBuildFile; productRef = 5889639D2FFA9A87004BE116 /* CENotifications */; };
@@ -215,6 +216,7 @@
 				6C0824A12C5C0C9700A0751E /* SwiftTerm in Frameworks */,
 				588950C52FFA5C05004BE116 /* CESearch in Frameworks */,
 				58CE15A100000001004BE201 /* CELSP in Frameworks */,
+				58CE50C200000002004BE302 /* CESourceControl in Frameworks */,
 				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 				6CB94D032CA1205100E8651C /* AsyncAlgorithms in Frameworks */,
 				6C9DB9E42D55656300ACD86E /* CodeEditSourceEditor in Frameworks */,
@@ -363,6 +365,7 @@
 				5AD0C0DE2D00000000000012 /* CodeEditSettings */,
 				588950C42FFA5C05004BE116 /* CESearch */,
 				58CE15A000000001004BE200 /* CELSP */,
+				58CE50C100000002004BE301 /* CESourceControl */,
 				588957122FFA679E004BE116 /* ShellClient */,
 				5889571430CE12AB004BE116 /* CEWorkspaceFileManager */,
 				5889639D2FFA9A87004BE116 /* CENotifications */,
@@ -1915,6 +1918,10 @@
 		58CE15A000000001004BE200 /* CELSP */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CELSP;
+		};
+		58CE50C100000002004BE301 /* CESourceControl */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CESourceControl;
 		};
 		588957122FFA679E004BE116 /* ShellClient */ = {
 			isa = XCSwiftPackageProductDependency;

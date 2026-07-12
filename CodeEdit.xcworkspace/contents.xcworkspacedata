@@ -42,5 +42,8 @@
       <FileRef
          location = "group:CELSP">
       </FileRef>
+      <FileRef
+         location = "group:CESourceControl">
+      </FileRef>
    </Group>
 </Workspace>

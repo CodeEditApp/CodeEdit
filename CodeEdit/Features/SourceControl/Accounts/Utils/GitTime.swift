@@ -16,7 +16,9 @@ enum GitTime {
      - (https://tools.ietf.org/html/rfc3339)
      - (https://developer.apple.com/library/mac/qa/qa1480/_index.html)
      */
-    static var rfc3339DateFormatter: DateFormatter = {
+    // nonisolated(unsafe): configured once here and never mutated afterwards;
+    // DateFormatter is thread-safe for reading once configuration is complete.
+    nonisolated(unsafe) static let rfc3339DateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"
         formatter.locale = Locale(identifier: "en_US_POSIX")
