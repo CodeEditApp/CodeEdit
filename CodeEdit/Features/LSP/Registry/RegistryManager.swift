@@ -11,7 +11,6 @@ import Foundation
 import ZIPFoundation
 import Combine
 import CodeEditCore
-import CENotifications
 
 @MainActor
 final class RegistryManager: ObservableObject, RegistryManaging {
@@ -51,12 +50,12 @@ final class RegistryManager: ObservableObject, RegistryManaging {
     var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
 
     private let eventBus: EventBus
-    private let notificationManager: NotificationManaging
+    private let errorNotifier: ErrorNotifying
     private let shellClient: ShellClientProtocol
 
-    init(eventBus: EventBus, notificationManager: NotificationManaging, shellClient: ShellClientProtocol) {
+    init(eventBus: EventBus, errorNotifier: ErrorNotifying, shellClient: ShellClientProtocol) {
         self.eventBus = eventBus
-        self.notificationManager = notificationManager
+        self.errorNotifier = errorNotifier
         self.shellClient = shellClient
         // Load the registry items from disk again after cache expires
         if let items = loadItemsFromDisk() {
@@ -182,13 +181,9 @@ final class RegistryManager: ObservableObject, RegistryManaging {
         fail failed: Bool
     ) {
         if failed {
-            notificationManager.post(
-                iconSymbol: "xmark.circle",
-                iconColor: .clear,
+            errorNotifier.postError(
                 title: "Could not install \(activityName)",
-                description: "There was a problem during installation.",
-                actionButtonTitle: "Done",
-                action: {},
+                description: "There was a problem during installation."
             )
         } else {
             eventBus.publish(TaskNotificationEvent(

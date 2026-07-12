@@ -45,9 +45,11 @@ final class AppDependencies {
         return service
     }()
 
+    private(set) lazy var errorNotifier: ErrorNotifying = AppErrorNotifier(notificationManager: notificationManager)
+
     private(set) lazy var registryManager = RegistryManager(
         eventBus: eventBus,
-        notificationManager: notificationManager,
+        errorNotifier: errorNotifier,
         shellClient: shellClient
     )
 

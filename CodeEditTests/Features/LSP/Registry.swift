@@ -8,7 +8,6 @@
 import Testing
 import Foundation
 import CodeEditCore
-import CENotifications
 import ShellClient
 @testable import CodeEdit
 
@@ -17,7 +16,7 @@ import ShellClient
 struct RegistryTests {
     var registry: RegistryManager = RegistryManager(
         eventBus: EventBus(),
-        notificationManager: NotificationManager(eventBus: EventBus()),
+        errorNotifier: NoOpErrorNotifier(),
         shellClient: ShellClient()
     )
 
