@@ -28,13 +28,25 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
 
     var tempTestDir: URL!
 
-    /// The host app's live dependency graph (the test bundle runs inside CodeEdit).
-    @MainActor var appDependencies: AppDependencies {
-        (NSApplication.shared.delegate as! AppDelegate).dependencies // swiftlint:disable:this force_cast
-    }
+    /// A dedicated dependency graph for this test class. `NSApp.delegate` is SwiftUI's
+    /// adaptor wrapper (not our `AppDelegate`), so the host graph isn't reachable from
+    /// tests; an isolated graph is cleaner anyway. The static
+    /// `CodeFileDocument.delegateProvider` is repointed at it in `setUp` so document
+    /// lifecycle notifications reach THIS graph's `LSPService`, and restored in `tearDown`.
+    private var testDependencies: AppDependencies!
+    private var previousDelegateProvider: (() -> CodeFileDocumentDelegate?)!
+
+    @MainActor var appDependencies: AppDependencies { testDependencies }
 
     override func setUp() {
         continueAfterFailure = false
+        // XCTest invokes setUp on the main thread; AppDependencies is main-actor isolated.
+        MainActor.assumeIsolated {
+            let dependencies = AppDependencies()
+            testDependencies = dependencies
+            previousDelegateProvider = CodeFileDocument.delegateProvider
+            CodeFileDocument.delegateProvider = { dependencies.codeFileDocumentDelegate }
+        }
         do {
             let tempDir = FileManager.default.temporaryDirectory.appending(
                 path: "codeedit-lsp-tests"
@@ -51,6 +63,10 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
     }
 
     override func tearDown() {
+        MainActor.assumeIsolated {
+            CodeFileDocument.delegateProvider = previousDelegateProvider
+            testDependencies = nil
+        }
         do {
             try FileManager.default.removeItem(at: tempTestDir)
         } catch {
