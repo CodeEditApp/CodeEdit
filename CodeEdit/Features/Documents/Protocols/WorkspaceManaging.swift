@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 06.04.26.
 //
 
+import CESourceControl
 import Foundation
 import CEWorkspaceFileManager
 import CEEditor

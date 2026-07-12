@@ -5,6 +5,7 @@
 //  Created by Austin Condiff on 6/29/24.
 //
 
+import CESourceControl
 import SwiftUI
 
 struct SourceControlCommands: Commands {

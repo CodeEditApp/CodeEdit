@@ -5,6 +5,7 @@
 //  Created by Nanashi Li on 2022/04/18.
 //
 
+import CESourceControl
 import Foundation
 import CodeEditSettings
 import CodeEditCore

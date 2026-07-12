@@ -8,6 +8,7 @@
 import XCTest
 import CodeEditCore
 import ShellClient
+import CESourceControl
 import CESearch
 @testable import CodeEdit
 

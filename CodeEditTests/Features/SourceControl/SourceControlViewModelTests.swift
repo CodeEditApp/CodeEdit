@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 02/07/2026.
 //
 
+@testable import CESourceControl
 import XCTest
 @testable import CodeEdit
 

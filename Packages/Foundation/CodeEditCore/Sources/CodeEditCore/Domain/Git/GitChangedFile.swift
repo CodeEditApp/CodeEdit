@@ -8,7 +8,7 @@
 import Foundation
 
 /// Represents a single changed file in the working tree.
-public struct GitChangedFile: Identifiable, Hashable {
+public struct GitChangedFile: Identifiable, Hashable, Sendable {
     public var id: String { fileURL.relativePath }
 
     /// The status of the file.

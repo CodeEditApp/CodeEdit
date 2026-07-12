@@ -5,6 +5,7 @@
 //  Created by Khan Winter on 8/23/24.
 //
 
+import CESourceControl
 import SwiftUI
 import ShellClient
 import CEWorkspaceFileManager

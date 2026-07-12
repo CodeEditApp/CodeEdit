@@ -5,6 +5,7 @@
 //  Created by Albert Vinizhanau on 10/20/23.
 //
 
+import CESourceControl
 import SwiftUI
 
 struct SourceControlNavigatorSyncView: View {

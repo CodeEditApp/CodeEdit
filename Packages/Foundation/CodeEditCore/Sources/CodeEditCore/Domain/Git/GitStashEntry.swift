@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct GitStashEntry: Hashable {
+public struct GitStashEntry: Hashable, Sendable {
     public let index: Int
     public let message: String
     public let date: Date

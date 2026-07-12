@@ -5,6 +5,7 @@
 //  Created by Nanashi Li on 2022/04/14.
 //
 
+import CESourceControl
 import SwiftUI
 import CodeEditSettings
 

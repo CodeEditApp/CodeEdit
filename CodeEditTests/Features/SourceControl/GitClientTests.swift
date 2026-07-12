@@ -5,6 +5,7 @@
 //  Created by Khan Winter on 9/11/25.
 //
 
+@testable import CESourceControl
 import Testing
 import ShellClient
 @testable import CodeEdit

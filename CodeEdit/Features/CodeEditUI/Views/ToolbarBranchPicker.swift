@@ -5,6 +5,7 @@
 //  Created by Lukas Pistrol on 21.04.22.
 //
 
+import CESourceControl
 import SwiftUI
 import CodeEditSettings
 import CEWorkspaceFileManager

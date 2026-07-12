@@ -5,6 +5,7 @@
 //  Created by Austin Condiff on 11/1/24.
 //
 
+import CESourceControl
 import CodeEditCore
 import Foundation
 import ShellClient

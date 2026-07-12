@@ -5,6 +5,7 @@
 //  Created by Giorgi Tchelidze on 07.06.25.
 //
 
+import CESourceControl
 import CodeEditCore
 import SwiftUI
 import ShellClient

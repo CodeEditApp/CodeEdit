@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct GitBranchesGroup: Hashable {
+public struct GitBranchesGroup: Hashable, Sendable {
     public let name: String
     public var branches: [GitBranch]
     public var shouldNest: Bool {
