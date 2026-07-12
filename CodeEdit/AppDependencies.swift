@@ -7,7 +7,7 @@
 
 import CodeEditCore
 import CodeEditDocument
-import Notifications
+import CENotifications
 import ShellClient
 
 /// The app-scope composition root. Owns every process-lifetime service and is the only

@@ -3,10 +3,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "Notifications",
+    name: "CENotifications",
     platforms: [.macOS(.v14)],
     products: [
-        .library(name: "Notifications", targets: ["Notifications"])
+        .library(name: "CENotifications", targets: ["CENotifications"])
     ],
     dependencies: [
         .package(path: "../../Foundation/CodeEditCore"),
@@ -14,7 +14,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Notifications",
+            name: "CENotifications",
             dependencies: [
                 .product(name: "CodeEditCore", package: "CodeEditCore"),
                 .product(name: "CodeEditUI", package: "CodeEditUI")

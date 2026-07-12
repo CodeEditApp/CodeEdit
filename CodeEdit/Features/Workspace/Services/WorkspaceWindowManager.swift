@@ -9,7 +9,7 @@ import AppKit
 import CodeEditSettings
 import CEWorkspaceFileManager
 import CodeEditCore
-import Notifications
+import CENotifications
 import SwiftUI
 import WelcomeWindow
 

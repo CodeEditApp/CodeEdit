@@ -8,7 +8,7 @@
 import XCTest
 import CodeEditCore
 import CodeEditDocument
-import Notifications
+import CENotifications
 @testable import CodeEdit
 
 @MainActor

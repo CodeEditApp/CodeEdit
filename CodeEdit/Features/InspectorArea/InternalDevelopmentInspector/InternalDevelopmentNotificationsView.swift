@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Notifications
+import CENotifications
 
 struct InternalDevelopmentNotificationsView: View {
     @Environment(\.notificationManager) private var notificationManager

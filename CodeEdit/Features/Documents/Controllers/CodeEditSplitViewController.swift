@@ -10,7 +10,7 @@ import CodeEditCore
 import CodeEditUI
 import Editor
 import SwiftUI
-import Notifications
+import CENotifications
 
 final class CodeEditSplitViewController: NSSplitViewController {
     static let minSidebarWidth: CGFloat = 242

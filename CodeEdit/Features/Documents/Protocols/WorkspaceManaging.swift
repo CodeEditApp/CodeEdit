@@ -8,7 +8,7 @@
 import Foundation
 import CEWorkspaceFileManager
 import Editor
-import Notifications
+import CENotifications
 import CESearch
 
 /// Protocol defining the interface that workspace consumers depend on.

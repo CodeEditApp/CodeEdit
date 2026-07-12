@@ -6,7 +6,7 @@
 //
 
 import AppKit
-import Notifications
+import CENotifications
 
 /// App-shell integration for the notification toolbar badge.
 ///

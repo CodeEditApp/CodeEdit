@@ -9,7 +9,7 @@ import AppKit
 import CEWorkspaceFileManager
 import SwiftUI
 import Combine
-import Notifications
+import CENotifications
 
 extension CodeEditWindowController {
     internal func setupToolbar() {

@@ -34,7 +34,7 @@
          location = "group:CESearch">
       </FileRef>
       <FileRef
-         location = "group:Notifications">
+         location = "group:CENotifications">
       </FileRef>
       <FileRef
          location = "group:Editor">

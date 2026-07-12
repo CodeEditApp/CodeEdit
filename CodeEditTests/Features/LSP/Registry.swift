@@ -8,7 +8,7 @@
 import Testing
 import Foundation
 import CodeEditCore
-import Notifications
+import CENotifications
 import ShellClient
 @testable import CodeEdit
 

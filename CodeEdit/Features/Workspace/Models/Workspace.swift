@@ -9,7 +9,7 @@ import AppKit
 import CEWorkspaceFileManager
 import CodeEditCore
 import Editor
-import Notifications
+import CENotifications
 import CESearch
 import SwiftUI
 import Foundation

@@ -10,7 +10,7 @@ import CodeEditSettings
 import CodeEditCore
 import CodeEditUI
 import Editor
-import Notifications
+import CENotifications
 import UniformTypeIdentifiers
 
 struct WorkspaceView: View {

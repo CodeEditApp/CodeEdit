@@ -11,7 +11,7 @@ import Foundation
 import ZIPFoundation
 import Combine
 import CodeEditCore
-import Notifications
+import CENotifications
 
 @MainActor
 final class RegistryManager: ObservableObject, RegistryManaging {
