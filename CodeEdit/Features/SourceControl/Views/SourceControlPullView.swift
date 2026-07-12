@@ -7,7 +7,6 @@
 
 import CodeEditCore
 import SwiftUI
-import ShellClient
 
 struct SourceControlPullView: View {
     @Environment(\.dismiss)
@@ -16,9 +15,6 @@ struct SourceControlPullView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
     @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 
-    @Environment(\.shellClient) private var shellClient
-
-    private var gitConfig: GitConfigClient { GitConfigClient(shellClient: shellClient ?? ShellClient()) }
 
     @State var loading: Bool = false
 
@@ -46,7 +42,7 @@ struct SourceControlPullView: View {
             .scrollContentBackground(.hidden)
             .onAppear {
                 Task {
-                    preferRebaseWhenPulling = try await gitConfig.get(key: "pull.rebase", global: true) ?? false
+                    preferRebaseWhenPulling = try await sourceControlManager.gitConfig.get(key: "pull.rebase", global: true) ?? false
                     if preferRebaseWhenPulling {
                         sourceControlViewModel.operationRebase = true
                     }

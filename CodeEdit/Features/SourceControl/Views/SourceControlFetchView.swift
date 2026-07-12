@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CEWorkspaceFileManager
 
 struct SourceControlFetchView: View {
     @Environment(\.dismiss)
@@ -14,11 +13,9 @@ struct SourceControlFetchView: View {
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
-    @Environment(\.workspaceFileManager)
-    private var workspaceFileManager
 
     var projectName: String {
-        workspaceFileManager?.folderUrl.lastPathComponent ?? "Empty"
+        sourceControlManager.workspaceURL.lastPathComponent
     }
 
     var body: some View {

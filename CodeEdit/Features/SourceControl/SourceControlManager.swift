@@ -6,7 +6,6 @@
 //
 
 import Combine
-import CEWorkspaceFileManager
 import Foundation
 import OSLog
 import CodeEditCore
@@ -25,13 +24,15 @@ final class SourceControlManager: ObservableObject {
 
     let gitClient: GitClientProtocol
 
+    /// Reads git configuration. Exposed so source-control views can consult config
+    /// (e.g. `pull.rebase`) without their own shell-client plumbing.
+    let gitConfig: GitConfigClient
+
     /// The base URL of the workspace
     let workspaceURL: URL
 
     let eventBus: EventBus
     var fileEventCancellables: Set<AnyCancellable> = []
-
-    weak var fileManager: CEWorkspaceFileManager?
 
     // MARK: - Git State
 
@@ -76,6 +77,7 @@ final class SourceControlManager: ObservableObject {
         self.workspaceURL = workspaceURL
         self.eventBus = eventBus
         gitClient = GitClient(directoryURL: workspaceURL, shellClient: shellClient)
+        gitConfig = GitConfigClient(shellClient: shellClient)
         subscribeToWorkspaceFileEvents()
         Task { try? await validate() }
     }
