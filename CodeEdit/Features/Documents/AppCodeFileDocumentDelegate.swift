@@ -6,7 +6,7 @@
 //
 
 import AppKit
-import Editor
+import CEEditor
 import SwiftUI
 import CodeEditTextView
 import CodeEditDocument

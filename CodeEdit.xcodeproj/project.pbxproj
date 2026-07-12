@@ -20,7 +20,7 @@
 		588957132FFA679E004BE116 /* CodeEditServices in Frameworks */ = {isa = PBXBuildFile; productRef = 588957122FFA679E004BE116 /* CodeEditServices */; };
 		5889639E2FFA9A87004BE116 /* CENotifications in Frameworks */ = {isa = PBXBuildFile; productRef = 5889639D2FFA9A87004BE116 /* CENotifications */; };
 		58CFC49B2F8BE799009F4AA7 /* CodeEditCore in Frameworks */ = {isa = PBXBuildFile; productRef = 58CFC49A2F8BE799009F4AA7 /* CodeEditCore */; };
-		58ED10022FFB0001004BE116 /* Editor in Frameworks */ = {isa = PBXBuildFile; productRef = 58ED10012FFB0001004BE116 /* Editor */; };
+		58ED10022FFB0001004BE116 /* CEEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 58ED10012FFB0001004BE116 /* CEEditor */; };
 		58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACE292FB2B0004A9BDE /* Documentation.docc */; };
 		58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 58F2EB1D292FB954004A9BDE /* Sparkle */; };
 		5AD0C0DE2D00000000000001 /* CodeEditDocument in Frameworks */ = {isa = PBXBuildFile; productRef = 5AD0C0DE2D00000000000002 /* CodeEditDocument */; };
@@ -190,7 +190,7 @@
 				6C76D6D42E15B91E00EF52C3 /* CodeEditSourceEditor in Frameworks */,
 				6CCF73D02E26DE3200B94F75 /* SwiftTerm in Frameworks */,
 				5889639E2FFA9A87004BE116 /* CENotifications in Frameworks */,
-				58ED10022FFB0001004BE116 /* Editor in Frameworks */,
+				58ED10022FFB0001004BE116 /* CEEditor in Frameworks */,
 				6C315FC82E05E33D0011BFC5 /* CodeEditSourceEditor in Frameworks */,
 				6CC00A8B2CBEF150004E8134 /* CodeEditSourceEditor in Frameworks */,
 				6CD3CA552C8B508200D83DCD /* CodeEditSourceEditor in Frameworks */,
@@ -360,7 +360,7 @@
 				588950C42FFA5C05004BE116 /* CESearch */,
 				588957122FFA679E004BE116 /* CodeEditServices */,
 				5889639D2FFA9A87004BE116 /* CENotifications */,
-				58ED10012FFB0001004BE116 /* Editor */,
+				58ED10012FFB0001004BE116 /* CEEditor */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -1918,9 +1918,9 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditCore;
 		};
-		58ED10012FFB0001004BE116 /* Editor */ = {
+		58ED10012FFB0001004BE116 /* CEEditor */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Editor;
+			productName = CEEditor;
 		};
 		58F2EB1D292FB954004A9BDE /* Sparkle */ = {
 			isa = XCSwiftPackageProductDependency;

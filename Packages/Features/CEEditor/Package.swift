@@ -3,10 +3,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "Editor",
+    name: "CEEditor",
     platforms: [.macOS(.v14)],
     products: [
-        .library(name: "Editor", targets: ["Editor"])
+        .library(name: "CEEditor", targets: ["CEEditor"])
     ],
     dependencies: [
         .package(path: "../../Foundation/CodeEditCore"),
@@ -23,7 +23,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Editor",
+            name: "CEEditor",
             dependencies: [
                 .product(name: "CodeEditCore", package: "CodeEditCore"),
                 .product(name: "CodeEditUI", package: "CodeEditUI"),

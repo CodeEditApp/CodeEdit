@@ -10,7 +10,7 @@ import CodeEditDocument
 import Combine
 import CodeEditCore
 @testable import CodeEdit
-@testable import Editor
+@testable import CEEditor
 
 final class DocumentRegistryTests: XCTestCase {
     private func makeFile(_ path: String = "/tmp/reg-\(UUID().uuidString).swift") -> CEWorkspaceFile {

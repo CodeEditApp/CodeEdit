@@ -8,7 +8,7 @@
 import Cocoa
 import CodeEditDocument
 import CodeEditSettings
-import Editor
+import CEEditor
 import SwiftUI
 import CodeEditUI
 import Combine

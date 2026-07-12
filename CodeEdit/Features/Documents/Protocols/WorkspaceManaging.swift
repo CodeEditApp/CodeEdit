@@ -7,7 +7,7 @@
 
 import Foundation
 import CEWorkspaceFileManager
-import Editor
+import CEEditor
 import CENotifications
 import CESearch
 

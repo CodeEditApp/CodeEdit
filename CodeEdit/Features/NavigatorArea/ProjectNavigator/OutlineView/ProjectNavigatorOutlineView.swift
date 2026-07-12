@@ -9,7 +9,7 @@ import SwiftUI
 import CEWorkspaceFileManager
 import CodeEditCore
 import CodeEditSettings
-import Editor
+import CEEditor
 import Combine
 
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`

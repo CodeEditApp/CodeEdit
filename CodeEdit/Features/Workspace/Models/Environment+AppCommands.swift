@@ -7,7 +7,7 @@
 
 import SwiftUI
 import CodeEditCore
-import Editor
+import CEEditor
 import CENotifications
 import CESearch
 import ShellClient

@@ -37,7 +37,7 @@
          location = "group:CENotifications">
       </FileRef>
       <FileRef
-         location = "group:Editor">
+         location = "group:CEEditor">
       </FileRef>
    </Group>
 </Workspace>

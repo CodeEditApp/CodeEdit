@@ -8,7 +8,7 @@
 import Cocoa
 import CodeEditCore
 import CodeEditUI
-import Editor
+import CEEditor
 import SwiftUI
 import CENotifications
 

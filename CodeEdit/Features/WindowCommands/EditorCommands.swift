@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Editor
+import CEEditor
 import CodeEditKit
 
 struct EditorCommands: Commands {

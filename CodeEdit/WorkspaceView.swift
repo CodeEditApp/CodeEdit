@@ -9,7 +9,7 @@ import SwiftUI
 import CodeEditSettings
 import CodeEditCore
 import CodeEditUI
-import Editor
+import CEEditor
 import CENotifications
 import UniformTypeIdentifiers
 

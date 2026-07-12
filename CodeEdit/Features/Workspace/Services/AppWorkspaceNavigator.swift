@@ -8,7 +8,7 @@
 import Foundation
 import CodeEditCore
 import CEWorkspaceFileManager
-import Editor
+import CEEditor
 
 /// App-shell binding of the `WorkspaceNavigator` command interface.
 /// Delegates to `WorkspaceWindowManager.openFileInWorkspace(url:asTemporary:)`, which maps the

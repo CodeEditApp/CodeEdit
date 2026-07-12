@@ -7,7 +7,7 @@
 
 import Foundation
 import CEWorkspaceFileManager
-import Editor
+import CEEditor
 import CESearch
 
 /// Constructs and wires the manager/service object graph for a ``Workspace``.
