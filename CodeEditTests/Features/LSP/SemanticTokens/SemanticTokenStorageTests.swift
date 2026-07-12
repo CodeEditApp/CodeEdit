@@ -5,6 +5,7 @@
 //  Created by Khan Winter on 12/26/24.
 //
 
+@testable import CELSP
 import Foundation
 import Testing
 import CodeEditSourceEditor

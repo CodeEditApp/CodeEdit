@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom.
 //
 
+import CELSP
 import AppKit
 import CEEditor
 import SwiftUI

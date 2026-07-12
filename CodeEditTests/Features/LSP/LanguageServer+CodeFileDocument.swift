@@ -5,6 +5,7 @@
 //  Created by Khan Winter on 9/9/24.
 //
 
+@testable import CELSP
 import CEWorkspaceFileManager
 import CodeEditDocument
 import XCTest
@@ -74,6 +75,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         }
     }
 
+    @MainActor
     func makeTestServer() async throws -> (connection: BufferingServerConnection, server: LanguageServerType) {
         let bufferingConnection = BufferingServerConnection()
         var capabilities = ServerCapabilities()
@@ -121,6 +123,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         return (workspace, fileManager)
     }
 
+    @MainActor
     func openCodeFile(
         for server: LanguageServerType,
         connection: BufferingServerConnection,

@@ -14,7 +14,7 @@ import CodeEditDocument
 /// reactive observation of `@Published` properties require the concrete type.
 /// Use `LSPService` directly in those cases.
 @MainActor
-protocol LSPServiceProtocol: AnyObject {
+public protocol LSPServiceProtocol: AnyObject {
     func openDocument(_ document: CodeFileDocument)
     func closeDocument(_ url: URL)
     func closeWorkspace(_ workspacePath: String)

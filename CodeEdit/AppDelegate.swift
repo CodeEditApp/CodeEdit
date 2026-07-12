@@ -5,6 +5,7 @@
 //  Created by Pavel Kasila on 12.03.22.
 //
 
+import CELSP
 import Combine
 import CodeEditSettings
 import CodeEditDocument

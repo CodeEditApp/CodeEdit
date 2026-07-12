@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 06/07/2026.
 //
 
+@testable import CELSP
 import XCTest
 import CodeEditDocument
 @testable import CodeEdit

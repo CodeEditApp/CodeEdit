@@ -5,6 +5,7 @@
 //  Created by Abe Malla on 2/2/25.
 //
 
+@testable import CELSP
 import Testing
 import Foundation
 import CodeEditCore

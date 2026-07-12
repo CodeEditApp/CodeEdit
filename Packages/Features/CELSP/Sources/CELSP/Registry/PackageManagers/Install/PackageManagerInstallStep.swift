@@ -6,9 +6,9 @@
 //
 
 /// Represents a single executable step in a package install.
-struct PackageManagerInstallStep: Identifiable {
-    var id: String { name }
-    let name: String
-    let confirmation: InstallStepConfirmation
+public struct PackageManagerInstallStep: Identifiable {
+    public var id: String { name }
+    public let name: String
+    public let confirmation: InstallStepConfirmation
     let handler: (_ model: PackageManagerProgressModel) async throws -> Void
 }

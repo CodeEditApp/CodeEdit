@@ -16,38 +16,38 @@ import CodeEditCore
 ///
 /// If a step requires confirmation, the ``waitingForConfirmation`` value will be filled.
 @MainActor
-final class PackageManagerInstallOperation: ObservableObject, Identifiable {
-    enum RunningState {
+public final class PackageManagerInstallOperation: ObservableObject, Identifiable {
+    public enum RunningState {
         case none
         case running
         case complete
     }
 
-    struct OutputItem: Identifiable, Equatable {
-        let id: UUID = UUID()
-        let isStepDivider: Bool
-        let outputIdx: Int?
-        let contents: String
+    public struct OutputItem: Identifiable, Equatable {
+        public let id: UUID = UUID()
+        public let isStepDivider: Bool
+        public let outputIdx: Int?
+        public let contents: String
 
-        init(outputIdx: Int? = nil, isStepDivider: Bool = false, contents: String) {
+        public init(outputIdx: Int? = nil, isStepDivider: Bool = false, contents: String) {
             self.isStepDivider = isStepDivider
             self.outputIdx = outputIdx
             self.contents = contents
         }
     }
 
-    nonisolated var id: String { package.name }
+    public nonisolated var id: String { package.name }
 
-    let package: RegistryItem
-    let steps: [PackageManagerInstallStep]
+    public let package: RegistryItem
+    public let steps: [PackageManagerInstallStep]
 
     /// The step the operation is currently executing or stopped at.
-    var currentStep: PackageManagerInstallStep? {
+    public var currentStep: PackageManagerInstallStep? {
         steps[safe: currentStepIdx]
     }
 
     /// The current state of the operation.
-    var runningState: RunningState {
+    public var runningState: RunningState {
         if operationTask != nil {
             return .running
         } else if error != nil || currentStepIdx == steps.count {
@@ -57,10 +57,10 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
         }
     }
 
-    @Published var accumulatedOutput: [OutputItem] = []
-    @Published var currentStepIdx: Int = 0
-    @Published var error: Error?
-    @Published var progress: Progress
+    @Published public var accumulatedOutput: [OutputItem] = []
+    @Published public var currentStepIdx: Int = 0
+    @Published public var error: Error?
+    @Published public var progress: Progress
 
     /// If non-nil, indicates that this operation has halted and requires confirmation.
     @Published public private(set) var waitingForConfirmation: String?
@@ -75,14 +75,14 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
     /// - Parameters:
     ///   - package: The package to install.
     ///   - steps: The steps that make up the operation.
-    init(package: RegistryItem, steps: [PackageManagerInstallStep], shellClient: ShellClientProtocol) {
+    public init(package: RegistryItem, steps: [PackageManagerInstallStep], shellClient: ShellClientProtocol) {
         self.shellClient = shellClient
         self.package = package
         self.steps = steps
         self.progress = Progress(totalUnitCount: Int64(steps.count))
     }
 
-    func run() async throws {
+    public func run() async throws {
         guard operationTask == nil else { return }
         operationTask = Task {
             defer { operationTask = nil }
@@ -91,13 +91,13 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
         try await operationTask?.value
     }
 
-    func cancel() {
+    public func cancel() {
         operationTask?.cancel()
         operationTask = nil
     }
 
     /// Called by UI to confirm continuing to the next step
-    func confirmCurrentStep() {
+    public func confirmCurrentStep() {
         waitingForConfirmation = nil
         confirmationContinuation?.resume()
         confirmationContinuation = nil
@@ -130,33 +130,29 @@ final class PackageManagerInstallOperation: ObservableObject, Identifiable {
         try Task.checkCancellation()
         accumulatedOutput.append(OutputItem(isStepDivider: true, contents: "Step \(currentStepIdx + 1): \(task.name)"))
 
-        await withTaskGroup(of: Void.self) { group in
-            group.addTask {
-                for await outputItem in model.outputStream {
-                    await MainActor.run {
-                        switch outputItem {
-                        case .status(let string):
-                            self.outputIdx += 1
-                            self.accumulatedOutput.append(OutputItem(outputIdx: self.outputIdx, contents: string))
-                        case .output(let string):
-                            self.accumulatedOutput.append(OutputItem(contents: string))
-                        }
-                    }
-                }
-            }
-            group.addTask {
-                do {
-                    try await task.handler(model)
-                } catch {
-                    await MainActor.run {
-                        self.error = error
-                    }
-                }
-                await MainActor.run {
-                    model.finish()
+        // `Task {}` inherits this method's main-actor isolation, so the capture of `model`
+        // and `self` stays in-region (a task group's `addTask` requires `sending` closures,
+        // which the non-Sendable progress model can't satisfy).
+        let outputForwarding = Task {
+            for await outputItem in model.outputStream {
+                switch outputItem {
+                case .status(let string):
+                    self.outputIdx += 1
+                    self.accumulatedOutput.append(OutputItem(outputIdx: self.outputIdx, contents: string))
+                case .output(let string):
+                    self.accumulatedOutput.append(OutputItem(contents: string))
                 }
             }
         }
+
+        do {
+            try await task.handler(model)
+        } catch {
+            self.error = error
+        }
+        model.finish()
+        // Drain the stream so all output lands before the next step begins.
+        await outputForwarding.value
 
         self.currentStepIdx += 1
 

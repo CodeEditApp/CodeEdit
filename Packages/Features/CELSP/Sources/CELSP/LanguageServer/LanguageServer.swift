@@ -12,14 +12,18 @@ import LanguageServerProtocol
 import OSLog
 
 /// A client for language servers.
-class LanguageServer<DocumentType: LanguageServerDocument> {
-    static var logger: Logger { // types with associated types cannot have constant static properties
+/// Main-actor isolated: per-document work touches main-actor documents and editor
+/// objects; network calls hop to the connection internally and pass only Sendable
+/// LSP payloads.
+@MainActor
+public class LanguageServer<DocumentType: LanguageServerDocument> {
+    nonisolated static var logger: Logger { // types with associated types cannot have constant static properties
         Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LanguageServer")
     }
     let logger: Logger
 
     /// Identifies which language the server belongs to
-    let languageId: LanguageIdentifier
+    public let languageId: LanguageIdentifier
     /// Holds information about the language server binary
     let binary: LanguageServerBinary
     /// A cache to hold responses from the server, to minimize duplicate server requests
@@ -42,7 +46,7 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     /// The configuration options this server supports.
     var serverCapabilities: ServerCapabilities
 
-    var logContainer: LanguageServerLogContainer
+    public var logContainer: LanguageServerLogContainer
 
     /// An instance of a language server, that may or may not be initialized
     private(set) var lspInstance: InitializingServer
@@ -136,7 +140,7 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     ///   - languageId: The ID of the language to create the channel for.
     ///   - executionParams: The parameters for executing the local process.
     /// - Returns: A new connection to the language server.
-    static func makeLocalServerConnection(
+    nonisolated static func makeLocalServerConnection(
         languageId: LanguageIdentifier,
         executionParams: Process.ExecutionParameters,
         logContainer: LanguageServerLogContainer
@@ -161,7 +165,7 @@ class LanguageServer<DocumentType: LanguageServerDocument> {
     // MARK: - Get Init Params
 
     // swiftlint:disable function_body_length
-    static func getInitParams(workspacePath: String) -> InitializingServer.InitializeParamsProvider {
+    nonisolated static func getInitParams(workspacePath: String) -> InitializingServer.InitializeParamsProvider {
         let provider: InitializingServer.InitializeParamsProvider = {
             // Text Document Capabilities
             let textDocumentCapabilities = TextDocumentClientCapabilities(

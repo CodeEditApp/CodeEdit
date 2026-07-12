@@ -5,6 +5,7 @@
 //  Created by Austin Condiff on 5/25/23.
 //
 
+import CELSP
 import SwiftUI
 import LogStream
 

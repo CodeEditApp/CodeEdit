@@ -20,7 +20,8 @@ import LanguageServerProtocol
 /// Language servers expect edits to be sent in chunks (and it helps reduce processing overhead). To do this, this class
 /// keeps an async stream around for the duration of its lifetime. The stream is sent edit notifications, which are then
 /// chunked into 250ms timed groups before being sent to the ``LanguageServer``.
-class LSPContentCoordinator<DocumentType: LanguageServerDocument>: TextViewCoordinator, TextViewDelegate {
+@MainActor
+class LSPContentCoordinator<DocumentType: LanguageServerDocument>: @preconcurrency TextViewCoordinator, @preconcurrency TextViewDelegate {
     // Required to avoid a large_tuple lint error
     private struct SequenceElement: Sendable {
         let uri: String
@@ -29,10 +30,13 @@ class LSPContentCoordinator<DocumentType: LanguageServerDocument>: TextViewCoord
     }
 
     private var editedRange: LSPRange?
-    private var sequenceContinuation: AsyncStream<SequenceElement>.Continuation?
-    private var task: Task<Void, Never>?
+    // nonisolated(unsafe): assigned on the main actor during setup; read from the
+    // detached debounce task (`languageServer`, `sequenceContinuation`) and from
+    // `deinit` (`task`, `sequenceContinuation`), which cannot be actor-isolated.
+    private nonisolated(unsafe) var sequenceContinuation: AsyncStream<SequenceElement>.Continuation?
+    private nonisolated(unsafe) var task: Task<Void, Never>?
 
-    weak var languageServer: LanguageServer<DocumentType>?
+    nonisolated(unsafe) weak var languageServer: LanguageServer<DocumentType>?
     var documentURI: String?
 
     /// Initializes a content coordinator, and begins an async stream of updates
@@ -89,7 +93,7 @@ class LSPContentCoordinator<DocumentType: LanguageServerDocument>: TextViewCoord
         self.sequenceContinuation?.yield(SequenceElement(uri: documentURI, range: lspRange, string: string))
     }
 
-    func destroy() {
+    nonisolated func destroy() {
         task?.cancel()
         task = nil
         sequenceContinuation?.finish()

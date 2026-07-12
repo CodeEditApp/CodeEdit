@@ -7,7 +7,7 @@
 
 import Foundation
 import LanguageServerProtocol
-import CodeEditSourceEditor
+@preconcurrency import CodeEditSourceEditor
 import CodeEditTextView
 import CodeEditLanguages
 
@@ -21,10 +21,11 @@ import CodeEditLanguages
 /// ``SemanticTokenHighlightProvider/applyEdit(textView:range:delta:completion:)`` method. One might expect this class
 /// to respond to that method immediately, but it does not. It instead stores the completion passed in that method until
 /// it can respond to the edit with invalidated indices.
+@MainActor
 final class SemanticTokenHighlightProvider<
     Storage: GenericSemanticTokenStorage,
     DocumentType: LanguageServerDocument
->: HighlightProviding {
+>: @preconcurrency HighlightProviding {
     enum HighlightError: Error {
         case lspRangeFailure
     }

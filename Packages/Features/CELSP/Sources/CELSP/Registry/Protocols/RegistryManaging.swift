@@ -14,7 +14,7 @@ import CodeEditCore
 /// Note: `@Published` properties are not included because consumers
 /// need the concrete type for SwiftUI observation. Use `RegistryManager` directly in views.
 @MainActor
-protocol RegistryManaging: AnyObject, ObservableObject {
+public protocol RegistryManaging: AnyObject, ObservableObject {
     var installedLanguageServers: [String: SettingsData.InstalledLanguageServer] { get }
     var isInstalling: Bool { get }
 

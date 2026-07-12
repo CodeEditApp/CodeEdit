@@ -5,6 +5,7 @@
 //  Created by Khan Winter on 2/12/25.
 //
 
+@testable import CELSP
 import XCTest
 import CodeEditTextView
 import CodeEditSourceEditor
@@ -14,8 +15,10 @@ import LanguageServerProtocol
 
 @testable import CodeEdit
 
+@MainActor
 final class LanguageServerDocumentObjectsTests: XCTestCase {
-    final class MockDocumentType: LanguageServerDocument {
+    @MainActor
+    final class MockDocumentType: @preconcurrency LanguageServerDocument {
         var content: NSTextStorage?
         var languageServerURI: String?
         /// Test-local store (the protocol no longer requires it; `LSPService` owns it in production).

@@ -5,6 +5,7 @@
 //  Created by Khan Winter on 8/14/25.
 //
 
+import CELSP
 import SwiftUI
 import CodeEditUI
 

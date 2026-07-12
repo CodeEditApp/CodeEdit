@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import LanguageClient
+@preconcurrency import LanguageClient
 import LanguageServerProtocol
 
 extension LSPService {
@@ -16,9 +16,10 @@ extension LSPService {
             return
         }
 
-        // Create a new Task to listen to the events
+        // Capture the connection on the main actor; the detached task only awaits its events.
+        let lspInstance = languageClient.lspInstance
         let task = Task.detached { [weak self] in
-            for await event in languageClient.lspInstance.eventSequence {
+            for await event in lspInstance.eventSequence {
                 await self?.handleEvent(event, for: key)
             }
         }

@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 10/07/2026.
 //
 
+import CELSP
 import SwiftUI
 import CodeEditCore
 import CEEditor

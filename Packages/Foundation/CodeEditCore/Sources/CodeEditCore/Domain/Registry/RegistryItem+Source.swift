@@ -6,7 +6,7 @@
 //
 
 extension RegistryItem {
-    public struct Source: Codable {
+    public struct Source: Codable, Sendable {
         public let id: String
         public let asset: AssetContainer?
         public let build: BuildContainer?
@@ -24,7 +24,7 @@ extension RegistryItem {
             self.versionOverrides = versionOverrides
         }
 
-        public enum AssetContainer: Codable {
+        public enum AssetContainer: Codable, Sendable {
             case single(Asset)
             case multiple([Asset])
             case simpleFile(String)
@@ -85,7 +85,7 @@ extension RegistryItem {
             }
         }
 
-        public enum BuildContainer: Codable {
+        public enum BuildContainer: Codable, Sendable {
             case single(Build)
             case multiple([Build])
             case none
@@ -133,7 +133,7 @@ extension RegistryItem {
             }
         }
 
-        public struct Build: Codable {
+        public struct Build: Codable, Sendable {
             public let target: Target?
             public let run: String
             public let env: [String: String]?
@@ -152,7 +152,7 @@ extension RegistryItem {
             }
         }
 
-        public struct Asset: Codable {
+        public struct Asset: Codable, Sendable {
             public let target: Target
             public let file: String?
             public let bin: BinContainer?
@@ -175,7 +175,7 @@ extension RegistryItem {
             }
         }
 
-        public enum Target: Codable {
+        public enum Target: Codable, Sendable {
             case single(String)
             case multiple([String])
 
@@ -228,7 +228,7 @@ extension RegistryItem {
             }
         }
 
-        public enum BinContainer: Codable {
+        public enum BinContainer: Codable, Sendable {
             case single(String)
             case multiple([String: String])
 
@@ -260,7 +260,7 @@ extension RegistryItem {
             }
         }
 
-        public struct VersionOverride: Codable {
+        public struct VersionOverride: Codable, Sendable {
             public let constraint: String
             public let id: String
             public let asset: AssetContainer?

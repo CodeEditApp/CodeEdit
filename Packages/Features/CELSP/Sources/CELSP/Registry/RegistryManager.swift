@@ -13,7 +13,7 @@ import Combine
 import CodeEditCore
 
 @MainActor
-final class RegistryManager: ObservableObject, RegistryManaging {
+public final class RegistryManager: ObservableObject, RegistryManaging {
 
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "RegistryManager")
     let installPath = Settings.shared.baseURL.appending(path: "Language Servers")
@@ -27,33 +27,35 @@ final class RegistryManager: ObservableObject, RegistryManaging {
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/checksums.txt"
     )!
 
-    @Published var isDownloadingRegistry: Bool = false
+    @Published public var isDownloadingRegistry: Bool = false
     /// Holds an errors found while downloading the registry file. Needs a UI to dismiss, is logged.
-    @Published var downloadError: Error?
+    @Published public var downloadError: Error?
     /// Any currently running installation operation.
-    @Published var runningInstall: PackageManagerInstallOperation?
+    @Published public var runningInstall: PackageManagerInstallOperation?
     private var installTask: Task<Void, Never>?
 
     /// Indicates if the manager is currently installing a package.
-    var isInstalling: Bool {
+    public var isInstalling: Bool {
         installTask != nil
     }
 
     /// Reference to cached registry data. Will be removed from memory after a certain amount of time.
     private var cachedRegistry: CachedRegistry?
-    /// Timer to clear expired cache
-    private var cleanupTimer: Timer?
+    /// Timer to clear expired cache.
+    /// nonisolated(unsafe): scheduled and invalidated on the main actor; also
+    /// invalidated from `deinit`, which cannot be actor-isolated.
+    private nonisolated(unsafe) var cleanupTimer: Timer?
     /// Public access to registry items with cache management
     @Published public private(set) var registryItems: [RegistryItem] = []
 
     @AppSettings(\.languageServers.installedLanguageServers)
-    var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
+    public var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
 
     private let eventBus: EventBus
     private let errorNotifier: ErrorNotifying
     private let shellClient: ShellClientProtocol
 
-    init(eventBus: EventBus, errorNotifier: ErrorNotifying, shellClient: ShellClientProtocol) {
+    public init(eventBus: EventBus, errorNotifier: ErrorNotifying, shellClient: ShellClientProtocol) {
         self.eventBus = eventBus
         self.errorNotifier = errorNotifier
         self.shellClient = shellClient
@@ -73,14 +75,14 @@ final class RegistryManager: ObservableObject, RegistryManaging {
 
     // MARK: - Enable/Disable
 
-    func setPackageEnabled(packageName: String, enabled: Bool) {
+    public func setPackageEnabled(packageName: String, enabled: Bool) {
         installedLanguageServers[packageName]?.isEnabled = enabled
     }
 
     // MARK: - Uninstall
 
     @MainActor
-    func removeLanguageServer(packageName: String) async throws {
+    public func removeLanguageServer(packageName: String) async throws {
         let packageName = packageName.removingPercentEncoding ?? packageName
         let packageDirectory = installPath.appending(path: packageName)
 
@@ -197,7 +199,7 @@ final class RegistryManager: ObservableObject, RegistryManaging {
 
     // MARK: - Cache
 
-    func setRegistryItems(_ items: [RegistryItem]) {
+    public func setRegistryItems(_ items: [RegistryItem]) {
         cachedRegistry = CachedRegistry(items: items)
 
         // Set up timer to clear the cache after expiration

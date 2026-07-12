@@ -8,10 +8,10 @@
 import AppKit
 import CodeEditDocument
 
-extension CodeFileDocument: LanguageServerDocument {
+extension CodeFileDocument: @preconcurrency LanguageServerDocument {
     /// A stable string to use when identifying documents with language servers.
     /// Needs to be a valid URI, so always returns with the `file://` prefix to indicate it's a file URI.
-    var languageServerURI: String? {
+    public var languageServerURI: String? {
         fileURL?.lspURI
     }
 }

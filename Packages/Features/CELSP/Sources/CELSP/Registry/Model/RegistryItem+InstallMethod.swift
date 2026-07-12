@@ -1,5 +1,5 @@
 //
-//  RegistryItem+AppExtensions.swift
+//  RegistryItem+InstallMethod.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom on 12/04/26.
@@ -8,13 +8,9 @@
 import Foundation
 import CodeEditCore
 
-extension RegistryItem: FuzzySearchable {
-    var searchableString: String { name }
-}
-
 extension RegistryItem {
     /// The method for installation, parsed from this item's ``source`` parameter.
-    var installMethod: InstallationMethod? {
+    public var installMethod: InstallationMethod? {
         let sourceId = source.id
         if sourceId.hasPrefix("pkg:cargo/") {
             return PackageSourceParser.parseCargoPackage(self)

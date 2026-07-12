@@ -100,23 +100,23 @@ import CodeEditLanguages
 /// }
 /// ```
 @MainActor
-final class LSPService: ObservableObject, LSPServiceProtocol {
-    typealias LanguageServerType = LanguageServer<CodeFileDocument>
+public final class LSPService: ObservableObject, LSPServiceProtocol {
+    public typealias LanguageServerType = LanguageServer<CodeFileDocument>
 
     let logger: Logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
 
-    struct ClientKey: Hashable, Equatable {
-        let languageId: LanguageIdentifier
-        let workspacePath: String
+    public struct ClientKey: Hashable, Equatable, Sendable {
+        public let languageId: LanguageIdentifier
+        public let workspacePath: String
 
-        init(_ languageId: LanguageIdentifier, _ workspacePath: String) {
+        public init(_ languageId: LanguageIdentifier, _ workspacePath: String) {
             self.languageId = languageId
             self.workspacePath = workspacePath
         }
     }
 
     /// Holds the active language clients
-    @Published var languageClients: [ClientKey: LanguageServerType] = [:]
+    @Published public var languageClients: [ClientKey: LanguageServerType] = [:]
     /// Holds the language server configurations for all the installed language servers
     var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
     /// Holds all the event listeners for each active language client
@@ -153,9 +153,9 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
     /// init-injected) by the composition root because the window manager's own construction
     /// consumes `LSPService` — init injection in both directions would recurse. Assigned
     /// before any document opens.
-    var workspaceFinder: (URL) -> URL? = { _ in nil }
+    public var workspaceFinder: (URL) -> URL? = { _ in nil }
 
-    init() {
+    public init() {
         // Load the LSP binaries from the developer menu
         for binary in lspBinaries {
             if let language = LanguageIdentifier(rawValue: binary.key) {
@@ -222,7 +222,7 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
     /// Notify all relevant language clients that a document was opened.
     /// - Note: Must be invoked after the contents of the file are available.
     /// - Parameter document: The code document that was opened.
-    func openDocument(_ document: CodeFileDocument) {
+    public func openDocument(_ document: CodeFileDocument) {
         guard let workspaceURL = document.fileURL.flatMap({ workspaceFinder($0) }),
               let lspLanguage = document.getLanguage().lspLanguage else {
             return
@@ -253,7 +253,7 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
 
     /// Notify all relevant language clients that a document was closed.
     /// - Parameter url: The url of the document that was closed
-    func closeDocument(_ url: URL) {
+    public func closeDocument(_ url: URL) {
         removeLanguageServerObjects(for: url.lspURI)
         guard let languageClient = languageClient(forDocument: url) else { return }
         Task {
@@ -270,12 +270,12 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
 
     /// Close all language clients for a workspace.
     ///
-    /// This is intentionally synchronous so we can exit from the workspace document's ``Workspace/close()``
+    /// This is intentionally synchronous so the app's workspace-close path can call it on the way out
     /// method ASAP.
     ///
     /// Errors thrown in this method are logged and otherwise not handled.
     /// - Parameter workspacePath: The path of the workspace.
-    func closeWorkspace(_ workspacePath: String) {
+    public func closeWorkspace(_ workspacePath: String) {
         Task {
             let clientKeys = self.languageClients.filter({ $0.key.workspacePath == workspacePath })
             for (key, languageClient) in clientKeys {
@@ -316,16 +316,14 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
     }
 
     /// Goes through all active language servers and attempts to shut them down.
-    func stopAllServers() async {
-        await withTaskGroup(of: Void.self) { group in
-            for (key, server) in languageClients {
-                group.addTask {
-                    do {
-                        try await server.shutdown()
-                    } catch {
-                        self.logger.warning("Shutting down \(key.languageId.rawValue): Error \(error)")
-                    }
-                }
+    /// Sequential: `LanguageServer` is main-actor isolated, and the app's quit path
+    /// bounds this with a timeout + SIGKILL fallback.
+    public func stopAllServers() async {
+        for (key, server) in languageClients {
+            do {
+                try await server.shutdown()
+            } catch {
+                self.logger.warning("Shutting down \(key.languageId.rawValue): Error \(error)")
             }
         }
         languageClients.removeAll()
@@ -336,7 +334,7 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
     }
 
     /// Call this when a server is refusing to terminate itself. Sends the `SIGKILL` signal to all lsp processes.
-    func killAllServers() {
+    public func killAllServers() {
         for (_, server) in languageClients {
             kill(server.pid, SIGKILL)
         }

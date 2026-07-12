@@ -8,14 +8,14 @@
 import CodeEditDocument
 
 @MainActor
-final class AppLanguageServicesProvider: LanguageServicesProvider {
+public final class AppLanguageServicesProvider: LanguageServicesProvider {
     private let lspService: LSPService
 
-    init(lspService: LSPService) {
+    public init(lspService: LSPService) {
         self.lspService = lspService
     }
 
-    func languageServices(for document: CodeFileDocument) -> LanguageServices {
+    public func languageServices(for document: CodeFileDocument) -> LanguageServices {
         let objects = lspService.languageServerObjects(for: document)
         return LanguageServices(
             textCoordinator: objects.textCoordinator,
