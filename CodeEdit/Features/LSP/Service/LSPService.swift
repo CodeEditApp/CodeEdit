@@ -156,10 +156,11 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
 
     private let notificationManager: NotificationManaging
 
-    /// Resolves the workspace that owns a file URL. Property-injected (not init-injected) by the
-    /// composition root because the window manager's own construction consumes `LSPService` —
-    /// init injection in both directions would recurse. Assigned before any document opens.
-    var workspaceFinder: (URL) -> Workspace? = { _ in nil }
+    /// Resolves the root URL of the workspace that owns a file URL. Property-injected (not
+    /// init-injected) by the composition root because the window manager's own construction
+    /// consumes `LSPService` — init injection in both directions would recurse. Assigned
+    /// before any document opens.
+    var workspaceFinder: (URL) -> URL? = { _ in nil }
 
     init(notificationManager: NotificationManaging) {
         self.notificationManager = notificationManager
@@ -230,11 +231,11 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
     /// - Note: Must be invoked after the contents of the file are available.
     /// - Parameter document: The code document that was opened.
     func openDocument(_ document: CodeFileDocument) {
-        guard let workspace = document.fileURL.flatMap({ workspaceFinder($0) }),
-              let workspacePath = workspace.fileURL?.absolutePath,
+        guard let workspaceURL = document.fileURL.flatMap({ workspaceFinder($0) }),
               let lspLanguage = document.getLanguage().lspLanguage else {
             return
         }
+        let workspacePath = workspaceURL.absolutePath
         Task {
             let languageServer: LanguageServerType
             do {

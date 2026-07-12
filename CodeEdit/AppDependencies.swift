@@ -40,7 +40,7 @@ final class AppDependencies {
         // `lspService`, so init injection in both directions would recurse. Resolved at call
         // time, long after both objects exist.
         service.workspaceFinder = { [weak self] url in
-            self?.workspaceWindowManager.workspace(containing: url)
+            self?.workspaceWindowManager.workspace(containing: url)?.fileURL
         }
         return service
     }()
