@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CEWorkspaceFileManager
 import CodeEditCore
 import Foundation
 
@@ -30,8 +29,8 @@ struct EditorTabBarContextMenu: ViewModifier {
     @Environment(\.workspaceNavigator)
     private var workspaceNavigator
 
-    @Environment(\.workspaceFileManager)
-    private var workspaceFileManager
+    @Environment(\.workspaceFileProvider)
+    private var workspaceFileProvider
 
     @EnvironmentObject var tabs: Editor
 
@@ -155,7 +154,7 @@ struct EditorTabBarContextMenu: ViewModifier {
     /// Copies the relative path from the workspace folder to the given file item to the pasteboard.
     /// - Parameter item: The `FileItem` to use.
     private func copyRelativePath(item: CEWorkspaceFile) {
-        guard let rootPath = workspaceFileManager?.folderUrl else {
+        guard let rootPath = workspaceFileProvider?.folderUrl else {
             return
         }
         let destinationComponents = item.url.standardizedFileURL.pathComponents

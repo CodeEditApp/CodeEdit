@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CEWorkspaceFileManager
 import CodeEditCore
 import OSLog
 import OrderedCollections
@@ -28,7 +27,7 @@ public final class RestoreEditorStateUseCase {
     /// Decodes persisted editor state, validates it, and resolves file references.
     public func execute(
         statePersistence: any WorkspaceStatePersisting,
-        fileManager: CEWorkspaceFileManager?,
+        fileManager: (any WorkspaceFileProviding)?,
         findReplaceQuery: FindReplaceQuery?,
         editorManager: EditorManager
     ) -> Outcome {
@@ -70,7 +69,7 @@ public final class RestoreEditorStateUseCase {
     /// Recursively maps decoded `CEWorkspaceFile` references to their shared file-manager-owned representations.
     private func fixRestoredEditorLayout(
         _ group: EditorLayout,
-        fileManager: CEWorkspaceFileManager?,
+        fileManager: (any WorkspaceFileProviding)?,
         findReplaceQuery: FindReplaceQuery?,
         editorManager: EditorManager
     ) throws {
@@ -98,7 +97,7 @@ public final class RestoreEditorStateUseCase {
     /// and loads each tab's underlying code file.
     private func fixEditor(
         _ editor: Editor,
-        fileManager: CEWorkspaceFileManager?,
+        fileManager: (any WorkspaceFileProviding)?,
         findReplaceQuery: FindReplaceQuery?,
         editorManager: EditorManager
     ) throws {

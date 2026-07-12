@@ -10,9 +10,9 @@ import CodeEditCore
 import Foundation
 import OSLog
 
-public protocol CEWorkspaceFileManagerObserver: AnyObject {
-    func fileManagerUpdated(updatedItems: Set<CEWorkspaceFile>)
-}
+/// The observer protocol moved to `CodeEditCore` as ``WorkspaceFileObserver`` so
+/// feature packages can observe without depending on this service target.
+public typealias CEWorkspaceFileManagerObserver = WorkspaceFileObserver
 
 /// This class is used to load, modify, and listen to files on a user's machine.
 ///
@@ -259,3 +259,5 @@ public final class CEWorkspaceFileManager: @unchecked Sendable {
         observers.removeAllObjects()
     }
 }
+
+extension CEWorkspaceFileManager: WorkspaceFileProviding {}

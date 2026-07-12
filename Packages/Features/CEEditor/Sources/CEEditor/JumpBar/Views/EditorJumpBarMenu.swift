@@ -7,17 +7,16 @@
 
 import AppKit
 import CodeEditSettings
-import CEWorkspaceFileManager
 import CodeEditCore
 
 final class EditorJumpBarMenu: NSMenu, NSMenuDelegate {
     private let fileItems: [CEWorkspaceFile]
-    private weak var fileManager: CEWorkspaceFileManager?
+    private weak var fileManager: (any WorkspaceFileProviding)?
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
 
     init(
         fileItems: [CEWorkspaceFile],
-        fileManager: CEWorkspaceFileManager,
+        fileManager: any WorkspaceFileProviding,
         tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.fileItems = fileItems

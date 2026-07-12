@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CodeEditDocument
-import CEWorkspaceFileManager
 import CodeEditCore
 import CodeEditTextView
 
@@ -54,7 +53,7 @@ public final class UndoManagerRegistration: ObservableObject {
     }
 }
 
-extension UndoManagerRegistration: CEWorkspaceFileManagerObserver {
+extension UndoManagerRegistration: WorkspaceFileObserver {
     /// Managers need to be cleared when the following is true:
     /// - The file is not open in any editors
     /// - The file is updated externally

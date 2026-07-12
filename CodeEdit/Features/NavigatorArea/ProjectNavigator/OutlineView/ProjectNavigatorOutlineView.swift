@@ -55,7 +55,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
     }
 
     @MainActor
-    class Coordinator: NSObject, CEWorkspaceFileManagerObserver {
+    class Coordinator: NSObject, WorkspaceFileObserver {
         init(_ workspace: Workspace) {
             self.workspace = workspace
             self.fileManager = workspace.workspaceFileManager

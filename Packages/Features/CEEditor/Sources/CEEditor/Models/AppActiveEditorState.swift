@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 import CodeEditCore
-import CEWorkspaceFileManager
 
 /// App-side `ActiveEditorState` over a window's `EditorManager`. Emits the active editor's
 /// selected file across both active-editor switches and within-editor tab changes.

@@ -21,8 +21,8 @@ struct EditorJumpBarComponent: View {
     @Environment(\.controlActiveState)
     private var activeState
 
-    @Environment(\.workspaceFileManager)
-    private var workspaceFileManager
+    @Environment(\.workspaceFileProvider)
+    private var workspaceFileProvider
 
     @State var position: NSPoint?
     @State var selection: CEWorkspaceFile
@@ -44,7 +44,7 @@ struct EditorJumpBarComponent: View {
     }
 
     var siblings: [CEWorkspaceFile] {
-        guard let fileManager = workspaceFileManager,
+        guard let fileManager = workspaceFileProvider,
               let parent = fileItem.parent else {
             return [fileItem]
         }
@@ -57,7 +57,7 @@ struct EditorJumpBarComponent: View {
 
     var body: some View {
         NSPopUpButtonView(selection: $selection) {
-            guard let fileManager = workspaceFileManager else { return NSPopUpButton() }
+            guard let fileManager = workspaceFileProvider else { return NSPopUpButton() }
 
             button.menu = EditorJumpBarMenu(
                 fileItems: siblings,

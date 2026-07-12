@@ -110,7 +110,7 @@ extension CEWorkspaceFileManager {
     /// Notify observers that an update occurred in the watched files.
     func notifyObservers(updatedItems: Set<CEWorkspaceFile>) {
         observers.allObjects.reversed().forEach { delegate in
-            guard let delegate = delegate as? CEWorkspaceFileManagerObserver else {
+            guard let delegate = delegate as? WorkspaceFileObserver else {
                 observers.remove(delegate)
                 return
             }
@@ -120,13 +120,13 @@ extension CEWorkspaceFileManager {
 
     /// Add an observer for file system events.
     /// - Parameter observer: The observer to add.
-    public func addObserver(_ observer: CEWorkspaceFileManagerObserver) {
+    public func addObserver(_ observer: WorkspaceFileObserver) {
         observers.add(observer as AnyObject)
     }
 
     /// Remove an observer for file system events.
     /// - Parameter observer: The observer to remove.
-    public func removeObserver(_ observer: CEWorkspaceFileManagerObserver) {
+    public func removeObserver(_ observer: WorkspaceFileObserver) {
         observers.remove(observer as AnyObject)
     }
 }

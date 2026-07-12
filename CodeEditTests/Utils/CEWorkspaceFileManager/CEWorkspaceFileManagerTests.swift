@@ -15,7 +15,7 @@ final class CEWorkspaceFileManagerUnitTests: XCTestCase {
     let typeOfExtensions = ["json", "txt", "swift", "js", "py", "md"]
     var directory: URL!
 
-    class DummyObserver: CEWorkspaceFileManagerObserver {
+    class DummyObserver: WorkspaceFileObserver {
         var completion: (() -> Void)?
 
         init(completion: @escaping () -> Void) {

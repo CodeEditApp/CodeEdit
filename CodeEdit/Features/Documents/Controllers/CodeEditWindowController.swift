@@ -192,6 +192,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     workspace.editorManager?.openTab(item: file)
                 }
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
+                .environment(\.workspaceFileProvider, workspace.workspaceFileManager)
                 .environment(\.filePreview) { file in AnyView(FilePreviewView(item: file)) }
                 .environment(\.languageServices, dependencies.languageServicesProvider)
                 .environment(\.currentTheme, ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!)

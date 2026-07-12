@@ -6,14 +6,13 @@
 //
 
 import Foundation
-import CEWorkspaceFileManager
 import CodeEditCore
 import SwiftUI
 
 /// Observer ViewModel for tracking file deletion
 @MainActor
 final class EditorTabFileObserver: ObservableObject,
-    CEWorkspaceFileManagerObserver {
+    WorkspaceFileObserver {
     @Published private(set) var isDeleted = false
 
     private let tabFile: CEWorkspaceFile

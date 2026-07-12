@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CodeEditSettings
-import CEWorkspaceFileManager
 import CodeEditCore
 
 struct EditorTabView: View {
@@ -26,8 +25,8 @@ struct EditorTabView: View {
 
     @EnvironmentObject private var editorManager: EditorManager
 
-    @Environment(\.workspaceFileManager)
-    private var workspaceFileManager
+    @Environment(\.workspaceFileProvider)
+    private var workspaceFileProvider
 
     @StateObject private var fileObserver: EditorTabFileObserver
 
@@ -270,10 +269,10 @@ struct EditorTabView: View {
             .tabBarContextMenu(item: tabFile, isTemporary: isTemporary)
             .accessibilityElement(children: .contain)
             .onAppear {
-                workspaceFileManager?.addObserver(fileObserver)
+                workspaceFileProvider?.addObserver(fileObserver)
             }
             .onDisappear {
-                workspaceFileManager?.removeObserver(fileObserver)
+                workspaceFileProvider?.removeObserver(fileObserver)
             }
     }
 }

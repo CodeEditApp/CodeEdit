@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import CEWorkspaceFileManager
 import CodeEditCore
 import SwiftUI
 import OrderedCollections
@@ -19,7 +18,7 @@ extension EditorManager {
     ///   - findReplaceQuery: The shared find/replace query for editor instances.
     public func restoreFromState(
         statePersistence: any WorkspaceStatePersisting,
-        fileManager: CEWorkspaceFileManager?,
+        fileManager: (any WorkspaceFileProviding)?,
         findReplaceQuery: FindReplaceQuery?
     ) {
         defer {

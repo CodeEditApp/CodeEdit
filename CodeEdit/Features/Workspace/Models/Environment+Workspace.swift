@@ -21,6 +21,10 @@ private struct FileEditorOverridesKey: EnvironmentKey {
     static let defaultValue: FileEditorOverrides = NoOpFileEditorOverrides()
 }
 
+private struct WorkspaceFileManagerKey: EnvironmentKey {
+    nonisolated(unsafe) static let defaultValue: CEWorkspaceFileManager? = nil
+}
+
 private struct WorkspaceFileURLKey: EnvironmentKey {
     static let defaultValue: URL? = nil
 }
@@ -34,6 +38,13 @@ private struct FilePreviewFactoryKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
+    /// The concrete workspace file manager, for app-shell views that need the mutating
+    /// API (create/rename). Feature packages use `\.workspaceFileProvider` (CEEditor) instead.
+    var workspaceFileManager: CEWorkspaceFileManager? {
+        get { self[WorkspaceFileManagerKey.self] }
+        set { self[WorkspaceFileManagerKey.self] = newValue }
+    }
+
     var workspaceFileURL: URL? {
         get { self[WorkspaceFileURLKey.self] }
         set { self[WorkspaceFileURLKey.self] = newValue }
