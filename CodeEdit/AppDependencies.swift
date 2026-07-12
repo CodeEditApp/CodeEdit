@@ -35,7 +35,7 @@ final class AppDependencies {
     private(set) lazy var notificationManager: NotificationManaging = NotificationManager(eventBus: eventBus)
 
     private(set) lazy var lspService: LSPService = {
-        let service = LSPService(notificationManager: notificationManager)
+        let service = LSPService()
         // Property-injected (not init-injected): the window manager's construction consumes
         // `lspService`, so init injection in both directions would recurse. Resolved at call
         // time, long after both objects exist.

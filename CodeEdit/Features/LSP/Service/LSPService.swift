@@ -9,12 +9,10 @@ import os.log
 import CodeEditSettings
 import CodeEditDocument
 import JSONRPC
-import SwiftUI
 import Foundation
 import LanguageClient
 import LanguageServerProtocol
 import CodeEditLanguages
-import CENotifications
 
 /// `LSPService` is a service class responsible for managing the lifecycle and event handling
 /// of Language Server Protocol (LSP) clients within the CodeEdit application. It handles the initialization,
@@ -132,9 +130,6 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
     @AppSettings(\.developerSettings.lspBinaries)
     var lspBinaries
 
-    @Environment(\.openWindow)
-    private var openWindow
-
     /// Returns the language-server objects for a document, creating and storing them on first use.
     /// A document without a URI (e.g. untitled) gets a fresh, unstored instance — it has no server.
     func languageServerObjects(for document: CodeFileDocument) -> LanguageServerDocumentObjects<CodeFileDocument> {
@@ -154,16 +149,13 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
         documentObjects[uri] = nil
     }
 
-    private let notificationManager: NotificationManaging
-
     /// Resolves the root URL of the workspace that owns a file URL. Property-injected (not
     /// init-injected) by the composition root because the window manager's own construction
     /// consumes `LSPService` — init injection in both directions would recurse. Assigned
     /// before any document opens.
     var workspaceFinder: (URL) -> URL? = { _ in nil }
 
-    init(notificationManager: NotificationManaging) {
-        self.notificationManager = notificationManager
+    init() {
         // Load the LSP binaries from the developer menu
         for binary in lspBinaries {
             if let language = LanguageIdentifier(rawValue: binary.key) {
@@ -245,7 +237,6 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
                     languageServer = try await self.startServer(for: lspLanguage, workspacePath: workspacePath)
                 }
             } catch {
-                notifyToInstallLanguageServer(language: lspLanguage)
                 // swiftlint:disable:next line_length
                 self.logger.error("Failed to find/start server for language: \(lspLanguage.rawValue), workspace: \(workspacePath, privacy: .private)")
                 return
@@ -349,35 +340,6 @@ final class LSPService: ObservableObject, LSPServiceProtocol {
         for (_, server) in languageClients {
             kill(server.pid, SIGKILL)
         }
-    }
-}
-
-extension LSPService {
-    private func notifyToInstallLanguageServer(language lspLanguage: LanguageIdentifier) {
-        // TODO: Re-Enable when this is more fleshed out (don't send duplicate notifications in a session)
-        return
-        // FIXME: Unreachable code - remove or re-enable when ready
-        /*
-        let lspLanguageTitle = lspLanguage.rawValue.capitalized
-        let notificationTitle = "Install \(lspLanguageTitle) Language Server"
-        // Make sure the user doesn't have the same existing notification
-        guard !notificationManager.notifications.contains(where: { $0.title == notificationTitle }) else {
-            return
-        }
-
-        notificationManager.post(
-            iconSymbol: "arrow.down.circle",
-            iconColor: .clear,
-            title: notificationTitle,
-            description: "Install the \(lspLanguageTitle) language server to enable code intelligence features.",
-            actionButtonTitle: "Install"
-        ) { [weak self] in
-            // TODO: Warning:
-            // Accessing Environment<OpenWindowAction>'s value outside of being installed on a View.
-            // This will always read the default value and will not update
-            self?.openWindow(sceneID: .settings)
-        }
-        */
     }
 }
 
