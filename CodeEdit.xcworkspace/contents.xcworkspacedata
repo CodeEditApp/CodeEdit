@@ -39,5 +39,8 @@
       <FileRef
          location = "group:CEEditor">
       </FileRef>
+      <FileRef
+         location = "group:CELSP">
+      </FileRef>
    </Group>
 </Workspace>
