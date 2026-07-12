@@ -16,7 +16,7 @@
 		30CB64942C16CA9100CC8A9E /* LanguageClient in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64932C16CA9100CC8A9E /* LanguageClient */; };
 		5800E2F82FF843390085ECF1 /* CodeEditUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5800E2F72FF843390085ECF1 /* CodeEditUI */; };
 		583E529C29361BAB001AB554 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 583E529B29361BAB001AB554 /* SnapshotTesting */; };
-		588950C52FFA5C05004BE116 /* Search in Frameworks */ = {isa = PBXBuildFile; productRef = 588950C42FFA5C05004BE116 /* Search */; };
+		588950C52FFA5C05004BE116 /* CESearch in Frameworks */ = {isa = PBXBuildFile; productRef = 588950C42FFA5C05004BE116 /* CESearch */; };
 		588957132FFA679E004BE116 /* CodeEditServices in Frameworks */ = {isa = PBXBuildFile; productRef = 588957122FFA679E004BE116 /* CodeEditServices */; };
 		5889639E2FFA9A87004BE116 /* Notifications in Frameworks */ = {isa = PBXBuildFile; productRef = 5889639D2FFA9A87004BE116 /* Notifications */; };
 		58CFC49B2F8BE799009F4AA7 /* CodeEditCore in Frameworks */ = {isa = PBXBuildFile; productRef = 58CFC49A2F8BE799009F4AA7 /* CodeEditCore */; };
@@ -210,7 +210,7 @@
 				5EACE6222DF4BF08005E08B8 /* WelcomeWindow in Frameworks */,
 				6C6BD6F829CD14D100235D17 /* CodeEditKit in Frameworks */,
 				6C0824A12C5C0C9700A0751E /* SwiftTerm in Frameworks */,
-				588950C52FFA5C05004BE116 /* Search in Frameworks */,
+				588950C52FFA5C05004BE116 /* CESearch in Frameworks */,
 				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 				6CB94D032CA1205100E8651C /* AsyncAlgorithms in Frameworks */,
 				6C9DB9E42D55656300ACD86E /* CodeEditSourceEditor in Frameworks */,
@@ -357,7 +357,7 @@
 				5800E2F72FF843390085ECF1 /* CodeEditUI */,
 				5AD0C0DE2D00000000000002 /* CodeEditDocument */,
 				5AD0C0DE2D00000000000012 /* CodeEditSettings */,
-				588950C42FFA5C05004BE116 /* Search */,
+				588950C42FFA5C05004BE116 /* CESearch */,
 				588957122FFA679E004BE116 /* CodeEditServices */,
 				5889639D2FFA9A87004BE116 /* Notifications */,
 				58ED10012FFB0001004BE116 /* Editor */,
@@ -1902,9 +1902,9 @@
 			package = 583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
 			productName = SnapshotTesting;
 		};
-		588950C42FFA5C05004BE116 /* Search */ = {
+		588950C42FFA5C05004BE116 /* CESearch */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Search;
+			productName = CESearch;
 		};
 		588957122FFA679E004BE116 /* CodeEditServices */ = {
 			isa = XCSwiftPackageProductDependency;

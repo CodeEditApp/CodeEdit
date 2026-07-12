@@ -31,7 +31,7 @@
       location = "group:Packages/Features"
       name = "Features">
       <FileRef
-         location = "group:Search">
+         location = "group:CESearch">
       </FileRef>
       <FileRef
          location = "group:Notifications">

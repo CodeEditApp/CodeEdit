@@ -8,7 +8,7 @@
 import XCTest
 import CodeEditCore
 import ShellClient
-import Search
+import CESearch
 @testable import CodeEdit
 
 @MainActor

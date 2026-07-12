@@ -7,7 +7,7 @@
 
 import XCTest
 import CodeEditCore
-import Search
+import CESearch
 
 final class FindReplaceQueryBridgeTests: XCTestCase {
     private var directory: URL!

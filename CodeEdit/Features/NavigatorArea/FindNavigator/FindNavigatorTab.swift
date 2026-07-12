@@ -7,7 +7,7 @@
 
 import SwiftUI
 import CodeEditSettings
-import Search
+import CESearch
 
 /// App-side wrapper for the Search package's find navigator: reads Settings
 /// (which the package cannot import) and passes them down as configuration.

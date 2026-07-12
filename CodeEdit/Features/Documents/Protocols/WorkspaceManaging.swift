@@ -9,7 +9,7 @@ import Foundation
 import CEWorkspaceFileManager
 import Editor
 import Notifications
-import Search
+import CESearch
 
 /// Protocol defining the interface that workspace consumers depend on.
 /// Enables testability via mock implementations and decouples views from the concrete Workspace type.

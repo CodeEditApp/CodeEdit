@@ -9,7 +9,7 @@ import SwiftUI
 import CodeEditCore
 import Editor
 import Notifications
-import Search
+import CESearch
 import ShellClient
 
 private struct FileRelocatorKey: EnvironmentKey {

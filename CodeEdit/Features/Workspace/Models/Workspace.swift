@@ -10,7 +10,7 @@ import CEWorkspaceFileManager
 import CodeEditCore
 import Editor
 import Notifications
-import Search
+import CESearch
 import SwiftUI
 import Foundation
 
