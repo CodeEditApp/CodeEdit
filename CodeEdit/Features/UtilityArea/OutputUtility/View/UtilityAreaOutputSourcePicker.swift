@@ -23,9 +23,10 @@ struct UtilityAreaOutputSourcePicker: View {
 
     @ObservedObject var extensionManager = ExtensionManager.shared
 
-    @Environment(\.lspService) var lspService
+    @Environment(\.languageServerListState)
+    private var languageServerListState
     @State private var updater: UUID = UUID()
-    @State private var languageServerClients: [LSPService.LanguageServerType] = []
+    @State private var languageServerClients: [RunningLanguageServer] = []
 
     var body: some View {
         Picker("Output Source", selection: $selectedSource) {
@@ -67,26 +68,21 @@ struct UtilityAreaOutputSourcePicker: View {
         .labelsHidden()
         .controlSize(.small)
         .onAppear {
-            updateLanguageServers(lspService?.languageClients ?? [:])
+            updateLanguageServers(languageServerListState?.runningServers ?? [])
         }
         .onReceive(
-            lspService?.$languageClients.eraseToAnyPublisher() ?? Just([:]).eraseToAnyPublisher()
-        ) { clients in
-            updateLanguageServers(clients)
+            languageServerListState?.$runningServers.eraseToAnyPublisher() ?? Just([]).eraseToAnyPublisher()
+        ) { servers in
+            updateLanguageServers(servers)
         }
         .onReceive(extensionManager.$extensions) { _ in
             updater = UUID()
         }
     }
 
-    func updateLanguageServers(_ clients: [LSPService.ClientKey: LSPService.LanguageServerType]) {
-        languageServerClients = clients
-            .compactMap { (key, value) in
-                if key.workspacePath == workspaceFileURL?.absolutePath {
-                    return value
-                }
-                return nil
-            }
+    func updateLanguageServers(_ servers: [RunningLanguageServer]) {
+        languageServerClients = servers
+            .filter { $0.workspacePath == workspaceFileURL?.absolutePath }
             .sorted(by: { $0.languageId.rawValue < $1.languageId.rawValue })
         if selectedSource == nil, let client = languageServerClients.first {
             selectedSource = Sources.languageServer(client.logContainer)

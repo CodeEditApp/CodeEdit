@@ -34,8 +34,8 @@ private struct ShellClientKey: EnvironmentKey {
     static let defaultValue: ShellClientProtocol? = nil
 }
 
-private struct LSPServiceKey: EnvironmentKey {
-    static let defaultValue: LSPService? = nil
+private struct LanguageServerListStateKey: EnvironmentKey {
+    static let defaultValue: LanguageServerListState? = nil
 }
 
 private struct RegistryManagerKey: EnvironmentKey {
@@ -65,10 +65,10 @@ extension EnvironmentValues {
         set { self[ShellClientKey.self] = newValue }
     }
 
-    /// The LSP service. Optional: language-server UI is empty in previews. Injected by the app shell.
-    var lspService: LSPService? {
-        get { self[LSPServiceKey.self] }
-        set { self[LSPServiceKey.self] = newValue }
+    /// The observable list of running language servers. Optional: empty in previews.
+    var languageServerListState: LanguageServerListState? {
+        get { self[LanguageServerListStateKey.self] }
+        set { self[LanguageServerListStateKey.self] = newValue }
     }
 
     /// The language-server registry. Optional: registry UI is empty in previews. Injected by the app shell.
@@ -97,7 +97,7 @@ extension View {
     func appServices(_ dependencies: AppDependencies) -> some View {
         environment(\.commandManager, dependencies.commandManager)
             .environment(\.shellClient, dependencies.shellClient)
-            .environment(\.lspService, dependencies.lspService)
+            .environment(\.languageServerListState, dependencies.lspService.serverListState)
             .environment(\.registryManager, dependencies.registryManager)
             .environment(\.eventBus, dependencies.eventBus)
             .environment(\.workspaceWindowManager, dependencies.workspaceWindowManager)
@@ -114,7 +114,7 @@ extension Scene {
     func appServices(_ dependencies: AppDependencies) -> some Scene {
         environment(\.commandManager, dependencies.commandManager)
             .environment(\.shellClient, dependencies.shellClient)
-            .environment(\.lspService, dependencies.lspService)
+            .environment(\.languageServerListState, dependencies.lspService.serverListState)
             .environment(\.registryManager, dependencies.registryManager)
             .environment(\.eventBus, dependencies.eventBus)
             .environment(\.workspaceWindowManager, dependencies.workspaceWindowManager)

@@ -100,10 +100,14 @@ import CodeEditLanguages
 /// }
 /// ```
 @MainActor
-public final class LSPService: ObservableObject, LSPServiceProtocol {
+public final class LSPService: LSPServiceProtocol {
     public typealias LanguageServerType = LanguageServer<CodeFileDocument>
 
     let logger: Logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "LSPService")
+
+    /// Observable list of running servers for UI (the output-source picker).
+    /// The service owns and feeds it; views observe it instead of the service.
+    public let serverListState = LanguageServerListState()
 
     public struct ClientKey: Hashable, Equatable, Sendable {
         public let languageId: LanguageIdentifier
@@ -116,7 +120,7 @@ public final class LSPService: ObservableObject, LSPServiceProtocol {
     }
 
     /// Holds the active language clients
-    @Published public var languageClients: [ClientKey: LanguageServerType] = [:]
+    public var languageClients: [ClientKey: LanguageServerType] = [:]
     /// Holds the language server configurations for all the installed language servers
     var languageConfigs: [LanguageIdentifier: LanguageServerBinary] = [:]
     /// Holds all the event listeners for each active language client
@@ -211,6 +215,11 @@ public final class LSPService: ObservableObject, LSPServiceProtocol {
             }
         )
         languageClients[ClientKey(languageId, workspacePath)] = server
+        serverListState.add(RunningLanguageServer(
+            workspacePath: workspacePath,
+            languageId: languageId,
+            logContainer: server.logContainer
+        ))
         logger.info("Successfully started \(languageId.rawValue) language server")
 
         self.startListeningToEvents(for: ClientKey(languageId, workspacePath))
@@ -288,6 +297,7 @@ public final class LSPService: ObservableObject, LSPServiceProtocol {
             for (key, _) in clientKeys {
                 self.languageClients.removeValue(forKey: key)
             }
+            self.serverListState.removeAll(workspacePath: workspacePath)
         }
     }
 
@@ -310,6 +320,7 @@ public final class LSPService: ObservableObject, LSPServiceProtocol {
             throw error
         }
         languageClients.removeValue(forKey: ClientKey(languageId, workspacePath))
+        serverListState.remove(workspacePath: workspacePath, languageId: languageId)
         logger.info("Server stopped for language \(languageId.rawValue)")
 
         stopListeningToEvents(for: ClientKey(languageId, workspacePath))
@@ -327,6 +338,7 @@ public final class LSPService: ObservableObject, LSPServiceProtocol {
             }
         }
         languageClients.removeAll()
+        serverListState.removeAll()
         eventListeningTasks.forEach { (_, value) in
             value.cancel()
         }
