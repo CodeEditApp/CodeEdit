@@ -78,7 +78,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
             }
 
             if needToHandleOpen {
-                self.handleOpen()
+                // Reopen the workspaces that were open at last quit (saved by
+                // ShutdownApplicationUseCase). Workspace windows are plain NSWindows,
+                // so NSQuitAlwaysKeepsWindows cannot restore them itself.
+                var restoredWorkspace = false
+                if let projects = UserDefaults.standard.array(
+                    forKey: AppDelegate.recoverWorkspacesKey
+                ) as? [String] {
+                    for path in projects {
+                        do {
+                            try self.windowManager.openWorkspace(at: URL(fileURLWithPath: path))
+                            restoredWorkspace = true
+                        } catch {
+                            self.logger.error(
+                                "Failed to restore workspace at \(path): \(error.localizedDescription)"
+                            )
+                        }
+                    }
+                }
+
+                if !restoredWorkspace {
+                    self.handleOpen()
+                }
             }
         }
     }
