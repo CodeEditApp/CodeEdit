@@ -89,7 +89,7 @@ extension ProjectNavigatorMenu {
     func newFile() {
         guard let item else { return }
         do {
-            if let newFile = try workspace?.workspaceFileManager?.addFile(fileName: "untitled", toFile: item) {
+            if let newFile = try workspace?.workspaceFileManager.addFile(fileName: "untitled", toFile: item) {
                 workspace?.listenerModel.highlightedFileItem = newFile
                 sender.workspaceNavigator.open(file: newFile, asTemporary: false)
             }
@@ -124,7 +124,7 @@ extension ProjectNavigatorMenu {
         do {
             let clipBoardContent = NSPasteboard.general.string(forType: .string)?.data(using: .utf8)
             if let clipBoardContent, !clipBoardContent.isEmpty, let newFile = try workspace?
-                .workspaceFileManager?
+                .workspaceFileManager
                 .addFile(
                     fileName: "untitled",
                     toFile: item,
@@ -147,7 +147,7 @@ extension ProjectNavigatorMenu {
     func newFolder() {
         guard let item else { return }
         do {
-            if let newFolder = try workspace?.workspaceFileManager?.addFolder(folderName: "untitled", toFile: item) {
+            if let newFolder = try workspace?.workspaceFileManager.addFolder(folderName: "untitled", toFile: item) {
                 workspace?.listenerModel.highlightedFileItem = newFolder
             }
         } catch {
@@ -160,7 +160,7 @@ extension ProjectNavigatorMenu {
     /// Creates a new folder with the items selected.
     @objc
     func newFolderFromSelection() {
-        guard let workspace, let workspaceFileManager = workspace.workspaceFileManager else { return }
+        guard let workspaceFileManager = workspace?.workspaceFileManager else { return }
 
         let selectedItems = selectedItems()
         guard let parent = selectedItems.first?.parent else { return }
@@ -198,7 +198,7 @@ extension ProjectNavigatorMenu {
                     // Was likely already trashed (eg selecting files in a folder and deleting the folder and files)
                     return
                 }
-                try workspace?.workspaceFileManager?.trash(file: item)
+                try workspace?.workspaceFileManager.trash(file: item)
             }
             reloadData()
         } catch {
@@ -233,10 +233,10 @@ extension ProjectNavigatorMenu {
         do {
             if selectedItems.count == 1 {
                 try selectedItems.forEach { item in
-                    try workspace?.workspaceFileManager?.delete(file: item)
+                    try workspace?.workspaceFileManager.delete(file: item)
                 }
             } else {
-                try workspace?.workspaceFileManager?.batchDelete(files: selectedItems)
+                try workspace?.workspaceFileManager.batchDelete(files: selectedItems)
             }
 
             withAnimation {
@@ -258,7 +258,7 @@ extension ProjectNavigatorMenu {
     func duplicate() {
         do {
             try selectedItems().forEach { item in
-                try workspace?.workspaceFileManager?.duplicate(file: item)
+                try workspace?.workspaceFileManager.duplicate(file: item)
             }
             reloadData()
         } catch {
@@ -281,7 +281,7 @@ extension ProjectNavigatorMenu {
     /// Copies the relative path of the selected files
     @objc
     func copyRelativePath() {
-        guard let rootPath = workspace?.workspaceFileManager?.folderUrl else {
+        guard let rootPath = workspace?.workspaceFileManager.folderUrl else {
             return
         }
         let paths = selectedItems().map {

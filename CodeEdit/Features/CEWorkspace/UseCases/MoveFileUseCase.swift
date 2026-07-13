@@ -16,7 +16,7 @@ import CodeEditCore
 final class MoveFileUseCase {
 
     func execute(file: CEWorkspaceFile, to destination: URL, in workspace: Workspace) throws -> CEWorkspaceFile? {
-        guard let newFile = try workspace.workspaceFileManager?.move(file: file, to: destination) else {
+        guard let newFile = try workspace.workspaceFileManager.move(file: file, to: destination) else {
             return nil
         }
 
@@ -25,10 +25,10 @@ final class MoveFileUseCase {
         }
 
         if !file.isFolder {
-            workspace.editorManager?.editorLayout.closeAllTabs(of: file)
+            workspace.editorManager.editorLayout.closeAllTabs(of: file)
         }
         workspace.listenerModel.highlightedFileItem = newFile
-        workspace.editorManager?.openTab(item: newFile)
+        workspace.editorManager.openTab(item: newFile)
 
         return newFile
     }

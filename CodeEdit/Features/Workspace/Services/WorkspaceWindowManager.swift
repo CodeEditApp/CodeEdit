@@ -40,7 +40,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
     func openWorkspace(at url: URL) throws {
         // Check if this workspace is already open
-        if let existing = openWorkspaces.first(where: { $0.fileURL?.standardizedFileURL == url.standardizedFileURL }) {
+        if let existing = openWorkspaces.first(where: { $0.fileURL.standardizedFileURL == url.standardizedFileURL }) {
             focusWorkspace(existing)
             return
         }
@@ -79,7 +79,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
     func workspace(containing url: URL) -> Workspace? {
         openWorkspaces.first { workspace in
-            workspace.workspaceFileManager?.getFile(url.absolutePath, createIfNotFound: true) != nil
+            workspace.workspaceFileManager.getFile(url.absolutePath, createIfNotFound: true) != nil
         }
     }
 
@@ -89,10 +89,10 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
         guard !url.isFolder else { return false }
 
         for workspace in openWorkspaces.sorted(by: {
-            ($0.fileURL?.sharedComponents(url) ?? 0) > ($1.fileURL?.sharedComponents(url) ?? 0)
+            $0.fileURL.sharedComponents(url) > $1.fileURL.sharedComponents(url)
         }) {
-            if let newFile = workspace.workspaceFileManager?.getFile(url.absolutePath, createIfNotFound: true) {
-                workspace.editorManager?.openTab(item: newFile, asTemporary: asTemporary)
+            if let newFile = workspace.workspaceFileManager.getFile(url.absolutePath, createIfNotFound: true) {
+                workspace.editorManager.openTab(item: newFile, asTemporary: asTemporary)
                 focusWorkspace(workspace)
                 return true
             }

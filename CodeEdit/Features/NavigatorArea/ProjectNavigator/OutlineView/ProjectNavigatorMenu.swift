@@ -75,12 +75,12 @@ final class ProjectNavigatorMenu: NSMenu {
         let rename = menuItem("Rename", action: #selector(renameFile))
 
         let trash = menuItem("Move to Trash", action:
-                                item.url != workspace?.workspaceFileManager?.folderUrl
+                                item.url != workspace?.workspaceFileManager.folderUrl
                               ? #selector(trash) : nil)
 
         // trash has to be the previous menu item for delete.isAlternate to work correctly
         let delete = menuItem("Delete Immediately...", action:
-                                item.url != workspace?.workspaceFileManager?.folderUrl
+                                item.url != workspace?.workspaceFileManager.folderUrl
                               ? #selector(delete) : nil)
         delete.keyEquivalentModifierMask = .option
         delete.isAlternate = true

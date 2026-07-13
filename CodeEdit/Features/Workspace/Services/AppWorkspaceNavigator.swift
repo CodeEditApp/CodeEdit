@@ -32,6 +32,6 @@ final class AppWorkspaceNavigator: WorkspaceNavigator {
 
     @MainActor
     func closeTab(file: CEWorkspaceFile) {
-        windowManager.workspace(containing: file.url)?.editorManager?.editorLayout.closeAllTabs(of: file)
+        windowManager.workspace(containing: file.url)?.editorManager.editorLayout.closeAllTabs(of: file)
     }
 }

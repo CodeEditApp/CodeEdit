@@ -28,7 +28,7 @@ extension ProjectNavigatorViewController: OutlineTableViewCellDelegate {
 
     func copyFile(file: CEWorkspaceFile, to destination: URL) {
         do {
-            try workspace?.workspaceFileManager?.copy(file: file, to: destination)
+            try workspace?.workspaceFileManager.copy(file: file, to: destination)
         } catch {
             let alert = NSAlert(error: error)
             alert.addButton(withTitle: "Dismiss")

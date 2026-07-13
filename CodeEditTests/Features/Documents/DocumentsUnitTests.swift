@@ -20,7 +20,7 @@ final class DocumentsUnitTests: XCTestCase {
     private var hapticFeedbackPerformerMock: NSHapticFeedbackPerformerMock!
     private var navigatorViewModel: NavigatorAreaViewModel!
     private var window: NSWindow!
-    private var workspace = Workspace()
+    private var workspace: Workspace!
 
     // MARK: - Lifecycle
 
@@ -28,18 +28,8 @@ final class DocumentsUnitTests: XCTestCase {
         super.setUp()
         hapticFeedbackPerformerMock = NSHapticFeedbackPerformerMock()
         navigatorViewModel = .init()
-        workspace.taskManager = TaskManager(
-            tasksConfiguration: CEWorkspaceSettings(workspaceURL: URL(filePath: NSTemporaryDirectory())),
-            workspaceURL: nil,
-            eventBus: EventBus()
-        )
-        workspace.sourceControlManager = SourceControlManager(
-            workspaceURL: URL(filePath: "/tmp"),
-            shellClient: ShellClient(),
-            eventBus: EventBus()
-        )
-        workspace.sourceControlViewModel = SourceControlViewModel()
-        workspace.searchState = SearchState(workspaceURL: URL(filePath: "/tmp"), eventBus: EventBus())
+        // swiftlint:disable:next force_try
+        workspace = try! TestWorkspaceFactory.make()
         window = NSWindow()
         splitViewController = .init(
             workspace: workspace,

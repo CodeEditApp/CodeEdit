@@ -30,7 +30,7 @@ final class ShutdownApplicationUseCase {
         let workspaces = windowManager.openWorkspaces
 
         // Save workspace paths for recovery on next launch
-        let projects: [String] = workspaces.compactMap { $0.fileURL?.path }
+        let projects: [String] = workspaces.map { $0.fileURL.path }
         UserDefaults.standard.set(projects, forKey: AppDelegate.recoverWorkspacesKey)
 
         // Check for unsaved changes and prompt the user

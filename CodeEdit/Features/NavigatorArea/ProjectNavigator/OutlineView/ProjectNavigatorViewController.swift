@@ -30,8 +30,8 @@ final class ProjectNavigatorViewController: NSViewController {
     ///
     /// Also creates a top level item "root" which represents the projects root directory and automatically expands it.
     var content: [CEWorkspaceFile] {
-        guard let folderURL = workspace?.workspaceFileManager?.folderUrl else { return [] }
-        guard let root = workspace?.workspaceFileManager?.getFile(folderURL.path) else { return [] }
+        guard let folderURL = workspace?.workspaceFileManager.folderUrl else { return [] }
+        guard let root = workspace?.workspaceFileManager.getFile(folderURL.path) else { return [] }
         return [root]
     }
 
@@ -74,7 +74,7 @@ final class ProjectNavigatorViewController: NSViewController {
     var shouldReloadAfterDoneEditing: Bool = false
 
     var filterIsEmpty: Bool {
-        workspace?.projectNavigatorViewModel?.navigatorFilter
+        workspace?.projectNavigatorViewModel.navigatorFilter
             .trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true
     }
 
@@ -88,7 +88,7 @@ final class ProjectNavigatorViewController: NSViewController {
         self.outlineView.dataSource = self
         self.outlineView.delegate = self
         self.outlineView.autosaveExpandedItems = true
-        self.outlineView.autosaveName = workspace?.workspaceFileManager?.folderUrl.path ?? ""
+        self.outlineView.autosaveName = workspace?.workspaceFileManager.folderUrl.path ?? ""
         self.outlineView.headerView = nil
         self.outlineView.menu = ProjectNavigatorMenu(self)
         self.outlineView.menu?.delegate = self
@@ -207,7 +207,7 @@ final class ProjectNavigatorViewController: NSViewController {
         guard let workspace else { return }
 
         /// If the filter is empty, show all items and restore the expanded state.
-        if workspace.projectNavigatorViewModel?.sourceControlFilter == true || !filterIsEmpty {
+        if workspace.projectNavigatorViewModel.sourceControlFilter == true || !filterIsEmpty {
             outlineView.autosaveExpandedItems = false
             /// Expand all items for search.
             outlineView.expandItem(outlineView.item(atRow: 0), expandChildren: true)
@@ -243,7 +243,7 @@ final class ProjectNavigatorViewController: NSViewController {
             return true
         }
 
-        if let children = workspace?.workspaceFileManager?.childrenOfFile(item) {
+        if let children = workspace?.workspaceFileManager.childrenOfFile(item) {
             return children.contains { fileSearchMatches(filter, for: $0, sourceControlFilter: sourceControlFilter) }
         }
 
@@ -256,7 +256,7 @@ final class ProjectNavigatorViewController: NSViewController {
     private func saveAllContentChildren(for item: CEWorkspaceFile) {
         guard item.isFolder, filteredContentChildren[item] == nil else { return }
 
-        if let children = workspace?.workspaceFileManager?.childrenOfFile(item) {
+        if let children = workspace?.workspaceFileManager.childrenOfFile(item) {
             filteredContentChildren[item] = children
             for child in children.filter({ $0.isFolder }) {
                 saveAllContentChildren(for: child)

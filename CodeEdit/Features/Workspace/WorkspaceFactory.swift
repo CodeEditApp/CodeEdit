@@ -9,6 +9,7 @@ import CESourceControl
 import Foundation
 import CEWorkspaceFileManager
 import CEEditor
+import CENotifications
 import CESearch
 import CETerminal
 
@@ -20,22 +21,16 @@ enum WorkspaceFactory {
 
     private static let ignoredFilesAndDirectories: Set<String> = [".DS_Store"]
 
-    /// Populates all manager properties on `workspace` for the given workspace URL.
-    ///
-    /// - Parameters:
-    ///   - workspace: The workspace to populate. Its `editorManager`,
-    ///     `statusBarViewModel`, `utilityAreaModel`, `listenerModel`,
-    ///     `taskNotificationHandler`, `undoRegistration`, and `notificationPanel`
-    ///     must already be initialized (they are set at declaration time).
-    ///   - url: The root URL of the workspace folder.
+    /// Builds a fully-populated ``Workspace`` for the given folder URL.
     @MainActor
-    static func populate(_ workspace: Workspace, url: URL, dependencies: AppDependencies) {
+    static func make(url: URL, dependencies: AppDependencies) -> Workspace {
         // Begin security-scoped access on the original (possibly bookmark-derived) URL so a
         // sandboxed build can read a workspace opened from recents. `startAccessingSecurityScopedResource`
         // returns `false` for non-scoped URLs (e.g. from the open panel / Powerbox), which access
         // fine without it. Released in `Workspace.tearDown`.
+        var securityScopedURL: URL?
         if url.startAccessingSecurityScopedResource() {
-            workspace.securityScopedURL = url
+            securityScopedURL = url
         }
 
         // Normalize the URL to always end with "/"
@@ -44,60 +39,69 @@ enum WorkspaceFactory {
             url = URL(filePath: url.absoluteURL.path(percentEncoded: false) + "/")
         }
 
-        workspace.fileURL = url
-        workspace.displayName = url.lastPathComponent
-        workspace.statePersistence = WorkspaceStatePersistence(workspaceURL: url)
-
-        // --- Phase 1: Source control + file manager (dependency chain) ---
-        guard let editorManager = workspace.editorManager else {
-            assertionFailure("EditorManager must be initialized before calling populate")
-            return
-        }
-
-        let shellClient = dependencies.shellClient
         let eventBus = dependencies.eventBus
+        let statePersistence = WorkspaceStatePersistence(workspaceURL: url)
+        let editorManager = EditorManager()
         let sourceControlManager = SourceControlManager(
             workspaceURL: url,
-            shellClient: shellClient,
+            shellClient: dependencies.shellClient,
             eventBus: eventBus
         )
-
         let workspaceFileManager = CEWorkspaceFileManager(
             folderUrl: url,
             ignoredFilesAndFolders: ignoredFilesAndDirectories,
             eventBus: eventBus
         )
+        let searchState = SearchState(workspaceURL: url, eventBus: eventBus)
+        let workspaceSettingsManager = CEWorkspaceSettings(workspaceURL: url)
+        let taskManager = TaskManager(
+            tasksConfiguration: workspaceSettingsManager,
+            workspaceURL: url,
+            eventBus: eventBus
+        )
+        let undoRegistration = UndoManagerRegistration()
 
-        workspace.sourceControlManager = sourceControlManager
-        workspace.sourceControlViewModel = SourceControlViewModel()
-        workspace.workspaceFileManager = workspaceFileManager
+        // Observer registration
+        workspaceFileManager.addObserver(undoRegistration)
+        undoRegistration.editorManager = editorManager
 
-        // --- Phase 2: Independent managers ---
-        workspace.searchState = SearchState(workspaceURL: url, eventBus: eventBus)
-        workspace.openQuicklyViewModel = OpenQuicklyViewModel(fileURL: url)
-        workspace.commandsPaletteState = QuickActionsViewModel(commandManager: dependencies.commandManager)
-        workspace.workspaceSettingsManager = CEWorkspaceSettings(workspaceURL: url)
-        if let workspaceSettingsManager = workspace.workspaceSettingsManager {
-            workspace.taskManager = TaskManager(
-                tasksConfiguration: workspaceSettingsManager,
-                workspaceURL: url,
+        // Window-UI models (Phase B moves these to CodeEditWindowController)
+        let utilityAreaModel = UtilityAreaViewModel()
+
+        let workspace = Workspace(
+            fileURL: url,
+            displayName: url.lastPathComponent,
+            editorManager: editorManager,
+            workspaceFileManager: workspaceFileManager,
+            sourceControlManager: sourceControlManager,
+            sourceControlViewModel: SourceControlViewModel(),
+            searchState: searchState,
+            taskManager: taskManager,
+            workspaceSettingsManager: workspaceSettingsManager,
+            statePersistence: statePersistence,
+            undoRegistration: undoRegistration,
+            statusBarViewModel: StatusBarViewModel(),
+            utilityAreaModel: utilityAreaModel,
+            openQuicklyViewModel: OpenQuicklyViewModel(fileURL: url),
+            commandsPaletteState: QuickActionsViewModel(commandManager: dependencies.commandManager),
+            notificationPanel: NotificationPanelViewModel(
+                notificationManager: dependencies.notificationManager,
                 eventBus: eventBus
-            )
-        }
-        workspace.taskNotificationHandler.workspaceURL = url
+            ),
+            taskNotificationHandler: TaskNotificationHandler(workspaceURL: url, eventBus: eventBus),
+            listenerModel: WorkspaceNotificationModel(),
+            projectNavigatorViewModel: ProjectNavigatorViewModel(),
+            securityScopedURL: securityScopedURL
+        )
 
-        // --- Phase 3: Observer registration ---
-        workspaceFileManager.addObserver(workspace.undoRegistration)
-        workspace.undoRegistration.editorManager = editorManager
+        // State restoration
+        editorManager.restoreFromState(
+            statePersistence: statePersistence,
+            fileManager: workspaceFileManager,
+            findReplaceQuery: searchState.query
+        )
+        utilityAreaModel.restoreFromState(statePersistence)
 
-        // --- Phase 4: State restoration ---
-        if let statePersistence = workspace.statePersistence {
-            editorManager.restoreFromState(
-                statePersistence: statePersistence,
-                fileManager: workspaceFileManager,
-                findReplaceQuery: workspace.searchState?.query
-            )
-            workspace.utilityAreaModel?.restoreFromState(statePersistence)
-        }
+        return workspace
     }
 }

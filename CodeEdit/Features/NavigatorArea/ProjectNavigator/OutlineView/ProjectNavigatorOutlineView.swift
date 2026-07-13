@@ -31,7 +31,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
         controller.iconColor = prefs.preferences.general.fileIconStyle
         controller.activeEditorState = activeEditorState
         controller.workspaceNavigator = workspaceNavigator
-        workspace.workspaceFileManager?.addObserver(context.coordinator)
+        workspace.workspaceFileManager.addObserver(context.coordinator)
 
         context.coordinator.controller = controller
         context.coordinator.observeActiveFile(activeEditorState)
@@ -69,7 +69,8 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
                     self?.controller?.reveal(fileItem)
                 })
                 .store(in: &cancellables)
-            if let projectNavigatorViewModel = workspace.projectNavigatorViewModel {
+            do {
+                let projectNavigatorViewModel = workspace.projectNavigatorViewModel
                 projectNavigatorViewModel.$navigatorFilter
                     .throttle(for: 0.1, scheduler: RunLoop.main, latest: true)
                     .sink { [weak self] _ in

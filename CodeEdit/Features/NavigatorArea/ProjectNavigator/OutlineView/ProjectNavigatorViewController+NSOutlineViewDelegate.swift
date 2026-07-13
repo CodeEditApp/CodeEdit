@@ -31,7 +31,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
             frame: frameRect,
             item: item as? CEWorkspaceFile,
             delegate: self,
-            navigatorFilter: workspace?.projectNavigatorViewModel?.navigatorFilter
+            navigatorFilter: workspace?.projectNavigatorViewModel.navigatorFilter
         )
         return cell
     }
@@ -63,13 +63,13 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineViewItemDidExpand(_ notification: Notification) {
         /// Save expanded items' state to restore when finish filtering.
         guard let workspace else { return }
-        if workspace.projectNavigatorViewModel?.navigatorFilter.isEmpty ?? true,
+        if workspace.projectNavigatorViewModel.navigatorFilter.isEmpty ?? true,
            let item = notification.userInfo?["NSObject"] as? CEWorkspaceFile {
             expandedItems.insert(item)
         }
 
         guard let id = activeEditorState?.selectedFile?.id,
-              let item = workspace.workspaceFileManager?.getFile(id, createIfNotFound: true),
+              let item = workspace.workspaceFileManager.getFile(id, createIfNotFound: true),
               /// update outline selection only if the parent of selected item match with expanded item
               item.parent === notification.userInfo?["NSObject"] as? CEWorkspaceFile else {
             return
@@ -83,7 +83,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     func outlineViewItemDidCollapse(_ notification: Notification) {
         /// Save expanded items' state to restore when finish filtering.
         guard let workspace else { return }
-        if workspace.projectNavigatorViewModel?.navigatorFilter.isEmpty ?? true,
+        if workspace.projectNavigatorViewModel.navigatorFilter.isEmpty ?? true,
            let item = notification.userInfo?["NSObject"] as? CEWorkspaceFile {
             expandedItems.remove(item)
         }
@@ -91,7 +91,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
 
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
         guard let id = object as? CEWorkspaceFile.ID,
-              let item = workspace?.workspaceFileManager?.getFile(id, createIfNotFound: true) else { return nil }
+              let item = workspace?.workspaceFileManager.getFile(id, createIfNotFound: true) else { return nil }
         return item
     }
 
@@ -107,7 +107,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
     ///   - forcesReveal: The boolean to indicates whether or not it should force to reveal the selected file.
     func select(by id: EditorTabID, forcesReveal: Bool) {
         guard case .codeEditor(let path) = id,
-              let item = workspace?.workspaceFileManager?.getFile(path, createIfNotFound: true) else {
+              let item = workspace?.workspaceFileManager.getFile(path, createIfNotFound: true) else {
             return
         }
         // If the user has set "Reveal file on selection change" to on or it is forced to reveal,

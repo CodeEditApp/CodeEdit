@@ -22,8 +22,8 @@ final class StopTaskToolbarItem: NSToolbarItem {
     private var statusListener: AnyCancellable?
     private var otherListeners: Set<AnyCancellable> = []
 
-    init?(workspace: Workspace) {
-        guard let taskManager = workspace.taskManager else { return nil }
+    init(workspace: Workspace) {
+        let taskManager = workspace.taskManager
 
         self.workspace = workspace
         super.init(itemIdentifier: NSToolbarItem.Identifier("StopTaskToolbarItem"))

@@ -15,15 +15,15 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
         if let cachedChildren = filteredContentChildren[item] {
             return cachedChildren
                 .sorted { lhs, rhs in
-                    workspace?.projectNavigatorViewModel?.sortFoldersOnTop == true
+                    workspace?.projectNavigatorViewModel.sortFoldersOnTop == true
                         ? lhs.isFolder && !rhs.isFolder : lhs.name < rhs.name
                 }
         }
 
-        if let workspace, let children = workspace.workspaceFileManager?.childrenOfFile(item) {
-            let navigatorFilter = workspace.projectNavigatorViewModel?.navigatorFilter ?? ""
-            let sourceControlFilter = workspace.projectNavigatorViewModel?.sourceControlFilter ?? false
-            let sortFoldersOnTop = workspace.projectNavigatorViewModel?.sortFoldersOnTop ?? true
+        if let workspace, let children = workspace.workspaceFileManager.childrenOfFile(item) {
+            let navigatorFilter = workspace.projectNavigatorViewModel.navigatorFilter ?? ""
+            let sourceControlFilter = workspace.projectNavigatorViewModel.sourceControlFilter ?? false
+            let sortFoldersOnTop = workspace.projectNavigatorViewModel.sortFoldersOnTop ?? true
 
             if !navigatorFilter.isEmpty || sourceControlFilter {
                 let filteredChildren = children.filter {

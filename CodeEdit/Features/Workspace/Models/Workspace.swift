@@ -17,85 +17,95 @@ import SwiftUI
 import Foundation
 
 /// A plain model representing an open workspace (folder).
-/// Replaces `WorkspaceDocument` (NSDocument) with no framework coupling.
+/// Constructed complete by ``WorkspaceFactory/make(url:dependencies:)`` — every
+/// manager is non-optional for the workspace's lifetime.
 @MainActor
-final class Workspace: ObservableObject, WorkspaceManaging {
-    var projectNavigatorViewModel: ProjectNavigatorViewModel? = ProjectNavigatorViewModel()
+final class Workspace: ObservableObject {
+    let fileURL: URL
+    let displayName: String
 
-    var fileURL: URL?
-    var displayName: String = ""
+    let editorManager: EditorManager
+    let workspaceFileManager: CEWorkspaceFileManager
+    let sourceControlManager: SourceControlManager
+    let sourceControlViewModel: SourceControlViewModel
+    let searchState: SearchState
+    let taskManager: TaskManager
+    let workspaceSettingsManager: CEWorkspaceSettings
+    let statePersistence: WorkspaceStatePersistence
+    let undoRegistration: UndoManagerRegistration
 
-    var workspaceFileManager: CEWorkspaceFileManager?
-    var editorManager: EditorManager? = EditorManager()
-    var statusBarViewModel: StatusBarViewModel? = StatusBarViewModel()
-    var utilityAreaModel: UtilityAreaViewModel? = UtilityAreaViewModel()
-    var searchState: SearchState?
-    var openQuicklyViewModel: OpenQuicklyViewModel?
-    var commandsPaletteState: QuickActionsViewModel?
-    var listenerModel: WorkspaceNotificationModel = .init()
-    var sourceControlManager: SourceControlManager?
-    var sourceControlViewModel: SourceControlViewModel?
+    // Window-UI models — Phase B moves these to CodeEditWindowController.
+    let statusBarViewModel: StatusBarViewModel
+    let utilityAreaModel: UtilityAreaViewModel
+    let openQuicklyViewModel: OpenQuicklyViewModel
+    let commandsPaletteState: QuickActionsViewModel
+    let notificationPanel: NotificationPanelViewModel
+    let taskNotificationHandler: TaskNotificationHandler
 
-    var taskManager: TaskManager?
-    var workspaceSettingsManager: CEWorkspaceSettings?
-    var taskNotificationHandler: TaskNotificationHandler
-
-    var statePersistence: WorkspaceStatePersistence?
-
-    var undoRegistration: UndoManagerRegistration = UndoManagerRegistration()
-
-    var notificationPanel: NotificationPanelViewModel
+    // Navigator-coupled — stay until the Navigator feature is packaged
+    // (consumed by the ProjectNavigator AppKit cluster and by-workspace command paths).
+    let listenerModel: WorkspaceNotificationModel
+    let projectNavigatorViewModel: ProjectNavigatorViewModel
 
     /// The original (possibly bookmark-derived) security-scoped URL whose access is held for this
     /// workspace's lifetime. Set by `WorkspaceFactory` when the URL is security-scoped (e.g. opened
     /// from recents in the sandbox); released in ``tearDown()``.
     var securityScopedURL: URL?
 
-    // MARK: - Initialization
-
-    init(url: URL, dependencies: AppDependencies) {
-        self.taskNotificationHandler = TaskNotificationHandler(eventBus: dependencies.eventBus)
-        self.notificationPanel = NotificationPanelViewModel(
-            notificationManager: dependencies.notificationManager,
-            eventBus: dependencies.eventBus
-        )
-        WorkspaceFactory.populate(self, url: url, dependencies: dependencies)
-    }
-
-    /// Minimal initializer for testing. Does not set up workspace state.
-    internal init() {
-        let eventBus = EventBus()
-        self.taskNotificationHandler = TaskNotificationHandler(eventBus: eventBus)
-        self.notificationPanel = NotificationPanelViewModel(
-            notificationManager: NotificationManager(eventBus: eventBus),
-            eventBus: eventBus
-        )
+    // swiftlint:disable:next function_parameter_count
+    init(
+        fileURL: URL,
+        displayName: String,
+        editorManager: EditorManager,
+        workspaceFileManager: CEWorkspaceFileManager,
+        sourceControlManager: SourceControlManager,
+        sourceControlViewModel: SourceControlViewModel,
+        searchState: SearchState,
+        taskManager: TaskManager,
+        workspaceSettingsManager: CEWorkspaceSettings,
+        statePersistence: WorkspaceStatePersistence,
+        undoRegistration: UndoManagerRegistration,
+        statusBarViewModel: StatusBarViewModel,
+        utilityAreaModel: UtilityAreaViewModel,
+        openQuicklyViewModel: OpenQuicklyViewModel,
+        commandsPaletteState: QuickActionsViewModel,
+        notificationPanel: NotificationPanelViewModel,
+        taskNotificationHandler: TaskNotificationHandler,
+        listenerModel: WorkspaceNotificationModel,
+        projectNavigatorViewModel: ProjectNavigatorViewModel,
+        securityScopedURL: URL?
+    ) {
+        self.fileURL = fileURL
+        self.displayName = displayName
+        self.editorManager = editorManager
+        self.workspaceFileManager = workspaceFileManager
+        self.sourceControlManager = sourceControlManager
+        self.sourceControlViewModel = sourceControlViewModel
+        self.searchState = searchState
+        self.taskManager = taskManager
+        self.workspaceSettingsManager = workspaceSettingsManager
+        self.statePersistence = statePersistence
+        self.undoRegistration = undoRegistration
+        self.statusBarViewModel = statusBarViewModel
+        self.utilityAreaModel = utilityAreaModel
+        self.openQuicklyViewModel = openQuicklyViewModel
+        self.commandsPaletteState = commandsPaletteState
+        self.notificationPanel = notificationPanel
+        self.taskNotificationHandler = taskNotificationHandler
+        self.listenerModel = listenerModel
+        self.projectNavigatorViewModel = projectNavigatorViewModel
+        self.securityScopedURL = securityScopedURL
     }
 
     // MARK: - Tear Down
 
+    /// Cleanup-only: saves restoration state and releases external resources.
+    /// Members are no longer nil-ed — `WorkspaceLifecycleTests` guards against leaks instead.
     func tearDown() {
-        if let statePersistence {
-            editorManager?.saveRestorationState(statePersistence)
-            utilityAreaModel?.saveRestorationState(statePersistence)
-        }
-
-        statusBarViewModel = nil
-        utilityAreaModel = nil
-        searchState = nil
-        editorManager = nil
-        openQuicklyViewModel = nil
-        commandsPaletteState = nil
-        sourceControlManager = nil
-        sourceControlViewModel = nil
-        projectNavigatorViewModel = nil
-        workspaceFileManager?.cleanUp()
-        workspaceFileManager = nil
-        workspaceSettingsManager?.cleanUp()
-        workspaceSettingsManager = nil
-        taskManager = nil
-        statePersistence = nil
-
+        editorManager.saveRestorationState(statePersistence)
+        utilityAreaModel.saveRestorationState(statePersistence)
+        workspaceFileManager.cleanUp()
+        workspaceSettingsManager.cleanUp()
         securityScopedURL?.stopAccessingSecurityScopedResource()
         securityScopedURL = nil
     }
@@ -103,7 +113,6 @@ final class Workspace: ObservableObject, WorkspaceManaging {
     // MARK: - Unsaved Changes
 
     func hasUnsavedChanges() -> Bool {
-        guard let editorManager else { return false }
         let editedFiles = editorManager.editorLayout
             .gatherOpenFiles()
             .compactMap { editorManager.document(for: $0) }
@@ -114,7 +123,6 @@ final class Workspace: ObservableObject, WorkspaceManaging {
     /// Prompts the user to save any unsaved files before closing.
     /// Returns `true` if all files are clean and the workspace can close, `false` if the user cancelled.
     func promptSaveUnsavedFiles() -> Bool {
-        guard let editorManager else { return true }
         let editedCodeFiles = editorManager.editorLayout
             .gatherOpenFiles()
             .compactMap { editorManager.document(for: $0) }

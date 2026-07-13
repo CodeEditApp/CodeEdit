@@ -52,8 +52,8 @@ struct AppWorkspaceNavigatorTests {
 
     @MainActor
     @Test
-    func revealSetsHighlightedFileItemOnCorrectWorkspace() {
-        let workspace = Workspace()
+    func revealSetsHighlightedFileItemOnCorrectWorkspace() throws {
+        let workspace = try TestWorkspaceFactory.make()
         let mock = MockWindowManager()
         mock.stubbedWorkspace = workspace
         let navigator = AppWorkspaceNavigator(windowManager: mock)
@@ -66,10 +66,9 @@ struct AppWorkspaceNavigatorTests {
 
     @MainActor
     @Test
-    func closeTabClosesFileInEditorLayout() {
-        let workspace = Workspace()
-        let editorManager = EditorManager()
-        workspace.editorManager = editorManager
+    func closeTabClosesFileInEditorLayout() throws {
+        let workspace = try TestWorkspaceFactory.make()
+        let editorManager = workspace.editorManager
         let mock = MockWindowManager()
         mock.stubbedWorkspace = workspace
         let navigator = AppWorkspaceNavigator(windowManager: mock)

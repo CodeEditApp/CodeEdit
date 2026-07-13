@@ -103,14 +103,14 @@ extension CodeEditWindowController {
 
     func toggleToolbar() {
         toolbarCollapsed.toggle()
-        workspace?.statePersistence?.set(key: .toolbarCollapsed, value: toolbarCollapsed)
+        workspace?.statePersistence.set(key: .toolbarCollapsed, value: toolbarCollapsed)
         updateToolbarVisibility()
     }
 
     func updateToolbarVisibility() {
         if toolbarCollapsed {
             window?.titleVisibility = .visible
-            window?.title = workspace?.workspaceFileManager?.folderUrl.lastPathComponent ?? "Empty"
+            window?.title = workspace?.workspaceFileManager.folderUrl.lastPathComponent ?? "Empty"
             window?.toolbar = nil
         } else {
             window?.titleVisibility = .hidden
@@ -182,10 +182,10 @@ extension CodeEditWindowController {
             guard #available(macOS 26, *) else {
                 fatalError("Unified task sidebar item used on pre-tahoe platform.")
             }
-            guard let workspace,
-                    let stop = StopTaskToolbarItem(workspace: workspace) else {
+            guard let workspace else {
                 return nil
             }
+            let stop = StopTaskToolbarItem(workspace: workspace)
             let start = StartTaskToolbarItem(workspace: workspace, commandManager: dependencies.commandManager)
 
             let group = NSToolbarItemGroup(itemIdentifier: .taskSidebarItem)

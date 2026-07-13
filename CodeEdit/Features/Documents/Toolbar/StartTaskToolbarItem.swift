@@ -14,7 +14,7 @@ final class StartTaskToolbarItem: NSToolbarItem {
     private let commandManager: CommandManaging
 
     private var utilityAreaCollapsed: Bool {
-        workspace?.utilityAreaModel?.isCollapsed ?? true
+        workspace?.utilityAreaModel.isCollapsed ?? true
     }
 
     init(workspace: Workspace, commandManager: CommandManaging) {
@@ -41,7 +41,7 @@ final class StartTaskToolbarItem: NSToolbarItem {
         if utilityAreaCollapsed {
             commandManager.executeCommand("open.drawer")
         }
-        workspace?.utilityAreaModel?.selectedTab = .debugConsole
+        workspace?.utilityAreaModel.selectedTab = .debugConsole
         taskManager.taskShowingOutput = taskManager.selectedTaskID
     }
 }

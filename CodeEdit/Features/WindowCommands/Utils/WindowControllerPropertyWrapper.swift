@@ -60,18 +60,18 @@ struct UpdatingWindowController: DynamicProperty {
             }
             .store(in: &cancellables)
 
-            controller?.workspace?.utilityAreaModel?.objectWillChange.sink { [weak self] in
+            controller?.workspace?.utilityAreaModel.objectWillChange.sink { [weak self] in
                 self?.objectWillChange.send()
             }
             .store(in: &cancellables)
 
-            let activeEditor = controller?.workspace?.editorManager?.activeEditor
+            let activeEditor = controller?.workspace?.editorManager.activeEditor
             activeEditor?.objectWillChange.sink { [weak self] in
                 self?.objectWillChange.send()
             }
             .store(in: &cancellables)
 
-            controller?.workspace?.taskManager?.objectWillChange.sink { [weak self] in
+            controller?.workspace?.taskManager.objectWillChange.sink { [weak self] in
                 self?.objectWillChange.send()
             }
             .store(in: &cancellables)

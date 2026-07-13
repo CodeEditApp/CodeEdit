@@ -79,10 +79,10 @@ extension CodeEditWindowController {
                 toggle: { self.toggleLastPanel(shouldAnimate: false) }
             ),
             PanelDescriptor(
-                isCollapsed: { self.workspace?.utilityAreaModel?.isCollapsed ?? true },
+                isCollapsed: { self.workspace?.utilityAreaModel.isCollapsed ?? true },
                 getPrevCollapsed: { self.prevUtilityAreaCollapsed },
                 setPrevCollapsed: { self.prevUtilityAreaCollapsed = $0 },
-                toggle: { self.workspace?.utilityAreaModel?.togglePanel(animation: false) }
+                toggle: { self.workspace?.utilityAreaModel.togglePanel(animation: false) }
             ),
             PanelDescriptor(
                 isCollapsed: { self.toolbarCollapsed },

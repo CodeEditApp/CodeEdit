@@ -19,9 +19,7 @@ final class CloseWorkspaceUseCase {
     }
 
     func execute(workspace: Workspace) {
-        if let path = workspace.fileURL?.absoluteURL.path() {
-            lspService.closeWorkspace(path)
-        }
+        lspService.closeWorkspace(workspace.fileURL.absoluteURL.path())
         workspace.tearDown()
     }
 }

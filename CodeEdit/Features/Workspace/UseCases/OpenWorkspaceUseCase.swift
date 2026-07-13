@@ -23,7 +23,7 @@ final class OpenWorkspaceUseCase {
     }
 
     func execute(url: URL) -> Result {
-        let workspace = Workspace(url: url, dependencies: dependencies)
+        let workspace = WorkspaceFactory.make(url: url, dependencies: dependencies)
 
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 1400, height: 900),
@@ -39,7 +39,7 @@ final class OpenWorkspaceUseCase {
         )
 
         // Restore saved window geometry, or use default centered frame
-        if let rectString = workspace.statePersistence?.get(.workspaceWindowSize) as? String {
+        if let rectString = workspace.statePersistence.get(.workspaceWindowSize) as? String {
             window.setFrame(NSRectFromString(rectString), display: true, animate: false)
         } else {
             window.setFrame(NSRect(x: 0, y: 0, width: 1400, height: 900), display: true, animate: false)
@@ -47,7 +47,7 @@ final class OpenWorkspaceUseCase {
         }
 
         window.setAccessibilityIdentifier("workspace")
-        window.setAccessibilityDocument(workspace.fileURL?.absoluteString)
+        window.setAccessibilityDocument(workspace.fileURL.absoluteString)
 
         return Result(workspace: workspace, window: window, windowController: windowController)
     }

@@ -41,7 +41,7 @@ final class AcceptDroppedFilesUseCase {
             }
 
             // Resolve the source: either an existing workspace file, or treat as external
-            let source = workspace.workspaceFileManager?.getFile(url.path)
+            let source = workspace.workspaceFileManager.getFile(url.path)
                 ?? CEWorkspaceFile(url: URL(fileURLWithPath: url.path))
 
             // Handle existing destination via the supplied confirmation closure

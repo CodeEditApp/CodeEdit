@@ -52,7 +52,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         window?.delegate = self
         guard let workspace else { return }
         self.workspace = workspace
-        self.toolbarCollapsed = workspace.statePersistence?.get(.toolbarCollapsed) as? Bool ?? false
+        self.toolbarCollapsed = workspace.statePersistence.get(.toolbarCollapsed) as? Bool ?? false
         guard let splitViewController = setupSplitView(with: workspace) else {
             fatalError("Failed to set up content view.")
         }
@@ -122,11 +122,12 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     @IBAction func saveDocument(_ sender: Any) {
         guard let codeFile = getSelectedCodeFile() else { return }
         codeFile.save(sender)
-        workspace?.editorManager?.activeEditor.temporaryTab = nil
+        workspace?.editorManager.activeEditor.temporaryTab = nil
     }
 
     @IBAction func openCommandPalette(_ sender: Any) {
-        if let workspace, let state = workspace.commandsPaletteState {
+        if let workspace {
+            let state = workspace.commandsPaletteState
             if let commandPalettePanel {
                 if commandPalettePanel.isKeyWindow {
                     commandPalettePanel.close()
@@ -163,14 +164,15 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         if let navigatorViewModel = navigatorSidebarViewModel,
            let searchTab = navigatorViewModel.tabItems.first(where: { $0 == .search }) {
             DispatchQueue.main.async {
-                self.workspace?.searchState?.shouldFocusSearchField = true
+                self.workspace?.searchState.shouldFocusSearchField = true
                 navigatorViewModel.setNavigatorTab(tab: searchTab)
             }
         }
     }
 
     @IBAction func openQuickly(_ sender: Any?) {
-        if let workspace, let state = workspace.openQuicklyViewModel {
+        if let workspace {
+            let state = workspace.openQuicklyViewModel
             if let quickOpenPanel {
                 if quickOpenPanel.isKeyWindow {
                     quickOpenPanel.close()
@@ -189,7 +191,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     panel.close()
                     self.panelOpen = false
                 } openFile: { file in
-                    workspace.editorManager?.openTab(item: file)
+                    workspace.editorManager.openTab(item: file)
                 }
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                 .environment(\.workspaceFileProvider, workspace.workspaceFileManager)
@@ -207,20 +209,20 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     @IBAction func closeCurrentTab(_ sender: Any) {
         if self.panelOpen { return }
-        if (workspace?.editorManager?.activeEditor.tabs ?? []).isEmpty {
+        if (workspace?.editorManager.activeEditor.tabs ?? []).isEmpty {
             self.closeActiveEditor(self)
         } else {
-            workspace?.editorManager?.activeEditor.closeSelectedTab()
+            workspace?.editorManager.activeEditor.closeSelectedTab()
         }
     }
 
     @IBAction func closeActiveEditor(_ sender: Any) {
-        if workspace?.editorManager?.editorLayout.findSomeEditor(
-            except: workspace?.editorManager?.activeEditor
+        if workspace?.editorManager.editorLayout.findSomeEditor(
+            except: workspace?.editorManager.activeEditor
         ) == nil {
             NSApp.sendAction(#selector(NSWindow.performClose(_:)), to: NSApp.keyWindow, from: nil)
         } else {
-            workspace?.editorManager?.activeEditor.close()
+            workspace?.editorManager.activeEditor.close()
         }
     }
 

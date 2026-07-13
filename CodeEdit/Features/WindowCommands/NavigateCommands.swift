@@ -12,7 +12,7 @@ struct NavigateCommands: Commands {
 
     @UpdatingWindowController var windowController: CodeEditWindowController?
     private var editor: Editor? {
-        windowController?.workspace?.editorManager?.activeEditor
+        windowController?.workspace?.editorManager.activeEditor
     }
 
     var body: some Commands {

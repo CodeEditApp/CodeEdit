@@ -36,7 +36,7 @@ extension CodeEditWindowController {
 
     // Listen to changes in all tabs/files
     internal func listenToDocumentEdited(workspace: Workspace) {
-        guard let editorManager = workspace.editorManager else { return }
+        let editorManager = workspace.editorManager
         editorManager.$activeEditor
             .flatMap({ editor in
                 editor.$tabs
@@ -73,24 +73,21 @@ extension CodeEditWindowController {
 
     // Recalculate documentEdited by checking if any tab/file is edited
     private func updateDocumentEdited(workspace: Workspace) {
-        let hasEditedDocuments = !(workspace
-            .editorManager
-            .map({ editorManager in
-                editorManager
-                    .editorLayout
-                    .gatherOpenFiles()
-                    .filter({ editorManager.document(for: $0)?.isDocumentEdited == true })
-            })?
-            .isEmpty ?? true)
+        let editorManager = workspace.editorManager
+        let hasEditedDocuments = !editorManager
+            .editorLayout
+            .gatherOpenFiles()
+            .filter({ editorManager.document(for: $0)?.isDocumentEdited == true })
+            .isEmpty
         self.setDocumentEdited(hasEditedDocuments)
     }
 
     @IBAction func openWorkspaceSettings(_ sender: Any) {
         guard let window = window,
-              let workspace = workspace,
-              let workspaceSettingsManager = workspace.workspaceSettingsManager,
-              let taskManager = workspace.taskManager
+              let workspace = workspace
         else { return }
+        let workspaceSettingsManager = workspace.workspaceSettingsManager
+        let taskManager = workspace.taskManager
 
         if let workspaceSettingsWindow, workspaceSettingsWindow.isVisible {
             workspaceSettingsWindow.makeKeyAndOrderFront(self)

@@ -111,16 +111,12 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         let windowManager = appDependencies.workspaceWindowManager
         try windowManager.openWorkspace(at: tempTestDir)
         guard let workspace = windowManager.openWorkspaces.first(where: {
-            $0.fileURL?.standardizedFileURL.path() == tempTestDir.standardizedFileURL.path()
+            $0.fileURL.standardizedFileURL.path() == tempTestDir.standardizedFileURL.path()
         }) else {
             XCTFail("Workspace was not registered with the window manager")
             fatalError("Workspace was not registered with the window manager") // never runs
         }
-        guard let fileManager = workspace.workspaceFileManager else {
-            XCTFail("No File Manager")
-            fatalError("No File Manager") // never runs
-        }
-        return (workspace, fileManager)
+        return (workspace, workspace.workspaceFileManager)
     }
 
     @MainActor
@@ -201,7 +197,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             withContentsOf: file.url,
             ofType: "public.swift-source"
         )
-        workspace.editorManager?.setDocument(codeFile, for: file)
+        workspace.editorManager.setDocument(codeFile, for: file)
         NSDocumentController.shared.addDocument(codeFile)
 
         await waitForClientState(
