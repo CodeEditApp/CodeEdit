@@ -65,9 +65,6 @@ enum WorkspaceFactory {
         workspaceFileManager.addObserver(undoRegistration)
         undoRegistration.editorManager = editorManager
 
-        // Window-UI models (Phase B moves these to CodeEditWindowController)
-        let utilityAreaModel = UtilityAreaViewModel()
-
         let workspace = Workspace(
             fileURL: url,
             displayName: url.lastPathComponent,
@@ -80,15 +77,6 @@ enum WorkspaceFactory {
             workspaceSettingsManager: workspaceSettingsManager,
             statePersistence: statePersistence,
             undoRegistration: undoRegistration,
-            statusBarViewModel: StatusBarViewModel(),
-            utilityAreaModel: utilityAreaModel,
-            openQuicklyViewModel: OpenQuicklyViewModel(fileURL: url),
-            commandsPaletteState: QuickActionsViewModel(commandManager: dependencies.commandManager),
-            notificationPanel: NotificationPanelViewModel(
-                notificationManager: dependencies.notificationManager,
-                eventBus: eventBus
-            ),
-            taskNotificationHandler: TaskNotificationHandler(workspaceURL: url, eventBus: eventBus),
             listenerModel: WorkspaceNotificationModel(),
             projectNavigatorViewModel: ProjectNavigatorViewModel(),
             securityScopedURL: securityScopedURL
@@ -100,7 +88,6 @@ enum WorkspaceFactory {
             fileManager: workspaceFileManager,
             findReplaceQuery: searchState.query
         )
-        utilityAreaModel.restoreFromState(statePersistence)
 
         return workspace
     }

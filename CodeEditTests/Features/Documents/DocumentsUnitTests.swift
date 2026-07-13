@@ -8,6 +8,7 @@
 import XCTest
 import CodeEditCore
 import ShellClient
+import CENotifications
 import CESourceControl
 import CESearch
 import CETerminal
@@ -31,11 +32,18 @@ final class DocumentsUnitTests: XCTestCase {
         // swiftlint:disable:next force_try
         workspace = try! TestWorkspaceFactory.make()
         window = NSWindow()
+        let eventBus = EventBus()
         splitViewController = .init(
             workspace: workspace,
             navigatorViewModel: navigatorViewModel,
             windowRef: window,
             dependencies: AppDependencies(),
+            statusBarViewModel: StatusBarViewModel(),
+            utilityAreaModel: UtilityAreaViewModel(),
+            notificationPanel: NotificationPanelViewModel(
+                notificationManager: NotificationManager(eventBus: eventBus),
+                eventBus: eventBus
+            ),
             hapticPerformer: hapticFeedbackPerformerMock
         )
         splitViewController.viewDidLoad()

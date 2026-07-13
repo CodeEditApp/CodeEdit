@@ -186,7 +186,11 @@ extension CodeEditWindowController {
                 return nil
             }
             let stop = StopTaskToolbarItem(workspace: workspace)
-            let start = StartTaskToolbarItem(workspace: workspace, commandManager: dependencies.commandManager)
+            let start = StartTaskToolbarItem(
+                workspace: workspace,
+                utilityAreaModel: utilityAreaModel,
+                commandManager: dependencies.commandManager
+            )
 
             let group = NSToolbarItemGroup(itemIdentifier: .taskSidebarItem)
             group.isBordered = true
@@ -217,7 +221,6 @@ extension CodeEditWindowController {
         let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.startTaskSidebarItem)
 
         guard let taskManager = workspace?.taskManager else { return nil }
-        guard let utilityAreaModel = workspace?.utilityAreaModel else { return nil }
 
         let view = NSHostingView(
             rootView: StartTaskToolbarButton(taskManager: taskManager)
@@ -232,7 +235,7 @@ extension CodeEditWindowController {
         let toolbarItem = NSToolbarItem(itemIdentifier: .notificationItem)
         guard let workspace = workspace else { return nil }
         let view = NSHostingView(
-            rootView: NotificationToolbarItem().environmentObject(workspace.notificationPanel)
+            rootView: NotificationToolbarItem().environmentObject(notificationPanel)
         )
         toolbarItem.view = view
         return toolbarItem
@@ -242,7 +245,6 @@ extension CodeEditWindowController {
         let toolbarItem = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier.activityViewer)
         toolbarItem.visibilityPriority = .user
         guard let workspaceSettingsManager = workspace?.workspaceSettingsManager,
-              let taskNotificationHandler = workspace?.taskNotificationHandler,
               let taskManager = workspace?.taskManager
         else { return nil }
 

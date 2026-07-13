@@ -110,7 +110,7 @@ extension ViewCommands {
         }
 
         var utilityAreaCollapsed: Bool {
-            windowController?.workspace?.utilityAreaModel.isCollapsed ?? true
+            windowController?.utilityAreaModel.isCollapsed ?? true
         }
 
         var toolbarCollapsed: Bool {

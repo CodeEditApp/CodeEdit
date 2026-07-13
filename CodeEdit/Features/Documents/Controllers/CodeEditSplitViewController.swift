@@ -26,6 +26,11 @@ final class CodeEditSplitViewController: NSSplitViewController {
     private weak var statePersistence: (any WorkspaceStatePersisting)?
     private unowned var hapticPerformer: NSHapticFeedbackPerformer
 
+    // Window-UI models, owned by the window controller and injected here for the SwiftUI trees.
+    private let statusBarViewModel: StatusBarViewModel
+    private let utilityAreaModel: UtilityAreaViewModel
+    private let notificationPanel: NotificationPanelViewModel
+
     /// Per-window active-file read-model, retained so its Combine subscription lives with the window.
     private var activeEditorState: AppActiveEditorState?
 
@@ -42,6 +47,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
         navigatorViewModel: NavigatorAreaViewModel,
         windowRef: NSWindow,
         dependencies: AppDependencies,
+        statusBarViewModel: StatusBarViewModel,
+        utilityAreaModel: UtilityAreaViewModel,
+        notificationPanel: NotificationPanelViewModel,
         hapticPerformer: NSHapticFeedbackPerformer = NSHapticFeedbackManager.defaultPerformer
     ) {
         self.dependencies = dependencies
@@ -49,6 +57,9 @@ final class CodeEditSplitViewController: NSSplitViewController {
         self.navigatorViewModel = navigatorViewModel
         self.windowRef = windowRef
         self.statePersistence = workspace.statePersistence
+        self.statusBarViewModel = statusBarViewModel
+        self.utilityAreaModel = utilityAreaModel
+        self.notificationPanel = notificationPanel
         self.hapticPerformer = hapticPerformer
         super.init(nibName: nil, bundle: nil)
     }
@@ -71,8 +82,6 @@ final class CodeEditSplitViewController: NSSplitViewController {
             return
         }
         let editorManager = workspace.editorManager
-        let statusBarViewModel = workspace.statusBarViewModel
-        let utilityAreaModel = workspace.utilityAreaModel
         let projectNavigatorViewModel = workspace.projectNavigatorViewModel
         let sourceControlManager = workspace.sourceControlManager
         let sourceControlViewModel = workspace.sourceControlViewModel
@@ -119,7 +128,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environmentObject(sourceControlViewModel)
                     .environmentObject(workspace.listenerModel)
                     .environmentObject(workspace.undoRegistration)
-                    .environmentObject(workspace.notificationPanel)
+                    .environmentObject(notificationPanel)
                     .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                     .environment(\.workspaceFileProvider, workspace.workspaceFileManager)
                     .environment(\.workspaceFileURL, workspace.fileURL)
@@ -189,7 +198,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
             ) as? Bool ?? true
         }
 
-        workspace?.notificationPanel.updateToolbarItem()
+        notificationPanel.updateToolbarItem()
     }
 
     // MARK: - NSSplitViewDelegate

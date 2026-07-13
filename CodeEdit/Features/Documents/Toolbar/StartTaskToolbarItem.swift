@@ -11,14 +11,16 @@ import CETerminal
 @available(macOS 26, *)
 final class StartTaskToolbarItem: NSToolbarItem {
     private weak var workspace: Workspace?
+    private weak var utilityAreaModel: UtilityAreaViewModel?
     private let commandManager: CommandManaging
 
     private var utilityAreaCollapsed: Bool {
-        workspace?.utilityAreaModel.isCollapsed ?? true
+        utilityAreaModel?.isCollapsed ?? true
     }
 
-    init(workspace: Workspace, commandManager: CommandManaging) {
+    init(workspace: Workspace, utilityAreaModel: UtilityAreaViewModel, commandManager: CommandManaging) {
         self.workspace = workspace
+        self.utilityAreaModel = utilityAreaModel
         self.commandManager = commandManager
         super.init(itemIdentifier: NSToolbarItem.Identifier("StartTaskToolbarItem"))
 
@@ -41,7 +43,7 @@ final class StartTaskToolbarItem: NSToolbarItem {
         if utilityAreaCollapsed {
             commandManager.executeCommand("open.drawer")
         }
-        workspace?.utilityAreaModel.selectedTab = .debugConsole
+        utilityAreaModel?.selectedTab = .debugConsole
         taskManager.taskShowingOutput = taskManager.selectedTaskID
     }
 }

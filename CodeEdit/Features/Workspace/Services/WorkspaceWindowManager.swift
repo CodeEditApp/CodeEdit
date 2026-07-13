@@ -49,7 +49,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
         openWorkspaces.append(result.workspace)
         windowControllers[ObjectIdentifier(result.workspace)] = result.windowController
-        let notificationPanel = result.workspace.notificationPanel
+        let notificationPanel = result.windowController.notificationPanel
         notificationPanel.windowController = result.windowController
         // App shell owns window-toolbar mutation; the package signals a refresh via this hook.
         notificationPanel.onToolbarUpdateRequested = { [weak notificationPanel] in

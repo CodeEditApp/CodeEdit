@@ -34,14 +34,6 @@ final class Workspace: ObservableObject {
     let statePersistence: WorkspaceStatePersistence
     let undoRegistration: UndoManagerRegistration
 
-    // Window-UI models — Phase B moves these to CodeEditWindowController.
-    let statusBarViewModel: StatusBarViewModel
-    let utilityAreaModel: UtilityAreaViewModel
-    let openQuicklyViewModel: OpenQuicklyViewModel
-    let commandsPaletteState: QuickActionsViewModel
-    let notificationPanel: NotificationPanelViewModel
-    let taskNotificationHandler: TaskNotificationHandler
-
     // Navigator-coupled — stay until the Navigator feature is packaged
     // (consumed by the ProjectNavigator AppKit cluster and by-workspace command paths).
     let listenerModel: WorkspaceNotificationModel
@@ -65,12 +57,6 @@ final class Workspace: ObservableObject {
         workspaceSettingsManager: CEWorkspaceSettings,
         statePersistence: WorkspaceStatePersistence,
         undoRegistration: UndoManagerRegistration,
-        statusBarViewModel: StatusBarViewModel,
-        utilityAreaModel: UtilityAreaViewModel,
-        openQuicklyViewModel: OpenQuicklyViewModel,
-        commandsPaletteState: QuickActionsViewModel,
-        notificationPanel: NotificationPanelViewModel,
-        taskNotificationHandler: TaskNotificationHandler,
         listenerModel: WorkspaceNotificationModel,
         projectNavigatorViewModel: ProjectNavigatorViewModel,
         securityScopedURL: URL?
@@ -86,12 +72,6 @@ final class Workspace: ObservableObject {
         self.workspaceSettingsManager = workspaceSettingsManager
         self.statePersistence = statePersistence
         self.undoRegistration = undoRegistration
-        self.statusBarViewModel = statusBarViewModel
-        self.utilityAreaModel = utilityAreaModel
-        self.openQuicklyViewModel = openQuicklyViewModel
-        self.commandsPaletteState = commandsPaletteState
-        self.notificationPanel = notificationPanel
-        self.taskNotificationHandler = taskNotificationHandler
         self.listenerModel = listenerModel
         self.projectNavigatorViewModel = projectNavigatorViewModel
         self.securityScopedURL = securityScopedURL
@@ -103,7 +83,6 @@ final class Workspace: ObservableObject {
     /// Members are no longer nil-ed — `WorkspaceLifecycleTests` guards against leaks instead.
     func tearDown() {
         editorManager.saveRestorationState(statePersistence)
-        utilityAreaModel.saveRestorationState(statePersistence)
         workspaceFileManager.cleanUp()
         workspaceSettingsManager.cleanUp()
         securityScopedURL?.stopAccessingSecurityScopedResource()

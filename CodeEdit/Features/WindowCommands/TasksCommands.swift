@@ -94,7 +94,7 @@ struct TasksCommands: Commands {
     }
 
     private func showOutput() {
-        guard let utilityAreaModel = windowController?.workspace?.utilityAreaModel else {
+        guard let utilityAreaModel = windowController?.utilityAreaModel else {
             return
         }
         if utilityAreaModel.isCollapsed {

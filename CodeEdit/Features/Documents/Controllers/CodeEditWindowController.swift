@@ -9,6 +9,7 @@ import Cocoa
 import CodeEditDocument
 import CodeEditSettings
 import CEEditor
+import CENotifications
 import SwiftUI
 import CodeEditUI
 import Combine
@@ -36,6 +37,14 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     var commandPalettePanel: SearchPanel?
     var navigatorSidebarViewModel: NavigatorAreaViewModel?
 
+    // Window-UI models: window-scoped state, owned here (1:1 with the workspace).
+    let statusBarViewModel = StatusBarViewModel()
+    let utilityAreaModel = UtilityAreaViewModel()
+    let openQuicklyViewModel: OpenQuicklyViewModel
+    let commandsPaletteState: QuickActionsViewModel
+    let notificationPanel: NotificationPanelViewModel
+    let taskNotificationHandler: TaskNotificationHandler
+
     internal var cancellables = [AnyCancellable]()
 
     var splitViewController: CodeEditSplitViewController? {
@@ -44,15 +53,25 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     init(
         window: NSWindow?,
-        workspace: Workspace?,
+        workspace: Workspace,
         dependencies: AppDependencies
     ) {
         self.dependencies = dependencies
+        self.workspace = workspace
+        self.openQuicklyViewModel = OpenQuicklyViewModel(fileURL: workspace.fileURL)
+        self.commandsPaletteState = QuickActionsViewModel(commandManager: dependencies.commandManager)
+        self.notificationPanel = NotificationPanelViewModel(
+            notificationManager: dependencies.notificationManager,
+            eventBus: dependencies.eventBus
+        )
+        self.taskNotificationHandler = TaskNotificationHandler(
+            workspaceURL: workspace.fileURL,
+            eventBus: dependencies.eventBus
+        )
         super.init(window: window)
         window?.delegate = self
-        guard let workspace else { return }
-        self.workspace = workspace
         self.toolbarCollapsed = workspace.statePersistence.get(.toolbarCollapsed) as? Bool ?? false
+        utilityAreaModel.restoreFromState(workspace.statePersistence)
         guard let splitViewController = setupSplitView(with: workspace) else {
             fatalError("Failed to set up content view.")
         }
@@ -109,7 +128,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             workspace: workspace,
             navigatorViewModel: navigatorModel,
             windowRef: window,
-            dependencies: dependencies
+            dependencies: dependencies,
+            statusBarViewModel: statusBarViewModel,
+            utilityAreaModel: utilityAreaModel,
+            notificationPanel: notificationPanel
         )
     }
 
@@ -126,8 +148,8 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
     }
 
     @IBAction func openCommandPalette(_ sender: Any) {
-        if let workspace {
-            let state = workspace.commandsPaletteState
+        do {
+            let state = commandsPaletteState
             if let commandPalettePanel {
                 if commandPalettePanel.isKeyWindow {
                     commandPalettePanel.close()
@@ -172,7 +194,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     @IBAction func openQuickly(_ sender: Any?) {
         if let workspace {
-            let state = workspace.openQuicklyViewModel
+            let state = openQuicklyViewModel
             if let quickOpenPanel {
                 if quickOpenPanel.isKeyWindow {
                     quickOpenPanel.close()
@@ -251,6 +273,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
         // Notify the window manager to clean up workspace state
         if let workspace {
+            utilityAreaModel.saveRestorationState(workspace.statePersistence)
             dependencies.workspaceWindowManager.closeWorkspace(workspace)
         }
         workspace = nil
