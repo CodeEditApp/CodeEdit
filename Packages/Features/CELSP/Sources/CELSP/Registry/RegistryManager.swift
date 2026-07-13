@@ -51,7 +51,21 @@ public final class RegistryManager: RegistryManaging {
         self.eventBus = eventBus
         self.errorNotifier = errorNotifier
         self.shellClient = shellClient
-        // Load the registry items from disk again after cache expires
+    }
+
+    deinit {
+        cleanupTimer?.invalidate()
+    }
+
+    private var didStartInitialLoad = false
+
+    /// Loads the registry catalog on first demand (from disk, else network).
+    /// Idempotent — safe to call on every appearance of the Extensions page.
+    /// The cache-expiry timer set by `setRegistryItems` continues the refresh
+    /// cycle after the first load.
+    public func loadRegistryIfNeeded() {
+        guard !didStartInitialLoad else { return }
+        didStartInitialLoad = true
         if let items = loadItemsFromDisk() {
             setRegistryItems(items)
         } else {
@@ -59,10 +73,6 @@ public final class RegistryManager: RegistryManaging {
                 await downloadRegistryItems()
             }
         }
-    }
-
-    deinit {
-        cleanupTimer?.invalidate()
     }
 
     // MARK: - Enable/Disable

@@ -19,6 +19,7 @@ public protocol RegistryManaging: AnyObject {
     var viewState: RegistryViewState { get }
     var installedLanguageServers: [String: SettingsData.InstalledLanguageServer] { get }
 
+    func loadRegistryIfNeeded()
     func setPackageEnabled(packageName: String, enabled: Bool)
     func removeLanguageServer(packageName: String) async throws
     func installOperation(package: RegistryItem) throws -> PackageManagerInstallOperation

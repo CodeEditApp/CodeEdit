@@ -65,6 +65,9 @@ struct LanguageServersView: View {
             }
         }
         .environmentObject(registryState)
+        .task {
+            registryManager.loadRegistryIfNeeded()
+        }
     }
 
     private func getInfoString() -> AttributedString {
