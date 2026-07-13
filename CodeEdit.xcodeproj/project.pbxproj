@@ -22,6 +22,7 @@
 		5889639E2FFA9A87004BE116 /* CENotifications in Frameworks */ = {isa = PBXBuildFile; productRef = 5889639D2FFA9A87004BE116 /* CENotifications */; };
 		58CE15A100000001004BE201 /* CELSP in Frameworks */ = {isa = PBXBuildFile; productRef = 58CE15A000000001004BE200 /* CELSP */; };
 		58CE50C200000002004BE302 /* CESourceControl in Frameworks */ = {isa = PBXBuildFile; productRef = 58CE50C100000002004BE301 /* CESourceControl */; };
+		58CE7E4200000003004BE402 /* CETerminal in Frameworks */ = {isa = PBXBuildFile; productRef = 58CE7E4100000003004BE401 /* CETerminal */; };
 		58CFC49B2F8BE799009F4AA7 /* CodeEditCore in Frameworks */ = {isa = PBXBuildFile; productRef = 58CFC49A2F8BE799009F4AA7 /* CodeEditCore */; };
 		58ED10022FFB0001004BE116 /* CEEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 58ED10012FFB0001004BE116 /* CEEditor */; };
 		58F2EB03292FB2B0004A9BDE /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = 58F2EACE292FB2B0004A9BDE /* Documentation.docc */; };
@@ -217,6 +218,7 @@
 				588950C52FFA5C05004BE116 /* CESearch in Frameworks */,
 				58CE15A100000001004BE201 /* CELSP in Frameworks */,
 				58CE50C200000002004BE302 /* CESourceControl in Frameworks */,
+				58CE7E4200000003004BE402 /* CETerminal in Frameworks */,
 				6C81916B29B41DD300B75C92 /* DequeModule in Frameworks */,
 				6CB94D032CA1205100E8651C /* AsyncAlgorithms in Frameworks */,
 				6C9DB9E42D55656300ACD86E /* CodeEditSourceEditor in Frameworks */,
@@ -366,6 +368,7 @@
 				588950C42FFA5C05004BE116 /* CESearch */,
 				58CE15A000000001004BE200 /* CELSP */,
 				58CE50C100000002004BE301 /* CESourceControl */,
+				58CE7E4100000003004BE401 /* CETerminal */,
 				588957122FFA679E004BE116 /* ShellClient */,
 				5889571430CE12AB004BE116 /* CEWorkspaceFileManager */,
 				5889639D2FFA9A87004BE116 /* CENotifications */,
@@ -1934,6 +1937,10 @@
 		58CE50C100000002004BE301 /* CESourceControl */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CESourceControl;
+		};
+		58CE7E4100000003004BE401 /* CETerminal */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CETerminal;
 		};
 		58CFC49A2F8BE799009F4AA7 /* CodeEditCore */ = {
 			isa = XCSwiftPackageProductDependency;

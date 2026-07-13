@@ -45,5 +45,8 @@
       <FileRef
          location = "group:CESourceControl">
       </FileRef>
+      <FileRef
+         location = "group:CETerminal">
+      </FileRef>
    </Group>
 </Workspace>
