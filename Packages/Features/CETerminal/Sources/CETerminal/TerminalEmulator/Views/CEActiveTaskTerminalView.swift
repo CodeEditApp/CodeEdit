@@ -9,7 +9,7 @@ import AppKit
 import CodeEditSettings
 import SwiftTerm
 
-class CEActiveTaskTerminalView: CELocalShellTerminalView {
+public class CEActiveTaskTerminalView: CELocalShellTerminalView {
     var activeTask: CEActiveTask
 
     var isUserCommandRunning: Bool {
@@ -25,7 +25,7 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func startProcess(
+    override public func startProcess(
         workspaceURL url: URL?,
         shell: Shell? = nil,
         environment: [String] = [],
@@ -60,7 +60,7 @@ class CEActiveTaskTerminalView: CELocalShellTerminalView {
         )
     }
 
-    override func processTerminated(_ source: LocalProcess, exitCode: Int32?) {
+    override public func processTerminated(_ source: LocalProcess, exitCode: Int32?) {
         activeTask.handleProcessFinished(terminationStatus: exitCode ?? 1)
     }
 

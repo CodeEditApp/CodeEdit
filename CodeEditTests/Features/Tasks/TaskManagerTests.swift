@@ -11,6 +11,7 @@ import CodeEditSettings
 import Testing
 import CodeEditCore
 @testable import CodeEdit
+@testable import CETerminal
 
 /// In-memory stand-in for `CEWorkspaceSettings`: task configuration without disk I/O.
 final class TasksConfigurationStub: TasksConfigurationProviding {

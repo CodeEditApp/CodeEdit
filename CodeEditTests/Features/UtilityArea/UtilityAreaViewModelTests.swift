@@ -7,6 +7,7 @@
 
 import XCTest
 @testable import CodeEdit
+import CETerminal
 
 final class UtilityAreaViewModelTests: XCTestCase {
     var model: UtilityAreaViewModel!

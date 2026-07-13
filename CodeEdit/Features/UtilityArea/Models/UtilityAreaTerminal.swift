@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CETerminal
 
 final class UtilityAreaTerminal: ObservableObject, Identifiable, Equatable {
     let id: UUID

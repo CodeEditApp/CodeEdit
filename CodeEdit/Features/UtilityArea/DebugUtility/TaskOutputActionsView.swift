@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CETerminal
 import CodeEditUI
 
 struct TaskOutputActionsView: View {

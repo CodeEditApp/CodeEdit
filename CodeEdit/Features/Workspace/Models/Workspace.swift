@@ -12,6 +12,7 @@ import CodeEditCore
 import CEEditor
 import CENotifications
 import CESearch
+import CETerminal
 import SwiftUI
 import Foundation
 

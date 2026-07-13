@@ -60,6 +60,8 @@ struct WorkspaceView: View {
                     }
                     .edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .environment(\.currentTheme, themeModel.selectedTheme ?? themeModel.themes.first!)
+                    .environment(\.currentDarkTheme, themeModel.selectedDarkTheme)
                     .overlay(alignment: .top) {
                         utilityArea(proxy: proxy)
                     }
@@ -167,7 +169,6 @@ struct WorkspaceView: View {
             }
         }
         .frame(minHeight: 170 + 29 + 29)
-        .environment(\.currentTheme, themeModel.selectedTheme ?? themeModel.themes.first!)
         .collapsable()
         .collapsed($utilityAreaViewModel.isMaximized)
         .holdingPriority(.init(1))

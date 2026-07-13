@@ -7,21 +7,22 @@
 
 import SwiftUI
 import Combine
-import SwiftTerm
+@preconcurrency import SwiftTerm
 import CodeEditCore
 
 /// Stores the state of a task once it's executed
-class CEActiveTask: ObservableObject, Identifiable, Hashable {
+@MainActor
+public class CEActiveTask: ObservableObject, Identifiable, @preconcurrency Hashable {
     /// The current progress of the task.
-    @Published var output: CEActiveTaskTerminalView?
+    @Published public var output: CEActiveTaskTerminalView?
 
     var hasOutputBeenConfigured: Bool = false
 
     /// The status of the task.
-    @Published private(set) var status: CETaskStatus = .notRunning
+    @Published public private(set) var status: CETaskStatus = .notRunning
 
     /// The name of the associated task.
-    let task: CETask
+    public let task: CETask
 
     /// Prevents tasks overwriting each other.
     /// Say a user cancels one task, then runs it immediately, the cancel message should show and then the
@@ -32,7 +33,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         task.id.uuidString + "-" + activeTaskID.uuidString
     }
 
-    var workspaceURL: URL?
+    public var workspaceURL: URL?
 
     private let eventBus: EventBus
 
@@ -41,7 +42,6 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         self.eventBus = eventBus
     }
 
-    @MainActor
     func run(workspaceURL: URL?, shell: Shell? = nil) {
         self.workspaceURL = workspaceURL
         self.activeTaskID = UUID() // generate a new ID for this run
@@ -55,7 +55,6 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         output = view
     }
 
-    @MainActor
     func handleProcessFinished(terminationStatus: Int32) {
         // Shells add 128 to non-zero exit codes.
         var terminationStatus = terminationStatus
@@ -104,16 +103,14 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         deleteStatusTaskNotification()
     }
 
-    @MainActor
-    func suspend() {
+    public func suspend() {
         if let shellPID = output?.runningPID(), status == .running {
             kill(shellPID, SIGSTOP)
             updateTaskStatus(to: .stopped)
         }
     }
 
-    @MainActor
-    func resume() {
+    public func resume() {
         if let shellPID = output?.runningPID(), status == .running {
             kill(shellPID, SIGCONT)
             updateTaskStatus(to: .running)
@@ -138,8 +135,7 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         }
     }
 
-    @MainActor
-    func clearOutput() {
+    public func clearOutput() {
         output?.terminal.resetToInitialState()
         output?.feed(text: "")
     }
@@ -170,19 +166,18 @@ class CEActiveTask: ObservableObject, Identifiable, Hashable {
         ))
     }
 
-    @MainActor
     func updateTaskStatus(to taskStatus: CETaskStatus) {
         self.status = taskStatus
     }
 
-    static func == (lhs: CEActiveTask, rhs: CEActiveTask) -> Bool {
+    public static func == (lhs: CEActiveTask, rhs: CEActiveTask) -> Bool {
         return lhs.output == rhs.output &&
         lhs.status == rhs.status &&
         lhs.output?.process.shellPid == rhs.output?.process.shellPid &&
         lhs.task == rhs.task
     }
 
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(output)
         hasher.combine(status)
         hasher.combine(task)

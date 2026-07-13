@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import XCTest
 @testable import CodeEdit
+@testable import CETerminal
 
 final class ShellIntegrationTests: XCTestCase {
     func testBash() throws {

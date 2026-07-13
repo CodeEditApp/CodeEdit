@@ -7,7 +7,7 @@
 
 import AppKit
 import CodeEditSettings
-import SwiftTerm
+@preconcurrency import SwiftTerm
 import Foundation
 
 /// # Dev Note (please read)
@@ -21,7 +21,11 @@ import Foundation
 /// This has now been updated so that it differs from `LocalProcessTerminalView` in enough important ways that it
 /// should not be removed in the future even if SwiftTerm has a change in behavior.
 
-protocol CELocalShellTerminalViewDelegate: AnyObject {
+/// `@MainActor`: `LocalProcess`'s exit-monitor and read-queue callbacks are dispatched on
+/// `DispatchQueue.main` (SwiftTerm's default when no custom queue is supplied), and
+/// `TerminalViewDelegate` callbacks originate from AppKit view events — both always on main.
+@MainActor
+public protocol CELocalShellTerminalViewDelegate: AnyObject {
     /// This method is invoked to notify that the terminal has been resized to the specified number of columns and rows
     /// the user interface code might try to adjust the containing scroll view, or if it is a top level window, the
     /// window itself
@@ -49,8 +53,9 @@ protocol CELocalShellTerminalViewDelegate: AnyObject {
 
 // MARK: - CELocalShellTerminalView
 
-class CELocalShellTerminalView: CETerminalView, TerminalViewDelegate, LocalProcessDelegate {
-    var process: LocalProcess!
+@MainActor
+public class CELocalShellTerminalView: CETerminalView, @preconcurrency TerminalViewDelegate, @preconcurrency LocalProcessDelegate {
+    public var process: LocalProcess!
 
     override public init(frame: CGRect) {
         super.init(frame: frame)

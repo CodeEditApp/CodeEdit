@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CETerminal
 
 @available(macOS 26, *)
 final class StartTaskToolbarItem: NSToolbarItem {

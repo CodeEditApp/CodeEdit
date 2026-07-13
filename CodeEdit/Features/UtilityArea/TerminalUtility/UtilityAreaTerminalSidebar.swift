@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CETerminal
 
 /// The view that displays the list of available terminals in the utility area.
 /// See ``UtilityAreaTerminalView`` for use.

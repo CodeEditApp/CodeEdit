@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CETerminal
 
 struct TaskOutputView: View {
     @ObservedObject var activeTask: CEActiveTask

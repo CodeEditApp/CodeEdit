@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CETerminal
 import Combine
 
 @available(macOS 26, *)

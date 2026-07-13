@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CETerminal
 import CodeEditCore
 
 /// `TaskView` represents a single active task and observes its state.

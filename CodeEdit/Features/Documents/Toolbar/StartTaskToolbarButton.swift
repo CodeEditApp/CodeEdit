@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CETerminal
 
 struct StartTaskToolbarButton: View {
     @Environment(\.controlActiveState)

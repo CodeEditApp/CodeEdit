@@ -10,8 +10,8 @@ import AppKit
 
 /// # Please see dev note in ``CELocalShellTerminalView``!
 
-class CETerminalView: TerminalView {
-    override func setFrameSize(_ newSize: NSSize) {
+public class CETerminalView: TerminalView {
+    override public func setFrameSize(_ newSize: NSSize) {
         if newSize != .zero {
             super.setFrameSize(newSize)
         }

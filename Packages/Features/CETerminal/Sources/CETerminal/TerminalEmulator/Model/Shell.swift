@@ -8,7 +8,7 @@
 import Foundation
 
 /// Shells supported by CodeEdit
-enum Shell: String, CaseIterable {
+public enum Shell: String, CaseIterable {
     case bash
     case zsh
 

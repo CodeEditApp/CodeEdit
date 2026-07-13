@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import CETerminal
 
 struct TasksCommands: Commands {
     @UpdatingWindowController var windowController: CodeEditWindowController?

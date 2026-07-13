@@ -18,7 +18,7 @@ import SwiftTerm
 ///
 /// Caches the view in the ``TerminalCache`` to keep terminal state when the view is removed from the hierarchy.
 ///
-struct TerminalEmulatorView: NSViewRepresentable {
+public struct TerminalEmulatorView: NSViewRepresentable {
     enum TerminalMode {
         case shell(shellType: Shell?)
         case task(activeTask: CEActiveTask)
@@ -29,7 +29,8 @@ struct TerminalEmulatorView: NSViewRepresentable {
     @AppSettings(\.textEditing.font)
     var fontSettings
 
-    @StateObject private var themeModel: ThemeModel = .shared
+    @Environment(\.currentTheme) private var currentTheme
+    @Environment(\.currentDarkTheme) private var currentDarkTheme
 
     private var font: NSFont {
         if terminalSettings.useTextEditorFont {
@@ -42,8 +43,8 @@ struct TerminalEmulatorView: NSViewRepresentable {
     private let terminalID: UUID
     private var url: URL
 
-    public var mode: TerminalMode
-    public var onTitleChange: (_ title: String) -> Void
+    var mode: TerminalMode
+    var onTitleChange: (_ title: String) -> Void
 
     /// Create an emulator view
     /// - Parameters:
@@ -51,14 +52,14 @@ struct TerminalEmulatorView: NSViewRepresentable {
     ///   - terminalID: The ID of the terminal. Used to restore state when switching away from the view.
     ///   - shellType: The type of shell to use. Overrides any settings or auto-detection.
     ///   - onTitleChange: A callback used when the terminal updates it's title.
-    init(url: URL, terminalID: UUID, shellType: Shell? = nil, onTitleChange: @escaping (_ title: String) -> Void) {
+    public init(url: URL, terminalID: UUID, shellType: Shell? = nil, onTitleChange: @escaping (_ title: String) -> Void) {
         self.url = url
         self.terminalID = terminalID
         self.mode = .shell(shellType: shellType)
         self.onTitleChange = onTitleChange
     }
 
-    init(url: URL, task: CEActiveTask) {
+    public init(url: URL, task: CEActiveTask) {
         terminalID = task.task.id
         self.url = url
         self.mode = .task(activeTask: task)
@@ -86,48 +87,48 @@ struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
     private var colors: [SwiftTerm.Color] {
-        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
-            ? themeModel.selectedDarkTheme
-            : themeModel.selectedTheme,
-           let index = themeModel.themes.firstIndex(of: selectedTheme) {
-            return themeModel.themes[index].terminal.ansiColors.map { color in
-                SwiftTerm.Color(hex: color)
-            }
+        guard let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? currentDarkTheme
+            : currentTheme
+        else {
+            return []
         }
-        return []
+        return selectedTheme.terminal.ansiColors.map { color in
+            SwiftTerm.Color(hex: color)
+        }
     }
 
     /// Returns the `cursor` color of the selected theme
     private var cursorColor: NSColor {
-        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
-            ? themeModel.selectedDarkTheme
-            : themeModel.selectedTheme,
-           let index = themeModel.themes.firstIndex(of: selectedTheme) {
-            return NSColor(themeModel.themes[index].terminal.cursor.swiftColor)
+        guard let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? currentDarkTheme
+            : currentTheme
+        else {
+            return NSColor(.accentColor)
         }
-        return NSColor(.accentColor)
+        return NSColor(selectedTheme.terminal.cursor.swiftColor)
     }
 
     /// Returns the `selection` color of the selected theme
     private var selectionColor: NSColor {
-        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
-            ? themeModel.selectedDarkTheme
-            : themeModel.selectedTheme,
-           let index = themeModel.themes.firstIndex(of: selectedTheme) {
-            return NSColor(themeModel.themes[index].terminal.selection.swiftColor)
+        guard let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? currentDarkTheme
+            : currentTheme
+        else {
+            return NSColor(.accentColor)
         }
-        return NSColor(.accentColor)
+        return NSColor(selectedTheme.terminal.selection.swiftColor)
     }
 
     /// Returns the `text` color of the selected theme
     private var textColor: NSColor {
-        if let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
-            ? themeModel.selectedDarkTheme
-            : themeModel.selectedTheme,
-           let index = themeModel.themes.firstIndex(of: selectedTheme) {
-            return NSColor(themeModel.themes[index].terminal.text.swiftColor)
+        guard let selectedTheme = Settings[\.theme].matchAppearance && Settings[\.terminal].darkAppearance
+            ? currentDarkTheme
+            : currentTheme
+        else {
+            return NSColor(.primary)
         }
-        return NSColor(.primary)
+        return NSColor(selectedTheme.terminal.text.swiftColor)
     }
 
     /// Returns the `background` color of the selected theme
@@ -147,7 +148,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
     // MARK: - NSViewRepresentable
 
     /// Inherited from NSViewRepresentable.makeNSView(context:).
-    func makeNSView(context: Context) -> CELocalShellTerminalView {
+    public func makeNSView(context: Context) -> CELocalShellTerminalView {
         let view: CELocalShellTerminalView
 
         switch mode {
@@ -203,7 +204,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         return nil
     }
 
-    func updateNSView(_ view: CELocalShellTerminalView, context: Context) {
+    public func updateNSView(_ view: CELocalShellTerminalView, context: Context) {
         view.installColors(self.colors)
         view.caretColor = cursorColor.withAlphaComponent(0.5)
         view.caretTextColor = cursorColor.withAlphaComponent(0.5)
@@ -218,7 +219,7 @@ struct TerminalEmulatorView: NSViewRepresentable {
         view.feed(text: "") // send empty character to force colors to be redrawn
     }
 
-    func makeCoordinator() -> Coordinator {
+    public func makeCoordinator() -> Coordinator {
         Coordinator(terminalID: terminalID, mode: mode, onTitleChange: onTitleChange)
     }
 }

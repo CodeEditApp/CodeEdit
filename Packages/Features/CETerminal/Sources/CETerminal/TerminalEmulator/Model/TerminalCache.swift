@@ -10,8 +10,9 @@ import SwiftTerm
 
 /// Stores a mapping of ID -> terminal view for reusing terminal views.
 /// This allows terminal views to continue to receive data even when not in the view hierarchy.
-final class TerminalCache {
-    static let shared: TerminalCache = TerminalCache()
+@MainActor
+public final class TerminalCache {
+    public static let shared: TerminalCache = TerminalCache()
 
     /// The cache of terminal views.
     private var terminals: [UUID: CELocalShellTerminalView]
@@ -23,7 +24,7 @@ final class TerminalCache {
     /// Get a cached terminal view.
     /// - Parameter id: The ID of the terminal.
     /// - Returns: The existing terminal, if it exists.
-    func getTerminalView(_ id: UUID) -> CELocalShellTerminalView? {
+    public func getTerminalView(_ id: UUID) -> CELocalShellTerminalView? {
         terminals[id]
     }
 
@@ -37,7 +38,7 @@ final class TerminalCache {
 
     /// Remove any view associated with the terminal id.
     /// - Parameter id: The ID of the terminal.
-    func removeCachedView(_ id: UUID) {
+    public func removeCachedView(_ id: UUID) {
         terminals[id] = nil
     }
 }

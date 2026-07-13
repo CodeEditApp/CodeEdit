@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CETerminal
 import CodeEditCore
 
 struct CEWorkspaceSettingsTaskListView: View {

@@ -6,6 +6,7 @@
 //
 
 import CodeEditCore
+import CETerminal
 import SwiftUI
 
 /// # UtilityAreaViewModel
@@ -65,7 +66,10 @@ class UtilityAreaViewModel: ObservableObject {
     func removeTerminals(_ ids: Set<UUID>) {
         for (idx, terminal) in terminals.enumerated().reversed()
         where ids.contains(terminal.id) {
-            TerminalCache.shared.removeCachedView(terminal.id)
+            // `UtilityAreaViewModel` isn't statically @MainActor, but is only ever driven from SwiftUI on main.
+            MainActor.assumeIsolated {
+                TerminalCache.shared.removeCachedView(terminal.id)
+            }
             terminals.remove(at: idx)
         }
 
@@ -135,8 +139,11 @@ class UtilityAreaViewModel: ObservableObject {
         let id = UUID()
         let url = terminals[index].url
         let shell = terminals[index].shell
-        if let shellPid = TerminalCache.shared.getTerminalView(replacing)?.process.shellPid {
-            kill(shellPid, SIGKILL)
+        // `UtilityAreaViewModel` isn't statically @MainActor, but is only ever driven from SwiftUI on main.
+        MainActor.assumeIsolated {
+            if let shellPid = TerminalCache.shared.getTerminalView(replacing)?.process.shellPid {
+                kill(shellPid, SIGKILL)
+            }
         }
 
         terminals[index] = UtilityAreaTerminal(
@@ -145,7 +152,9 @@ class UtilityAreaViewModel: ObservableObject {
             title: shell?.rawValue ?? "terminal",
             shell: shell
         )
-        TerminalCache.shared.removeCachedView(replacing)
+        MainActor.assumeIsolated {
+            TerminalCache.shared.removeCachedView(replacing)
+        }
 
         selectedTerminals = [id]
         return

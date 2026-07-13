@@ -8,6 +8,7 @@
 import Testing
 import CodeEditCore
 @testable import CodeEdit
+@testable import CETerminal
 
 @MainActor
 @Suite(.serialized)

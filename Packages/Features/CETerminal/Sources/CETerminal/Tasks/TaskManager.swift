@@ -11,10 +11,10 @@ import CodeEditCore
 
 /// This class handles the execution of tasks
 @MainActor
-class TaskManager: ObservableObject {
-    @Published var activeTasks: [UUID: CEActiveTask] = [:]
-    @Published var selectedTaskID: UUID?
-    @Published var taskShowingOutput: UUID?
+public class TaskManager: ObservableObject {
+    @Published public var activeTasks: [UUID: CEActiveTask] = [:]
+    @Published public var selectedTaskID: UUID?
+    @Published public var taskShowingOutput: UUID?
 
     private let tasksConfiguration: any TasksConfigurationProviding
 
@@ -23,7 +23,7 @@ class TaskManager: ObservableObject {
 
     private let eventBus: EventBus
 
-    init(tasksConfiguration: any TasksConfigurationProviding, workspaceURL: URL?, eventBus: EventBus) {
+    public init(tasksConfiguration: any TasksConfigurationProviding, workspaceURL: URL?, eventBus: EventBus) {
         self.eventBus = eventBus
         self.workspaceURL = workspaceURL
         self.tasksConfiguration = tasksConfiguration
@@ -36,7 +36,7 @@ class TaskManager: ObservableObject {
             }
     }
 
-    var selectedTask: CETask? {
+    public var selectedTask: CETask? {
         if let selectedTaskID {
             return availableTasks.first { $0.id == selectedTaskID }
         } else {
@@ -52,27 +52,27 @@ class TaskManager: ObservableObject {
         return nil
     }
 
-    var availableTasks: [CETask] {
+    public var availableTasks: [CETask] {
         return tasksConfiguration.tasks
     }
 
-    func taskStatus(taskID: UUID) -> CETaskStatus {
+    public func taskStatus(taskID: UUID) -> CETaskStatus {
         return self.activeTasks[taskID]?.status ?? .notRunning
     }
 
-    func updateSelectedTaskID() {
+    public func updateSelectedTaskID() {
         guard selectedTask == nil else { return }
         selectedTaskID = availableTasks.first?.id
     }
 
-    func executeActiveTask() {
+    public func executeActiveTask() {
         guard let task = tasksConfiguration.tasks.first(where: { $0.id == selectedTaskID }) else { return }
         Task {
             await runTask(task: task)
         }
     }
 
-    func runTask(task: CETask) async {
+    public func runTask(task: CETask) async {
         // A process can only be started once, that means we have to renew the Process and Pipe
         // but don't initialize a new object.
         if let activeTask = activeTasks[task.id] {
@@ -92,7 +92,7 @@ class TaskManager: ObservableObject {
         }
     }
 
-    func terminateActiveTask() {
+    public func terminateActiveTask() {
         guard let taskID = selectedTaskID else {
             return
         }
@@ -108,7 +108,7 @@ class TaskManager: ObservableObject {
     /// this method does nothing.
     ///
     /// - Parameter taskID: The ID of the task to suspend.
-    func suspendTask(taskID: UUID) {
+    public func suspendTask(taskID: UUID) {
         if let activeTask = activeTasks[taskID] {
             activeTask.suspend()
         }
@@ -120,7 +120,7 @@ class TaskManager: ObservableObject {
     /// this method does nothing.
     ///
     /// - Parameter taskID: The ID of the task to resume.
-    func resumeTask(taskID: UUID) {
+    public func resumeTask(taskID: UUID) {
         if let activeTask = activeTasks[taskID] {
             activeTask.resume()
         }
@@ -136,7 +136,7 @@ class TaskManager: ObservableObject {
     /// or if the task is not currently running, this method does nothing.
     ///
     /// - Parameter taskID: The ID of the task to terminate.
-    func terminateTask(taskID: UUID) {
+    public func terminateTask(taskID: UUID) {
         if let activeTask = activeTasks[taskID] {
             activeTask.terminate()
         }
@@ -153,19 +153,19 @@ class TaskManager: ObservableObject {
     /// this method does nothing.
     ///
     /// - Parameter taskID: The ID of the task to interrupt.
-    func interruptTask(taskID: UUID) {
+    public func interruptTask(taskID: UUID) {
         if let activeTask = activeTasks[taskID] {
             activeTask.interrupt()
         }
     }
 
-    func stopAllTasks() {
+    public func stopAllTasks() {
         for (id, _) in activeTasks {
             interruptTask(taskID: id)
         }
     }
 
-    func deleteTask(taskID: UUID) {
+    public func deleteTask(taskID: UUID) {
         terminateTask(taskID: taskID)
         activeTasks.removeValue(forKey: taskID)
     }

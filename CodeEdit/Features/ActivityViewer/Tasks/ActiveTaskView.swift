@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CETerminal
 
 // We need to observe each active task individually because:
 // 1. Active tasks are nested inside TaskManager.

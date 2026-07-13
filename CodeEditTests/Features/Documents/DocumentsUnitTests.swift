@@ -10,6 +10,7 @@ import CodeEditCore
 import ShellClient
 import CESourceControl
 import CESearch
+import CETerminal
 @testable import CodeEdit
 
 @MainActor
