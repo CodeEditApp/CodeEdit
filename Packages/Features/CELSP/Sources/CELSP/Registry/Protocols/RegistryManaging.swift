@@ -11,12 +11,13 @@ import CodeEditCore
 
 /// Protocol for managing the language server registry.
 ///
-/// Note: `@Published` properties are not included because consumers
-/// need the concrete type for SwiftUI observation. Use `RegistryManager` directly in views.
+/// A pure command service: observable presentation state lives on the
+/// concrete ``RegistryViewState`` exposed via ``viewState`` (views observe
+/// that; a view-state is concrete by nature).
 @MainActor
-public protocol RegistryManaging: AnyObject, ObservableObject {
+public protocol RegistryManaging: AnyObject {
+    var viewState: RegistryViewState { get }
     var installedLanguageServers: [String: SettingsData.InstalledLanguageServer] { get }
-    var isInstalling: Bool { get }
 
     func setPackageEnabled(packageName: String, enabled: Bool)
     func removeLanguageServer(packageName: String) async throws

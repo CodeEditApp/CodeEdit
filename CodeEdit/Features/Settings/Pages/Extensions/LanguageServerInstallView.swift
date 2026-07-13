@@ -7,13 +7,18 @@
 
 import CELSP
 import SwiftUI
+import CodeEditSettings
 import CodeEditUI
 
 /// A view for initiating a package install and monitoring progress.
 struct LanguageServerInstallView: View {
     @Environment(\.dismiss)
     var dismiss
-    @EnvironmentObject private var registryManager: RegistryManager
+    @Environment(\.registryManager)
+    private var registryManager
+
+    @AppSettings(\.languageServers.installedLanguageServers)
+    private var installedLanguageServers
 
     @ObservedObject var operation: PackageManagerInstallOperation
 
@@ -30,7 +35,7 @@ struct LanguageServerInstallView: View {
             presenting: operation.waitingForConfirmation
         ) { _ in
             Button("Cancel") {
-                registryManager.cancelInstallation()
+                registryManager?.cancelInstallation()
             }
             Button("Continue") {
                 operation.confirmCurrentStep()
@@ -67,7 +72,7 @@ struct LanguageServerInstallView: View {
                 .buttonStyle(.bordered)
                 Button {
                     do {
-                        try registryManager.startInstallation(operation: operation)
+                        try registryManager?.startInstallation(operation: operation)
                     } catch {
                         // Display the error
                         NSAlert(error: error).runModal()
@@ -78,7 +83,7 @@ struct LanguageServerInstallView: View {
                 .buttonStyle(.borderedProminent)
             case .running:
                 Button {
-                    registryManager.cancelInstallation()
+                    registryManager?.cancelInstallation()
                     dismiss()
                 } label: {
                     Text("Cancel")
@@ -150,7 +155,7 @@ struct LanguageServerInstallView: View {
     @ViewBuilder private var progressSection: some View {
         Section {
             LabeledContent("Step") {
-                if registryManager.installedLanguageServers[operation.package.name] != nil {
+                if installedLanguageServers[operation.package.name] != nil {
                     HStack(spacing: 4) {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundColor(.green)

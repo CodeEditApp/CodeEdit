@@ -11,8 +11,8 @@ import CodeEditCore
 extension RegistryManager {
     /// Downloads the latest registry
     func downloadRegistryItems() async {
-        isDownloadingRegistry = true
-        defer { isDownloadingRegistry = false }
+        viewState.isDownloadingRegistry = true
+        defer { viewState.isDownloadingRegistry = false }
 
         let registryData, checksumData: Data
         do {
@@ -47,7 +47,7 @@ extension RegistryManager {
             try FileManager.default.removeItem(at: tempZipURL)
 
             try checksumData.write(to: checksumDestination)
-            downloadError = nil
+            viewState.downloadError = nil
         } catch {
             handleUpdateError(RegistryManagerError.writeFailed(error: error))
             return
@@ -65,7 +65,7 @@ extension RegistryManager {
     }
 
     func handleUpdateError(_ error: Error) {
-        self.downloadError = error
+        self.viewState.downloadError = error
         if let regError = error as? RegistryManagerError {
             switch regError {
             case .installationRunning:

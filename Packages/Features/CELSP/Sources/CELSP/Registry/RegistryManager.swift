@@ -13,7 +13,7 @@ import Combine
 import CodeEditCore
 
 @MainActor
-public final class RegistryManager: ObservableObject, RegistryManaging {
+public final class RegistryManager: RegistryManaging {
 
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "RegistryManager")
     let installPath = Settings.shared.baseURL.appending(path: "Language Servers")
@@ -27,17 +27,11 @@ public final class RegistryManager: ObservableObject, RegistryManaging {
         string: "https://github.com/mason-org/mason-registry/releases/latest/download/checksums.txt"
     )!
 
-    @Published public var isDownloadingRegistry: Bool = false
-    /// Holds an errors found while downloading the registry file. Needs a UI to dismiss, is logged.
-    @Published public var downloadError: Error?
-    /// Any currently running installation operation.
-    @Published public var runningInstall: PackageManagerInstallOperation?
-    private var installTask: Task<Void, Never>?
+    /// Observable presentation state for the Settings extension pages.
+    /// The manager owns and feeds it; views observe it instead of the manager.
+    public let viewState = RegistryViewState()
 
-    /// Indicates if the manager is currently installing a package.
-    public var isInstalling: Bool {
-        installTask != nil
-    }
+    private var installTask: Task<Void, Never>?
 
     /// Reference to cached registry data. Will be removed from memory after a certain amount of time.
     private var cachedRegistry: CachedRegistry?
@@ -45,8 +39,6 @@ public final class RegistryManager: ObservableObject, RegistryManaging {
     /// nonisolated(unsafe): scheduled and invalidated on the main actor; also
     /// invalidated from `deinit`, which cannot be actor-isolated.
     private nonisolated(unsafe) var cleanupTimer: Timer?
-    /// Public access to registry items with cache management
-    @Published public private(set) var registryItems: [RegistryItem] = []
 
     @AppSettings(\.languageServers.installedLanguageServers)
     public var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
@@ -109,7 +101,7 @@ public final class RegistryManager: ObservableObject, RegistryManaging {
     // MARK: - Install
 
     public func installOperation(package: RegistryItem) throws -> PackageManagerInstallOperation {
-        guard !isInstalling else {
+        guard !viewState.isInstalling else {
             throw RegistryManagerError.installationRunning
         }
         guard let method = package.installMethod,
@@ -122,7 +114,7 @@ public final class RegistryManager: ObservableObject, RegistryManaging {
 
     /// Starts the actual installation process for a package
     public func startInstallation(operation installOperation: PackageManagerInstallOperation) throws {
-        guard !isInstalling else {
+        guard !viewState.isInstalling else {
             throw RegistryManagerError.installationRunning
         }
 
@@ -135,12 +127,14 @@ public final class RegistryManager: ObservableObject, RegistryManaging {
     }
 
     private func installPackage(operation: PackageManagerInstallOperation, method: InstallationMethod) {
+        viewState.isInstalling = true
         installTask = Task { [weak self] in
             defer {
                 self?.installTask = nil
-                self?.runningInstall = nil
+                self?.viewState.isInstalling = false
+                self?.viewState.runningInstall = nil
             }
-            self?.runningInstall = operation
+            self?.viewState.runningInstall = operation
 
             // Add to activity viewer
             let activityTitle = "\(operation.package.name)\("@" + (method.version ?? "latest"))"
@@ -170,9 +164,11 @@ public final class RegistryManager: ObservableObject, RegistryManaging {
 
     /// Cancel the currently running installation
     public func cancelInstallation() {
-        runningInstall?.cancel()
+        viewState.runningInstall?.cancel()
         installTask?.cancel()
         installTask = nil
+        viewState.isInstalling = false
+        viewState.runningInstall = nil
     }
 
     /// Updates the activity viewer with the status of the language server installation
@@ -215,7 +211,7 @@ public final class RegistryManager: ObservableObject, RegistryManaging {
             }
         }
 
-        registryItems = items
+        viewState.registryItems = items
     }
 }
 

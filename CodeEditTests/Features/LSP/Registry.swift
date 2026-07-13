@@ -27,7 +27,7 @@ struct RegistryTests {
     func registryDownload() async throws {
         await registry.downloadRegistryItems()
 
-        #expect(registry.downloadError == nil)
+        #expect(registry.viewState.downloadError == nil)
 
         let registryJsonPath = registry.installPath.appending(path: "registry.json")
         let checksumPath = registry.installPath.appending(path: "checksums.txt")

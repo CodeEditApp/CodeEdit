@@ -7,6 +7,7 @@
 
 import CELSP
 import SwiftUI
+import CodeEditSettings
 import CodeEditCore
 
 private let iconSize: CGFloat = 26
@@ -17,10 +18,10 @@ struct LanguageServerRowView: View, Equatable {
     let onInstall: (() async -> Void)
 
     private var isInstalled: Bool {
-        registryManager.installedLanguageServers[package.name] != nil
+        installedLanguageServers[package.name] != nil
     }
     private var isEnabled: Bool {
-        registryManager.installedLanguageServers[package.name]?.isEnabled ?? false
+        installedLanguageServers[package.name]?.isEnabled ?? false
     }
 
     @State private var isHovering: Bool = false
@@ -31,7 +32,13 @@ struct LanguageServerRowView: View, Equatable {
 
     @State private var showMore: Bool = false
 
-    @EnvironmentObject var registryManager: RegistryManager
+    @EnvironmentObject var registryState: RegistryViewState
+
+    @Environment(\.registryManager)
+    private var registryManager
+
+    @AppSettings(\.languageServers.installedLanguageServers)
+    private var installedLanguageServers
 
     init(
         package: RegistryItem,
@@ -123,7 +130,7 @@ struct LanguageServerRowView: View, Equatable {
     private func installationButton() -> some View {
         if isInstalled {
             installedRow()
-        } else if registryManager.runningInstall?.package.name == package.name {
+        } else if registryState.runningInstall?.package.name == package.name {
             isInstallingRow()
         } else if isHovering {
             isHoveringRow()
@@ -147,7 +154,7 @@ struct LanguageServerRowView: View, Equatable {
                 "",
                 isOn: Binding(
                     get: { isEnabled },
-                    set: { registryManager.setPackageEnabled(packageName: package.name, enabled: $0) }
+                    set: { registryManager?.setPackageEnabled(packageName: package.name, enabled: $0) }
                 )
             )
             .toggleStyle(.switch)
@@ -197,7 +204,7 @@ struct LanguageServerRowView: View, Equatable {
         } label: {
             Text("Install")
         }
-        .disabled(registryManager.isInstalling)
+        .disabled(registryState.isInstalling)
     }
 
     @ViewBuilder
@@ -222,7 +229,7 @@ struct LanguageServerRowView: View, Equatable {
         isRemoving = true
         Task {
             do {
-                try await registryManager.removeLanguageServer(packageName: package.name)
+                try await registryManager?.removeLanguageServer(packageName: package.name)
                 await MainActor.run {
                     isRemoving = false
                 }

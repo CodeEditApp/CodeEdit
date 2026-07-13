@@ -203,7 +203,7 @@ struct SettingsView: View {
                     LocationsSettingsView()
                 case .languageServers:
                     if let registryManager {
-                        LanguageServersView(registryManager: registryManager)
+                        LanguageServersView(registryManager: registryManager, registryState: registryManager.viewState)
                     }
                 case .developer:
                     DeveloperSettingsView()

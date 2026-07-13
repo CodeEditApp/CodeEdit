@@ -11,7 +11,8 @@ import CodeEditCore
 
 /// Displays a searchable list of packages from the ``RegistryManager``.
 struct LanguageServersView: View {
-    @ObservedObject var registryManager: RegistryManager
+    let registryManager: any RegistryManaging
+    @ObservedObject var registryState: RegistryViewState
     @StateObject private var searchModel = FuzzySearchUIModel<RegistryItem>()
     @State private var searchText: String = ""
     @State private var selectedInstall: PackageManagerInstallOperation?
@@ -21,7 +22,7 @@ struct LanguageServersView: View {
     var body: some View {
         Group {
             SettingsForm {
-                if registryManager.isDownloadingRegistry {
+                if registryState.isDownloadingRegistry {
                     HStack {
                         Spacer()
                         ProgressView()
@@ -31,7 +32,7 @@ struct LanguageServersView: View {
                 }
 
                 Section {
-                    List(searchModel.items ?? registryManager.registryItems, id: \.name) { item in
+                    List(searchModel.items ?? registryState.registryItems, id: \.name) { item in
                         LanguageServerRowView(
                             package: item,
                             onCancel: {
@@ -50,7 +51,7 @@ struct LanguageServersView: View {
                     }
                     .searchable(text: $searchText)
                     .onChange(of: searchText) { _, newValue in
-                        searchModel.searchTextUpdated(searchText: newValue, allItems: registryManager.registryItems)
+                        searchModel.searchTextUpdated(searchText: newValue, allItems: registryState.registryItems)
                     }
                 } header: {
                     Label(
@@ -63,7 +64,7 @@ struct LanguageServersView: View {
                 LanguageServerInstallView(operation: operation)
             }
         }
-        .environmentObject(registryManager)
+        .environmentObject(registryState)
     }
 
     private func getInfoString() -> AttributedString {

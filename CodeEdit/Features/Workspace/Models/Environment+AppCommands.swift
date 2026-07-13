@@ -39,7 +39,7 @@ private struct LSPServiceKey: EnvironmentKey {
 }
 
 private struct RegistryManagerKey: EnvironmentKey {
-    static let defaultValue: RegistryManager? = nil
+    static let defaultValue: (any RegistryManaging)? = nil
 }
 
 private struct WorkspaceWindowManagerKey: EnvironmentKey {
@@ -72,7 +72,7 @@ extension EnvironmentValues {
     }
 
     /// The language-server registry. Optional: registry UI is empty in previews. Injected by the app shell.
-    var registryManager: RegistryManager? {
+    var registryManager: (any RegistryManaging)? {
         get { self[RegistryManagerKey.self] }
         set { self[RegistryManagerKey.self] = newValue }
     }
