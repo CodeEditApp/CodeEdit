@@ -33,14 +33,21 @@ struct FeedbackView: View {
                     Text("Failed to submit feedback")
                 }
                 Button {
-                    feedbackModel.createIssue(
-                        title: feedbackModel.feedbackTitle,
-                        description: feedbackModel.issueDescription,
-                        steps: feedbackModel.stepsReproduceDescription,
-                        expectation: feedbackModel.expectationDescription,
-                        actuallyHappened: feedbackModel.whatHappenedDescription
-                    )
-                    isSubmitButtonPressed = true
+                    let gitAccounts = Settings[\.accounts].sourceControlAccounts.gitAccounts
+                    if gitAccounts.isEmpty {
+                        showsAlert.toggle()
+                    } else {
+                        let firstGitAccount = gitAccounts.first
+                        feedbackModel.createIssue(
+                            gitAccount: firstGitAccount!.name,
+                            title: feedbackModel.feedbackTitle,
+                            description: feedbackModel.issueDescription,
+                            steps: feedbackModel.stepsReproduceDescription,
+                            expectation: feedbackModel.expectationDescription,
+                            actuallyHappened: feedbackModel.whatHappenedDescription
+                        )
+                        isSubmitButtonPressed = true
+                    }
                 } label: {
                     Text("Submit")
                 }
