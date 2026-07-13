@@ -6,6 +6,7 @@
 //
 
 @testable import CodeEdit
+import CESourceControl
 import CodeEditUI
 import Foundation
 import SnapshotTesting
@@ -88,7 +89,7 @@ final class CodeEditUIUnitTests: XCTestCase {
 
     func testBranchPickerLight() throws {
         let view = ToolbarBranchPicker(
-            workspaceFileManager: nil,
+            fallbackTitle: "Empty",
             sourceControlManager: nil
         )
         let hosting = NSHostingView(rootView: view)
@@ -99,7 +100,7 @@ final class CodeEditUIUnitTests: XCTestCase {
 
     func testBranchPickerDark() throws {
         let view = ToolbarBranchPicker(
-            workspaceFileManager: nil,
+            fallbackTitle: "Empty",
             sourceControlManager: nil
         )
         let hosting = NSHostingView(rootView: view)

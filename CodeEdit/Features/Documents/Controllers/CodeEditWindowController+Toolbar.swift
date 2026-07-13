@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CESourceControl
 import CEWorkspaceFileManager
 import SwiftUI
 import Combine
@@ -167,7 +168,7 @@ extension CodeEditWindowController {
             let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
             let view = NSHostingView(
                 rootView: ToolbarBranchPicker(
-                    workspaceFileManager: workspace?.workspaceFileManager,
+                    fallbackTitle: workspace?.workspaceFileManager.folderUrl.lastPathComponent ?? "Empty",
                     sourceControlManager: workspace?.sourceControlManager
                 )
             )

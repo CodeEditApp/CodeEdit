@@ -5,18 +5,16 @@
 //  Created by Lukas Pistrol on 21.04.22.
 //
 
-import CESourceControl
 import SwiftUI
 import CodeEditSettings
-import CEWorkspaceFileManager
 import CodeEditCore
 import CodeEditSymbols
 import CodeEditUI
 import Combine
 
 /// A view that pops up a branch picker.
-struct ToolbarBranchPicker: View {
-    private weak var workspaceFileManager: CEWorkspaceFileManager?
+public struct ToolbarBranchPicker: View {
+    private let fallbackTitle: String
     private weak var sourceControlManager: SourceControlManager?
 
     @Environment(\.controlActiveState)
@@ -26,17 +24,17 @@ struct ToolbarBranchPicker: View {
     @State private var displayPopover: Bool = false
     @State private var currentBranch: GitBranch?
 
-    /// Initializes the ``ToolbarBranchPicker`` with an instance of a `WorkspaceClient`
-    /// - Parameter workspace: An instance of the current `WorkspaceClient`
-    init(
-        workspaceFileManager: CEWorkspaceFileManager?,
+    /// Initializes the picker with the workspace's display name (shown when no
+    /// branch is available) and its source-control manager.
+    public init(
+        fallbackTitle: String,
         sourceControlManager: SourceControlManager?
     ) {
-        self.workspaceFileManager = workspaceFileManager
+        self.fallbackTitle = fallbackTitle
         self.sourceControlManager = sourceControlManager
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(alignment: .center, spacing: 7) {
             Group {
                 if currentBranch != nil {
@@ -105,7 +103,7 @@ struct ToolbarBranchPicker: View {
     }
 
     private var title: String {
-        workspaceFileManager?.folderUrl.lastPathComponent ?? "Empty"
+        fallbackTitle
     }
 
     // MARK: Popover View
