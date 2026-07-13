@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 import CodeEditSettings
 
 struct GlobPatternList: View {

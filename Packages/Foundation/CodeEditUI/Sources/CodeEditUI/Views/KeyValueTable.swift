@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
 public struct KeyValueItem: Identifiable, Equatable {
     public let id = UUID()

@@ -7,9 +7,8 @@
 
 import Foundation
 import SwiftUI
-import CodeEditUI
 
-struct SearchPanelView<RowView: View, PreviewView: View, Option: Identifiable & Hashable>: View {
+public struct SearchPanelView<RowView: View, PreviewView: View, Option: Identifiable & Hashable>: View {
     @ViewBuilder let rowViewBuilder: ((Option) -> RowView)
     @ViewBuilder let previewViewBuilder: ((Option) -> PreviewView)?
 
@@ -27,7 +26,7 @@ struct SearchPanelView<RowView: View, PreviewView: View, Option: Identifiable & 
     let alwaysShowOptions: Bool
     let optionRowHeight: CGFloat
 
-    init(
+    public init(
         title: String,
         image: Image,
         options: Binding<[Option]>,
@@ -52,7 +51,7 @@ struct SearchPanelView<RowView: View, PreviewView: View, Option: Identifiable & 
         self.optionRowHeight = optionRowHeight
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 0) {
             VStack {
                 HStack(alignment: .center, spacing: 0) {

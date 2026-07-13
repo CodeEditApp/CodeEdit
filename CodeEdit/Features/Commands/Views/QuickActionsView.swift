@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 import CodeEditCore
 
 /// Quick actions view

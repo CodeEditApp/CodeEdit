@@ -6,9 +6,8 @@
 //
 
 import SwiftUI
-import CodeEditUI
 
-extension View {
+public extension View {
     func actionBar<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         self
             .padding(.bottom, 24)
