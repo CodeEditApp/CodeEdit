@@ -28,7 +28,7 @@ final class DocumentsUnitTests: XCTestCase {
         hapticFeedbackPerformerMock = NSHapticFeedbackPerformerMock()
         navigatorViewModel = .init()
         workspace.taskManager = TaskManager(
-            settingsStore: CEWorkspaceSettings(workspaceURL: URL(filePath: NSTemporaryDirectory())),
+            tasksConfiguration: CEWorkspaceSettings(workspaceURL: URL(filePath: NSTemporaryDirectory())),
             workspaceURL: nil,
             eventBus: EventBus()
         )

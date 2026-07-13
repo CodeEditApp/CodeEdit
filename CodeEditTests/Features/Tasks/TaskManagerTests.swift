@@ -6,26 +6,32 @@
 //
 
 import Foundation
+import Combine
 import CodeEditSettings
 import Testing
 import CodeEditCore
 @testable import CodeEdit
 
+/// In-memory stand-in for `CEWorkspaceSettings`: task configuration without disk I/O.
+final class TasksConfigurationStub: TasksConfigurationProviding {
+    @Published var tasks: [CETask] = []
+    var tasksPublisher: AnyPublisher<[CETask], Never> { $tasks.eraseToAnyPublisher() }
+}
+
 @MainActor
 @Suite(.serialized)
 class TaskManagerTests {
     var taskManager: TaskManager!
-    var settingsStore: CEWorkspaceSettings!
+    var tasksConfiguration: TasksConfigurationStub!
 
     init() throws {
-        settingsStore = CEWorkspaceSettings(workspaceURL: URL(filePath: NSTemporaryDirectory()))
-        settingsStore.settings = try JSONDecoder().decode(CEWorkspaceSettingsData.self, from: Data("{}".utf8))
-        taskManager = TaskManager(settingsStore: settingsStore, workspaceURL: nil, eventBus: EventBus())
+        tasksConfiguration = TasksConfigurationStub()
+        taskManager = TaskManager(tasksConfiguration: tasksConfiguration, workspaceURL: nil, eventBus: EventBus())
     }
 
     func testInitialization() {
         #expect(taskManager != nil)
-        #expect(taskManager.availableTasks == settingsStore.settings.tasks)
+        #expect(taskManager.availableTasks == tasksConfiguration.tasks)
     }
 
     @Test
@@ -33,7 +39,7 @@ class TaskManagerTests {
         Settings.shared.preferences.terminal.shell = .zsh
 
         let task = CETask(name: "Test Task", command: "echo 'Hello World'")
-        settingsStore.settings.tasks.append(task)
+        tasksConfiguration.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
@@ -52,7 +58,7 @@ class TaskManagerTests {
         Settings.shared.preferences.terminal.shell = .bash
 
         let task = CETask(name: "Test Task", command: "echo 'Hello World'")
-        settingsStore.settings.tasks.append(task)
+        tasksConfiguration.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
@@ -69,7 +75,7 @@ class TaskManagerTests {
     @Test(.disabled("Not sure why but tasks run in shells seem to never receive signals."))
     func terminateSelectedTask() async throws {
         let task = CETask(name: "Test Task", command: "sleep 10")
-        settingsStore.settings.tasks.append(task)
+        tasksConfiguration.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
@@ -95,7 +101,7 @@ class TaskManagerTests {
     @Test(.disabled("Not sure why but tasks run in shells seem to never receive signals."))
     func suspendAndResumeTask() async throws {
         let task = CETask(name: "Test Task", command: "sleep 5")
-        settingsStore.settings.tasks.append(task)
+        tasksConfiguration.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 

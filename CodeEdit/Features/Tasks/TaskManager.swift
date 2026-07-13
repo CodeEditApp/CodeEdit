@@ -16,20 +16,19 @@ class TaskManager: ObservableObject {
     @Published var selectedTaskID: UUID?
     @Published var taskShowingOutput: UUID?
 
-    private let settingsStore: CEWorkspaceSettings
+    private let tasksConfiguration: any TasksConfigurationProviding
 
     private var workspaceURL: URL?
     private var settingsListener: AnyCancellable?
 
     private let eventBus: EventBus
 
-    init(settingsStore: CEWorkspaceSettings, workspaceURL: URL?, eventBus: EventBus) {
+    init(tasksConfiguration: any TasksConfigurationProviding, workspaceURL: URL?, eventBus: EventBus) {
         self.eventBus = eventBus
         self.workspaceURL = workspaceURL
-        self.settingsStore = settingsStore
+        self.tasksConfiguration = tasksConfiguration
 
-        settingsListener = settingsStore.$settings
-            .map(\.tasks)
+        settingsListener = tasksConfiguration.tasksPublisher
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
@@ -54,7 +53,7 @@ class TaskManager: ObservableObject {
     }
 
     var availableTasks: [CETask] {
-        return settingsStore.settings.tasks
+        return tasksConfiguration.tasks
     }
 
     func taskStatus(taskID: UUID) -> CETaskStatus {
@@ -67,7 +66,7 @@ class TaskManager: ObservableObject {
     }
 
     func executeActiveTask() {
-        guard let task = settingsStore.settings.tasks.first(where: { $0.id == selectedTaskID }) else { return }
+        guard let task = tasksConfiguration.tasks.first(where: { $0.id == selectedTaskID }) else { return }
         Task {
             await runTask(task: task)
         }
