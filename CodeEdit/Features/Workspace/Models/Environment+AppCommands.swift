@@ -43,7 +43,7 @@ private struct RegistryManagerKey: EnvironmentKey {
 }
 
 private struct WorkspaceWindowManagerKey: EnvironmentKey {
-    static let defaultValue: WorkspaceWindowManager? = nil
+    static let defaultValue: (any WorkspaceWindowManaging)? = nil
 }
 
 private struct EventBusKey: EnvironmentKey {
@@ -79,7 +79,7 @@ extension EnvironmentValues {
 
     /// The workspace window manager, for flows that open arbitrary files or workspaces
     /// (e.g. Settings pages opening ~/.gitconfig). Optional: nil in previews.
-    var workspaceWindowManager: WorkspaceWindowManager? {
+    var workspaceWindowManager: (any WorkspaceWindowManaging)? {
         get { self[WorkspaceWindowManagerKey.self] }
         set { self[WorkspaceWindowManagerKey.self] = newValue }
     }

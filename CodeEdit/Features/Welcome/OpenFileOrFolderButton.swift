@@ -13,7 +13,7 @@ struct OpenFileOrFolderButton: View {
     @Environment(\.openWindow)
     private var openWindow
 
-    let windowManager: WorkspaceWindowManager
+    let windowManager: any WorkspaceWindowManaging
 
     var dismissWindow: () -> Void
 

@@ -26,7 +26,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     let dependencies = AppDependencies()
 
     var lspService: LSPService { dependencies.lspService }
-    var windowManager: WorkspaceWindowManager { dependencies.workspaceWindowManager }
+    var windowManager: any WorkspaceWindowManaging { dependencies.workspaceWindowManager }
     var eventBus: EventBus { dependencies.eventBus }
 
     private lazy var shutdownUseCase = ShutdownApplicationUseCase(

@@ -23,6 +23,15 @@ struct AppFileRelocatorTests {
             return nil
         }
         func openFileInWorkspace(url: URL, asTemporary: Bool) -> Bool { false }
+        func openDocumentFromPanel() {}
+        func newDocumentFromPanel() {}
+        func openDocument(at url: URL, onCompletion: @escaping () -> Void) {}
+        func openDocumentWithDialog(
+            canChooseFiles: Bool,
+            canChooseDirectories: Bool,
+            onDialogPresented: (() -> Void)?,
+            onCancel: (() -> Void)?
+        ) {}
     }
 
     @MainActor

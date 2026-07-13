@@ -10,7 +10,7 @@ import WelcomeWindow
 
 struct NewFileButton: View {
 
-    let windowManager: WorkspaceWindowManager
+    let windowManager: any WorkspaceWindowManaging
 
     var dismissWindow: () -> Void
 

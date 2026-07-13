@@ -10,7 +10,7 @@ import SwiftUI
 struct FileCommands: Commands {
     static let recentProjectsMenu = RecentProjectsMenu()
 
-    let windowManager: WorkspaceWindowManager
+    let windowManager: any WorkspaceWindowManaging
 
     @Environment(\.openWindow)
     private var openWindow

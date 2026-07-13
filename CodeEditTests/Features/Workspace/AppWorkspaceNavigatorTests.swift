@@ -25,6 +25,15 @@ struct AppWorkspaceNavigatorTests {
             opened.append((url, asTemporary))
             return true
         }
+        func openDocumentFromPanel() {}
+        func newDocumentFromPanel() {}
+        func openDocument(at url: URL, onCompletion: @escaping () -> Void) {}
+        func openDocumentWithDialog(
+            canChooseFiles: Bool,
+            canChooseDirectories: Bool,
+            onDialogPresented: (() -> Void)?,
+            onCancel: (() -> Void)?
+        ) {}
     }
 
     @MainActor

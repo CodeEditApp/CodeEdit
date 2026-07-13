@@ -16,7 +16,7 @@ struct GitCloneButton: View {
     @State private var showGitClone = false
     @State private var showCheckoutBranchItem: URL?
 
-    let windowManager: WorkspaceWindowManager
+    let windowManager: any WorkspaceWindowManaging
     let shellClient: ShellClientProtocol
 
     var dismissWindow: () -> Void
