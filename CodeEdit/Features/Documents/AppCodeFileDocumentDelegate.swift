@@ -17,12 +17,12 @@ import CodeEditDocument
 /// standalone-window view, and `LSPService` lifecycle notifications.
 @MainActor
 final class AppCodeFileDocumentDelegate: CodeFileDocumentDelegate {
-    private let lspService: LSPService
+    private let lspService: any LSPServiceProtocol
     private let windowManager: WorkspaceWindowManaging
     private let languageServices: LanguageServicesProvider
 
     init(
-        lspService: LSPService,
+        lspService: any LSPServiceProtocol,
         windowManager: WorkspaceWindowManaging,
         languageServices: LanguageServicesProvider
     ) {

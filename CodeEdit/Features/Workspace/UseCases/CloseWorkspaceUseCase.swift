@@ -12,9 +12,9 @@ import Foundation
 @MainActor
 final class CloseWorkspaceUseCase {
 
-    private let lspService: LSPService
+    private let lspService: any LSPServiceProtocol
 
-    init(lspService: LSPService) {
+    init(lspService: any LSPServiceProtocol) {
         self.lspService = lspService
     }
 
