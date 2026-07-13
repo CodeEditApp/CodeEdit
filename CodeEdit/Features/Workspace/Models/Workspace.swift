@@ -140,8 +140,4 @@ final class Workspace: ObservableObject {
         let mutablePointer = UnsafeMutablePointer<Bool>(opaquePtr)
         mutablePointer.pointee = shouldClose
     }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
 }
