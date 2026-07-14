@@ -15,7 +15,6 @@ public struct SourceControlFetchView: View {
 
     @EnvironmentObject var sourceControlManager: SourceControlManager
 
-
     var projectName: String {
         sourceControlManager.workspaceURL.lastPathComponent
     }

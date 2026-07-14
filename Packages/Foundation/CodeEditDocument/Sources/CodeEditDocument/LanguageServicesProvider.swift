@@ -26,7 +26,7 @@ public protocol LanguageServicesProvider: AnyObject {
 }
 
 public final class NoOpLanguageServicesProvider: LanguageServicesProvider {
-    public nonisolated init() {}
+    nonisolated public init() {}
 
     @MainActor
     public func languageServices(for document: CodeFileDocument) -> LanguageServices {

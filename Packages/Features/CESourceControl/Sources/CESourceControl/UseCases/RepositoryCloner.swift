@@ -16,7 +16,6 @@ final class RepositoryCloner {
         self.shellClient = shellClient
     }
 
-
     enum Failure: Error, LocalizedError {
         case gitNotInstalled
         case invalidUrl

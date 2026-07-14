@@ -116,15 +116,15 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
 
     // MARK: - NSDocument
 
-    public override static var autosavesInPlace: Bool {
+    override public static var autosavesInPlace: Bool {
         isAutoSaveOnProvider()
     }
 
-    public override var autosavingFileType: String? {
+    override public var autosavingFileType: String? {
         Self.isAutoSaveOnProvider() ? fileType : nil
     }
 
-    public override func makeWindowControllers() {
+    override public func makeWindowControllers() {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 750, height: 800),
             styleMask: [.titled, .closable, .miniaturizable, .resizable, .fullSizeContentView],
@@ -150,7 +150,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
 
     // MARK: - Data
 
-    public override func data(ofType _: String) throws -> Data {
+    override public func data(ofType _: String) throws -> Data {
         guard let sourceEncoding, let data = (content?.string as NSString?)?.data(using: sourceEncoding.nsValue) else {
             Self.logger.error("Failed to encode contents to \(self.sourceEncoding.debugDescription)")
             throw CodeFileError.failedToEncode
@@ -162,7 +162,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
 
     /// This function is used for decoding files.
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
-    public override func read(from data: Data, ofType _: String) throws {
+    override public func read(from data: Data, ofType _: String) throws {
         var nsString: NSString?
         let rawEncoding = NSString.stringEncoding(
             for: data,
@@ -214,7 +214,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     /// - Note: This is inefficient memory-wise. We could do a diff of the file and only register the
     ///         mutations that would recreate the diff. However, that would instead be CPU intensive.
     ///         Tradeoffs.
-    private nonisolated func registerContentChangeUndo(fileURL: URL?, nsString: NSString, content: NSTextStorage) {
+    nonisolated private func registerContentChangeUndo(fileURL: URL?, nsString: NSString, content: NSTextStorage) {
         guard let fileURL else { return }
         // The delegate's undo registry is main-actor isolated. Capture only Sendable primitives and build
         // the (non-Sendable) `TextMutation` on the main actor so nothing non-Sendable crosses the boundary.
@@ -239,7 +239,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     // MARK: - Autosave
 
     /// Triggered when change occurred
-    public override func updateChangeCount(_ change: NSDocument.ChangeType) {
+    override public func updateChangeCount(_ change: NSDocument.ChangeType) {
         super.updateChangeCount(change)
 
         if CodeFileDocument.autosavesInPlace {
@@ -250,7 +250,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     /// Triggered when changes saved
-    public override func updateChangeCount(withToken changeCountToken: Any, for saveOperation: NSDocument.SaveOperationType) {
+    override public func updateChangeCount(withToken changeCountToken: Any, for saveOperation: NSDocument.SaveOperationType) {
         super.updateChangeCount(withToken: changeCountToken, for: saveOperation)
 
         if CodeFileDocument.autosavesInPlace {
@@ -265,7 +265,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     ///
     /// All operations are done with the ``autosaveTimerLock`` acquired (including the scheduled autosave) to ensure
     /// correct timing when scheduling or cancelling timers.
-    public override func scheduleAutosaving() {
+    override public func scheduleAutosaving() {
         autosaveTimerLock.withLock {
             if self.hasUnautosavedChanges {
                 guard autosaveTimer == nil else { return }
@@ -292,7 +292,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     /// we continue.
     /// To determine if we can reload the file, we check if the document has outstanding edits. If not, we reload the
     /// file.
-    public override func presentedItemDidChange() {
+    override public func presentedItemDidChange() {
         if fileModificationDate != getModificationDate() {
             guard isDocumentEdited else {
                 fileModificationDate = getModificationDate()
@@ -326,14 +326,14 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
 
     // MARK: - Close
 
-    public override func close() {
+    override public func close() {
         super.close()
         if let fileURL {
             notifyLSPDidClose(fileURL)
         }
     }
 
-    public override func save(_ sender: Any?) {
+    override public func save(_ sender: Any?) {
         guard let fileURL else {
             super.save(sender)
             return
@@ -350,7 +350,7 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
         }
     }
 
-    public override func fileNameExtension(
+    override public func fileNameExtension(
         forType typeName: String,
         saveOperation: NSDocument.SaveOperationType
     ) -> String? {

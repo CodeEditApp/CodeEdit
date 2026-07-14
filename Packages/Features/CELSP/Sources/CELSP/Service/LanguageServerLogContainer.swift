@@ -23,7 +23,6 @@ public final class LanguageServerLogContainer: @unchecked Sendable {
             log.message
         }
 
-
         public var date: Date = Date()
         public var subsystem: String?
         public var category: String?

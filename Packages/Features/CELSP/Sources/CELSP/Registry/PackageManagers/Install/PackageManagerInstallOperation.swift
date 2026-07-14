@@ -36,7 +36,7 @@ public final class PackageManagerInstallOperation: ObservableObject, Identifiabl
         }
     }
 
-    public nonisolated var id: String { package.name }
+    nonisolated public var id: String { package.name }
 
     public let package: RegistryItem
     public let steps: [PackageManagerInstallStep]

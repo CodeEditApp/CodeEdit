@@ -38,7 +38,7 @@ public final class RegistryManager: RegistryManaging {
     /// Timer to clear expired cache.
     /// nonisolated(unsafe): scheduled and invalidated on the main actor; also
     /// invalidated from `deinit`, which cannot be actor-isolated.
-    private nonisolated(unsafe) var cleanupTimer: Timer?
+    nonisolated(unsafe) private var cleanupTimer: Timer?
 
     @AppSettings(\.languageServers.installedLanguageServers)
     public var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]

@@ -46,7 +46,7 @@ struct PDFFileView: NSViewRepresentable {
     /// - Returns: A modified `pdfView` if a valid PDF was created, or an unmodified `pdfView` if it could not create a
     /// valid PDF.
     @discardableResult
-    private func attachPDFDocumentToView (_ pdfView: PDFView) -> PDFView {
+    private func attachPDFDocumentToView(_ pdfView: PDFView) -> PDFView {
         guard let pdfDocument = PDFDocument(url: fileURL) else {
             // What can happen is the view doesn't redraw, so whatever was in the editor area view remains as is.
             return pdfView

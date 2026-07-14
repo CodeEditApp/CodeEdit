@@ -33,8 +33,8 @@ class LSPContentCoordinator<DocumentType: LanguageServerDocument>: @preconcurren
     // nonisolated(unsafe): assigned on the main actor during setup; read from the
     // detached debounce task (`languageServer`, `sequenceContinuation`) and from
     // `deinit` (`task`, `sequenceContinuation`), which cannot be actor-isolated.
-    private nonisolated(unsafe) var sequenceContinuation: AsyncStream<SequenceElement>.Continuation?
-    private nonisolated(unsafe) var task: Task<Void, Never>?
+    nonisolated(unsafe) private var sequenceContinuation: AsyncStream<SequenceElement>.Continuation?
+    nonisolated(unsafe) private var task: Task<Void, Never>?
 
     nonisolated(unsafe) weak var languageServer: LanguageServer<DocumentType>?
     var documentURI: String?

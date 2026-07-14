@@ -17,7 +17,6 @@ public struct SourceControlPullView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
     @EnvironmentObject var sourceControlViewModel: SourceControlViewModel
 
-
     @State var loading: Bool = false
 
     @State var preferRebaseWhenPulling: Bool = false

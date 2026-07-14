@@ -17,7 +17,6 @@ import CodeEditCore
 public final class SourceControlViewModel: ObservableObject {
     public init() {}
 
-
     // MARK: - Sheet State
 
     /// Is the push sheet presented
