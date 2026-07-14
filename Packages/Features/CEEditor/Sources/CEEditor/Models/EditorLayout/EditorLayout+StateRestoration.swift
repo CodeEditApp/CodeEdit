@@ -30,8 +30,8 @@ extension EditorManager {
             }
         }
 
-        let useCase = RestoreEditorStateUseCase()
-        switch useCase.execute(
+        let restorer = EditorRestorer()
+        switch restorer.execute(
             statePersistence: statePersistence,
             fileManager: fileManager,
             findReplaceQuery: findReplaceQuery,

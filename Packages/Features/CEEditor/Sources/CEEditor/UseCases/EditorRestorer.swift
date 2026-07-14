@@ -1,5 +1,5 @@
 //
-//  RestoreEditorStateUseCase.swift
+//  EditorRestorer.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom on 15/04/26.
@@ -11,7 +11,7 @@ import OSLog
 import OrderedCollections
 
 /// Restores an editor layout from persisted state, resolving file references against the current file manager.
-public final class RestoreEditorStateUseCase {
+public final class EditorRestorer {
 
     public enum Outcome {
         /// Persisted state was loaded and resolved successfully.
@@ -22,7 +22,7 @@ public final class RestoreEditorStateUseCase {
         case noChange
     }
 
-    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "RestoreEditorStateUseCase")
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "EditorRestorer")
 
     /// Decodes persisted editor state, validates it, and resolves file references.
     public func execute(

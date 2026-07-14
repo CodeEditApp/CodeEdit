@@ -18,11 +18,11 @@ class GitCloneViewModel: ObservableObject {
     var cloningTask: Task<Void, Error>?
 
     let shellClient: ShellClientProtocol
-    private let useCase: CloneRepositoryUseCase
+    private let cloner: RepositoryCloner
 
     init(shellClient: ShellClientProtocol) {
         self.shellClient = shellClient
-        self.useCase = CloneRepositoryUseCase(shellClient: shellClient)
+        self.cloner = RepositoryCloner(shellClient: shellClient)
     }
 
     /// Check if url is valid
@@ -53,7 +53,7 @@ class GitCloneViewModel: ObservableObject {
     /// Clone repository
     func cloneRepository(completionHandler: @escaping (URL) -> Void) {
         do {
-            try useCase.verifyGitInstalled()
+            try cloner.verifyGitInstalled()
         } catch {
             showAlert(alertMsg: "Git installation not found.", infoText: error.localizedDescription)
             return
@@ -61,7 +61,7 @@ class GitCloneViewModel: ObservableObject {
 
         let parsed: (remoteUrl: URL, suggestedName: String)
         do {
-            parsed = try useCase.parse(repoUrl: repoUrlStr)
+            parsed = try cloner.parse(repoUrl: repoUrlStr)
         } catch {
             showAlert(alertMsg: "Invalid URL", infoText: error.localizedDescription)
             return
@@ -73,7 +73,7 @@ class GitCloneViewModel: ObservableObject {
 
         let progressStream: AsyncThrowingMapSequence<GitClient.LiveCommandStream, GitClient.CloneProgress>
         do {
-            progressStream = try useCase.execute(remoteUrl: parsed.remoteUrl, localPath: localPath)
+            progressStream = try cloner.execute(remoteUrl: parsed.remoteUrl, localPath: localPath)
         } catch {
             showAlert(alertMsg: "Failed to clone", infoText: error.localizedDescription)
             return
@@ -120,7 +120,7 @@ class GitCloneViewModel: ObservableObject {
 
     private func deleteTemporaryFolder(localPath: URL) {
         do {
-            try useCase.cleanup(localPath: localPath)
+            try cloner.cleanup(localPath: localPath)
         } catch {
             showAlert(alertMsg: "Failed to delete folder", infoText: "\(error)")
         }

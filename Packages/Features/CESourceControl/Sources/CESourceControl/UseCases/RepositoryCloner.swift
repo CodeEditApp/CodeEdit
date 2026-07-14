@@ -1,5 +1,5 @@
 //
-//  CloneRepositoryUseCase.swift
+//  RepositoryCloner.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom on 15/04/26.
@@ -9,7 +9,7 @@ import CodeEditCore
 import Foundation
 
 /// Validates and orchestrates a `git clone` operation, streaming progress to the caller.
-final class CloneRepositoryUseCase {
+final class RepositoryCloner {
     private let shellClient: ShellClientProtocol
 
     init(shellClient: ShellClientProtocol) {
