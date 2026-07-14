@@ -11,7 +11,6 @@
 		283BDCBD2972EEBD002AFF81 /* Package.resolved in Resources */ = {isa = PBXBuildFile; fileRef = 283BDCBC2972EEBD002AFF81 /* Package.resolved */; };
 		284DC8512978BA2600BF2770 /* .all-contributorsrc in Resources */ = {isa = PBXBuildFile; fileRef = 284DC8502978BA2600BF2770 /* .all-contributorsrc */; };
 		2BE487F428245162003F3F64 /* OpenWithCodeEdit.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		302AD7FF2D8054D500231E16 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 30818CB42D4E563900967860 /* ZIPFoundation */; };
 		30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64902C16CA8100CC8A9E /* LanguageServerProtocol */; };
 		30CB64942C16CA9100CC8A9E /* LanguageClient in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64932C16CA9100CC8A9E /* LanguageClient */; };
 		5800E2F82FF843390085ECF1 /* CodeEditUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5800E2F72FF843390085ECF1 /* CodeEditUI */; };
@@ -182,7 +181,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				302AD7FF2D8054D500231E16 /* ZIPFoundation in Frameworks */,
 				6C85BB402C2105ED00EB5DEF /* CodeEditKit in Frameworks */,
 				6C66C31329D05CDC00DE9ED2 /* GRDB in Frameworks */,
 				58F2EB1E292FB954004A9BDE /* Sparkle in Frameworks */,
@@ -353,7 +351,6 @@
 				6CD3CA542C8B508200D83DCD /* CodeEditSourceEditor */,
 				6CB94D022CA1205100E8651C /* AsyncAlgorithms */,
 				6CC00A8A2CBEF150004E8134 /* CodeEditSourceEditor */,
-				30818CB42D4E563900967860 /* ZIPFoundation */,
 				6C73A6D22D4F1E550012D95C /* CodeEditSourceEditor */,
 				5EACE6212DF4BF08005E08B8 /* WelcomeWindow */,
 				5E4485602DF600D9008BBE69 /* AboutWindow */,
@@ -474,7 +471,6 @@
 				303E88452C276FD100EEA8D9 /* XCRemoteSwiftPackageReference "LanguageClient" */,
 				303E88462C276FD600EEA8D9 /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */,
 				6CB94D012CA1205100E8651C /* XCRemoteSwiftPackageReference "swift-async-algorithms" */,
-				30ED7B722DD299E600ACC922 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 				5EACE6202DF4BF08005E08B8 /* XCRemoteSwiftPackageReference "WelcomeWindow" */,
 				5E44855F2DF600D9008BBE69 /* XCRemoteSwiftPackageReference "AboutWindow" */,
 				6C76D6D22E15B91E00EF52C3 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
@@ -1738,14 +1734,6 @@
 				minimumVersion = 0.13.2;
 			};
 		};
-		30818CB32D4E563900967860 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.19;
-			};
-		};
 		30CB648F2C16CA8100CC8A9E /* XCRemoteSwiftPackageReference "LanguageServerProtocol" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ChimeHQ/LanguageServerProtocol";
@@ -1760,14 +1748,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.8.0;
-			};
-		};
-		30ED7B722DD299E600ACC922 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.19;
 			};
 		};
 		583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
@@ -1889,11 +1869,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */;
 			productName = CodeEditSymbols;
-		};
-		30818CB42D4E563900967860 /* ZIPFoundation */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 30818CB32D4E563900967860 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
-			productName = ZIPFoundation;
 		};
 		30CB64902C16CA8100CC8A9E /* LanguageServerProtocol */ = {
 			isa = XCSwiftPackageProductDependency;

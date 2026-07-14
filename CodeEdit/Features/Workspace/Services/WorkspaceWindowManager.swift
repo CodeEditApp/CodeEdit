@@ -203,3 +203,23 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
         }
     }
 }
+
+extension URL {
+    /// Compares this url with another, counting the number of shared path components. Stops counting once a
+    /// different component is found.
+    ///
+    /// - Note: URL treats a leading `/` as a component, so `/Users` and `/` will return `1`.
+    /// - Parameter other: The URL to compare against.
+    /// - Returns: The number of shared components.
+    func sharedComponents(_ other: URL) -> Int {
+        var count = 0
+        for (component, otherComponent) in zip(pathComponents, other.pathComponents) {
+            if component == otherComponent {
+                count += 1
+            } else {
+                return count
+            }
+        }
+        return count
+    }
+}
