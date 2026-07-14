@@ -6,10 +6,9 @@
 //
 
 import Foundation
-import CodeEditCore
 
 /// A protocol defining the requirements for an object that can be searched using fuzzy matching.
-protocol FuzzySearchable {
+public protocol FuzzySearchable {
     var searchableString: String { get }
 
     /// Performs a fuzzy search on the conforming object's searchable string.
@@ -22,7 +21,7 @@ protocol FuzzySearchable {
     func fuzzyMatch(query: String, characters: FuzzySearchString) -> FuzzySearchMatchResult
 }
 
-extension FuzzySearchable {
+public extension FuzzySearchable {
     func fuzzyMatch(query: String, characters: FuzzySearchString) -> FuzzySearchMatchResult {
         let compareString = characters.characters
 

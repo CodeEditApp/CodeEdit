@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import CodeEditCore
 
 extension URL: FuzzySearchable {
-    var searchableString: String {
+    public var searchableString: String {
         return self.lastPathComponent
     }
 }

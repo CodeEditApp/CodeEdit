@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import CodeEditCore
 @testable import CodeEdit
 
 final class FuzzySearchTests: XCTestCase {

@@ -9,5 +9,5 @@ import CELSP
 import CodeEditCore
 
 extension RegistryItem: FuzzySearchable {
-    var searchableString: String { name }
+    public var searchableString: String { name }
 }

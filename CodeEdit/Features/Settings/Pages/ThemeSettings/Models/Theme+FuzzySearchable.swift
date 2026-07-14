@@ -7,9 +7,10 @@
 
 import Foundation
 import CodeEditSettings
+import CodeEditCore
 
 extension Theme: FuzzySearchable {
-    var searchableString: String {
+    public var searchableString: String {
         return id
     }
 }

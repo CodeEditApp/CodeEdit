@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+import AsyncAlgorithms
+import CodeEditCore
 
 @MainActor
 final class FuzzySearchUIModel<Element: FuzzySearchable>: ObservableObject {
