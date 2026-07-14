@@ -8,6 +8,7 @@
 import SwiftUI
 
 public extension Theme.Attributes {
+    /// The attribute's color as a SwiftUI `Color`; setting it stores the new value as a hex string.
     var swiftColor: Color {
         get {
             Color(hex: color)
@@ -17,6 +18,7 @@ public extension Theme.Attributes {
         }
     }
 
+    /// The attribute's color as an AppKit `NSColor`; setting it stores the new value as a hex string.
     var nsColor: NSColor {
         get {
             NSColor(hex: color)

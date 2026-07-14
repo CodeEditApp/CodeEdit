@@ -12,6 +12,7 @@ public struct ActiveEditorEnvironmentKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+    /// Whether the editor this view belongs to is the focused editor in the window.
     var isActiveEditor: Bool {
         get { self[ActiveEditorEnvironmentKey.self] }
         set { self[ActiveEditorEnvironmentKey.self] = newValue }

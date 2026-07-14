@@ -15,6 +15,9 @@ extension SearchIndexer {
         private let addQueue = DispatchQueue(label: "app.codeedit.CodeEdit.AddFilesToIndex", attributes: .concurrent)
         private let searchQueue = DispatchQueue(label: "app.codeedit.CodeEdit.SearchIndex", attributes: .concurrent)
 
+        /// Create an async manager wrapping an index.
+        ///
+        /// - Parameter index: The index to perform asynchronous operations on.
         public init(index: SearchIndexer) {
             self.index = index
         }

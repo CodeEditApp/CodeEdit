@@ -12,6 +12,7 @@ public struct SplitEditorEnvironmentKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+    /// A closure that splits the current editor towards the given edge, inserting the provided editor.
     var splitEditor: SplitEditorEnvironmentKey.Value {
         get { self[SplitEditorEnvironmentKey.self] }
         set { self[SplitEditorEnvironmentKey.self] = newValue }

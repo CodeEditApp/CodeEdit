@@ -37,6 +37,11 @@ class BitBucketEmail: Codable {
 
 extension BitBucketAccount {
 
+    /// Fetches the profile of the currently authenticated Bitbucket user.
+    /// - Parameters:
+    ///   - session: The session used to make the request; defaults to the shared session.
+    ///   - completion: Called with the user on success, or the request error on failure.
+    /// - Returns: The started network task, or `nil` if the request could not be constructed.
     public func me(
         _ session: GitURLSession = URLSession.shared,
         completion: @escaping (_ response: Result<BitBucketUser, Error>) -> Void

@@ -8,6 +8,8 @@
 import SwiftUI
 
 public extension View {
+    /// Overlays a 24pt bar along the view's bottom edge, showing `content` as small icon buttons.
+    /// Used under lists for add/remove-style controls, like the +/- bar in settings tables.
     func actionBar<Content: View>(@ViewBuilder content: () -> Content) -> some View {
         self
             .padding(.bottom, 24)

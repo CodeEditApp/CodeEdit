@@ -16,6 +16,8 @@ private struct CurrentDarkThemeKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+    /// The theme currently active in the editor, following the user's selection
+    /// and the app's light/dark appearance.
     var currentTheme: Theme? {
         get { self[CurrentThemeKey.self] }
         set { self[CurrentThemeKey.self] = newValue }

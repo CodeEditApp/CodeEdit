@@ -26,6 +26,7 @@ import CodeEditCore
 /// information can be included in the same call.
 
 extension GitClient {
+    /// The parsed result of `git status`: ordinary changes, unmerged (conflicting) paths, and untracked files.
     public struct Status {
         var changedFiles: [GitChangedFile]
         var unmergedChanges: [GitChangedFile]

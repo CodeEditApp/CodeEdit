@@ -12,6 +12,7 @@ import SwiftTerm
 /// This allows terminal views to continue to receive data even when not in the view hierarchy.
 @MainActor
 public final class TerminalCache {
+    /// The single cache shared by all terminal views in the app.
     public static let shared: TerminalCache = TerminalCache()
 
     /// The cache of terminal views.

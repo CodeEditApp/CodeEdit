@@ -12,6 +12,8 @@ private struct WorkspaceFullscreenStateEnvironmentKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+    /// Whether the window hosting this view is in fullscreen, so views can adapt their layout (e.g. the
+    /// toolbar inset).
     var isFullscreen: Bool {
         get { self[WorkspaceFullscreenStateEnvironmentKey.self] }
         set { self[WorkspaceFullscreenStateEnvironmentKey.self] = newValue }

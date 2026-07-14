@@ -48,6 +48,9 @@ extension EditorManager {
         }
     }
 
+    /// Encodes the current editor layout and active editor, storing it with the persistence service
+    /// for `restoreFromState` to load on the next launch.
+    /// - Parameter statePersistence: The persistence service to save the captured state to.
     public func saveRestorationState(_ statePersistence: any WorkspaceStatePersisting) {
         if let data = try? JSONEncoder().encode(
             EditorRestorationState(activeEditor: activeEditor.id, groups: editorLayout)

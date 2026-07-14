@@ -10,6 +10,7 @@ import CodeEditSourceEditor
 import AppKit
 
 public extension Theme.EditorColors {
+    /// Bridges the settings theme's editor colors to a source editor `EditorTheme`, converting in both directions.
     var editorTheme: EditorTheme {
         get {
             .init(

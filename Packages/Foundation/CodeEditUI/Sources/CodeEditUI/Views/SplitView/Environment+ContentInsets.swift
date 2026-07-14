@@ -13,6 +13,7 @@ public struct EdgeInsetsEnvironmentKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+    /// The insets a container applies around its content, e.g. to keep split view content clear of the toolbar.
     var edgeInsets: EdgeInsetsEnvironmentKey.Value {
         get { self[EdgeInsetsEnvironmentKey.self] }
         set { self[EdgeInsetsEnvironmentKey.self] = newValue }
@@ -20,6 +21,7 @@ public extension EnvironmentValues {
 }
 
 public extension EdgeInsets {
+    /// The same insets converted to an AppKit `NSEdgeInsets`, mapping leading/trailing to left/right.
     var nsEdgeInsets: NSEdgeInsets {
         .init(top: top, left: leading, bottom: bottom, right: trailing)
     }

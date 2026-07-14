@@ -12,6 +12,8 @@ public struct EventModifierEnvironmentKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+    /// The modifier keys (command, option, shift, ...) currently held down, for views that adapt while
+    /// a modifier is pressed.
     var modifierKeys: EventModifierEnvironmentKey.Value {
         get { self[EventModifierEnvironmentKey.self] }
         set { self[EventModifierEnvironmentKey.self] = newValue }

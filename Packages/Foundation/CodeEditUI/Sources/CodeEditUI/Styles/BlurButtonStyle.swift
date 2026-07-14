@@ -8,7 +8,9 @@
 import SwiftUI
 
 public extension ButtonStyle where Self == BlurButtonStyle {
+    /// A button style with a translucent, blurred material background, for buttons overlaid on content.
     static var blur: BlurButtonStyle { BlurButtonStyle() }
+    /// A more subdued variant of ``blur``, for the less prominent action next to a primary blur button.
     static var secondaryBlur: BlurButtonStyle { BlurButtonStyle(isSecondary: true) }
 }
 

@@ -98,6 +98,7 @@ public struct BelowToolbarEnvironmentKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+    /// The vertical edges at which this editor layout borders the window, used to adjust chrome near the toolbar.
     var isEditorLayoutAtEdge: BelowToolbarEnvironmentKey.Value {
         get { self[BelowToolbarEnvironmentKey.self] }
         set { self[BelowToolbarEnvironmentKey.self] = newValue }

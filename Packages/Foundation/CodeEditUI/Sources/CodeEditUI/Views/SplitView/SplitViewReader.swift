@@ -34,18 +34,23 @@ public struct SplitViewReader<Content: View>: View {
     }
 }
 
+/// A handle to a `SplitView`, vended by ``SplitViewReader``, for imperatively moving dividers and
+/// collapsing items.
 public struct SplitViewProxy {
     private var viewController: () -> SplitViewController?
 
+    /// Creates a proxy that resolves the underlying controller lazily, so it works before the split view exists.
     public init(viewController: @escaping () -> SplitViewController?) {
         self.viewController = viewController
     }
 
+    /// Moves the divider at `index` to the given position, in points from the split view's leading/top edge.
     @MainActor
     public func setPosition(of index: Int, position: CGFloat) {
         viewController()?.splitView.setPosition(position, ofDividerAt: index)
     }
 
+    /// Collapses or expands the split view item identified by `id`, animating the change.
     @MainActor
     public func collapseView(with id: AnyHashable, _ enabled: Bool) {
         viewController()?.collapse(for: id, enabled: enabled)

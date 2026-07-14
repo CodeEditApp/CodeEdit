@@ -13,6 +13,7 @@ import OrderedCollections
 /// Restores an editor layout from persisted state, resolving file references against the current file manager.
 public final class EditorRestorer {
 
+    /// The result of a restoration attempt, telling the caller how to proceed.
     public enum Outcome {
         /// Persisted state was loaded and resolved successfully.
         case restored(layout: EditorLayout, activeEditor: Editor)

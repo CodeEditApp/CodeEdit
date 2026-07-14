@@ -10,6 +10,7 @@ import Combine
 import CodeEditCore
 
 extension GitClient {
+    /// A snapshot of clone progress: the total percentage (0-100) and the phase git is currently in.
     public struct CloneProgress {
         let progress: Double
         let state: GitCloneProgressState

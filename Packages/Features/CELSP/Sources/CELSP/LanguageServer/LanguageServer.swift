@@ -46,6 +46,7 @@ public class LanguageServer<DocumentType: LanguageServerDocument> {
     /// The configuration options this server supports.
     var serverCapabilities: ServerCapabilities
 
+    /// Buffers log messages received from the server for display in the language server UI.
     public var logContainer: LanguageServerLogContainer
 
     /// An instance of a language server, that may or may not be initialized

@@ -96,6 +96,7 @@ public struct IconButtonStyle: ButtonStyle {
 }
 
 public extension ButtonStyle where Self == IconButtonStyle {
+    /// An icon button style with a custom font, active state, and fixed square frame of the given side length.
     static func icon(
         isActive: Bool? = false,
         font: Font? = Font.system(size: 14.5, weight: .regular, design: .default),
@@ -103,6 +104,7 @@ public extension ButtonStyle where Self == IconButtonStyle {
     ) -> IconButtonStyle {
         return IconButtonStyle(isActive: isActive, font: font, size: size)
     }
+    /// An icon button style with a custom font, active state, and fixed frame of the given width and height.
     static func icon(
         isActive: Bool? = false,
         font: Font? = Font.system(size: 14.5, weight: .regular, design: .default),
@@ -110,11 +112,13 @@ public extension ButtonStyle where Self == IconButtonStyle {
     ) -> IconButtonStyle {
         return IconButtonStyle(isActive: isActive, font: font, size: size)
     }
+    /// An icon button style with a custom font and active state, and no fixed frame.
     static func icon(
         isActive: Bool? = false,
         font: Font? = Font.system(size: 14.5, weight: .regular, design: .default)
     ) -> IconButtonStyle {
         return IconButtonStyle(isActive: isActive, font: font)
     }
+    /// An icon button style with the default font and no fixed frame.
     static var icon: IconButtonStyle { .init() }
 }

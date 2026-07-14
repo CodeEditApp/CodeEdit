@@ -44,6 +44,8 @@ public struct SettingsDataEnvironmentKey: EnvironmentKey {
 }
 
 public extension EnvironmentValues {
+    /// The app-wide settings model. Views read individual settings through this value (usually via
+    /// the ``AppSettings`` property wrapper) so they update whenever a setting changes.
     var settings: SettingsDataEnvironmentKey.Value {
         get { self[SettingsDataEnvironmentKey.self] }
         set { self[SettingsDataEnvironmentKey.self] = newValue }

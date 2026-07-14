@@ -12,7 +12,9 @@ import Foundation
 /// Conform to this protocol to define a default value that will be used
 /// when decoding fails or the key is missing from the JSON.
 public protocol DefaultValueProvider {
+    /// The type of the value being defaulted; must round-trip through `Codable`.
     associatedtype Value: Codable & Hashable
+    /// The fallback value used when the key is missing from the JSON or its value fails to decode.
     static var defaultValue: Value { get }
 }
 

@@ -8,6 +8,7 @@
 import Foundation
 
 extension URL {
+    /// The last path component with surrounding whitespace and newlines trimmed.
     public var fileName: String {
         self.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
     }

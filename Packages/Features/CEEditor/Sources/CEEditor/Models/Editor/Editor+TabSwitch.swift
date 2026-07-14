@@ -8,6 +8,7 @@
 import Foundation
 
 extension Editor {
+    /// Selects the tab after the current one, wrapping around to the first tab when at the end.
     public func selectNextTab() {
         guard let currentTab = selectedTab, let currentIndex = tabs.firstIndex(of: currentTab) else { return }
         let nextIndex = tabs.index(after: currentIndex)
@@ -19,6 +20,7 @@ extension Editor {
         }
     }
 
+    /// Selects the tab before the current one, wrapping around to the last tab when at the beginning.
     public func selectPreviousTab() {
         guard let currentTab = selectedTab, let currentIndex = tabs.firstIndex(of: currentTab) else { return }
         let previousIndex = tabs.index(before: currentIndex)

@@ -45,6 +45,9 @@ extension GitClient {
         return try parseUnsyncedCommitsOutput(from: output)
     }
 
+    /// Lists the files a commit changed, using `git diff-tree` to compare the commit against its parent.
+    /// - Parameter commitSHA: The hash of the commit to inspect.
+    /// - Returns: The changed files with their change status, or an empty array if the lookup fails.
     public func getCommitChangedFiles(commitSHA: String) async throws -> [GitChangedFile] {
         do {
             let output = try await run("diff-tree --no-commit-id --name-status -r \(commitSHA)")

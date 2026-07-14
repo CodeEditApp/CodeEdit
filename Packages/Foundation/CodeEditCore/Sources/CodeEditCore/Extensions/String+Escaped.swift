@@ -23,6 +23,7 @@ public extension String {
         escape(replacing: #"""#)
     }
 
+    /// Returns a new string, prefixing every occurrence of the given character with `\` unless already escaped.
     func escape(replacing: Character) -> String {
         var string = ""
         var lastChar: Character?

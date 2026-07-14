@@ -9,6 +9,7 @@ import Foundation
 
 /// A protocol defining the requirements for an object that can be searched using fuzzy matching.
 public protocol FuzzySearchable {
+    /// The string content that fuzzy searches are matched against.
     var searchableString: String { get }
 
     /// Performs a fuzzy search on the conforming object's searchable string.
@@ -22,6 +23,8 @@ public protocol FuzzySearchable {
 }
 
 public extension FuzzySearchable {
+    /// Default implementation scoring consecutive character matches; returns a zero-weight result
+    /// when the query is not fully contained in the searchable string.
     func fuzzyMatch(query: String, characters: FuzzySearchString) -> FuzzySearchMatchResult {
         let compareString = characters.characters
 

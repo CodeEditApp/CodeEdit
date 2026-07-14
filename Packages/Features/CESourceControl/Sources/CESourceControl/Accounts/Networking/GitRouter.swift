@@ -18,33 +18,45 @@ enum GitHTTPEncoding: Int {
     case url, form, json
 }
 
+/// A single HTTP header (field name and value) to attach to git provider API requests.
 public struct GitHTTPHeader {
     var headerField: String
     var value: String
 }
 
+/// Describes how to reach and authenticate against a git provider's REST API (GitHub, GitLab, Bitbucket).
 public protocol GitRouterConfiguration {
+    /// The base URL of the provider's API, e.g. `https://api.github.com`.
     var apiEndpoint: String? { get }
+    /// The token used to authenticate requests, if the account is signed in.
     var accessToken: String? { get }
+    /// The query-parameter name the provider expects the access token under.
     var accessTokenFieldName: String? { get }
+    /// The authorization scheme (e.g. `Bearer`) used to send the token in an `Authorization` header instead.
     var authorizationHeader: String? { get }
+    /// The domain used when constructing errors for failed requests.
     var errorDomain: String? { get }
+    /// Additional headers to attach to every request made with this configuration.
     var customHeaders: [GitHTTPHeader]? { get }
 }
 
 extension GitRouterConfiguration {
+    /// By default the access token is sent in the `access_token` query field.
     public var accessTokenFieldName: String? {
         "access_token"
     }
 
+    /// By default the token is sent as a query parameter instead of an `Authorization` header.
     public var authorizationHeader: String? {
         nil
     }
 
+    /// The default domain used for errors produced by failed account requests.
     public var errorDomain: String? {
         "com.codeedit.models.accounts.networking"
     }
 
+    /// By default no additional headers are attached to requests.
     public var customHeaders: [GitHTTPHeader]? {
         nil
     }
