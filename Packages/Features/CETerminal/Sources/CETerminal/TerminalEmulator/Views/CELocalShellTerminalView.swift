@@ -5,6 +5,7 @@
 //  Created by Khan Winter on 8/7/24.
 //
 
+import CodeEditCore
 import AppKit
 import CodeEditSettings
 @preconcurrency import SwiftTerm

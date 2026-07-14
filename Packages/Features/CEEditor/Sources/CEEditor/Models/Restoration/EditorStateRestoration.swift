@@ -5,6 +5,7 @@
 //  Created by Khan Winter on 6/20/25.
 //
 
+import CodeEditCore
 import Foundation
 import GRDB
 import CodeEditSourceEditor

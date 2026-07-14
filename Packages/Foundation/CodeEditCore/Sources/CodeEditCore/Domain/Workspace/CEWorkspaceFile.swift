@@ -34,7 +34,7 @@ public final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable 
 
     /// Returns the resolved symlink url of this object.
     public lazy var resolvedURL: URL = {
-        Self.isSymbolicLink(url) ? url.resolvingSymlinksInPath() : url
+        url.isSymbolicLink ? url.resolvingSymlinksInPath() : url
     }()
 
     /// Returns a parent ``CEWorkspaceFile``. `nil` for the top-level item.
@@ -50,7 +50,7 @@ public final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable 
 
     /// True if the resource is a directory.
     public lazy var isFolder: Bool = {
-        Self.isDirectory(resolvedURL)
+        resolvedURL.isFolder
     }()
 
     /// True if this directory has no contents. (Check ``isFolder`` first.)
@@ -69,7 +69,7 @@ public final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable 
     public var doesExist: Bool { Self.fileManager.fileExists(atPath: self.url.path) }
 
     /// The file's UTType.
-    public var contentType: UTType? { Self.contentType(url) }
+    public var contentType: UTType? { url.contentType }
 
     public init(
         id: String,
@@ -128,23 +128,6 @@ public final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable 
 
     /// `FileManager.default` is documented thread-safe; the shared instance is only read from here.
     nonisolated(unsafe) public static let fileManager = FileManager.default
-
-    private static func resourceValues(_ url: URL) -> URLResourceValues? {
-        try? url.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey, .contentTypeKey])
-    }
-
-    private static func isDirectory(_ url: URL) -> Bool {
-        resourceValues(url)?.isDirectory ?? false
-    }
-
-    private static func isSymbolicLink(_ url: URL) -> Bool {
-        let values = resourceValues(url)
-        return (values?.isSymbolicLink ?? false) || (values?.contentType ?? .item) == .aliasFile
-    }
-
-    private static func contentType(_ url: URL) -> UTType? {
-        resourceValues(url)?.contentType
-    }
 
     // MARK: Comparable / Hashable
 

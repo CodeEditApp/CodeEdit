@@ -1,13 +1,13 @@
 //
 //  CECircularProgressView.swift
-//  CodeEdit
+//  CodeEditUI
 //
 //  Created by Tommy Ludwig on 21.06.24.
 //
 
 import SwiftUI
 
-struct CECircularProgressView: View {
+public struct CECircularProgressView: View {
     @State private var isAnimating = false
     @State private var previousValue: Bool = false
 
@@ -16,7 +16,12 @@ struct CECircularProgressView: View {
 
     let lineWidth: CGFloat = 2
 
-    var body: some View {
+    public init(progress: Double? = nil, currentTaskCount: Int = 1) {
+        self.progress = progress
+        self.currentTaskCount = currentTaskCount
+    }
+
+    public var body: some View {
         Circle()
             .stroke(style: StrokeStyle(lineWidth: lineWidth))
             .foregroundStyle(.tertiary)

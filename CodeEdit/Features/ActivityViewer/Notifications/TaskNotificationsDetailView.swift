@@ -5,6 +5,7 @@
 //  Created by Tommy Ludwig on 21.06.24.
 //
 
+import CodeEditUI
 import CodeEditCore
 import SwiftUI
 

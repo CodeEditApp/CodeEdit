@@ -5,6 +5,7 @@
 //  Created by Abe Malla on 2/7/24.
 //
 
+import CodeEditCore
 import os.log
 import CodeEditSettings
 import CodeEditDocument

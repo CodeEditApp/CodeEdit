@@ -1,6 +1,6 @@
 //
-//  URL+ResouceValues.swift
-//  CodeEdit
+//  URL+ResourceValues.swift
+//  CodeEditCore
 //
 //  Created by Axel Martinez on 27/6/24.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import UniformTypeIdentifiers
 
-extension URL {
+public extension URL {
     fileprivate var resourceValues: URLResourceValues? {
         try? self.resourceValues(forKeys: [.isDirectoryKey, .isSymbolicLinkKey, .contentTypeKey])
     }

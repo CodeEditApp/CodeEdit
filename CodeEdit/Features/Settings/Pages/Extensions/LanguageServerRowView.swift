@@ -5,6 +5,7 @@
 //  Created by Abe Malla on 2/2/25.
 //
 
+import CodeEditUI
 import CELSP
 import SwiftUI
 import CodeEditSettings
