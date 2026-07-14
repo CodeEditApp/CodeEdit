@@ -17,7 +17,8 @@ public protocol ActiveCursorState: AnyObject {
     @MainActor var cursorPositionsPublisher: AnyPublisher<[EditorCursorPosition], Never> { get }
     /// Number of lines contained by `range` in the active editor's live text view.
     /// Returns 0 when there is no active editor or the lines cannot be resolved.
-    @MainActor func linesInRange(_ range: NSRange) -> Int
+    @MainActor
+    func linesInRange(_ range: NSRange) -> Int
 }
 
 /// Default used when no cursor state is injected (tests, previews); reports no cursor.

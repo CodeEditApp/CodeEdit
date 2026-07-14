@@ -81,51 +81,73 @@ final class CodeEditSplitViewController: NSSplitViewController {
             assertionFailure("Missing workspace=\(workspace == nil) or navigator=\(navigatorViewModel == nil)")
             return
         }
-        let editorManager = workspace.editorManager
-        let projectNavigatorViewModel = workspace.projectNavigatorViewModel
-        let sourceControlManager = workspace.sourceControlManager
-        let sourceControlViewModel = workspace.sourceControlViewModel
-        let searchState = workspace.searchState
-        let taskManager = workspace.taskManager
 
         splitView.translatesAutoresizingMaskIntoConstraints = false
 
-        let activeEditorState = AppActiveEditorState(editorManager: editorManager)
+        let activeEditorState = AppActiveEditorState(editorManager: workspace.editorManager)
         self.activeEditorState = activeEditorState
 
-        let activeCursorState = AppActiveCursorState(editorManager: editorManager)
+        let activeCursorState = AppActiveCursorState(editorManager: workspace.editorManager)
         self.activeCursorState = activeCursorState
 
-        let fileEditorOverrides = AppFileEditorOverrides(editorManager: editorManager)
+        let fileEditorOverrides = AppFileEditorOverrides(editorManager: workspace.editorManager)
         self.fileEditorOverrides = fileEditorOverrides
 
-        let navigator = makeNavigator(view: SettingsInjector {
+        addSplitViewItem(makeNavigatorItem(
+            workspace: workspace,
+            navigatorViewModel: navigatorViewModel,
+            activeEditorState: activeEditorState
+        ))
+        addSplitViewItem(makeMainContentItem(
+            workspace: workspace,
+            windowRef: windowRef,
+            activeEditorState: activeEditorState,
+            activeCursorState: activeCursorState
+        ))
+        addSplitViewItem(makeInspectorItem(
+            workspace: workspace,
+            activeEditorState: activeEditorState,
+            fileEditorOverrides: fileEditorOverrides
+        ))
+    }
+
+    private func makeNavigatorItem(
+        workspace: Workspace,
+        navigatorViewModel: NavigatorAreaViewModel,
+        activeEditorState: AppActiveEditorState
+    ) -> NSSplitViewItem {
+        makeNavigator(view: SettingsInjector {
             NavigatorAreaView(workspace: workspace, viewModel: navigatorViewModel)
                 .environmentObject(workspace)
-                .environmentObject(editorManager)
+                .environmentObject(workspace.editorManager)
                 .environmentObject(workspace.listenerModel)
-                .environmentObject(projectNavigatorViewModel)
-                .environmentObject(sourceControlManager)
-                .environmentObject(sourceControlViewModel)
-                .environmentObject(searchState)
+                .environmentObject(workspace.projectNavigatorViewModel)
+                .environmentObject(workspace.sourceControlManager)
+                .environmentObject(workspace.sourceControlViewModel)
+                .environmentObject(workspace.searchState)
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                 .environment(\.workspaceFileProvider, workspace.workspaceFileManager)
                 .environment(\.workspaceFileURL, workspace.fileURL)
                 .environment(\.activeEditorState, activeEditorState)
                 .appServices(dependencies)
         })
+    }
 
-        addSplitViewItem(navigator)
-
+    private func makeMainContentItem(
+        workspace: Workspace,
+        windowRef: NSWindow,
+        activeEditorState: AppActiveEditorState,
+        activeCursorState: AppActiveCursorState
+    ) -> NSSplitViewItem {
         let workspaceView = SettingsInjector {
             WindowObserver(window: WindowBox(value: windowRef)) {
                 WorkspaceView()
-                    .environmentObject(editorManager)
+                    .environmentObject(workspace.editorManager)
                     .environmentObject(statusBarViewModel)
                     .environmentObject(utilityAreaModel)
-                    .environmentObject(taskManager)
-                    .environmentObject(sourceControlManager)
-                    .environmentObject(sourceControlViewModel)
+                    .environmentObject(workspace.taskManager)
+                    .environmentObject(workspace.sourceControlManager)
+                    .environmentObject(workspace.sourceControlViewModel)
                     .environmentObject(workspace.listenerModel)
                     .environmentObject(workspace.undoRegistration)
                     .environmentObject(notificationPanel)
@@ -142,21 +164,24 @@ final class CodeEditSplitViewController: NSSplitViewController {
         let mainContent = NSSplitViewItem(viewController: NSHostingController(rootView: workspaceView))
         mainContent.titlebarSeparatorStyle = .line
         mainContent.minimumThickness = 200
+        return mainContent
+    }
 
-        addSplitViewItem(mainContent)
-
-        let inspector = makeInspector(view: SettingsInjector {
+    private func makeInspectorItem(
+        workspace: Workspace,
+        activeEditorState: AppActiveEditorState,
+        fileEditorOverrides: AppFileEditorOverrides
+    ) -> NSSplitViewItem {
+        makeInspector(view: SettingsInjector {
             InspectorAreaView(viewModel: InspectorAreaViewModel())
-                .environmentObject(editorManager)
-                .environmentObject(sourceControlManager)
+                .environmentObject(workspace.editorManager)
+                .environmentObject(workspace.sourceControlManager)
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                 .environment(\.workspaceFileProvider, workspace.workspaceFileManager)
                 .environment(\.activeEditorState, activeEditorState)
                 .environment(\.fileEditorOverrides, fileEditorOverrides)
                 .appServices(dependencies)
         })
-
-        addSplitViewItem(inspector)
     }
 
     private func makeNavigator(view: some View) -> NSSplitViewItem {

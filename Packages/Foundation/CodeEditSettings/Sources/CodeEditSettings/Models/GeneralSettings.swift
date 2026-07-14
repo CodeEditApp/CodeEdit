@@ -28,7 +28,8 @@ extension SettingsData {
         @CodableDefault<DefaultFalse> public var dimEditorsWithoutFocus = false
 
         /// The show file extensions behavior of the app
-        @CodableDefault<DefaultFileExtensionsVisibility> public var fileExtensionsVisibility: FileExtensionsVisibility = .showAll
+        @CodableDefault<DefaultFileExtensionsVisibility> public var fileExtensionsVisibility:
+            FileExtensionsVisibility = .showAll
 
         /// The file extensions collection to display
         @CodableDefault<DefaultFileExtensions> public var shownFileExtensions: FileExtensions = .default
@@ -40,16 +41,19 @@ extension SettingsData {
         @CodableDefault<DefaultFileIconStyle> public var fileIconStyle: FileIconStyle = .color
 
         /// The position for the navigator sidebar tab bar
-        @CodableDefault<DefaultSidebarTabBarPositionTop> public var navigatorTabBarPosition: SidebarTabBarPosition = .top
+        @CodableDefault<DefaultSidebarTabBarPositionTop> public var navigatorTabBarPosition:
+            SidebarTabBarPosition = .top
 
         /// The position for the inspector sidebar tab bar
-        @CodableDefault<DefaultSidebarTabBarPositionTop> public var inspectorTabBarPosition: SidebarTabBarPosition = .top
+        @CodableDefault<DefaultSidebarTabBarPositionTop> public var inspectorTabBarPosition:
+            SidebarTabBarPosition = .top
 
         /// The reopen behavior of the app
         @CodableDefault<DefaultReopenBehavior> public var reopenBehavior: ReopenBehavior = .welcome
 
         /// Decides what the app does after a workspace is closed
-        @CodableDefault<DefaultReopenWindowBehavior> public var reopenWindowAfterClose: ReopenWindowBehavior = .doNothing
+        @CodableDefault<DefaultReopenWindowBehavior> public var reopenWindowAfterClose:
+            ReopenWindowBehavior = .doNothing
 
         /// The size of the project navigator
         @CodableDefault<DefaultProjectNavigatorSize> public var projectNavigatorSize: ProjectNavigatorSize = .medium

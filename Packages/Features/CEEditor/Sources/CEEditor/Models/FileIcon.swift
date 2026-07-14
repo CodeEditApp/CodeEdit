@@ -10,7 +10,8 @@ import CodeEditCore
 
 enum FileIcon {
 
-    static func fileIcon(fileType: FileType?) -> String { // swiftlint:disable:this cyclomatic_complexity function_body_length
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
+    static func fileIcon(fileType: FileType?) -> String {
         switch fileType {
         case .json, .yml, .resolved:
             return "doc.json"

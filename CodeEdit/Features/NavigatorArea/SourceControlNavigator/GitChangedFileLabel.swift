@@ -44,7 +44,11 @@ struct GitChangedFileLabel: View {
             fileURL: URL(filePath: "/Users/CodeEdit/app.jsx"),
             originalFilename: nil
         ))
-        .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), shellClient: ShellClient(), eventBus: EventBus()))
+        .environmentObject(SourceControlManager(
+            workspaceURL: URL(filePath: "/Users/CodeEdit"),
+            shellClient: ShellClient(),
+            eventBus: EventBus()
+        ))
 
         GitChangedFileLabel(file: GitChangedFile(
             status: .none,
@@ -52,6 +56,10 @@ struct GitChangedFileLabel: View {
             fileURL: URL(filePath: "/Users/CodeEdit/app.jsx"),
             originalFilename: "app2.jsx"
         ))
-        .environmentObject(SourceControlManager(workspaceURL: URL(filePath: "/Users/CodeEdit"), shellClient: ShellClient(), eventBus: EventBus()))
+        .environmentObject(SourceControlManager(
+            workspaceURL: URL(filePath: "/Users/CodeEdit"),
+            shellClient: ShellClient(),
+            eventBus: EventBus()
+        ))
     }.padding()
 }

@@ -18,8 +18,10 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
     @EnvironmentObject var workspace: Workspace
     @EnvironmentObject var editorManager: EditorManager
 
-    @Environment(\.activeEditorState) private var activeEditorState
-    @Environment(\.workspaceNavigator) private var workspaceNavigator
+    @Environment(\.activeEditorState)
+    private var activeEditorState
+    @Environment(\.workspaceNavigator)
+    private var workspaceNavigator
 
     @StateObject var prefs: CodeEditSettings.Settings = .shared
 

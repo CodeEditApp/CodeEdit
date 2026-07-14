@@ -54,7 +54,10 @@ class CEActiveTaskTests {
     func testHandleProcessFinished(_ shell: Shell) async throws {
         // CETask is a value type, so build a fresh active task around the failing command
         // rather than mutating `task` after `activeTask` already copied it.
-        let activeTask = CEActiveTask(task: CETask(name: "Test Task", command: "aNon-existentCommand"), eventBus: EventBus())
+        let activeTask = CEActiveTask(
+            task: CETask(name: "Test Task", command: "aNon-existentCommand"),
+            eventBus: EventBus()
+        )
         activeTask.run(workspaceURL: nil, shell: shell)
         activeTask.waitForExit()
 

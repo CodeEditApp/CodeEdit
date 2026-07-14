@@ -36,10 +36,8 @@ final class ApplicationShutdownCoordinator {
         // Check for unsaved changes and prompt the user
         let hasUnsavedChanges = workspaces.contains { $0.hasUnsavedChanges() }
         if hasUnsavedChanges {
-            for workspace in workspaces {
-                if !workspace.promptSaveUnsavedFiles() {
-                    return false // User cancelled
-                }
+            for workspace in workspaces where !workspace.promptSaveUnsavedFiles() {
+                return false // User cancelled
             }
         }
 

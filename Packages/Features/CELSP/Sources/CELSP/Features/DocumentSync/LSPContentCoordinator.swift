@@ -21,7 +21,9 @@ import LanguageServerProtocol
 /// keeps an async stream around for the duration of its lifetime. The stream is sent edit notifications, which are then
 /// chunked into 250ms timed groups before being sent to the ``LanguageServer``.
 @MainActor
-class LSPContentCoordinator<DocumentType: LanguageServerDocument>: @preconcurrency TextViewCoordinator, @preconcurrency TextViewDelegate {
+class LSPContentCoordinator<
+    DocumentType: LanguageServerDocument
+>: @preconcurrency TextViewCoordinator, @preconcurrency TextViewDelegate {
     // Required to avoid a large_tuple lint error
     private struct SequenceElement: Sendable {
         let uri: String

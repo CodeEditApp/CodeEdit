@@ -11,8 +11,8 @@ extension SettingsData {
     public struct LanguageServerSettings: Codable, Hashable {
 
         /// Stores the currently installed language servers. The key is the name of the language server.
-        @CodableDefault<DefaultEmptyLanguageServerDictionary>
-        public var installedLanguageServers: [String: InstalledLanguageServer] = [:]
+        @CodableDefault<DefaultEmptyLanguageServerDictionary> public var installedLanguageServers:
+            [String: InstalledLanguageServer] = [:]
 
         /// Default initializer
         public init() {}

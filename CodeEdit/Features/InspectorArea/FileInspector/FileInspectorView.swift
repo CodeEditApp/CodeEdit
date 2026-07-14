@@ -10,10 +10,13 @@ import CodeEditCore
 import CodeEditLanguages
 
 struct FileInspectorView: View {
-    @Environment(\.activeEditorState) private var activeEditorState
+    @Environment(\.activeEditorState)
+    private var activeEditorState
 
-    @Environment(\.fileEditorOverrides) private var fileEditorOverrides
-    @Environment(\.fileRelocator) private var fileRelocator
+    @Environment(\.fileEditorOverrides)
+    private var fileEditorOverrides
+    @Environment(\.fileRelocator)
+    private var fileRelocator
 
     @AppSettings(\.textEditing)
     private var textEditing
@@ -207,7 +210,10 @@ struct FileInspectorView: View {
         }
         .onChange(of: defaultTabWidth) { _, newValue in
             if let file {
-                fileEditorOverrides.setDefaultTabWidth(newValue == textEditing.defaultTabWidth ? nil : newValue, for: file)
+                fileEditorOverrides.setDefaultTabWidth(
+                    newValue == textEditing.defaultTabWidth ? nil : newValue,
+                    for: file
+                )
             }
         }
     }
@@ -216,7 +222,10 @@ struct FileInspectorView: View {
         Toggle("Wrap lines", isOn: $wrapLines)
             .onChange(of: wrapLines) { _, newValue in
                 if let file {
-                    fileEditorOverrides.setWrapLines(newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue, for: file)
+                    fileEditorOverrides.setWrapLines(
+                        newValue == textEditing.wrapLinesToEditorWidth ? nil : newValue,
+                        for: file
+                    )
                 }
             }
     }

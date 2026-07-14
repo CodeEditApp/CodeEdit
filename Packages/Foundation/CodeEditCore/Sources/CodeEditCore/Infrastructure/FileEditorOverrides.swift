@@ -12,11 +12,16 @@ import Foundation
 /// `EditorManager` / `CodeFileDocument`. Workspace-scoped: one per window.
 public protocol FileEditorOverrides: AnyObject {
     /// Current overrides for `file`; all fields `nil` when the file has no open document.
-    @MainActor func overrides(for file: CEWorkspaceFile) -> FileEditorOverrideValues
-    @MainActor func setIndentOption(_ value: IndentOption?, for file: CEWorkspaceFile)
-    @MainActor func setDefaultTabWidth(_ value: Int?, for file: CEWorkspaceFile)
-    @MainActor func setWrapLines(_ value: Bool?, for file: CEWorkspaceFile)
-    @MainActor func setLanguageId(_ value: String?, for file: CEWorkspaceFile)
+    @MainActor
+    func overrides(for file: CEWorkspaceFile) -> FileEditorOverrideValues
+    @MainActor
+    func setIndentOption(_ value: IndentOption?, for file: CEWorkspaceFile)
+    @MainActor
+    func setDefaultTabWidth(_ value: Int?, for file: CEWorkspaceFile)
+    @MainActor
+    func setWrapLines(_ value: Bool?, for file: CEWorkspaceFile)
+    @MainActor
+    func setLanguageId(_ value: String?, for file: CEWorkspaceFile)
 }
 
 /// Default used when no editor is injected (tests, previews); no overrides, no-op writes.

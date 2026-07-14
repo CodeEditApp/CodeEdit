@@ -195,7 +195,8 @@ extension SettingsData {
         }
 
         public struct WarningCharacters: Equatable, Hashable, Codable {
-            nonisolated(unsafe) public static let `default`: WarningCharacters  = WarningCharacters(enabled: true, characters: [
+            nonisolated(unsafe) public static let `default`: WarningCharacters =
+                WarningCharacters(enabled: true, characters: [
                 0x0003: "End of text",
 
                 0x00A0: "Non-breaking space",

@@ -44,7 +44,6 @@ final class Workspace: ObservableObject {
     /// from recents in the sandbox); released in ``tearDown()``.
     var securityScopedURL: URL?
 
-    // swiftlint:disable:next function_parameter_count
     init(
         fileURL: URL,
         displayName: String,

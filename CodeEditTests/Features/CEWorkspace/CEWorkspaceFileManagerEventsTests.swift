@@ -26,19 +26,19 @@ final class CEWorkspaceFileManagerEventsTests: XCTestCase {
 
     func testAppliesGitStatusChangedEvent() throws {
         let bus = EventBus()
-        let fm = CEWorkspaceFileManager(
+        let manager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
             eventBus: bus
         )
         let key = directory.appending(path: "changed.swift").relativePath
-        XCTAssertNotNil(fm.getFile(key), "file should be cached after init")
+        XCTAssertNotNil(manager.getFile(key), "file should be cached after init")
 
         bus.publish(GitStatusChangedEvent(workspaceURL: directory, changed: [key: .modified]))
 
         let expectation = expectation(description: "status applied")
         DispatchQueue.main.async {
-            XCTAssertEqual(fm.getFile(key)?.gitStatus, .modified)
+            XCTAssertEqual(manager.getFile(key)?.gitStatus, .modified)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 2)
@@ -46,19 +46,19 @@ final class CEWorkspaceFileManagerEventsTests: XCTestCase {
 
     func testClearsStaleGitStatus() throws {
         let bus = EventBus()
-        let fm = CEWorkspaceFileManager(
+        let manager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
             eventBus: bus
         )
         let key = directory.appending(path: "changed.swift").relativePath
-        fm.getFile(key)?.gitStatus = .modified
+        manager.getFile(key)?.gitStatus = .modified
 
         bus.publish(GitStatusChangedEvent(workspaceURL: directory, changed: [:]))
 
         let expectation = expectation(description: "status cleared")
         DispatchQueue.main.async {
-            XCTAssertNil(fm.getFile(key)?.gitStatus)
+            XCTAssertNil(manager.getFile(key)?.gitStatus)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 2)
@@ -66,7 +66,7 @@ final class CEWorkspaceFileManagerEventsTests: XCTestCase {
 
     func testIgnoresEventsForOtherWorkspaces() throws {
         let bus = EventBus()
-        let fm = CEWorkspaceFileManager(
+        let manager = CEWorkspaceFileManager(
             folderUrl: directory,
             ignoredFilesAndFolders: [],
             eventBus: bus
@@ -77,7 +77,7 @@ final class CEWorkspaceFileManagerEventsTests: XCTestCase {
 
         let expectation = expectation(description: "no apply")
         DispatchQueue.main.async {
-            XCTAssertNil(fm.getFile(key)?.gitStatus)
+            XCTAssertNil(manager.getFile(key)?.gitStatus)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 2)

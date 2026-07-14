@@ -49,7 +49,8 @@ final class ProjectNavigatorMenu: NSMenu {
 
     /// Configures the menu based on the current selection in the outline view.
     /// - Menu items get added depending on the amount of selected items.
-    @MainActor private func setupMenu() { // swiftlint:disable:this function_body_length
+    @MainActor
+    private func setupMenu() { // swiftlint:disable:this function_body_length
         guard let item else { return }
         let showInFinder = menuItem("Show in Finder", action: #selector(showInFinder))
 

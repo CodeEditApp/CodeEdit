@@ -24,20 +24,7 @@ enum WorkspaceFactory {
     /// Builds a fully-populated ``Workspace`` for the given folder URL.
     @MainActor
     static func make(url: URL, dependencies: AppDependencies) -> Workspace {
-        // Begin security-scoped access on the original (possibly bookmark-derived) URL so a
-        // sandboxed build can read a workspace opened from recents. `startAccessingSecurityScopedResource`
-        // returns `false` for non-scoped URLs (e.g. from the open panel / Powerbox), which access
-        // fine without it. Released in `Workspace.tearDown`.
-        var securityScopedURL: URL?
-        if url.startAccessingSecurityScopedResource() {
-            securityScopedURL = url
-        }
-
-        // Normalize the URL to always end with "/"
-        var url = url
-        if !url.absoluteString.hasSuffix("/") {
-            url = URL(filePath: url.absoluteURL.path(percentEncoded: false) + "/")
-        }
+        let (url, securityScopedURL) = prepareWorkspaceURL(url)
 
         let eventBus = dependencies.eventBus
         let statePersistence = WorkspaceStatePersistence(workspaceURL: url)
@@ -90,5 +77,25 @@ enum WorkspaceFactory {
         )
 
         return workspace
+    }
+
+    /// Claims security-scoped access and normalizes the workspace URL.
+    ///
+    /// Begins security-scoped access on the original (possibly bookmark-derived) URL so a
+    /// sandboxed build can read a workspace opened from recents. `startAccessingSecurityScopedResource`
+    /// returns `false` for non-scoped URLs (e.g. from the open panel / Powerbox), which access
+    /// fine without it. Released in `Workspace.tearDown`. The returned URL always ends with "/".
+    private static func prepareWorkspaceURL(_ url: URL) -> (url: URL, securityScopedURL: URL?) {
+        var securityScopedURL: URL?
+        if url.startAccessingSecurityScopedResource() {
+            securityScopedURL = url
+        }
+
+        var url = url
+        if !url.absoluteString.hasSuffix("/") {
+            url = URL(filePath: url.absoluteURL.path(percentEncoded: false) + "/")
+        }
+
+        return (url, securityScopedURL)
     }
 }

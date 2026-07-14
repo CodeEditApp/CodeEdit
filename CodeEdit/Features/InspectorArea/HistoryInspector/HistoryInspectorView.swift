@@ -16,7 +16,8 @@ struct HistoryInspectorView: View {
 
     @EnvironmentObject private var sourceControlManager: SourceControlManager
 
-    @Environment(\.activeEditorState) private var activeEditorState
+    @Environment(\.activeEditorState)
+    private var activeEditorState
 
     @ObservedObject private var model: HistoryInspectorModel
 

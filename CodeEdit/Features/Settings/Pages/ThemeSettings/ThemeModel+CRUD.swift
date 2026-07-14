@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 
 extension ThemeModel {
     /// Loads all available themes from disk, applies overrides, and selects the initial theme.
-    func loadThemes() throws { // swiftlint:disable:this function_body_length
+    func loadThemes() throws {
         themes.removeAll()
 
         let prefs = Settings.shared.preferences

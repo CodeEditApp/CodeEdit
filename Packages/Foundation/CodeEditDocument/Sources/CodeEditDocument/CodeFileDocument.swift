@@ -250,7 +250,10 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     /// Triggered when changes saved
-    override public func updateChangeCount(withToken changeCountToken: Any, for saveOperation: NSDocument.SaveOperationType) {
+    override public func updateChangeCount(
+        withToken changeCountToken: Any,
+        for saveOperation: NSDocument.SaveOperationType
+    ) {
         super.updateChangeCount(withToken: changeCountToken, for: saveOperation)
 
         if CodeFileDocument.autosavesInPlace {

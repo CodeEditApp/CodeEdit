@@ -11,7 +11,8 @@ import Combine
 struct FindNavigatorResultList: NSViewControllerRepresentable {
 
     @EnvironmentObject var state: SearchState
-    @Environment(\.workspaceFileOpener) private var fileOpener
+    @Environment(\.workspaceFileOpener)
+    private var fileOpener
 
     let configuration: FindNavigatorConfiguration
 

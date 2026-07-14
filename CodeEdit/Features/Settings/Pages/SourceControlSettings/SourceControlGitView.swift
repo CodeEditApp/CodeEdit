@@ -15,8 +15,10 @@ struct SourceControlGitView: View {
     @AppSettings(\.sourceControl.git)
     var git
 
-    @Environment(\.shellClient) private var shellClient
-    @Environment(\.workspaceWindowManager) private var windowManager
+    @Environment(\.shellClient)
+    private var shellClient
+    @Environment(\.workspaceWindowManager)
+    private var windowManager
 
     private var gitConfig: GitConfigClient { GitConfigClient(shellClient: shellClient ?? ShellClient()) }
 

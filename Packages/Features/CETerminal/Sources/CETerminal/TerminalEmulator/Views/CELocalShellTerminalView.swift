@@ -55,7 +55,8 @@ public protocol CELocalShellTerminalViewDelegate: AnyObject {
 // MARK: - CELocalShellTerminalView
 
 @MainActor
-public class CELocalShellTerminalView: CETerminalView, @preconcurrency TerminalViewDelegate, @preconcurrency LocalProcessDelegate {
+public class CELocalShellTerminalView: CETerminalView, @preconcurrency TerminalViewDelegate,
+                                       @preconcurrency LocalProcessDelegate {
     public var process: LocalProcess!
 
     override public init(frame: CGRect) {

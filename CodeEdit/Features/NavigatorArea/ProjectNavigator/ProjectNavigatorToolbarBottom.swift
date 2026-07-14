@@ -17,8 +17,10 @@ struct ProjectNavigatorToolbarBottom: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @Environment(\.activeEditorState) private var activeEditorState
-    @Environment(\.workspaceNavigator) private var workspaceNavigator
+    @Environment(\.activeEditorState)
+    private var activeEditorState
+    @Environment(\.workspaceNavigator)
+    private var workspaceNavigator
     @EnvironmentObject var listenerModel: WorkspaceNotificationModel
     @EnvironmentObject var projectNavigatorViewModel: ProjectNavigatorViewModel
 

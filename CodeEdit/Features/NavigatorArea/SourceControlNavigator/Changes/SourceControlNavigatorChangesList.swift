@@ -13,7 +13,8 @@ import CodeEditCore
 
 struct SourceControlNavigatorChangesList: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
-    @Environment(\.workspaceNavigator) private var workspaceNavigator
+    @Environment(\.workspaceNavigator)
+    private var workspaceNavigator
 
     @Environment(\.workspaceFileManager)
     private var workspaceFileManager

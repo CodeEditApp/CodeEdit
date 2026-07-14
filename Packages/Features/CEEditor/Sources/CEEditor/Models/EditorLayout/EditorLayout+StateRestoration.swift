@@ -37,7 +37,7 @@ extension EditorManager {
             findReplaceQuery: findReplaceQuery,
             editorManager: self
         ) {
-        case .restored(let layout, let activeEditor):
+        case let .restored(layout, activeEditor):
             self.editorLayout = layout
             self.activeEditor = activeEditor
             switchToActiveEditor()

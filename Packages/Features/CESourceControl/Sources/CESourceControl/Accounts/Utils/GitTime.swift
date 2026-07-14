@@ -10,14 +10,14 @@ import Foundation
 // TODO: DOCS (Nanashi Li)
 enum GitTime {
 
+    // nonisolated(unsafe): configured once here and never mutated afterwards;
+    // DateFormatter is thread-safe for reading once configuration is complete.
     /**
      A date formatter for RFC 3339 style timestamps.
      Uses POSIX locale and GMT timezone so that date values are parsed as absolutes.
      - (https://tools.ietf.org/html/rfc3339)
      - (https://developer.apple.com/library/mac/qa/qa1480/_index.html)
      */
-    // nonisolated(unsafe): configured once here and never mutated afterwards;
-    // DateFormatter is thread-safe for reading once configuration is complete.
     nonisolated(unsafe) static let rfc3339DateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"

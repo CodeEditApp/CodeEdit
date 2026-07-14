@@ -10,7 +10,8 @@ import CodeEditSettings
 
 /// A struct for settings
 struct SettingsView: View {
-    @Environment(\.registryManager) private var registryManager
+    @Environment(\.registryManager)
+    private var registryManager
 
     @StateObject var model = SettingsViewModel()
     @Environment(\.colorScheme)

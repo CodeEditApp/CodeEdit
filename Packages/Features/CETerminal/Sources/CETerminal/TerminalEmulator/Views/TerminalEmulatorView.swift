@@ -29,8 +29,10 @@ public struct TerminalEmulatorView: NSViewRepresentable {
     @AppSettings(\.textEditing.font)
     var fontSettings
 
-    @Environment(\.currentTheme) private var currentTheme
-    @Environment(\.currentDarkTheme) private var currentDarkTheme
+    @Environment(\.currentTheme)
+    private var currentTheme
+    @Environment(\.currentDarkTheme)
+    private var currentDarkTheme
 
     private var font: NSFont {
         if terminalSettings.useTextEditorFont {
@@ -52,7 +54,12 @@ public struct TerminalEmulatorView: NSViewRepresentable {
     ///   - terminalID: The ID of the terminal. Used to restore state when switching away from the view.
     ///   - shellType: The type of shell to use. Overrides any settings or auto-detection.
     ///   - onTitleChange: A callback used when the terminal updates it's title.
-    public init(url: URL, terminalID: UUID, shellType: Shell? = nil, onTitleChange: @escaping (_ title: String) -> Void) {
+    public init(
+        url: URL,
+        terminalID: UUID,
+        shellType: Shell? = nil,
+        onTitleChange: @escaping (_ title: String) -> Void
+    ) {
         self.url = url
         self.terminalID = terminalID
         self.mode = .shell(shellType: shellType)

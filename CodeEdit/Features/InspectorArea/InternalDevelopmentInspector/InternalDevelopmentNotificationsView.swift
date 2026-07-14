@@ -9,7 +9,8 @@ import SwiftUI
 import CENotifications
 
 struct InternalDevelopmentNotificationsView: View {
-    @Environment(\.notificationManager) private var notificationManager
+    @Environment(\.notificationManager)
+    private var notificationManager
 
     enum IconType: String, CaseIterable {
         case symbol = "Symbol"

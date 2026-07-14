@@ -13,7 +13,8 @@ import UniformTypeIdentifiers
 struct StatusBarFileInfoView: View {
 
     @EnvironmentObject private var statusBarViewModel: StatusBarViewModel
-    @Environment(\.activeEditorState) private var activeEditorState
+    @Environment(\.activeEditorState)
+    private var activeEditorState
 
     @State private var fileSize: Int?
     @State private var dimensions: ImageDimensions?

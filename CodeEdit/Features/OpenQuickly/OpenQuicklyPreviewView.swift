@@ -11,7 +11,8 @@ import CodeEditCore
 struct OpenQuicklyPreviewView: View {
     let item: CEWorkspaceFile
 
-    @Environment(\.filePreview) private var filePreview
+    @Environment(\.filePreview)
+    private var filePreview
 
     var body: some View {
         filePreview(item)

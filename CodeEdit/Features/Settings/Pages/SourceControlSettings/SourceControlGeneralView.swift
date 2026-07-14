@@ -15,7 +15,8 @@ struct SourceControlGeneralView: View {
     @AppSettings(\.sourceControl.general)
     var settings
 
-    @Environment(\.shellClient) private var shellClient
+    @Environment(\.shellClient)
+    private var shellClient
 
     private var gitConfig: GitConfigClient { GitConfigClient(shellClient: shellClient ?? ShellClient()) }
 
