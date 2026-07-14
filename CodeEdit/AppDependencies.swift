@@ -35,6 +35,11 @@ final class AppDependencies {
 
     private(set) lazy var notificationManager: NotificationManaging = NotificationManager(eventBus: eventBus)
 
+    /// The single Sparkle updater controller. One instance app-wide: the "Check for
+    /// Updates" menu action and the Settings auto-update toggles must observe the same
+    /// `SPUUpdater`, or their state drifts apart.
+    private(set) lazy var softwareUpdater = SoftwareUpdater()
+
     private(set) lazy var lspService: LSPService = {
         let service = LSPService()
         // Property-injected (not init-injected): the window manager's construction consumes

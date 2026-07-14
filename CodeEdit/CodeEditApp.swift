@@ -17,8 +17,6 @@ struct CodeEditApp: App {
     @NSApplicationDelegateAdaptor var appdelegate: AppDelegate
     @ObservedObject var settings = Settings.shared
 
-    let updater: SoftwareUpdater = SoftwareUpdater()
-
     init() {
         NSMenuItem.swizzle()
         NSSplitViewItem.swizzle()
@@ -83,7 +81,7 @@ struct CodeEditApp: App {
                 footer: { AboutFooterView() }
             )
 
-            SettingsWindow()
+            SettingsWindow(updater: appdelegate.dependencies.softwareUpdater)
                 .commands {
                     CodeEditCommands(dependencies: appdelegate.dependencies)
                 }

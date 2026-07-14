@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct SettingsWindow: Scene {
-    private let updater = SoftwareUpdater()
+    private let updater: SoftwareUpdater
+
+    init(updater: SoftwareUpdater) {
+        self.updater = updater
+    }
 
     var body: some Scene {
         Window("Settings", id: SceneID.settings.rawValue) {

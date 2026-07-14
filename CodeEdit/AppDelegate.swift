@@ -18,7 +18,6 @@ import OSLog
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "AppDelegate")
-    private let updater = SoftwareUpdater()
 
     @Environment(\.openWindow)
     var openWindow
@@ -210,7 +209,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     @IBAction private func checkForUpdates(_ sender: Any) {
-        updater.checkForUpdates()
+        dependencies.softwareUpdater.checkForUpdates()
     }
 
     /// Tries to focus a window with specified view content type.
