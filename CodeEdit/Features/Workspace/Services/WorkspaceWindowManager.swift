@@ -20,14 +20,14 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
     private let dependencies: AppDependencies
     private var eventBus: EventBus { dependencies.eventBus }
 
-    private let openWorkspaceUseCase: OpenWorkspaceUseCase
-    private let closeWorkspaceUseCase: CloseWorkspaceUseCase
-    private lazy var openDocumentUseCase = OpenDocumentUseCase(windowManager: self)
+    private let workspaceOpener: WorkspaceOpener
+    private let workspaceCloser: WorkspaceCloser
+    private lazy var documentOpener = DocumentOpener(windowManager: self)
 
     init(dependencies: AppDependencies) {
         self.dependencies = dependencies
-        self.openWorkspaceUseCase = OpenWorkspaceUseCase(dependencies: dependencies)
-        self.closeWorkspaceUseCase = CloseWorkspaceUseCase(lspService: dependencies.lspService)
+        self.workspaceOpener = WorkspaceOpener(dependencies: dependencies)
+        self.workspaceCloser = WorkspaceCloser(lspService: dependencies.lspService)
     }
 
     /// All currently open workspaces.
@@ -45,7 +45,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
             return
         }
 
-        let result = openWorkspaceUseCase.execute(url: url)
+        let result = workspaceOpener.execute(url: url)
 
         openWorkspaces.append(result.workspace)
         windowControllers[ObjectIdentifier(result.workspace)] = result.windowController
@@ -64,7 +64,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
     // MARK: - Close Workspace
 
     func closeWorkspace(_ workspace: Workspace) {
-        closeWorkspaceUseCase.execute(workspace: workspace)
+        workspaceCloser.execute(workspace: workspace)
 
         let id = ObjectIdentifier(workspace)
         windowControllers.removeValue(forKey: id)
@@ -150,7 +150,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
 
     /// Opens a workspace or file at the given URL, calling the completion handler on success.
     func openDocument(at url: URL, onCompletion: @escaping () -> Void) {
-        openDocumentUseCase.execute(url: url, onCompletion: onCompletion)
+        documentOpener.execute(url: url, onCompletion: onCompletion)
     }
 
     /// Opens a dialog to choose a file or folder, with optional configuration.

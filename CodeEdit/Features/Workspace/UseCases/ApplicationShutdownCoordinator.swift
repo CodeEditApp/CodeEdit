@@ -1,5 +1,5 @@
 //
-//  ShutdownApplicationUseCase.swift
+//  ApplicationShutdownCoordinator.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom on 12/04/26.
@@ -15,7 +15,7 @@ import CodeEditCore
 /// Language server shutdown is handled separately by the caller (AppDelegate)
 /// since it's async and tied to the NSApplication reply lifecycle.
 @MainActor
-final class ShutdownApplicationUseCase {
+final class ApplicationShutdownCoordinator {
 
     private let windowManager: WorkspaceWindowManaging
     private let eventBus: EventBus

@@ -1,5 +1,5 @@
 //
-//  OpenWorkspaceUseCase.swift
+//  WorkspaceOpener.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom on 12/04/26.
@@ -9,7 +9,7 @@ import AppKit
 
 /// Creates and configures a workspace, window, and window controller for a given URL.
 @MainActor
-final class OpenWorkspaceUseCase {
+final class WorkspaceOpener {
     private let dependencies: AppDependencies
 
     init(dependencies: AppDependencies) {

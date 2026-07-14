@@ -1,5 +1,5 @@
 //
-//  OpenDocumentUseCase.swift
+//  DocumentOpener.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom on 15/04/26.
@@ -11,7 +11,7 @@ import WelcomeWindow
 /// Routes a URL to the appropriate opener: a workspace (folder), an existing workspace's file,
 /// or a standalone document via NSDocumentController.
 @MainActor
-final class OpenDocumentUseCase {
+final class DocumentOpener {
     private let windowManager: WorkspaceWindowManaging
 
     init(windowManager: WorkspaceWindowManaging) {

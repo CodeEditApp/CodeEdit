@@ -16,8 +16,8 @@ extension ProjectNavigatorViewController: OutlineTableViewCellDelegate {
     func moveFile(file: CEWorkspaceFile, to destination: URL) {
         guard let workspace else { return }
         do {
-            let useCase = MoveFileUseCase()
-            _ = try useCase.execute(file: file, to: destination, in: workspace)
+            let fileMover = FileMover()
+            _ = try fileMover.execute(file: file, to: destination, in: workspace)
             outlineView.reloadItem(file.parent, reloadChildren: true)
         } catch {
             let alert = NSAlert(error: error)

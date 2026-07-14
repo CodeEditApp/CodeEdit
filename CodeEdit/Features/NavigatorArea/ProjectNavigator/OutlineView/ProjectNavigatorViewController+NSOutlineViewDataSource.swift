@@ -105,11 +105,11 @@ extension ProjectNavigatorViewController: NSOutlineViewDataSource {
         guard let fileItemDestination = item as? CEWorkspaceFile,
               let workspace else { return false }
 
-        let useCase = AcceptDroppedFilesUseCase()
+        let dropHandler = FileDropHandler()
         let isCopy = info.draggingSourceOperationMask == .copy
 
         do {
-            let operations = try useCase.execute(
+            let operations = try dropHandler.execute(
                 urls: fileItemURLS,
                 destinationParent: fileItemDestination,
                 isCopyOperation: isCopy,

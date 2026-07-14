@@ -28,7 +28,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     var windowManager: any WorkspaceWindowManaging { dependencies.workspaceWindowManager }
     var eventBus: EventBus { dependencies.eventBus }
 
-    private lazy var shutdownUseCase = ShutdownApplicationUseCase(
+    private lazy var shutdownCoordinator = ApplicationShutdownCoordinator(
         windowManager: dependencies.workspaceWindowManager,
         eventBus: dependencies.eventBus
     )
@@ -78,7 +78,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
             if needToHandleOpen {
                 // Reopen the workspaces that were open at last quit (saved by
-                // ShutdownApplicationUseCase). Workspace windows are plain NSWindows,
+                // ApplicationShutdownCoordinator). Workspace windows are plain NSWindows,
                 // so NSQuitAlwaysKeepsWindows cannot restore them itself.
                 var restoredWorkspace = false
                 if let projects = UserDefaults.standard.array(
@@ -180,7 +180,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     ///
     /// All paths _must_ call `NSApplication.shared.reply(toApplicationShouldTerminate: true)` as soon as possible.
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
-        guard shutdownUseCase.execute() else {
+        guard shutdownCoordinator.execute() else {
             return .terminateCancel
         }
 

@@ -1,5 +1,5 @@
 //
-//  CloseWorkspaceUseCase.swift
+//  WorkspaceCloser.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom on 12/04/26.
@@ -10,7 +10,7 @@ import Foundation
 
 /// Coordinates cleanup when a workspace is closed (LSP shutdown + workspace teardown).
 @MainActor
-final class CloseWorkspaceUseCase {
+final class WorkspaceCloser {
 
     private let lspService: any LSPServiceProtocol
 

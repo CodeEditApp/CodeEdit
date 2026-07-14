@@ -1,5 +1,5 @@
 //
-//  AcceptDroppedFilesUseCase.swift
+//  FileDropHandler.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom on 15/04/26.
@@ -11,7 +11,7 @@ import CodeEditCore
 
 /// Resolves dropped file URLs into copy/move operations, handling source resolution and replace conflicts.
 @MainActor
-final class AcceptDroppedFilesUseCase {
+final class FileDropHandler {
 
     struct Operation {
         let source: CEWorkspaceFile
