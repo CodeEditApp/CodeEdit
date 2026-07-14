@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditUI
 
 struct OpenQuicklyListItemView: View {
     private let baseDirectory: URL

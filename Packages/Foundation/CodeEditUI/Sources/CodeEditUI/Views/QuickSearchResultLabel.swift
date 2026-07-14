@@ -10,11 +10,21 @@ import SwiftUI
 /// Implementation of command palette entity. While swiftui does not allow to use NSMutableAttributeStrings,
 /// the only way to fallback to UIKit and have NSViewRepresentable to be a bridge between UIKit and SwiftUI.
 /// Highlights currently entered text query
-struct QuickSearchResultLabel: NSViewRepresentable {
+public struct QuickSearchResultLabel: NSViewRepresentable {
     let labelName: String
     let charactersToHighlight: [NSRange]
     let maximumNumberOfLines: Int = 1
     var nsLabelName: NSAttributedString?
+
+    public init(
+        labelName: String,
+        charactersToHighlight: [NSRange],
+        nsLabelName: NSAttributedString? = nil
+    ) {
+        self.labelName = labelName
+        self.charactersToHighlight = charactersToHighlight
+        self.nsLabelName = nsLabelName
+    }
 
     public func makeNSView(context: Context) -> some NSTextField {
         let label = NSTextField(wrappingLabelWithString: labelName)
@@ -41,7 +51,7 @@ struct QuickSearchResultLabel: NSViewRepresentable {
         return attribText
     }
 
-    func updateNSView(_ nsView: NSViewType, context: Context) {
+    public func updateNSView(_ nsView: NSViewType, context: Context) {
         nsView.textColor = if nsLabelName == nil && charactersToHighlight.isEmpty {
             .controlTextColor
         } else {
