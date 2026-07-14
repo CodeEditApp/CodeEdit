@@ -1,5 +1,5 @@
 //
-//  DocumentsUnitTests.swift
+//  WorkspaceWindowTests.swift
 //  CodeEditTests
 //
 //  Created by YAPRYNTSEV Aleksey on 31.12.2022.
@@ -15,7 +15,7 @@ import CETerminal
 @testable import CodeEdit
 
 @MainActor
-final class DocumentsUnitTests: XCTestCase {
+final class WorkspaceWindowTests: XCTestCase {
     // Properties
     private var splitViewController: CodeEditSplitViewController!
     private var hapticFeedbackPerformerMock: NSHapticFeedbackPerformerMock!
