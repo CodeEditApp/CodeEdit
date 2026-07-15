@@ -59,6 +59,13 @@
         "identifier" : "CodeEditCoreTests",
         "name" : "CodeEditCoreTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Packages\/Features\/CESearch",
+        "identifier" : "CESearchTests",
+        "name" : "CESearchTests"
+      }
     }
   ],
   "version" : 1

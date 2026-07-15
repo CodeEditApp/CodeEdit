@@ -1,6 +1,6 @@
 //
-//  WorkspaceDocument+SearchState+FindReplaceQueryTests.swift
-//  CodeEditTests
+//  FindReplaceQueryTests.swift
+//  CESearchTests
 //
 //  Created by Matthijs Eikelenboom.
 //

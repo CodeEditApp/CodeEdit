@@ -19,6 +19,13 @@ let package = Package(
                 .product(name: "CodeEditCore", package: "CodeEditCore"),
                 .product(name: "CodeEditUI", package: "CodeEditUI")
             ]
+        ),
+        .testTarget(
+            name: "CESearchTests",
+            dependencies: [
+                "CESearch",
+                .product(name: "CodeEditCore", package: "CodeEditCore")
+            ]
         )
     ]
 )

@@ -47,6 +47,7 @@ custom_rules:
     severity: error
   no_feature_to_feature:
     included: "Packages/Features/.*\\.swift"
+    excluded: "Packages/Features/[^/]*/Tests/.*\\.swift"
     name: "No feature→feature imports"
     regex: "^import (CEEditor|CESearch|CENotifications|CELSP|CESourceControl|CETerminal)$"
     message: "Feature packages may not import each other — communicate via CodeEditCore events or command interfaces (see docs/ARCHITECTURE.md)"
