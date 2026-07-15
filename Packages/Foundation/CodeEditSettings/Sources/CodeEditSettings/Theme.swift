@@ -12,7 +12,7 @@ import Foundation
 /// # Theme
 ///
 /// The model structure of themes for the editor & terminal emulator
-public struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable {
+public struct Theme: Identifiable, Codable, Equatable, Hashable, Loopable, Sendable {
     enum CodingKeys: String, CodingKey {
         case author, license, distributionURL, name, displayName, editor, terminal, version
         case appearance = "type"
@@ -95,7 +95,7 @@ extension Theme {
     /// The type of the theme
     /// - **dark**: this is a theme for dark system appearance
     /// - **light**: this is a theme for light system appearance
-    public enum ThemeType: String, Codable, Hashable {
+    public enum ThemeType: String, Codable, Hashable, Sendable {
         case dark
         case light
     }
@@ -107,7 +107,7 @@ extension Theme {
     ///
     /// As of now it only includes the colors `hex` string and
     /// an accessor for a `SwiftUI` `Color`.
-    public struct Attributes: Codable, Equatable, Hashable, Loopable {
+    public struct Attributes: Codable, Equatable, Hashable, Loopable, Sendable {
 
         /// The 24-bit hex string of the color (e.g. #123456)
         public var color: String
@@ -150,7 +150,7 @@ extension Theme {
 
 extension Theme {
     /// The editor colors of the theme
-    public struct EditorColors: Codable, Hashable, Loopable {
+    public struct EditorColors: Codable, Hashable, Loopable, Sendable {
         public var text: Attributes
         public var insertionPoint: Attributes
         public var invisibles: Attributes
@@ -261,7 +261,7 @@ extension Theme {
 
 extension Theme {
     /// The terminal emulator colors of the theme
-    public struct TerminalColors: Codable, Hashable, Loopable {
+    public struct TerminalColors: Codable, Hashable, Loopable, Sendable {
         public var text: Attributes
         public var boldText: Attributes
         public var cursor: Attributes

@@ -33,7 +33,7 @@ public struct FuzzySearchString {
 }
 
 /// The result of a fuzzy match operation, containing a relevance weight and the matched ranges.
-public struct FuzzySearchMatchResult {
+public struct FuzzySearchMatchResult: Sendable {
     /// A score indicating how closely the input matched; higher values mean a better match.
     public let weight: Int
     /// The ranges within the original string that were matched.

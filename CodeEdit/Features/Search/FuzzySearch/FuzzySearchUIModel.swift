@@ -11,7 +11,7 @@ import AsyncAlgorithms
 import CodeEditCore
 
 @MainActor
-final class FuzzySearchUIModel<Element: FuzzySearchable>: ObservableObject {
+final class FuzzySearchUIModel<Element: FuzzySearchable & Sendable>: ObservableObject {
     @Published var items: [Element]?
 
     private var allItems: [Element] = []

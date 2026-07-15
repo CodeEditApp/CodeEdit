@@ -64,4 +64,27 @@ final class FuzzySearchTests: XCTestCase {
         }
         XCTAssertEqual(swiftResults.count, 3)
     }
+
+    func testFuzzySearchExcludesNonMatches() async {
+        let urls = [
+            URL(string: "ContentView.swift")!,
+            URL(string: "README.md")!
+        ]
+
+        let results = await urls.fuzzySearch(query: "swift")
+
+        XCTAssertEqual(results.count, 1)
+        XCTAssertEqual(results[0].item.lastPathComponent, "ContentView.swift")
+        XCTAssertTrue(results.allSatisfy { $0.result.weight > 0 })
+    }
+
+    func testFuzzySearchPreservesInputOrderForEqualWeights() async {
+        // Identical file names produce identical weights; Swift's sort is stable,
+        // so the result order must match the input order.
+        let urls = (0..<50).map { URL(string: "Folder\($0)/SameName.swift")! }
+
+        let results = await urls.fuzzySearch(query: "same").map(\.item)
+
+        XCTAssertEqual(results, urls)
+    }
 }
