@@ -37,6 +37,14 @@ let package = Package(
                 .product(name: "ZIPFoundation", package: "ZIPFoundation"),
                 .product(name: "AsyncAlgorithms", package: "swift-async-algorithms")
             ]
+        ),
+        .testTarget(
+            name: "CELSPTests",
+            dependencies: [
+                "CELSP",
+                .product(name: "CodeEditSourceEditor", package: "CodeEditSourceEditor"),
+                .product(name: "LanguageServerProtocol", package: "LanguageServerProtocol")
+            ]
         )
     ]
 )

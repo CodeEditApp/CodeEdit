@@ -10,7 +10,6 @@ import Foundation
 import Testing
 import CodeEditSourceEditor
 import LanguageServerProtocol
-@testable import CodeEdit
 
 // For easier comparison while setting semantic tokens
 extension SemanticToken: @retroactive Equatable {

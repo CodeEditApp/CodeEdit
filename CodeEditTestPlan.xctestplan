@@ -53,6 +53,13 @@
         "identifier" : "CodeEditUIUnitTests",
         "name" : "CodeEditUIUnitTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Packages\/Features\/CELSP",
+        "identifier" : "CELSPTests",
+        "name" : "CELSPTests"
+      }
     }
   ],
   "version" : 1

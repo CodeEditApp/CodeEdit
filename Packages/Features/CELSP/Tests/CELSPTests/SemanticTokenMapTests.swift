@@ -9,7 +9,6 @@
 import XCTest
 import CodeEditSourceEditor
 import LanguageServerProtocol
-@testable import CodeEdit
 
 final class SemanticTokenMapTests: XCTestCase {
     // Ignores the line parameter and just returns a range from the char and length for testing
