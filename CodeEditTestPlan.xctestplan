@@ -18,27 +18,7 @@
   "testTargets" : [
     {
       "skippedTests" : [
-        "CodeEditUIUnitTests",
-        "CodeEditUIUnitTests\/testBranchPickerDark()",
-        "CodeEditUIUnitTests\/testBranchPickerLight()",
-        "CodeEditUIUnitTests\/testEffectViewDark()",
-        "CodeEditUIUnitTests\/testEffectViewLight()",
-        "CodeEditUIUnitTests\/testFontPickerViewDark()",
-        "CodeEditUIUnitTests\/testFontPickerViewLight()",
-        "CodeEditUIUnitTests\/testHelpButtonDark()",
-        "CodeEditUIUnitTests\/testHelpButtonLight()",
-        "CodeEditUIUnitTests\/testSegmentedControlDark()",
-        "CodeEditUIUnitTests\/testSegmentedControlLight()",
-        "CodeEditUIUnitTests\/testSegmentedControlProminentDark()",
-        "CodeEditUIUnitTests\/testSegmentedControlProminentLight()",
-        "RegistryTests",
-        "WelcomeModuleUnitTests",
-        "WelcomeModuleUnitTests\/testRecentJSFileDarkSnapshot()",
-        "WelcomeModuleUnitTests\/testRecentJSFileLightSnapshot()",
-        "WelcomeModuleUnitTests\/testRecentProjectItemDarkSnapshot()",
-        "WelcomeModuleUnitTests\/testRecentProjectItemLightSnapshot()",
-        "WelcomeModuleUnitTests\/testWelcomeActionViewDarkSnapshot()",
-        "WelcomeModuleUnitTests\/testWelcomeActionViewLightSnapshot()"
+        "RegistryTests"
       ],
       "target" : {
         "containerPath" : "container:CodeEdit.xcodeproj",
