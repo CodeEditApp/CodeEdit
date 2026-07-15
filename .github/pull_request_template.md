@@ -22,6 +22,7 @@
 - [ ] My code builds and runs on my machine
 - [ ] My changes are all related to the related issue above
 - [ ] I documented my code
+- [ ] New files follow the placement rules in [docs/ARCHITECTURE.md](https://github.com/CodeEditApp/CodeEdit/blob/main/docs/ARCHITECTURE.md) (features as packages, no cross-feature imports, purpose-first folders)
 
 ### Screenshots
 

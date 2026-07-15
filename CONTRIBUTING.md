@@ -28,6 +28,17 @@ We also have a [troubleshooting guide](https://github.com/CodeEditApp/CodeEdit/w
 
 Please read our guide on [Code Style](https://github.com/CodeEditApp/CodeEdit/wiki/Code-Style) in our wiki.
 
+## Architecture
+
+CodeEdit is organized as a tiered workspace of local Swift packages (foundation, services,
+features) plus a thin app target that composes them. Before adding files, please consult the
+decision tree in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — it answers "where does my code
+go?" in a few steps. The short version: new features start as `Packages/Features/CE<Name>`
+packages, feature packages never import each other, and shared code moves to a foundation
+package only when it has multiple consumers *and* passes that package's dependency charter.
+CI enforces these rules (SwiftLint charter rules + a package import audit), so a misplaced
+file will fail checks.
+
 ## Pull Request
 
 Once you are happy with your changes, submit a `Pull Request`.
