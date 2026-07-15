@@ -66,6 +66,13 @@
         "identifier" : "CESearchTests",
         "name" : "CESearchTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Packages\/Foundation\/CodeEditUI",
+        "identifier" : "CodeEditUIUnitTests",
+        "name" : "CodeEditUIUnitTests"
+      }
     }
   ],
   "version" : 1

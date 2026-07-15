@@ -14,7 +14,6 @@
 		30CB64912C16CA8100CC8A9E /* LanguageServerProtocol in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64902C16CA8100CC8A9E /* LanguageServerProtocol */; };
 		30CB64942C16CA9100CC8A9E /* LanguageClient in Frameworks */ = {isa = PBXBuildFile; productRef = 30CB64932C16CA9100CC8A9E /* LanguageClient */; };
 		5800E2F82FF843390085ECF1 /* CodeEditUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5800E2F72FF843390085ECF1 /* CodeEditUI */; };
-		583E529C29361BAB001AB554 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 583E529B29361BAB001AB554 /* SnapshotTesting */; };
 		588950C52FFA5C05004BE116 /* CESearch in Frameworks */ = {isa = PBXBuildFile; productRef = 588950C42FFA5C05004BE116 /* CESearch */; };
 		588957132FFA679E004BE116 /* ShellClient in Frameworks */ = {isa = PBXBuildFile; productRef = 588957122FFA679E004BE116 /* ShellClient */; };
 		5889571530CE12AB004BE116 /* CEWorkspaceFileManager in Frameworks */ = {isa = PBXBuildFile; productRef = 5889571430CE12AB004BE116 /* CEWorkspaceFileManager */; };
@@ -227,7 +226,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				583E529C29361BAB001AB554 /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,7 +391,6 @@
 			);
 			name = CodeEditTests;
 			packageProductDependencies = (
-				583E529B29361BAB001AB554 /* SnapshotTesting */,
 			);
 			productName = CodeEditTests;
 			productReference = B658FB3D27DA9E1000EA4DBD /* CodeEditTests.xctest */;
@@ -461,7 +458,6 @@
 				2816F592280CF50500DD548B /* XCRemoteSwiftPackageReference "CodeEditSymbols" */,
 				287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */,
 				58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */,
-				583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 				6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */,
 				6C6BD6F229CD142C00235D17 /* XCRemoteSwiftPackageReference "collectionconcurrencykit" */,
 				6C66C31129D05CC800DE9ED2 /* XCRemoteSwiftPackageReference "GRDB.swift" */,
@@ -1750,14 +1746,6 @@
 				minimumVersion = 0.8.0;
 			};
 		};
-		583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing.git";
-			requirement = {
-				kind = upToNextMinorVersion;
-				minimumVersion = 1.14.2;
-			};
-		};
 		58F2EB1C292FB954004A9BDE /* XCRemoteSwiftPackageReference "Sparkle" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/sparkle-project/Sparkle.git";
@@ -1883,11 +1871,6 @@
 		5800E2F72FF843390085ECF1 /* CodeEditUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditUI;
-		};
-		583E529B29361BAB001AB554 /* SnapshotTesting */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 583E529A29361BAB001AB554 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
-			productName = SnapshotTesting;
 		};
 		588950C42FFA5C05004BE116 /* CESearch */ = {
 			isa = XCSwiftPackageProductDependency;

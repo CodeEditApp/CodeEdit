@@ -1,5 +1,5 @@
 {
-  "originHash" : "284326793962ba3e88f2e400e6ddd71d0f84fc0dffae3cc190272c17b6b8d095",
+  "originHash" : "9f3ffaf512dafa48c6a63229ac8dfbf9fe483823402bc3f215cc353a3a127fb2",
   "pins" : [
     {
       "identity" : "aboutwindow",
@@ -206,24 +206,6 @@
       "state" : {
         "revision" : "07ba6f47d903a0b1b59f12ca70d6de9949b975d6",
         "version" : "0.2.0"
-      }
-    },
-    {
-      "identity" : "swift-snapshot-testing",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-snapshot-testing.git",
-      "state" : {
-        "revision" : "bb0ea08db8e73324fe6c3727f755ca41a23ff2f4",
-        "version" : "1.14.2"
-      }
-    },
-    {
-      "identity" : "swift-syntax",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-syntax.git",
-      "state" : {
-        "revision" : "64889f0c732f210a935a0ad7cda38f77f876262d",
-        "version" : "509.1.1"
       }
     },
     {
