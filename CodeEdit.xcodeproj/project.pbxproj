@@ -156,7 +156,7 @@
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			buildPhase = 6C6BD6FD29CD154900235D17 /* Embed ExtensionKit ExtensionPoint */;
 			membershipExceptions = (
-				Features/Extensions/codeedit.extension.appextensionpoint,
+				Windows/Extensions/codeedit.extension.appextensionpoint,
 			);
 		};
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
