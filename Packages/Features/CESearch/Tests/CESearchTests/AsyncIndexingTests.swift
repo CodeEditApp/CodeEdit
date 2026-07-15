@@ -7,7 +7,6 @@
 
 import XCTest
 import CESearch
-@testable import CodeEdit
 
 final class AsyncIndexingTests: XCTestCase {
     func testAddDocuments() {

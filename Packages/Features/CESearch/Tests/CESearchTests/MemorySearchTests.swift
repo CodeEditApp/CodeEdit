@@ -7,7 +7,6 @@
 
 import XCTest
 import CESearch
-@testable import CodeEdit
 
 final class MemoryIndexSearchTests: XCTestCase {
     func testIndexFileSearch() {

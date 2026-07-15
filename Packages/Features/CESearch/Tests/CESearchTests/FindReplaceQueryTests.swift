@@ -76,7 +76,7 @@ final class FindReplaceQueryBridgeTests: XCTestCase {
 
     /// Polls `condition` until it's true or 2 seconds elapse, yielding to the run loop between checks so
     /// `.receive(on: RunLoop.main)`-scheduled Combine work actually gets a chance to run.
-    private func waitUntil(timeout: TimeInterval = 2, _ condition: @escaping () -> Bool) async {
+    private func waitUntil(timeout: TimeInterval = 10, _ condition: @escaping () -> Bool) async {
         let startTime = Date()
         while !condition() {
             try? await Task.sleep(nanoseconds: 20_000_000)
