@@ -52,6 +52,13 @@
         "identifier" : "B658FB4627DA9E1000EA4DBD",
         "name" : "CodeEditUITests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Packages\/Foundation\/CodeEditCore",
+        "identifier" : "CodeEditCoreTests",
+        "name" : "CodeEditCoreTests"
+      }
     }
   ],
   "version" : 1

@@ -13,6 +13,10 @@ let package = Package(
         .target(
             name: "CodeEditCore",
             dependencies: []
+        ),
+        .testTarget(
+            name: "CodeEditCoreTests",
+            dependencies: ["CodeEditCore"]
         )
     ]
 )
