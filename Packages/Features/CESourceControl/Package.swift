@@ -23,6 +23,10 @@ let package = Package(
                 .product(name: "CodeEditUI", package: "CodeEditUI"),
                 .product(name: "CodeEditSymbols", package: "CodeEditSymbols")
             ]
+        ),
+        .testTarget(
+            name: "CESourceControlTests",
+            dependencies: ["CESourceControl"]
         )
     ]
 )

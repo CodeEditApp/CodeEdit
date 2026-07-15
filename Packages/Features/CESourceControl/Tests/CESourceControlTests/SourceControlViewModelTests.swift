@@ -7,7 +7,6 @@
 
 @testable import CESourceControl
 import XCTest
-@testable import CodeEdit
 
 @MainActor
 final class SourceControlViewModelTests: XCTestCase {

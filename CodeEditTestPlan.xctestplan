@@ -60,6 +60,13 @@
         "identifier" : "CELSPTests",
         "name" : "CELSPTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Packages\/Features\/CESourceControl",
+        "identifier" : "CESourceControlTests",
+        "name" : "CESourceControlTests"
+      }
     }
   ],
   "version" : 1

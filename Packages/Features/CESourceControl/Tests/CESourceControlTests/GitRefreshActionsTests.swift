@@ -7,7 +7,6 @@
 
 @testable import CESourceControl
 import XCTest
-@testable import CodeEdit
 
 final class GitRefreshActionsTests: XCTestCase {
     private let root = "MyWorkspace"
