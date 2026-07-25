@@ -45,7 +45,8 @@ struct AtomConstructionTests {
         #expect(hosting.fittingSize.height > 0)
     }
 
-    @Test func effectViewMaterializesAVisualEffectView() throws {
+    @Test
+    func effectViewMaterializesAVisualEffectView() throws {
         let window = materialize(EffectView(), appearance: .aqua)
 
         func containsVisualEffectView(_ view: NSView) -> Bool {

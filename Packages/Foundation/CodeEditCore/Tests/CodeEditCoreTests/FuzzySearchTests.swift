@@ -20,20 +20,23 @@ private struct TestSearchable: FuzzyMatchable, Sendable, Equatable {
 }
 
 struct FuzzyMatchTests {
-    @Test func normalisation() {
+    @Test
+    func normalisation() {
         #expect("ü".normalise()[0].normalisedContent == "u")
         #expect("ñ".normalise()[0].normalisedContent == "n")
         #expect("é".normalise()[0].normalisedContent == "e")
     }
 
-    @Test func matchWeightReflectsContainment() {
+    @Test
+    func matchWeightReflectsContainment() {
         let item = TestSearchable(0, "ContentView.swift")
         #expect(item.fuzzyMatch(query: "CV").weight > 0)
         #expect(item.fuzzyMatch(query: "conv").weight > 0)
         #expect(item.fuzzyMatch(query: "xyz").weight == 0)
     }
 
-    @Test func matchedPartsCoverTheQuery() {
+    @Test
+    func matchedPartsCoverTheQuery() {
         let item = TestSearchable(0, "ContentView.swift")
         let string = item.searchableString
 
@@ -44,7 +47,8 @@ struct FuzzyMatchTests {
         #expect(substrings == ["Con", "Vie"])
     }
 
-    @Test func searchSortsByDescendingWeightAndDropsNonMatches() async {
+    @Test
+    func searchSortsByDescendingWeightAndDropsNonMatches() async {
         let items = [
             TestSearchable(0, "FuzzyMatchable.swift"),
             TestSearchable(1, "README.md"),
@@ -58,7 +62,8 @@ struct FuzzyMatchTests {
         #expect(results.map(\.result.weight) == results.map(\.result.weight).sorted(by: >))
     }
 
-    @Test func searchPreservesInputOrderForEqualWeights() async {
+    @Test
+    func searchPreservesInputOrderForEqualWeights() async {
         // Identical searchable strings produce identical weights; the sort is stable,
         // so the result order must match the input order.
         let items = (0..<50).map { TestSearchable($0, "SameName.swift") }
