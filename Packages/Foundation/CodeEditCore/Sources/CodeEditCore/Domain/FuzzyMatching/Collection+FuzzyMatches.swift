@@ -1,5 +1,5 @@
 //
-//  Collection+FuzzySearch.swift
+//  Collection+FuzzyMatches.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 03.02.24.

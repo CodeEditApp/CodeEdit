@@ -1,5 +1,5 @@
 //
-//  FuzzySearchModels.swift
+//  FuzzyMatchModels.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 03.02.24.
