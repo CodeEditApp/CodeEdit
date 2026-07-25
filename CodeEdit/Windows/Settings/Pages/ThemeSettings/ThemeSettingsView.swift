@@ -149,7 +149,7 @@ struct ThemeSettingsView: View {
     }
 
     private func filterAndSortThemes(_ themes: [Theme]) async -> [Theme] {
-        return await themes.fuzzySearch(query: themeSearchQuery).map { $1 }
+        return await themes.fuzzyMatches(query: themeSearchQuery).map { $1 }
     }
 }
 

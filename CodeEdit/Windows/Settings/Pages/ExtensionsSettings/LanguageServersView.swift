@@ -13,7 +13,7 @@ import CodeEditCore
 struct LanguageServersView: View {
     let registryManager: any RegistryManaging
     @ObservedObject var registryState: RegistryViewState
-    @StateObject private var searchModel = FuzzySearchUIModel<RegistryItem>()
+    @StateObject private var searchModel = FuzzyMatchUIModel<RegistryItem>()
     @State private var searchText: String = ""
     @State private var selectedInstall: PackageManagerInstallOperation?
 

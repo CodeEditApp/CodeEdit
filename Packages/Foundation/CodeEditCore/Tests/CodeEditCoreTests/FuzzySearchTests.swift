@@ -1,5 +1,5 @@
 //
-//  FuzzySearchTests.swift
+//  FuzzyMatchTests.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom on 15/07/26.
@@ -9,7 +9,7 @@ import Testing
 import Foundation
 import CodeEditCore
 
-private struct TestSearchable: FuzzySearchable, Sendable, Equatable {
+private struct TestSearchable: FuzzyMatchable, Sendable, Equatable {
     let id: Int
     let searchableString: String
 
@@ -19,7 +19,7 @@ private struct TestSearchable: FuzzySearchable, Sendable, Equatable {
     }
 }
 
-struct FuzzySearchTests {
+struct FuzzyMatchTests {
     @Test func normalisation() {
         #expect("ü".normalise()[0].normalisedContent == "u")
         #expect("ñ".normalise()[0].normalisedContent == "n")
@@ -46,12 +46,12 @@ struct FuzzySearchTests {
 
     @Test func searchSortsByDescendingWeightAndDropsNonMatches() async {
         let items = [
-            TestSearchable(0, "FuzzySearchable.swift"),
+            TestSearchable(0, "FuzzyMatchable.swift"),
             TestSearchable(1, "README.md"),
             TestSearchable(2, "FuzzyMatch.swift")
         ]
 
-        let results = await items.fuzzySearch(query: "fuzzy")
+        let results = await items.fuzzyMatches(query: "fuzzy")
 
         #expect(results.count == 2)
         #expect(results.allSatisfy { $0.result.weight > 0 })
@@ -63,7 +63,7 @@ struct FuzzySearchTests {
         // so the result order must match the input order.
         let items = (0..<50).map { TestSearchable($0, "SameName.swift") }
 
-        let results = await items.fuzzySearch(query: "same").map(\.item)
+        let results = await items.fuzzyMatches(query: "same").map(\.item)
 
         #expect(results == items)
     }

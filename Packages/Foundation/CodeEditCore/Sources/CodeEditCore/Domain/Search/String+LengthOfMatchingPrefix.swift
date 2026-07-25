@@ -12,11 +12,11 @@ extension String {
     /// Returns the length of the matching prefix content or normalised content at the specified index.
     ///
     /// - Parameters:
-    ///   - prefix: The FuzzySearchCharacter whose content or normalised content to check for a prefix match.
+    ///   - prefix: The FuzzyMatchCharacter whose content or normalised content to check for a prefix match.
     ///   - index: The index from which to start searching for the prefix.
     ///
     /// - Returns: The length of the matching prefix, or nil if no match is found.
-    func lengthOfMatchingPrefix(prefix: FuzzySearchCharacter, startingAt index: Int) -> Int? {
+    func lengthOfMatchingPrefix(prefix: FuzzyMatchCharacter, startingAt index: Int) -> Int? {
         guard let stringIndex = self.index(self.startIndex, offsetBy: index, limitedBy: self.endIndex) else {
             return nil
         }

@@ -1,5 +1,5 @@
 //
-//  FuzzySearchTests.swift
+//  FuzzyMatchTests.swift
 //  CodeEditTests
 //
 //  Created by Tommy Ludwig on 03.02.24.
@@ -9,9 +9,9 @@ import XCTest
 import CodeEditCore
 @testable import CodeEdit
 
-/// Tests the app's `URL: FuzzySearchable` conformance (OpenQuickly). The fuzzy-match
-/// algorithm itself is covered in CodeEditCore's `CodeEditCoreTests/FuzzySearchTests`.
-final class FuzzySearchTests: XCTestCase {
+/// Tests the app's `URL: FuzzyMatchable` conformance (OpenQuickly). The fuzzy-match
+/// algorithm itself is covered in CodeEditCore's `CodeEditCoreTests/FuzzyMatchTests`.
+final class FuzzyMatchTests: XCTestCase {
     func testFuzzyMatchWeightUsesFileNameOnly() {
         guard let url = URL(string: "path/ContentView.swift") else {
             XCTFail("URL could not be created")

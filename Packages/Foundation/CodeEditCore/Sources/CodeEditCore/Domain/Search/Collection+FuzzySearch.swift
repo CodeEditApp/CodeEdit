@@ -7,8 +7,8 @@
 
 import Foundation
 
-public extension Collection where Element: FuzzySearchable & Sendable {
-    /// Concurrently performs a fuzzy search on a collection of elements conforming to FuzzySearchable.
+public extension Collection where Element: FuzzyMatchable & Sendable {
+    /// Concurrently fuzzy-matches a collection of elements conforming to FuzzyMatchable.
     ///
     /// - Parameter query: The query string to match against the elements.
     ///
@@ -17,17 +17,17 @@ public extension Collection where Element: FuzzySearchable & Sendable {
     ///
     /// - Note: Because this is an extension on Collection and not only array,
     /// you can also use this on sets.
-    func fuzzySearch(query: String) async -> [(result: FuzzySearchMatchResult, item: Element)] {
+    func fuzzyMatches(query: String) async -> [(result: FuzzyMatchResult, item: Element)] {
         let items = Array(self)
 
-        let matches = await withTaskGroup(of: (Int, FuzzySearchMatchResult).self) { group in
+        let matches = await withTaskGroup(of: (Int, FuzzyMatchResult).self) { group in
             for (index, item) in items.enumerated() {
                 group.addTask {
                     (index, item.fuzzyMatch(query: query))
                 }
             }
 
-            var results = [FuzzySearchMatchResult?](repeating: nil, count: items.count)
+            var results = [FuzzyMatchResult?](repeating: nil, count: items.count)
             for await (index, result) in group {
                 results[index] = result
             }

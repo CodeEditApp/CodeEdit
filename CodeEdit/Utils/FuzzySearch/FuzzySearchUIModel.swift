@@ -1,5 +1,5 @@
 //
-//  FuzzySearchUIModel.swift
+//  FuzzyMatchUIModel.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 8/14/25.
@@ -11,7 +11,7 @@ import AsyncAlgorithms
 import CodeEditCore
 
 @MainActor
-final class FuzzySearchUIModel<Element: FuzzySearchable & Sendable>: ObservableObject {
+final class FuzzyMatchUIModel<Element: FuzzyMatchable & Sendable>: ObservableObject {
     @Published var items: [Element]?
 
     private var allItems: [Element] = []
@@ -42,7 +42,7 @@ final class FuzzySearchUIModel<Element: FuzzySearchable & Sendable>: ObservableO
             return
         }
 
-        let results = await allItems.fuzzySearch(query: query)
+        let results = await allItems.fuzzyMatches(query: query)
         items = results.map { $0.item }
     }
 

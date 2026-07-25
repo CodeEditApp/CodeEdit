@@ -71,7 +71,7 @@ final class OpenQuicklyViewModel: ObservableObject {
                     }
                 }
 
-                let fuzzySearchResults = await filteredFiles.fuzzySearch(
+                let fuzzyMatchResults = await filteredFiles.fuzzyMatches(
                     query: self.query.trimmingCharacters(in: .whitespaces)
                 ).concurrentMap {
                     SearchResult(
@@ -82,7 +82,7 @@ final class OpenQuicklyViewModel: ObservableObject {
 
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
-                    self.searchResults = fuzzySearchResults
+                    self.searchResults = fuzzyMatchResults
                     print("Duration: \(Date().timeIntervalSince(startTime))")
                 }
             }
