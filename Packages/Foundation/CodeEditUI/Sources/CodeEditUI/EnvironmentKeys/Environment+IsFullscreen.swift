@@ -8,7 +8,7 @@
 import SwiftUI
 
 private struct WorkspaceFullscreenStateEnvironmentKey: EnvironmentKey {
-    nonisolated(unsafe) static let defaultValue: Bool = false
+    static let defaultValue: Bool = false
 }
 
 public extension EnvironmentValues {

@@ -35,7 +35,15 @@ public class SplitViewItem: ObservableObject {
     private func createObservers() -> [NSKeyValueObservation] {
         [
             item.observe(\.isCollapsed) { [weak self] item, _ in
-                self?.collapsed.wrappedValue = item.isCollapsed
+                // Read the value out here so only a `Bool` crosses into the main actor
+                // region — `item` is non-Sendable and cannot be sent.
+                let isCollapsed = item.isCollapsed
+                // AppKit mutates `isCollapsed` on the main thread, so this KVO callback is
+                // always delivered there. Assert that rather than hopping asynchronously —
+                // a `Task { @MainActor }` would delay the binding update by a runloop turn.
+                MainActor.assumeIsolated {
+                    self?.collapsed.wrappedValue = isCollapsed
+                }
             }
         ]
     }
