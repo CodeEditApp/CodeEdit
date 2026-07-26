@@ -10,11 +10,11 @@ import AppKit
 // MARK: - Bool Defaults
 
 public enum DefaultTrue: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = true
+    public static let defaultValue = true
 }
 
 public enum DefaultFalse: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = false
+    public static let defaultValue = false
 }
 
 // MARK: - Terminal Defaults
@@ -44,7 +44,7 @@ public enum DefaultEmptyGlobPatterns: DefaultValueProvider {
 }
 
 public enum DefaultEmptyStringDictionary: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue: [String: String] = [:]
+    public static let defaultValue: [String: String] = [:]
 }
 
 public enum DefaultEmptyLanguageServerDictionary: DefaultValueProvider {
@@ -62,7 +62,7 @@ public enum DefaultEmptySourceControlAccounts: DefaultValueProvider {
 }
 
 public enum DefaultEmptyString: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = ""
+    public static let defaultValue = ""
 }
 
 // MARK: - General Settings Defaults

@@ -8,11 +8,11 @@
 import SwiftUI
 
 private struct CurrentThemeKey: EnvironmentKey {
-    nonisolated(unsafe) static let defaultValue: Theme? = nil
+    static let defaultValue: Theme? = nil
 }
 
 private struct CurrentDarkThemeKey: EnvironmentKey {
-    nonisolated(unsafe) static let defaultValue: Theme? = nil
+    static let defaultValue: Theme? = nil
 }
 
 public extension EnvironmentValues {
