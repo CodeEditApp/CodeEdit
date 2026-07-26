@@ -74,12 +74,26 @@ Don't judge generic-ness — **count consumers**:
   general-purpose.
 - It moves to `CodeEditCore` only when a **second consumer actually appears** *and* it passes
   the zero-dependency charter.
+- The rule runs **both ways**. A type already in `CodeEditCore` that turns out to have a
+  single consumer moves *out*, into that consumer's package. Framework-freedom is necessary
+  but not sufficient: Core is a shared kernel, and every type in it that isn't actually
+  shared is coupling every context pays for and nobody uses.
+- The exception is **deliberate contracts**: events, command interfaces, and read-models stay
+  in Core even with one publisher or one implementor today, because being a seam is their
+  entire purpose. `FileEditorOverrideValues` stays for the same reason — it is the payload of
+  Core's `FileEditorOverrides` protocol.
 
-Worked example: when fuzzy search was consolidated, the pure parts (`FuzzySearchable`,
-the string-matching primitives) moved to CodeEditCore — but `Collection+FuzzySearch` stayed
-app-side because it depends on CollectionConcurrencyKit, which would breach Core's charter.
-**Dependency honesty beats tidiness**: never add a dependency to a foundation package just to
-make a move possible. Mirroring a one-line helper locally is the accepted alternative.
+Applying this in July 2026 evicted five types: the registry install cluster
+(`InstallationMethod`, `PackageSource`, `PackageManagerType`, `RegistryManagerError`) to
+CELSP, and `GitBranchesGroup` to CESourceControl.
+
+Worked example: fuzzy matching earned its place in CodeEditCore — three consumers across two
+features (Open Quickly, Theme settings, Language Servers) — but its concurrency helper
+depended on CollectionConcurrencyKit, which Core's zero-dependency charter forbids. The fix
+was to rewrite the helper over `withTaskGroup` (about ten lines) rather than admit the
+dependency, so `Domain/FuzzyMatching/` is now dependency-free.
+**Dependency honesty beats tidiness**: never add a dependency to a foundation package to make
+a move possible. Rewrite the helper, or mirror it locally, instead.
 
 ## Folder conventions (app target)
 
@@ -172,3 +186,22 @@ Run both locally from the repo root:
 swiftlint lint --quiet
 python3 .github/scripts/audit_package_imports.py
 ```
+
+## Glossary
+
+Several words are overloaded in this codebase. These are the intended meanings; prefer the
+qualified term whenever the bare one could be read two ways.
+
+| Term | Means |
+| --- | --- |
+| **Editor** (`Editor`) | One tab group inside a workspace window — a split pane with its own tab bar and selection. |
+| **Editor instance** (`EditorInstance`) | One open file within an editor, holding that file's editing state. |
+| **`EditorManager`** | The per-workspace owner of the editor layout (splits, the active editor). |
+| **CEEditor** | The package containing the editor feature. |
+| **CodeEditSourceEditor** | The external text-editing widget (a separate repository), not part of this codebase. |
+| **Search** | *Project* search: find/replace across files, the index, query modes, the Find navigator. Lives in `CESearch`, which owns its whole model. |
+| **Fuzzy matching** | Ranking candidates by match quality for typeahead (Open Quickly, theme and language-server pickers). A generic capability in CodeEditCore `Domain/FuzzyMatching/`. It does no searching; nothing here is named `*Search*`. |
+| **Workspace** (`Workspace`) | The session aggregate for one open project: the project-scoped services and their lifetime. It owns lifecycle, *not* mutation routing — features mutate the sub-models they are handed. |
+| **Workspace window** (`WorkspaceWindow/`) | The window and its chrome around a workspace: navigator, inspector, utility area, status bar. Window-UI state lives on `CodeEditWindowController`, not on `Workspace`. |
+| **Document** (`CodeFileDocument`) | An open, editable file backed by NSDocument. Distinct from `CEWorkspaceFile` (a node in the file tree) and from the file on disk. |
+| **Doer** | A role-noun class performing one operation that spans services (`WorkspaceOpener`, `FileMover`, `RepositoryCloner`), following the `NSFileCoordinator` naming idiom. Formerly called UseCases. |
