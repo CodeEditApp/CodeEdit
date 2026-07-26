@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 
 public struct GitBranchesGroup: Hashable, Sendable {
     public let name: String
