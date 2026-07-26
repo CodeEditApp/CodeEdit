@@ -33,7 +33,8 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
         }
     }
 
-    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CodeFileDocument")
+    /// `nonisolated` so the nonisolated overrides can log; `Logger` is `Sendable`.
+    nonisolated static let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "CodeFileDocument")
 
     /// Vends the app-registered delegate (see ``CodeFileDocumentDelegate``). A static provider —
     /// not a per-instance property — because framework-created documents fire `documentDidOpen`
@@ -105,9 +106,13 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     }
 
     /// A lock that ensures autosave scheduling happens correctly.
-    private var autosaveTimerLock: NSLock = NSLock()
+    /// `nonisolated` for the nonisolated `scheduleAutosaving()` override; `NSLock` is `Sendable`.
+    nonisolated private let autosaveTimerLock: NSLock = NSLock()
+
     /// Timer used to schedule autosave intervals.
-    private var autosaveTimer: Timer?
+    /// `nonisolated(unsafe)` because every access happens with ``autosaveTimerLock`` held — the
+    /// lock is the synchronisation, which the compiler cannot see. Never touch this outside it.
+    nonisolated(unsafe) private var autosaveTimer: Timer?
 
     /// Provides the current "autosave enabled" preference without coupling this type to the
     /// Settings feature. Wired by the app at launch (see `AppDelegate`). Defaults to `false`
@@ -276,7 +281,11 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
                     self?.autosaveTimerLock.withLock {
                         guard timer.isValid else { return }
                         self?.autosaveTimer = nil
-                        self?.autosave(withDelegate: nil, didAutosave: nil, contextInfo: nil)
+                        // Delivered on the main runloop the timer was scheduled on; assert that
+                        // rather than hopping, which would fire outside the lock.
+                        MainActor.assumeIsolated {
+                            self?.autosave(withDelegate: nil, didAutosave: nil, contextInfo: nil)
+                        }
                     }
                 }
             } else {
@@ -382,7 +391,9 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
 
 private extension CodeFileDocument {
 
-    static let fileTypeExtension: [String: String?] = [
+    /// `nonisolated` so `fileNameExtension(forType:saveOperation:)` can read it off the main actor.
+    /// `[String: String?]` is `Sendable`, so this is safe rather than merely asserted.
+    nonisolated static let fileTypeExtension: [String: String?] = [
         "public.make-source": nil
     ]
 }
