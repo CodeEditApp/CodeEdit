@@ -84,6 +84,11 @@ extension SettingsData {
         case dark
 
         /// Applies the selected appearance
+        ///
+        /// Main-actor isolated because it mutates `NSApp.appearance`, and AppKit is
+        /// main-thread-only. Both callers (`AppDelegate` and `GeneralSettingsView`) are
+        /// already main-actor contexts.
+        @MainActor
         public func applyAppearance() {
             switch self {
             case .system:
