@@ -118,7 +118,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		283BDCBC2972EEBD002AFF81 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; name = Package.resolved; path = CodeEdit.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved; sourceTree = "<group>"; };
+		283BDCBC2972EEBD002AFF81 /* Package.resolved */ = {isa = PBXFileReference; lastKnownFileType = text; name = Package.resolved; path = CodeEdit.xcworkspace/xcshareddata/swiftpm/Package.resolved; sourceTree = "<group>"; };
 		284DC8502978BA2600BF2770 /* .all-contributorsrc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ".all-contributorsrc"; sourceTree = "<group>"; };
 		2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenWithCodeEdit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		589F3E342936185400E1A4DA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
