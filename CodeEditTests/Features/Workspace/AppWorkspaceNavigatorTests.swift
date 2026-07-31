@@ -7,6 +7,7 @@
 
 import Foundation
 import Testing
+import Combine
 import CodeEditCore
 @testable import CodeEdit
 @testable import CEEditor
@@ -52,16 +53,21 @@ struct AppWorkspaceNavigatorTests {
 
     @MainActor
     @Test
-    func revealSetsHighlightedFileItemOnCorrectWorkspace() throws {
+    func revealSendsRevealRequestOnCorrectWorkspace() throws {
         let workspace = try TestWorkspaceFactory.make()
         let mock = MockWindowManager()
         mock.stubbedWorkspace = workspace
         let navigator = AppWorkspaceNavigator(windowManager: mock)
         let file = CEWorkspaceFile(url: URL(fileURLWithPath: "/tmp/example.swift"))
 
+        var revealed: [CEWorkspaceFile] = []
+        let cancellable = workspace.revealRequests.sink { revealed.append($0) }
+        defer { cancellable.cancel() }
+
         navigator.reveal(file: file)
 
-        #expect(workspace.listenerModel.highlightedFileItem === file)
+        #expect(revealed.count == 1)
+        #expect(revealed.first === file)
     }
 
     @MainActor
