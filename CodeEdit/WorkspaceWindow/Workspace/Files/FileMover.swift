@@ -27,7 +27,7 @@ final class FileMover {
         if !file.isFolder {
             workspace.editorManager.editorLayout.closeAllTabs(of: file)
         }
-        workspace.listenerModel.highlightedFileItem = newFile
+        workspace.revealRequests.send(newFile)
         workspace.editorManager.openTab(item: newFile)
 
         return newFile

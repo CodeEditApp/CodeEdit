@@ -27,7 +27,7 @@ final class AppWorkspaceNavigator: WorkspaceNavigator {
 
     @MainActor
     func reveal(file: CEWorkspaceFile) {
-        windowManager.workspace(containing: file.url)?.listenerModel.highlightedFileItem = file
+        windowManager.workspace(containing: file.url)?.revealRequests.send(file)
     }
 
     @MainActor

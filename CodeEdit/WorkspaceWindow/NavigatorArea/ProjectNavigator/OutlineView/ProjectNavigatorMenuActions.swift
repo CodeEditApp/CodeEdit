@@ -90,7 +90,7 @@ extension ProjectNavigatorMenu {
         guard let item else { return }
         do {
             if let newFile = try workspace?.workspaceFileManager.addFile(fileName: "untitled", toFile: item) {
-                workspace?.listenerModel.highlightedFileItem = newFile
+                workspace?.revealRequests.send(newFile)
                 sender.workspaceNavigator.open(file: newFile, asTemporary: false)
             }
         } catch {
@@ -135,7 +135,7 @@ extension ProjectNavigatorMenu {
                     toFile: item,
                     contents: clipBoardContent
                 ) {
-                workspace?.listenerModel.highlightedFileItem = newFile
+                workspace?.revealRequests.send(newFile)
                 sender.workspaceNavigator.open(file: newFile, asTemporary: false)
                 beginRenaming(newFile)
             }
@@ -153,7 +153,7 @@ extension ProjectNavigatorMenu {
         guard let item else { return }
         do {
             if let newFolder = try workspace?.workspaceFileManager.addFolder(folderName: "untitled", toFile: item) {
-                workspace?.listenerModel.highlightedFileItem = newFolder
+                workspace?.revealRequests.send(newFolder)
             }
         } catch {
             let alert = NSAlert(error: error)

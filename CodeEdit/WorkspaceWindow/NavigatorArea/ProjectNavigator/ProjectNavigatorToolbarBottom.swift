@@ -21,7 +21,6 @@ struct ProjectNavigatorToolbarBottom: View {
     private var activeEditorState
     @Environment(\.workspaceNavigator)
     private var workspaceNavigator
-    @EnvironmentObject var listenerModel: WorkspaceNotificationModel
     @EnvironmentObject var projectNavigatorViewModel: ProjectNavigatorViewModel
 
     @Environment(\.workspaceFileManager)
@@ -118,7 +117,7 @@ struct ProjectNavigatorToolbarBottom: View {
                         fileName: "untitled",
                         toFile: rootFile
                     ) {
-                        listenerModel.highlightedFileItem = newFile
+                        workspaceNavigator.reveal(file: newFile)
                         workspaceNavigator.open(file: newFile, asTemporary: false)
                     }
                 } catch {
@@ -136,7 +135,7 @@ struct ProjectNavigatorToolbarBottom: View {
                         folderName: "untitled",
                         toFile: rootFile
                     ) {
-                        listenerModel.highlightedFileItem = newFolder
+                        workspaceNavigator.reveal(file: newFolder)
                     }
                 } catch {
                     let alert = NSAlert(error: error)

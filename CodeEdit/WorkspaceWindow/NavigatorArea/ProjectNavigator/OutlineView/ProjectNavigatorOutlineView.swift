@@ -63,12 +63,9 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
             self.fileManager = workspace.workspaceFileManager
             super.init()
 
-            workspace.listenerModel.$highlightedFileItem
-                .sink(receiveValue: { [weak self] fileItem in
-                    guard let fileItem else {
-                        return
-                    }
-                    self?.controller?.reveal(fileItem)
+            workspace.revealRequests
+                .sink(receiveValue: { [weak self] file in
+                    self?.controller?.reveal(file)
                 })
                 .store(in: &cancellables)
             do {

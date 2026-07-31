@@ -64,7 +64,6 @@ enum WorkspaceFactory {
             workspaceSettingsManager: workspaceSettingsManager,
             statePersistence: statePersistence,
             undoRegistration: undoRegistration,
-            listenerModel: WorkspaceNotificationModel(),
             projectNavigatorViewModel: ProjectNavigatorViewModel(),
             securityScopedURL: securityScopedURL
         )

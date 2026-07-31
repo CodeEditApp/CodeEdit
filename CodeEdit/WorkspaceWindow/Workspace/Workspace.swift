@@ -7,6 +7,7 @@
 
 import CESourceControl
 import AppKit
+import Combine
 import CEWorkspaceFileManager
 import CodeEditCore
 import CEEditor
@@ -34,10 +35,14 @@ final class Workspace: ObservableObject {
     let statePersistence: WorkspaceStatePersistence
     let undoRegistration: UndoManagerRegistration
 
-    // Navigator-coupled — stay until the Navigator feature is packaged
+    // Navigator-coupled — stays until the Navigator feature is packaged
     // (consumed by the ProjectNavigator AppKit cluster and by-workspace command paths).
-    let listenerModel: WorkspaceNotificationModel
     let projectNavigatorViewModel: ProjectNavigatorViewModel
+
+    /// Requests to reveal a file in the Project Navigator. The navigator's outline view subscribes
+    /// and scrolls to each file. A request is a one-shot event, not retained state — which is why
+    /// this is a subject rather than a `@Published` property.
+    let revealRequests = PassthroughSubject<CEWorkspaceFile, Never>()
 
     /// The original (possibly bookmark-derived) security-scoped URL whose access is held for this
     /// workspace's lifetime. Set by `WorkspaceFactory` when the URL is security-scoped (e.g. opened
@@ -56,7 +61,6 @@ final class Workspace: ObservableObject {
         workspaceSettingsManager: CEWorkspaceSettings,
         statePersistence: WorkspaceStatePersistence,
         undoRegistration: UndoManagerRegistration,
-        listenerModel: WorkspaceNotificationModel,
         projectNavigatorViewModel: ProjectNavigatorViewModel,
         securityScopedURL: URL?
     ) {
@@ -71,7 +75,6 @@ final class Workspace: ObservableObject {
         self.workspaceSettingsManager = workspaceSettingsManager
         self.statePersistence = statePersistence
         self.undoRegistration = undoRegistration
-        self.listenerModel = listenerModel
         self.projectNavigatorViewModel = projectNavigatorViewModel
         self.securityScopedURL = securityScopedURL
     }
