@@ -248,6 +248,37 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         }
     }
 
+    @IBAction func openWorkspaceSettings(_ sender: Any) {
+        guard let window = window,
+              let workspace = workspace
+        else { return }
+        let workspaceSettingsManager = workspace.workspaceSettingsManager
+        let taskManager = workspace.taskManager
+
+        if let workspaceSettingsWindow, workspaceSettingsWindow.isVisible {
+            workspaceSettingsWindow.makeKeyAndOrderFront(self)
+        } else {
+            let settingsWindow = NSWindow()
+            self.workspaceSettingsWindow = settingsWindow
+            let contentView = CEWorkspaceSettingsView(
+                dismiss: { [weak self, weak settingsWindow] in
+                    guard let settingsWindow else { return }
+                    self?.window?.endSheet(settingsWindow)
+                 }
+            )
+            .environmentObject(workspaceSettingsManager)
+            .environmentObject(workspace)
+            .environmentObject(taskManager)
+
+            settingsWindow.contentView = NSHostingView(rootView: contentView)
+            settingsWindow.titlebarAppearsTransparent = true
+            settingsWindow.setContentSize(NSSize(width: 515, height: 515))
+            settingsWindow.setAccessibilityTitle("Workspace Settings")
+
+            window.beginSheet(settingsWindow, completionHandler: nil)
+        }
+    }
+
     func windowShouldClose(_ sender: NSWindow) -> Bool {
         // Check for unsaved changes before closing
         if let workspace, workspace.hasUnsavedChanges() {
