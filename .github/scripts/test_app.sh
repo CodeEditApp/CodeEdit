@@ -20,6 +20,7 @@ export LC_CTYPE=en_US.UTF-8
 # - is-ci: include test results in output
 
 set -o pipefail && arch -"${ARCH}" xcodebuild \
+           -workspace CodeEdit.xcworkspace \
            -scheme CodeEdit \
            -destination "platform=OS X,arch=${ARCH}" \
            -skipPackagePluginValidation \
