@@ -100,12 +100,10 @@ extension ProjectNavigatorMenu {
         }
     }
 
-    /// Opens the rename file dialogue on the cell this was presented from.
-    @objc
-    func renameFile() {
-        guard let newFile = workspace?.listenerModel.highlightedFileItem else { return }
-        let row = sender.outlineView.row(forItem: newFile)
-        guard row > 0,
+    /// Puts the cell for `file` into edit mode, if that row is visible.
+    private func beginRenaming(_ file: CEWorkspaceFile) {
+        let row = sender.outlineView.row(forItem: file)
+        guard row >= 0,
               let cell = sender.outlineView.view(
                 atColumn: 0,
                 row: row,
@@ -114,6 +112,13 @@ extension ProjectNavigatorMenu {
             return
         }
         sender.outlineView.window?.makeFirstResponder(cell.textField)
+    }
+
+    /// Opens the rename dialogue on the cell this menu was presented from.
+    @objc
+    func renameFile() {
+        guard let item else { return }
+        beginRenaming(item)
     }
 
     // TODO: Automatically identified the file type
@@ -132,7 +137,7 @@ extension ProjectNavigatorMenu {
                 ) {
                 workspace?.listenerModel.highlightedFileItem = newFile
                 sender.workspaceNavigator.open(file: newFile, asTemporary: false)
-                renameFile()
+                beginRenaming(newFile)
             }
         } catch {
             let alert = NSAlert(error: error)
