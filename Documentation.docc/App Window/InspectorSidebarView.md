@@ -1,5 +1,8 @@
 # ``CodeEdit/InspectorAreaView``
 
+Inspector tabs share ``WorkspacePanelView`` with the navigator: panels stay mounted and are
+shown/hidden with opacity so selection and scroll state survive tab switches (#711).
+
 ## Topics
 
 ### Toolbars

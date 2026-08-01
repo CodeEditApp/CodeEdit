@@ -34,11 +34,23 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: 
 
     var body: some View {
         VStack(spacing: 0) {
-            if let selection = selectedTab {
-                selection
-            } else {
-                CEContentUnavailableView("No Selection")
+            // Keep every sidebar panel mounted so expand/scroll state survives tab switches (#711).
+            // Hiding with opacity (instead of swapping `if selectedTab`) preserves NSOutlineView state.
+            ZStack {
+                ForEach(tabItems) { tab in
+                    let isSelected = selectedTab == tab
+                    tab
+                        .opacity(isSelected ? 1 : 0)
+                        .allowsHitTesting(isSelected)
+                        .accessibilityHidden(!isSelected)
+                        .zIndex(isSelected ? 1 : 0)
+                }
+
+                if selectedTab == nil {
+                    CEContentUnavailableView("No Selection")
+                }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side {
