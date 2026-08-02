@@ -21,7 +21,7 @@ import Foundation
 /// Constructed complete by ``WorkspaceFactory/make(url:dependencies:)`` — every
 /// manager is non-optional for the workspace's lifetime.
 @MainActor
-final class Workspace: ObservableObject {
+final class Workspace {
     let fileURL: URL
     let displayName: String
 
