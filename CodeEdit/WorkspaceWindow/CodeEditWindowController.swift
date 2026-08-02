@@ -267,7 +267,6 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                  }
             )
             .environmentObject(workspaceSettingsManager)
-            .environmentObject(workspace)
             .environmentObject(taskManager)
 
             settingsWindow.contentView = NSHostingView(rootView: contentView)

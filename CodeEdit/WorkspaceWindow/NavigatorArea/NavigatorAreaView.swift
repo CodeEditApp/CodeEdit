@@ -9,15 +9,13 @@ import SwiftUI
 import CodeEditSettings
 
 struct NavigatorAreaView: View {
-    @ObservedObject private var workspace: Workspace
     @ObservedObject private var extensionManager = ExtensionManager.shared
     @ObservedObject public var viewModel: NavigatorAreaViewModel
 
     @AppSettings(\.general.navigatorTabBarPosition)
     var sidebarPosition: SettingsData.SidebarTabBarPosition
 
-    init(workspace: Workspace, viewModel: NavigatorAreaViewModel) {
-        self.workspace = workspace
+    init(viewModel: NavigatorAreaViewModel) {
         self.viewModel = viewModel
 
         viewModel.tabItems = [.project, .sourceControl, .search] +
@@ -41,7 +39,6 @@ struct NavigatorAreaView: View {
             tabItems: $viewModel.tabItems,
             sidebarPosition: sidebarPosition
         )
-        .environmentObject(workspace)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("navigator")
     }

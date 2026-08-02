@@ -117,7 +117,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         activeEditorState: AppActiveEditorState
     ) -> NSSplitViewItem {
         makeNavigator(view: SettingsInjector {
-            NavigatorAreaView(workspace: workspace, viewModel: navigatorViewModel)
+            NavigatorAreaView(viewModel: navigatorViewModel)
                 .environment(\.workspace, workspace)
                 .environmentObject(workspace.editorManager)
                 .environmentObject(workspace.projectNavigatorViewModel)
