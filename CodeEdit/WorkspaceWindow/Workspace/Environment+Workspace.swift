@@ -33,11 +33,22 @@ private struct WorkspaceStatePersistenceKey: EnvironmentKey {
     static let defaultValue: (any WorkspaceStatePersisting)? = nil
 }
 
+private struct WorkspaceKey: EnvironmentKey {
+    nonisolated(unsafe) static let defaultValue: Workspace? = nil
+}
+
 private struct FilePreviewFactoryKey: EnvironmentKey {
     static let defaultValue: (CEWorkspaceFile) -> AnyView = { _ in AnyView(EmptyView()) }
 }
 
 extension EnvironmentValues {
+    /// The workspace owning this view tree. `nil` only in previews or a mis-wired tree —
+    /// `CodeEditSplitViewController` populates it for every real workspace window.
+    var workspace: Workspace? {
+        get { self[WorkspaceKey.self] }
+        set { self[WorkspaceKey.self] = newValue }
+    }
+
     /// The concrete workspace file manager, for app-shell views that need the mutating
     /// API (create/rename). Feature packages use `\.workspaceFileProvider` (CEEditor) instead.
     var workspaceFileManager: CEWorkspaceFileManager? {

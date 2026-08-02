@@ -15,7 +15,8 @@ import Combine
 /// Wraps an ``OutlineViewController`` inside a `NSViewControllerRepresentable`
 struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
-    @EnvironmentObject var workspace: Workspace
+    @Environment(\.workspace)
+    private var workspace
     @EnvironmentObject var editorManager: EditorManager
 
     @Environment(\.activeEditorState)
@@ -29,14 +30,19 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
     func makeNSViewController(context: Context) -> ProjectNavigatorViewController {
         let controller = ProjectNavigatorViewController()
-        controller.workspace = workspace
         controller.iconColor = prefs.preferences.general.fileIconStyle
         controller.activeEditorState = activeEditorState
         controller.workspaceNavigator = workspaceNavigator
-        workspace.workspaceFileManager.addObserver(context.coordinator)
 
         context.coordinator.controller = controller
         context.coordinator.observeActiveFile(activeEditorState)
+
+        guard let workspace else {
+            assertionFailure("ProjectNavigatorOutlineView built with no workspace in the environment")
+            return controller
+        }
+        controller.workspace = workspace
+        workspace.workspaceFileManager.addObserver(context.coordinator)
 
         return controller
     }
@@ -58,10 +64,12 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
 
     @MainActor
     class Coordinator: NSObject, WorkspaceFileObserver {
-        init(_ workspace: Workspace) {
+        init(_ workspace: Workspace?) {
             self.workspace = workspace
-            self.fileManager = workspace.workspaceFileManager
+            self.fileManager = workspace?.workspaceFileManager
             super.init()
+
+            guard let workspace else { return }
 
             workspace.revealRequests
                 .sink(receiveValue: { [weak self] file in
