@@ -16,6 +16,6 @@ struct StatusBarLineEndSelector: View {
             Text("LF")
         }
         .menuStyle(StatusBarMenuStyle())
-        .onHover { isHovering($0) }
+        .onHover { setHoverCursor($0) }
     }
 }

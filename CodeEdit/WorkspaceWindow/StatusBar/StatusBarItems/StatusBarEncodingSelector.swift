@@ -16,6 +16,6 @@ struct StatusBarEncodingSelector: View {
             Text("UTF 8")
         }
         .menuStyle(StatusBarMenuStyle())
-        .onHover { isHovering($0) }
+        .onHover { setHoverCursor($0) }
     }
 }

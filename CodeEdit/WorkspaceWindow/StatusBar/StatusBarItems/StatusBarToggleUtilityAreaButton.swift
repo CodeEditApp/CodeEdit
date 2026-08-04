@@ -26,7 +26,7 @@ internal struct StatusBarToggleUtilityAreaButton: View {
         .buttonStyle(.icon)
         .keyboardShortcut("Y", modifiers: [.command, .shift])
         .help(utilityAreaViewModel.isCollapsed ? "Show the Utility area" : "Hide the Utility area")
-        .onHover { isHovering($0) }
+        .onHover { setHoverCursor($0) }
         .onChange(of: controlActiveState) { _, newValue in
             if newValue == .key {
                 commandManager?.addCommand(
