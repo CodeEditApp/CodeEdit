@@ -114,8 +114,6 @@
 		2BE487EC28245162003F3F64 /* OpenWithCodeEdit.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OpenWithCodeEdit.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		589F3E342936185400E1A4DA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		58F2EACE292FB2B0004A9BDE /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
-		6C67413D2C44A28C00AABDF5 /* ProjectNavigatorViewController+DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+DataSource.swift"; sourceTree = "<group>"; };
-		6C67413F2C44A2A200AABDF5 /* ProjectNavigatorViewController+Delegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProjectNavigatorViewController+Delegate.swift"; sourceTree = "<group>"; };
 		6C9619262C3F285C009733CE /* CodeEditTestPlan.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = CodeEditTestPlan.xctestplan; sourceTree = "<group>"; };
 		B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeEdit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B658FB3D27DA9E1000EA4DBD /* CodeEditTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,6 +150,7 @@
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		B618FF76302277540012F062 /* ProductIcons */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductIcons; sourceTree = "<group>"; };
 		B624520B2D78A3CC009A86D1 /* CodeEdit */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B62454482D78A3CC009A86D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, B62454492D78A3CC009A86D1 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = CodeEdit; sourceTree = "<group>"; };
 		B624544F2D78A3D3009A86D1 /* Configs */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Configs; sourceTree = "<group>"; };
 		B62454602D78A3D4009A86D1 /* CodeEditUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CodeEditUITests; sourceTree = "<group>"; };
@@ -229,15 +228,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6C01F25D2C4820B600AA951B /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				6C67413D2C44A28C00AABDF5 /* ProjectNavigatorViewController+DataSource.swift */,
-				6C67413F2C44A2A200AABDF5 /* ProjectNavigatorViewController+Delegate.swift */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
@@ -248,12 +238,12 @@
 				B6FF04772B6C08AC002C2C78 /* DefaultThemes */,
 				58F2EACE292FB2B0004A9BDE /* Documentation.docc */,
 				B62454CD2D78A3D8009A86D1 /* OpenWithCodeEdit */,
+				B618FF76302277540012F062 /* ProductIcons */,
 				6C9619262C3F285C009733CE /* CodeEditTestPlan.xctestplan */,
 				284DC8502978BA2600BF2770 /* .all-contributorsrc */,
 				283BDCBC2972EEBD002AFF81 /* Package.resolved */,
 				B658FB2D27DA9E0F00EA4DBD /* Products */,
 				5C403B8D27E20F8000788241 /* Frameworks */,
-				6C01F25D2C4820B600AA951B /* Recovered References */,
 			);
 			indentWidth = 4;
 			sourceTree = "<group>";
@@ -310,6 +300,7 @@
 				2BE487F328245162003F3F64 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				B618FF76302277540012F062 /* ProductIcons */,
 				B624520B2D78A3CC009A86D1 /* CodeEdit */,
 			);
 			name = CodeEdit;
@@ -666,8 +657,9 @@
 			baseConfigurationReferenceAnchor = B624544F2D78A3D3009A86D1 /* Configs */;
 			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
+				ASSETCATALOG_COMPILER_APPICON_NAME = CodeEditAlphaIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
@@ -868,8 +860,9 @@
 			baseConfigurationReferenceAnchor = B624544F2D78A3D3009A86D1 /* Configs */;
 			baseConfigurationReferenceRelativePath = Beta.xcconfig;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
+				ASSETCATALOG_COMPILER_APPICON_NAME = CodeEditBetaIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
@@ -1143,8 +1136,9 @@
 			baseConfigurationReferenceAnchor = B624544F2D78A3D3009A86D1 /* Configs */;
 			baseConfigurationReferenceRelativePath = Alpha.xcconfig;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
+				ASSETCATALOG_COMPILER_APPICON_NAME = CodeEditPreIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CE_APPICON_NAME = AppIconPre;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1418,8 +1412,9 @@
 			baseConfigurationReferenceAnchor = B624544F2D78A3D3009A86D1 /* Configs */;
 			baseConfigurationReferenceRelativePath = Debug.xcconfig;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
+				ASSETCATALOG_COMPILER_APPICON_NAME = CodeEditDevIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
@@ -1462,8 +1457,9 @@
 			baseConfigurationReferenceAnchor = B624544F2D78A3D3009A86D1 /* Configs */;
 			baseConfigurationReferenceRelativePath = Release.xcconfig;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "${CE_APPICON_NAME}";
+				ASSETCATALOG_COMPILER_APPICON_NAME = CodeEditIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = CodeEdit/CodeEdit.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
