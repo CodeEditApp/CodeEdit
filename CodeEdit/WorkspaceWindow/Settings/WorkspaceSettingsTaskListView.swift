@@ -1,5 +1,5 @@
 //
-//  CEWorkspaceSettingsTaskListView.swift
+//  WorkspaceSettingsTaskListView.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 01.07.24.
@@ -9,7 +9,7 @@ import SwiftUI
 import CETerminal
 import CodeEditCore
 
-struct CEWorkspaceSettingsTaskListView: View {
+struct WorkspaceSettingsTaskListView: View {
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @EnvironmentObject var taskManager: TaskManager
 

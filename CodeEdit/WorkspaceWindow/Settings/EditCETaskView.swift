@@ -29,7 +29,7 @@ struct EditCETaskView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            CETaskFormView(task: $task)
+            TaskFormView(task: $task)
             Divider()
             HStack {
                 Button(role: .destructive) {

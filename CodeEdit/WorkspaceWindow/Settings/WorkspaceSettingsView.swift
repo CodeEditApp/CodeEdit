@@ -1,5 +1,5 @@
 //
-//  CEWorkspaceSettingsView.swift
+//  WorkspaceSettingsView.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 01.07.24.
@@ -8,7 +8,7 @@
 import SwiftUI
 import CodeEditCore
 
-struct CEWorkspaceSettingsView: View {
+struct WorkspaceSettingsView: View {
     var dismiss: () -> Void
 
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
@@ -31,7 +31,7 @@ struct CEWorkspaceSettingsView: View {
                 }
 
                 Section {
-                    CEWorkspaceSettingsTaskListView(
+                    WorkspaceSettingsTaskListView(
                         selectedTaskID: $selectedTaskID,
                         showAddTaskSheet: $showAddTaskSheet
                     )
@@ -80,5 +80,5 @@ struct CEWorkspaceSettingsView: View {
 }
 
 #Preview {
-    CEWorkspaceSettingsView(dismiss: { print("Dismiss") })
+    WorkspaceSettingsView(dismiss: { print("Dismiss") })
 }

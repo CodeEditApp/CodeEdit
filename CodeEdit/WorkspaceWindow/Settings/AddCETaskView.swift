@@ -17,7 +17,7 @@ struct AddCETaskView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            CETaskFormView(task: $newTask)
+            TaskFormView(task: $newTask)
             Divider()
             HStack {
                 Button {

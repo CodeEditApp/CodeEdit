@@ -260,7 +260,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         } else {
             let settingsWindow = NSWindow()
             self.workspaceSettingsWindow = settingsWindow
-            let contentView = CEWorkspaceSettingsView(
+            let contentView = WorkspaceSettingsView(
                 dismiss: { [weak self, weak settingsWindow] in
                     guard let settingsWindow else { return }
                     self?.window?.endSheet(settingsWindow)

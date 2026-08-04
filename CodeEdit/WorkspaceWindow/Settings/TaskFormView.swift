@@ -1,5 +1,5 @@
 //
-//  CETaskFormView.swift
+//  TaskFormView.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 01.07.24.
@@ -9,7 +9,7 @@ import SwiftUI
 import CodeEditUI
 import CodeEditCore
 
-struct CETaskFormView: View {
+struct TaskFormView: View {
     @EnvironmentObject var workspaceSettingsManager: CEWorkspaceSettings
     @Binding var task: CETask
     @State private var selectedEnvID: UUID?
