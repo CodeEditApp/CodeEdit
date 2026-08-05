@@ -10,6 +10,7 @@ import SwiftUI
 import CodeEditSettings
 import CEWorkspaceFileManager
 import CodeEditCore
+import CodeEditUI
 
 /// A view to display a changed file's information in a list view. Optionally displays the staged status.
 struct GitChangedFileListView: View {
@@ -77,7 +78,7 @@ struct GitChangedFileListView: View {
             if let file {
                 return file.iconColor
             } else {
-                return FileIcon.iconColor(fileType: nil)
+                return FileIcon.generic.color
             }
         case .monochrome:
             return Color("CoolGray")

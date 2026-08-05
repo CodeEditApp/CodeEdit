@@ -10,6 +10,7 @@ import SwiftUI
 import ShellClient
 import CEWorkspaceFileManager
 import CodeEditCore
+import CodeEditUI
 
 struct GitChangedFileLabel: View {
     @EnvironmentObject private var sourceControlManager: SourceControlManager
@@ -29,7 +30,7 @@ struct GitChangedFileLabel: View {
                 Image(nsImage: ceFile.nsIcon)
                     .renderingMode(.template)
             } else {
-                Image(systemName: FileIcon.fileIcon(fileType: nil))
+                FileIcon.generic.image
                     .renderingMode(.template)
             }
         }

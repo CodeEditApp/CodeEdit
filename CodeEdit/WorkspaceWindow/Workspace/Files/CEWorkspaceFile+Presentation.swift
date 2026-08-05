@@ -8,41 +8,25 @@
 import SwiftUI
 import CodeEditCore
 import CodeEditSettings
-import CodeEditSymbols
+import CodeEditUI
 
 extension CEWorkspaceFile {
     // MARK: Icons
 
-    var icon: Image {
-        if let customImage = NSImage.symbol(named: systemImage) {
-            return Image(nsImage: customImage)
-        } else {
-            return Image(systemName: systemImage)
-        }
+    /// Symbol + tint for this file or folder, from ``CodeEditUI/FileIcon``.
+    var iconSpec: FileIconSpec {
+        isFolder
+            ? FileIcon.folderSpec(
+                isEmpty: isEmptyFolder,
+                isRoot: parent == nil,
+                isCodeEditDirectory: name == ".codeedit"
+              )
+            : FileIcon.spec(for: url)
     }
 
-    var nsIcon: NSImage {
-        if let customImage = NSImage.symbol(named: systemImage) {
-            return customImage
-        } else {
-            return NSImage(systemSymbolName: systemImage, accessibilityDescription: systemImage)
-                ?? NSImage(systemSymbolName: "doc", accessibilityDescription: "doc")!
-        }
-    }
-
-    var iconColor: Color {
-        FileIcon.iconColor(fileType: type)
-    }
-
-    var systemImage: String {
-        if isFolder {
-            if self.parent == nil { return "folder.fill.badge.gearshape" }
-            if self.name == ".codeedit" { return "folder.fill.badge.gearshape" }
-            return isEmptyFolder ? "folder" : "folder.fill"
-        } else {
-            return FileIcon.fileIcon(fileType: type)
-        }
-    }
+    var icon: Image { iconSpec.image }
+    var nsIcon: NSImage { iconSpec.nsImage }
+    var iconColor: Color { iconSpec.color }
 
     // MARK: Intents
 
