@@ -18,17 +18,6 @@ public final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable 
     /// Returns the file name (e.g.: `Package.swift`)
     public var name: String { url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines) }
 
-    /// The file's ``FileType`` derived from its extension (defaults to `.txt`).
-    public var type: FileType {
-        let filename = url.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
-        if let type = FileType(rawValue: filename) {
-            return type
-        } else {
-            let extensions = filename.dropFirst().components(separatedBy: ".").reversed()
-            return extensions.compactMap { FileType(rawValue: $0) }.first ?? .txt
-        }
-    }
-
     /// Returns the URL of the ``CEWorkspaceFile``
     public let url: URL
 

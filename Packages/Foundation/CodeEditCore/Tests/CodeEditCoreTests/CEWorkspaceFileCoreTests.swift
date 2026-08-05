@@ -10,16 +10,15 @@ import CodeEditCore
 
 final class CEWorkspaceFileCoreTests: XCTestCase {
 
-    func testNameAndType() {
+    func testName() {
         let file = CEWorkspaceFile(url: URL(filePath: "/tmp/Package.swift"))
         XCTAssertEqual(file.name, "Package.swift")
-        XCTAssertEqual(file.type, .swift)
     }
 
-    func testTypeDefaultsToTxt() {
-        let file = CEWorkspaceFile(url: URL(filePath: "/tmp/no-extension-here"))
-        XCTAssertEqual(file.type, .txt)
-    }
+    // `testTypeDefaultsToTxt` lived here to cover the `FileType` fallback. That enum was
+    // presentation, not domain, and is gone; the behaviour it guarded — an unrecognised
+    // extension still resolving to something sensible — is covered by
+    // `FileIconTests.testUndeclaredExtensionsFallThroughToBareDoc` in CodeEditUIUnitTests.
 
     func testFileNameTypeHidden() {
         let file = CEWorkspaceFile(url: URL(filePath: "/tmp/Model.swift"))
