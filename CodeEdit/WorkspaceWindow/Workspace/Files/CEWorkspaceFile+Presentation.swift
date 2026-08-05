@@ -43,6 +43,11 @@ extension CEWorkspaceFile {
     // MARK: Display name (user preference driven)
 
     /// A display name honoring the user's file-extension-visibility preference.
+    ///
+    /// Matches on the file's real extension. It used to compare `type.rawValue`, which
+    /// silently failed twice over: the raw value for `.txt` was `"text"`, so a user
+    /// entering `txt` never matched, and any extension absent from the `FileType` enum
+    /// fell back to `.txt` and so reported itself as `"text"`.
     func labelFileName() -> String {
         let prefs = Settings.shared.preferences.general
         switch prefs.fileExtensionsVisibility {
@@ -51,9 +56,9 @@ extension CEWorkspaceFile {
         case .showAll:
             return self.fileName(typeHidden: false)
         case .showOnly:
-            return self.fileName(typeHidden: !prefs.shownFileExtensions.extensions.contains(self.type.rawValue))
+            return self.fileName(typeHidden: !prefs.shownFileExtensions.extensions.contains(url.pathExtension))
         case .hideOnly:
-            return self.fileName(typeHidden: prefs.hiddenFileExtensions.extensions.contains(self.type.rawValue))
+            return self.fileName(typeHidden: prefs.hiddenFileExtensions.extensions.contains(url.pathExtension))
         }
     }
 
