@@ -15,7 +15,8 @@ let package = Package(
     targets: [
         .target(
             name: "CodeEditUI",
-            dependencies: [.product(name: "CodeEditSymbols", package: "CodeEditSymbols")]
+            dependencies: [.product(name: "CodeEditSymbols", package: "CodeEditSymbols")],
+            resources: [.process("Resources")]
         ),
         .testTarget(
             name: "CodeEditUIUnitTests",
