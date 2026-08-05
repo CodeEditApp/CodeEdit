@@ -53,9 +53,33 @@ final class ProjectNavigatorViewController: NSViewController {
         }
     }
 
-    var fileExtensionsVisibility: SettingsData.FileExtensionsVisibility = .showAll
-    var shownFileExtensions: SettingsData.FileExtensions = .default
-    var hiddenFileExtensions: SettingsData.FileExtensions = .default
+    // These three drive `CEWorkspaceFile.labelFileName()`, which is read when a cell is built.
+    // Cells are only built by `outlineView(_:viewFor:)`, so without a reload a preference change
+    // leaves every visible label showing the text it was born with — the same reason `iconColor`
+    // and `rowHeight` reload below.
+    var fileExtensionsVisibility: SettingsData.FileExtensionsVisibility = .showAll {
+        willSet {
+            if newValue != fileExtensionsVisibility {
+                outlineView?.reloadData()
+            }
+        }
+    }
+
+    var shownFileExtensions: SettingsData.FileExtensions = .default {
+        willSet {
+            if newValue != shownFileExtensions {
+                outlineView?.reloadData()
+            }
+        }
+    }
+
+    var hiddenFileExtensions: SettingsData.FileExtensions = .default {
+        willSet {
+            if newValue != hiddenFileExtensions {
+                outlineView?.reloadData()
+            }
+        }
+    }
 
     var rowHeight: Double = 22 {
         willSet {
