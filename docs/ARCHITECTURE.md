@@ -187,6 +187,22 @@ swiftlint lint --quiet
 python3 .github/scripts/audit_package_imports.py
 ```
 
+### Known weakness in the CodeEditUI charter (2026-08-05)
+
+Both checks constrain **local** packages only. `ui_package_purity` lists sibling module names in
+a regex, and the audit script inspects `local_deps`. So `CodeEditUI` is barred from importing
+`CodeEditCore` — a zero-dependency, pure-types package — while nothing stops it taking an
+arbitrary *external* dependency, up to and including a tree-sitter grammar bundle. The rule as
+written is narrower than its own stated intent ("presentation atoms must not know about models
+or features") in one direction and far wider in the other.
+
+This surfaced while deduplicating `FileIcon`, which is presentation keyed by a file's identity.
+It was designed to take a `URL` rather than a domain type — so it needs neither `CodeEditCore`
+nor the loophole — and its three custom colorsets moved into the package as resources, making
+`CodeEditUI` self-contained and letting its tests assert colours without an app host. Treat the
+asymmetry as a known weakness, not a licence: adding an external dependency to `CodeEditUI` to
+sidestep the local-package rule would satisfy the letter of the charter and defeat its purpose.
+
 ## Glossary
 
 Several words are overloaded in this codebase. These are the intended meanings; prefer the
