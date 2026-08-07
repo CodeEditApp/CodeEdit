@@ -36,7 +36,7 @@ public final class SearchState: ObservableObject {
     @Published public var replaceText: String = ""
 
     /// The find/replace primitive shared with the Editor feature, kept in sync with
-    /// `searchQuery`/`replaceText` below. See `Packages/Foundation/CodeEditCore`.
+    /// `searchQuery`/`replaceText` below. See `CodeEditModules/Sources/CodeEditCore`.
     public let query = FindReplaceQuery()
 
     private var queryBridgeCancellables: Set<AnyCancellable> = []

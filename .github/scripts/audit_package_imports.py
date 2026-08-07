@@ -2,9 +2,14 @@
 """Audit the CodeEditModules package: every `import` must be declared in the
 manifest, and the three rules from docs/ARCHITECTURE.md must hold.
 
-Why: Xcode workspace builds share one build directory, so an undeclared import
-of a sibling target compiles fine ("leaky import") and only breaks a standalone
-`swift build`. This script makes manifest honesty a PR gate.
+Why: for most targets this script is the ONLY defence against a leaky import.
+Xcode workspace builds share one build directory, so an undeclared import of a
+sibling target compiles fine. The usual backstop — "it breaks a standalone
+`swift build`" — does not exist here: external CodeEditSymbols never declares
+its .xcassets under `resources:`, so SwiftPM synthesises no `Bundle.module`
+accessor and the dependency itself fails to compile. 7 of the 12 targets need it
+transitively, so plain `swift build` is unavailable for them and nothing else
+would catch the violation. Hence manifest honesty is a PR gate.
 
 Usage: python3 .github/scripts/audit_package_imports.py  (from anywhere)
 """

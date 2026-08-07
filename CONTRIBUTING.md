@@ -30,14 +30,15 @@ Please read our guide on [Code Style](https://github.com/CodeEditApp/CodeEdit/wi
 
 ## Architecture
 
-CodeEdit is organized as a tiered workspace of local Swift packages (foundation, services,
-features) plus a thin app target that composes them. Before adding files, please consult the
-decision tree in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — it answers "where does my code
-go?" in a few steps. The short version: new features start as `Packages/Features/CE<Name>`
-packages, feature packages never import each other, and shared code moves to a foundation
-package only when it has multiple consumers *and* passes that package's dependency charter.
-CI enforces these rules (SwiftLint charter rules + a package import audit), so a misplaced
-file will fail checks.
+CodeEdit is a thin app target plus one local multi-target Swift package, `CodeEditModules`,
+whose single `Package.swift` holds the entire local dependency graph. Before adding files,
+please consult the decision tree in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — it answers
+"where does my code go?" in a few steps. The short version: a new feature starts as a new
+target in `CodeEditModules/Package.swift`, `CodeEditCore` stays dependency-free and UI-free,
+and `CodeEditUI` depends on `CodeEditSymbols` alone. CI enforces those as hard rules (SwiftLint
+charter rules + a package import audit), so a misplaced file will fail checks. Features should
+also prefer to be leaves that nothing else depends on — that one is a review preference rather
+than a gate, so declare any target-to-target edge in the manifest where reviewers can see it.
 
 ## Pull Request
 

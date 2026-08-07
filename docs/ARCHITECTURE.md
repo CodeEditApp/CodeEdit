@@ -6,29 +6,41 @@ before you add files will save you a failed check.
 
 ## Package topology
 
-The workspace contains one app project and nine local Swift packages, grouped by tier:
+The workspace contains one app project and one local Swift package holding 12 library targets
+and 5 test targets:
 
 ```
 CodeEdit.xcworkspace
 ├── CodeEdit.xcodeproj                — app shell + composition UI
-└── Packages/
-    ├── Foundation/
+└── CodeEditModules/
+    ├── Package.swift                 — the entire local dependency graph, in one file
+    ├── Sources/
     │   ├── CodeEditCore              — pure types, EventBus, command interfaces (no UI/IO, zero deps)
     │   ├── CodeEditUI                — shared presentation atoms (→ CodeEditSymbols only)
     │   ├── CodeEditDocument          — CodeFileDocument + editor-framework bridging protocols
-    │   └── CodeEditSettings          — settings model + store (UI pages stay app-side)
-    ├── Features/                     — CEEditor, CESearch, CENotifications, CELSP,
-    │                                   CESourceControl, CETerminal (one package per feature)
-    └── Services/CodeEditServices     — ShellClient, CEWorkspaceFileManager (one target each)
+    │   ├── CodeEditSettings          — settings model + store (UI pages stay app-side)
+    │   ├── ShellClient               — Process adapter
+    │   ├── CEWorkspaceFileManager    — FileManager + FSEvents workspace tree
+    │   └── CEEditor, CESearch, CENotifications, CELSP, CESourceControl, CETerminal
+    │                                 — one target per feature
+    └── Tests/                        — CodeEditCoreTests, CodeEditUIUnitTests, CESearchTests,
+                                        CELSPTests, CESourceControlTests
 ```
 
-Naming: `CodeEdit*` = foundation substrate (peer-named with the external CodeEdit libraries),
-`CE*` = feature packages (peer-named with the `CE*` domain types). Services are named after
-their primary type.
+Each library target publishes a like-named `.library` product, and the app target links the ones
+it needs. Inside the manifest, targets reference each other by bare name, so the whole graph is
+legible in a single file — which is the point. See
+[History](#history-why-the-2022-module-split-failed) for what the previous arrangement cost.
 
-All local packages build with Swift 6 strict concurrency. The app target is still Swift 5 —
-write new app-side code Swift-6-ready, and don't add `@MainActor` to app types whose callers
-aren't isolated (it cascades).
+Naming: `CodeEdit*` marks substrate peer-named with the external CodeEdit libraries
+(`CodeEditSourceEditor`, `CodeEditSymbols`, …); `CE*` marks app-internal feature contexts,
+peer-named with the `CE*` domain types. Apply `CE` only where the bare name would collide with a
+stdlib/SwiftUI/AppKit/vendor type — it is a collision-avoider, not a namespace.
+
+Every target builds with Swift 6 strict concurrency **except `CEEditor`**, which declares
+`.swiftLanguageMode(.v5)` and is the sole exception. The app target is still Swift 5 — write new
+app-side code Swift-6-ready, and don't add `@MainActor` to app types whose callers aren't
+isolated (it cascades).
 
 ## History: why the 2022 module split failed
 
