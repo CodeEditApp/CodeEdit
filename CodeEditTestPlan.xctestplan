@@ -35,35 +35,35 @@
     },
     {
       "target" : {
-        "containerPath" : "container:Packages\/Foundation\/CodeEditCore",
+        "containerPath" : "container:CodeEditModules",
         "identifier" : "CodeEditCoreTests",
         "name" : "CodeEditCoreTests"
       }
     },
     {
       "target" : {
-        "containerPath" : "container:Packages\/Features\/CESearch",
+        "containerPath" : "container:CodeEditModules",
         "identifier" : "CESearchTests",
         "name" : "CESearchTests"
       }
     },
     {
       "target" : {
-        "containerPath" : "container:Packages\/Foundation\/CodeEditUI",
+        "containerPath" : "container:CodeEditModules",
         "identifier" : "CodeEditUIUnitTests",
         "name" : "CodeEditUIUnitTests"
       }
     },
     {
       "target" : {
-        "containerPath" : "container:Packages\/Features\/CELSP",
+        "containerPath" : "container:CodeEditModules",
         "identifier" : "CELSPTests",
         "name" : "CELSPTests"
       }
     },
     {
       "target" : {
-        "containerPath" : "container:Packages\/Features\/CESourceControl",
+        "containerPath" : "container:CodeEditModules",
         "identifier" : "CESourceControlTests",
         "name" : "CESourceControlTests"
       }

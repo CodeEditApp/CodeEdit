@@ -4,49 +4,7 @@
    <FileRef
       location = "container:CodeEdit.xcodeproj">
    </FileRef>
-   <Group
-      location = "group:Packages/Foundation"
-      name = "Foundation">
-      <FileRef
-         location = "group:CodeEditCore">
-      </FileRef>
-      <FileRef
-         location = "group:CodeEditUI">
-      </FileRef>
-      <FileRef
-         location = "group:CodeEditDocument">
-      </FileRef>
-      <FileRef
-         location = "group:CodeEditSettings">
-      </FileRef>
-   </Group>
-   <Group
-      location = "group:Packages/Services"
-      name = "Services">
-      <FileRef
-         location = "group:CodeEditServices">
-      </FileRef>
-   </Group>
-   <Group
-      location = "group:Packages/Features"
-      name = "Features">
-      <FileRef
-         location = "group:CESearch">
-      </FileRef>
-      <FileRef
-         location = "group:CENotifications">
-      </FileRef>
-      <FileRef
-         location = "group:CEEditor">
-      </FileRef>
-      <FileRef
-         location = "group:CELSP">
-      </FileRef>
-      <FileRef
-         location = "group:CESourceControl">
-      </FileRef>
-      <FileRef
-         location = "group:CETerminal">
-      </FileRef>
-   </Group>
+   <FileRef
+      location = "group:CodeEditModules">
+   </FileRef>
 </Workspace>

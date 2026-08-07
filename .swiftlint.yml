@@ -15,7 +15,7 @@ identifier_name:
 
 # paths to ignore during linting.
 excluded:
-  - "**/.build" # SwiftPM dependency checkouts (inside any local package under Packages/)
+  - "**/.build" # SwiftPM dependency checkouts (inside CodeEditModules/)
   - "**/.swiftpm"
   - DerivedData
 
@@ -40,13 +40,13 @@ custom_rules:
     message: "Prefer spaces for indents over tabs. See Xcode setting: 'Text Editing' -> 'Indentation'"
     severity: warning
   no_ui_in_core:
-    included: "Packages/Foundation/CodeEditCore/.*\\.swift"
+    included: "CodeEditModules/Sources/CodeEditCore/.*\\.swift"
     name: "CodeEditCore charter"
     regex: "^import (SwiftUI|AppKit|Cocoa)$"
     message: "CodeEditCore must stay UI-free — move UI-coupled code to CodeEditUI or the owning feature (see docs/ARCHITECTURE.md)"
     severity: error
   ui_package_purity:
-    included: "Packages/Foundation/CodeEditUI/.*\\.swift"
+    included: "CodeEditModules/Sources/CodeEditUI/.*\\.swift"
     name: "CodeEditUI charter"
     regex: "^import (CodeEditCore|CodeEditDocument|CodeEditSettings|CEEditor|CESearch|CENotifications|CELSP|CESourceControl|CETerminal|ShellClient|CEWorkspaceFileManager)$"
     message: "CodeEditUI depends on CodeEditSymbols only — presentation atoms must not know about models or features (see docs/ARCHITECTURE.md)"
