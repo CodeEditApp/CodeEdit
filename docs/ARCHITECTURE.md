@@ -30,6 +30,48 @@ All local packages build with Swift 6 strict concurrency. The app target is stil
 write new app-side code Swift-6-ready, and don't add `@MainActor` to app types whose callers
 aren't isolated (it cascades).
 
+## History: why the 2022 module split failed
+
+The project already tried a single multi-target `CodeEditModules` package. It was deleted on
+2022-12-03 (commit `4858de16`) after repeated cyclic-dependency problems, and everything moved into
+the app target. **The cycles were not caused by the packaging shape.** The 2022 manifest's own edges
+explain them:
+
+| Cause | Evidence in the 2022 manifest |
+|---|---|
+| **No kernel existed** | No framework-free contracts target. Shared types lived in whichever module happened to own them, so "A and B both need X" was only expressible as a feature→feature edge. |
+| **Domain depended on UI** | `WorkspaceClient → TabBar` |
+| **Shared UI depended on domain** | `CodeEditUI → WorkspaceClient, Git` |
+| **A god-module hub** | `AppPreferences → CodeEditUI, Git, Keybindings, CodeEditUtils, Sparkle, CodeEditTextView`, itself depended on by half the tree |
+
+With the bottom of the graph pointing up into the top, cycles were the steady state rather than an
+accident. The same manifest split across eleven separate packages fails identically — SwiftPM refuses
+to resolve a cyclic graph either way.
+
+**`CodeEditCore` is the fix, and it now exists.** Zero dependencies, framework-free, holding domain
+values, the typed `EventBus`, and the cross-feature command interfaces. Every "A and B both need X"
+now resolves *downward*. Both 2022 killers are structurally impossible today: the domain lives in
+`CodeEditCore`, which may import nothing, and `CodeEditUI → Git` is blocked by the `CodeEditUI`
+purity rule.
+
+### Cycle-resolution playbook
+
+Detection was never the problem — SwiftPM refuses a cyclic target graph as a hard error. The 2022
+failure was that detection had no accompanying *resolution* technique, so the exit taken was to
+collapse everything into the app target. When you hit a cycle, the legal moves, in preference order:
+
+1. **Push the shared thing down to `CodeEditCore`** — a protocol, an event, or a value type. This is
+   what `EventBus` and the command interfaces (`WorkspaceNavigator`, `TasksConfigurationProviding`, …)
+   are for. The default answer.
+2. **Push the coordination up to the app target** — the app may depend on everything. Two leaf
+   features never need to know each other if a doer wires them (`WorkspaceOpener`, `DocumentOpener`).
+3. **Merge the two targets** — if A and B genuinely will not separate, the boundary was drawn wrong.
+   Merging is a correct outcome, not a defeat; in one package it is a folder move plus a three-line
+   manifest edit.
+
+Never resolve a cycle by moving code back into the app target. That is what happened in 2022 and it
+cost four years of enforced boundaries.
+
 ## Tier charters
 
 | Tier | Package(s) | May depend on | Must never contain |
