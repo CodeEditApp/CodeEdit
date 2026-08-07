@@ -72,34 +72,55 @@ collapse everything into the app target. When you hit a cycle, the legal moves, 
 Never resolve a cycle by moving code back into the app target. That is what happened in 2022 and it
 cost four years of enforced boundaries.
 
-## Tier charters
+## Rules
 
-| Tier | Package(s) | May depend on | Must never contain |
-|---|---|---|---|
-| Foundation | CodeEditCore | *nothing* | UI or I/O framework imports (SwiftUI/AppKit), external deps |
-| Foundation | CodeEditUI | CodeEditSymbols only | feature semantics, model/service imports |
-| Foundation | CodeEditDocument | CodeEditCore + editor libraries | app-tier types |
-| Foundation | CodeEditSettings | CodeEditCore | settings *pages* (those are app-side composition UI) |
-| Services | CodeEditServices targets | CodeEditCore only | UI imports, sibling service targets |
-| Features | `CE*` packages | Foundation tiers + external libraries | **other `CE*` feature packages** |
-| App | CodeEdit target | everything | — (it's the composition layer, not the default dumping ground) |
+Three checks are enforced in CI. Each one blocks a specific failure documented in
+[History](#history-why-the-2022-module-split-failed) — none is enforced on principle alone.
+
+1. **`CodeEditCore` purity.** Zero dependencies, local or external. No `SwiftUI`, `AppKit`, or
+   `Cocoa` import. Blocks 2022's `WorkspaceClient → TabBar`. Keep it platform-free too: it is the one
+   target that would port to iPadOS unchanged.
+2. **`CodeEditUI` purity.** No local target dependencies; external `CodeEditSymbols` only. Blocks
+   2022's `CodeEditUI → Git`. This is why `FileIcon` is keyed on `URL` rather than on a domain type —
+   a deliberate consequence, not an accident.
+3. **Import honesty.** Every `import` in a target's sources must be declared in that target's
+   manifest dependencies. Xcode workspace builds share one build directory, so an undeclared import
+   of a sibling compiles fine and only breaks a standalone `swift build`.
+
+Plus one assertion: **only `CEEditor` may declare `.swiftLanguageMode(.v5)`.** Every other target
+inherits Swift 6 from the package's tools version. A target silently dropping to Swift 5 would lose
+strict-concurrency enforcement without anything failing.
+
+### Norms (review-time, not gates)
+
+**Prefer features to be leaves.** Nothing should depend on a feature target. When an edge between two
+features is genuinely needed, try the three
+[cycle-resolution moves](#cycle-resolution-playbook) first, then declare the edge in the manifest
+where it is visible to everyone. Acyclicity itself needs no rule — SwiftPM enforces it.
+
+**Hub heuristic.** Any target both depended on by three or more others *and* itself depending on
+three or more is a hub under review. 2022's `AppPreferences` was exactly this and would have been
+flagged years before it became fatal. `CodeEditSettings` is the current watch item: four dependents,
+and it imports `AppKit` in 3 files and `SwiftUI` in 9.
 
 ## Where does my code go?
 
 Work through these in order; the first match wins.
 
-1. **A new user-facing feature?** → A new `Packages/Features/CE<Name>` package (see the
-   [recipe](#creating-a-new-feature-package)). Features start as packages; the app target is
+1. **A new user-facing feature?** → A new target at `CodeEditModules/Sources/CE<Name>` (see the
+   [recipe](#creating-a-new-feature-target)). Features start as targets; the app target is
    not the default. Exception: *shell chrome* that composes multiple features around the
    concrete `Workspace` hub — navigator/inspector/utility areas, the status bar — stays
    app-side, because its interface would effectively be "the whole app".
 2. **A type, protocol, event, or command interface needed by two or more features?** →
-   `CodeEditCore`, *if* it passes the charter (no UI/IO imports, no external dependencies).
-   Events (facts, e.g. `TaskNotificationEvent`) and command interfaces (requests with exactly
-   one handler, e.g. `WorkspaceNavigator`) always live here.
-3. **A reusable view, style, or view modifier with no feature semantics?** → `CodeEditUI`.
-4. **A service that performs I/O and has no UI?** → A new target in `CodeEditServices`
-   (Core-only dependencies, its own library product, the app links it directly).
+   `CodeEditModules/Sources/CodeEditCore`, *if* it passes the charter (no UI/IO imports, no
+   external dependencies). Events (facts, e.g. `TaskNotificationEvent`) and command interfaces
+   (requests with exactly one handler, e.g. `WorkspaceNavigator`) always live here.
+3. **A reusable view, style, or view modifier with no feature semantics?** →
+   `CodeEditModules/Sources/CodeEditUI`.
+4. **A service that performs I/O and has no UI?** → A new target at
+   `CodeEditModules/Sources/<ServiceName>` (Core-only dependencies, its own library product, the
+   app links it directly).
 5. **Cross-service orchestration?** → A doer-style role-noun class in the feature that owns
    the operation (`WorkspaceOpener`, `FileMover`, `RepositoryCloner` — the `NSFileCoordinator`
    naming idiom). One doer per operation that touches more than one service; dependencies
@@ -166,47 +187,34 @@ Grouping is **purpose-first**:
   (the presentation-state split), and views issue commands through protocol-typed environment
   keys.
 
-## Creating a new feature package
+## Creating a new feature target
 
-1. Create `Packages/Features/CE<Name>/Package.swift`:
+1. Create the folder `CodeEditModules/Sources/CE<Name>/` and add a target and product for it in
+   `CodeEditModules/Package.swift`:
 
    ```swift
-   // swift-tools-version: 6.0
-
-   import PackageDescription
-
-   let package = Package(
-       name: "CE<Name>",
-       platforms: [.macOS(.v14)],
-       products: [
-           .library(name: "CE<Name>", targets: ["CE<Name>"])
-       ],
-       dependencies: [
-           .package(path: "../../Foundation/CodeEditCore"),
-           .package(path: "../../Foundation/CodeEditUI")
-       ],
-       targets: [
-           .target(
-               name: "CE<Name>",
-               dependencies: [
-                   .product(name: "CodeEditCore", package: "CodeEditCore"),
-                   .product(name: "CodeEditUI", package: "CodeEditUI")
-               ]
-           )
-       ]
-   )
+   .library(name: "CE<Name>", targets: ["CE<Name>"]),
    ```
 
-2. Add the package to the workspace: in Xcode, drag the folder into the **Features** group of
-   the workspace navigator (or add a `FileRef` to `CodeEdit.xcworkspace/contents.xcworkspacedata`).
-3. Link the product to the app: CodeEdit target → *General* → *Frameworks, Libraries, and
+   ```swift
+   .target(
+       name: "CE<Name>",
+       dependencies: [
+           "CodeEditCore",
+           "CodeEditUI"
+       ]
+   ),
+   ```
+
+2. Link the product to the app: CodeEdit target → *General* → *Frameworks, Libraries, and
    Embedded Content* → add `CE<Name>`.
-4. Remember the package builds with **Swift 6 strict concurrency** — types crossing actor
-   boundaries need `Sendable`, and UI-bound classes are usually `@MainActor`.
-5. Known quirk: packages that depend on `CodeEditSymbols` build via Xcode/xcodebuild only —
+3. Remember the target builds with **Swift 6 strict concurrency** — types crossing actor
+   boundaries need `Sendable`, and UI-bound classes are usually `@MainActor`. (`CEEditor` is the
+   sole exception — see [Rules](#rules).)
+4. Known quirk: targets that depend on `CodeEditSymbols` build via Xcode/xcodebuild only —
    standalone `swift build` fails on its `Bundle.module` resolution.
-6. Declare **every** module you import in the manifest. The workspace's shared build directory
-   makes undeclared imports of sibling packages compile by accident — CI will catch it
+5. Declare **every** module you import in the manifest. The workspace's shared build directory
+   makes undeclared imports of sibling targets compile by accident — CI will catch it
    (see below).
 
 ## Enforcement
@@ -214,13 +222,14 @@ Grouping is **purpose-first**:
 Two automated checks keep this document honest; both run on every PR:
 
 - **SwiftLint** (`swiftlint --strict`, config in `.swiftlint.yml`) — includes custom rules
-  that reject UI imports in CodeEditCore, feature→feature imports, and model/feature imports
-  in CodeEditUI. These fire inside Xcode while you type.
-- **The package audit** (`.github/scripts/audit_package_imports.py`) — verifies every
-  `import` in every package is declared in that package's manifest, and that the tier rules
-  in the charter table hold. It exists because Xcode workspace builds share one build
-  directory, so an undeclared import of a sibling package compiles fine locally and the
-  violation stays invisible until a standalone build breaks.
+  that reject UI imports in CodeEditCore and model/feature imports in CodeEditUI. These fire
+  inside Xcode while you type.
+- **The package audit** (`.github/scripts/audit_package_imports.py`) — verifies every `import`
+  in every target is declared in that target's manifest dependencies, and that the three
+  [Rules](#rules) plus the language-mode assertion hold. It exists because Xcode workspace
+  builds share one build directory, so an undeclared import of a sibling target compiles fine
+  locally and the violation stays invisible until a standalone build breaks. Every target is
+  declared in `CodeEditModules/Package.swift`.
 
 Run both locally from the repo root:
 
@@ -231,8 +240,9 @@ python3 .github/scripts/audit_package_imports.py
 
 ### Known weakness in the CodeEditUI charter (2026-08-05)
 
-Both checks constrain **local** packages only. `ui_package_purity` lists sibling module names in
-a regex, and the audit script inspects `local_deps`. So `CodeEditUI` is barred from importing
+Both checks constrain **local** targets only. `ui_package_purity` lists sibling module names in
+a regex, and the audit script intersects the target's declared dependencies with the package's
+library targets. So `CodeEditUI` is barred from importing
 `CodeEditCore` — a zero-dependency, pure-types package — while nothing stops it taking an
 arbitrary *external* dependency, up to and including a tree-sitter grammar bundle. The rule as
 written is narrower than its own stated intent ("presentation atoms must not know about models
