@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Audit local Swift packages: every `import` must be declared in the package
-manifest, and the tier rules from docs/ARCHITECTURE.md must hold.
+"""Audit the CodeEditModules package: every `import` must be declared in the
+manifest, and the three rules from docs/ARCHITECTURE.md must hold.
 
 Why: Xcode workspace builds share one build directory, so an undeclared import
-of a sibling local package compiles fine ("leaky import") and only breaks a
-standalone `swift build`. This script makes manifest honesty a PR gate.
+of a sibling target compiles fine ("leaky import") and only breaks a standalone
+`swift build`. This script makes manifest honesty a PR gate.
 
 Usage: python3 .github/scripts/audit_package_imports.py  (from anywhere)
 """
@@ -13,7 +13,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-PACKAGES = REPO / "Packages"
+PACKAGE = REPO / "CodeEditModules"
+MANIFEST = PACKAGE / "Package.swift"
 
 # Apple SDK modules used in this codebase; extend when a new system framework is adopted.
 SYSTEM_MODULES = {
@@ -23,81 +24,137 @@ SYSTEM_MODULES = {
     "Swift", "XCTest", "Testing",
 }
 
-LOCAL_PRODUCTS = {
-    "CodeEditCore", "CodeEditUI", "CodeEditDocument", "CodeEditSettings",
-    "CEEditor", "CESearch", "CENotifications", "CELSP", "CESourceControl",
-    "CETerminal", "ShellClient", "CEWorkspaceFileManager",
-}
-FEATURE_PRODUCTS = {"CEEditor", "CESearch", "CENotifications", "CELSP", "CESourceControl", "CETerminal"}
 UI_FRAMEWORKS = {"SwiftUI", "AppKit", "Cocoa"}
+
+# Rule 4: the single target permitted to opt out of Swift 6.
+SWIFT5_ALLOWED = {"CEEditor"}
 
 IMPORT_RE = re.compile(
     r"^\s*(?:@[\w()]+\s+)?import\s+(?:struct\s+|class\s+|enum\s+|func\s+|var\s+)?([A-Za-z_][A-Za-z0-9_]*)",
     re.MULTILINE,
 )
-PRODUCT_DEP_RE = re.compile(r'\.product\(\s*name:\s*"([^"]+)"')
-TARGET_RE = re.compile(r'\.(?:target|executableTarget|testTarget)\(\s*name:\s*"([^"]+)"')
+TARGET_START_RE = re.compile(r"\.(target|testTarget)\(\s*name:\s*\"([^\"]+)\"")
 
 
-def manifest_declared(manifest_text: str) -> set:
-    """Modules a target in this package may legitimately import."""
-    declared = set(PRODUCT_DEP_RE.findall(manifest_text))
-    declared |= set(TARGET_RE.findall(manifest_text))  # own targets
-    # bare-string dependencies inside dependencies: [...] arrays
-    for match in re.findall(r"dependencies:\s*\[([^\]]*)\]", manifest_text, re.DOTALL):
-        declared |= set(re.findall(r'"([A-Za-z][\w-]*)"', match))
-    return declared
+def balanced_block(text, open_index):
+    """Return text from the '(' at open_index through its matching ')'."""
+    depth = 0
+    for i in range(open_index, len(text)):
+        if text[i] == "(":
+            depth += 1
+        elif text[i] == ")":
+            depth -= 1
+            if depth == 0:
+                return text[open_index:i + 1]
+    raise ValueError("unbalanced parentheses in manifest")
+
+
+def parse_targets(text):
+    """Map target name -> {kind, deps, swift_modes} from the manifest."""
+    targets = {}
+    for match in TARGET_START_RE.finditer(text):
+        kind, name = match.group(1), match.group(2)
+        paren = text.index("(", match.start())
+        block = balanced_block(text, paren)
+        deps = set(re.findall(r'"([A-Za-z][\w.\-]*)"', _dependencies_slice(block)))
+        deps |= set(re.findall(r'\.product\(\s*name:\s*"([^"]+)"', block))
+        deps.discard(name)
+        targets[name] = {
+            "kind": kind,
+            "deps": deps,
+            "swift_modes": set(re.findall(r"\.swiftLanguageMode\(\.(\w+)\)", block)),
+        }
+    return targets
+
+
+def _dependencies_slice(block):
+    """The text inside this target's `dependencies: [...]`, or '' if absent."""
+    match = re.search(r"dependencies:\s*\[", block)
+    if not match:
+        return ""
+    start = block.index("[", match.start())
+    depth = 0
+    for i in range(start, len(block)):
+        if block[i] == "[":
+            depth += 1
+        elif block[i] == "]":
+            depth -= 1
+            if depth == 0:
+                return block[start:i + 1]
+    return ""
 
 
 def main() -> int:
-    failures = []
-    manifests = sorted(PACKAGES.glob("*/*/Package.swift"))
-    if not manifests:
-        print(f"Package audit FAILED: no manifests found under {PACKAGES}")
+    if not MANIFEST.exists():
+        print(f"Package audit FAILED: no manifest at {MANIFEST}")
         return 1
 
-    for manifest in manifests:
-        pkg_dir = manifest.parent
-        pkg_name = pkg_dir.name
-        tier = pkg_dir.parent.name  # Foundation | Services | Features
-        text = manifest.read_text()
-        declared = manifest_declared(text)
-        own_targets = set(TARGET_RE.findall(text)) | {pkg_name}
-        # A package's own targets are not dependencies — exclude them from tier analysis.
-        local_deps = (declared - own_targets) & LOCAL_PRODUCTS
+    text = MANIFEST.read_text()
+    targets = parse_targets(text)
+    library_targets = {n for n, t in targets.items() if t["kind"] == "target"}
+    failures = []
 
-        # --- tier rules on the manifest itself ---
-        if pkg_name == "CodeEditCore" and PRODUCT_DEP_RE.search(text):
-            failures.append(f"{pkg_name}: CodeEditCore must have zero dependencies")
-        if pkg_name == "CodeEditUI" and local_deps:
-            failures.append(f"{pkg_name}: CodeEditUI may not depend on local packages (CodeEditSymbols only)")
-        if tier == "Services" and local_deps - {"CodeEditCore"}:
+    # --- Rule 1: CodeEditCore purity (manifest half) ---
+    if targets.get("CodeEditCore", {}).get("deps"):
+        failures.append(
+            "CodeEditCore must have zero dependencies "
+            f"(found {sorted(targets['CodeEditCore']['deps'])})"
+        )
+
+    # --- Rule 2: CodeEditUI purity ---
+    ui_local = targets.get("CodeEditUI", {}).get("deps", set()) & library_targets
+    if ui_local:
+        failures.append(
+            "CodeEditUI may not depend on local targets — CodeEditSymbols only "
+            f"(found {sorted(ui_local)})"
+        )
+
+    # --- Rule 4: language-mode assertion ---
+    for name, target in sorted(targets.items()):
+        if "v5" in target["swift_modes"] and name not in SWIFT5_ALLOWED:
             failures.append(
-                f"{pkg_name}: service targets may depend on CodeEditCore only "
-                f"(found {sorted(local_deps - {'CodeEditCore'})})"
-            )
-        if tier == "Features" and (local_deps & FEATURE_PRODUCTS) - {pkg_name}:
-            failures.append(
-                f"{pkg_name}: feature packages may not depend on other feature packages "
-                f"(found {sorted((local_deps & FEATURE_PRODUCTS) - {pkg_name})})"
+                f"{name}: only {sorted(SWIFT5_ALLOWED)} may declare .swiftLanguageMode(.v5) — "
+                "every other target must stay on Swift 6"
             )
 
-        # --- import honesty per source file ---
-        allowed = declared | SYSTEM_MODULES | {pkg_name}
-        for swift in sorted((pkg_dir / "Sources").rglob("*.swift")):
+    # --- Rule 3: import honesty, plus Rule 1's no-UI half ---
+    for name, target in sorted(targets.items()):
+        source_dir = PACKAGE / ("Tests" if target["kind"] == "testTarget" else "Sources") / name
+        if not source_dir.is_dir():
+            failures.append(f"{name}: declared in the manifest but {source_dir} does not exist")
+            continue
+        system_modules = SYSTEM_MODULES - UI_FRAMEWORKS if name == "CodeEditCore" else SYSTEM_MODULES
+        allowed = target["deps"] | system_modules | {name}
+        for swift in sorted(source_dir.rglob("*.swift")):
             rel = swift.relative_to(REPO)
             for module in sorted(set(IMPORT_RE.findall(swift.read_text()))):
                 if module not in allowed:
-                    failures.append(f"{rel}: import {module} is not declared in {pkg_name}/Package.swift")
-                if pkg_name == "CodeEditCore" and module in UI_FRAMEWORKS:
-                    failures.append(f"{rel}: {module} import violates the CodeEditCore no-UI charter")
+                    failures.append(f"{rel}: import {module} is not declared for target {name}")
+                if name == "CodeEditCore" and module in UI_FRAMEWORKS:
+                    failures.append(f"{rel}: {module} import violates the CodeEditCore no-UI rule")
 
     if failures:
         print(f"Package audit FAILED ({len(failures)} violations):")
         for failure in failures:
             print(f"  {failure}")
         return 1
-    print(f"Package audit passed ({len(manifests)} packages).")
+
+    # --- Norm (informational only): hub heuristic ---
+    dependents = {n: 0 for n in targets}
+    for target in targets.values():
+        for dep in target["deps"]:
+            if dep in dependents:
+                dependents[dep] += 1
+    hubs = sorted(
+        n for n, t in targets.items()
+        if t["kind"] == "target"
+        and dependents[n] >= 3
+        and len(t["deps"] & library_targets) >= 3
+    )
+    if hubs:
+        print(f"Note — hub targets under review (>=3 dependents and >=3 local deps): {hubs}")
+
+    print(f"Package audit passed ({len(library_targets)} library targets).")
     return 0
 
 
