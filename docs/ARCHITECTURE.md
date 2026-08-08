@@ -97,7 +97,9 @@ Three checks are enforced in CI. Each one blocks a specific failure documented i
    a deliberate consequence, not an accident.
 3. **Import honesty.** Every `import` in a target's sources must be declared in that target's
    manifest dependencies. Xcode workspace builds share one build directory, so an undeclared import
-   of a sibling compiles fine and only breaks a standalone `swift build`.
+   of a sibling compiles fine and nothing else catches it. For the 7 targets that transitively need
+   `CodeEditSymbols`, a standalone `swift build` is not available as a backstop either — see
+   [Enforcement](#enforcement) — so this check is their only defence, not a redundant one.
 
 Plus one assertion: **only `CEEditor` may declare `.swiftLanguageMode(.v5)`.** Every other target
 inherits Swift 6 from the package's tools version. A target silently dropping to Swift 5 would lose
@@ -240,8 +242,9 @@ Two automated checks keep this document honest; both run on every PR:
   in every target is declared in that target's manifest dependencies, and that the three
   [Rules](#rules) plus the language-mode assertion hold. It exists because Xcode workspace
   builds share one build directory, so an undeclared import of a sibling target compiles fine
-  locally and the violation stays invisible until a standalone build breaks. Every target is
-  declared in `CodeEditModules/Package.swift`.
+  locally. For the 7 targets that transitively need `CodeEditSymbols` there is no standalone
+  `swift build` to fall back on either (see the quirk above), so for most of the graph this
+  audit is the only thing standing between a leaky import and `main`.
 
 Run both locally from the repo root:
 
