@@ -32,7 +32,8 @@ enum WorkspaceFactory {
         let sourceControlManager = SourceControlManager(
             workspaceURL: url,
             shellClient: dependencies.shellClient,
-            eventBus: eventBus
+            eventBus: eventBus,
+            settingsReader: dependencies.settingsReader
         )
         let workspaceFileManager = CEWorkspaceFileManager(
             folderUrl: url,

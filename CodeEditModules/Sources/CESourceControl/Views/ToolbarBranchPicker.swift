@@ -24,6 +24,9 @@ public struct ToolbarBranchPicker: View {
     @State private var displayPopover: Bool = false
     @State private var currentBranch: GitBranch?
 
+    @SettingsValue(SourceControlSettings.self, \.general.sourceControlIsEnabled)
+    private var sourceControlIsEnabled
+
     /// Initializes the picker with the workspace's display name (shown when no
     /// branch is available) and its source-control manager.
     public init(
@@ -88,7 +91,7 @@ public struct ToolbarBranchPicker: View {
             self.currentBranch = branch
         }
         .task {
-            if Settings.shared.preferences.sourceControl.general.sourceControlIsEnabled {
+            if sourceControlIsEnabled {
                 await self.sourceControlManager?.refreshCurrentBranch()
                 await self.sourceControlManager?.refreshBranches()
             }

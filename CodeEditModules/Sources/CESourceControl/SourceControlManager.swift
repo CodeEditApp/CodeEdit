@@ -9,6 +9,7 @@ import Combine
 import Foundation
 import OSLog
 import CodeEditCore
+import CodeEditSettings
 
 /// Stores git state for the workspace and delegates operations to ``GitClient``.
 ///
@@ -33,6 +34,7 @@ public final class SourceControlManager: ObservableObject {
     public let workspaceURL: URL
 
     let eventBus: EventBus
+    let settingsReader: SettingsReading
     var fileEventCancellables: Set<AnyCancellable> = []
 
     // MARK: - Git State
@@ -73,10 +75,12 @@ public final class SourceControlManager: ObservableObject {
     public init(
         workspaceURL: URL,
         shellClient: ShellClientProtocol,
-        eventBus: EventBus
+        eventBus: EventBus,
+        settingsReader: SettingsReading
     ) {
         self.workspaceURL = workspaceURL
         self.eventBus = eventBus
+        self.settingsReader = settingsReader
         gitClient = GitClient(directoryURL: workspaceURL, shellClient: shellClient)
         gitConfig = GitConfigClient(shellClient: shellClient)
         subscribeToWorkspaceFileEvents()

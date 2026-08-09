@@ -8,6 +8,7 @@
 import CELSP
 import CodeEditCore
 import CodeEditDocument
+import CodeEditSettings
 import CENotifications
 import ShellClient
 
@@ -28,6 +29,11 @@ final class AppDependencies {
     private(set) lazy var eventBus = EventBus()
 
     private(set) lazy var shellClient: ShellClientProtocol = ShellClient()
+
+    /// Feature-side settings access. Defaults-only until Task 9/10 wires a store-backed reader
+    /// over `Settings.shared`'s persisted data — feature packages already read through this
+    /// interface, so that swap will not touch any of their call sites.
+    private(set) lazy var settingsReader: SettingsReading = DefaultSettingsReader()
 
     private(set) lazy var commandManager: CommandManaging = CommandManager()
 

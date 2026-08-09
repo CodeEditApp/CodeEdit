@@ -66,7 +66,7 @@ extension SourceControlManager {
         case .childrenIndexed:
             Task { await self.refreshAllChangedFiles() }
         case let .filesystemChanged(paths):
-            let settings = Settings.shared.preferences.sourceControl.general
+            let settings = settingsReader.value(SourceControlSettings.self).general
             guard settings.sourceControlIsEnabled && settings.refreshStatusLocally else { return }
             dispatch(Self.gitRefreshActions(for: paths, workspaceRelativePath: workspaceURL.relativePath))
         }

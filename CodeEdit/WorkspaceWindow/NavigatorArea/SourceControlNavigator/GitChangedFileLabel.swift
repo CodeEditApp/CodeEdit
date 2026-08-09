@@ -10,6 +10,7 @@ import SwiftUI
 import ShellClient
 import CEWorkspaceFileManager
 import CodeEditCore
+import CodeEditSettings
 import CodeEditUI
 
 struct GitChangedFileLabel: View {
@@ -48,7 +49,8 @@ struct GitChangedFileLabel: View {
         .environmentObject(SourceControlManager(
             workspaceURL: URL(filePath: "/Users/CodeEdit"),
             shellClient: ShellClient(),
-            eventBus: EventBus()
+            eventBus: EventBus(),
+            settingsReader: DefaultSettingsReader()
         ))
 
         GitChangedFileLabel(file: GitChangedFile(
@@ -60,7 +62,8 @@ struct GitChangedFileLabel: View {
         .environmentObject(SourceControlManager(
             workspaceURL: URL(filePath: "/Users/CodeEdit"),
             shellClient: ShellClient(),
-            eventBus: EventBus()
+            eventBus: EventBus(),
+            settingsReader: DefaultSettingsReader()
         ))
     }.padding()
 }
