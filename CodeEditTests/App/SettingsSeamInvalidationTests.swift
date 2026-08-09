@@ -86,8 +86,16 @@ struct SettingsSeamInvalidationTests {
         #expect(Settings.shared.revision == before + 1)
     }
 
+    /// Guards the **outcome** users care about: a settings change reaches a view reading through the
+    /// seam.
+    ///
+    /// It deliberately does NOT isolate the `\.settingsRevision` mechanism — it passes with and
+    /// without that key, because SwiftUI also re-evaluates the probe when `SettingsInjector`'s body
+    /// reruns. Do not read a pass here as evidence the revision signal works; that is
+    /// ``changingSettingsBumpsTheRevision``'s job. What this catches is the seam silently failing to
+    /// deliver updated values at all — the failure mode that has recurred most on this branch.
     @Test
-    func settingsChangeReRendersAViewReadingThroughTheSeam() async throws {
+    func settingsChangeReachesAViewThroughTheSeam() async throws {
         let original = Settings.shared.preferences.terminal.cursorBlink
         defer { Settings.shared.preferences.terminal.cursorBlink = original }
 
