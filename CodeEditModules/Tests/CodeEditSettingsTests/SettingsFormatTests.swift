@@ -54,6 +54,22 @@ struct SettingsFormatTests {
         #expect(DeveloperSettings.settingsKey == "developerSettings")
     }
 
+    @Test
+    func snapshotReaderReturnsTheGivenSection() {
+        var terminal = TerminalSettings()
+        terminal.cursorBlink = true
+        let reader = SnapshotSettingsReader([TerminalSettings.settingsKey: terminal])
+
+        #expect(reader.value(TerminalSettings.self).cursorBlink == true)
+    }
+
+    @Test
+    func snapshotReaderFallsBackToDefaults() {
+        let reader = SnapshotSettingsReader([:])
+
+        #expect(reader.value(TerminalSettings.self) == TerminalSettings())
+    }
+
     /// Every section present on disk must survive a save, whether or not anything is registered to
     /// read it. This is what keeps a disabled or not-yet-loaded extension's configuration alive.
     ///
