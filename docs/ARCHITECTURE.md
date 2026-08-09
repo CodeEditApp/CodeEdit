@@ -201,6 +201,38 @@ Grouping is **purpose-first**:
   (the presentation-state split), and views issue commands through protocol-typed environment
   keys.
 
+## Reading and writing settings
+
+Feature packages reach settings through the **settings seam** in `CodeEditSettings`
+(`Store/SettingsValue.swift`, `Store/SettingsAccessing.swift`) — never through a singleton and
+never by naming the app-wide `SettingsData` aggregate. Three roles, pick by consumer kind:
+
+| Consumer | Use | Why |
+| --- | --- | --- |
+| SwiftUI view | `@SettingsValue(TerminalSettings.self, \.cursorBlink)` | Resolves from the environment; `$`-projects a `Binding` for `Toggle`/`TextField`. |
+| Read-only object (managers, services) | `SettingsReading` by initializer | No environment outside a view; narrow protocol makes read-only visible at the call site. |
+| Object that also writes | `SettingsAccessing` by initializer | The read+write half; every `SettingsAccessing` satisfies `SettingsReading`. |
+
+Access is **section-granular**: `value(_:)`/`setValue(_:)` deal in whole `SettingsSection` values,
+so a caller changing one field reads its section, mutates it and writes it back.
+
+- **`@AppSettings` is app-target only.** It reads the `Settings.shared` singleton directly and is
+  what ~30 app-target files still use. Feature packages must not use it; new app-target code
+  should prefer the seam.
+- **`@Environment` does not cross an `NSHostingView`/`NSHostingController` boundary.** A new
+  standalone hosting root must be given `.appServices(_:)` or wrapped in `SettingsInjector`, or its
+  subtree falls back to `DefaultSettingsReader` — plausible defaults, and **writes discarded**.
+  That fallback `assertionFailure`s outside SwiftUI previews precisely because it is otherwise
+  silent.
+- **Invalidation is explicit.** `SettingsValue` also depends on the `Equatable`
+  `\.settingsRevision` environment key, fed from `Settings.revision`. Rewriting the accessor is not
+  a re-render signal: it is a stateless value behind an existential. Any injection point that
+  *observes* `Settings` supplies the revision (`SettingsInjector`, `CodeEditApp`); `appServices(_:)`
+  observes nothing, so it supplies the accessor only.
+- **`LegacySettingsStore` is a stopgap.** It is the concrete accessor today, bridging to
+  `Settings.shared` so writes reach the existing throttled save pipeline. A section-keyed store
+  replaces it in a later slice.
+
 ## Creating a new feature target
 
 1. Create the folder `CodeEditModules/Sources/CE<Name>/` and add a target and product for it in
