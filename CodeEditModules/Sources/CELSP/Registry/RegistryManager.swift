@@ -40,27 +40,35 @@ public final class RegistryManager: RegistryManaging {
     /// invalidated from `deinit`, which cannot be actor-isolated.
     nonisolated(unsafe) private var cleanupTimer: Timer?
 
+    /// Every mutation persists through the settings seam. Note that the initializer's seeding
+    /// assignment happens inside `init` and therefore does *not* fire `didSet` — construction
+    /// deliberately writes nothing back.
     public private(set) var installedLanguageServers: [String: LanguageServerSettings.Installed] {
-        didSet { registryWriter.persistInstalledLanguageServers(installedLanguageServers) }
+        didSet {
+            var settings = settingsAccessor.value(LanguageServerSettings.self)
+            settings.installedLanguageServers = installedLanguageServers
+            settingsAccessor.setValue(settings)
+        }
     }
 
     private let eventBus: EventBus
     private let errorNotifier: ErrorNotifying
     private let shellClient: ShellClientProtocol
-    private let registryWriter: LanguageServerRegistryWriting
+    private let settingsAccessor: SettingsAccessing
 
     public init(
         eventBus: EventBus,
         errorNotifier: ErrorNotifying,
         shellClient: ShellClientProtocol,
-        settingsReader: SettingsReading,
-        registryWriter: LanguageServerRegistryWriting
+        settingsAccessor: SettingsAccessing
     ) {
         self.eventBus = eventBus
         self.errorNotifier = errorNotifier
         self.shellClient = shellClient
-        self.registryWriter = registryWriter
-        self.installedLanguageServers = settingsReader.value(LanguageServerSettings.self).installedLanguageServers
+        self.settingsAccessor = settingsAccessor
+        self.installedLanguageServers = settingsAccessor
+            .value(LanguageServerSettings.self)
+            .installedLanguageServers
     }
 
     deinit {

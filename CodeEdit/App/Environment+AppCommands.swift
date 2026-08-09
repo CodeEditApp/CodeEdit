@@ -107,7 +107,7 @@ extension View {
             .environment(\.workspaceFileOpener, dependencies.workspaceFileOpener)
             .environment(\.workspaceNavigator, dependencies.workspaceNavigator)
             .environment(\.languageServices, dependencies.languageServicesProvider)
-            .environment(\.settingsReader, dependencies.settingsReader)
+            .environment(\.settingsAccessor, dependencies.settingsAccessor)
     }
 }
 
@@ -125,6 +125,6 @@ extension Scene {
             .environment(\.workspaceFileOpener, dependencies.workspaceFileOpener)
             .environment(\.workspaceNavigator, dependencies.workspaceNavigator)
             .environment(\.languageServices, dependencies.languageServicesProvider)
-            .environment(\.settingsReader, dependencies.settingsReader)
+            .environment(\.settingsAccessor, dependencies.settingsAccessor)
     }
 }

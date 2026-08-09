@@ -20,14 +20,22 @@ public protocol SettingsReading {
     func value<S: SettingsSection>(_ type: S.Type) -> S
 }
 
-/// A reader that always answers with defaults. The environment's fallback, so a preview with no
-/// store configured still renders.
-public struct DefaultSettingsReader: SettingsReading {
+/// A reader that always answers with defaults, and **discards every write**. The environment's
+/// fallback, so a preview with no store configured still renders.
+///
+/// The discarding write is the dangerous half: a view whose subtree never received a real store
+/// (most easily by sitting behind an `NSHostingView`/`NSHostingController` boundary, which
+/// `@Environment` does not cross) will read plausible defaults and *appear* to save, losing the
+/// user's change with no error. Treat reaching this type outside a `#Preview` as a wiring bug.
+public struct DefaultSettingsReader: SettingsAccessing {
     public init() {}
 
     public func value<S: SettingsSection>(_ type: S.Type) -> S {
         S()
     }
+
+    /// Discards `value`. See the type's documentation — this is a no-op, not a save.
+    public func setValue<S: SettingsSection>(_ value: S) {}
 }
 
 /// A fixed reader for tests and SwiftUI previews.
@@ -43,39 +51,65 @@ public struct SnapshotSettingsReader: SettingsReading {
     }
 }
 
-public struct SettingsReaderKey: EnvironmentKey {
+public struct SettingsAccessorKey: EnvironmentKey {
     /// Defaults are a legitimate value here — a preview with no store configured should render.
-    nonisolated(unsafe) public static let defaultValue: SettingsReading = DefaultSettingsReader()
+    nonisolated(unsafe) public static let defaultValue: SettingsAccessing = DefaultSettingsReader()
 }
 
 public extension EnvironmentValues {
-    /// The settings reader for the current view tree.
-    var settingsReader: SettingsReading {
-        get { self[SettingsReaderKey.self] }
-        set { self[SettingsReaderKey.self] = newValue }
+    /// The settings accessor for the current view tree.
+    ///
+    /// Typed as ``SettingsAccessing`` rather than ``SettingsReading`` so that ``SettingsValue`` can
+    /// vend a `Binding` from the same value it reads through.
+    var settingsAccessor: SettingsAccessing {
+        get { self[SettingsAccessorKey.self] }
+        set { self[SettingsAccessorKey.self] = newValue }
     }
 }
 
-/// Reads one property of one settings section inside a SwiftUI view.
+/// Reads and writes one property of one settings section inside a SwiftUI view.
 ///
 /// ```swift
 /// @SettingsValue(TerminalSettings.self, \.cursorBlink) private var cursorBlink
+/// @SettingsValue(TextEditingSettings.self, \.showMinimap) private var showMinimap
+/// Toggle("Show Minimap", isOn: $showMinimap)
 /// ```
 ///
 /// Only valid inside a `View`. AppKit types must be handed the value by their
 /// `NSViewRepresentable` instead — read at the SwiftUI boundary, pass by value inward.
+///
+/// The key path is a `WritableKeyPath` even for read-only uses: every settings field is a `var`, so
+/// requiring it costs read-only call sites nothing and keeps one property wrapper for both jobs.
 @propertyWrapper
 public struct SettingsValue<S: SettingsSection, Value>: DynamicProperty {
-    @Environment(\.settingsReader)
-    private var reader
+    @Environment(\.settingsAccessor)
+    private var accessor
 
-    private let keyPath: KeyPath<S, Value>
+    private let keyPath: WritableKeyPath<S, Value>
 
-    public init(_ section: S.Type, _ keyPath: KeyPath<S, Value>) {
+    public init(_ section: S.Type, _ keyPath: WritableKeyPath<S, Value>) {
         self.keyPath = keyPath
     }
 
     public var wrappedValue: Value {
-        reader.value(S.self)[keyPath: keyPath]
+        get {
+            accessor.value(S.self)[keyPath: keyPath]
+        }
+        // Read-modify-write of the whole section: the accessor is section-granular, and this is the
+        // only way to change one field without naming the settings aggregate.
+        nonmutating set {
+            var section = accessor.value(S.self)
+            section[keyPath: keyPath] = newValue
+            accessor.setValue(section)
+        }
+    }
+
+    /// A binding to the setting, for controls like `Toggle` and `TextField`.
+    public var projectedValue: Binding<Value> {
+        Binding {
+            wrappedValue
+        } set: {
+            wrappedValue = $0
+        }
     }
 }

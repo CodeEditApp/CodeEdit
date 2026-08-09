@@ -30,10 +30,11 @@ final class AppDependencies {
 
     private(set) lazy var shellClient: ShellClientProtocol = ShellClient()
 
-    /// Feature-side settings access. Bridged onto `Settings.shared` via `LegacySettingsReader`
-    /// as a stopgap until a later task wires a real, section-keyed store — feature packages
-    /// already read through this interface, so that swap will not touch any of their call sites.
-    private(set) lazy var settingsReader: SettingsReading = LegacySettingsReader()
+    /// Feature-side settings access, read and write. Bridged onto `Settings.shared` via
+    /// `LegacySettingsStore` as a stopgap until a later task wires a real, section-keyed store —
+    /// feature packages already go through this interface, so that swap will not touch any of
+    /// their call sites.
+    private(set) lazy var settingsAccessor: SettingsAccessing = LegacySettingsStore()
 
     private(set) lazy var commandManager: CommandManaging = CommandManager()
 
@@ -47,7 +48,7 @@ final class AppDependencies {
     private(set) lazy var softwareUpdater = SoftwareUpdater()
 
     private(set) lazy var lspService: LSPService = {
-        let service = LSPService(settingsReader: settingsReader)
+        let service = LSPService(settingsReader: settingsAccessor)
         // Property-injected (not init-injected): the window manager's construction consumes
         // `lspService`, so init injection in both directions would recurse. Resolved at call
         // time, long after both objects exist.
@@ -63,8 +64,7 @@ final class AppDependencies {
         eventBus: eventBus,
         errorNotifier: errorNotifier,
         shellClient: shellClient,
-        settingsReader: settingsReader,
-        registryWriter: LegacyLanguageServerRegistryWriter()
+        settingsAccessor: settingsAccessor
     )
 
     private(set) lazy var workspaceWindowManager = WorkspaceWindowManager(dependencies: self)

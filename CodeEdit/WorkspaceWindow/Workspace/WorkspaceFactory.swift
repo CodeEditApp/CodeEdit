@@ -33,7 +33,7 @@ enum WorkspaceFactory {
             workspaceURL: url,
             shellClient: dependencies.shellClient,
             eventBus: eventBus,
-            settingsReader: dependencies.settingsReader
+            settingsReader: dependencies.settingsAccessor
         )
         let workspaceFileManager = CEWorkspaceFileManager(
             folderUrl: url,

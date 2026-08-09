@@ -20,8 +20,7 @@ struct RegistryTests {
         eventBus: EventBus(),
         errorNotifier: NoOpErrorNotifier(),
         shellClient: ShellClient(),
-        settingsReader: SnapshotSettingsReader([:]),
-        registryWriter: NoOpLanguageServerRegistryWriting()
+        settingsAccessor: RecordingSettingsStore()
     )
 
     // MARK: - Download Tests
