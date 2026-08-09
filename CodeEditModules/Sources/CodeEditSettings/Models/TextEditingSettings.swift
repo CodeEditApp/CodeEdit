@@ -10,7 +10,10 @@ import CodeEditCore
 import Foundation
 
 /// The global settings for text editing
-public struct TextEditingSettings: Codable, Hashable {
+public struct TextEditingSettings: SettingsSection {
+
+    /// The top-level key this section occupies in `settings.json`.
+    public static let settingsKey = "textEditing"
 
     /// An integer indicating how many spaces a `tab` will appear as visually.
     public var defaultTabWidth: Int = 4

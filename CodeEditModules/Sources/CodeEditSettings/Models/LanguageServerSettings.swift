@@ -7,7 +7,10 @@
 
 import Foundation
 
-public struct LanguageServerSettings: Codable, Hashable {
+public struct LanguageServerSettings: SettingsSection {
+
+    /// The top-level key this section occupies in `settings.json`.
+    public static let settingsKey = "languageServers"
 
     /// Stores the currently installed language servers. The key is the name of the language server.
     @CodableDefault<DefaultEmptyLanguageServerDictionary> public var installedLanguageServers:

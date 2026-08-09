@@ -8,7 +8,10 @@
 import Foundation
 
 /// The global settings for source control accounts
-public struct AccountsSettings: Codable, Hashable {
+public struct AccountsSettings: SettingsSection {
+
+    /// The top-level key this section occupies in `settings.json`.
+    public static let settingsKey = "accounts"
     /// The list of git accounts the user has saved
     @CodableDefault<DefaultGitAccounts> public var sourceControlAccounts: GitAccounts = .init()
 

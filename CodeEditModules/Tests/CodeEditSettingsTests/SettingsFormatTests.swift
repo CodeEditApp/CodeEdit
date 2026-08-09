@@ -35,6 +35,25 @@ struct SettingsFormatTests {
         #expect(try parsed(reencoded) == parsed(original))
     }
 
+    /// Section keys must match the JSON keys `SettingsData` already uses, or existing settings
+    /// files silently orphan their values.
+    ///
+    /// Note `developerSettings`, not `developer` — the key is the existing field name.
+    @Test
+    func sectionKeysMatchTheOnDiskKeys() {
+        #expect(GeneralSettings.settingsKey == "general")
+        #expect(AccountsSettings.settingsKey == "accounts")
+        #expect(NavigationSettings.settingsKey == "navigation")
+        #expect(ThemeSettings.settingsKey == "theme")
+        #expect(TextEditingSettings.settingsKey == "textEditing")
+        #expect(TerminalSettings.settingsKey == "terminal")
+        #expect(SourceControlSettings.settingsKey == "sourceControl")
+        #expect(KeybindingsSettings.settingsKey == "keybindings")
+        #expect(SearchSettings.settingsKey == "search")
+        #expect(LanguageServerSettings.settingsKey == "languageServers")
+        #expect(DeveloperSettings.settingsKey == "developerSettings")
+    }
+
     /// Every section present on disk must survive a save, whether or not anything is registered to
     /// read it. This is what keeps a disabled or not-yet-loaded extension's configuration alive.
     ///

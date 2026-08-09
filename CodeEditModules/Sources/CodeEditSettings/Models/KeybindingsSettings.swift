@@ -8,7 +8,10 @@
 import Foundation
 
 /// The global settings for text editing
-public struct KeybindingsSettings: Codable, Hashable {
+public struct KeybindingsSettings: SettingsSection {
+
+    /// The top-level key this section occupies in `settings.json`.
+    public static let settingsKey = "keybindings"
 
     /// An integer indicating how many spaces a `tab` will generate
     public var keybindings: [String: KeyboardShortcutWrapper] = .init()

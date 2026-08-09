@@ -28,7 +28,10 @@ import Foundation
 public typealias ThemeOverrides = [String: [String: Theme.Attributes]]
 
 /// The global settings for themes
-public struct ThemeSettings: Codable, Hashable {
+public struct ThemeSettings: SettingsSection {
+
+    /// The top-level key this section occupies in `settings.json`.
+    public static let settingsKey = "theme"
 
     /// The name of the currently selected dark theme
     public var selectedDarkTheme: String = "Default (Dark)"

@@ -8,7 +8,10 @@
 import Foundation
 
 /// The global settings for source control
-public struct SourceControlSettings: Codable, Hashable {
+public struct SourceControlSettings: SettingsSection {
+
+    /// The top-level key this section occupies in `settings.json`.
+    public static let settingsKey = "sourceControl"
 
     /// The general source control settings
     public var general: SourceControlGeneral = .init()

@@ -8,7 +8,10 @@
 import SwiftUI
 
 /// The general global setting
-public struct GeneralSettings: Codable, Hashable {
+public struct GeneralSettings: SettingsSection {
+
+    /// The top-level key this section occupies in `settings.json`.
+    public static let settingsKey = "general"
 
     /// The appearance of the app
     @CodableDefault<DefaultAppearance> public var appAppearance: Appearances = .system

@@ -9,7 +9,10 @@ import AppKit
 import Foundation
 
 /// The global settings for the terminal emulator
-public struct TerminalSettings: Codable, Hashable {
+public struct TerminalSettings: SettingsSection {
+
+    /// The top-level key this section occupies in `settings.json`.
+    public static let settingsKey = "terminal"
 
     /// If true terminal will use editor theme.
     @CodableDefault<DefaultTrue> public var useEditorTheme = true
