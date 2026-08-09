@@ -45,7 +45,7 @@ final class ProjectNavigatorViewController: NSViewController {
     var workspaceNavigator: WorkspaceNavigator = NoOpWorkspaceNavigator()
     weak var activeEditorState: (any ActiveEditorState)?
 
-    var iconColor: SettingsData.FileIconStyle = .color {
+    var iconColor: GeneralSettings.FileIconStyle = .color {
         willSet {
             if newValue != iconColor {
                 outlineView?.reloadData()
@@ -57,7 +57,7 @@ final class ProjectNavigatorViewController: NSViewController {
     // Cells are only built by `outlineView(_:viewFor:)`, so without a reload a preference change
     // leaves every visible label showing the text it was born with — the same reason `iconColor`
     // and `rowHeight` reload below.
-    var fileExtensionsVisibility: SettingsData.FileExtensionsVisibility = .showAll {
+    var fileExtensionsVisibility: GeneralSettings.FileExtensionsVisibility = .showAll {
         willSet {
             if newValue != fileExtensionsVisibility {
                 outlineView?.reloadData()
@@ -65,7 +65,7 @@ final class ProjectNavigatorViewController: NSViewController {
         }
     }
 
-    var shownFileExtensions: SettingsData.FileExtensions = .default {
+    var shownFileExtensions: GeneralSettings.FileExtensions = .default {
         willSet {
             if newValue != shownFileExtensions {
                 outlineView?.reloadData()
@@ -73,7 +73,7 @@ final class ProjectNavigatorViewController: NSViewController {
         }
     }
 
-    var hiddenFileExtensions: SettingsData.FileExtensions = .default {
+    var hiddenFileExtensions: GeneralSettings.FileExtensions = .default {
         willSet {
             if newValue != hiddenFileExtensions {
                 outlineView?.reloadData()

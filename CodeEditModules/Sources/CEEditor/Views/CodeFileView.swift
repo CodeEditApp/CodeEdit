@@ -219,7 +219,7 @@ struct CodeFileView: View {
 
 // This extension is kept here because it should not be used elsewhere in the app and may cause confusion
 // due to the similar type name from the CETV module.
-private extension SettingsData.TextEditingSettings.IndentOption {
+private extension TextEditingSettings.IndentOption {
     func textViewOption() -> CodeEditSourceEditor.IndentOption {
         switch self.indentType {
         case .spaces:
@@ -230,7 +230,7 @@ private extension SettingsData.TextEditingSettings.IndentOption {
     }
 }
 
-private extension SettingsData.TextEditingSettings.InvisibleCharactersConfig {
+private extension TextEditingSettings.InvisibleCharactersConfig {
     func textViewOption() -> InvisibleCharactersConfiguration {
         guard self.enabled else { return .empty }
         var config = InvisibleCharactersConfiguration(

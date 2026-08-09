@@ -17,14 +17,14 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: 
     @Environment(\.colorScheme)
     private var colorScheme
 
-    var sidebarPosition: SettingsData.SidebarTabBarPosition
+    var sidebarPosition: GeneralSettings.SidebarTabBarPosition
     var darkDivider: Bool
 
     init(
         viewModel: ViewModel,
         selectedTab: Binding<Tab?>,
         tabItems: Binding<[Tab]>,
-        sidebarPosition: SettingsData.SidebarTabBarPosition,
+        sidebarPosition: GeneralSettings.SidebarTabBarPosition,
         darkDivider: Bool = false
     ) {
         self.viewModel = viewModel

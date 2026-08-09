@@ -17,7 +17,7 @@ import CodeEditCore
 @MainActor
 public protocol RegistryManaging: AnyObject {
     var viewState: RegistryViewState { get }
-    var installedLanguageServers: [String: SettingsData.InstalledLanguageServer] { get }
+    var installedLanguageServers: [String: LanguageServerSettings.Installed] { get }
 
     func loadRegistryIfNeeded()
     func setPackageEnabled(packageName: String, enabled: Bool)

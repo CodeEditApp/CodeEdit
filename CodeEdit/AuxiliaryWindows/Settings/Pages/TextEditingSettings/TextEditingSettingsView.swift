@@ -102,19 +102,19 @@ private extension TextEditingSettingsView {
                 selection: $textEditing.overscroll
             ) {
                 Text("None")
-                    .tag(SettingsData.TextEditingSettings.OverscrollOption.none)
+                    .tag(TextEditingSettings.OverscrollOption.none)
                 Divider()
                 Text("Small")
                     .tag(
-                        SettingsData.TextEditingSettings.OverscrollOption.small
+                        TextEditingSettings.OverscrollOption.small
                     )
                 Text("Medium")
                     .tag(
-                        SettingsData.TextEditingSettings.OverscrollOption.medium
+                        TextEditingSettings.OverscrollOption.medium
                     )
                 Text("Large")
                     .tag(
-                        SettingsData.TextEditingSettings.OverscrollOption.large
+                        TextEditingSettings.OverscrollOption.large
                     )
             }
         }
@@ -134,9 +134,9 @@ private extension TextEditingSettingsView {
         Group {
             Picker("Prefer Indent Using", selection: $textEditing.indentOption.indentType) {
                 Text("Tabs")
-                    .tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
+                    .tag(TextEditingSettings.IndentOption.IndentType.tab)
                 Text("Spaces")
-                    .tag(SettingsData.TextEditingSettings.IndentOption.IndentType.spaces)
+                    .tag(TextEditingSettings.IndentOption.IndentType.spaces)
             }
             if textEditing.indentOption.indentType == .spaces {
                 HStack {
@@ -192,11 +192,11 @@ private extension TextEditingSettingsView {
                 "Bracket Pair Highlight",
                 selection: $textEditing.bracketEmphasis.highlightType
             ) {
-                Text("Disabled").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.disabled)
+                Text("Disabled").tag(TextEditingSettings.BracketPairEmphasis.HighlightType.disabled)
                 Divider()
-                Text("Bordered").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.bordered)
-                Text("Flash").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.flash)
-                Text("Underline").tag(SettingsData.TextEditingSettings.BracketPairEmphasis.HighlightType.underline)
+                Text("Bordered").tag(TextEditingSettings.BracketPairEmphasis.HighlightType.bordered)
+                Text("Flash").tag(TextEditingSettings.BracketPairEmphasis.HighlightType.flash)
+                Text("Underline").tag(TextEditingSettings.BracketPairEmphasis.HighlightType.underline)
             }
             if [.bordered, .underline].contains(textEditing.bracketEmphasis.highlightType) {
                 Toggle("Use Custom Color", isOn: $textEditing.bracketEmphasis.useCustomColor)

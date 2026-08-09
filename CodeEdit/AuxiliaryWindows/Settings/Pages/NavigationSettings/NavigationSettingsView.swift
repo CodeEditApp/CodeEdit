@@ -25,9 +25,9 @@ private extension NavigationSettingsView {
     private var navigationStyle: some View {
         Picker("Navigation Style", selection: $settings.navigationStyle) {
             Text("Open in Tabs")
-                .tag(SettingsData.NavigationStyle.openInTabs)
+                .tag(NavigationSettings.NavigationStyle.openInTabs)
             Text("Open in Place")
-                .tag(SettingsData.NavigationStyle.openInPlace)
+                .tag(NavigationSettings.NavigationStyle.openInPlace)
         }
     }
 }

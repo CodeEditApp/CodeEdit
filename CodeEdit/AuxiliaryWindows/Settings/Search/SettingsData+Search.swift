@@ -14,7 +14,7 @@ import CodeEditSettings
 // app rather than the CodeEditSettings package. One conformance extension per
 // persisted settings page, plus `propertiesOf`.
 
-extension SettingsData.GeneralSettings: SearchableSettingsPage {
+extension GeneralSettings: SearchableSettingsPage {
     var searchKeys: [String] {
         [
             "Appearance",
@@ -45,7 +45,7 @@ extension SettingsData.GeneralSettings: SearchableSettingsPage {
     }
 }
 
-extension SettingsData.AccountsSettings: SearchableSettingsPage {
+extension AccountsSettings: SearchableSettingsPage {
     var searchKeys: [String] {
         [
             "Accounts",
@@ -56,7 +56,7 @@ extension SettingsData.AccountsSettings: SearchableSettingsPage {
     }
 }
 
-extension SettingsData.NavigationSettings: SearchableSettingsPage {
+extension NavigationSettings: SearchableSettingsPage {
     var searchKeys: [String] {
         [
             "Navigation Style",
@@ -65,7 +65,7 @@ extension SettingsData.NavigationSettings: SearchableSettingsPage {
     }
 }
 
-extension SettingsData.ThemeSettings: SearchableSettingsPage {
+extension ThemeSettings: SearchableSettingsPage {
     var searchKeys: [String] {
         [
             "Automatically Change theme based on system appearance",
@@ -84,7 +84,7 @@ extension SettingsData.ThemeSettings: SearchableSettingsPage {
     }
 }
 
-extension SettingsData.TextEditingSettings: SearchableSettingsPage {
+extension TextEditingSettings: SearchableSettingsPage {
     var searchKeys: [String] {
         var keys = [
             "Prefer Indent Using",
@@ -114,7 +114,7 @@ extension SettingsData.TextEditingSettings: SearchableSettingsPage {
     }
 }
 
-extension SettingsData.TerminalSettings: SearchableSettingsPage {
+extension TerminalSettings: SearchableSettingsPage {
     var searchKeys: [String] {
         [
             "Shell",
@@ -129,7 +129,7 @@ extension SettingsData.TerminalSettings: SearchableSettingsPage {
     }
 }
 
-extension SettingsData.SourceControlSettings: SearchableSettingsPage {
+extension SourceControlSettings: SearchableSettingsPage {
     var searchKeys: [String] {
         [
             "General",
@@ -153,7 +153,7 @@ extension SettingsData.SourceControlSettings: SearchableSettingsPage {
     }
 }
 
-extension SettingsData.SearchSettings: SearchableSettingsPage {
+extension SearchSettings: SearchableSettingsPage {
     var searchKeys: [String] {
         [
             "Ignore Glob Patterns",
@@ -163,7 +163,7 @@ extension SettingsData.SearchSettings: SearchableSettingsPage {
     }
 }
 
-extension SettingsData.LanguageServerSettings: SearchableSettingsPage {
+extension LanguageServerSettings: SearchableSettingsPage {
     var searchKeys: [String] {
         [
             "Language Servers",
@@ -177,7 +177,7 @@ extension SettingsData.LanguageServerSettings: SearchableSettingsPage {
     }
 }
 
-extension SettingsData.DeveloperSettings: SearchableSettingsPage {
+extension DeveloperSettings: SearchableSettingsPage {
     var searchKeys: [String] {
         [
             "Developer",

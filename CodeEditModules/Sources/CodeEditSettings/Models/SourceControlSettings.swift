@@ -7,25 +7,23 @@
 
 import Foundation
 
-extension SettingsData {
-    /// The global settings for source control
-    public struct SourceControlSettings: Codable, Hashable {
+/// The global settings for source control
+public struct SourceControlSettings: Codable, Hashable {
 
-        /// The general source control settings
-        public var general: SourceControlGeneral = .init()
+    /// The general source control settings
+    public var general: SourceControlGeneral = .init()
 
-        /// The source control git settings
-        public var git: SourceControlGit = .init()
+    /// The source control git settings
+    public var git: SourceControlGit = .init()
 
-        /// Default initializer
-        public init() {}
+    /// Default initializer
+    public init() {}
 
-        /// Explicit decoder init for setting default values when key is not present in `JSON`
-        public init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.general = try container.decodeIfPresent(SourceControlGeneral.self, forKey: .general) ?? .init()
-            self.git = try container.decodeIfPresent(SourceControlGit.self, forKey: .git) ?? .init()
-        }
+    /// Explicit decoder init for setting default values when key is not present in `JSON`
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.general = try container.decodeIfPresent(SourceControlGeneral.self, forKey: .general) ?? .init()
+        self.git = try container.decodeIfPresent(SourceControlGit.self, forKey: .git) ?? .init()
     }
 
     public struct SourceControlGeneral: Codable, Hashable {

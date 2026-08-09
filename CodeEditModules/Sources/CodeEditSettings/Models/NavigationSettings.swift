@@ -7,17 +7,14 @@
 
 import Foundation
 
-extension SettingsData {
+/// The global settings for the terminal emulator
+public struct NavigationSettings: Codable, Hashable {
 
-    /// The global settings for the terminal emulator
-    public struct NavigationSettings: Codable, Hashable {
+    /// Navigation style used
+    @CodableDefault<DefaultNavigationStyle> public var navigationStyle: NavigationStyle = .openInTabs
 
-        /// Navigation style used
-        @CodableDefault<DefaultNavigationStyle> public var navigationStyle: NavigationStyle = .openInTabs
-
-        /// Default initializer
-        public init() {}
-    }
+    /// Default initializer
+    public init() {}
 
     public enum NavigationStyle: String, Codable, Hashable {
         case openInTabs

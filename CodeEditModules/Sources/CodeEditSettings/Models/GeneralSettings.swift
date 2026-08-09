@@ -7,77 +7,70 @@
 
 import SwiftUI
 
-extension SettingsData {
-
-    /// The general global setting
-    public struct GeneralSettings: Codable, Hashable {
-
-        /// The appearance of the app
-        @CodableDefault<DefaultAppearance> public var appAppearance: Appearances = .system
-
-        /// The show issues behavior of the app
-        @CodableDefault<DefaultIssues> public var showIssues: Issues = .inline
-
-        /// The show live issues behavior of the app
-        @CodableDefault<DefaultTrue> public var showLiveIssues = true
-
-        /// Show editor jump bar
-        @CodableDefault<DefaultTrue> public var showEditorJumpBar = true
-
-        /// Dims editors without focus
-        @CodableDefault<DefaultFalse> public var dimEditorsWithoutFocus = false
-
-        /// The show file extensions behavior of the app
-        @CodableDefault<DefaultFileExtensionsVisibility> public var fileExtensionsVisibility:
-            FileExtensionsVisibility = .showAll
-
-        /// The file extensions collection to display
-        @CodableDefault<DefaultFileExtensions> public var shownFileExtensions: FileExtensions = .default
-
-        /// The file extensions collection to hide
-        @CodableDefault<DefaultFileExtensions> public var hiddenFileExtensions: FileExtensions = .default
-
-        /// The style for file icons
-        @CodableDefault<DefaultFileIconStyle> public var fileIconStyle: FileIconStyle = .color
-
-        /// The position for the navigator sidebar tab bar
-        @CodableDefault<DefaultSidebarTabBarPositionTop> public var navigatorTabBarPosition:
-            SidebarTabBarPosition = .top
-
-        /// The position for the inspector sidebar tab bar
-        @CodableDefault<DefaultSidebarTabBarPositionTop> public var inspectorTabBarPosition:
-            SidebarTabBarPosition = .top
-
-        /// The reopen behavior of the app
-        @CodableDefault<DefaultReopenBehavior> public var reopenBehavior: ReopenBehavior = .welcome
-
-        /// Decides what the app does after a workspace is closed
-        @CodableDefault<DefaultReopenWindowBehavior> public var reopenWindowAfterClose:
-            ReopenWindowBehavior = .doNothing
-
-        /// The size of the project navigator
-        @CodableDefault<DefaultProjectNavigatorSize> public var projectNavigatorSize: ProjectNavigatorSize = .medium
-
-        /// The Find Navigator Detail line limit
-        @CodableDefault<DefaultNavigatorDetail> public var findNavigatorDetail: NavigatorDetail = .upTo3
-
-        /// The Issue Navigator Detail line limit
-        @CodableDefault<DefaultNavigatorDetail> public var issueNavigatorDetail: NavigatorDetail = .upTo3
-
-        /// The reveal file in navigator when focus changes behavior of the app.
-        @CodableDefault<DefaultFalse> public var revealFileOnFocusChange = false
-
-        /// Auto save behavior toggle
-        @CodableDefault<DefaultTrue> public var isAutoSaveOn = true
-
-        /// Default initializer
-        public init() {}
-    }
+/// The general global setting
+public struct GeneralSettings: Codable, Hashable {
 
     /// The appearance of the app
-    /// - **system**: uses the system appearance
-    /// - **dark**: always uses dark appearance
-    /// - **light**: always uses light appearance
+    @CodableDefault<DefaultAppearance> public var appAppearance: Appearances = .system
+
+    /// The show issues behavior of the app
+    @CodableDefault<DefaultIssues> public var showIssues: Issues = .inline
+
+    /// The show live issues behavior of the app
+    @CodableDefault<DefaultTrue> public var showLiveIssues = true
+
+    /// Show editor jump bar
+    @CodableDefault<DefaultTrue> public var showEditorJumpBar = true
+
+    /// Dims editors without focus
+    @CodableDefault<DefaultFalse> public var dimEditorsWithoutFocus = false
+
+    /// The show file extensions behavior of the app
+    @CodableDefault<DefaultFileExtensionsVisibility> public var fileExtensionsVisibility:
+        FileExtensionsVisibility = .showAll
+
+    /// The file extensions collection to display
+    @CodableDefault<DefaultFileExtensions> public var shownFileExtensions: FileExtensions = .default
+
+    /// The file extensions collection to hide
+    @CodableDefault<DefaultFileExtensions> public var hiddenFileExtensions: FileExtensions = .default
+
+    /// The style for file icons
+    @CodableDefault<DefaultFileIconStyle> public var fileIconStyle: FileIconStyle = .color
+
+    /// The position for the navigator sidebar tab bar
+    @CodableDefault<DefaultSidebarTabBarPositionTop> public var navigatorTabBarPosition:
+        SidebarTabBarPosition = .top
+
+    /// The position for the inspector sidebar tab bar
+    @CodableDefault<DefaultSidebarTabBarPositionTop> public var inspectorTabBarPosition:
+        SidebarTabBarPosition = .top
+
+    /// The reopen behavior of the app
+    @CodableDefault<DefaultReopenBehavior> public var reopenBehavior: ReopenBehavior = .welcome
+
+    /// Decides what the app does after a workspace is closed
+    @CodableDefault<DefaultReopenWindowBehavior> public var reopenWindowAfterClose:
+        ReopenWindowBehavior = .doNothing
+
+    /// The size of the project navigator
+    @CodableDefault<DefaultProjectNavigatorSize> public var projectNavigatorSize: ProjectNavigatorSize = .medium
+
+    /// The Find Navigator Detail line limit
+    @CodableDefault<DefaultNavigatorDetail> public var findNavigatorDetail: NavigatorDetail = .upTo3
+
+    /// The Issue Navigator Detail line limit
+    @CodableDefault<DefaultNavigatorDetail> public var issueNavigatorDetail: NavigatorDetail = .upTo3
+
+    /// The reveal file in navigator when focus changes behavior of the app.
+    @CodableDefault<DefaultFalse> public var revealFileOnFocusChange = false
+
+    /// Auto save behavior toggle
+    @CodableDefault<DefaultTrue> public var isAutoSaveOn = true
+
+    /// Default initializer
+    public init() {}
+
     public enum Appearances: String, Codable {
         case system
         case light

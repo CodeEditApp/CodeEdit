@@ -13,7 +13,7 @@ struct NavigatorAreaView: View {
     @ObservedObject public var viewModel: NavigatorAreaViewModel
 
     @AppSettings(\.general.navigatorTabBarPosition)
-    var sidebarPosition: SettingsData.SidebarTabBarPosition
+    var sidebarPosition: GeneralSettings.SidebarTabBarPosition
 
     init(viewModel: NavigatorAreaViewModel) {
         self.viewModel = viewModel

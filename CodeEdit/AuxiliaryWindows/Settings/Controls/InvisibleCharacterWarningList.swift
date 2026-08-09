@@ -42,7 +42,7 @@ struct InvisibleCharacterWarningList: View {
                 Button {
                     // Add defaults without removing user's data. We do still override notes here.
                     items = items.merging(
-                        SettingsData.TextEditingSettings.WarningCharacters.default.characters,
+                        TextEditingSettings.WarningCharacters.default.characters,
                         uniquingKeysWith: { _, defaults in
                             defaults
                         }

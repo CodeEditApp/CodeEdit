@@ -20,21 +20,21 @@ public enum DefaultFalse: DefaultValueProvider {
 // MARK: - Terminal Defaults
 
 public enum DefaultTerminalShell: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.TerminalShell.system
+    nonisolated(unsafe) public static let defaultValue = TerminalSettings.Shell.system
 }
 
 public enum DefaultTerminalCursorStyle: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.TerminalCursorStyle.block
+    nonisolated(unsafe) public static let defaultValue = TerminalSettings.CursorStyle.block
 }
 
 public enum DefaultTerminalFont: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.TerminalFont()
+    nonisolated(unsafe) public static let defaultValue = TerminalSettings.Font()
 }
 
 // MARK: - Navigation Defaults
 
 public enum DefaultNavigationStyle: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.NavigationStyle.openInTabs
+    nonisolated(unsafe) public static let defaultValue = NavigationSettings.NavigationStyle.openInTabs
 }
 
 // MARK: - Collection Defaults
@@ -48,13 +48,13 @@ public enum DefaultEmptyStringDictionary: DefaultValueProvider {
 }
 
 public enum DefaultEmptyLanguageServerDictionary: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue: [String: SettingsData.InstalledLanguageServer] = [:]
+    nonisolated(unsafe) public static let defaultValue: [String: LanguageServerSettings.Installed] = [:]
 }
 
 // MARK: - Account Defaults
 
 public enum DefaultGitAccounts: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.GitAccounts()
+    nonisolated(unsafe) public static let defaultValue = AccountsSettings.GitAccounts()
 }
 
 public enum DefaultEmptySourceControlAccounts: DefaultValueProvider {
@@ -68,41 +68,41 @@ public enum DefaultEmptyString: DefaultValueProvider {
 // MARK: - General Settings Defaults
 
 public enum DefaultAppearance: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.Appearances.system
+    nonisolated(unsafe) public static let defaultValue = GeneralSettings.Appearances.system
 }
 
 public enum DefaultIssues: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.Issues.inline
+    nonisolated(unsafe) public static let defaultValue = GeneralSettings.Issues.inline
 }
 
 public enum DefaultFileExtensionsVisibility: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.FileExtensionsVisibility.showAll
+    nonisolated(unsafe) public static let defaultValue = GeneralSettings.FileExtensionsVisibility.showAll
 }
 
 public enum DefaultFileExtensions: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.FileExtensions.default
+    nonisolated(unsafe) public static let defaultValue = GeneralSettings.FileExtensions.default
 }
 
 public enum DefaultFileIconStyle: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.FileIconStyle.color
+    nonisolated(unsafe) public static let defaultValue = GeneralSettings.FileIconStyle.color
 }
 
 public enum DefaultSidebarTabBarPositionTop: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.SidebarTabBarPosition.top
+    nonisolated(unsafe) public static let defaultValue = GeneralSettings.SidebarTabBarPosition.top
 }
 
 public enum DefaultReopenBehavior: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.ReopenBehavior.welcome
+    nonisolated(unsafe) public static let defaultValue = GeneralSettings.ReopenBehavior.welcome
 }
 
 public enum DefaultReopenWindowBehavior: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.ReopenWindowBehavior.doNothing
+    nonisolated(unsafe) public static let defaultValue = GeneralSettings.ReopenWindowBehavior.doNothing
 }
 
 public enum DefaultProjectNavigatorSize: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.ProjectNavigatorSize.medium
+    nonisolated(unsafe) public static let defaultValue = GeneralSettings.ProjectNavigatorSize.medium
 }
 
 public enum DefaultNavigatorDetail: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = SettingsData.NavigatorDetail.upTo3
+    nonisolated(unsafe) public static let defaultValue = GeneralSettings.NavigatorDetail.upTo3
 }

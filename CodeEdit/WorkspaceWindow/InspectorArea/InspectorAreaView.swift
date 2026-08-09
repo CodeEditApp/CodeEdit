@@ -13,7 +13,7 @@ struct InspectorAreaView: View {
     @ObservedObject public var viewModel: InspectorAreaViewModel
 
     @AppSettings(\.general.inspectorTabBarPosition)
-    var sidebarPosition: SettingsData.SidebarTabBarPosition
+    var sidebarPosition: GeneralSettings.SidebarTabBarPosition
 
     @AppSettings(\.developerSettings.showInternalDevelopmentInspector)
     var showInternalDevelopmentInspector

@@ -41,7 +41,7 @@ public final class RegistryManager: RegistryManaging {
     nonisolated(unsafe) private var cleanupTimer: Timer?
 
     @AppSettings(\.languageServers.installedLanguageServers)
-    public var installedLanguageServers: [String: SettingsData.InstalledLanguageServer]
+    public var installedLanguageServers: [String: LanguageServerSettings.Installed]
 
     private let eventBus: EventBus
     private let errorNotifier: ErrorNotifying

@@ -1,5 +1,5 @@
 //
-//  TerminalPreferences.swift
+//  TerminalSettings.swift
 //  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/08.
@@ -8,65 +8,62 @@
 import AppKit
 import Foundation
 
-extension SettingsData {
+/// The global settings for the terminal emulator
+public struct TerminalSettings: Codable, Hashable {
 
-    /// The global settings for the terminal emulator
-    public struct TerminalSettings: Codable, Hashable {
+    /// If true terminal will use editor theme.
+    @CodableDefault<DefaultTrue> public var useEditorTheme = true
 
-        /// If true terminal will use editor theme.
-        @CodableDefault<DefaultTrue> public var useEditorTheme = true
+    /// If true terminal appearance will always be `dark`. Otherwise it adapts to the system setting.
+    @CodableDefault<DefaultFalse> public var darkAppearance = false
 
-        /// If true terminal appearance will always be `dark`. Otherwise it adapts to the system setting.
-        @CodableDefault<DefaultFalse> public var darkAppearance = false
+    /// If true, the terminal uses the background color of the theme, otherwise it is clear
+    @CodableDefault<DefaultTrue> public var useThemeBackground = true
 
-        /// If true, the terminal uses the background color of the theme, otherwise it is clear
-        @CodableDefault<DefaultTrue> public var useThemeBackground = true
+    /// If true, the terminal treats the `Option` key as the `Meta` key
+    @CodableDefault<DefaultFalse> public var optionAsMeta = false
 
-        /// If true, the terminal treats the `Option` key as the `Meta` key
-        @CodableDefault<DefaultFalse> public var optionAsMeta = false
+    /// The selected shell to use.
+    @CodableDefault<DefaultTerminalShell> public var shell: Shell = .system
 
-        /// The selected shell to use.
-        @CodableDefault<DefaultTerminalShell> public var shell: TerminalShell = .system
+    /// The font to use in terminal.
+    @CodableDefault<DefaultTerminalFont> public var font: Font = .init()
 
-        /// The font to use in terminal.
-        @CodableDefault<DefaultTerminalFont> public var font: TerminalFont = .init()
+    // The cursor style to use in terminal
+    @CodableDefault<DefaultTerminalCursorStyle> public var cursorStyle: CursorStyle = .block
 
-        // The cursor style to use in terminal
-        @CodableDefault<DefaultTerminalCursorStyle> public var cursorStyle: TerminalCursorStyle = .block
+    // Toggle for blinking cursor or not
+    @CodableDefault<DefaultFalse> public var cursorBlink = false
 
-        // Toggle for blinking cursor or not
-        @CodableDefault<DefaultFalse> public var cursorBlink = false
+    // Use font settings from Text Editing
+    @CodableDefault<DefaultTrue> public var useTextEditorFont = true
 
-        // Use font settings from Text Editing
-        @CodableDefault<DefaultTrue> public var useTextEditorFont = true
+    /// If `true`, use injection scripts for terminal features like automatic tab title.
+    @CodableDefault<DefaultTrue> public var useShellIntegration = true
 
-        /// If `true`, use injection scripts for terminal features like automatic tab title.
-        @CodableDefault<DefaultTrue> public var useShellIntegration = true
+    /// If `true`, use a login shell.
+    @CodableDefault<DefaultTrue> public var useLoginShell = true
 
-        /// If `true`, use a login shell.
-        @CodableDefault<DefaultTrue> public var useLoginShell = true
-
-        /// Default initializer
-        public init() {}
-    }
+    /// Default initializer
+    public init() {}
 
     /// The shell options.
     /// - **bash**: uses the default bash shell
     /// - **zsh**: uses the ZSH shell
     /// - **system**: uses the system default shell (most likely ZSH)
-    public enum TerminalShell: String, Codable, Hashable {
+    public enum Shell: String, Codable, Hashable {
         case bash
         case zsh
         case system
     }
 
-    public enum TerminalCursorStyle: String, Codable, Hashable {
+    public enum CursorStyle: String, Codable, Hashable {
         case block
         case underline
         case bar
     }
 
-    public struct TerminalFont: Codable, Hashable {
+    public struct Font: Codable, Hashable {
         /// The font size for the custom font
         public var size: Double = 12
 

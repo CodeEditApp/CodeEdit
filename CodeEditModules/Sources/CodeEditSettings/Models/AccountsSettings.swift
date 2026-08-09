@@ -7,16 +7,13 @@
 
 import Foundation
 
-extension SettingsData {
+/// The global settings for source control accounts
+public struct AccountsSettings: Codable, Hashable {
+    /// The list of git accounts the user has saved
+    @CodableDefault<DefaultGitAccounts> public var sourceControlAccounts: GitAccounts = .init()
 
-    /// The global settings for source control accounts
-    public struct AccountsSettings: Codable, Hashable {
-        /// The list of git accounts the user has saved
-        @CodableDefault<DefaultGitAccounts> public var sourceControlAccounts: GitAccounts = .init()
-
-        /// Default initializer
-        public init() {}
-    }
+    /// Default initializer
+    public init() {}
 
     public struct GitAccounts: Codable, Hashable {
         /// This id will store the account name as the identifiable

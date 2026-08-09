@@ -29,13 +29,13 @@ struct FileInspectorView: View {
 
     @State private var languageId: String?
 
-    @State var indentOption: SettingsData.TextEditingSettings.IndentOption = .init(indentType: .tab)
+    @State var indentOption: TextEditingSettings.IndentOption = .init(indentType: .tab)
 
     @State var defaultTabWidth: Int = 0
 
     @State var wrapLines: Bool = false
 
-    func updateFileOptions(_ textEditingOverride: SettingsData.TextEditingSettings? = nil) {
+    func updateFileOptions(_ textEditingOverride: TextEditingSettings? = nil) {
         let textEditingSettings = textEditingOverride ?? textEditing
         let values = file.map { fileEditorOverrides.overrides(for: $0) }
         indentOption = values?.indentOption ?? textEditingSettings.indentOption
@@ -159,8 +159,8 @@ struct FileInspectorView: View {
 
     private var indentUsing: some View {
         Picker("Indent using", selection: $indentOption.indentType) {
-            Text("Spaces").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.spaces)
-            Text("Tabs").tag(SettingsData.TextEditingSettings.IndentOption.IndentType.tab)
+            Text("Spaces").tag(TextEditingSettings.IndentOption.IndentType.spaces)
+            Text("Tabs").tag(TextEditingSettings.IndentOption.IndentType.tab)
         }
         .onChange(of: indentOption) { _, newValue in
             if let file {

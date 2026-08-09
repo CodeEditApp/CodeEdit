@@ -17,7 +17,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
     @Binding var items: [Tab]
     @Binding var selection: Tab?
 
-    var position: SettingsData.SidebarTabBarPosition
+    var position: GeneralSettings.SidebarTabBarPosition
 
     @State private var tabLocations: [Tab: CGRect] = [:]
     @State private var tabWidth: [Tab: CGFloat] = [:]

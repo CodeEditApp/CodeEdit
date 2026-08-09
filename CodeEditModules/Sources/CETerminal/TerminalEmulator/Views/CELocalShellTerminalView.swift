@@ -127,7 +127,7 @@ public class CELocalShellTerminalView: CETerminalView, @preconcurrency TerminalV
     }
 
     /// Returns a string of a shell path to use
-    func getShell(_ shellType: Shell?, userSetting: SettingsData.TerminalShell) -> (Shell, String)? {
+    func getShell(_ shellType: Shell?, userSetting: TerminalSettings.Shell) -> (Shell, String)? {
         if let shellType {
             return (shellType, shellType.defaultPath)
         }

@@ -23,7 +23,7 @@ struct CodeEditApp: App {
         CodeFileDocument.delegateProvider = { [dependencies = appdelegate.dependencies] in
             dependencies.codeFileDocumentDelegate
         }
-        SettingsData.TextEditingSettings.registerCommands(in: appdelegate.dependencies.commandManager)
+        TextEditingSettings.registerCommands(in: appdelegate.dependencies.commandManager)
         SettingsData.reconcileDefaultKeybindings(keybindingManager: appdelegate.dependencies.keybindingManager)
     }
 

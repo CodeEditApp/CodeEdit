@@ -9,7 +9,7 @@ import SwiftUI
 import CodeEditSettings
 
 struct WarningCharactersView: View {
-    typealias Config = SettingsData.TextEditingSettings.WarningCharacters
+    typealias Config = TextEditingSettings.WarningCharacters
 
     @Binding var warningCharacters: Config
 

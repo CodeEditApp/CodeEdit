@@ -80,12 +80,12 @@ private extension GeneralSettingsView {
     var appearance: some View {
         Picker("Appearance", selection: $settings.appAppearance) {
             Text("System")
-                .tag(SettingsData.Appearances.system)
+                .tag(GeneralSettings.Appearances.system)
             Divider()
             Text("Light")
-                .tag(SettingsData.Appearances.light)
+                .tag(GeneralSettings.Appearances.light)
             Text("Dark")
-                .tag(SettingsData.Appearances.dark)
+                .tag(GeneralSettings.Appearances.dark)
         }
         .onChange(of: settings.appAppearance) { _, tag in
             tag.applyAppearance()
@@ -96,9 +96,9 @@ private extension GeneralSettingsView {
     var showIssues: some View {
         Picker("Show Issues", selection: $settings.showIssues) {
             Text("Show Inline")
-                .tag(SettingsData.Issues.inline)
+                .tag(GeneralSettings.Issues.inline)
             Text("Show Minimized")
-                .tag(SettingsData.Issues.minimized)
+                .tag(GeneralSettings.Issues.minimized)
         }
     }
 
@@ -118,14 +118,14 @@ private extension GeneralSettingsView {
         Group {
             Picker("File Extensions", selection: $settings.fileExtensionsVisibility) {
                 Text("Hide all")
-                    .tag(SettingsData.FileExtensionsVisibility.hideAll)
+                    .tag(GeneralSettings.FileExtensionsVisibility.hideAll)
                 Text("Show all")
-                    .tag(SettingsData.FileExtensionsVisibility.showAll)
+                    .tag(GeneralSettings.FileExtensionsVisibility.showAll)
                 Divider()
                 Text("Show only")
-                    .tag(SettingsData.FileExtensionsVisibility.showOnly)
+                    .tag(GeneralSettings.FileExtensionsVisibility.showOnly)
                 Text("Hide only")
-                    .tag(SettingsData.FileExtensionsVisibility.hideOnly)
+                    .tag(GeneralSettings.FileExtensionsVisibility.hideOnly)
             }
             if case .showOnly = settings.fileExtensionsVisibility {
                 TextField("", text: $settings.shownFileExtensions.string, axis: .vertical)
@@ -143,9 +143,9 @@ private extension GeneralSettingsView {
     var fileIconStyle: some View {
         Picker("File Icon Style", selection: $settings.fileIconStyle) {
             Text("Color")
-                .tag(SettingsData.FileIconStyle.color)
+                .tag(GeneralSettings.FileIconStyle.color)
             Text("Monochrome")
-                .tag(SettingsData.FileIconStyle.monochrome)
+                .tag(GeneralSettings.FileIconStyle.monochrome)
         }
         .pickerStyle(.radioGroup)
     }
@@ -153,9 +153,9 @@ private extension GeneralSettingsView {
     var navigatorTabBarPosition: some View {
         Picker("Navigator Tab Bar Position", selection: $settings.navigatorTabBarPosition) {
             Text("Top")
-                .tag(SettingsData.SidebarTabBarPosition.top)
+                .tag(GeneralSettings.SidebarTabBarPosition.top)
             Text("Side")
-                .tag(SettingsData.SidebarTabBarPosition.side)
+                .tag(GeneralSettings.SidebarTabBarPosition.side)
         }
         .pickerStyle(.radioGroup)
     }
@@ -163,9 +163,9 @@ private extension GeneralSettingsView {
     var inspectorTabBarPosition: some View {
         Picker("Inspector Tab Bar Position", selection: $settings.inspectorTabBarPosition) {
             Text("Top")
-                .tag(SettingsData.SidebarTabBarPosition.top)
+                .tag(GeneralSettings.SidebarTabBarPosition.top)
             Text("Side")
-                .tag(SettingsData.SidebarTabBarPosition.side)
+                .tag(GeneralSettings.SidebarTabBarPosition.side)
         }
         .pickerStyle(.radioGroup)
     }
@@ -173,12 +173,12 @@ private extension GeneralSettingsView {
     var reopenBehavior: some View {
         Picker("Reopen Behavior", selection: $settings.reopenBehavior) {
             Text("Welcome Screen")
-                .tag(SettingsData.ReopenBehavior.welcome)
+                .tag(GeneralSettings.ReopenBehavior.welcome)
             Divider()
             Text("Open Panel")
-                .tag(SettingsData.ReopenBehavior.openPanel)
+                .tag(GeneralSettings.ReopenBehavior.openPanel)
             Text("New Document")
-                .tag(SettingsData.ReopenBehavior.newDocument)
+                .tag(GeneralSettings.ReopenBehavior.newDocument)
         }
     }
 
@@ -188,29 +188,29 @@ private extension GeneralSettingsView {
             selection: $settings.reopenWindowAfterClose
         ) {
             Text("Do nothing")
-                .tag(SettingsData.ReopenWindowBehavior.doNothing)
+                .tag(GeneralSettings.ReopenWindowBehavior.doNothing)
             Divider()
             Text("Show Welcome Window")
-                .tag(SettingsData.ReopenWindowBehavior.showWelcomeWindow)
+                .tag(GeneralSettings.ReopenWindowBehavior.showWelcomeWindow)
             Text("Quit")
-                .tag(SettingsData.ReopenWindowBehavior.quit)
+                .tag(GeneralSettings.ReopenWindowBehavior.quit)
         }
     }
 
     var projectNavigatorSize: some View {
         Picker("Project Navigator Size", selection: $settings.projectNavigatorSize) {
             Text("Small")
-                .tag(SettingsData.ProjectNavigatorSize.small)
+                .tag(GeneralSettings.ProjectNavigatorSize.small)
             Text("Medium")
-                .tag(SettingsData.ProjectNavigatorSize.medium)
+                .tag(GeneralSettings.ProjectNavigatorSize.medium)
             Text("Large")
-                .tag(SettingsData.ProjectNavigatorSize.large)
+                .tag(GeneralSettings.ProjectNavigatorSize.large)
         }
     }
 
     var findNavigatorDetail: some View {
         Picker("Find Navigator Detail", selection: $settings.findNavigatorDetail) {
-            ForEach(SettingsData.NavigatorDetail.allCases, id: \.self) { tag in
+            ForEach(GeneralSettings.NavigatorDetail.allCases, id: \.self) { tag in
                 Text(tag.label).tag(tag)
             }
         }
@@ -219,7 +219,7 @@ private extension GeneralSettingsView {
     // TODO: Implement reflecting Issue Navigator Detail preference and remove disabled modifier
     var issueNavigatorDetail: some View {
         Picker("Issue Navigator Detail", selection: $settings.issueNavigatorDetail) {
-            ForEach(SettingsData.NavigatorDetail.allCases, id: \.self) { tag in
+            ForEach(GeneralSettings.NavigatorDetail.allCases, id: \.self) { tag in
                 Text(tag.label).tag(tag)
             }
         }

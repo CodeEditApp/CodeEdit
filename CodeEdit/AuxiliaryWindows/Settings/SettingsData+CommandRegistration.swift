@@ -9,7 +9,7 @@ import Foundation
 import CodeEditCore
 import CodeEditSettings
 
-extension SettingsData.TextEditingSettings {
+extension TextEditingSettings {
     /// Registers toggle-able text-editing preferences with the command palette.
     /// Invoked once at app startup (previously ran as a side effect of decoding).
     static func registerCommands(in mgr: CommandManaging) {

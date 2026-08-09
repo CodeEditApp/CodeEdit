@@ -42,23 +42,23 @@ private extension TerminalSettingsView {
     @ViewBuilder private var shellSelector: some View {
         Picker("Shell", selection: $settings.shell) {
             Text("System Default")
-                .tag(SettingsData.TerminalShell.system)
+                .tag(TerminalSettings.Shell.system)
             Divider()
             Text("Zsh")
-                .tag(SettingsData.TerminalShell.zsh)
+                .tag(TerminalSettings.Shell.zsh)
             Text("Bash")
-                .tag(SettingsData.TerminalShell.bash)
+                .tag(TerminalSettings.Shell.bash)
         }
     }
 
     private var cursorStyle: some View {
         Picker("Terminal Cursor Style", selection: $settings.cursorStyle) {
             Text("Block")
-                .tag(SettingsData.TerminalCursorStyle.block)
+                .tag(TerminalSettings.CursorStyle.block)
             Text("Underline")
-                .tag(SettingsData.TerminalCursorStyle.underline)
+                .tag(TerminalSettings.CursorStyle.underline)
             Text("Bar")
-                .tag(SettingsData.TerminalCursorStyle.bar)
+                .tag(TerminalSettings.CursorStyle.bar)
         }
     }
 

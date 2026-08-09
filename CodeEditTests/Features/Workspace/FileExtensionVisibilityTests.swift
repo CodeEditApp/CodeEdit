@@ -15,7 +15,7 @@ import CodeEditSettings
 /// general settings are restored in `tearDown`.
 final class FileExtensionVisibilityTests: XCTestCase {
 
-    private var original: SettingsData.GeneralSettings!
+    private var original: GeneralSettings!
 
     override func setUp() {
         super.setUp()
@@ -77,7 +77,7 @@ final class FileExtensionVisibilityTests: XCTestCase {
     }
 
     func testExtensionlessNamesAreUnaffected() {
-        for mode in [SettingsData.FileExtensionsVisibility.hideAll, .showAll] {
+        for mode in [GeneralSettings.FileExtensionsVisibility.hideAll, .showAll] {
             Settings.shared.preferences.general.fileExtensionsVisibility = mode
             XCTAssertEqual(label("LICENSE"), "LICENSE", "mode \(mode)")
             XCTAssertEqual(label("Makefile"), "Makefile", "mode \(mode)")

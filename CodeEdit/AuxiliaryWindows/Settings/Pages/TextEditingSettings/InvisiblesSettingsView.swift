@@ -9,7 +9,7 @@ import SwiftUI
 import CodeEditSettings
 
 struct InvisiblesSettingsView: View {
-    typealias Config = SettingsData.TextEditingSettings.InvisibleCharactersConfig
+    typealias Config = TextEditingSettings.InvisibleCharactersConfig
 
     @Binding var invisibleCharacters: Config
 

@@ -90,9 +90,9 @@ private extension SourceControlGeneralView {
             selection: $settings.revisionComparisonLayout
         ) {
             Text("Local Revision on Left Side")
-                .tag(SettingsData.RevisionComparisonLayout.localLeft)
+                .tag(SourceControlSettings.RevisionComparisonLayout.localLeft)
             Text("Local Revision on Right Side")
-                .tag(SettingsData.RevisionComparisonLayout.localRight)
+                .tag(SourceControlSettings.RevisionComparisonLayout.localRight)
         }
     }
 
@@ -102,9 +102,9 @@ private extension SourceControlGeneralView {
             selection: $settings.controlNavigatorOrder
         ) {
             Text("Sort by Name")
-                .tag(SettingsData.ControlNavigatorOrder.sortByName)
+                .tag(SourceControlSettings.ControlNavigatorOrder.sortByName)
             Text("Sort by Date")
-                .tag(SettingsData.ControlNavigatorOrder.sortByDate)
+                .tag(SourceControlSettings.ControlNavigatorOrder.sortByDate)
         }
     }
 }
