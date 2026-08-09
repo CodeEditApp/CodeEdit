@@ -56,6 +56,11 @@ public struct SettingsAccessorKey: EnvironmentKey {
     nonisolated(unsafe) public static let defaultValue: SettingsAccessing = DefaultSettingsReader()
 }
 
+public struct SettingsRevisionKey: EnvironmentKey {
+    /// `0` forever: a subtree with no injector has no settings to change under it.
+    public static let defaultValue: Int = 0
+}
+
 public extension EnvironmentValues {
     /// The settings accessor for the current view tree.
     ///
@@ -64,6 +69,21 @@ public extension EnvironmentValues {
     var settingsAccessor: SettingsAccessing {
         get { self[SettingsAccessorKey.self] }
         set { self[SettingsAccessorKey.self] = newValue }
+    }
+
+    /// Changes once per settings change; see ``Settings/revision``.
+    ///
+    /// The seam's invalidation signal, kept in its own `Equatable` key rather than folded into
+    /// ``settingsAccessor``. Two keys, two jobs: the accessor answers *what the value is* and is
+    /// legitimately a stable, stateless instance, while the revision answers *whether anything
+    /// changed*. That separation is what lets a non-observing injection point (`appServices(_:)`)
+    /// supply the accessor without also having to fake a change signal it cannot compute.
+    ///
+    /// Injected by any view that observes ``Settings``. A subtree that receives an accessor but no
+    /// revision reads correct values and never re-renders on change — inject both, or neither.
+    var settingsRevision: Int {
+        get { self[SettingsRevisionKey.self] }
+        set { self[SettingsRevisionKey.self] = newValue }
     }
 }
 
@@ -85,6 +105,10 @@ public struct SettingsValue<S: SettingsSection, Value>: DynamicProperty {
     @Environment(\.settingsAccessor)
     private var accessor
 
+    /// Not a source of data — a source of *invalidation*. See ``EnvironmentValues/settingsRevision``.
+    @Environment(\.settingsRevision)
+    private var revision
+
     private let keyPath: WritableKeyPath<S, Value>
 
     public init(_ section: S.Type, _ keyPath: WritableKeyPath<S, Value>) {
@@ -93,7 +117,10 @@ public struct SettingsValue<S: SettingsSection, Value>: DynamicProperty {
 
     public var wrappedValue: Value {
         get {
-            accessor.value(S.self)[keyPath: keyPath]
+            // Read, not merely declared: an unread `@Environment` is a dependency SwiftUI does not
+            // document itself as tracking, and being tracked is this property's entire purpose.
+            _ = revision
+            return accessor.value(S.self)[keyPath: keyPath]
         }
         // Read-modify-write of the whole section: the accessor is section-granular, and this is the
         // only way to change one field without naming the settings aggregate.

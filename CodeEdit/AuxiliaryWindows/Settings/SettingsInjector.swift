@@ -17,10 +17,13 @@ struct SettingsInjector<Content: View>: View {
     var body: some View {
         content
             .environment(\.settings, settings.preferences)
-            // `@ObservedObject` above means this recomputes on every `Settings.shared` change,
-            // so wrapped trees using `@SettingsValue`/`SettingsReading` re-render on settings
-            // changes too — a bare one-shot `.environment(\.settingsAccessor, LegacySettingsStore())`
-            // would not.
             .environment(\.settingsAccessor, LegacySettingsStore())
+            // The seam's invalidation signal. Rewriting the accessor above is *not* enough:
+            // `LegacySettingsStore` is a stateless struct behind an existential, so whether SwiftUI
+            // treats the rewrite as a change is unspecified — and `.appServices(_:)`, applied
+            // closer to the leaf in `CodeEditSplitViewController`, overwrites it with a
+            // process-lifetime instance anyway. `settingsRevision` is `Equatable` and lives in its
+            // own key, so neither of those can defeat it.
+            .environment(\.settingsRevision, settings.revision)
     }
 }

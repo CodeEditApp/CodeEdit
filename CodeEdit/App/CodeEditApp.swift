@@ -87,6 +87,10 @@ struct CodeEditApp: App {
                 }
         }
         .environment(\.settings, settings.preferences) // Add settings to each window environment
+        // The settings seam's invalidation signal, for the scene roots that never pass through
+        // `SettingsInjector`. `appServices(_:)` cannot supply it — it holds no observation — but
+        // this body does, via the `@ObservedObject` above.
+        .environment(\.settingsRevision, settings.revision)
         .appServices(appdelegate.dependencies)
     }
 }

@@ -22,6 +22,7 @@ public final class Settings: ObservableObject {
     nonisolated(unsafe) public static let shared: Settings = .init()
 
     private var storeTask: AnyCancellable!
+    private var revisionTask: AnyCancellable!
 
     private init() {
         self.preferences = .init()
@@ -29,6 +30,11 @@ public final class Settings: ObservableObject {
 
         self.storeTask = self.$preferences.throttle(for: 2, scheduler: RunLoop.main, latest: true).sink {
             try? self.savePreferences($0)
+        }
+        // Bumped on the `willSet` emission, i.e. before SwiftUI runs the update pass that the same
+        // change schedules, so a body evaluated for this change already sees the new revision.
+        self.revisionTask = self.$preferences.dropFirst().sink { [weak self] _ in
+            self?.revision &+= 1
         }
     }
 
@@ -45,6 +51,21 @@ public final class Settings: ObservableObject {
     ///
     /// Changes are saved automatically.
     @Published public var preferences: SettingsData
+
+    /// A counter incremented once per change to ``preferences``.
+    ///
+    /// This is the settings seam's **invalidation signal**. Views reach settings through
+    /// ``SettingsValue``, whose only environment dependency would otherwise be
+    /// ``EnvironmentValues/settingsAccessor`` — an existential holding a stateless store that never
+    /// compares unequal to itself. Re-rendering on a settings change would then rest on SwiftUI
+    /// treating a rewritten non-`Equatable` existential as a change, which is unspecified.
+    /// An `Int` is `Equatable`, so an injector publishing it into
+    /// ``EnvironmentValues/settingsRevision`` makes the invalidation explicit and precise: it
+    /// changes exactly when settings change, and never otherwise.
+    ///
+    /// Deliberately not derived from `SettingsData` itself — the seam types must not name the
+    /// app-wide aggregate.
+    @Published public private(set) var revision: Int = 0
 
     /// Load and construct ``Settings`` model from
     /// `~/Library/Application Support/CodeEdit/settings.json`
