@@ -132,9 +132,6 @@ public final class LSPService: LSPServiceProtocol {
     /// created on demand and removed when the document closes.
     private var documentObjects: [String: LanguageServerDocumentObjects<CodeFileDocument>] = [:]
 
-    @AppSettings(\.developerSettings.lspBinaries)
-    var lspBinaries
-
     /// Returns the language-server objects for a document, creating and storing them on first use.
     /// A document without a URI (e.g. untitled) gets a fresh, unstored instance — it has no server.
     func languageServerObjects(for document: CodeFileDocument) -> LanguageServerDocumentObjects<CodeFileDocument> {
@@ -160,8 +157,9 @@ public final class LSPService: LSPServiceProtocol {
     /// before any document opens.
     public var workspaceFinder: (URL) -> URL? = { _ in nil }
 
-    public init() {
+    public init(settingsReader: SettingsReading) {
         // Load the LSP binaries from the developer menu
+        let lspBinaries = settingsReader.value(DeveloperSettings.self).lspBinaries
         for binary in lspBinaries {
             if let language = LanguageIdentifier(rawValue: binary.key) {
                 self.languageConfigs[language] = LanguageServerBinary(

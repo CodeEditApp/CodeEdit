@@ -40,17 +40,27 @@ public final class RegistryManager: RegistryManaging {
     /// invalidated from `deinit`, which cannot be actor-isolated.
     nonisolated(unsafe) private var cleanupTimer: Timer?
 
-    @AppSettings(\.languageServers.installedLanguageServers)
-    public var installedLanguageServers: [String: LanguageServerSettings.Installed]
+    public private(set) var installedLanguageServers: [String: LanguageServerSettings.Installed] {
+        didSet { registryWriter.persistInstalledLanguageServers(installedLanguageServers) }
+    }
 
     private let eventBus: EventBus
     private let errorNotifier: ErrorNotifying
     private let shellClient: ShellClientProtocol
+    private let registryWriter: LanguageServerRegistryWriting
 
-    public init(eventBus: EventBus, errorNotifier: ErrorNotifying, shellClient: ShellClientProtocol) {
+    public init(
+        eventBus: EventBus,
+        errorNotifier: ErrorNotifying,
+        shellClient: ShellClientProtocol,
+        settingsReader: SettingsReading,
+        registryWriter: LanguageServerRegistryWriting
+    ) {
         self.eventBus = eventBus
         self.errorNotifier = errorNotifier
         self.shellClient = shellClient
+        self.registryWriter = registryWriter
+        self.installedLanguageServers = settingsReader.value(LanguageServerSettings.self).installedLanguageServers
     }
 
     deinit {

@@ -9,6 +9,7 @@
 import Testing
 import Foundation
 import CodeEditCore
+import CodeEditSettings
 import ShellClient
 @testable import CodeEdit
 
@@ -18,7 +19,9 @@ struct RegistryTests {
     var registry: RegistryManager = RegistryManager(
         eventBus: EventBus(),
         errorNotifier: NoOpErrorNotifier(),
-        shellClient: ShellClient()
+        shellClient: ShellClient(),
+        settingsReader: SnapshotSettingsReader([:]),
+        registryWriter: NoOpLanguageServerRegistryWriting()
     )
 
     // MARK: - Download Tests

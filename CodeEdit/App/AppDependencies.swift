@@ -47,7 +47,7 @@ final class AppDependencies {
     private(set) lazy var softwareUpdater = SoftwareUpdater()
 
     private(set) lazy var lspService: LSPService = {
-        let service = LSPService()
+        let service = LSPService(settingsReader: settingsReader)
         // Property-injected (not init-injected): the window manager's construction consumes
         // `lspService`, so init injection in both directions would recurse. Resolved at call
         // time, long after both objects exist.
@@ -62,7 +62,9 @@ final class AppDependencies {
     private(set) lazy var registryManager = RegistryManager(
         eventBus: eventBus,
         errorNotifier: errorNotifier,
-        shellClient: shellClient
+        shellClient: shellClient,
+        settingsReader: settingsReader,
+        registryWriter: LegacyLanguageServerRegistryWriter()
     )
 
     private(set) lazy var workspaceWindowManager = WorkspaceWindowManager(dependencies: self)

@@ -8,11 +8,12 @@
 @testable import CELSP
 import XCTest
 import CodeEditDocument
+import CodeEditSettings
 @testable import CodeEdit
 
 @MainActor
 final class LSPServiceDocumentObjectsTests: XCTestCase {
-    private func makeService() -> LSPService { LSPService() }
+    private func makeService() -> LSPService { LSPService(settingsReader: SnapshotSettingsReader([:])) }
 
     private func makeDocument(path: String) throws -> CodeFileDocument {
         let url = FileManager.default.temporaryDirectory
