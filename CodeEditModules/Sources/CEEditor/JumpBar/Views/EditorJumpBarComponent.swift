@@ -7,6 +7,7 @@
 
 import SwiftUI
 import CodeEditCore
+import CodeEditSettings
 import Combine
 import CodeEditSymbols
 
@@ -14,6 +15,9 @@ struct EditorJumpBarComponent: View {
     private let fileItem: CEWorkspaceFile
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
     private let isLastItem: Bool
+
+    @SettingsValue(GeneralSettings.self, \.fileIconStyle)
+    var fileIconStyle
 
     @Environment(\.colorScheme)
     var colorScheme
@@ -62,6 +66,7 @@ struct EditorJumpBarComponent: View {
             button.menu = EditorJumpBarMenu(
                 fileItems: siblings,
                 fileManager: fileManager,
+                fileIconStyle: fileIconStyle,
                 tappedOpenFile: tappedOpenFile
             )
             button.font = .systemFont(ofSize: NSFont.systemFontSize(for: .small))

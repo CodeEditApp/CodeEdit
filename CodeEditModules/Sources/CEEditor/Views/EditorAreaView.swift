@@ -14,13 +14,13 @@ import CodeEditTextView
 import UniformTypeIdentifiers
 
 struct EditorAreaView: View {
-    @AppSettings(\.general.showEditorJumpBar)
+    @SettingsValue(GeneralSettings.self, \.showEditorJumpBar)
     var showEditorJumpBar
 
-    @AppSettings(\.navigation.navigationStyle)
+    @SettingsValue(NavigationSettings.self, \.navigationStyle)
     var navigationStyle
 
-    @AppSettings(\.general.dimEditorsWithoutFocus)
+    @SettingsValue(GeneralSettings.self, \.dimEditorsWithoutFocus)
     var dimEditorsWithoutFocus
 
     @ObservedObject var editor: Editor

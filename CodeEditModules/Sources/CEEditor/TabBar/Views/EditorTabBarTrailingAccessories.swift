@@ -11,9 +11,9 @@ import CodeEditDocument
 import CodeEditUI
 
 struct EditorTabBarTrailingAccessories: View {
-    @AppSettings(\.textEditing.wrapLinesToEditorWidth)
+    @SettingsValue(TextEditingSettings.self, \.wrapLinesToEditorWidth)
     var wrapLinesToEditorWidth
-    @AppSettings(\.textEditing.showMinimap)
+    @SettingsValue(TextEditingSettings.self, \.showMinimap)
     var showMinimap
 
     @Environment(\.splitEditor)

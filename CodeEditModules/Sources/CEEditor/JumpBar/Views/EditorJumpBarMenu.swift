@@ -13,19 +13,28 @@ final class EditorJumpBarMenu: NSMenu, NSMenuDelegate {
     private let fileItems: [CEWorkspaceFile]
     private weak var fileManager: (any WorkspaceFileProviding)?
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
+    private let fileIconStyle: GeneralSettings.FileIconStyle
 
+    /// - Parameter fileIconStyle: Read at the SwiftUI boundary (`EditorJumpBarComponent`) and handed
+    ///   in by value — this type is AppKit, so it cannot use `@SettingsValue` itself.
     init(
         fileItems: [CEWorkspaceFile],
         fileManager: any WorkspaceFileProviding,
+        fileIconStyle: GeneralSettings.FileIconStyle,
         tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.fileItems = fileItems
         self.fileManager = fileManager
+        self.fileIconStyle = fileIconStyle
         self.tappedOpenFile = tappedOpenFile
         super.init(title: "")
         delegate = self
         fileItems.forEach { item in
-            let menuItem = JumpBarMenuItem(fileItem: item, tappedOpenFile: tappedOpenFile)
+            let menuItem = JumpBarMenuItem(
+                fileItem: item,
+                fileIconStyle: fileIconStyle,
+                tappedOpenFile: tappedOpenFile
+            )
             menuItem.onStateImage = nil
             self.addItem(menuItem)
         }
@@ -52,6 +61,7 @@ final class EditorJumpBarMenu: NSMenu, NSMenuDelegate {
             let menu = EditorJumpBarMenu(
                 fileItems: children,
                 fileManager: fileManager,
+                fileIconStyle: fileIconStyle,
                 tappedOpenFile: tappedOpenFile
             )
             return menu
@@ -63,10 +73,10 @@ final class EditorJumpBarMenu: NSMenu, NSMenuDelegate {
 final class JumpBarMenuItem: NSMenuItem {
     private let fileItem: CEWorkspaceFile
     private let tappedOpenFile: (CEWorkspaceFile) -> Void
-    private let generalSettings = Settings.shared.preferences.general
 
     init(
         fileItem: CEWorkspaceFile,
+        fileIconStyle: GeneralSettings.FileIconStyle,
         tappedOpenFile: @escaping (CEWorkspaceFile) -> Void
     ) {
         self.fileItem = fileItem
@@ -80,7 +90,7 @@ final class JumpBarMenuItem: NSMenuItem {
             submenu = subMenu
             color = NSColor(named: "FolderBlue") ?? .systemBlue
         }
-        if generalSettings.fileIconStyle == .monochrome {
+        if fileIconStyle == .monochrome {
             color = NSColor(named: "CoolGray") ?? .systemGray
         }
         let image = fileItem.nsIcon.withSymbolConfiguration(.init(paletteColors: [color]))

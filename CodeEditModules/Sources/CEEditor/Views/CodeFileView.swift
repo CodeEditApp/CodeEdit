@@ -27,41 +27,41 @@ struct CodeFileView: View {
     private var textViewCoordinators: [TextViewCoordinator]
     private var highlightProviders: [any HighlightProviding] = []
 
-    @AppSettings(\.textEditing.defaultTabWidth)
+    @SettingsValue(TextEditingSettings.self, \.defaultTabWidth)
     var defaultTabWidth
-    @AppSettings(\.textEditing.indentOption)
+    @SettingsValue(TextEditingSettings.self, \.indentOption)
     var indentOption
-    @AppSettings(\.textEditing.lineHeightMultiple)
+    @SettingsValue(TextEditingSettings.self, \.lineHeightMultiple)
     var lineHeightMultiple
-    @AppSettings(\.textEditing.wrapLinesToEditorWidth)
+    @SettingsValue(TextEditingSettings.self, \.wrapLinesToEditorWidth)
     var wrapLinesToEditorWidth
-    @AppSettings(\.textEditing.overscroll)
+    @SettingsValue(TextEditingSettings.self, \.overscroll)
     var overscroll
-    @AppSettings(\.textEditing.font)
+    @SettingsValue(TextEditingSettings.self, \.font)
     var settingsFont
-    @AppSettings(\.theme.useThemeBackground)
+    @SettingsValue(ThemeSettings.self, \.useThemeBackground)
     var useThemeBackground
-    @AppSettings(\.theme.matchAppearance)
+    @SettingsValue(ThemeSettings.self, \.matchAppearance)
     var matchAppearance
-    @AppSettings(\.textEditing.letterSpacing)
+    @SettingsValue(TextEditingSettings.self, \.letterSpacing)
     var letterSpacing
-    @AppSettings(\.textEditing.bracketEmphasis)
+    @SettingsValue(TextEditingSettings.self, \.bracketEmphasis)
     var bracketEmphasis
-    @AppSettings(\.textEditing.useSystemCursor)
+    @SettingsValue(TextEditingSettings.self, \.useSystemCursor)
     var useSystemCursor
-    @AppSettings(\.textEditing.showGutter)
+    @SettingsValue(TextEditingSettings.self, \.showGutter)
     var showGutter
-    @AppSettings(\.textEditing.showMinimap)
+    @SettingsValue(TextEditingSettings.self, \.showMinimap)
     var showMinimap
-    @AppSettings(\.textEditing.showFoldingRibbon)
+    @SettingsValue(TextEditingSettings.self, \.showFoldingRibbon)
     var showFoldingRibbon
-    @AppSettings(\.textEditing.reformatAtColumn)
+    @SettingsValue(TextEditingSettings.self, \.reformatAtColumn)
     var reformatAtColumn
-    @AppSettings(\.textEditing.showReformattingGuide)
+    @SettingsValue(TextEditingSettings.self, \.showReformattingGuide)
     var showReformattingGuide
-    @AppSettings(\.textEditing.invisibleCharacters)
+    @SettingsValue(TextEditingSettings.self, \.invisibleCharacters)
     var invisibleCharactersConfiguration
-    @AppSettings(\.textEditing.warningCharacters)
+    @SettingsValue(TextEditingSettings.self, \.warningCharacters)
     var warningCharacters
 
     @Environment(\.colorScheme)
@@ -116,8 +116,6 @@ struct CodeFileView: View {
         injectedTheme!
     }
 
-    @State private var font: NSFont = Settings[\.textEditing].font.current
-
     @Environment(\.edgeInsets)
     private var edgeInsets
 
@@ -129,7 +127,7 @@ struct CodeFileView: View {
                 appearance: .init(
                     theme: currentTheme.editor.editorTheme,
                     useThemeBackground: useThemeBackground,
-                    font: font,
+                    font: settingsFont.current,
                     lineHeightMultiple: lineHeightMultiple,
                     letterSpacing: letterSpacing,
                     wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
@@ -190,21 +188,18 @@ struct CodeFileView: View {
         .colorScheme(currentTheme.appearance == .dark ? .dark : .light)
         // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
         .frame(minHeight: .zero, maxHeight: .infinity)
-        .onChange(of: settingsFont) { _, newFontSetting in
-            font = newFontSetting.current
-        }
     }
 
     /// Determines the style of bracket emphasis based on the `bracketEmphasis` setting and the current theme.
     /// - Returns: The emphasis style to use for bracket pair emphasis.
     private func getBracketPairEmphasis() -> BracketPairEmphasis? {
-        let color = if Settings[\.textEditing].bracketEmphasis.useCustomColor {
-            Settings[\.textEditing].bracketEmphasis.color.nsColor
+        let color = if bracketEmphasis.useCustomColor {
+            bracketEmphasis.color.nsColor
         } else {
             currentTheme.editor.text.nsColor.withAlphaComponent(0.8)
         }
 
-        switch Settings[\.textEditing].bracketEmphasis.highlightType {
+        switch bracketEmphasis.highlightType {
         case .disabled:
             return nil
         case .flash:

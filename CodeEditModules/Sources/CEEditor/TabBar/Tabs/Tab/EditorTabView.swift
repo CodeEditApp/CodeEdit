@@ -30,7 +30,7 @@ struct EditorTabView: View {
 
     @StateObject private var fileObserver: EditorTabFileObserver
 
-    @AppSettings(\.general.fileIconStyle)
+    @SettingsValue(GeneralSettings.self, \.fileIconStyle)
     var fileIconStyle
 
     /// Is cursor hovering over the entire tab.
