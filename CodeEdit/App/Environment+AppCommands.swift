@@ -8,6 +8,7 @@
 import CELSP
 import SwiftUI
 import CodeEditCore
+import CodeEditSettings
 import CEEditor
 import CENotifications
 import CESearch
@@ -106,6 +107,7 @@ extension View {
             .environment(\.workspaceFileOpener, dependencies.workspaceFileOpener)
             .environment(\.workspaceNavigator, dependencies.workspaceNavigator)
             .environment(\.languageServices, dependencies.languageServicesProvider)
+            .environment(\.settingsReader, dependencies.settingsReader)
     }
 }
 
@@ -123,5 +125,6 @@ extension Scene {
             .environment(\.workspaceFileOpener, dependencies.workspaceFileOpener)
             .environment(\.workspaceNavigator, dependencies.workspaceNavigator)
             .environment(\.languageServices, dependencies.languageServicesProvider)
+            .environment(\.settingsReader, dependencies.settingsReader)
     }
 }
