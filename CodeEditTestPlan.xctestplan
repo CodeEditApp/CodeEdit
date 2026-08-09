@@ -43,6 +43,13 @@
     {
       "target" : {
         "containerPath" : "container:CodeEditModules",
+        "identifier" : "CodeEditSettingsTests",
+        "name" : "CodeEditSettingsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:CodeEditModules",
         "identifier" : "CESearchTests",
         "name" : "CESearchTests"
       }

@@ -119,6 +119,11 @@ let package = Package(
 
         // MARK: - Tests
         .testTarget(name: "CodeEditCoreTests", dependencies: ["CodeEditCore"]),
+        .testTarget(
+            name: "CodeEditSettingsTests",
+            dependencies: ["CodeEditSettings"],
+            resources: [.copy("Fixtures")]
+        ),
         .testTarget(name: "CodeEditUIUnitTests", dependencies: ["CodeEditUI"]),
         .testTarget(name: "CESearchTests", dependencies: ["CESearch", "CodeEditCore"]),
         .testTarget(

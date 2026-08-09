@@ -1,0 +1,161 @@
+{
+  "accounts" : {
+    "sourceControlAccounts" : {
+      "gitAccounts" : [
+
+      ],
+      "sshKey" : "/Users/test/.ssh/id_ed25519"
+    }
+  },
+  "developerSettings" : {
+    "lspBinaries" : {
+
+    },
+    "showInternalDevelopmentInspector" : true
+  },
+  "general" : {
+    "appAppearance" : "dark",
+    "dimEditorsWithoutFocus" : true,
+    "fileExtensionsVisibility" : {
+      "hideAll" : {
+
+      }
+    },
+    "fileIconStyle" : "monochrome",
+    "findNavigatorDetail" : 10,
+    "hiddenFileExtensions" : {
+      "extensions" : [
+        "log",
+        "tmp"
+      ]
+    },
+    "inspectorTabBarPosition" : "side",
+    "isAutoSaveOn" : false,
+    "issueNavigatorDetail" : 30,
+    "navigatorTabBarPosition" : "side",
+    "projectNavigatorSize" : "large",
+    "reopenBehavior" : "newDocument",
+    "reopenWindowAfterClose" : "quit",
+    "revealFileOnFocusChange" : true,
+    "showEditorJumpBar" : false,
+    "showIssues" : "minimized",
+    "showLiveIssues" : false,
+    "shownFileExtensions" : {
+      "extensions" : [
+        "rs",
+        "toml"
+      ]
+    }
+  },
+  "keybindings" : {
+    "keybindings" : {
+
+    }
+  },
+  "languageServers" : {
+    "installedLanguageServers" : {
+
+    }
+  },
+  "navigation" : {
+    "navigationStyle" : "openInPlace"
+  },
+  "search" : {
+    "ignoreGlobPatterns" : [
+
+    ]
+  },
+  "sourceControl" : {
+    "general" : {
+      "addRemoveAutomatically" : false,
+      "controlNavigatorOrder" : "sortByDate",
+      "fetchRefreshServerStatus" : false,
+      "includeUpstreamChanges" : false,
+      "openFeedbackInBrowser" : false,
+      "refreshStatusLocally" : false,
+      "revisionComparisonLayout" : "localRight",
+      "selectFilesToCommit" : false,
+      "showSourceControlChanges" : false,
+      "sourceControlIsEnabled" : false
+    },
+    "git" : {
+      "showMergeCommitsPerFileLog" : true
+    }
+  },
+  "terminal" : {
+    "cursorBlink" : true,
+    "cursorStyle" : "bar",
+    "darkAppearance" : true,
+    "font" : {
+      "name" : "Menlo",
+      "size" : 14,
+      "weight" : 0.5
+    },
+    "optionAsMeta" : true,
+    "shell" : "zsh",
+    "useEditorTheme" : false,
+    "useLoginShell" : false,
+    "useShellIntegration" : false,
+    "useTextEditorFont" : false,
+    "useThemeBackground" : false
+  },
+  "textEditing" : {
+    "autocompleteBraces" : false,
+    "bracketEmphasis" : {
+      "color" : {
+        "color" : "FF0000"
+      },
+      "highlightType" : "bordered",
+      "useCustomColor" : true
+    },
+    "defaultTabWidth" : 8,
+    "enableTypeOverCompletion" : false,
+    "font" : {
+      "name" : "Menlo",
+      "size" : 16,
+      "weight" : 0.5
+    },
+    "indentOption" : {
+      "indentType" : "tab",
+      "spaceCount" : 2
+    },
+    "invisibleCharacters" : {
+      "carriageReturnReplacement" : "R",
+      "enabled" : true,
+      "lineFeedReplacement" : "F",
+      "lineSeparatorReplacement" : "L",
+      "paragraphSeparatorReplacement" : "P",
+      "showLineEndings" : false,
+      "showSpaces" : false,
+      "showTabs" : false,
+      "spaceReplacement" : "S",
+      "tabReplacement" : "T"
+    },
+    "letterSpacing" : 1.5,
+    "lineHeightMultiple" : 1.5,
+    "overscroll" : "large",
+    "reformatAtColumn" : 100,
+    "showFoldingRibbon" : false,
+    "showGutter" : false,
+    "showMinimap" : false,
+    "showReformattingGuide" : true,
+    "useSystemCursor" : false,
+    "warningCharacters" : {
+      "characters" : [
+        894,
+        "Greek Question Mark"
+      ],
+      "enabled" : false
+    },
+    "wrapLinesToEditorWidth" : false
+  },
+  "theme" : {
+    "matchAppearance" : false,
+    "overrides" : {
+
+    },
+    "selectedDarkTheme" : "Solarized (Dark)",
+    "selectedLightTheme" : "Solarized (Light)",
+    "useThemeBackground" : false
+  }
+}
