@@ -32,10 +32,20 @@ struct LegacySettingsStore: SettingsAccessing {
     }
 
     func setValue<S: SettingsSection>(_ value: S) {
-        // A section absent from `accessors` has nowhere to go on `SettingsData`. Every section
-        // declared today is mapped below; a new one that forgets to register here would be
-        // discarded, which is why the map is the single source of truth for both directions.
-        Self.accessors[S.settingsKey]?.write(value)
+        // `SettingsAccessing` is deliberately nonisolated (see the protocol's docs), so the
+        // compiler cannot enforce this. A write lands in `Settings.shared.preferences`, whose
+        // `@Published` change drives AppKit through SwiftUI observers — off the main thread that
+        // corrupts AppKit state rather than failing cleanly. Loud in debug, unchanged in release.
+        MainActor.assertIsolated("Settings must be written on the main thread")
+
+        guard let accessor = Self.accessors[S.settingsKey] else {
+            // A section absent from `accessors` has nowhere to go on `SettingsData`, so the write
+            // would vanish. Every section declared today is mapped below; this fires only if a new
+            // one forgets to register, which is a wiring bug, not a runtime condition.
+            assertionFailure("No SettingsData field registered for section '\(S.settingsKey)'")
+            return
+        }
+        accessor.write(value)
     }
 
     /// A read/write pair for one `SettingsData` field, type-erased over its section type.
@@ -46,7 +56,15 @@ struct LegacySettingsStore: SettingsAccessing {
         init<S: SettingsSection>(_ keyPath: WritableKeyPath<SettingsData, S>) {
             read = { $0[keyPath: keyPath] }
             write = { value in
-                guard let value = value as? S else { return }
+                guard let value = value as? S else {
+                    // Only reachable if two sections share a `settingsKey`, or a key was mapped to
+                    // the wrong `SettingsData` field. Either way the user's write is being dropped.
+                    assertionFailure(
+                        "Section '\(S.settingsKey)' is registered for \(S.self) but was handed "
+                        + "\(type(of: value))"
+                    )
+                    return
+                }
                 Settings[keyPath] = value
             }
         }
