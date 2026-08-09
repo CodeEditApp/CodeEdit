@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 09/08/26.
 //
 
+import Foundation
 import SwiftUI
 
 /// Read access to settings, one section at a time.
@@ -26,16 +27,43 @@ public protocol SettingsReading {
 /// The discarding write is the dangerous half: a view whose subtree never received a real store
 /// (most easily by sitting behind an `NSHostingView`/`NSHostingController` boundary, which
 /// `@Environment` does not cross) will read plausible defaults and *appear* to save, losing the
-/// user's change with no error. Treat reaching this type outside a `#Preview` as a wiring bug.
+/// user's change with no error. Reaching this type outside a `#Preview` is therefore treated as a
+/// wiring bug: both methods `assertionFailure` unless `XCODE_RUNNING_FOR_PREVIEWS` is set, so the
+/// bug is loud in debug and unchanged in release.
 public struct DefaultSettingsReader: SettingsAccessing {
+    /// Previews legitimately render with no store configured; everywhere else, reaching this type
+    /// is a wiring bug worth a debug trap.
+    private static var isRunningInPreviews: Bool {
+        ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
+    }
+
     public init() {}
 
+    /// Answers with defaults. Reads are only *misleading*, not destructive, so they trap in debug
+    /// but the value is still returned — a preview or a mis-wired subtree keeps rendering.
     public func value<S: SettingsSection>(_ type: S.Type) -> S {
-        S()
+        if !Self.isRunningInPreviews {
+            assertionFailure(
+                "Read of '\(S.settingsKey)' fell back to defaults: this view subtree never received "
+                + "a settings accessor. A standalone NSHostingView/NSHostingController root needs "
+                + "`.appServices(_:)` or `SettingsInjector` — `@Environment` does not cross a "
+                + "hosting boundary."
+            )
+        }
+        return S()
     }
 
     /// Discards `value`. See the type's documentation — this is a no-op, not a save.
-    public func setValue<S: SettingsSection>(_ value: S) {}
+    public func setValue<S: SettingsSection>(_ value: S) {
+        if !Self.isRunningInPreviews {
+            assertionFailure(
+                "Write to '\(S.settingsKey)' was discarded: this view subtree never received a "
+                + "settings accessor. A standalone NSHostingView/NSHostingController root needs "
+                + "`.appServices(_:)` or `SettingsInjector` — `@Environment` does not cross a "
+                + "hosting boundary."
+            )
+        }
+    }
 }
 
 /// A fixed reader for tests and SwiftUI previews.
