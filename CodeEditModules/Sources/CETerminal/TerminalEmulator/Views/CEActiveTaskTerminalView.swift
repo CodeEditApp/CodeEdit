@@ -17,9 +17,9 @@ public class CEActiveTaskTerminalView: CELocalShellTerminalView {
         activeTask.status == .running || activeTask.status == .stopped
     }
 
-    init(activeTask: CEActiveTask) {
+    init(activeTask: CEActiveTask, settings: TerminalSettings = TerminalSettings()) {
         self.activeTask = activeTask
-        super.init(frame: .zero)
+        super.init(frame: .zero, settings: settings)
     }
 
     public required init?(coder: NSCoder) {
@@ -32,7 +32,7 @@ public class CEActiveTaskTerminalView: CELocalShellTerminalView {
         environment: [String] = [],
         interactive: Bool = true
     ) {
-        let terminalSettings = Settings.shared.preferences.terminal
+        let terminalSettings = settings
 
         var terminalEnvironment: [String] = Terminal.getEnvironmentVariables()
         terminalEnvironment.append("TERM_PROGRAM=CodeEditApp_Terminal")

@@ -59,12 +59,19 @@ public class CELocalShellTerminalView: CETerminalView, @preconcurrency TerminalV
                                        @preconcurrency LocalProcessDelegate {
     public var process: LocalProcess!
 
-    override public init(frame: CGRect) {
+    /// The terminal settings this view was last configured with. Set at construction and kept
+    /// current by ``apply(settings:)``, which `TerminalEmulatorView` calls from `updateNSView` so a
+    /// running terminal picks up changes without being reopened.
+    public internal(set) var settings: TerminalSettings
+
+    public init(frame: CGRect, settings: TerminalSettings = TerminalSettings()) {
+        self.settings = settings
         super.init(frame: frame)
         setup()
     }
 
     public required init?(coder: NSCoder) {
+        self.settings = TerminalSettings()
         super.init(coder: coder)
         setup()
     }
@@ -88,7 +95,7 @@ public class CELocalShellTerminalView: CETerminalView, @preconcurrency TerminalV
         environment: [String] = [],
         interactive: Bool = true
     ) {
-        let terminalSettings = Settings.shared.preferences.terminal
+        let terminalSettings = settings
 
         var terminalEnvironment: [String] = Terminal.getEnvironmentVariables()
         terminalEnvironment.append("TERM_PROGRAM=CodeEditApp_Terminal")
@@ -123,6 +130,30 @@ public class CELocalShellTerminalView: CETerminalView, @preconcurrency TerminalV
             )
         } catch {
             terminal.feed(text: "Failed to start a terminal session: \(error.localizedDescription)")
+        }
+    }
+
+    /// Re-applies the parts of ``TerminalSettings`` this view can act on by itself: the cursor
+    /// style/blink and the option-as-meta key mapping. Font and theme-derived colours stay with
+    /// `TerminalEmulatorView`, which also needs the current theme and text-editing font settings.
+    ///
+    /// `TerminalEmulatorView.updateNSView` calls this on every settings change so a running
+    /// terminal reflects new settings without being reopened.
+    public func apply(settings: TerminalSettings) {
+        self.settings = settings
+        optionAsMetaKey = settings.optionAsMeta
+        cursorStyleChanged(source: getTerminal(), newStyle: Self.cursorStyle(for: settings))
+    }
+
+    /// The `SwiftTerm.CursorStyle` for the given terminal settings' cursor shape and blink state.
+    static func cursorStyle(for settings: TerminalSettings) -> CursorStyle {
+        switch settings.cursorStyle {
+        case .block:
+            return settings.cursorBlink ? .blinkBlock : .steadyBlock
+        case .underline:
+            return settings.cursorBlink ? .blinkUnderline : .steadyUnderline
+        case .bar:
+            return settings.cursorBlink ? .blinkBar : .steadyBar
         }
     }
 
