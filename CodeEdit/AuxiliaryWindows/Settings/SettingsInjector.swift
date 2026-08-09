@@ -17,5 +17,10 @@ struct SettingsInjector<Content: View>: View {
     var body: some View {
         content
             .environment(\.settings, settings.preferences)
+            // `@ObservedObject` above means this recomputes on every `Settings.shared` change,
+            // so wrapped trees using `@SettingsValue`/`SettingsReading` re-render on settings
+            // changes too — a bare one-shot `.environment(\.settingsReader, LegacySettingsReader())`
+            // would not.
+            .environment(\.settingsReader, LegacySettingsReader())
     }
 }
