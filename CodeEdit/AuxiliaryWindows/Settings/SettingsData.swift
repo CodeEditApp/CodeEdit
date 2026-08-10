@@ -5,6 +5,7 @@
 //  Created by Lukas Pistrol on 01.04.22.
 //
 
+import CELSP
 import CESourceControl
 import CETerminal
 import CodeEditSettings

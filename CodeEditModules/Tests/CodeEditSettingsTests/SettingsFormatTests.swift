@@ -7,6 +7,7 @@
 
 import Testing
 import Foundation
+import CELSP
 import CESourceControl
 import CETerminal
 @testable import CodeEditSettings

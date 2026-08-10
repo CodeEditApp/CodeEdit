@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 09/08/2026.
 //
 
+import CELSP
 import CESourceControl
 import CETerminal
 import Foundation

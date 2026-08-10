@@ -5,6 +5,7 @@
 //  Created by Abe Malla on 2/2/25.
 //
 
+import CodeEditSettings
 import Foundation
 
 public struct LanguageServerSettings: SettingsSection {
@@ -30,4 +31,10 @@ public struct LanguageServerSettings: SettingsSection {
             self.version = version
         }
     }
+}
+
+// MARK: - Defaults
+
+public enum DefaultEmptyLanguageServerDictionary: DefaultValueProvider {
+    nonisolated(unsafe) public static let defaultValue: [String: LanguageServerSettings.Installed] = [:]
 }

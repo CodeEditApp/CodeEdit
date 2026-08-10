@@ -5,8 +5,6 @@
 //  Created by Matthijs Eikelenboom on 07.04.26.
 //
 
-import AppKit
-
 // MARK: - Bool Defaults
 
 public enum DefaultTrue: DefaultValueProvider {
@@ -31,10 +29,6 @@ public enum DefaultEmptyGlobPatterns: DefaultValueProvider {
 
 public enum DefaultEmptyStringDictionary: DefaultValueProvider {
     public static let defaultValue: [String: String] = [:]
-}
-
-public enum DefaultEmptyLanguageServerDictionary: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue: [String: LanguageServerSettings.Installed] = [:]
 }
 
 // MARK: - Account Defaults
