@@ -72,19 +72,31 @@ struct SettingsFormatTests {
 
     /// Every section present on disk must survive a save, whether or not anything is registered to
     /// read it. This is what keeps a disabled or not-yet-loaded extension's configuration alive.
-    ///
-    /// The body is commented out rather than merely disabled because `SettingsStore` does not exist
-    /// yet and a `.disabled` trait does not prevent compilation. Task 9 introduces the store,
-    /// uncomments this, and drops the trait.
-    @Test(.disabled("Target behaviour introduced in Task 9: SettingsStore preservation"))
+    @Test
     func unknownSectionsSurviveASave() throws {
-//        let original = try fixture("unknown-sections")
-//        let store = try SettingsStore(data: original)
-//        let saved = try store.encoded()
-//
-//        let before = try parsed(original)
-//        let after = try parsed(saved)
-//        #expect(after["someFutureFeature"] as? NSDictionary == before["someFutureFeature"] as? NSDictionary)
-//        #expect(after["extensions"] as? NSDictionary == before["extensions"] as? NSDictionary)
+        let original = try fixture("unknown-sections")
+        let store = try SettingsStore(data: original)
+        let saved = try store.encoded()
+
+        let before = try parsed(original)
+        let after = try parsed(saved)
+        #expect(after["someFutureFeature"] as? NSDictionary == before["someFutureFeature"] as? NSDictionary)
+        #expect(after["extensions"] as? NSDictionary == before["extensions"] as? NSDictionary)
+    }
+
+    /// A registered section must survive the store's decode/encode cycle with non-default values
+    /// intact — not merely be replaced by a section rebuilt at defaults.
+    @Test
+    func registeredSectionRoundTripsThroughTheStore() throws {
+        let store = try SettingsStore(data: fixture("full-settings"))
+
+        var terminal = store[TerminalSettings.self]
+        #expect(terminal.cursorBlink == true, "fixture seeds a non-default value")
+        terminal.cursorStyle = .underline
+        store[TerminalSettings.self] = terminal
+
+        let reloaded = try SettingsStore(data: store.encoded())
+        #expect(reloaded[TerminalSettings.self].cursorStyle == .underline)
+        #expect(reloaded[TerminalSettings.self].cursorBlink == true, "untouched field survived")
     }
 }
