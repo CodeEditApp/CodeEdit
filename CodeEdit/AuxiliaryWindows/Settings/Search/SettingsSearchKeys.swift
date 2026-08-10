@@ -6,6 +6,7 @@
 //
 
 import CELSP
+import CESourceControl
 import Foundation
 import CodeEditSettings
 

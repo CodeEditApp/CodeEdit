@@ -7,6 +7,7 @@
 
 import Testing
 import Foundation
+import CESourceControl
 @testable import CodeEditSettings
 
 struct SettingsFormatTests {

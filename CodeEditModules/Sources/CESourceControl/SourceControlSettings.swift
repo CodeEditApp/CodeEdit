@@ -5,6 +5,7 @@
 //  Created by Nanashi Li on 2022/04/08.
 //
 
+import CodeEditSettings
 import Foundation
 
 /// The global settings for source control

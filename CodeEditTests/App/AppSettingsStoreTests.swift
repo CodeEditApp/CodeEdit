@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 09/08/2026.
 //
 
+import CESourceControl
 import Foundation
 import Testing
 import CodeEditSettings
