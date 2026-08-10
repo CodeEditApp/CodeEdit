@@ -6,18 +6,23 @@
 //
 
 import SwiftUI
-import CodeEditSettings
-import Combine
 
 struct ViewCommands: Commands {
-    @AppSettings(\.textEditing.font.size)
-    var editorFontSize
-    @AppSettings(\.terminal.font.size)
-    var terminalFontSize
-    @AppSettings(\.general.showEditorJumpBar)
-    var showEditorJumpBar
-    @AppSettings(\.general.dimEditorsWithoutFocus)
-    var dimEditorsWithoutFocus
+
+    /// The settings store, handed in by `CodeEditCommands` rather than read from the environment.
+    ///
+    /// `Commands` content is **not** part of the view hierarchy: `.commands { }` attaches to a
+    /// `Scene` beside its content, so whether the `.environment` values `SettingsSceneInjector`
+    /// applies to that content also reach here is undocumented SwiftUI behaviour. Menu items that
+    /// read *and write* user settings must not rest on it — if it ever stopped holding, Font Size
+    /// and the Jump Bar toggle would become silent no-ops and `DefaultSettingsReader` would trap
+    /// while the menu bar is built.
+    ///
+    /// Observed, not merely held: the menu reflects settings state (the Jump Bar item's title, the
+    /// Dim-editors check mark), so it has to re-evaluate when they change. `ObservableObject`
+    /// observation inside a `Commands` conformer is already load-bearing here — it is how
+    /// ``UpdatingWindowController`` keeps the Show/Hide titles below current.
+    @ObservedObject private var settingsStore: AppSettingsStore
 
     @FocusedBinding(\.navigationSplitViewVisibility)
     var navigationSplitViewVisibility
@@ -26,6 +31,48 @@ struct ViewCommands: Commands {
     var inspectorVisibility
 
     @UpdatingWindowController var windowController: CodeEditWindowController?
+
+    init(settingsStore: AppSettingsStore) {
+        self.settingsStore = settingsStore
+    }
+
+    /// A fresh façade over the store. Stateless, so building one per access is free.
+    private var settings: SettingsData {
+        SettingsData(accessor: settingsStore)
+    }
+
+    /// The same read-modify-write `AppSettings`' `projectedValue` performs, without the environment.
+    private func binding<T: Equatable>(_ keyPath: WritableKeyPath<SettingsData, T>) -> Binding<T> {
+        Binding {
+            settings[keyPath: keyPath]
+        } set: { newValue in
+            var settings = SettingsData(accessor: settingsStore)
+            settings[keyPath: keyPath] = newValue
+        }
+    }
+
+    /// Nudges the editor and terminal font sizes together, each clamped independently so one already
+    /// at the limit does not stop the other from moving. Both bounds match the Text Editing and
+    /// Terminal settings pages.
+    private func adjustFontSizes(by delta: Double) {
+        var settings = SettingsData(accessor: settingsStore)
+
+        let editorSize = settings.textEditing.font.size
+        if (delta > 0 && editorSize < 288) || (delta < 0 && editorSize > 1) {
+            settings.textEditing.font.size = editorSize + delta
+        }
+
+        let terminalSize = settings.terminal.font.size
+        if (delta > 0 && terminalSize < 288) || (delta < 0 && terminalSize > 1) {
+            settings.terminal.font.size = terminalSize + delta
+        }
+    }
+
+    private func resetFontSizes() {
+        var settings = SettingsData(accessor: settingsStore)
+        settings.textEditing.font.size = 12
+        settings.terminal.font.size = 12
+    }
 
     var body: some Commands {
         CommandGroup(after: .toolbar) {
@@ -41,30 +88,19 @@ struct ViewCommands: Commands {
 
             Menu("Font Size") {
                 Button("Increase") {
-                    if editorFontSize < 288 {
-                        editorFontSize += 1
-                    }
-                    if terminalFontSize < 288 {
-                        terminalFontSize += 1
-                    }
+                    adjustFontSizes(by: 1)
                 }
                 .keyboardShortcut("+")
 
                 Button("Decrease") {
-                    if editorFontSize > 1 {
-                        editorFontSize -= 1
-                    }
-                    if terminalFontSize > 1 {
-                        terminalFontSize -= 1
-                    }
+                    adjustFontSizes(by: -1)
                 }
                 .keyboardShortcut("-")
 
                 Divider()
 
                 Button("Reset") {
-                    editorFontSize = 12
-                    terminalFontSize = 12
+                    resetFontSizes()
                 }
                 .keyboardShortcut("0", modifiers: [.command, .control])
             }
@@ -81,11 +117,12 @@ struct ViewCommands: Commands {
 
             Divider()
 
-            Button("\(showEditorJumpBar ? "Hide" : "Show") Jump Bar") {
-                showEditorJumpBar.toggle()
+            Button("\(settings.general.showEditorJumpBar ? "Hide" : "Show") Jump Bar") {
+                var settings = SettingsData(accessor: settingsStore)
+                settings.general.showEditorJumpBar.toggle()
             }
 
-            Toggle("Dim editors without focus", isOn: $dimEditorsWithoutFocus)
+            Toggle("Dim editors without focus", isOn: binding(\.general.dimEditorsWithoutFocus))
 
             Divider()
 
