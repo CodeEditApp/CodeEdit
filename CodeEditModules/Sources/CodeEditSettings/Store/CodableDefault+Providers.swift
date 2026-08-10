@@ -17,20 +17,6 @@ public enum DefaultFalse: DefaultValueProvider {
     public static let defaultValue = false
 }
 
-// MARK: - Terminal Defaults
-
-public enum DefaultTerminalShell: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = TerminalSettings.Shell.system
-}
-
-public enum DefaultTerminalCursorStyle: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = TerminalSettings.CursorStyle.block
-}
-
-public enum DefaultTerminalFont: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = TerminalSettings.Font()
-}
-
 // MARK: - Navigation Defaults
 
 public enum DefaultNavigationStyle: DefaultValueProvider {

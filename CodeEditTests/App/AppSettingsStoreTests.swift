@@ -6,6 +6,7 @@
 //
 
 import CESourceControl
+import CETerminal
 import Foundation
 import Testing
 import CodeEditSettings

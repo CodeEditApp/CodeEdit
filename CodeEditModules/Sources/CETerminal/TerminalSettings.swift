@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CodeEditSettings
 import Foundation
 
 /// The global settings for the terminal emulator
@@ -96,4 +97,18 @@ public struct TerminalSettings: SettingsSection {
             return customFont ?? NSFont.monospacedSystemFont(ofSize: size, weight: .medium)
         }
     }
+}
+
+// MARK: - Defaults
+
+public enum DefaultTerminalShell: DefaultValueProvider {
+    nonisolated(unsafe) public static let defaultValue = TerminalSettings.Shell.system
+}
+
+public enum DefaultTerminalCursorStyle: DefaultValueProvider {
+    nonisolated(unsafe) public static let defaultValue = TerminalSettings.CursorStyle.block
+}
+
+public enum DefaultTerminalFont: DefaultValueProvider {
+    nonisolated(unsafe) public static let defaultValue = TerminalSettings.Font()
 }

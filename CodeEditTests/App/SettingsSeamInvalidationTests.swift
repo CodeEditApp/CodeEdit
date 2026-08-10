@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import CETerminal
 import SwiftUI
 import Testing
 import CodeEditSettings

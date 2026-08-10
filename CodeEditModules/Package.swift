@@ -121,7 +121,7 @@ let package = Package(
         .testTarget(name: "CodeEditCoreTests", dependencies: ["CodeEditCore"]),
         .testTarget(
             name: "CodeEditSettingsTests",
-            dependencies: ["CodeEditSettings", "CESourceControl"],
+            dependencies: ["CodeEditSettings", "CESourceControl", "CETerminal"],
             resources: [.copy("Fixtures")]
         ),
         .testTarget(name: "CodeEditUIUnitTests", dependencies: ["CodeEditUI"]),

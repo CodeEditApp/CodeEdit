@@ -8,6 +8,7 @@
 import Testing
 import Foundation
 import CESourceControl
+import CETerminal
 @testable import CodeEditSettings
 
 struct SettingsFormatTests {

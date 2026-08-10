@@ -7,6 +7,7 @@
 
 import CELSP
 import CESourceControl
+import CETerminal
 import Foundation
 import CodeEditSettings
 
