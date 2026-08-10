@@ -223,8 +223,14 @@ so a caller changing one field reads its section, mutates it and writes it back.
   `settingsRevision` environment as `SettingsValue`, addressing a section field through the
   app-wide `SettingsData` façade instead of naming one section directly. There is no
   `Settings.shared` singleton any more — `AppSettingsStore` (owned by `AppDependencies`) is the
-  concrete accessor, injected like everything else. `@AppSettings` is what ~30 app-target files
-  still use; feature packages must not use it, and new app-target code should prefer the seam.
+  concrete accessor, injected like everything else. `@AppSettings` is what 30 app-target files
+  still use (47 declarations); feature packages must not use it, and new app-target code should
+  prefer the seam.
+- **Neither wrapper works in a `Commands` conformer.** `.commands { }` attaches beside a scene's
+  content, not inside it, so nothing guarantees the environment `SettingsSceneInjector` supplies
+  reaches menu-bar code. `CodeEditCommands`/`ViewCommands` are handed `AppSettingsStore` by
+  initializer and `@ObservedObject` it — reads, writes and menu invalidation all stop depending on
+  undocumented behaviour.
 - **`@Environment` does not cross an `NSHostingView`/`NSHostingController` boundary.** A new
   standalone hosting root must be given `.appServices(_:)` or wrapped in `SettingsInjector`, or its
   subtree falls back to `DefaultSettingsReader` — plausible defaults, and **writes discarded**.
@@ -238,7 +244,10 @@ so a caller changing one field reads its section, mutates it and writes it back.
 - **`AppSettingsStore` is the concrete accessor.** Section-keyed storage, owned by
   `AppDependencies` (no `shared`), driving the same throttled save pipeline `Settings.shared` used
   to own. Sections nothing here decodes are held verbatim and re-emitted on save, so a disabled
-  extension's configuration survives.
+  extension's configuration survives. The same holds for a section that is present but
+  *undecodable*: it reads as defaults but is re-emitted unchanged, and the one write that would
+  replace it is announced through `SettingsStore.willReplaceUndecodableSection` so the file is
+  copied to `settings.json.corrupt-<timestamp>` first.
 
 ## Creating a new feature target
 

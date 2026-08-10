@@ -40,9 +40,14 @@ struct SettingsInjector<Content: View>: View {
 /// The scene-level counterpart of ``SettingsInjector``.
 ///
 /// The app's scenes are not inside any hosting root, so they need their own injector — and it must
-/// be a `Scene`, since a `View` cannot wrap one. `CodeEditApp` cannot observe the store itself: it
-/// reaches it through the `NSApplicationDelegateAdaptor`, which is unavailable until every stored
-/// property is initialized, so the observation lives here instead.
+/// be a `Scene`, since a `View` cannot wrap one. `CodeEditApp` can *reach* the store (it does, in
+/// `init`, through the `NSApplicationDelegateAdaptor`), but it cannot `@ObservedObject` it: the
+/// store is not one of its stored properties, and a property wrapper cannot be attached to a value
+/// obtained from another one. So the observation lives here instead.
+///
+/// Note what this does **not** cover: `.commands { }` is attached beside a scene's content, not
+/// inside it, so these `.environment` values are not documented to reach `Commands` conformers.
+/// `CodeEditCommands` therefore takes the store by initializer — see its documentation.
 struct SettingsSceneInjector<Content: Scene>: Scene {
 
     /// Observed, not merely held: this scene's job is to re-inject `revision` when it changes.

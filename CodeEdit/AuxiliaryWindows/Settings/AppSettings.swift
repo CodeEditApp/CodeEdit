@@ -16,12 +16,16 @@ import CodeEditSettings
 /// for invalidation — so a view can use either without a difference in behaviour. The distinction
 /// that remains is what they may name: `SettingsValue` names one section and works inside feature
 /// packages, `AppSettings` names the app-wide aggregate and therefore cannot. New code should prefer
-/// `SettingsValue`; this wrapper exists so its ~50 existing call sites did not all have to move in
-/// one change.
+/// `SettingsValue`; this wrapper exists so its existing declarations — 47 of them, across 30
+/// app-target files — did not all have to move in one change.
 ///
 /// **Only valid inside a `View`.** It used to read a singleton, so it also worked in models and
 /// AppKit types; it no longer does, and such a use resolves to `DefaultSettingsReader`, which traps
 /// in debug. Non-view types take a ``SettingsReading``/``SettingsAccessing`` by initializer instead.
+///
+/// A `Commands` conformer counts as a non-view type here: `.commands { }` is attached beside a
+/// scene's content rather than inside it, so the environment is not documented to reach it. See
+/// `CodeEditCommands`, which is handed the store by initializer.
 @propertyWrapper
 struct AppSettings<T>: DynamicProperty where T: Equatable {
 
