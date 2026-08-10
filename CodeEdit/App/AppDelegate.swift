@@ -35,12 +35,21 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
+    /// Hands the settings store to the three pre-existing singletons that cannot take it through
+    /// `init`. Composition-root privilege: nothing else may do this.
+    private func installSettingsStore() {
+        ThemeModel.shared.configure(settings: dependencies.settingsAccessor)
+        FeedbackModel.shared.settingsAccessor = dependencies.settingsAccessor
+        SearchSettingsModel.shared.configure(settings: dependencies.settingsAccessor)
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
-        CodeFileDocument.isAutoSaveOnProvider = {
-            Settings.shared.preferences.general.isAutoSaveOn
+        CodeFileDocument.isAutoSaveOnProvider = { [settings = dependencies.settingsAccessor] in
+            settings.value(GeneralSettings.self).isAutoSaveOn
         }
+        installSettingsStore()
         enableWindowSizeSaveOnQuit()
-        Settings.shared.preferences.general.appAppearance.applyAppearance()
+        dependencies.settingsAccessor.value(GeneralSettings.self).appAppearance.applyAppearance()
         checkForFilesToOpen()
 
         // Subscribe to the welcome window event published by WorkspaceWindowManager
@@ -129,7 +138,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     }
 
     func handleOpen() {
-        let behavior = Settings.shared.preferences.general.reopenBehavior
+        let behavior = dependencies.settingsAccessor.value(GeneralSettings.self).reopenBehavior
         switch behavior {
         case .welcome:
             if !tryFocusWindow(id: .welcome) {
@@ -205,7 +214,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
     @IBAction func openFeedback(_ sender: Any) {
         if tryFocusWindow(of: FeedbackView.self) { return }
 
-        FeedbackView().showWindow()
+        FeedbackView().showWindow(settingsStore: dependencies.settingsStore)
     }
 
     @IBAction private func checkForUpdates(_ sender: Any) {

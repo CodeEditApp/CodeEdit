@@ -167,7 +167,7 @@ extension CodeEditWindowController {
         case .branchPicker:
             let toolbarItem = NSToolbarItem(itemIdentifier: .branchPicker)
             let view = NSHostingView(
-                rootView: SettingsInjector {
+                rootView: SettingsInjector(store: dependencies.settingsStore) {
                     ToolbarBranchPicker(
                         fallbackTitle: workspace?.workspaceFileManager.folderUrl.lastPathComponent ?? "Empty",
                         sourceControlManager: workspace?.sourceControlManager
@@ -212,8 +212,12 @@ extension CodeEditWindowController {
 
         guard let taskManager = workspace?.taskManager else { return nil }
 
+        // Wrapped like every other standalone hosting root in this file: `@Environment` does not
+        // cross the boundary, so without it this subtree reads settings defaults and discards writes.
         let view = NSHostingView(
-            rootView: StopTaskToolbarButton(taskManager: taskManager)
+            rootView: SettingsInjector(store: dependencies.settingsStore) {
+                StopTaskToolbarButton(taskManager: taskManager)
+            }
         )
         toolbarItem.view = view
 
@@ -226,8 +230,10 @@ extension CodeEditWindowController {
         guard let taskManager = workspace?.taskManager else { return nil }
 
         let view = NSHostingView(
-            rootView: StartTaskToolbarButton(taskManager: taskManager)
-                .environmentObject(utilityAreaModel)
+            rootView: SettingsInjector(store: dependencies.settingsStore) {
+                StartTaskToolbarButton(taskManager: taskManager)
+                    .environmentObject(utilityAreaModel)
+            }
         )
         toolbarItem.view = view
 
@@ -238,7 +244,9 @@ extension CodeEditWindowController {
         let toolbarItem = NSToolbarItem(itemIdentifier: .notificationItem)
         guard let workspace = workspace else { return nil }
         let view = NSHostingView(
-            rootView: NotificationToolbarItem().environmentObject(notificationPanel)
+            rootView: SettingsInjector(store: dependencies.settingsStore) {
+                NotificationToolbarItem().environmentObject(notificationPanel)
+            }
         )
         toolbarItem.view = view
         return toolbarItem
@@ -252,12 +260,14 @@ extension CodeEditWindowController {
         else { return nil }
 
         let view = NSHostingView(
-            rootView: ActivityViewer(
-                workspaceFileManager: workspace?.workspaceFileManager,
-                workspaceSettingsManager: workspaceSettingsManager,
-                taskNotificationHandler: taskNotificationHandler,
-                taskManager: taskManager
-            )
+            rootView: SettingsInjector(store: dependencies.settingsStore) {
+                ActivityViewer(
+                    workspaceFileManager: workspace?.workspaceFileManager,
+                    workspaceSettingsManager: workspaceSettingsManager,
+                    taskNotificationHandler: taskNotificationHandler,
+                    taskManager: taskManager
+                )
+            }
         )
 
         let weakWidth = view.widthAnchor.constraint(equalToConstant: 650)

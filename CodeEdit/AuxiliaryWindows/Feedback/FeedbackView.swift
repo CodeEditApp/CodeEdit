@@ -211,7 +211,11 @@ struct FeedbackView: View {
         }
     }
 
-    func showWindow() {
-        FeedbackWindowController(view: self, size: NSSize(width: 1028, height: 762)).showWindow(nil)
+    func showWindow(settingsStore: AppSettingsStore) {
+        FeedbackWindowController(
+            view: self,
+            size: NSSize(width: 1028, height: 762),
+            settingsStore: settingsStore
+        ).showWindow(nil)
     }
 }

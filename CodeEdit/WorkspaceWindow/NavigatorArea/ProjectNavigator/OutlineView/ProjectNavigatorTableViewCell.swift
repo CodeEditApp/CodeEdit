@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditSettings
 import CodeEditCore
 
 protocol OutlineTableViewCellDelegate: AnyObject {
@@ -31,9 +32,16 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
         item: CEWorkspaceFile?,
         isEditable: Bool = true,
         delegate: OutlineTableViewCellDelegate? = nil,
-        navigatorFilter: String? = nil
+        navigatorFilter: String? = nil,
+        generalSettings: GeneralSettings
     ) {
-        super.init(frame: frameRect, item: item, isEditable: isEditable, navigatorFilter: navigatorFilter)
+        super.init(
+            frame: frameRect,
+            item: item,
+            isEditable: isEditable,
+            navigatorFilter: navigatorFilter,
+            generalSettings: generalSettings
+        )
         self.textField?.setAccessibilityIdentifier("ProjectNavigatorTableViewCell-\(item?.name ?? "")")
         self.delegate = delegate
     }
@@ -57,14 +65,15 @@ final class ProjectNavigatorTableViewCell: FileSystemTableViewCell {
 
     override func controlTextDidEndEditing(_ obj: Notification) {
         guard let fileItem else { return }
-        textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
-        if fileItem.validateFileName(for: textField?.stringValue ?? "") {
+        textField?.backgroundColor =
+            fileItem.validateFileName(for: textField?.stringValue ?? "", prefs: prefs) ? .none : errorRed
+        if fileItem.validateFileName(for: textField?.stringValue ?? "", prefs: prefs) {
             let destinationURL = fileItem.url
                 .deletingLastPathComponent()
                 .appending(path: textField?.stringValue ?? "")
             delegate?.moveFile(file: fileItem, to: destinationURL)
         } else {
-            textField?.stringValue = fileItem.labelFileName()
+            textField?.stringValue = fileItem.labelFileName(prefs)
         }
         delegate?.cellDidFinishEditing()
     }

@@ -15,6 +15,10 @@ public class FeedbackModel: ObservableObject {
 
     private let keychain = CodeEditKeychain()
 
+    /// The settings store. Property-injected by `AppDelegate` at launch — see `ThemeModel`'s
+    /// `settingsAccessor` for why these pre-existing singletons take their store this way.
+    public var settingsAccessor: SettingsAccessing = DefaultSettingsReader()
+
     @Environment(\.openURL)
     var openIssueURL
 
@@ -140,7 +144,7 @@ public class FeedbackModel: ObservableObject {
         expectation: String?,
         actuallyHappened: String?
     ) {
-        let gitAccounts = Settings[\.accounts].sourceControlAccounts.gitAccounts
+        let gitAccounts = settingsAccessor.value(AccountsSettings.self).sourceControlAccounts.gitAccounts
         let firstGitAccount = gitAccounts.first
 
         let config = GitHubTokenConfiguration(keychain.get(firstGitAccount!.name))
@@ -159,7 +163,7 @@ public class FeedbackModel: ObservableObject {
         ) { response in
             switch response {
             case .success(let issue):
-                if Settings[\.sourceControl].general.openFeedbackInBrowser {
+                if self.settingsAccessor.value(SourceControlSettings.self).general.openFeedbackInBrowser {
                     self.openIssueURL(issue.htmlURL ?? URL(string: "https://github.com/CodeEditApp/CodeEdit/issues")!)
                 }
                 self.isSubmitted.toggle()

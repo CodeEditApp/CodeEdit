@@ -11,6 +11,10 @@ import CodeEditSettings
 import CodeEditCore
 
 final class HistoryInspectorModel: ObservableObject {
+    /// The settings store. Assigned by `HistoryInspectorView` from the environment, alongside the
+    /// source-control manager — this model is created by a view and configured the same way.
+    var settingsAccessor: SettingsAccessing = DefaultSettingsReader()
+
     private(set) var sourceControlManager: SourceControlManager?
 
     /// The base URL of the workspace
@@ -47,7 +51,7 @@ final class HistoryInspectorModel: ObservableObject {
                     branchName: nil,
                     maxCount: 40,
                     fileLocalPath: fileURL,
-                    showMergeCommits: Settings.shared.preferences.sourceControl.git.showMergeCommitsPerFileLog
+                    showMergeCommits: settingsAccessor.value(SourceControlSettings.self).git.showMergeCommitsPerFileLog
                 )
             await setCommitHistory(commitHistory)
         } catch {

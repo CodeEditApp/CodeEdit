@@ -18,6 +18,9 @@ struct FileInspectorView: View {
     @Environment(\.fileRelocator)
     private var fileRelocator
 
+    @AppSettings(\.general)
+    private var generalSettings
+
     @AppSettings(\.textEditing)
     private var textEditing
 
@@ -86,10 +89,12 @@ struct FileInspectorView: View {
         if let file {
             TextField("Name", text: $fileName)
                 .background(
-                    fileName != file.fileName() && !file.validateFileName(for: fileName) ? Color(errorRed) : Color.clear
+                    fileName != file.fileName()
+                        && !file.validateFileName(for: fileName, prefs: generalSettings)
+                        ? Color(errorRed) : Color.clear
                 )
                 .onSubmit {
-                    if file.validateFileName(for: fileName) {
+                    if file.validateFileName(for: fileName, prefs: generalSettings) {
                         let destinationURL = file.url
                             .deletingLastPathComponent()
                             .appending(path: fileName)
@@ -103,7 +108,7 @@ struct FileInspectorView: View {
                             }
                         }
                     } else {
-                        fileName = file.labelFileName()
+                        fileName = file.labelFileName(generalSettings)
                     }
                 }
         }

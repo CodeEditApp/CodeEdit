@@ -16,7 +16,7 @@ import CodeEditCore
 public final class RegistryManager: RegistryManaging {
 
     let logger = Logger(subsystem: Bundle.main.bundleIdentifier ?? "", category: "RegistryManager")
-    let installPath = Settings.shared.baseURL.appending(path: "Language Servers")
+    let installPath: URL
 
     /// The URL of where the registry.json file will be downloaded from
     let registryURL = URL(
@@ -60,8 +60,10 @@ public final class RegistryManager: RegistryManaging {
         eventBus: EventBus,
         errorNotifier: ErrorNotifying,
         shellClient: ShellClientProtocol,
-        settingsAccessor: SettingsAccessing
+        settingsAccessor: SettingsAccessing,
+        installPath: URL
     ) {
+        self.installPath = installPath
         self.eventBus = eventBus
         self.errorNotifier = errorNotifier
         self.shellClient = shellClient

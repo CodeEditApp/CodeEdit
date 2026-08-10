@@ -105,8 +105,6 @@ struct SettingsView: View {
         ),
     ]
 
-    @ObservedObject private var settings: CodeEditSettings.Settings = .shared
-
     let updater: SoftwareUpdater
 
     /// Searches through an array of pages to check if a page name exists in the array

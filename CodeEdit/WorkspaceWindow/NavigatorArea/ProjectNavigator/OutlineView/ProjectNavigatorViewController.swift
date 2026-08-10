@@ -45,41 +45,31 @@ final class ProjectNavigatorViewController: NSViewController {
     var workspaceNavigator: WorkspaceNavigator = NoOpWorkspaceNavigator()
     weak var activeEditorState: (any ActiveEditorState)?
 
-    var iconColor: GeneralSettings.FileIconStyle = .color {
+    /// The settings store, pushed in from `ProjectNavigatorOutlineView`. AppKit controllers cannot
+    /// read the SwiftUI environment, so the representable that owns this one hands it down.
+    var settingsAccessor: SettingsAccessing = DefaultSettingsReader()
+
+    /// The general settings, by value — the source for cell construction and the four fields that
+    /// require a reload when they change.
+    ///
+    /// `fileIconStyle` colours the icons; `fileExtensionsVisibility`, `shownFileExtensions` and
+    /// `hiddenFileExtensions` drive `CEWorkspaceFile.labelFileName(_:)`, which is read when a cell is
+    /// built. Cells are only built by `outlineView(_:viewFor:)`, so without a reload a preference
+    /// change leaves every visible label showing the text it was born with — the same reason
+    /// `rowHeight` reloads below.
+    var generalSettings: GeneralSettings = .init() {
         willSet {
-            if newValue != iconColor {
+            if newValue.fileIconStyle != generalSettings.fileIconStyle
+                || newValue.fileExtensionsVisibility != generalSettings.fileExtensionsVisibility
+                || newValue.shownFileExtensions != generalSettings.shownFileExtensions
+                || newValue.hiddenFileExtensions != generalSettings.hiddenFileExtensions {
                 outlineView?.reloadData()
             }
         }
     }
 
-    // These three drive `CEWorkspaceFile.labelFileName()`, which is read when a cell is built.
-    // Cells are only built by `outlineView(_:viewFor:)`, so without a reload a preference change
-    // leaves every visible label showing the text it was born with — the same reason `iconColor`
-    // and `rowHeight` reload below.
-    var fileExtensionsVisibility: GeneralSettings.FileExtensionsVisibility = .showAll {
-        willSet {
-            if newValue != fileExtensionsVisibility {
-                outlineView?.reloadData()
-            }
-        }
-    }
-
-    var shownFileExtensions: GeneralSettings.FileExtensions = .default {
-        willSet {
-            if newValue != shownFileExtensions {
-                outlineView?.reloadData()
-            }
-        }
-    }
-
-    var hiddenFileExtensions: GeneralSettings.FileExtensions = .default {
-        willSet {
-            if newValue != hiddenFileExtensions {
-                outlineView?.reloadData()
-            }
-        }
-    }
+    /// The icon-colouring preference, kept as a name of its own because it reads as one.
+    var iconColor: GeneralSettings.FileIconStyle { generalSettings.fileIconStyle }
 
     var rowHeight: Double = 22 {
         willSet {
@@ -208,7 +198,7 @@ final class ProjectNavigatorViewController: NSViewController {
             } else {
                 outlineView.expandItem(item)
             }
-        } else if Settings[\.navigation].navigationStyle == .openInTabs {
+        } else if settingsAccessor.value(NavigationSettings.self).navigationStyle == .openInTabs {
             workspaceNavigator.open(file: item, asTemporary: false)
         }
     }

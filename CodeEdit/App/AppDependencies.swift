@@ -30,11 +30,15 @@ final class AppDependencies {
 
     private(set) lazy var shellClient: ShellClientProtocol = ShellClient()
 
-    /// Feature-side settings access, read and write. Bridged onto `Settings.shared` via
-    /// `LegacySettingsStore` as a stopgap until a later task wires a real, section-keyed store —
-    /// feature packages already go through this interface, so that swap will not touch any of
-    /// their call sites.
-    private(set) lazy var settingsAccessor: SettingsAccessing = LegacySettingsStore()
+    /// The app's settings: the one store, owned here rather than reached through a singleton.
+    ///
+    /// Concrete (not `SettingsAccessing`) because the injectors also need its `revision` publisher
+    /// to observe. Consumers that only read or write settings take ``settingsAccessor`` instead.
+    private(set) lazy var settingsStore = AppSettingsStore()
+
+    /// Feature-side settings access, read and write. The same object as ``settingsStore``, narrowed
+    /// to the seam's protocol so nothing outside the composition root names the concrete type.
+    private(set) lazy var settingsAccessor: SettingsAccessing = settingsStore
 
     private(set) lazy var commandManager: CommandManaging = CommandManager()
 
@@ -64,7 +68,10 @@ final class AppDependencies {
         eventBus: eventBus,
         errorNotifier: errorNotifier,
         shellClient: shellClient,
-        settingsAccessor: settingsAccessor
+        settingsAccessor: settingsAccessor,
+        // Handed its install location rather than reading it from a singleton. A later slice gives
+        // `RegistryManager` a proper home for this path; until then the composition root supplies it.
+        installPath: settingsStore.baseURL.appending(path: "Language Servers")
     )
 
     private(set) lazy var workspaceWindowManager = WorkspaceWindowManager(dependencies: self)
@@ -87,6 +94,7 @@ final class AppDependencies {
         AppCodeFileDocumentDelegate(
             lspService: lspService,
             windowManager: workspaceWindowManager,
-            languageServices: languageServicesProvider
+            languageServices: languageServicesProvider,
+            settingsStore: settingsStore
         )
 }

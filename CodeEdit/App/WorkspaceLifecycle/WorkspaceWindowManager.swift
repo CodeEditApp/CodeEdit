@@ -188,7 +188,7 @@ final class WorkspaceWindowManager: WorkspaceWindowManaging {
     }
 
     private func handleLastWorkspaceClosed() {
-        switch Settings[\.general].reopenWindowAfterClose {
+        switch dependencies.settingsAccessor.value(GeneralSettings.self).reopenWindowAfterClose {
         case .showWelcomeWindow:
             if let welcomeWindow = NSApp.findWindow(.welcome) {
                 welcomeWindow.makeKeyAndOrderFront(nil)

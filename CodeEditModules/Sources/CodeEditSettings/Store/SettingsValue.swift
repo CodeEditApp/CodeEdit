@@ -99,7 +99,7 @@ public extension EnvironmentValues {
         set { self[SettingsAccessorKey.self] = newValue }
     }
 
-    /// Changes once per settings change; see ``Settings/revision``.
+    /// Changes once per settings change; see the app-side `AppSettingsStore.revision`.
     ///
     /// The seam's invalidation signal, kept in its own `Equatable` key rather than folded into
     /// ``settingsAccessor``. Two keys, two jobs: the accessor answers *what the value is* and is
@@ -107,7 +107,7 @@ public extension EnvironmentValues {
     /// changed*. That separation is what lets a non-observing injection point (`appServices(_:)`)
     /// supply the accessor without also having to fake a change signal it cannot compute.
     ///
-    /// Injected by any view that observes ``Settings``. A subtree that receives an accessor but no
+    /// Injected by any view that observes the store. A subtree that receives an accessor but no
     /// revision reads correct values and never re-renders on change — inject both, or neither.
     var settingsRevision: Int {
         get { self[SettingsRevisionKey.self] }

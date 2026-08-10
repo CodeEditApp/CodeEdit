@@ -15,6 +15,6 @@ struct PageAndSettings: Identifiable, Equatable {
 
     init(_ page: SettingsPage) {
         self.page = page
-        self.settings = SettingsData().propertiesOf(page.name)
+        self.settings = SettingsPage.propertiesOf(page.name)
     }
 }

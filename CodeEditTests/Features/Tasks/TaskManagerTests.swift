@@ -37,7 +37,9 @@ class TaskManagerTests {
 
     @Test
     func executeTaskInZsh() async throws {
-        Settings.shared.preferences.terminal.shell = .zsh
+        // Deliberately configures no shell. The shell preference reaches a task through
+        // `TerminalEmulatorView`'s `@SettingsValue`, which this headless test never constructs, so
+        // the singleton write that used to stand here changed nothing about what ran.
 
         let task = CETask(name: "Test Task", command: "echo 'Hello World'")
         tasksConfiguration.tasks.append(task)
@@ -56,7 +58,7 @@ class TaskManagerTests {
 
     @Test
     func executeTaskInBash() async throws {
-        Settings.shared.preferences.terminal.shell = .bash
+        // See `executeTaskInZsh` — the shell preference never reached this path.
 
         let task = CETask(name: "Test Task", command: "echo 'Hello World'")
         tasksConfiguration.tasks.append(task)

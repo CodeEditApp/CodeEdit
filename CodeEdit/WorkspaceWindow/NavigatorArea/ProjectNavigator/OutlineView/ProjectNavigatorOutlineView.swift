@@ -24,13 +24,18 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
     @Environment(\.workspaceNavigator)
     private var workspaceNavigator
 
-    @StateObject var prefs: CodeEditSettings.Settings = .shared
+    @AppSettings(\.general)
+    private var generalSettings
+
+    @Environment(\.settingsAccessor)
+    private var settingsAccessor
 
     typealias NSViewControllerType = ProjectNavigatorViewController
 
     func makeNSViewController(context: Context) -> ProjectNavigatorViewController {
         let controller = ProjectNavigatorViewController()
-        controller.iconColor = prefs.preferences.general.fileIconStyle
+        controller.generalSettings = generalSettings
+        controller.settingsAccessor = settingsAccessor
         controller.activeEditorState = activeEditorState
         controller.workspaceNavigator = workspaceNavigator
 
@@ -48,11 +53,9 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
     }
 
     func updateNSViewController(_ nsViewController: ProjectNavigatorViewController, context: Context) {
-        nsViewController.iconColor = prefs.preferences.general.fileIconStyle
-        nsViewController.rowHeight = prefs.preferences.general.projectNavigatorSize.rowHeight
-        nsViewController.fileExtensionsVisibility = prefs.preferences.general.fileExtensionsVisibility
-        nsViewController.shownFileExtensions = prefs.preferences.general.shownFileExtensions
-        nsViewController.hiddenFileExtensions = prefs.preferences.general.hiddenFileExtensions
+        nsViewController.settingsAccessor = settingsAccessor
+        nsViewController.generalSettings = generalSettings
+        nsViewController.rowHeight = generalSettings.projectNavigatorSize.rowHeight
         /// if the window becomes active from background, it will restore the selection to outline view.
         nsViewController.updateSelection(itemID: activeEditorState.selectedFile?.id)
         return

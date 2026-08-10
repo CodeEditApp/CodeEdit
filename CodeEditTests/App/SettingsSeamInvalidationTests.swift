@@ -11,12 +11,12 @@ import Testing
 import CodeEditSettings
 @testable import CodeEdit
 
-/// Covers the settings seam's *invalidation* half: that a change to `Settings.shared` actually
-/// re-renders a view reading through `@SettingsValue`.
+/// Covers the settings seam's *invalidation* half: that a change to the store actually re-renders a
+/// view reading through `@SettingsValue`.
 ///
 /// This is the production path end to end — `SettingsInjector` → `\.settingsRevision` +
-/// `LegacySettingsStore` → `@SettingsValue` — not a stand-in. It exists because the read/write
-/// tests next door pass just as happily when nothing ever re-renders: they render once.
+/// `AppSettingsStore` → `@SettingsValue` — not a stand-in. It exists because the read/write tests
+/// next door pass just as happily when nothing ever re-renders: they render once.
 ///
 /// **What it does not prove.** It is a guard on the *outcome*, not on the mechanism: it passes with
 /// `\.settingsRevision` injected and without it. Measured while writing it — with the revision
@@ -26,13 +26,23 @@ import CodeEditSettings
 /// state whenever an ancestor's body reruns. That is the unspecified behaviour the revision key
 /// replaces with a documented one, so this test cannot distinguish the two and should not be read
 /// as evidence that it can.
-///
-/// `TerminalSettings.cursorBlink` is chosen because no other suite touches it. The suites that
-/// mutate `Settings.shared` are not serialized against each other, so sharing a field with
-/// `LegacySettingsStoreTests` or `FileExtensionVisibilityTests` would be a real race.
 @MainActor
 @Suite(.serialized)
 struct SettingsSeamInvalidationTests {
+
+    /// A store over a temporary file, so these tests neither read nor overwrite the developer's real
+    /// `settings.json` — and cannot race any other suite.
+    private func makeStore() throws -> AppSettingsStore {
+        let directory = URL.temporaryDirectory.appending(path: "SettingsSeam-\(UUID().uuidString)")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        return AppSettingsStore(settingsURL: directory.appending(path: "settings.json"))
+    }
+
+    private func setCursorBlink(_ value: Bool, on store: AppSettingsStore) {
+        var section = store.value(TerminalSettings.self)
+        section.cursorBlink = value
+        store.setValue(section)
+    }
     /// Records the value observed on every body evaluation, so a *missing* re-render is a visible
     /// absence rather than a stale-but-plausible reading.
     private final class BodyRecorder {
@@ -77,13 +87,13 @@ struct SettingsSeamInvalidationTests {
     }
 
     @Test
-    func changingSettingsBumpsTheRevision() {
-        let original = Settings.shared.preferences.terminal.cursorBlink
-        defer { Settings.shared.preferences.terminal.cursorBlink = original }
+    func changingSettingsBumpsTheRevision() throws {
+        let store = try makeStore()
+        let before = store.revision
 
-        let before = Settings.shared.revision
-        Settings.shared.preferences.terminal.cursorBlink = !original
-        #expect(Settings.shared.revision == before + 1)
+        setCursorBlink(!store.value(TerminalSettings.self).cursorBlink, on: store)
+
+        #expect(store.revision == before + 1)
     }
 
     /// Guards the **outcome** users care about: a settings change reaches a view reading through the
@@ -96,12 +106,11 @@ struct SettingsSeamInvalidationTests {
     /// deliver updated values at all — the failure mode that has recurred most on this branch.
     @Test
     func settingsChangeReachesAViewThroughTheSeam() async throws {
-        let original = Settings.shared.preferences.terminal.cursorBlink
-        defer { Settings.shared.preferences.terminal.cursorBlink = original }
+        let store = try makeStore()
+        setCursorBlink(false, on: store)
 
-        Settings.shared.preferences.terminal.cursorBlink = false
         let recorder = BodyRecorder()
-        let (window, hostingView) = host(SettingsInjector { RevisionProbe(recorder: recorder) })
+        let (window, hostingView) = host(SettingsInjector(store: store) { RevisionProbe(recorder: recorder) })
         defer { window.contentView = nil }
 
         await settle(hostingView) { !recorder.observed.isEmpty }
@@ -110,7 +119,7 @@ struct SettingsSeamInvalidationTests {
         // the one below: defaults can never *change*.)
         #expect(recorder.observed.last == false)
 
-        Settings.shared.preferences.terminal.cursorBlink = true
+        setCursorBlink(true, on: store)
 
         await settle(hostingView) { recorder.observed.last == true }
         #expect(

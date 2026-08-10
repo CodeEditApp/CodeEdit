@@ -19,6 +19,9 @@ struct HistoryInspectorView: View {
     @Environment(\.activeEditorState)
     private var activeEditorState
 
+    @Environment(\.settingsAccessor)
+    private var settingsAccessor
+
     @ObservedObject private var model: HistoryInspectorModel
 
     @State var selection: GitCommit?
@@ -55,6 +58,9 @@ struct HistoryInspectorView: View {
             }
         }
         .task {
+            // The model is created by this view, so this view configures it — the same shape as
+            // `setWorkspace` below.
+            model.settingsAccessor = settingsAccessor
             await model.setWorkspace(sourceControlManager: sourceControlManager)
             await model.setFile(url: activeEditorState.selectedFile?.url.path())
         }

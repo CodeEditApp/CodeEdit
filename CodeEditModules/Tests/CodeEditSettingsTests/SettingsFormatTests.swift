@@ -26,13 +26,36 @@ struct SettingsFormatTests {
     ///
     /// The fixture deliberately holds no default values: a fixture of defaults would pass even if
     /// decoding silently fell back to defaults, which is the failure this guards against.
+    ///
+    /// It used to round-trip a `SettingsData`, which is no longer possible: that aggregate is an
+    /// app-side façade over this store and is not `Codable`. Every section is instead read *and
+    /// written back* through the store, which is the same work: reading alone would prove nothing,
+    /// because an unread section is re-emitted as the raw JSON it came in as. Writing the decoded
+    /// value back replaces the stored JSON with whatever the Swift type produces — exactly the step
+    /// that could silently drop or rename a key.
     @Test
     func fullSettingsRoundTripsUnchanged() throws {
         let original = try fixture("full-settings")
-        let decoded = try JSONDecoder().decode(SettingsData.self, from: original)
-        let reencoded = try JSONEncoder().encode(decoded)
+        let store = try SettingsStore(data: original)
 
-        #expect(try parsed(reencoded) == parsed(original))
+        func reencode<S: SettingsSection>(_ type: S.Type) {
+            let decoded = store[S.self]
+            store[S.self] = decoded
+        }
+
+        reencode(GeneralSettings.self)
+        reencode(AccountsSettings.self)
+        reencode(NavigationSettings.self)
+        reencode(ThemeSettings.self)
+        reencode(TextEditingSettings.self)
+        reencode(TerminalSettings.self)
+        reencode(SourceControlSettings.self)
+        reencode(KeybindingsSettings.self)
+        reencode(SearchSettings.self)
+        reencode(LanguageServerSettings.self)
+        reencode(DeveloperSettings.self)
+
+        #expect(try parsed(store.encoded()) == parsed(original))
     }
 
     /// Section keys must match the JSON keys `SettingsData` already uses, or existing settings

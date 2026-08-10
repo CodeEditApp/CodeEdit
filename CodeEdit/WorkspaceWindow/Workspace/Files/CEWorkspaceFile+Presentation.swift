@@ -48,8 +48,10 @@ extension CEWorkspaceFile {
     /// silently failed twice over: the raw value for `.txt` was `"text"`, so a user
     /// entering `txt` never matched, and any extension absent from the `FileType` enum
     /// fell back to `.txt` and so reported itself as `"text"`.
-    func labelFileName() -> String {
-        let prefs = Settings.shared.preferences.general
+    /// - Parameter prefs: The general settings, passed in by value. This used to read the settings
+    ///   singleton; an extension on a domain type has no injection channel, so its one caller-visible
+    ///   dependency became a parameter instead.
+    func labelFileName(_ prefs: GeneralSettings) -> String {
         switch prefs.fileExtensionsVisibility {
         case .hideAll:
             return self.fileName(typeHidden: true)
@@ -62,8 +64,8 @@ extension CEWorkspaceFile {
         }
     }
 
-    func validateFileName(for newName: String) -> Bool {
-        guard newName != labelFileName() &&
+    func validateFileName(for newName: String, prefs: GeneralSettings) -> Bool {
+        guard newName != labelFileName(prefs) &&
                 !newName.isEmpty &&
                 newName.isValidFilename &&
                 !FileManager.default.fileExists(

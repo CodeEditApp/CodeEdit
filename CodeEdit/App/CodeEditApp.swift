@@ -15,20 +15,26 @@ import AboutWindow
 @main
 struct CodeEditApp: App {
     @NSApplicationDelegateAdaptor var appdelegate: AppDelegate
-    @ObservedObject var settings = Settings.shared
 
     init() {
         NSMenuItem.swizzle()
         NSSplitViewItem.swizzle()
-        CodeFileDocument.delegateProvider = { [dependencies = appdelegate.dependencies] in
+        let dependencies = appdelegate.dependencies
+        CodeFileDocument.delegateProvider = {
             dependencies.codeFileDocumentDelegate
         }
-        TextEditingSettings.registerCommands(in: appdelegate.dependencies.commandManager)
-        SettingsData.reconcileDefaultKeybindings(keybindingManager: appdelegate.dependencies.keybindingManager)
+        TextEditingSettings.registerCommands(
+            in: dependencies.commandManager,
+            settings: dependencies.settingsAccessor
+        )
+        KeybindingsSettings.reconcileDefaults(
+            keybindingManager: dependencies.keybindingManager,
+            settings: dependencies.settingsAccessor
+        )
     }
 
     var body: some Scene {
-        Group {
+        SettingsSceneInjector(store: appdelegate.dependencies.settingsStore) {
             WelcomeWindow(
                 subtitleView: { WelcomeSubtitleView() },
                 actions: { dismissWindow in
@@ -86,11 +92,6 @@ struct CodeEditApp: App {
                     CodeEditCommands(dependencies: appdelegate.dependencies)
                 }
         }
-        .environment(\.settings, settings.preferences) // Add settings to each window environment
-        // The settings seam's invalidation signal, for the scene roots that never pass through
-        // `SettingsInjector`. `appServices(_:)` cannot supply it — it holds no observation — but
-        // this body does, via the `@ObservedObject` above.
-        .environment(\.settingsRevision, settings.revision)
         .appServices(appdelegate.dependencies)
     }
 }

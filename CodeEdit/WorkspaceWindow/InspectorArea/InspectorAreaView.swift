@@ -20,7 +20,6 @@ struct InspectorAreaView: View {
 
     init(viewModel: InspectorAreaViewModel) {
         self.viewModel = viewModel
-        updateTabs()
     }
 
     private func updateTabs() {
@@ -53,6 +52,13 @@ struct InspectorAreaView: View {
         .formStyle(.grouped)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("inspector")
+        // Seeded here, not in `init`: `showInternalDevelopmentInspector` reads the environment,
+        // which SwiftUI only populates once the view is in the hierarchy. Called from `init` it
+        // silently returned the section default — invisible while settings came from a singleton,
+        // and a hard trap now that they come from the environment.
+        .onAppear {
+            updateTabs()
+        }
         .onChange(of: showInternalDevelopmentInspector) { _, _ in
             updateTabs()
         }

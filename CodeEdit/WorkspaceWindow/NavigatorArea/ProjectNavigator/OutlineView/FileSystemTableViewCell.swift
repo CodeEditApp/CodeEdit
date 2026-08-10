@@ -17,7 +17,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
     var changeLabelLargeWidth: NSLayoutConstraint!
     var changeLabelSmallWidth: NSLayoutConstraint!
 
-    private let prefs = Settings.shared.preferences.general
+    let prefs: GeneralSettings
     private var navigatorFilter: String?
 
     /// Initializes the `OutlineTableViewCell` with an `icon` and `label`
@@ -28,7 +28,16 @@ class FileSystemTableViewCell: StandardTableViewCell {
     ///   - isEditable: Set to true if the user should be able to edit the file name.
     ///   - navigatorFilter: An optional string use to filter the navigator area.
     ///                      (Used for bolding and changing primary/secondary color).
-    init(frame frameRect: NSRect, item: CEWorkspaceFile?, isEditable: Bool = true, navigatorFilter: String? = nil) {
+    ///   - generalSettings: The general settings, by value. AppKit cells cannot read the
+    ///                       environment, so the controller that builds them hands the value down.
+    init(
+        frame frameRect: NSRect,
+        item: CEWorkspaceFile?,
+        isEditable: Bool = true,
+        navigatorFilter: String? = nil,
+        generalSettings: GeneralSettings
+    ) {
+        self.prefs = generalSettings
         super.init(frame: frameRect, isEditable: isEditable)
         self.navigatorFilter = navigatorFilter
 
@@ -48,7 +57,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
         imageView?.image = item.nsIcon
         imageView?.contentTintColor = color(for: item)
 
-        let fileName = item.labelFileName()
+        let fileName = item.labelFileName(prefs)
         let fontSize = textField?.font?.pointSize ?? 12
 
         guard let filter = navigatorFilter?.trimmingCharacters(in: .whitespacesAndNewlines), !filter.isEmpty else {
@@ -108,6 +117,7 @@ class FileSystemTableViewCell: StandardTableViewCell {
 
     /// *Not Implemented*
     override init(frame frameRect: NSRect) {
+        self.prefs = GeneralSettings()
         super.init(frame: frameRect)
         fatalError("""
             init(frame: ) isn't implemented on `OutlineTableViewCell`.
@@ -157,20 +167,22 @@ let errorRed = NSColor(red: 1, green: 0, blue: 0, alpha: 0.2)
 extension FileSystemTableViewCell: NSTextFieldDelegate {
     func controlTextDidChange(_ obj: Notification) {
         guard let fileItem else { return }
-        textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
+        textField?.backgroundColor =
+            fileItem.validateFileName(for: textField?.stringValue ?? "", prefs: prefs) ? .none : errorRed
     }
 
     func controlTextDidEndEditing(_ obj: Notification) {
         guard let fileItem else { return }
         do {
-            textField?.backgroundColor = fileItem.validateFileName(for: textField?.stringValue ?? "") ? .none : errorRed
-            if fileItem.validateFileName(for: textField?.stringValue ?? "") {
+            textField?.backgroundColor =
+                fileItem.validateFileName(for: textField?.stringValue ?? "", prefs: prefs) ? .none : errorRed
+            if fileItem.validateFileName(for: textField?.stringValue ?? "", prefs: prefs) {
                 let newURL = fileItem.url
                     .deletingLastPathComponent()
                     .appending(path: textField?.stringValue ?? "")
                 try workspace?.workspaceFileManager.move(file: fileItem, to: newURL)
             } else {
-                textField?.stringValue = fileItem.labelFileName()
+                textField?.stringValue = fileItem.labelFileName(prefs)
             }
         } catch {
             let alert = NSAlert(error: error)

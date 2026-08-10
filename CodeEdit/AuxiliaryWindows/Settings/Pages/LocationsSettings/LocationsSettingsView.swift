@@ -24,9 +24,9 @@ struct LocationsSettingsView: View {
 
 private extension LocationsSettingsView {
     @ViewBuilder private var applicationSupportLocation: some View {
-        ExternalLink(destination: Settings.shared.baseURL) {
+        ExternalLink(destination: SettingsLocation.baseURL) {
             Text("Application Support")
-            Text(Settings.shared.baseURL.path)
+            Text(SettingsLocation.baseURL.path)
                 .font(.footnote)
                 .foregroundColor(.secondary)
         }

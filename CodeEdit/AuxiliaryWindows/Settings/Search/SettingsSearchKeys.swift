@@ -189,28 +189,35 @@ extension DeveloperSettings: SearchableSettingsPage {
     }
 }
 
-extension SettingsData {
+extension SettingsPage {
     // swiftlint:disable cyclomatic_complexity
-    func propertiesOf(_ name: SettingsPage.Name) -> [SettingsPage] {
+    /// The searchable settings of one page.
+    ///
+    /// Reads no stored value — every `searchKeys` list is a constant of its section type — so this
+    /// is a static function on the page rather than a method on the settings aggregate, which is now
+    /// a façade that would need a store just to answer it.
+    static func propertiesOf(_ name: SettingsPage.Name) -> [SettingsPage] {
         var settings: [SettingsPage] = []
 
         switch name {
         case .general:
-            general.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            GeneralSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .accounts:
-            accounts.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            AccountsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .navigation:
-            navigation.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            NavigationSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .theme:
-            theme.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            ThemeSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .textEditing:
-            textEditing.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            TextEditingSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .terminal:
-            terminal.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            TerminalSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .search:
-            search.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            SearchSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .sourceControl:
-            sourceControl.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            SourceControlSettings().searchKeys.forEach {
+                settings.append(.init(name, isSetting: true, settingName: $0))
+            }
         case .location:
             LocationsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .languageServers:
@@ -218,7 +225,7 @@ extension SettingsData {
                 settings.append(.init(name, isSetting: true, settingName: $0))
             }
         case .developer:
-            developerSettings.searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
+            DeveloperSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .behavior: return [.init(name, settingName: "Error")]
         case .components: return [.init(name, settingName: "Error")]
         case .keybindings: return [.init(name, settingName: "Error")]

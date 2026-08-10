@@ -116,7 +116,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         navigatorViewModel: NavigatorAreaViewModel,
         activeEditorState: AppActiveEditorState
     ) -> NSSplitViewItem {
-        makeNavigator(view: SettingsInjector {
+        makeNavigator(view: SettingsInjector(store: dependencies.settingsStore) {
             NavigatorAreaView(viewModel: navigatorViewModel)
                 .environment(\.workspace, workspace)
                 .environmentObject(workspace.editorManager)
@@ -138,7 +138,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         activeEditorState: AppActiveEditorState,
         activeCursorState: AppActiveCursorState
     ) -> NSSplitViewItem {
-        let workspaceView = SettingsInjector {
+        let workspaceView = SettingsInjector(store: dependencies.settingsStore) {
             WindowObserver(window: WindowBox(value: windowRef)) {
                 WorkspaceView()
                     .environmentObject(workspace.editorManager)
@@ -170,7 +170,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         activeEditorState: AppActiveEditorState,
         fileEditorOverrides: AppFileEditorOverrides
     ) -> NSSplitViewItem {
-        makeInspector(view: SettingsInjector {
+        makeInspector(view: SettingsInjector(store: dependencies.settingsStore) {
             InspectorAreaView(viewModel: InspectorAreaViewModel())
                 .environmentObject(workspace.editorManager)
                 .environmentObject(workspace.sourceControlManager)

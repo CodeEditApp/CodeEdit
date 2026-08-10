@@ -10,77 +10,75 @@ import CodeEditCore
 import CodeEditSettings
 @testable import CodeEdit
 
-/// Covers `CEWorkspaceFile.labelFileName()`, which had no tests despite driving every
-/// Project Navigator row label. Mutates the `Settings.shared` singleton, so the original
-/// general settings are restored in `tearDown`.
+/// Covers `CEWorkspaceFile.labelFileName(_:)`, which had no tests despite driving every
+/// Project Navigator row label.
+///
+/// It used to mutate the `Settings.shared` singleton and restore it in `tearDown`; the settings it
+/// reads are now a parameter, so each case builds the exact `GeneralSettings` it means and no
+/// process-wide state is touched.
 final class FileExtensionVisibilityTests: XCTestCase {
 
-    private var original: GeneralSettings!
-
-    override func setUp() {
-        super.setUp()
-        original = Settings.shared.preferences.general
+    private func settings(
+        _ visibility: GeneralSettings.FileExtensionsVisibility,
+        shown: [String] = [],
+        hidden: [String] = []
+    ) -> GeneralSettings {
+        var settings = GeneralSettings()
+        settings.fileExtensionsVisibility = visibility
+        settings.shownFileExtensions.extensions = shown
+        settings.hiddenFileExtensions.extensions = hidden
+        return settings
     }
 
-    override func tearDown() {
-        Settings.shared.preferences.general = original
-        original = nil
-        super.tearDown()
-    }
-
-    private func label(_ filename: String) -> String {
-        CEWorkspaceFile(url: URL(filePath: "/tmp/\(filename)")).labelFileName()
+    private func label(_ filename: String, _ settings: GeneralSettings) -> String {
+        CEWorkspaceFile(url: URL(filePath: "/tmp/\(filename)")).labelFileName(settings)
     }
 
     func testShowAllKeepsEveryExtension() {
-        Settings.shared.preferences.general.fileExtensionsVisibility = .showAll
-        XCTAssertEqual(label("notes.txt"), "notes.txt")
-        XCTAssertEqual(label("Model.swift"), "Model.swift")
+        let settings = settings(.showAll)
+        XCTAssertEqual(label("notes.txt", settings), "notes.txt")
+        XCTAssertEqual(label("Model.swift", settings), "Model.swift")
     }
 
     func testHideAllStripsEveryExtension() {
-        Settings.shared.preferences.general.fileExtensionsVisibility = .hideAll
-        XCTAssertEqual(label("notes.txt"), "notes")
-        XCTAssertEqual(label("Model.swift"), "Model")
+        let settings = settings(.hideAll)
+        XCTAssertEqual(label("notes.txt", settings), "notes")
+        XCTAssertEqual(label("Model.swift", settings), "Model")
     }
 
     func testShowOnlyKeepsListedAndStripsTheRest() {
-        Settings.shared.preferences.general.fileExtensionsVisibility = .showOnly
-        Settings.shared.preferences.general.shownFileExtensions.extensions = ["swift"]
-        XCTAssertEqual(label("Model.swift"), "Model.swift")
-        XCTAssertEqual(label("notes.txt"), "notes")
+        let settings = settings(.showOnly, shown: ["swift"])
+        XCTAssertEqual(label("Model.swift", settings), "Model.swift")
+        XCTAssertEqual(label("notes.txt", settings), "notes")
     }
 
     func testHideOnlyStripsListedAndKeepsTheRest() {
-        Settings.shared.preferences.general.fileExtensionsVisibility = .hideOnly
-        Settings.shared.preferences.general.hiddenFileExtensions.extensions = ["swift"]
-        XCTAssertEqual(label("Model.swift"), "Model")
-        XCTAssertEqual(label("notes.txt"), "notes.txt")
+        let settings = settings(.hideOnly, hidden: ["swift"])
+        XCTAssertEqual(label("Model.swift", settings), "Model")
+        XCTAssertEqual(label("notes.txt", settings), "notes.txt")
     }
 
     /// Regression for 2715e319. Matching used to compare `FileType.rawValue`, whose value for
     /// `.txt` was the string `"text"` — so entering `txt` never matched anything.
     func testTxtIsMatchableByItsRealExtension() {
-        Settings.shared.preferences.general.fileExtensionsVisibility = .showOnly
-        Settings.shared.preferences.general.shownFileExtensions.extensions = ["txt"]
-        XCTAssertEqual(label("notes.txt"), "notes.txt")
-        XCTAssertEqual(label("Model.swift"), "Model")
+        let settings = settings(.showOnly, shown: ["txt"])
+        XCTAssertEqual(label("notes.txt", settings), "notes.txt")
+        XCTAssertEqual(label("Model.swift", settings), "Model")
     }
 
     /// Regression for 2715e319. Extensions absent from the old `FileType` enum all fell back to
     /// `.txt` and reported themselves as `"text"`, so the preference could never match them.
     func testExtensionsAbsentFromTheOldEnumAreMatchable() {
-        Settings.shared.preferences.general.fileExtensionsVisibility = .hideOnly
-        Settings.shared.preferences.general.hiddenFileExtensions.extensions = ["toml"]
-        XCTAssertEqual(label("Config.toml"), "Config")
-        XCTAssertEqual(label("notes.txt"), "notes.txt")
+        let settings = settings(.hideOnly, hidden: ["toml"])
+        XCTAssertEqual(label("Config.toml", settings), "Config")
+        XCTAssertEqual(label("notes.txt", settings), "notes.txt")
     }
 
     func testExtensionlessNamesAreUnaffected() {
         for mode in [GeneralSettings.FileExtensionsVisibility.hideAll, .showAll] {
-            Settings.shared.preferences.general.fileExtensionsVisibility = mode
-            XCTAssertEqual(label("LICENSE"), "LICENSE", "mode \(mode)")
-            XCTAssertEqual(label("Makefile"), "Makefile", "mode \(mode)")
+            let settings = settings(mode)
+            XCTAssertEqual(label("LICENSE", settings), "LICENSE", "mode \(mode)")
+            XCTAssertEqual(label("Makefile", settings), "Makefile", "mode \(mode)")
         }
     }
 }

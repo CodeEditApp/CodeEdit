@@ -169,7 +169,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                     panel.close()
                     self.panelOpen = false
                 }
-                panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
+                panel.contentView = NSHostingView(
+                    rootView: SettingsInjector(store: dependencies.settingsStore) { contentView }
+                )
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
                 self.panelOpen = true
@@ -221,7 +223,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 .environment(\.languageServices, dependencies.languageServicesProvider)
                 .environment(\.currentTheme, ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!)
 
-                panel.contentView = NSHostingView(rootView: SettingsInjector { contentView })
+                panel.contentView = NSHostingView(
+                    rootView: SettingsInjector(store: dependencies.settingsStore) { contentView }
+                )
                 window?.addChildWindow(panel, ordered: .above)
                 panel.makeKeyAndOrderFront(self)
                 self.panelOpen = true
@@ -269,7 +273,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
             .environmentObject(workspaceSettingsManager)
             .environmentObject(taskManager)
 
-            settingsWindow.contentView = NSHostingView(rootView: contentView)
+            settingsWindow.contentView = NSHostingView(
+                rootView: SettingsInjector(store: dependencies.settingsStore) { contentView }
+            )
             settingsWindow.titlebarAppearsTransparent = true
             settingsWindow.setContentSize(NSSize(width: 515, height: 515))
             settingsWindow.setAccessibilityTitle("Workspace Settings")

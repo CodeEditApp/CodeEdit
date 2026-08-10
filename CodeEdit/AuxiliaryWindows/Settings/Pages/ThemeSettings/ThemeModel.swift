@@ -19,8 +19,18 @@ import UniformTypeIdentifiers
 final class ThemeModel: ObservableObject {
     static let shared: ThemeModel = .init()
 
-    @AppSettings(\.theme)
-    var settings
+    /// The settings store, installed by `configure(settings:)`. `ThemeModel` is a pre-existing
+    /// singleton that this change does not dismantle, so it cannot take the store through `init`.
+    /// Left at `DefaultSettingsReader` it traps in debug, which is the point — a missing install is
+    /// a wiring bug, not a runtime condition.
+    private(set) var settingsAccessor: SettingsAccessing = DefaultSettingsReader()
+
+    /// Read-modify-write of the whole `ThemeSettings` section, the granularity the store works in.
+    func updateThemeSettings(_ mutate: (inout ThemeSettings) -> Void) {
+        var section = settingsAccessor.value(ThemeSettings.self)
+        mutate(&section)
+        settingsAccessor.setValue(section)
+    }
 
     /// Default instance of the `FileManager`
     let filemanager = FileManager.default
@@ -60,8 +70,7 @@ final class ThemeModel: ObservableObject {
     @Published var selectedLightTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                Settings.shared
-                    .preferences.theme.selectedLightTheme = self.selectedLightTheme?.name ?? "Broken"
+                self.updateThemeSettings { $0.selectedLightTheme = self.selectedLightTheme?.name ?? "Broken" }
             }
         }
     }
@@ -71,8 +80,7 @@ final class ThemeModel: ObservableObject {
     @Published var selectedDarkTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                Settings.shared
-                    .preferences.theme.selectedDarkTheme = self.selectedDarkTheme?.name ?? "Broken"
+                self.updateThemeSettings { $0.selectedDarkTheme = self.selectedDarkTheme?.name ?? "Broken" }
             }
         }
     }
@@ -90,7 +98,7 @@ final class ThemeModel: ObservableObject {
     @Published var selectedTheme: Theme? {
         didSet {
             DispatchQueue.main.async {
-                Settings[\.theme].selectedTheme = self.selectedTheme?.name
+                self.updateThemeSettings { $0.selectedTheme = self.selectedTheme?.name }
             }
         }
     }
@@ -113,6 +121,15 @@ final class ThemeModel: ObservableObject {
             themesURL: base.appending(path: "Themes", directoryHint: .isDirectory),
             bundledThemesURL: Bundle.main.resourceURL?.appending(path: "DefaultThemes", directoryHint: .isDirectory)
         )
+    }
+
+    /// Installs the settings store and loads the themes from disk.
+    ///
+    /// Loading is deliberately *not* in `init`: it reads `theme` out of the store, and `init` runs
+    /// the moment anything first touches `shared` — including the very line that would assign the
+    /// store. The load would then read `DefaultSettingsReader` and select the wrong theme.
+    func configure(settings: SettingsAccessing) {
+        settingsAccessor = settings
         do {
             try loadThemes()
         } catch {

@@ -20,7 +20,10 @@ struct RegistryTests {
         eventBus: EventBus(),
         errorNotifier: NoOpErrorNotifier(),
         shellClient: ShellClient(),
-        settingsAccessor: RecordingSettingsStore()
+        settingsAccessor: RecordingSettingsStore(),
+        // The same path the manager used to read off the settings singleton, so these tests keep
+        // exercising the real install location.
+        installPath: SettingsLocation.baseURL.appending(path: "Language Servers")
     )
 
     // MARK: - Download Tests

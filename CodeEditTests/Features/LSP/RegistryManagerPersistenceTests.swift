@@ -34,7 +34,8 @@ struct RegistryManagerPersistenceTests {
             eventBus: EventBus(),
             errorNotifier: NoOpErrorNotifier(),
             shellClient: ShellClient(),
-            settingsAccessor: store
+            settingsAccessor: store,
+            installPath: URL.temporaryDirectory.appending(path: "RegistryManagerPersistenceTests")
         )
     }
 

@@ -16,11 +16,22 @@ import CodeEditSettings
 /// private var searchSettigs: SearchSettingsModel = .shared
 /// ```
 final class SearchSettingsModel: ObservableObject {
-    /// Reads settings file for Search Settings and updates the values in this model
-    /// correspondingly
-    private init() {
-        let value = Settings[\.search].ignoreGlobPatterns
-        self.ignoreGlobPatterns = value
+    private init() {}
+
+    /// The settings store. Property-injected by `AppDelegate` at launch — see `ThemeModel`'s
+    /// `settingsAccessor` for why these pre-existing singletons take their store this way.
+    private var settingsAccessor: SettingsAccessing = DefaultSettingsReader()
+
+    /// Suppresses the write-back that `ignoreGlobPatterns`' `didSet` would otherwise perform while
+    /// seeding it *from* the store, which would save the value that was just read.
+    private var isSeeding = false
+
+    /// Installs the store and seeds this model from it. Called once, by the composition root.
+    func configure(settings: SettingsAccessing) {
+        settingsAccessor = settings
+        isSeeding = true
+        ignoreGlobPatterns = settings.value(SearchSettings.self).ignoreGlobPatterns
+        isSeeding = false
     }
 
     static let shared: SearchSettingsModel = .init()
@@ -53,10 +64,13 @@ final class SearchSettingsModel: ObservableObject {
 
     /// Stores the new values from the Search Settings Model into the settings.json whenever
     /// `ignoreGlobPatterns` is updated
-    @Published var ignoreGlobPatterns: [GlobPattern] {
+    @Published var ignoreGlobPatterns: [GlobPattern] = [] {
         didSet {
+            guard !isSeeding else { return }
             DispatchQueue.main.async {
-                Settings[\.search].ignoreGlobPatterns = self.ignoreGlobPatterns
+                var section = self.settingsAccessor.value(SearchSettings.self)
+                section.ignoreGlobPatterns = self.ignoreGlobPatterns
+                self.settingsAccessor.setValue(section)
             }
         }
     }

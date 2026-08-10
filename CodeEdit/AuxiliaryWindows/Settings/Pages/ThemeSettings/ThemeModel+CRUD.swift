@@ -14,19 +14,19 @@ extension ThemeModel {
     func loadThemes() throws {
         themes.removeAll()
 
-        let prefs = Settings.shared.preferences
-        themes = try repository.loadAllThemes(overrides: prefs.theme.overrides)
+        let prefs = settingsAccessor.value(ThemeSettings.self)
+        themes = try repository.loadAllThemes(overrides: prefs.overrides)
 
         // Select initial themes based on preferences
         self.selectedDarkTheme = self.darkThemes.first {
-            $0.name == prefs.theme.selectedDarkTheme
+            $0.name == prefs.selectedDarkTheme
         } ?? self.darkThemes.first
 
         self.selectedLightTheme = self.lightThemes.first {
-            $0.name == prefs.theme.selectedLightTheme
+            $0.name == prefs.selectedLightTheme
         } ?? self.lightThemes.first
 
-        let userSelectedTheme = self.themes.first { $0.name == prefs.theme.selectedTheme }
+        let userSelectedTheme = self.themes.first { $0.name == prefs.selectedTheme }
         let systemAppearance = NSAppearance.currentDrawing().name
 
         if userSelectedTheme != nil {
@@ -116,7 +116,7 @@ extension ThemeModel {
     func delete(_ theme: Theme) {
         do {
             try repository.delete(theme)
-            Settings.shared.preferences.theme.overrides.removeValue(forKey: theme.name)
+            updateThemeSettings { $0.overrides.removeValue(forKey: theme.name) }
             try self.loadThemes()
         } catch {
             print(error)

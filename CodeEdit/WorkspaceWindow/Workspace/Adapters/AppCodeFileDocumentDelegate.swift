@@ -21,11 +21,16 @@ final class AppCodeFileDocumentDelegate: CodeFileDocumentDelegate {
     private let windowManager: WorkspaceWindowManaging
     private let languageServices: LanguageServicesProvider
 
+    /// The settings store, so the standalone hosting root below can inject the settings seam.
+    private let settingsStore: AppSettingsStore
+
     init(
         lspService: any LSPServiceProtocol,
         windowManager: WorkspaceWindowManaging,
-        languageServices: LanguageServicesProvider
+        languageServices: LanguageServicesProvider,
+        settingsStore: AppSettingsStore
     ) {
+        self.settingsStore = settingsStore
         self.lspService = lspService
         self.windowManager = windowManager
         self.languageServices = languageServices
@@ -36,7 +41,7 @@ final class AppCodeFileDocumentDelegate: CodeFileDocumentDelegate {
     }
 
     func makeWindowContentView(for document: CodeFileDocument) -> NSView {
-        NSHostingView(rootView: SettingsInjector {
+        NSHostingView(rootView: SettingsInjector(store: settingsStore) {
             WindowCodeFileView(codeFile: document)
                 .environment(\.languageServices, languageServices)
         })
