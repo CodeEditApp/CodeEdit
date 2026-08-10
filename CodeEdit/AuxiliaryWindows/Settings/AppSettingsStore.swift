@@ -50,9 +50,24 @@ final class AppSettingsStore: ObservableObject, SettingsAccessing {
     /// temporary file instead of the user's real `settings.json`.
     private let settingsURL: URL
 
+    /// One copy-aside per store, however many sections turn out to be undecodable: the copy is of the
+    /// whole file, so the first one already contains every one of them.
+    private var hasPreservedOriginal = false
+
     init(settingsURL: URL = SettingsLocation.settingsFileURL) {
         self.settingsURL = settingsURL
         self.store = Self.loadStore(at: settingsURL)
+
+        // The whole-file copy above only covers a file that failed to *load*. A file that loads fine
+        // but holds one section this build cannot decode is the same loss at a smaller scale: the
+        // section reads as defaults, and the first write of it replaces the user's JSON with values
+        // they never chose. `SettingsStore` announces exactly that moment, before it happens and
+        // while the original is still on disk, so the same copy-aside applies.
+        self.store.willReplaceUndecodableSection = { [weak self] _ in
+            guard let self, !self.hasPreservedOriginal else { return }
+            self.hasPreservedOriginal = true
+            Self.preserveUnreadableFile(at: settingsURL)
+        }
 
         self.saveTask = saveRequests
             .throttle(for: 2, scheduler: RunLoop.main, latest: true)
@@ -121,6 +136,10 @@ final class AppSettingsStore: ObservableObject, SettingsAccessing {
 
     /// Copies an unreadable `settings.json` to `settings.json.corrupt-<timestamp>` before anything
     /// can overwrite it.
+    ///
+    /// Called from two places: a whole file that failed to load, and — via
+    /// `SettingsStore.willReplaceUndecodableSection` — the first write that would replace a single
+    /// section this build could not decode.
     ///
     /// Copied rather than moved, so the app still finds a file where it expects one, and so a
     /// failure to copy cannot itself destroy the original. `copyItem` is used rather than re-reading

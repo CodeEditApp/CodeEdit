@@ -126,6 +126,53 @@ struct AppSettingsStoreTests {
         #expect(try String(contentsOf: try #require(after.first), encoding: .utf8) == corruptContents)
     }
 
+    /// A file that loads but holds **one** undecodable section must be copied aside before the write
+    /// that replaces that section, and the copy must still hold the user's original text.
+    ///
+    /// The scenario is a hand-edit: `"theme": []` is valid JSON but not a `ThemeSettings`, so the
+    /// section reads as defaults and the next theme change persists those defaults over it. The
+    /// assertion is deliberately on the *original bytes surviving somewhere*, not on the values read
+    /// back — asserting defaults would pass against the unprotected implementation too.
+    @Test
+    func anUndecodableSectionIsPreservedBeforeTheWriteThatReplacesIt() throws {
+        let seed = #"{"theme":[],"general":{"fileIconStyle":"monochrome"}}"#
+        let (store, url) = try makeStore(seed: seed)
+
+        // The rest of the file is fine, so nothing is copied on load.
+        #expect(store.value(GeneralSettings.self).fileIconStyle == .monochrome)
+        #expect(try backupFiles(besides: url).isEmpty, "a readable file must not be copied on load")
+
+        // Reading the broken section falls back to defaults, but changes nothing on disk.
+        #expect(store.value(ThemeSettings.self) == ThemeSettings())
+        #expect(try backupFiles(besides: url).isEmpty, "a read is not destructive and needs no copy")
+
+        // The write is the destructive moment; the copy must already exist when it lands.
+        var theme = store.value(ThemeSettings.self)
+        theme.matchAppearance = !theme.matchAppearance
+        store.setValue(theme)
+
+        let backups = try backupFiles(besides: url)
+        #expect(backups.count == 1, "the undecodable section was replaced with no copy of the original")
+        #expect(try String(contentsOf: try #require(backups.first), encoding: .utf8) == seed)
+    }
+
+    /// A second write of the same broken section must not pile up copies — one per store is enough,
+    /// because the copy is of the whole file.
+    @Test
+    func onlyOneCopyIsMadeHoweverManySectionsAreReplaced() throws {
+        let (store, url) = try makeStore(seed: #"{"theme":[],"terminal":"nope"}"#)
+
+        var theme = store.value(ThemeSettings.self)
+        theme.matchAppearance = !theme.matchAppearance
+        store.setValue(theme)
+
+        var terminal = store.value(TerminalSettings.self)
+        terminal.cursorBlink = !terminal.cursorBlink
+        store.setValue(terminal)
+
+        #expect(try backupFiles(besides: url).count == 1)
+    }
+
     /// A *missing* file is the first-launch case: an empty store is correct and nothing is copied.
     @Test
     func anAbsentFileIsNotTreatedAsCorruption() throws {

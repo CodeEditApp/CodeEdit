@@ -126,6 +126,48 @@ struct SettingsFormatTests {
         #expect(reloaded[TerminalSettings.self].cursorBlink == true, "untouched field survived")
     }
 
+    /// A section this build cannot decode must survive a save untouched for as long as nothing
+    /// writes it — reading it as defaults must not make those defaults the stored value.
+    @Test
+    func anUndecodableSectionIsReEmittedVerbatim() throws {
+        let original = Data(#"{"theme":["hand","edited"],"general":{"fileIconStyle":"monochrome"}}"#.utf8)
+        let store = try SettingsStore(data: original)
+
+        #expect(store[ThemeSettings.self] == ThemeSettings(), "an unreadable section reads as defaults")
+
+        // A write to an *unrelated* section must not take the broken one down with it.
+        var general = store[GeneralSettings.self]
+        general.fileIconStyle = .color
+        store[GeneralSettings.self] = general
+
+        let after = try parsed(store.encoded())
+        #expect(after["theme"] as? NSArray == ["hand", "edited"] as NSArray)
+    }
+
+    /// Writing a section whose stored value could not be decoded is the one destructive operation in
+    /// the store, and it must announce itself before it happens.
+    ///
+    /// The handler is what lets `AppSettingsStore` copy the file aside first. Asserting on the values
+    /// instead would prove nothing: they are the same defaults either way.
+    @Test
+    func replacingAnUndecodableSectionIsAnnouncedOnce() throws {
+        let store = try SettingsStore(data: Data(#"{"theme":[],"general":{}}"#.utf8))
+
+        var announced: [String] = []
+        store.willReplaceUndecodableSection = { announced.append($0) }
+
+        // A decodable section is replaced silently — nothing of the user's is lost.
+        store[GeneralSettings.self] = store[GeneralSettings.self]
+        #expect(announced.isEmpty)
+
+        store[ThemeSettings.self] = store[ThemeSettings.self]
+        #expect(announced == ["theme"])
+
+        // The original is gone now, so a repeat write has nothing left to announce.
+        store[ThemeSettings.self] = store[ThemeSettings.self]
+        #expect(announced == ["theme"])
+    }
+
     /// Loading and saving through `Settings` must not drop sections it has no field for.
     ///
     /// This is the guarantee extensions depend on: a user who disables an extension must not lose
