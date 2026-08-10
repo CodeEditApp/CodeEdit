@@ -47,6 +47,10 @@ let package = Package(
             dependencies: [.product(name: "CodeEditSymbols", package: "CodeEditSymbols")],
             resources: [.process("Resources")]
         ),
+        .target(name: "CodeEditSettings", dependencies: ["CodeEditCore"]),
+
+        // MARK: - Editor substrate
+        // CodeFileDocument + editor-framework bridging; consumed only by CEEditor and CELSP.
         .target(
             name: "CodeEditDocument",
             dependencies: [
@@ -57,7 +61,9 @@ let package = Package(
                 .product(name: "TextStory", package: "TextStory")
             ]
         ),
-        .target(name: "CodeEditSettings", dependencies: ["CodeEditCore"]),
+
+        // MARK: - App-linked services
+        // Zero package-internal consumers; the app target links these directly.
         .target(name: "ShellClient", dependencies: ["CodeEditCore"]),
         .target(name: "CEWorkspaceFileManager", dependencies: ["CodeEditCore"]),
 

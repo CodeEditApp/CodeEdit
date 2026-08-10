@@ -17,10 +17,11 @@ CodeEdit.xcworkspace
     ├── Sources/
     │   ├── CodeEditCore              — pure types, EventBus, command interfaces (no UI/IO, zero deps)
     │   ├── CodeEditUI                — shared presentation atoms (→ CodeEditSymbols only)
+    │   ├── CodeEditSettings          — settings seam + store + theme (UI pages stay app-side)
     │   ├── CodeEditDocument          — CodeFileDocument + editor-framework bridging protocols
-    │   ├── CodeEditSettings          — settings model + store (UI pages stay app-side)
-    │   ├── ShellClient               — Process adapter
-    │   ├── CEWorkspaceFileManager    — FileManager + FSEvents workspace tree
+    │   │                               (consumed only by CEEditor and CELSP)
+    │   ├── ShellClient               — Process adapter (app-linked; no package-internal consumer)
+    │   ├── CEWorkspaceFileManager    — FileManager + FSEvents workspace tree (app-linked, ditto)
     │   └── CEEditor, CESearch, CENotifications, CELSP, CESourceControl, CETerminal
     │                                 — one target per feature
     └── Tests/                        — CodeEditCoreTests, CodeEditUIUnitTests, CESearchTests,
@@ -114,8 +115,10 @@ where it is visible to everyone. Acyclicity itself needs no rule — SwiftPM enf
 
 **Hub heuristic.** Any target both depended on by three or more others *and* itself depending on
 three or more is a hub under review. 2022's `AppPreferences` was exactly this and would have been
-flagged years before it became fatal. `CodeEditSettings` is the current watch item: four dependents,
-and it imports `AppKit` in 3 files and `SwiftUI` in 9.
+flagged years before it became fatal. `CodeEditSettings` is the current watch item: four dependents
+(`CEEditor`, `CELSP`, `CESourceControl`, `CETerminal`) but only one dependency (`CodeEditCore`), so
+it stays a well-formed shared substrate rather than a hub — and it imports `AppKit` in 1 file and
+`SwiftUI` in 7.
 
 ## Where does my code go?
 
@@ -216,22 +219,26 @@ never by naming the app-wide `SettingsData` aggregate. Three roles, pick by cons
 Access is **section-granular**: `value(_:)`/`setValue(_:)` deal in whole `SettingsSection` values,
 so a caller changing one field reads its section, mutates it and writes it back.
 
-- **`@AppSettings` is app-target only.** It reads the `Settings.shared` singleton directly and is
-  what ~30 app-target files still use. Feature packages must not use it; new app-target code
-  should prefer the seam.
+- **`@AppSettings` is app-target only.** It resolves through the same `settingsAccessor`/
+  `settingsRevision` environment as `SettingsValue`, addressing a section field through the
+  app-wide `SettingsData` façade instead of naming one section directly. There is no
+  `Settings.shared` singleton any more — `AppSettingsStore` (owned by `AppDependencies`) is the
+  concrete accessor, injected like everything else. `@AppSettings` is what ~30 app-target files
+  still use; feature packages must not use it, and new app-target code should prefer the seam.
 - **`@Environment` does not cross an `NSHostingView`/`NSHostingController` boundary.** A new
   standalone hosting root must be given `.appServices(_:)` or wrapped in `SettingsInjector`, or its
   subtree falls back to `DefaultSettingsReader` — plausible defaults, and **writes discarded**.
   That fallback `assertionFailure`s outside SwiftUI previews precisely because it is otherwise
   silent.
 - **Invalidation is explicit.** `SettingsValue` also depends on the `Equatable`
-  `\.settingsRevision` environment key, fed from `Settings.revision`. Rewriting the accessor is not
-  a re-render signal: it is a stateless value behind an existential. Any injection point that
-  *observes* `Settings` supplies the revision (`SettingsInjector`, `CodeEditApp`); `appServices(_:)`
-  observes nothing, so it supplies the accessor only.
-- **`LegacySettingsStore` is a stopgap.** It is the concrete accessor today, bridging to
-  `Settings.shared` so writes reach the existing throttled save pipeline. A section-keyed store
-  replaces it in a later slice.
+  `\.settingsRevision` environment key, fed from `AppSettingsStore.revision`. Rewriting the
+  accessor is not a re-render signal: it is a stateless value behind an existential. Any injection
+  point that *observes* the store supplies the revision (`SettingsInjector`, `CodeEditApp`);
+  `appServices(_:)` observes nothing, so it supplies the accessor only.
+- **`AppSettingsStore` is the concrete accessor.** Section-keyed storage, owned by
+  `AppDependencies` (no `shared`), driving the same throttled save pipeline `Settings.shared` used
+  to own. Sections nothing here decodes are held verbatim and re-emitted on save, so a disabled
+  extension's configuration survives.
 
 ## Creating a new feature target
 
