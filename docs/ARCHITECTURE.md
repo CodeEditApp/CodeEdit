@@ -223,8 +223,8 @@ so a caller changing one field reads its section, mutates it and writes it back.
   `settingsRevision` environment as `SettingsValue`, addressing a section field through the
   app-wide `SettingsData` façade instead of naming one section directly. There is no
   `Settings.shared` singleton any more — `AppSettingsStore` (owned by `AppDependencies`) is the
-  concrete accessor, injected like everything else. `@AppSettings` is what 30 app-target files
-  still use (47 declarations); feature packages must not use it, and new app-target code should
+  concrete accessor, injected like everything else. `@AppSettings` is what 29 app-target files
+  still use (46 declarations); feature packages must not use it, and new app-target code should
   prefer the seam.
 - **Neither wrapper works in a `Commands` conformer.** `.commands { }` attaches beside a scene's
   content, not inside it, so nothing guarantees the environment `SettingsSceneInjector` supplies
