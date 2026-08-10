@@ -21,10 +21,12 @@ public final class Settings: ObservableObject {
     /// The publicly available singleton instance of ``SettingsModel``
     nonisolated(unsafe) public static let shared: Settings = .init()
 
+    private var store: SettingsStore
     private var storeTask: AnyCancellable!
     private var revisionTask: AnyCancellable!
 
     private init() {
+        self.store = SettingsStore()
         self.preferences = .init()
         self.preferences = loadSettings()
 
@@ -69,26 +71,60 @@ public final class Settings: ObservableObject {
 
     /// Load and construct ``Settings`` model from
     /// `~/Library/Application Support/CodeEdit/settings.json`
+    ///
+    /// Builds a ``SettingsStore`` from the file on disk (or an empty one if it is absent or
+    /// unreadable) and populates ``SettingsData`` from it section by section, so sections nothing
+    /// here decodes are preserved verbatim in ``store`` for the next save.
     private func loadSettings() -> SettingsData {
         if !filemanager.fileExists(atPath: settingsURL.path) {
             try? filemanager.createDirectory(at: baseURL, withIntermediateDirectories: false)
+            self.store = SettingsStore()
             return .init()
         }
 
         guard let json = try? Data(contentsOf: settingsURL),
-              let prefs = try? JSONDecoder().decode(SettingsData.self, from: json)
+              let loadedStore = try? SettingsStore(data: json)
         else {
+            self.store = SettingsStore()
             return .init()
         }
-        return prefs
+        self.store = loadedStore
+
+        var data = SettingsData()
+        data.general = store[GeneralSettings.self]
+        data.accounts = store[AccountsSettings.self]
+        data.navigation = store[NavigationSettings.self]
+        data.theme = store[ThemeSettings.self]
+        data.textEditing = store[TextEditingSettings.self]
+        data.terminal = store[TerminalSettings.self]
+        data.sourceControl = store[SourceControlSettings.self]
+        data.keybindings = store[KeybindingsSettings.self]
+        data.search = store[SearchSettings.self]
+        data.languageServers = store[LanguageServerSettings.self]
+        data.developerSettings = store[DeveloperSettings.self]
+        return data
     }
 
-    /// Save``Settings`` model to
+    /// Save ``Settings`` model to
     /// `~/Library/Application Support/CodeEdit/settings.json`
+    ///
+    /// Writes each ``SettingsData`` field back into ``store`` before encoding, so sections the
+    /// store holds but ``SettingsData`` has no field for (an unknown or disabled extension's
+    /// configuration) are re-emitted unchanged.
     private func savePreferences(_ data: SettingsData) throws {
-        let data = try JSONEncoder().encode(data)
-        let json = try JSONSerialization.jsonObject(with: data)
-        let prettyJSON = try JSONSerialization.data(withJSONObject: json, options: [.prettyPrinted])
+        store[GeneralSettings.self] = data.general
+        store[AccountsSettings.self] = data.accounts
+        store[NavigationSettings.self] = data.navigation
+        store[ThemeSettings.self] = data.theme
+        store[TextEditingSettings.self] = data.textEditing
+        store[TerminalSettings.self] = data.terminal
+        store[SourceControlSettings.self] = data.sourceControl
+        store[KeybindingsSettings.self] = data.keybindings
+        store[SearchSettings.self] = data.search
+        store[LanguageServerSettings.self] = data.languageServers
+        store[DeveloperSettings.self] = data.developerSettings
+
+        let prettyJSON = try store.encoded()
         try prettyJSON.write(to: settingsURL, options: .atomic)
     }
 

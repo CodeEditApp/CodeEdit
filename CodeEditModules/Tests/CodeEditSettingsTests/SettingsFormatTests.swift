@@ -99,4 +99,25 @@ struct SettingsFormatTests {
         #expect(reloaded[TerminalSettings.self].cursorStyle == .underline)
         #expect(reloaded[TerminalSettings.self].cursorBlink == true, "untouched field survived")
     }
+
+    /// Loading and saving through `Settings` must not drop sections it has no field for.
+    ///
+    /// This is the guarantee extensions depend on: a user who disables an extension must not lose
+    /// its configuration the next time anything else is saved.
+    @Test
+    @MainActor
+    func savingPreservesSectionsSettingsDataDoesNotKnow() throws {
+        let original = try fixture("unknown-sections")
+        let store = try SettingsStore(data: original)
+
+        // Simulate the load → mutate a known section → save cycle `Settings` performs.
+        var general = store[GeneralSettings.self]
+        general.fileIconStyle = .color
+        store[GeneralSettings.self] = general
+
+        let after = try parsed(store.encoded())
+        let before = try parsed(original)
+        #expect(after["someFutureFeature"] as? NSDictionary == before["someFutureFeature"] as? NSDictionary)
+        #expect(after["extensions"] as? NSDictionary == before["extensions"] as? NSDictionary)
+    }
 }
