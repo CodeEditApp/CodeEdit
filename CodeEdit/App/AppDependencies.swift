@@ -90,6 +90,39 @@ final class AppDependencies {
     private(set) lazy var languageServicesProvider: LanguageServicesProvider =
         AppLanguageServicesProvider(lspService: lspService)
 
+    // MARK: - Wiring that must not wait for a delegate callback
+
+    init() {
+        installSettingsStore()
+    }
+
+    /// Hands the settings store to the three pre-existing singletons that cannot take it through
+    /// their own `init`, before anything can read them.
+    ///
+    /// Deliberately here and not in an `AppDelegate` callback. It first lived in
+    /// `applicationDidFinishLaunching`, which `application(_:open urls:)` can beat: launching by
+    /// double-clicking a folder in Finder, or via a `codeedit://` URL at cold start, opens a
+    /// workspace window before that callback runs. `ThemeModel` would then still hold
+    /// `DefaultSettingsReader` — a debug trap, and in release a crash, because
+    /// `CodeEditWindowController` force-unwraps `ThemeModel.shared.themes.first!` on an array that
+    /// never loaded. The singleton these replaced was immune to that ordering; this is.
+    ///
+    /// `AppDelegate` holds `dependencies` as a non-lazy stored property, so this runs while the
+    /// delegate itself is being initialized — before *any* delegate callback, not merely before the
+    /// one that happened to be a problem. Moving it to `applicationWillFinishLaunching` would fix
+    /// today's ordering and leave the next earlier callback free to reintroduce it.
+    ///
+    /// The cost is that `settingsStore` and `ThemeModel` are built eagerly rather than on first use,
+    /// which front-loads reading `settings.json` and the theme files. Both are read by the first
+    /// window anyway, so this moves the work earlier rather than adding it.
+    private func installSettingsStore() {
+        ThemeModel.shared.configure(settings: settingsAccessor)
+        FeedbackModel.shared.settingsAccessor = settingsAccessor
+        SearchSettingsModel.shared.configure(settings: settingsAccessor)
+    }
+
+    // MARK: - Command-interface adapters, continued
+
     private(set) lazy var codeFileDocumentDelegate: CodeFileDocumentDelegate =
         AppCodeFileDocumentDelegate(
             lspService: lspService,

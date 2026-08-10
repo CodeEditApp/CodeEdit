@@ -35,19 +35,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate, ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    /// Hands the settings store to the three pre-existing singletons that cannot take it through
-    /// `init`. Composition-root privilege: nothing else may do this.
-    private func installSettingsStore() {
-        ThemeModel.shared.configure(settings: dependencies.settingsAccessor)
-        FeedbackModel.shared.settingsAccessor = dependencies.settingsAccessor
-        SearchSettingsModel.shared.configure(settings: dependencies.settingsAccessor)
-    }
-
     func applicationDidFinishLaunching(_ notification: Notification) {
         CodeFileDocument.isAutoSaveOnProvider = { [settings = dependencies.settingsAccessor] in
             settings.value(GeneralSettings.self).isAutoSaveOn
         }
-        installSettingsStore()
         enableWindowSizeSaveOnQuit()
         dependencies.settingsAccessor.value(GeneralSettings.self).appAppearance.applyAppearance()
         checkForFilesToOpen()

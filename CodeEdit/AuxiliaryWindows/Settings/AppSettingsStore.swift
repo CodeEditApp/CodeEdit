@@ -86,6 +86,19 @@ final class AppSettingsStore: ObservableObject, SettingsAccessing {
     // MARK: - Persistence
 
     /// Builds the store from `settings.json`, or an empty one when the file is absent or unreadable.
+    ///
+    /// The two failure cases are **not** equivalent and are deliberately handled differently. A file
+    /// that is *absent* means a first launch, and an empty store is the correct answer. A file that
+    /// is *present but unreadable* means the user has settings that something here failed to parse —
+    /// a bug in this code, a half-written file, a manual edit with a stray comma. Answering with an
+    /// empty store is still the only way to keep launching, but the first subsequent write would
+    /// then persist that emptiness over the original, destroying settings that were very likely
+    /// recoverable by hand.
+    ///
+    /// So the original is copied aside first, and the copy is what makes the fallback survivable.
+    /// The alternative considered — refusing to save until the user explicitly re-saves — was
+    /// rejected: it turns one silent failure into another (every later change is dropped with no
+    /// indication), and it still loses the file the moment anything does write.
     private static func loadStore(at url: URL) -> SettingsStore {
         let fileManager = FileManager.default
 
@@ -100,9 +113,29 @@ final class AppSettingsStore: ObservableObject, SettingsAccessing {
         guard let json = try? Data(contentsOf: url),
               let loaded = try? SettingsStore(data: json)
         else {
+            preserveUnreadableFile(at: url)
             return SettingsStore()
         }
         return loaded
+    }
+
+    /// Copies an unreadable `settings.json` to `settings.json.corrupt-<timestamp>` before anything
+    /// can overwrite it.
+    ///
+    /// Copied rather than moved, so the app still finds a file where it expects one, and so a
+    /// failure to copy cannot itself destroy the original. `copyItem` is used rather than re-reading
+    /// the bytes because the file may have failed to *read*, not merely to parse.
+    private static func preserveUnreadableFile(at url: URL) {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        // Colon-free: legal on APFS, but a filename with colons reads as a path separator in the
+        // Finder and in plenty of shell tooling, and this file exists to be found and inspected.
+        formatter.dateFormat = "yyyy-MM-dd'T'HH-mm-ss'Z'"
+
+        let backup = url.appendingPathExtension("corrupt-\(formatter.string(from: Date()))")
+        guard !FileManager.default.fileExists(atPath: backup.path) else { return }
+        try? FileManager.default.copyItem(at: url, to: backup)
     }
 
     /// Writes every section — including the ones nothing here decodes — to `settings.json`.

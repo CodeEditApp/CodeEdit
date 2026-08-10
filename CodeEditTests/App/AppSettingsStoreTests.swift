@@ -91,6 +91,61 @@ struct AppSettingsStoreTests {
         #expect(readBack?.isEnabled == false)
     }
 
+    /// An unparseable `settings.json` must be copied aside **before** the empty store it falls back
+    /// to can be written over it.
+    ///
+    /// The fallback itself is not the bug — the app has to launch. Losing the original is, and it is
+    /// silent: the user sees settings reset to defaults and has nothing left to recover from.
+    @Test
+    func anUnreadableFileIsPreservedBeforeTheFirstWrite() async throws {
+        let corruptContents = #"{"general": {"fileIconStyle": "colo"#  // truncated mid-write
+        let (store, url) = try makeStore(seed: corruptContents)
+
+        // Loading fell back to defaults, as it must to keep launching.
+        #expect(store.value(GeneralSettings.self) == GeneralSettings())
+
+        // The copy must exist *before* any write, not be made on the way out.
+        let backups = try backupFiles(besides: url)
+        #expect(backups.count == 1, "the unreadable file was not copied aside")
+        #expect(try String(contentsOf: try #require(backups.first), encoding: .utf8) == corruptContents)
+
+        // And the original is still where the app expects it, so the copy is a copy, not a move.
+        #expect(FileManager.default.fileExists(atPath: url.path))
+
+        // Now let a write land and confirm the preserved copy is untouched by it.
+        var section = store.value(GeneralSettings.self)
+        section.fileIconStyle = .monochrome
+        store.setValue(section)
+        await settle { (try? Data(contentsOf: url))?.count != corruptContents.utf8.count }
+
+        let after = try backupFiles(besides: url)
+        #expect(after.count == 1)
+        #expect(try String(contentsOf: try #require(after.first), encoding: .utf8) == corruptContents)
+    }
+
+    /// A *missing* file is the first-launch case: an empty store is correct and nothing is copied.
+    @Test
+    func anAbsentFileIsNotTreatedAsCorruption() throws {
+        let (store, url) = try makeStore()
+
+        #expect(store.value(GeneralSettings.self) == GeneralSettings())
+        #expect(try backupFiles(besides: url).isEmpty, "a first launch must not leave a corrupt-copy")
+    }
+
+    private func backupFiles(besides url: URL) throws -> [URL] {
+        try FileManager.default
+            .contentsOfDirectory(at: url.deletingLastPathComponent(), includingPropertiesForKeys: nil)
+            .filter { $0.lastPathComponent.contains(".corrupt-") }
+    }
+
+    private func settle(until: () -> Bool) async {
+        var attempts = 0
+        while !until() && attempts < 120 {
+            attempts += 1
+            try? await Task.sleep(for: .milliseconds(50))
+        }
+    }
+
     /// A section this build has no field for must survive a save, or a disabled extension loses its
     /// configuration the first time anything else is written.
     @Test
