@@ -115,10 +115,12 @@ where it is visible to everyone. Acyclicity itself needs no rule — SwiftPM enf
 
 **Hub heuristic.** Any target both depended on by three or more others *and* itself depending on
 three or more is a hub under review. 2022's `AppPreferences` was exactly this and would have been
-flagged years before it became fatal. `CodeEditSettings` is the current watch item: four dependents
-(`CEEditor`, `CELSP`, `CESourceControl`, `CETerminal`) but only one dependency (`CodeEditCore`), so
-it stays a well-formed shared substrate rather than a hub — and it imports `AppKit` in 1 file and
-`SwiftUI` in 7.
+flagged years before it became fatal. `CodeEditSettings` is the current watch item: five dependents
+as of the panel-contributions work (`CEEditor`, `CELSP`, `CESearch`, `CESourceControl`, `CETerminal`
+— up from four; `CESearch` joined when `FindNavigatorContribution` started reading its own settings
+instead of taking them from an app-side wrapper) but only one dependency (`CodeEditCore`), so it
+stays a well-formed shared substrate rather than a hub — and it imports `AppKit` in 1 file and
+`SwiftUI` in 7 (both unchanged; re-measured, not carried forward).
 
 ## Where does my code go?
 
@@ -128,7 +130,13 @@ Work through these in order; the first match wins.
    [recipe](#creating-a-new-feature-target)). Features start as targets; the app target is
    not the default. Exception: *shell chrome* that composes multiple features around the
    concrete `Workspace` hub — navigator/inspector/utility areas, the status bar — stays
-   app-side, because its interface would effectively be "the whole app".
+   app-side, because its interface would effectively be "the whole app". **This exemption is
+   about the panel, not any one tab inside it.** `NavigatorAreaView` hosts a tab bar over many
+   features' tabs and has no single owner, so it stays app-side; a *tab* is one feature's own
+   UI and belongs in that feature's package — `CESearch` owns `FindNavigatorContribution` for
+   exactly this reason (see [Panel tab contributions](#panel-tab-contributions)). The only
+   permanent app-side tab is `ProjectNavigatorContribution`, because the project navigator has
+   no owning package to move to, not because it is a tab.
 2. **A type, protocol, event, or command interface needed by two or more features?** →
    `CodeEditModules/Sources/CodeEditCore`, *if* it passes the charter (no UI/IO imports, no
    external dependencies). Events (facts, e.g. `TaskNotificationEvent`) and command interfaces
@@ -203,6 +211,49 @@ Grouping is **purpose-first**:
 - No SwiftUI view observes a service directly — services expose a concrete view-state object
   (the presentation-state split), and views issue commands through protocol-typed environment
   keys.
+
+## Panel tab contributions
+
+The navigator, inspector and utility area no longer switch on closed enums (`NavigatorTab`,
+`InspectorTab`, `UtilityAreaTab`). Each panel is a list of `WorkspacePanelContribution` values —
+a tab is a value, not a case — assembled by one function per panel in
+`CodeEdit/WorkspaceWindow/WorkspacePanel/PanelContributions.swift`: first-party entries named
+directly, conditional ones (`InternalDevelopmentInspectorContribution`) as a plain `if`, then
+extension-provided ones appended through a single adapter call. The panel that renders the list
+cannot tell a first-party tab from an extension's — that indistinguishability is the point; it is
+what lets a new contribution source arrive without the panel code changing.
+
+`WorkspacePanelContribution` lives in `CodeEditUI`
+(`CodeEditModules/Sources/CodeEditUI/WorkspacePanelContribution.swift`), not `CodeEditCore`: a
+contribution vends a `content: AnyView`, and Core's charter (rule 1, above) forbids UI imports
+outright. `CodeEditUI`'s own charter (rule 2) is satisfied too — the protocol needs SwiftUI and
+nothing else.
+
+A contribution's owner follows the same placement rule as everything else in
+[Where does my code go?](#where-does-my-code-go): a feature that owns a tab vends its own
+contribution from its package, reading whatever it needs (including settings, through the seam)
+directly rather than having the app assemble it. `CESearch`'s `FindNavigatorContribution`
+(`CodeEditModules/Sources/CESearch/FindNavigatorContribution.swift`) replaced an app-side
+`FindNavigatorTab` wrapper that existed only to shuttle settings values down — once the feature
+could read its own settings, the wrapper had no reason to exist. The tab's id is now owned by the
+same package (`FindNavigatorContribution.tabID`); the app's `PanelTabID.search` references it
+rather than duplicating the literal, so there is exactly one source of truth even though the app
+still needs a compile-checked constant to select the tab by.
+
+`ProjectNavigatorContribution` (`CodeEdit/WorkspaceWindow/NavigatorArea/NavigatorContributions.swift`)
+is the one contribution that stays app-side permanently — not because it is a tab (see the
+[chrome exemption correction](#where-does-my-code-go)) but because the project navigator has no
+owning package to move to. `SourceControlNavigatorContribution` in the same file is app-side only
+until `SourceControlNavigatorView` is packaged — an out-of-scope follow-up, not a charter
+exception.
+
+Extensions are the third contribution source. `ExtensionPanelContribution`
+(`CodeEdit/WorkspaceWindow/WorkspacePanel/ExtensionPanelContribution.swift`) is the **only** app
+file, outside the pre-existing extension-management UI under `AuxiliaryWindows/Extensions/`, that
+may name `AppExtensionIdentity` or `ResolvedSidebar`. Confining ExtensionKit's vocabulary to this
+one adapter is what let the app-side panel-contribution list above be written without an
+ExtensionKit import in sight, and is what would let a second, non-ExtensionKit contribution source
+arrive later without touching the panels.
 
 ## Reading and writing settings
 
