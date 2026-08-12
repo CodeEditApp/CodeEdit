@@ -101,7 +101,7 @@ struct TasksCommands: Commands {
             // Open the utility area
             utilityAreaModel.isCollapsed.toggle()
         }
-        utilityAreaModel.selectedTabID = "debugConsole" // Switch to the correct tab
+        utilityAreaModel.selectedTabID = PanelTabID.debugConsole // Switch to the correct tab
         taskManager?.taskShowingOutput = taskManager?.selectedTaskID // Switch to the selected task
     }
 

@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct UtilityAreaView: View {
-    @ObservedObject private var extensionManager = ExtensionManager.shared
     @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
 
     var body: some View {
@@ -22,8 +21,5 @@ struct UtilityAreaView: View {
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Utility Area")
         .accessibilityIdentifier("UtilityArea")
-        .onAppear {
-            utilityAreaViewModel.tabItems = utilityAreaContributions(extensionManager: extensionManager)
-        }
     }
 }

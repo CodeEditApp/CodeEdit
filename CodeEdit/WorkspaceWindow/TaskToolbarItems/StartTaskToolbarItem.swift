@@ -43,7 +43,7 @@ final class StartTaskToolbarItem: NSToolbarItem {
         if utilityAreaCollapsed {
             commandManager.executeCommand("open.drawer")
         }
-        utilityAreaModel?.selectedTabID = "debugConsole"
+        utilityAreaModel?.selectedTabID = PanelTabID.debugConsole
         taskManager.taskShowingOutput = taskManager.selectedTaskID
     }
 }

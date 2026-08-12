@@ -7,6 +7,26 @@
 
 import CodeEditUI
 
+/// The ids of the first-party panel tabs.
+///
+/// Selecting a tab means assigning its id, so these exist to keep every call site that does so
+/// compile-checked. A bare string typo is silent: guarded sites become a no-op, unguarded ones
+/// select an id no contribution has and the panel renders "No Selection". Extension-provided ids
+/// are dynamic and deliberately absent.
+enum PanelTabID {
+    static let project = "project"
+    static let sourceControl = "sourceControl"
+    static let search = "search"
+
+    static let file = "file"
+    static let gitHistory = "gitHistory"
+    static let internalDevelopment = "internalDevelopment"
+
+    static let terminal = "terminal"
+    static let debugConsole = "debugConsole"
+    static let output = "output"
+}
+
 @MainActor
 func navigatorContributions(
     extensionManager: ExtensionManager

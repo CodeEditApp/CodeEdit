@@ -9,7 +9,7 @@ import Foundation
 import CodeEditUI
 
 class NavigatorAreaViewModel: ObservableObject {
-    @Published var selectedTabID: String? = "project"
+    @Published var selectedTabID: String? = PanelTabID.project
     /// The tab bar items in the Navigator
     @Published var tabItems: [any WorkspacePanelContribution] = []
 }

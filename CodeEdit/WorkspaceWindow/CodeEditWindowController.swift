@@ -39,7 +39,9 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
 
     // Window-UI models: window-scoped state, owned here (1:1 with the workspace).
     let statusBarViewModel = StatusBarViewModel()
-    let utilityAreaModel = UtilityAreaViewModel()
+    let utilityAreaModel = UtilityAreaViewModel(
+        tabItems: utilityAreaContributions(extensionManager: .shared)
+    )
     let openQuicklyViewModel: OpenQuicklyViewModel
     let commandsPaletteState: QuickActionsViewModel
     let notificationPanel: NotificationPanelViewModel
@@ -186,10 +188,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         }
 
         if let navigatorViewModel = navigatorSidebarViewModel,
-           navigatorViewModel.tabItems.contains(where: { $0.id == "search" }) {
+           navigatorViewModel.tabItems.contains(where: { $0.id == PanelTabID.search }) {
             DispatchQueue.main.async {
                 self.workspace?.searchState.shouldFocusSearchField = true
-                navigatorViewModel.selectedTabID = "search"
+                navigatorViewModel.selectedTabID = PanelTabID.search
             }
         }
     }

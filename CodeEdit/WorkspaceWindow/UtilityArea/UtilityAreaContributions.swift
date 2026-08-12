@@ -9,21 +9,21 @@ import CodeEditUI
 import SwiftUI
 
 struct TerminalUtilityContribution: WorkspacePanelContribution {
-    let id = "terminal"
+    let id = PanelTabID.terminal
     let title = "Terminal"
     let systemImage = "terminal"
     var content: AnyView { AnyView(UtilityAreaTerminalView()) }
 }
 
 struct DebugConsoleUtilityContribution: WorkspacePanelContribution {
-    let id = "debugConsole"
+    let id = PanelTabID.debugConsole
     let title = "Debug Console"
     let systemImage = "ladybug"
     var content: AnyView { AnyView(UtilityAreaDebugView()) }
 }
 
 struct OutputUtilityContribution: WorkspacePanelContribution {
-    let id = "output"
+    let id = PanelTabID.output
     let title = "Output"
     let systemImage = "list.bullet.indent"
     var content: AnyView { AnyView(UtilityAreaOutputView()) }

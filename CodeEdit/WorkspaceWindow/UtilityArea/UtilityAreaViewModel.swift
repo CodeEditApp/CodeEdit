@@ -15,7 +15,7 @@ import SwiftUI
 /// A model class to host and manage data for the Utility area.
 class UtilityAreaViewModel: ObservableObject {
 
-    @Published var selectedTabID: String? = "terminal"
+    @Published var selectedTabID: String? = PanelTabID.terminal
 
     @Published var terminals: [UtilityAreaTerminal] = []
 
@@ -35,12 +35,18 @@ class UtilityAreaViewModel: ObservableObject {
 
     /// The tab bar items for the UtilityAreaView.
     ///
-    /// Seeded by ``UtilityAreaView`` on appear: assembly is `@MainActor`, and a property default is
-    /// evaluated in this non-isolated class's `init`.
-    @Published var tabItems: [any WorkspacePanelContribution] = []
+    /// Injected rather than defaulted: assembly is `@MainActor`, and a property-default expression
+    /// is evaluated in this non-isolated class's `init`. The owner supplies it, so the list is
+    /// populated before the first body evaluation — the utility area never paints "No Selection".
+    @Published var tabItems: [any WorkspacePanelContribution]
 
     /// The tab bar view model for UtilityAreaTabView
     @Published var tabViewModel = UtilityAreaTabViewModel()
+
+    /// - Parameter tabItems: The panel's tabs. Defaults to none, for tests that do not exercise them.
+    init(tabItems: [any WorkspacePanelContribution] = []) {
+        self.tabItems = tabItems
+    }
 
     // MARK: - State Restoration
 

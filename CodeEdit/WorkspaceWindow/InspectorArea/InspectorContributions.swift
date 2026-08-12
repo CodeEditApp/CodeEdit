@@ -9,21 +9,21 @@ import CodeEditUI
 import SwiftUI
 
 struct FileInspectorContribution: WorkspacePanelContribution {
-    let id = "file"
+    let id = PanelTabID.file
     let title = "File Inspector"
     let systemImage = "doc"
     var content: AnyView { AnyView(FileInspectorView()) }
 }
 
 struct GitHistoryInspectorContribution: WorkspacePanelContribution {
-    let id = "gitHistory"
+    let id = PanelTabID.gitHistory
     let title = "History Inspector"
     let systemImage = "clock"
     var content: AnyView { AnyView(HistoryInspectorView()) }
 }
 
 struct InternalDevelopmentInspectorContribution: WorkspacePanelContribution {
-    let id = "internalDevelopment"
+    let id = PanelTabID.internalDevelopment
     let title = "Internal Development"
     let systemImage = "hammer"
     var content: AnyView { AnyView(InternalDevelopmentInspectorView()) }
