@@ -19,9 +19,9 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
 
     var position: GeneralSettings.SidebarTabBarPosition
 
-    @State private var tabLocations: [Tab: CGRect] = [:]
-    @State private var tabWidth: [Tab: CGFloat] = [:]
-    @State private var tabOffsets: [Tab: CGFloat] = [:]
+    @State private var tabLocations: [Tab.ID: CGRect] = [:]
+    @State private var tabWidth: [Tab.ID: CGFloat] = [:]
+    @State private var tabOffsets: [Tab.ID: CGFloat] = [:]
 
     /// The tab currently being dragged.
     ///
@@ -79,8 +79,8 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
             ForEach(items) { tab in
                 makeIcon(tab: tab, size: size)
                     .offset(
-                        x: (position == .top) ? (tabOffsets[tab] ?? 0) : 0,
-                        y: (position == .side) ? (tabOffsets[tab] ?? 0) : 0
+                        x: (position == .top) ? (tabOffsets[tab.id] ?? 0) : 0,
+                        y: (position == .side) ? (tabOffsets[tab.id] ?? 0) : 0
                     )
                     .background(makeTabItemGeometryReader(tab: tab))
                     .simultaneousGesture(makeAreaTabDragGesture(tab: tab))
@@ -129,12 +129,12 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
                 let currentLocation = (position == .top) ? value.location.x : value.location.y
                 guard let startLocation = draggingStartLocation,
                       let currentIndex = items.firstIndex(of: tab),
-                      let currentTabWidth = tabWidth[tab],
+                      let currentTabWidth = tabWidth[tab.id],
                       let lastLocation = draggingLastLocation
                 else { return }
 
                 let dragDifference = currentLocation - lastLocation
-                tabOffsets[tab] = currentLocation - startLocation
+                tabOffsets[tab.id] = currentLocation - startLocation
 
                 // Check for swaps between adjacent tabs
                 // Left tab
@@ -214,8 +214,8 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
 
         // Get info about the tab to swap with
         let swapTab = items[swapIndex]
-        guard let swapTabLocation = tabLocations[swapTab],
-              let swapTabWidth = tabWidth[swapTab]
+        guard let swapTabLocation = tabLocations[swapTab.id],
+              let swapTabWidth = tabWidth[swapTab.id]
         else { return }
 
         let isWithinBounds: Bool
@@ -233,7 +233,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         if isWithinBounds {
             let changing = swapTabWidth - 1
             draggingStartLocation! += direction == .previous ? -changing : changing
-            tabOffsets[tab]! += direction == .previous ? changing : -changing
+            tabOffsets[tab.id]! += direction == .previous ? changing : -changing
             items.swapAt(currentIndex, swapIndex)
         }
     }
@@ -279,14 +279,14 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
             Rectangle()
                 .foregroundColor(.clear)
                 .onAppear {
-                    self.tabWidth[tab] = (position == .top) ? geometry.size.width : geometry.size.height
-                    self.tabLocations[tab] = geometry.frame(in: .global)
+                    self.tabWidth[tab.id] = (position == .top) ? geometry.size.width : geometry.size.height
+                    self.tabLocations[tab.id] = geometry.frame(in: .global)
                 }
                 .onChange(of: geometry.frame(in: .global)) { _, newFrame in
-                    self.tabLocations[tab] = newFrame
+                    self.tabLocations[tab.id] = newFrame
                 }
                 .onChange(of: geometry.size.width) { _, newWidth in
-                    self.tabWidth[tab] = newWidth
+                    self.tabWidth[tab.id] = newWidth
                 }
         }
     }
