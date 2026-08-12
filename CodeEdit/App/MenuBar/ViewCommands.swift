@@ -198,9 +198,9 @@ extension ViewCommands {
 
         var body: some View {
             Menu("Navigators", content: {
-                ForEach(Array(model.tabItems.prefix(9).enumerated()), id: \.element) { index, tab in
+                ForEach(Array(model.tabItems.prefix(9).enumerated()), id: \.element.id) { index, tab in
                     Button(tab.title) {
-                        model.setNavigatorTab(tab: tab)
+                        model.selectedTabID = tab.id
                     }
                     .keyboardShortcut(KeyEquivalent(Character(String(index + 1))))
                 }

@@ -186,10 +186,10 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
         }
 
         if let navigatorViewModel = navigatorSidebarViewModel,
-           let searchTab = navigatorViewModel.tabItems.first(where: { $0 == .search }) {
+           navigatorViewModel.tabItems.contains(where: { $0.id == "search" }) {
             DispatchQueue.main.async {
                 self.workspace?.searchState.shouldFocusSearchField = true
-                navigatorViewModel.setNavigatorTab(tab: searchTab)
+                navigatorViewModel.selectedTabID = "search"
             }
         }
     }

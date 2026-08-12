@@ -6,13 +6,10 @@
 //
 
 import Foundation
+import CodeEditUI
 
 class InspectorAreaViewModel: ObservableObject {
-    @Published var selectedTab: InspectorTab? = .file
+    @Published var selectedTabID: String? = "file"
     /// The tab bar items in the Inspector
-    @Published var tabItems: [InspectorTab] = []
-
-    func setInspectorTab(tab newTab: InspectorTab) {
-        selectedTab = newTab
-    }
+    @Published var tabItems: [any WorkspacePanelContribution] = []
 }

@@ -23,29 +23,16 @@ struct InspectorAreaView: View {
     }
 
     private func updateTabs() {
-        var tabs: [InspectorTab] = [.file, .gitHistory]
-
-        if showInternalDevelopmentInspector {
-            tabs.append(.internalDevelopment)
-        }
-
-        viewModel.tabItems = tabs + extensionManager
-            .extensions
-            .map { ext in
-                ext.availableFeatures.compactMap {
-                    if case .sidebarItem(let data) = $0, data.kind == .inspector {
-                        return InspectorTab.uiExtension(endpoint: ext.endpoint, data: data)
-                    }
-                    return nil
-                }
-            }
-            .joined()
+        viewModel.tabItems = inspectorContributions(
+            extensionManager: extensionManager,
+            showInternalDevelopment: showInternalDevelopmentInspector
+        )
     }
 
     var body: some View {
         WorkspacePanelView(
             viewModel: viewModel,
-            selectedTab: $viewModel.selectedTab,
+            selectedTabID: $viewModel.selectedTabID,
             tabItems: $viewModel.tabItems,
             sidebarPosition: sidebarPosition
         )

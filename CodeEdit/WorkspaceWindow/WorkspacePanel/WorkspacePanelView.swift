@@ -9,10 +9,10 @@ import SwiftUI
 import CodeEditSettings
 import CodeEditUI
 
-struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: View {
+struct WorkspacePanelView<ViewModel: ObservableObject>: View {
     @ObservedObject var viewModel: ViewModel
-    @Binding var selectedTab: Tab?
-    @Binding var tabItems: [Tab]
+    @Binding var selectedTabID: String?
+    @Binding var tabItems: [any WorkspacePanelContribution]
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -22,22 +22,27 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: 
 
     init(
         viewModel: ViewModel,
-        selectedTab: Binding<Tab?>,
-        tabItems: Binding<[Tab]>,
+        selectedTabID: Binding<String?>,
+        tabItems: Binding<[any WorkspacePanelContribution]>,
         sidebarPosition: GeneralSettings.SidebarTabBarPosition,
         darkDivider: Bool = false
     ) {
         self.viewModel = viewModel
-        self._selectedTab = selectedTab
+        self._selectedTabID = selectedTabID
         self._tabItems = tabItems
         self.sidebarPosition = sidebarPosition
         self.darkDivider = darkDivider
     }
 
+    private var selectedTab: (any WorkspacePanelContribution)? {
+        guard let selectedTabID else { return nil }
+        return tabItems.first { $0.id == selectedTabID }
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             if let selection = selectedTab {
-                selection
+                selection.content
             } else {
                 CEContentUnavailableView("No Selection")
             }
@@ -45,7 +50,7 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: 
         .safeAreaInset(edge: .leading, spacing: 0) {
             if sidebarPosition == .side {
                 HStack(spacing: 0) {
-                    WorkspacePanelTabBar(items: $tabItems, selection: $selectedTab, position: sidebarPosition)
+                    WorkspacePanelTabBar(items: $tabItems, selectionID: $selectedTabID, position: sidebarPosition)
                     Divider()
                         .overlay(Color(nsColor: darkDivider && colorScheme == .dark ? .black : .clear))
                 }
@@ -55,7 +60,7 @@ struct WorkspacePanelView<Tab: WorkspacePanelTab, ViewModel: ObservableObject>: 
             if sidebarPosition == .top {
                 VStack(spacing: 0) {
                     Divider()
-                    WorkspacePanelTabBar(items: $tabItems, selection: $selectedTab, position: sidebarPosition)
+                    WorkspacePanelTabBar(items: $tabItems, selectionID: $selectedTabID, position: sidebarPosition)
                     Divider()
                 }
             } else if !darkDivider {

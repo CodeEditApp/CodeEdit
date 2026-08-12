@@ -6,6 +6,7 @@
 //
 
 import CodeEditCore
+import CodeEditUI
 import CETerminal
 import SwiftUI
 
@@ -14,7 +15,7 @@ import SwiftUI
 /// A model class to host and manage data for the Utility area.
 class UtilityAreaViewModel: ObservableObject {
 
-    @Published var selectedTab: UtilityAreaTab? = .terminal
+    @Published var selectedTabID: String? = "terminal"
 
     @Published var terminals: [UtilityAreaTerminal] = []
 
@@ -32,8 +33,11 @@ class UtilityAreaViewModel: ObservableObject {
     /// The current height of the drawer. Zero if hidden
     @Published var currentHeight: Double = 0
 
-    /// The tab bar items for the UtilityAreaView
-    @Published var tabItems: [UtilityAreaTab] = UtilityAreaTab.allCases
+    /// The tab bar items for the UtilityAreaView.
+    ///
+    /// Seeded by ``UtilityAreaView`` on appear: assembly is `@MainActor`, and a property default is
+    /// evaluated in this non-isolated class's `init`.
+    @Published var tabItems: [any WorkspacePanelContribution] = []
 
     /// The tab bar view model for UtilityAreaTabView
     @Published var tabViewModel = UtilityAreaTabViewModel()

@@ -28,7 +28,7 @@ struct StartTaskToolbarButton: View {
             if utilityAreaCollapsed {
                 commandManager?.executeCommand("open.drawer")
             }
-            utilityAreaModel.selectedTab = .debugConsole
+            utilityAreaModel.selectedTabID = "debugConsole"
             taskManager.taskShowingOutput = taskManager.selectedTaskID
         } label: {
             Label("Start", systemImage: "play.fill")

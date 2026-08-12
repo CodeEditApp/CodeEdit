@@ -18,24 +18,13 @@ struct NavigatorAreaView: View {
     init(viewModel: NavigatorAreaViewModel) {
         self.viewModel = viewModel
 
-        viewModel.tabItems = [.project, .sourceControl, .search] +
-            extensionManager
-                .extensions
-                .map { ext in
-                    ext.availableFeatures.compactMap {
-                        if case .sidebarItem(let data) = $0, data.kind == .navigator {
-                            return NavigatorTab.uiExtension(endpoint: ext.endpoint, data: data)
-                        }
-                        return nil
-                    }
-                }
-                .joined()
+        viewModel.tabItems = navigatorContributions(extensionManager: extensionManager)
     }
 
     var body: some View {
         WorkspacePanelView(
             viewModel: viewModel,
-            selectedTab: $viewModel.selectedTab,
+            selectedTabID: $viewModel.selectedTabID,
             tabItems: $viewModel.tabItems,
             sidebarPosition: sidebarPosition
         )

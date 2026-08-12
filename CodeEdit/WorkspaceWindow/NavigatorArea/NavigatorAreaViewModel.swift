@@ -6,13 +6,10 @@
 //
 
 import Foundation
+import CodeEditUI
 
 class NavigatorAreaViewModel: ObservableObject {
-    @Published var selectedTab: NavigatorTab? = .project
+    @Published var selectedTabID: String? = "project"
     /// The tab bar items in the Navigator
-    @Published var tabItems: [NavigatorTab] = []
-
-    func setNavigatorTab(tab newTab: NavigatorTab) {
-        selectedTab = newTab
-    }
+    @Published var tabItems: [any WorkspacePanelContribution] = []
 }

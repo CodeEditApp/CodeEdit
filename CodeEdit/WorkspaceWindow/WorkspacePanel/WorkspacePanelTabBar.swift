@@ -7,26 +7,22 @@
 
 import SwiftUI
 import CodeEditSettings
+import CodeEditUI
 
-protocol WorkspacePanelTab: View, Identifiable, Hashable {
-    var title: String { get }
-    var systemImage: String { get }
-}
-
-struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
-    @Binding var items: [Tab]
-    @Binding var selection: Tab?
+struct WorkspacePanelTabBar: View {
+    @Binding var items: [any WorkspacePanelContribution]
+    @Binding var selectionID: String?
 
     var position: GeneralSettings.SidebarTabBarPosition
 
-    @State private var tabLocations: [Tab.ID: CGRect] = [:]
-    @State private var tabWidth: [Tab.ID: CGFloat] = [:]
-    @State private var tabOffsets: [Tab.ID: CGFloat] = [:]
+    @State private var tabLocations: [String: CGRect] = [:]
+    @State private var tabWidth: [String: CGFloat] = [:]
+    @State private var tabOffsets: [String: CGFloat] = [:]
 
-    /// The tab currently being dragged.
+    /// The id of the tab currently being dragged.
     ///
     /// It will be `nil` when there is no tab dragged currently.
-    @State private var draggingTab: Tab?
+    @State private var draggingTabID: String?
 
     /// The start location of dragging.
     ///
@@ -51,7 +47,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         GeometryReader { proxy in
             iconsView(size: proxy.size)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .animation(.default, value: items)
+                .animation(.default, value: items.map(\.id))
         }
         .clipped()
         .frame(maxWidth: .infinity, idealHeight: 27)
@@ -63,7 +59,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
             iconsView(size: proxy.size)
                 .padding(.vertical, 5)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .animation(.default, value: items)
+                .animation(.default, value: items.map(\.id))
         }
         .clipped()
         .frame(idealWidth: 40, maxHeight: .infinity)
@@ -76,7 +72,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
             ? AnyLayout(HStackLayout(spacing: 0))
             : AnyLayout(VStackLayout(spacing: 0))
         layout {
-            ForEach(items) { tab in
+            ForEach(items, id: \.id) { tab in
                 makeIcon(tab: tab, size: size)
                     .offset(
                         x: (position == .top) ? (tabOffsets[tab.id] ?? 0) : 0,
@@ -92,21 +88,21 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
     }
 
     private func makeIcon(
-        tab: Tab,
+        tab: any WorkspacePanelContribution,
         scale: Image.Scale = .medium,
         size: CGSize
     ) -> some View {
         Button {
-            selection = tab
+            selectionID = tab.id
         } label: {
             getSafeImage(named: tab.systemImage, accessibilityDescription: tab.title)
                 .font(.system(size: 12.5))
-                .symbolVariant(tab == selection ? .fill : .none)
+                .symbolVariant(tab.id == selectionID ? .fill : .none)
                 .help(tab.title)
         }
         .buttonStyle(
             .icon(
-                isActive: tab == selection,
+                isActive: tab.id == selectionID,
                 size: CGSize(
                     width: position == .side ? 40 : 24,
                     height: position == .side ? 28 : size.height
@@ -118,17 +114,17 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         .accessibilityLabel(tab.title)
     }
 
-    private func makeAreaTabDragGesture(tab: Tab) -> some Gesture {
+    private func makeAreaTabDragGesture(tab: any WorkspacePanelContribution) -> some Gesture {
         DragGesture(minimumDistance: 2, coordinateSpace: .global)
             .onChanged({ value in
-                if draggingTab != tab {
+                if draggingTabID != tab.id {
                     initializeDragGesture(value: value, for: tab)
                 }
 
                 // Get the current cursor location
                 let currentLocation = (position == .top) ? value.location.x : value.location.y
                 guard let startLocation = draggingStartLocation,
-                      let currentIndex = items.firstIndex(of: tab),
+                      let currentIndex = items.firstIndex(where: { $0.id == tab.id }),
                       let currentTabWidth = tabWidth[tab.id],
                       let lastLocation = draggingLastLocation
                 else { return }
@@ -169,13 +165,13 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
                     tabOffsets = [:]
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                    draggingTab = nil
+                    draggingTabID = nil
                 }
             })
     }
 
-    private func initializeDragGesture(value: DragGesture.Value, for tab: Tab) {
-        draggingTab = tab
+    private func initializeDragGesture(value: DragGesture.Value, for tab: any WorkspacePanelContribution) {
+        draggingTabID = tab.id
         let initialLocation = position == .top ? value.startLocation.x : value.startLocation.y
         draggingStartLocation = initialLocation
         draggingLastLocation = initialLocation
@@ -188,7 +184,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
 
     // swiftlint:disable:next function_parameter_count
     private func swapTab(
-        tab: Tab,
+        tab: any WorkspacePanelContribution,
         currentIndex: Int,
         currentLocation: CGFloat,
         dragDifference: CGFloat,
@@ -274,7 +270,7 @@ struct WorkspacePanelTabBar<Tab: WorkspacePanelTab>: View {
         )
     }
 
-    private func makeTabItemGeometryReader(tab: Tab) -> some View {
+    private func makeTabItemGeometryReader(tab: any WorkspacePanelContribution) -> some View {
         GeometryReader { geometry in
             Rectangle()
                 .foregroundColor(.clear)
