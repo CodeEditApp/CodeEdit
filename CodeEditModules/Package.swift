@@ -104,7 +104,7 @@ let package = Package(
             ]
         ),
         .target(name: "CENotifications", dependencies: ["CodeEditCore", "CodeEditUI"]),
-        .target(name: "CESearch", dependencies: ["CodeEditCore", "CodeEditUI"]),
+        .target(name: "CESearch", dependencies: ["CodeEditCore", "CodeEditUI", "CodeEditSettings"]),
         .target(
             name: "CESourceControl",
             dependencies: [

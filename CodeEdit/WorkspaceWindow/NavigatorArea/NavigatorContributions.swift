@@ -22,10 +22,3 @@ struct SourceControlNavigatorContribution: WorkspacePanelContribution {
     let systemImage = "vault"
     var content: AnyView { AnyView(SourceControlNavigatorView()) }
 }
-
-struct FindNavigatorContribution: WorkspacePanelContribution {
-    let id = PanelTabID.search
-    let title = "Search"
-    let systemImage = "magnifyingglass"
-    var content: AnyView { AnyView(FindNavigatorTab()) }
-}

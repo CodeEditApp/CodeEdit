@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 12/08/26.
 //
 
+import CESearch
 import CodeEditUI
 
 /// The ids of the first-party panel tabs.
@@ -16,7 +17,9 @@ import CodeEditUI
 enum PanelTabID {
     static let project = "project"
     static let sourceControl = "sourceControl"
-    static let search = "search"
+    /// Owned by `CESearch.FindNavigatorContribution`, which vends the tab this id selects — kept
+    /// as one source of truth rather than duplicated as a literal.
+    static let search = FindNavigatorContribution.tabID
 
     static let file = "file"
     static let gitHistory = "gitHistory"
