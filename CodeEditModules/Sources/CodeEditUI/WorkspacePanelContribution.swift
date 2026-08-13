@@ -31,5 +31,11 @@ public protocol WorkspacePanelContribution: Identifiable {
     ///
     /// Type-erased because a panel holds a heterogeneous list. Erasure happens once per tab, not per
     /// row, and one tab is visible at a time.
-    var content: AnyView { get }
+    ///
+    /// Main-actor isolated because every contribution vends a SwiftUI view, and `View`'s members are
+    /// main-actor isolated. Left nonisolated, a conformer in a Swift 6 target warns when it
+    /// constructs its own content view — the app target simply doesn't report it, being Swift 5.
+    /// Only this requirement is isolated: `id`, `title` and `systemImage` are plain values read from
+    /// non-isolated positions.
+    @MainActor var content: AnyView { get }
 }
