@@ -5,11 +5,14 @@
 //  Created by Nanashi Li on 2022/04/18.
 //
 
-import CESourceControl
 import Foundation
 import CodeEditSettings
 import CodeEditCore
 
+/// Main-actor isolated: it is created and driven entirely by `HistoryInspectorView`, and this
+/// target compiles under Swift 6 strict concurrency, where passing a non-`Sendable` model into a
+/// `Task` from the view is an error rather than the warning it was app-side.
+@MainActor
 final class HistoryInspectorModel: ObservableObject {
     /// The settings store. Assigned by `HistoryInspectorView` from the environment, alongside the
     /// source-control manager — this model is created by a view and configured the same way.
@@ -40,7 +43,7 @@ final class HistoryInspectorModel: ObservableObject {
 
     func updateCommitHistory() async {
         guard let sourceControlManager, let fileURL else {
-            await setCommitHistory([])
+            commitHistory = []
             return
         }
 
@@ -53,14 +56,9 @@ final class HistoryInspectorModel: ObservableObject {
                     fileLocalPath: fileURL,
                     showMergeCommits: settingsAccessor.value(SourceControlSettings.self).git.showMergeCommitsPerFileLog
                 )
-            await setCommitHistory(commitHistory)
+            self.commitHistory = commitHistory
         } catch {
-            await setCommitHistory([])
+            self.commitHistory = []
         }
-    }
-
-    @MainActor
-    private func setCommitHistory(_ history: [GitCommit]) {
-        self.commitHistory = history
     }
 }

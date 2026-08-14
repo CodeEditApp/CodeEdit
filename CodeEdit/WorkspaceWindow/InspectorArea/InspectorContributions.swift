@@ -15,13 +15,6 @@ struct FileInspectorContribution: WorkspacePanelContribution {
     var content: AnyView { AnyView(FileInspectorView()) }
 }
 
-struct GitHistoryInspectorContribution: WorkspacePanelContribution {
-    let id = PanelTabID.gitHistory
-    let title = "History Inspector"
-    let systemImage = "clock"
-    var content: AnyView { AnyView(HistoryInspectorView()) }
-}
-
 struct InternalDevelopmentInspectorContribution: WorkspacePanelContribution {
     let id = PanelTabID.internalDevelopment
     let title = "Internal Development"

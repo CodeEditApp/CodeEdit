@@ -15,10 +15,3 @@ struct ProjectNavigatorContribution: WorkspacePanelContribution {
     let systemImage = "folder"
     var content: AnyView { AnyView(ProjectNavigatorView()) }
 }
-
-struct SourceControlNavigatorContribution: WorkspacePanelContribution {
-    let id = PanelTabID.sourceControl
-    let title = "Source Control"
-    let systemImage = "vault"
-    var content: AnyView { AnyView(SourceControlNavigatorView()) }
-}

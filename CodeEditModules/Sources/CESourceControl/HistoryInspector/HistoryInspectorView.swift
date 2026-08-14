@@ -4,20 +4,21 @@
 //
 //  Created by Nanashi Li on 2022/03/24.
 //
-import CESourceControl
 import SwiftUI
 import CodeEditSettings
 import CodeEditUI
 import CodeEditCore
 
-struct HistoryInspectorView: View {
+public struct HistoryInspectorView: View {
     @SettingsValue(SourceControlSettings.self, \.git.showMergeCommitsPerFileLog)
     var showMergeCommitsPerFileLog
 
     @EnvironmentObject private var sourceControlManager: SourceControlManager
 
-    @Environment(\.activeEditorState)
-    private var activeEditorState
+    /// The active-file read-model, injected rather than read from the environment: the
+    /// `\.activeEditorState` key is declared in the app shell and this view now ships in
+    /// `CESourceControl`.
+    private let activeEditorState: ActiveEditorState
 
     @Environment(\.settingsAccessor)
     private var settingsAccessor
@@ -26,13 +27,14 @@ struct HistoryInspectorView: View {
 
     @State var selection: GitCommit?
 
-    /// Initialize with GitClient
-    /// - Parameter gitClient: a GitClient
-    init() {
+    /// - Parameter activeEditorState: the workspace's active-file read-model; the history shown
+    ///   follows its selection.
+    public init(activeEditorState: ActiveEditorState) {
+        self.activeEditorState = activeEditorState
         self.model = .init()
     }
 
-    var body: some View {
+    public var body: some View {
         Group {
             if model.sourceControlManager != nil {
                 VStack {
@@ -49,7 +51,7 @@ struct HistoryInspectorView: View {
                     }
                 }
             } else {
-                NoSelectionInspectorView()
+                CEContentUnavailableView("No Selection")
             }
         }
         .onReceive(activeEditorState.selectedFilePublisher) { file in

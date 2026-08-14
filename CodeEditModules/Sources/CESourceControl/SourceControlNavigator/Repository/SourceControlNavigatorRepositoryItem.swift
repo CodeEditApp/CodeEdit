@@ -58,7 +58,10 @@ struct SourceControlNavigatorRepositoryItem: View {
                 }
             }
             .opacity(controlActiveState == .inactive ? 0.5 : 1)
-            .foregroundStyle(fileIconStyle == .color ? item.imageColor : Color.coolGray)
+            // `Color.coolGray` is an app-target asset symbol, which a package cannot see. Named
+            // lookup against the main bundle resolves the same asset and is what the sibling
+            // `GitChangedFileListView` — and `CEEditor` — already do for this colour.
+            .foregroundStyle(fileIconStyle == .color ? item.imageColor : Color("CoolGray"))
         })
         .padding(.leading, 1)
         .padding(.vertical, -1)

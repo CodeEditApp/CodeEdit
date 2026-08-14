@@ -5,15 +5,16 @@
 //  Created by Austin Condiff on 11/18/23.
 //
 
-import CESourceControl
 import AppKit
 import SwiftUI
 import CodeEditCore
 
 struct SourceControlNavigatorChangesList: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
-    @Environment(\.workspaceNavigator)
-    private var workspaceNavigator
+
+    /// Threaded from `SourceControlNavigatorView` rather than read from the environment: the
+    /// environment key lives in the app shell, and this view now ships in `CESourceControl`.
+    let navigator: WorkspaceNavigator
 
     @State var selection = Set<GitChangedFile>()
 
@@ -76,7 +77,7 @@ struct SourceControlNavigatorChangesList: View {
 
     private func openGitFile(_ file: GitChangedFile) {
         DispatchQueue.main.async {
-            workspaceNavigator.open(fileAt: file.fileURL, asTemporary: true)
+            navigator.open(fileAt: file.fileURL, asTemporary: true)
         }
     }
 }

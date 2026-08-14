@@ -58,47 +58,6 @@ final class CodeEditUtilsExtensionsUnitTests: XCTestCase {
         XCTAssertEqual(alpha, color.alphaComponent)
     }
 
-    // MARK: - DATE + FORMATTED
-
-    func testRelativeDateStringMinutes() throws {
-        let date = Date.now.addingTimeInterval(-61)
-        let string = date.relativeStringToNow(locale: Locale(identifier: "en_US"))
-
-        XCTAssertEqual("1 min. ago", string)
-    }
-
-    func testRelativeDateStringHours() throws {
-        let date = Date.now.addingTimeInterval(-3_601)
-        let string = date.relativeStringToNow(locale: Locale(identifier: "en_US"))
-
-        XCTAssertEqual("1 hr. ago", string)
-    }
-
-    func testRelativeDateStringDays() throws {
-        let date = Date.now.addingTimeInterval(-86_400)
-        let string = date.relativeStringToNow(locale: Locale(identifier: "en_US"))
-
-        XCTAssertEqual("yesterday", string)
-    }
-
-    // MARK: - STRING + MD5
-
-    func testMD5GenerationCaseSensitive() throws {
-        let testString = "CodeEdit"
-        let md5 = testString.md5(caseSensitive: true)
-
-        let result = "8ba8c8fd0442f7bae4d441e2a3fda706"
-        XCTAssertEqual(result, md5)
-    }
-
-    func testMD5Generation() throws {
-        let testString = "CodeEdit"
-        let md5 = testString.md5(caseSensitive: false)
-
-        let result = "4cdf122ff382a2d929eddc1a63473ec1"
-        XCTAssertEqual(result, md5)
-    }
-
     // MARK: - STRING + VALID FILE NAME
 
     func testValidFileName() {

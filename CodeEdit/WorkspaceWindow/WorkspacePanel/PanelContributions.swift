@@ -6,6 +6,8 @@
 //
 
 import CESearch
+import CESourceControl
+import CodeEditCore
 import CodeEditUI
 
 /// The ids of the first-party panel tabs.
@@ -16,13 +18,15 @@ import CodeEditUI
 /// are dynamic and deliberately absent.
 enum PanelTabID {
     static let project = "project"
-    static let sourceControl = "sourceControl"
+    /// Owned by `CESourceControl.SourceControlNavigatorContribution`.
+    static let sourceControl = SourceControlNavigatorContribution.tabID
     /// Owned by `CESearch.FindNavigatorContribution`, which vends the tab this id selects — kept
     /// as one source of truth rather than duplicated as a literal.
     static let search = FindNavigatorContribution.tabID
 
     static let file = "file"
-    static let gitHistory = "gitHistory"
+    /// Owned by `CESourceControl.GitHistoryInspectorContribution`.
+    static let gitHistory = GitHistoryInspectorContribution.tabID
     static let internalDevelopment = "internalDevelopment"
 
     static let terminal = "terminal"
@@ -30,13 +34,19 @@ enum PanelTabID {
     static let output = "output"
 }
 
+/// The `navigator` and `activeEditorState` parameters below default to the no-op implementations
+/// `CodeEditCore` vends — the same defaults the `\.workspaceNavigator` and `\.activeEditorState`
+/// environment keys carry, and for the same reason: a caller with no workspace (previews, tests)
+/// legitimately has nothing to pass. The real values come from the composition root via
+/// `NavigatorAreaView` / `InspectorAreaView`.
 @MainActor
 func navigatorContributions(
-    extensionManager: ExtensionManager
+    extensionManager: ExtensionManager,
+    navigator: WorkspaceNavigator = NoOpWorkspaceNavigator()
 ) -> [any WorkspacePanelContribution] {
     var items: [any WorkspacePanelContribution] = [
         ProjectNavigatorContribution(),
-        SourceControlNavigatorContribution(),
+        SourceControlNavigatorContribution(navigator: navigator),
         FindNavigatorContribution()
     ]
     items += extensionContributions(for: .navigator, from: extensionManager)
@@ -46,11 +56,12 @@ func navigatorContributions(
 @MainActor
 func inspectorContributions(
     extensionManager: ExtensionManager,
-    showInternalDevelopment: Bool
+    showInternalDevelopment: Bool,
+    activeEditorState: ActiveEditorState = NoOpActiveEditorState()
 ) -> [any WorkspacePanelContribution] {
     var items: [any WorkspacePanelContribution] = [
         FileInspectorContribution(),
-        GitHistoryInspectorContribution()
+        GitHistoryInspectorContribution(activeEditorState: activeEditorState)
     ]
     if showInternalDevelopment {
         items.append(InternalDevelopmentInspectorContribution())

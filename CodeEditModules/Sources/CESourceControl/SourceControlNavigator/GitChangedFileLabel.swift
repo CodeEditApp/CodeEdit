@@ -5,16 +5,11 @@
 //  Created by Khan Winter on 8/23/24.
 //
 
-import CESourceControl
 import SwiftUI
-import ShellClient
 import CodeEditCore
-import CodeEditSettings
 import CodeEditUI
 
 struct GitChangedFileLabel: View {
-    @EnvironmentObject private var sourceControlManager: SourceControlManager
-
     let file: GitChangedFile
 
     var body: some View {
@@ -29,6 +24,9 @@ struct GitChangedFileLabel: View {
     }
 }
 
+// The label reads nothing but `file`, so the preview needs no environment. Building a
+// `SourceControlManager` here previously forced a `ShellClient` import that this target — and this
+// view — has no other use for.
 #Preview {
     Group {
         GitChangedFileLabel(file: GitChangedFile(
@@ -37,24 +35,12 @@ struct GitChangedFileLabel: View {
             fileURL: URL(filePath: "/Users/CodeEdit/app.jsx"),
             originalFilename: nil
         ))
-        .environmentObject(SourceControlManager(
-            workspaceURL: URL(filePath: "/Users/CodeEdit"),
-            shellClient: ShellClient(),
-            eventBus: EventBus(),
-            settingsReader: DefaultSettingsReader()
-        ))
 
         GitChangedFileLabel(file: GitChangedFile(
             status: .none,
             stagedStatus: .renamed,
             fileURL: URL(filePath: "/Users/CodeEdit/app.jsx"),
             originalFilename: "app2.jsx"
-        ))
-        .environmentObject(SourceControlManager(
-            workspaceURL: URL(filePath: "/Users/CodeEdit"),
-            shellClient: ShellClient(),
-            eventBus: EventBus(),
-            settingsReader: DefaultSettingsReader()
         ))
     }.padding()
 }

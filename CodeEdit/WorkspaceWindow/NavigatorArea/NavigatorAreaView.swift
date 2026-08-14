@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 import CodeEditSettings
 
 struct NavigatorAreaView: View {
@@ -15,10 +16,13 @@ struct NavigatorAreaView: View {
     @AppSettings(\.general.navigatorTabBarPosition)
     var sidebarPosition: GeneralSettings.SidebarTabBarPosition
 
-    init(viewModel: NavigatorAreaViewModel) {
+    init(viewModel: NavigatorAreaViewModel, navigator: WorkspaceNavigator) {
         self.viewModel = viewModel
 
-        viewModel.tabItems = navigatorContributions(extensionManager: extensionManager)
+        viewModel.tabItems = navigatorContributions(
+            extensionManager: extensionManager,
+            navigator: navigator
+        )
     }
 
     var body: some View {

@@ -5,7 +5,6 @@
 //  Created by Austin Condiff on 11/17/23.
 //
 
-import CESourceControl
 import SwiftUI
 
 struct SourceControlNavigatorNoRemotesView: View {

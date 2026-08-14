@@ -117,7 +117,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
         activeEditorState: AppActiveEditorState
     ) -> NSSplitViewItem {
         makeNavigator(view: SettingsInjector(store: dependencies.settingsStore) {
-            NavigatorAreaView(viewModel: navigatorViewModel)
+            NavigatorAreaView(viewModel: navigatorViewModel, navigator: dependencies.workspaceNavigator)
                 .environment(\.workspace, workspace)
                 .environmentObject(workspace.editorManager)
                 .environmentObject(workspace.projectNavigatorViewModel)
@@ -171,7 +171,10 @@ final class CodeEditSplitViewController: NSSplitViewController {
         fileEditorOverrides: AppFileEditorOverrides
     ) -> NSSplitViewItem {
         makeInspector(view: SettingsInjector(store: dependencies.settingsStore) {
-            InspectorAreaView(viewModel: InspectorAreaViewModel())
+            InspectorAreaView(
+                viewModel: InspectorAreaViewModel(),
+                activeEditorState: activeEditorState
+            )
                 .environmentObject(workspace.editorManager)
                 .environmentObject(workspace.sourceControlManager)
                 .environment(\.workspaceFileManager, workspace.workspaceFileManager)

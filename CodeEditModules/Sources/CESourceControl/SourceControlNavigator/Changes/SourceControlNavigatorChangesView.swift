@@ -5,12 +5,15 @@
 //  Created by Nanashi Li on 2022/05/20.
 //
 
-import CESourceControl
 import SwiftUI
+import CodeEditCore
 import CodeEditUI
 
 struct SourceControlNavigatorChangesView: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
+
+    /// Passed down to the changes list, which needs it to open a changed file.
+    let navigator: WorkspaceNavigator
 
     var hasRemotes: Bool {
         !sourceControlManager.remotes.isEmpty
@@ -50,7 +53,7 @@ struct SourceControlNavigatorChangesView: View {
                 Divider()
             }
             if hasChanges {
-                SourceControlNavigatorChangesList()
+                SourceControlNavigatorChangesList(navigator: navigator)
             } else {
                 CEContentUnavailableView("No Changes")
             }

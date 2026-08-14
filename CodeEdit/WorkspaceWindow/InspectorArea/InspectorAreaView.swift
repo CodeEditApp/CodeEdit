@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 import CodeEditSettings
 
 struct InspectorAreaView: View {
@@ -18,14 +19,21 @@ struct InspectorAreaView: View {
     @AppSettings(\.developerSettings.showInternalDevelopmentInspector)
     var showInternalDevelopmentInspector
 
-    init(viewModel: InspectorAreaViewModel) {
+    /// The active-file read-model the history inspector follows. Taken by `init` rather than read
+    /// from `\.activeEditorState`: `updateTabs()` builds the contributions, and a view's
+    /// environment is not populated at the point the tabs first need it.
+    private let activeEditorState: ActiveEditorState
+
+    init(viewModel: InspectorAreaViewModel, activeEditorState: ActiveEditorState) {
         self.viewModel = viewModel
+        self.activeEditorState = activeEditorState
     }
 
     private func updateTabs() {
         viewModel.tabItems = inspectorContributions(
             extensionManager: extensionManager,
-            showInternalDevelopment: showInternalDevelopmentInspector
+            showInternalDevelopment: showInternalDevelopmentInspector,
+            activeEditorState: activeEditorState
         )
     }
 
