@@ -69,6 +69,25 @@ struct AppWorkspaceNavigatorTests {
         #expect(mock.opened.first?.asTemporary == true)
     }
 
+    /// Regression test for the case the old unsorted `workspace(containing:)` probe could miss:
+    /// `open(fileAt:)` must still open the file via `openFileInWorkspace` (the sorted,
+    /// nearest-workspace path) even when the unsorted probe would have returned nil.
+    @MainActor
+    @Test
+    func openFileAtURLOpensEvenWhenWorkspaceContainingProbeMisses() throws {
+        let mock = MockWindowManager()
+        // Deliberately leave `stubbedWorkspace` nil so `workspace(containing:)` returns nil,
+        // simulating the unsorted probe missing a URL that the sorted path would still resolve.
+        let navigator = AppWorkspaceNavigator(windowManager: mock)
+        let fileURL = URL(fileURLWithPath: "/tmp/unmatched-by-probe.swift")
+
+        navigator.open(fileAt: fileURL, asTemporary: false)
+
+        #expect(mock.opened.count == 1)
+        #expect(mock.opened.first?.url == fileURL)
+        #expect(mock.opened.first?.asTemporary == false)
+    }
+
     @MainActor
     @Test
     func revealSendsRevealRequestOnCorrectWorkspace() throws {

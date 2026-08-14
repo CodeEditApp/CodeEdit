@@ -9,7 +9,7 @@ import CodeEditSettings
 import CodeEditUI
 import CodeEditCore
 
-public struct HistoryInspectorView: View {
+struct HistoryInspectorView: View {
     @SettingsValue(SourceControlSettings.self, \.git.showMergeCommitsPerFileLog)
     var showMergeCommitsPerFileLog
 
@@ -29,12 +29,12 @@ public struct HistoryInspectorView: View {
 
     /// - Parameter activeEditorState: the workspace's active-file read-model; the history shown
     ///   follows its selection.
-    public init(activeEditorState: ActiveEditorState) {
+    init(activeEditorState: ActiveEditorState) {
         self.activeEditorState = activeEditorState
         self.model = .init()
     }
 
-    public var body: some View {
+    var body: some View {
         Group {
             if model.sourceControlManager != nil {
                 VStack {

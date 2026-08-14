@@ -10,7 +10,7 @@ import CodeEditCore
 import CodeEditSettings
 import CodeEditUI
 
-public struct SourceControlNavigatorView: View {
+struct SourceControlNavigatorView: View {
     @EnvironmentObject private var sourceControlManager: SourceControlManager
     @EnvironmentObject private var sourceControlViewModel: SourceControlViewModel
 
@@ -21,11 +21,11 @@ public struct SourceControlNavigatorView: View {
     /// environment, so the app shell stays the only place that knows where it comes from.
     private let navigator: WorkspaceNavigator
 
-    public init(navigator: WorkspaceNavigator) {
+    init(navigator: WorkspaceNavigator) {
         self.navigator = navigator
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(spacing: 0) {
             SourceControlNavigatorTabs(navigator: navigator)
                 .environmentObject(sourceControlManager)

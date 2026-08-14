@@ -1,6 +1,6 @@
 //
 //  Date+RelativeStringToNow.swift
-//  CodeEditModules/CodeEditUtils
+//  CodeEdit
 //
 //  Created by Lukas Pistrol on 20.04.22.
 //
