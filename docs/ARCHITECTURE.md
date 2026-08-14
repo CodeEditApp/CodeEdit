@@ -243,9 +243,22 @@ still needs a compile-checked constant to select the tab by.
 `ProjectNavigatorContribution` (`CodeEdit/WorkspaceWindow/NavigatorArea/NavigatorContributions.swift`)
 is the one contribution that stays app-side permanently — not because it is a tab (see the
 [chrome exemption correction](#where-does-my-code-go)) but because the project navigator has no
-owning package to move to. `SourceControlNavigatorContribution` in the same file is app-side only
-until `SourceControlNavigatorView` is packaged — an out-of-scope follow-up, not a charter
-exception.
+owning package to move to.
+
+`CESourceControl` is the second feature package to own a panel tab, after `CESearch`.
+`SourceControlNavigatorContribution` and `GitHistoryInspectorContribution`
+(`CodeEditModules/Sources/CESourceControl/SourceControlNavigator/` and `.../HistoryInspector/`)
+vend `SourceControlNavigatorView` and `HistoryInspectorView` from the package; the app-side
+`WorkspaceWindow/NavigatorArea/SourceControlNavigator/` and
+`WorkspaceWindow/InspectorArea/HistoryInspector/` groups no longer exist. The relocation is the
+shape a future one follows: whatever the view needs that the package cannot see becomes a
+**required** initialiser parameter on the contribution — `WorkspaceNavigator` for the navigator
+tab, `ActiveEditorState` for the inspector tab — rather than an environment key moved down with
+it; both are non-optional so a missing injection at the call site
+(`PanelContributions.swift`) is a compile error, not a silently no-op tab. Each contribution still
+owns its own `tabID` constant, and the app's `PanelTabID.sourceControl` / `.gitHistory` reference
+it rather than duplicating the literal, same as `PanelTabID.search`. A third relocation onto this
+shape is expected.
 
 Extensions are the third contribution source. `ExtensionPanelContribution`
 (`CodeEdit/WorkspaceWindow/WorkspacePanel/ExtensionPanelContribution.swift`) is the **only** app
