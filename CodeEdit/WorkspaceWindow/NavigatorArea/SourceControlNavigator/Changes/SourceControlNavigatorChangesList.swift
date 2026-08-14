@@ -75,6 +75,8 @@ struct SourceControlNavigatorChangesList: View {
     }
 
     private func openGitFile(_ file: GitChangedFile) {
-        workspaceNavigator.open(fileAt: file.fileURL, asTemporary: true)
+        DispatchQueue.main.async {
+            workspaceNavigator.open(fileAt: file.fileURL, asTemporary: true)
+        }
     }
 }

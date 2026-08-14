@@ -8,7 +8,6 @@
 import CESourceControl
 import SwiftUI
 import CodeEditSettings
-import CEWorkspaceFileManager
 import CodeEditCore
 import CodeEditUI
 
@@ -17,9 +16,6 @@ struct GitChangedFileListView: View {
     @AppSettings(\.general.fileIconStyle)
     private var fileIconStyle
     @EnvironmentObject private var sourceControlManager: SourceControlManager
-
-    @Environment(\.workspaceFileManager)
-    private var workspaceFileManager
 
     @Binding private var changedFile: GitChangedFile
 
@@ -65,21 +61,9 @@ struct GitChangedFileListView: View {
     }
 
     private var listItemTint: Color {
-        if let ceFile = workspaceFileManager?.getFile(changedFile.ceFileKey, createIfNotFound: true) {
-            iconForegroundColor(ceFile)
-        } else {
-            iconForegroundColor(nil)
-        }
-    }
-
-    private func iconForegroundColor(_ file: CEWorkspaceFile?) -> Color {
         switch fileIconStyle {
         case .color:
-            if let file {
-                return file.iconColor
-            } else {
-                return FileIcon.generic.color
-            }
+            return FileIcon.spec(for: changedFile.fileURL).color
         case .monochrome:
             return Color("CoolGray")
         }
