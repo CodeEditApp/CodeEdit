@@ -7,7 +7,6 @@
 
 import CESourceControl
 import AppKit
-import CEWorkspaceFileManager
 import SwiftUI
 import CodeEditCore
 
@@ -15,9 +14,6 @@ struct SourceControlNavigatorChangesList: View {
     @EnvironmentObject var sourceControlManager: SourceControlManager
     @Environment(\.workspaceNavigator)
     private var workspaceNavigator
-
-    @Environment(\.workspaceFileManager)
-    private var workspaceFileManager
 
     @State var selection = Set<GitChangedFile>()
 
@@ -79,11 +75,6 @@ struct SourceControlNavigatorChangesList: View {
     }
 
     private func openGitFile(_ file: GitChangedFile) {
-        guard let ceFile = workspaceFileManager?.getFile(file.ceFileKey, createIfNotFound: true) else {
-            return
-        }
-        DispatchQueue.main.async {
-            workspaceNavigator.open(file: ceFile, asTemporary: true)
-        }
+        workspaceNavigator.open(fileAt: file.fileURL, asTemporary: true)
     }
 }

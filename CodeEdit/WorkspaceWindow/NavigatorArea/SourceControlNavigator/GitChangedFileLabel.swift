@@ -8,16 +8,12 @@
 import CESourceControl
 import SwiftUI
 import ShellClient
-import CEWorkspaceFileManager
 import CodeEditCore
 import CodeEditSettings
 import CodeEditUI
 
 struct GitChangedFileLabel: View {
     @EnvironmentObject private var sourceControlManager: SourceControlManager
-
-    @Environment(\.workspaceFileManager)
-    private var workspaceFileManager
 
     let file: GitChangedFile
 
@@ -27,13 +23,8 @@ struct GitChangedFileLabel: View {
                 .lineLimit(1)
                 .truncationMode(.middle)
         } icon: {
-            if let ceFile = workspaceFileManager?.getFile(file.ceFileKey, createIfNotFound: true) {
-                Image(nsImage: ceFile.nsIcon)
-                    .renderingMode(.template)
-            } else {
-                FileIcon.generic.image
-                    .renderingMode(.template)
-            }
+            FileIcon.spec(for: file.fileURL).image
+                .renderingMode(.template)
         }
     }
 }
