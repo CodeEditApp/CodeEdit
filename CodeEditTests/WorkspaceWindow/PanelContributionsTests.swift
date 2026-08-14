@@ -6,6 +6,7 @@
 //
 
 import Testing
+import CodeEditCore
 import CodeEditUI
 @testable import CodeEdit
 
@@ -25,19 +26,28 @@ struct PanelContributionsTests {
 
     @Test
     func navigatorTabsKeepTheirIdsAndOrder() {
-        let items = navigatorContributions(extensionManager: ExtensionManager())
+        let items = navigatorContributions(
+            extensionManager: ExtensionManager(),
+            navigator: NoOpWorkspaceNavigator()
+        )
         #expect(items.prefix(3).map(\.id) == ["project", "sourceControl", "search"])
     }
 
     @Test
     func navigatorTabsKeepTheirTitles() {
-        let items = navigatorContributions(extensionManager: ExtensionManager())
+        let items = navigatorContributions(
+            extensionManager: ExtensionManager(),
+            navigator: NoOpWorkspaceNavigator()
+        )
         #expect(items.prefix(3).map(\.title) == ["Project", "Source Control", "Search"])
     }
 
     @Test
     func navigatorTabsKeepTheirSymbols() {
-        let items = navigatorContributions(extensionManager: ExtensionManager())
+        let items = navigatorContributions(
+            extensionManager: ExtensionManager(),
+            navigator: NoOpWorkspaceNavigator()
+        )
         #expect(items.prefix(3).map(\.systemImage) == ["folder", "vault", "magnifyingglass"])
     }
 
@@ -45,19 +55,31 @@ struct PanelContributionsTests {
 
     @Test
     func inspectorTabsKeepTheirIdsAndOrder() {
-        let items = inspectorContributions(extensionManager: ExtensionManager(), showInternalDevelopment: true)
+        let items = inspectorContributions(
+            extensionManager: ExtensionManager(),
+            showInternalDevelopment: true,
+            activeEditorState: NoOpActiveEditorState()
+        )
         #expect(items.prefix(3).map(\.id) == ["file", "gitHistory", "internalDevelopment"])
     }
 
     @Test
     func inspectorTabsKeepTheirTitles() {
-        let items = inspectorContributions(extensionManager: ExtensionManager(), showInternalDevelopment: true)
+        let items = inspectorContributions(
+            extensionManager: ExtensionManager(),
+            showInternalDevelopment: true,
+            activeEditorState: NoOpActiveEditorState()
+        )
         #expect(items.prefix(3).map(\.title) == ["File Inspector", "History Inspector", "Internal Development"])
     }
 
     @Test
     func inspectorTabsKeepTheirSymbols() {
-        let items = inspectorContributions(extensionManager: ExtensionManager(), showInternalDevelopment: true)
+        let items = inspectorContributions(
+            extensionManager: ExtensionManager(),
+            showInternalDevelopment: true,
+            activeEditorState: NoOpActiveEditorState()
+        )
         #expect(items.prefix(3).map(\.systemImage) == ["doc", "clock", "hammer"])
     }
 
@@ -65,10 +87,14 @@ struct PanelContributionsTests {
     @Test
     func inspectorIncludesTheDeveloperTabOnlyWhenEnabled() {
         let disabled = inspectorContributions(
-            extensionManager: ExtensionManager(), showInternalDevelopment: false
+            extensionManager: ExtensionManager(),
+            showInternalDevelopment: false,
+            activeEditorState: NoOpActiveEditorState()
         )
         let enabled = inspectorContributions(
-            extensionManager: ExtensionManager(), showInternalDevelopment: true
+            extensionManager: ExtensionManager(),
+            showInternalDevelopment: true,
+            activeEditorState: NoOpActiveEditorState()
         )
 
         #expect(!disabled.map(\.id).contains("internalDevelopment"))
@@ -105,8 +131,12 @@ struct PanelContributionsTests {
     func selectionConstantsMatchTheContributionsTheyName() {
         #expect(PanelTabID.search == "search")
         #expect(PanelTabID.debugConsole == "debugConsole")
-        #expect(navigatorContributions(extensionManager: ExtensionManager())
-            .contains { $0.id == PanelTabID.search })
+        #expect(
+            navigatorContributions(
+                extensionManager: ExtensionManager(),
+                navigator: NoOpWorkspaceNavigator()
+            ).contains { $0.id == PanelTabID.search }
+        )
         #expect(utilityAreaContributions(extensionManager: ExtensionManager())
             .contains { $0.id == PanelTabID.debugConsole })
     }

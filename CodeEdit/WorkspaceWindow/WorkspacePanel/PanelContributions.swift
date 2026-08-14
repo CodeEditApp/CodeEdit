@@ -34,15 +34,15 @@ enum PanelTabID {
     static let output = "output"
 }
 
-/// The `navigator` and `activeEditorState` parameters below default to the no-op implementations
-/// `CodeEditCore` vends — the same defaults the `\.workspaceNavigator` and `\.activeEditorState`
-/// environment keys carry, and for the same reason: a caller with no workspace (previews, tests)
-/// legitimately has nothing to pass. The real values come from the composition root via
-/// `NavigatorAreaView` / `InspectorAreaView`.
+/// The `navigator` and `activeEditorState` parameters below are deliberately **required**. A
+/// default would let a forgotten injection compile and then fail silently at runtime — a no-op
+/// navigator means clicking a changed file does nothing, which no gate can see. Callers with no
+/// workspace (tests) pass `CodeEditCore`'s no-op types explicitly, which is a choice rather than an
+/// accident.
 @MainActor
 func navigatorContributions(
     extensionManager: ExtensionManager,
-    navigator: WorkspaceNavigator = NoOpWorkspaceNavigator()
+    navigator: WorkspaceNavigator
 ) -> [any WorkspacePanelContribution] {
     var items: [any WorkspacePanelContribution] = [
         ProjectNavigatorContribution(),
@@ -57,7 +57,7 @@ func navigatorContributions(
 func inspectorContributions(
     extensionManager: ExtensionManager,
     showInternalDevelopment: Bool,
-    activeEditorState: ActiveEditorState = NoOpActiveEditorState()
+    activeEditorState: ActiveEditorState
 ) -> [any WorkspacePanelContribution] {
     var items: [any WorkspacePanelContribution] = [
         FileInspectorContribution(),
