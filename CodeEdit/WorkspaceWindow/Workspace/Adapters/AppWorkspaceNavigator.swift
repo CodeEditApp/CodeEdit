@@ -26,6 +26,17 @@ final class AppWorkspaceNavigator: WorkspaceNavigator {
     }
 
     @MainActor
+    func open(fileAt url: URL, asTemporary: Bool) {
+        guard let ceFile = windowManager.workspace(containing: url)?.workspaceFileManager.getFile(
+            url.absolutePath,
+            createIfNotFound: true
+        ) else {
+            return
+        }
+        open(file: ceFile, asTemporary: asTemporary)
+    }
+
+    @MainActor
     func reveal(file: CEWorkspaceFile) {
         windowManager.workspace(containing: file.url)?.revealRequests.send(file)
     }

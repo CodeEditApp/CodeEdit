@@ -53,6 +53,24 @@ struct AppWorkspaceNavigatorTests {
 
     @MainActor
     @Test
+    func openFileAtURLResolvesThroughWorkspaceFileManagerAndPreservesTemporaryFlag() throws {
+        let workspace = try TestWorkspaceFactory.make()
+        let fileURL = workspace.fileURL.appending(path: "example.swift")
+        try "// example".write(to: fileURL, atomically: true, encoding: .utf8)
+
+        let mock = MockWindowManager()
+        mock.stubbedWorkspace = workspace
+        let navigator = AppWorkspaceNavigator(windowManager: mock)
+
+        navigator.open(fileAt: fileURL, asTemporary: true)
+
+        #expect(mock.opened.count == 1)
+        #expect(mock.opened.first?.url == fileURL)
+        #expect(mock.opened.first?.asTemporary == true)
+    }
+
+    @MainActor
+    @Test
     func revealSendsRevealRequestOnCorrectWorkspace() throws {
         let workspace = try TestWorkspaceFactory.make()
         let mock = MockWindowManager()

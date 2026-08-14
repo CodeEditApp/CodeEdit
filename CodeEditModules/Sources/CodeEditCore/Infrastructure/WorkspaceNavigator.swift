@@ -16,6 +16,16 @@ public protocol WorkspaceNavigator: AnyObject {
     @MainActor
     func open(file: CEWorkspaceFile, asTemporary: Bool)
 
+    /// Resolve `url` to a workspace file and open it in the active editor.
+    ///
+    /// For callers that hold a URL rather than a `CEWorkspaceFile` — a package cannot resolve one
+    /// without depending on the workspace file manager, and expressing intent is the point of this
+    /// interface.
+    /// - Parameter asTemporary: open as a temporary (preview) tab, replaced by the next
+    ///   temporary open, rather than a pinned tab.
+    @MainActor
+    func open(fileAt url: URL, asTemporary: Bool)
+
     /// Highlight `file` in the project navigator without opening it.
     @MainActor
     func reveal(file: CEWorkspaceFile)
@@ -30,6 +40,8 @@ public final class NoOpWorkspaceNavigator: WorkspaceNavigator {
     public init() {}
     @MainActor
     public func open(file: CEWorkspaceFile, asTemporary: Bool) {}
+    @MainActor
+    public func open(fileAt url: URL, asTemporary: Bool) {}
     @MainActor
     public func reveal(file: CEWorkspaceFile) {}
     @MainActor
