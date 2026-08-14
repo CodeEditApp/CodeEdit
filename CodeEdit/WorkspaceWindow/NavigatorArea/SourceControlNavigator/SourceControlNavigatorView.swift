@@ -14,7 +14,7 @@ struct SourceControlNavigatorView: View {
     @EnvironmentObject private var sourceControlManager: SourceControlManager
     @EnvironmentObject private var sourceControlViewModel: SourceControlViewModel
 
-    @AppSettings(\.sourceControl.general.fetchRefreshServerStatus)
+    @SettingsValue(SourceControlSettings.self, \.general.fetchRefreshServerStatus)
     var fetchRefreshServerStatus
 
     var body: some View {

@@ -19,7 +19,7 @@ struct SourceControlNavigatorHistoryView: View {
         case error(error: Error)
     }
 
-    @AppSettings(\.sourceControl.git.showMergeCommitsPerFileLog)
+    @SettingsValue(SourceControlSettings.self, \.git.showMergeCommitsPerFileLog)
     var showMergeCommitsPerFileLog
 
     @EnvironmentObject var sourceControlManager: SourceControlManager

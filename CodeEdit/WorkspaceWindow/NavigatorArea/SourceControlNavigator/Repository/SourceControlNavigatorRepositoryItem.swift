@@ -9,7 +9,7 @@ import SwiftUI
 import CodeEditSettings
 
 struct SourceControlNavigatorRepositoryItem: View {
-    @AppSettings(\.general.fileIconStyle)
+    @SettingsValue(GeneralSettings.self, \.fileIconStyle)
     var fileIconStyle
 
     let item: RepoOutlineGroupItem

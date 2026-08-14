@@ -13,7 +13,7 @@ import CodeEditUI
 
 /// A view to display a changed file's information in a list view. Optionally displays the staged status.
 struct GitChangedFileListView: View {
-    @AppSettings(\.general.fileIconStyle)
+    @SettingsValue(GeneralSettings.self, \.fileIconStyle)
     private var fileIconStyle
     @EnvironmentObject private var sourceControlManager: SourceControlManager
 

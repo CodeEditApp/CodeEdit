@@ -11,7 +11,7 @@ import CodeEditUI
 import CodeEditCore
 
 struct HistoryInspectorView: View {
-    @AppSettings(\.sourceControl.git.showMergeCommitsPerFileLog)
+    @SettingsValue(SourceControlSettings.self, \.git.showMergeCommitsPerFileLog)
     var showMergeCommitsPerFileLog
 
     @EnvironmentObject private var sourceControlManager: SourceControlManager
