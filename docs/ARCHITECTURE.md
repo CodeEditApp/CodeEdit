@@ -91,8 +91,26 @@ Three checks are enforced in CI. Each one blocks a specific failure documented i
 [History](#history-why-the-2022-module-split-failed) — none is enforced on principle alone.
 
 1. **`CodeEditCore` purity.** Zero dependencies, local or external. No `SwiftUI`, `AppKit`, or
-   `Cocoa` import. Blocks 2022's `WorkspaceClient → TabBar`. Keep it platform-free too: it is the one
-   target that would port to iPadOS unchanged.
+   `Cocoa` import. Blocks 2022's `WorkspaceClient → TabBar`. The two constraints earn their keep
+   separately: **zero local dependencies** is the acyclicity guarantee — it makes Core a sink, so
+   every "A and B both need X" resolves downward, which is the direct fix for the "no kernel
+   existed" failure above. **No UI frameworks** keeps the placement question answerable — without
+   it, Core becomes the place everything shared goes, which is what `AppPreferences` was and one of
+   the two documented causes of the 2022 collapse.
+
+   The friction this produces is usually the rule working. Three worked examples already in this
+   codebase: `FileIcon` is keyed on `URL` rather than a domain type, so it needs neither
+   `CodeEditCore` nor a charter exception (see rule 2 below); `WorkspacePanelContribution` was shaped
+   to need only SwiftUI, so it lives in `CodeEditUI`
+   (`CodeEditModules/Sources/CodeEditUI/WorkspacePanelContribution.swift`); and fuzzy matching's
+   concurrency helper was rewritten over `withTaskGroup` rather than admit `CollectionConcurrencyKit`
+   (below).
+
+   The counter-example people will cite: `TextEditingSettings` and `TerminalSettings.Font` carry
+   `NSFont.Weight`, which forces them out of Core. That is the rule flagging a presentation type
+   inside a settings model, not the rule obstructing a reasonable design — storing the weight as a
+   `Double` and converting at the presentation boundary would make both structs Core-eligible with
+   no rule change.
 2. **`CodeEditUI` purity.** No local target dependencies; external `CodeEditSymbols` only. Blocks
    2022's `CodeEditUI → Git`. This is why `FileIcon` is keyed on `URL` rather than on a domain type —
    a deliberate consequence, not an accident.
