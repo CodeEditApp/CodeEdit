@@ -5,9 +5,14 @@
 //  Created by Nanashi Li on 2022/04/08.
 //
 
+import CodeEditSettings
 import Foundation
 
-/// The global settings for source control accounts
+/// The user's source-control accounts.
+///
+/// Lives in `CESourceControl` rather than with the app-wide settings models because its entire
+/// contents are source control: `sourceControlAccounts` holds `[SourceControlAccount]` and an SSH
+/// key, and nothing else. The general-sounding name is historical.
 public struct AccountsSettings: SettingsSection {
 
     /// The top-level key this section occupies in `settings.json`.
@@ -27,4 +32,14 @@ public struct AccountsSettings: SettingsSection {
         /// Default initializer
         public init() {}
     }
+}
+
+// MARK: - Defaults
+
+public enum DefaultGitAccounts: DefaultValueProvider {
+    nonisolated(unsafe) public static let defaultValue = AccountsSettings.GitAccounts()
+}
+
+public enum DefaultEmptySourceControlAccounts: DefaultValueProvider {
+    nonisolated(unsafe) public static let defaultValue: [SourceControlAccount] = []
 }

@@ -33,14 +33,6 @@ public enum DefaultEmptyStringDictionary: DefaultValueProvider {
 
 // MARK: - Account Defaults
 
-public enum DefaultGitAccounts: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue = AccountsSettings.GitAccounts()
-}
-
-public enum DefaultEmptySourceControlAccounts: DefaultValueProvider {
-    nonisolated(unsafe) public static let defaultValue: [SourceControlAccount] = []
-}
-
 public enum DefaultEmptyString: DefaultValueProvider {
     public static let defaultValue = ""
 }
