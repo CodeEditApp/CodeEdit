@@ -27,6 +27,10 @@ struct SettingsInjector<Content: View>: View {
 
     var body: some View {
         content
+            // The store as an observed object. SwiftUI subscribes to it directly, so this one
+            // injection carries both the value and the change signal that the two `.environment`
+            // keys below need two keys to express.
+            .environmentObject(store)
             .environment(\.settingsAccessor, store)
             // The seam's invalidation signal. Rewriting the accessor above is *not* enough: it is a
             // stable instance behind an existential, so whether SwiftUI treats the rewrite as a
@@ -62,6 +66,7 @@ struct SettingsSceneInjector<Content: Scene>: Scene {
 
     var body: some Scene {
         content
+            .environmentObject(store)
             .environment(\.settingsAccessor, store)
             .environment(\.settingsRevision, store.revision)
     }
