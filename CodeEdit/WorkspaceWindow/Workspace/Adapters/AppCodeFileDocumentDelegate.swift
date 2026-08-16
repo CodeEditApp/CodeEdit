@@ -8,6 +8,7 @@
 import CELSP
 import AppKit
 import CEEditor
+import CodeEditCore
 import SwiftUI
 import CodeEditTextView
 import CodeEditDocument
@@ -24,13 +25,19 @@ final class AppCodeFileDocumentDelegate: CodeFileDocumentDelegate {
     /// The settings store, so the standalone hosting root below can inject the settings seam.
     private let settingsStore: AppSettingsStore
 
+    /// The themes in effect. `CodeFileView` reads these as an `@EnvironmentObject`, which traps when
+    /// missing — and the hosting root below is standalone, so nothing above it can supply them.
+    private let activeTheme: ActiveTheme
+
     init(
         lspService: any LSPServiceProtocol,
         windowManager: WorkspaceWindowManaging,
         languageServices: LanguageServicesProvider,
-        settingsStore: AppSettingsStore
+        settingsStore: AppSettingsStore,
+        activeTheme: ActiveTheme
     ) {
         self.settingsStore = settingsStore
+        self.activeTheme = activeTheme
         self.lspService = lspService
         self.windowManager = windowManager
         self.languageServices = languageServices
@@ -44,6 +51,7 @@ final class AppCodeFileDocumentDelegate: CodeFileDocumentDelegate {
         NSHostingView(rootView: SettingsInjector(store: settingsStore) {
             WindowCodeFileView(codeFile: document)
                 .environment(\.languageServices, languageServices)
+                .environmentObject(activeTheme)
         })
     }
 

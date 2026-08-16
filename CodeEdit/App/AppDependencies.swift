@@ -128,6 +128,7 @@ final class AppDependencies {
             lspService: lspService,
             windowManager: workspaceWindowManager,
             languageServices: languageServicesProvider,
-            settingsStore: settingsStore
+            settingsStore: settingsStore,
+            activeTheme: ThemeModel.shared.activeTheme
         )
 }

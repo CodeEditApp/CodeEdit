@@ -116,8 +116,13 @@ final class ThemeModel: ObservableObject {
     }
 
     /// Pushes the current selection into ``activeTheme``, which publishes only on a real change.
+    ///
+    /// The `?? themes.first` carries over the fallback both former injection sites applied: if no
+    /// theme matches the current appearance, any loaded theme beats none. It is deliberately not
+    /// `themes.first!` — ``ActiveTheme/current`` is already optional, so the write site has no
+    /// reason to trap. ``selectedDarkTheme`` gets no fallback because the old injection had none.
     private func publishActiveTheme() {
-        activeTheme.update(current: selectedTheme, dark: selectedDarkTheme)
+        activeTheme.update(current: selectedTheme ?? themes.first, dark: selectedDarkTheme)
     }
 
     @Published var previousTheme: Theme?
