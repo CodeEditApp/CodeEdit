@@ -294,42 +294,75 @@ never by naming the app-wide `SettingsData` aggregate. Three roles, pick by cons
 
 | Consumer | Use | Why |
 | --- | --- | --- |
-| SwiftUI view | `@SettingsValue(TerminalSettings.self, \.cursorBlink)` | Resolves from the environment; `$`-projects a `Binding` for `Toggle`/`TextField`. |
+| SwiftUI view | `@SettingsValue(TerminalSettings.self, \.cursorBlink)` | Observes the injected `PersistentSettingsStore`; `$`-projects a `Binding` for `Toggle`/`TextField`. |
 | Read-only object (managers, services) | `SettingsReading` by initializer | No environment outside a view; narrow protocol makes read-only visible at the call site. |
 | Object that also writes | `SettingsAccessing` by initializer | The read+write half; every `SettingsAccessing` satisfies `SettingsReading`. |
 
 Access is **section-granular**: `value(_:)`/`setValue(_:)` deal in whole `SettingsSection` values,
 so a caller changing one field reads its section, mutates it and writes it back.
 
-- **`@AppSettings` is app-target only.** It resolves through the same `settingsAccessor`/
-  `settingsRevision` environment as `SettingsValue`, addressing a section field through the
-  app-wide `SettingsData` façade instead of naming one section directly. There is no
-  `Settings.shared` singleton any more — `AppSettingsStore` (owned by `AppDependencies`) is the
-  concrete accessor, injected like everything else. `@AppSettings` is what 29 app-target files
-  still use (46 declarations); feature packages must not use it, and new app-target code should
-  prefer the seam.
+- **`@AppSettings` is app-target only.** It observes the same store as `SettingsValue`, but
+  addresses a section field through the app-wide `SettingsData` façade instead of naming one
+  section directly. There is no `Settings.shared` singleton any more — `PersistentSettingsStore`
+  (owned by `AppDependencies`) is the concrete store, injected like everything else. `@AppSettings`
+  is what 29 app-target files still use (46 declarations); feature packages must not use it, and
+  new app-target code should prefer the seam.
 - **Neither wrapper works in a `Commands` conformer.** `.commands { }` attaches beside a scene's
   content, not inside it, so nothing guarantees the environment `SettingsSceneInjector` supplies
-  reaches menu-bar code. `CodeEditCommands`/`ViewCommands` are handed `AppSettingsStore` by
+  reaches menu-bar code. `CodeEditCommands`/`ViewCommands` are handed `PersistentSettingsStore` by
   initializer and `@ObservedObject` it — reads, writes and menu invalidation all stop depending on
   undocumented behaviour.
-- **`@Environment` does not cross an `NSHostingView`/`NSHostingController` boundary.** A new
-  standalone hosting root must be given `.appServices(_:)` or wrapped in `SettingsInjector`, or its
-  subtree falls back to `DefaultSettingsReader` — plausible defaults, and **writes discarded**.
-  That fallback `assertionFailure`s outside SwiftUI previews precisely because it is otherwise
-  silent.
-- **Invalidation is explicit.** `SettingsValue` also depends on the `Equatable`
-  `\.settingsRevision` environment key, fed from `AppSettingsStore.revision`. Rewriting the
-  accessor is not a re-render signal: it is a stateless value behind an existential. Any injection
-  point that *observes* the store supplies the revision (`SettingsInjector`, `CodeEditApp`);
-  `appServices(_:)` observes nothing, so it supplies the accessor only.
-- **`AppSettingsStore` is the concrete accessor.** Section-keyed storage, owned by
+- **The environment does not cross an `NSHostingView`/`NSHostingController` boundary.** A new
+  standalone hosting root must be wrapped in `SettingsInjector` (or `SettingsSceneInjector` for a
+  scene), or every `@SettingsValue` under it **traps**. That is deliberate: this replaced a pair of
+  environment keys whose failure modes were silent — a subtree given neither read plausible
+  defaults and discarded writes, and a subtree given the value but not the separate `Int`
+  invalidation key read correctly and never re-rendered. `@EnvironmentObject` makes both
+  unrepresentable, because SwiftUI subscribes to the store itself. Those two injectors are the only
+  places the store is injected, which is what makes the coverage question answerable by grep rather
+  than by reachability analysis.
+- **A protocol double cannot be substituted into a view.** `@EnvironmentObject` cannot carry an
+  existential, so a view-level test injects a real `PersistentSettingsStore` on a temporary file.
+  The protocol seam still applies to every initializer-injected consumer, which is where
+  `RecordingSettingsStore` and `SnapshotSettingsReader` are used.
+- **`DefaultSettingsReader` is not the environment's fallback any more** — there is no fallback. It
+  survives as the stand-in four singletons (`ThemeModel`, `FeedbackModel`, `SearchSettingsModel`,
+  `HistoryInspectorModel`) hold between construction and `configure(_:)`. It still
+  `assertionFailure`s outside previews, since reaching it means a real store never arrived.
+- **`PersistentSettingsStore` is the concrete store.** Section-keyed storage, owned by
   `AppDependencies` (no `shared`), driving the same throttled save pipeline `Settings.shared` used
   to own. Sections nothing here decodes are held verbatim and re-emitted on save, so a disabled
   extension's configuration survives. The same holds for a section that is present but
   *undecodable*: it reads as defaults but is re-emitted unchanged, and the one write that would
   replace it is announced through `SettingsStore.willReplaceUndecodableSection` so the file is
   copied to `settings.json.corrupt-<timestamp>` first.
+
+### Where a settings section lives
+
+A section lives with **its owner**:
+
+| Readers | Home | Examples |
+| --- | --- | --- |
+| Exactly one feature package | that package | `TerminalSettings` → `CETerminal`, `LanguageServerSettings` → `CELSP`, `SourceControlSettings`/`AccountsSettings` → `CESourceControl` |
+| More than one module, or only the app | `CodeEditSettings` | `TextEditing`, `Theme`, `General`, `Navigation`, `Developer`, `Search`, `Keybindings` |
+
+**Never `CodeEditCore` or `CodeEditUI`.** A `Codable` config bag has no natural boundary and
+accretes — that is precisely how Core became `AppPreferences` the first time, and Core's purity
+rationale is that the placement question stays answerable. `CodeEditUI` is excluded mechanically:
+it may not depend on a local target, so it cannot see settings types at all.
+
+**Migration trigger:** when a section's readers collapse to a single feature, it moves with that
+feature. That is how the four package-owned sections got where they are.
+
+App-only sections (`SearchSettings`, `KeybindingsSettings`) stay in `CodeEditSettings` rather than
+moving app-side: `SettingsFormatTests` guards the on-disk format for every section in one place
+using `Bundle.module` fixtures, and splitting two sections into the app target would split that
+guard across two bundle mechanisms to satisfy a boundary nothing enforces.
+
+Two field-level misplacements are **recorded but not fixed**, because both keys live in users'
+`settings.json` and moving a field is a data migration rather than a refactor:
+`GeneralSettings.findNavigatorDetail` is read by `CESearch` (a feature-specific field in a shared
+section), and `SearchSettings.ignoreGlobPatterns` is dead.
 
 ## Creating a new feature target
 

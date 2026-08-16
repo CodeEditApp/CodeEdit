@@ -15,9 +15,11 @@ import Foundation
 /// `shared`. It replaces `Settings.shared`, which reached the same state from anywhere and could
 /// therefore never be substituted in a test or a second configuration.
 ///
-/// Not `@MainActor`: it conforms to ``SettingsAccessing``, which is deliberately nonisolated so it
-/// can be an `EnvironmentKey` value (see that protocol's documentation). Main-thread use is asserted
-/// at the write entry point instead.
+/// Not `@MainActor`: it conforms to ``SettingsAccessing``, which is nonisolated. The original reason
+/// — that the protocol had to supply a nonisolated `EnvironmentKey` default — is gone with that key.
+/// What still blocks isolation is the Swift 5 app target, where annotating the protocol cascades
+/// into its callers, so main-thread use is asserted at the write entry point instead. Isolating both
+/// belongs with the app-target Swift 6 migration.
 public final class PersistentSettingsStore: ObservableObject, SettingsAccessing {
 
     /// Section-keyed storage. Sections nothing here decodes are held verbatim and re-emitted on
@@ -83,10 +85,11 @@ public final class PersistentSettingsStore: ObservableObject, SettingsAccessing 
     }
 
     public func setValue<S: SettingsSection>(_ value: S) {
-        // `SettingsAccessing` is deliberately nonisolated (see the protocol's docs), so the compiler
-        // cannot enforce this. A write bumps `revision`, whose `@Published` change drives AppKit
-        // through SwiftUI observers — off the main thread that corrupts AppKit state rather than
-        // failing cleanly. Loud in debug, unchanged in release.
+        // `SettingsAccessing` is nonisolated (see the protocol's docs), so the compiler cannot
+        // enforce this yet — the Swift 5 app target is the remaining blocker, not the environment
+        // key this store used to be injected through. A write publishes to SwiftUI observers and
+        // bumps `revision` for AppKit ones; off the main thread that corrupts AppKit state rather
+        // than failing cleanly. Loud in debug, unchanged in release.
         MainActor.assertIsolated("Settings must be written on the main thread")
 
         store[S.self] = value

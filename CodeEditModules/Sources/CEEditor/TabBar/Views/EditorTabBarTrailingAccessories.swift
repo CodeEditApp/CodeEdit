@@ -112,7 +112,15 @@ struct EditorTabBarTrailingAccessories: View {
 }
 
 struct TabBarTrailingAccessories_Previews: PreviewProvider {
+    /// A store on a temporary file, never the user's real `settings.json`: this view writes through
+    /// `@SettingsValue`, and a preview must not be able to persist over real settings.
+    private static let store = PersistentSettingsStore(
+        settingsURL: FileManager.default.temporaryDirectory
+            .appendingPathComponent("preview-settings.json")
+    )
+
     static var previews: some View {
         EditorTabBarTrailingAccessories(codeFile: .constant(nil))
+            .environmentObject(store)
     }
 }
