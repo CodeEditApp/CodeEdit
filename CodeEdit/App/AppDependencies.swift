@@ -34,7 +34,7 @@ final class AppDependencies {
     ///
     /// Concrete (not `SettingsAccessing`) because the injectors also need its `revision` publisher
     /// to observe. Consumers that only read or write settings take ``settingsAccessor`` instead.
-    private(set) lazy var settingsStore = AppSettingsStore()
+    private(set) lazy var settingsStore = PersistentSettingsStore()
 
     /// Feature-side settings access, read and write. The same object as ``settingsStore``, narrowed
     /// to the seam's protocol so nothing outside the composition root names the concrete type.

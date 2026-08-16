@@ -5,6 +5,7 @@
 //  Created by Wouter Hennen on 13/03/2023.
 //
 
+import CodeEditSettings
 import SwiftUI
 
 struct ViewCommands: Commands {
@@ -22,7 +23,7 @@ struct ViewCommands: Commands {
     /// Dim-editors check mark), so it has to re-evaluate when they change. `ObservableObject`
     /// observation inside a `Commands` conformer is already load-bearing here — it is how
     /// ``UpdatingWindowController`` keeps the Show/Hide titles below current.
-    @ObservedObject private var settingsStore: AppSettingsStore
+    @ObservedObject private var settingsStore: PersistentSettingsStore
 
     @FocusedBinding(\.navigationSplitViewVisibility)
     var navigationSplitViewVisibility
@@ -32,7 +33,7 @@ struct ViewCommands: Commands {
 
     @UpdatingWindowController var windowController: CodeEditWindowController?
 
-    init(settingsStore: AppSettingsStore) {
+    init(settingsStore: PersistentSettingsStore) {
         self.settingsStore = settingsStore
     }
 

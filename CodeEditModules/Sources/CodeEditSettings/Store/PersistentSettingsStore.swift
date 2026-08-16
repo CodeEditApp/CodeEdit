@@ -1,5 +1,5 @@
 //
-//  AppSettingsStore.swift
+//  PersistentSettingsStore.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom on 10/08/26.
@@ -7,7 +7,6 @@
 
 import Combine
 import Foundation
-import CodeEditSettings
 
 /// The app's single settings store: owns the on-disk state, the save pipeline and the seam's
 /// invalidation signal.
@@ -19,7 +18,7 @@ import CodeEditSettings
 /// Not `@MainActor`: it conforms to ``SettingsAccessing``, which is deliberately nonisolated so it
 /// can be an `EnvironmentKey` value (see that protocol's documentation). Main-thread use is asserted
 /// at the write entry point instead.
-final class AppSettingsStore: ObservableObject, SettingsAccessing {
+public final class PersistentSettingsStore: ObservableObject, SettingsAccessing {
 
     /// Section-keyed storage. Sections nothing here decodes are held verbatim and re-emitted on
     /// save, so a disabled extension's configuration survives.
@@ -41,10 +40,10 @@ final class AppSettingsStore: ObservableObject, SettingsAccessing {
     /// rewritten non-`Equatable` existential as a change, which is unspecified. An `Int` is
     /// `Equatable`, so an injector publishing it into ``EnvironmentValues/settingsRevision`` makes
     /// the invalidation explicit and precise.
-    @Published private(set) var revision: Int = 0
+    @Published public private(set) var revision: Int = 0
 
     /// `~/Library/Application Support/CodeEdit/` — the folder settings and adjacent app data live in.
-    var baseURL: URL { SettingsLocation.baseURL }
+    public var baseURL: URL { SettingsLocation.baseURL }
 
     /// The file this store loads from and saves to. Injectable so a test can point a store at a
     /// temporary file instead of the user's real `settings.json`.
@@ -54,7 +53,7 @@ final class AppSettingsStore: ObservableObject, SettingsAccessing {
     /// whole file, so the first one already contains every one of them.
     private var hasPreservedOriginal = false
 
-    init(settingsURL: URL = SettingsLocation.settingsFileURL) {
+    public init(settingsURL: URL = SettingsLocation.settingsFileURL) {
         self.settingsURL = settingsURL
         self.store = Self.loadStore(at: settingsURL)
 
@@ -78,11 +77,11 @@ final class AppSettingsStore: ObservableObject, SettingsAccessing {
 
     // MARK: - SettingsAccessing
 
-    func value<S: SettingsSection>(_ type: S.Type) -> S {
+    public func value<S: SettingsSection>(_ type: S.Type) -> S {
         store[S.self]
     }
 
-    func setValue<S: SettingsSection>(_ value: S) {
+    public func setValue<S: SettingsSection>(_ value: S) {
         // `SettingsAccessing` is deliberately nonisolated (see the protocol's docs), so the compiler
         // cannot enforce this. A write bumps `revision`, whose `@Published` change drives AppKit
         // through SwiftUI observers — off the main thread that corrupts AppKit state rather than

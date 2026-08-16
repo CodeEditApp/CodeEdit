@@ -99,7 +99,7 @@ public extension EnvironmentValues {
         set { self[SettingsAccessorKey.self] = newValue }
     }
 
-    /// Changes once per settings change; see the app-side `AppSettingsStore.revision`.
+    /// Changes once per settings change; see `PersistentSettingsStore.revision`.
     ///
     /// The seam's invalidation signal, kept in its own `Equatable` key rather than folded into
     /// ``settingsAccessor``. Two keys, two jobs: the accessor answers *what the value is* and is

@@ -5,6 +5,7 @@
 //  Created by Wouter Hennen on 11/03/2023.
 //
 
+import CodeEditSettings
 import SwiftUI
 
 struct CodeEditCommands: Commands {
@@ -16,7 +17,7 @@ struct CodeEditCommands: Commands {
     /// hierarchy, so `@Environment` — and with it `@AppSettings` — cannot be relied on here. Without
     /// a real store this menu would build with `DefaultSettingsReader`, trapping in debug and showing
     /// the Source Control group unconditionally in release.
-    @ObservedObject private var settingsStore: AppSettingsStore
+    @ObservedObject private var settingsStore: PersistentSettingsStore
 
     init(dependencies: AppDependencies) {
         self.dependencies = dependencies

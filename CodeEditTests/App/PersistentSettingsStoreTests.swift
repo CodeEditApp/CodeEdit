@@ -1,5 +1,5 @@
 //
-//  AppSettingsStoreTests.swift
+//  PersistentSettingsStoreTests.swift
 //  CodeEditTests
 //
 //  Created by Matthijs Eikelenboom on 09/08/2026.
@@ -13,7 +13,7 @@ import Testing
 import CodeEditSettings
 @testable import CodeEdit
 
-/// Verifies `AppSettingsStore` reads and writes real, persisted settings rather than answering with
+/// Verifies `PersistentSettingsStore` reads and writes real, persisted settings rather than answering with
 /// section defaults like `DefaultSettingsReader` would. A test that only checked defaults would pass
 /// against either implementation and prove nothing.
 ///
@@ -22,17 +22,17 @@ import CodeEditSettings
 /// that touched settings, and could never assert anything about the file on disk. That is the
 /// concrete payoff of moving ownership into the composition root.
 @MainActor
-struct AppSettingsStoreTests {
+struct PersistentSettingsStoreTests {
 
     /// A store over a fresh temporary `settings.json` that no other test can see.
-    private func makeStore(seed: String? = nil) throws -> (AppSettingsStore, URL) {
-        let directory = URL.temporaryDirectory.appending(path: "AppSettingsStoreTests-\(UUID().uuidString)")
+    private func makeStore(seed: String? = nil) throws -> (PersistentSettingsStore, URL) {
+        let directory = URL.temporaryDirectory.appending(path: "PersistentSettingsStoreTests-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let url = directory.appending(path: "settings.json")
         if let seed {
             try Data(seed.utf8).write(to: url)
         }
-        return (AppSettingsStore(settingsURL: url), url)
+        return (PersistentSettingsStore(settingsURL: url), url)
     }
 
     @Test
@@ -88,7 +88,7 @@ struct AppSettingsStoreTests {
             try? await Task.sleep(for: .milliseconds(50))
         }
 
-        let reloaded = AppSettingsStore(settingsURL: url)
+        let reloaded = PersistentSettingsStore(settingsURL: url)
         let readBack = reloaded.value(LanguageServerSettings.self).installedLanguageServers["round-trip-test"]
         #expect(readBack?.version == "9.9.9", "a settings write did not survive to disk")
         #expect(readBack?.isEnabled == false)

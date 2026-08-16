@@ -16,7 +16,7 @@ import CodeEditSettings
 /// view reading through `@SettingsValue`.
 ///
 /// This is the production path end to end — `SettingsInjector` → `\.settingsRevision` +
-/// `AppSettingsStore` → `@SettingsValue` — not a stand-in. It exists because the read/write tests
+/// `PersistentSettingsStore` → `@SettingsValue` — not a stand-in. It exists because the read/write tests
 /// next door pass just as happily when nothing ever re-renders: they render once.
 ///
 /// **What it does not prove.** It is a guard on the *outcome*, not on the mechanism: it passes with
@@ -33,13 +33,13 @@ struct SettingsSeamInvalidationTests {
 
     /// A store over a temporary file, so these tests neither read nor overwrite the developer's real
     /// `settings.json` — and cannot race any other suite.
-    private func makeStore() throws -> AppSettingsStore {
+    private func makeStore() throws -> PersistentSettingsStore {
         let directory = URL.temporaryDirectory.appending(path: "SettingsSeam-\(UUID().uuidString)")
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        return AppSettingsStore(settingsURL: directory.appending(path: "settings.json"))
+        return PersistentSettingsStore(settingsURL: directory.appending(path: "settings.json"))
     }
 
-    private func setCursorBlink(_ value: Bool, on store: AppSettingsStore) {
+    private func setCursorBlink(_ value: Bool, on store: PersistentSettingsStore) {
         var section = store.value(TerminalSettings.self)
         section.cursorBlink = value
         store.setValue(section)

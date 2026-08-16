@@ -38,7 +38,7 @@ public final class SettingsStore {
     /// data.
     ///
     /// Deliberately a callback rather than a policy: this target has no business knowing where the
-    /// file lives or what "preserve" means. The owner (`AppSettingsStore`) copies the file aside.
+    /// file lives or what "preserve" means. The owner (`PersistentSettingsStore`) copies the file aside.
     /// Called synchronously and before the replacement, so the handler still sees the original both
     /// in this store and on disk.
     public var willReplaceUndecodableSection: ((String) -> Void)?

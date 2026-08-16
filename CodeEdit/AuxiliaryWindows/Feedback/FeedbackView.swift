@@ -5,8 +5,9 @@
 //  Created by Nanashi Li on 2022/04/14.
 //
 
-import SwiftUI
+import CodeEditSettings
 import CodeEditUI
+import SwiftUI
 
 struct FeedbackView: View {
     @ObservedObject private var feedbackModel: FeedbackModel = .shared
@@ -211,7 +212,7 @@ struct FeedbackView: View {
         }
     }
 
-    func showWindow(settingsStore: AppSettingsStore) {
+    func showWindow(settingsStore: PersistentSettingsStore) {
         FeedbackWindowController(
             view: self,
             size: NSSize(width: 1028, height: 762),

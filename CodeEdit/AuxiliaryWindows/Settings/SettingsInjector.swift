@@ -16,11 +16,11 @@ import CodeEditSettings
 struct SettingsInjector<Content: View>: View {
 
     /// Observed, not merely held: this view's job is to re-inject `revision` when it changes.
-    @ObservedObject var store: AppSettingsStore
+    @ObservedObject var store: PersistentSettingsStore
 
     @ViewBuilder var content: Content
 
-    init(store: AppSettingsStore, @ViewBuilder content: () -> Content) {
+    init(store: PersistentSettingsStore, @ViewBuilder content: () -> Content) {
         self.store = store
         self.content = content()
     }
@@ -51,11 +51,11 @@ struct SettingsInjector<Content: View>: View {
 struct SettingsSceneInjector<Content: Scene>: Scene {
 
     /// Observed, not merely held: this scene's job is to re-inject `revision` when it changes.
-    @ObservedObject var store: AppSettingsStore
+    @ObservedObject var store: PersistentSettingsStore
 
     var content: Content
 
-    init(store: AppSettingsStore, @SceneBuilder content: () -> Content) {
+    init(store: PersistentSettingsStore, @SceneBuilder content: () -> Content) {
         self.store = store
         self.content = content()
     }

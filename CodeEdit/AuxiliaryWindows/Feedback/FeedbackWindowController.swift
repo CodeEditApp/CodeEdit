@@ -5,10 +5,11 @@
 //  Created by Nanashi Li on 2022/04/14.
 //
 
+import CodeEditSettings
 import SwiftUI
 
 final class FeedbackWindowController: NSWindowController, NSToolbarDelegate {
-    convenience init<T: View>(view: T, size: NSSize, settingsStore: AppSettingsStore) {
+    convenience init<T: View>(view: T, size: NSSize, settingsStore: PersistentSettingsStore) {
         let hostingController = NSHostingController(rootView: SettingsInjector(store: settingsStore) { view })
         let window = NSWindow(contentViewController: hostingController)
         self.init(window: window)

@@ -5,13 +5,14 @@
 //  Created by Matthijs Eikelenboom.
 //
 
-import CELSP
 import AppKit
 import CEEditor
+import CELSP
 import CodeEditCore
-import SwiftUI
-import CodeEditTextView
 import CodeEditDocument
+import CodeEditSettings
+import CodeEditTextView
+import SwiftUI
 
 /// App-side implementation of ``CodeFileDocumentDelegate``. Bridges a packaged
 /// `CodeFileDocument` back to the app's `Workspace` undo registry, Settings-injected
@@ -23,7 +24,7 @@ final class AppCodeFileDocumentDelegate: CodeFileDocumentDelegate {
     private let languageServices: LanguageServicesProvider
 
     /// The settings store, so the standalone hosting root below can inject the settings seam.
-    private let settingsStore: AppSettingsStore
+    private let settingsStore: PersistentSettingsStore
 
     /// The themes in effect. `CodeFileView` reads these as an `@EnvironmentObject`, which traps when
     /// missing — and the hosting root below is standalone, so nothing above it can supply them.
@@ -33,7 +34,7 @@ final class AppCodeFileDocumentDelegate: CodeFileDocumentDelegate {
         lspService: any LSPServiceProtocol,
         windowManager: WorkspaceWindowManaging,
         languageServices: LanguageServicesProvider,
-        settingsStore: AppSettingsStore,
+        settingsStore: PersistentSettingsStore,
         activeTheme: ActiveTheme
     ) {
         self.settingsStore = settingsStore

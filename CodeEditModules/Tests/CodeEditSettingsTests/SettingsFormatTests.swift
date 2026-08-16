@@ -147,7 +147,7 @@ struct SettingsFormatTests {
     /// Writing a section whose stored value could not be decoded is the one destructive operation in
     /// the store, and it must announce itself before it happens.
     ///
-    /// The handler is what lets `AppSettingsStore` copy the file aside first. Asserting on the values
+    /// The handler is what lets `PersistentSettingsStore` copy the file aside first. Asserting on the values
     /// instead would prove nothing: they are the same defaults either way.
     @Test
     func replacingAnUndecodableSectionIsAnnouncedOnce() throws {
