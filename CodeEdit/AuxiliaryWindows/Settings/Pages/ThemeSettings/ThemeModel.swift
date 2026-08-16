@@ -33,6 +33,12 @@ final class ThemeModel: ObservableObject {
         settingsAccessor.setValue(section)
     }
 
+    /// The themes in effect, handed to the editor and the terminal as an `@EnvironmentObject`.
+    ///
+    /// Kept in sync from the `didSet` observers on ``selectedTheme`` and ``selectedDarkTheme``.
+    /// Theme *management* state stays here; only the two themes in effect cross into rendering.
+    let activeTheme = ActiveTheme()
+
     /// Default instance of the `FileManager`
     let filemanager = FileManager.default
 
@@ -80,6 +86,9 @@ final class ThemeModel: ObservableObject {
     /// Used for auto-switching theme to match macOS system appearance
     @Published var selectedDarkTheme: Theme? {
         didSet {
+            // Synchronous on purpose: the async hop below defers a *settings write*. Deferring the
+            // in-memory update too would delay the re-render this holder exists to deliver.
+            publishActiveTheme()
             DispatchQueue.main.async {
                 self.updateThemeSettings { $0.selectedDarkTheme = self.selectedDarkTheme?.name ?? "Broken" }
             }
@@ -98,10 +107,17 @@ final class ThemeModel: ObservableObject {
     /// The currently selected ``Theme``.
     @Published var selectedTheme: Theme? {
         didSet {
+            // Synchronous on purpose — see ``selectedDarkTheme``.
+            publishActiveTheme()
             DispatchQueue.main.async {
                 self.updateThemeSettings { $0.selectedTheme = self.selectedTheme?.name }
             }
         }
+    }
+
+    /// Pushes the current selection into ``activeTheme``, which publishes only on a real change.
+    private func publishActiveTheme() {
+        activeTheme.update(current: selectedTheme, dark: selectedDarkTheme)
     }
 
     @Published var previousTheme: Theme?

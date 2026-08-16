@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 import CodeEditSettings
 import SwiftTerm
 
@@ -31,10 +32,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
     @SettingsValue(ThemeSettings.self, \.matchAppearance)
     private var themeMatchAppearance
 
-    @Environment(\.currentTheme)
-    private var currentTheme
-    @Environment(\.currentDarkTheme)
-    private var currentDarkTheme
+    @EnvironmentObject private var activeTheme: ActiveTheme
 
     private var font: NSFont {
         if terminalSettings.useTextEditorFont {
@@ -85,7 +83,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the mapped array of `SwiftTerm.Color` objects of ANSI Colors
     private var colors: [SwiftTerm.Color] {
-        guard let selectedTheme = useDarkTheme ? currentDarkTheme : currentTheme else {
+        guard let selectedTheme = useDarkTheme ? activeTheme.dark : activeTheme.current else {
             return []
         }
         return selectedTheme.terminal.ansiColors.map { color in
@@ -95,7 +93,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `cursor` color of the selected theme
     private var cursorColor: NSColor {
-        guard let selectedTheme = useDarkTheme ? currentDarkTheme : currentTheme else {
+        guard let selectedTheme = useDarkTheme ? activeTheme.dark : activeTheme.current else {
             return NSColor(.accentColor)
         }
         return NSColor(selectedTheme.terminal.cursor.swiftColor)
@@ -103,7 +101,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `selection` color of the selected theme
     private var selectionColor: NSColor {
-        guard let selectedTheme = useDarkTheme ? currentDarkTheme : currentTheme else {
+        guard let selectedTheme = useDarkTheme ? activeTheme.dark : activeTheme.current else {
             return NSColor(.accentColor)
         }
         return NSColor(selectedTheme.terminal.selection.swiftColor)
@@ -111,7 +109,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
 
     /// Returns the `text` color of the selected theme
     private var textColor: NSColor {
-        guard let selectedTheme = useDarkTheme ? currentDarkTheme : currentTheme else {
+        guard let selectedTheme = useDarkTheme ? activeTheme.dark : activeTheme.current else {
             return NSColor(.primary)
         }
         return NSColor(selectedTheme.terminal.text.swiftColor)

@@ -69,8 +69,7 @@ struct CodeFileView: View {
 
     @EnvironmentObject var undoRegistration: UndoManagerRegistration
 
-    @Environment(\.currentTheme)
-    private var injectedTheme
+    @EnvironmentObject private var activeTheme: ActiveTheme
 
     @State private var treeSitter = TreeSitterClient()
 
@@ -113,7 +112,7 @@ struct CodeFileView: View {
     }
 
     private var currentTheme: Theme {
-        injectedTheme!
+        activeTheme.current!
     }
 
     @Environment(\.edgeInsets)

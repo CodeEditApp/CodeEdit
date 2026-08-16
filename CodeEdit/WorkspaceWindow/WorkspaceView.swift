@@ -60,8 +60,6 @@ struct WorkspaceView: View {
                     }
                     .edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .environment(\.currentTheme, themeModel.selectedTheme ?? themeModel.themes.first!)
-                    .environment(\.currentDarkTheme, themeModel.selectedDarkTheme)
                     .overlay(alignment: .top) {
                         utilityArea(proxy: proxy)
                     }
@@ -143,6 +141,11 @@ struct WorkspaceView: View {
                 _ = handleDrop(providers: providers)
                 return true
             }
+            // Outermost on purpose. An `.overlay`/`.background` closure is a *sibling* of the view it
+            // decorates, so it does not see an environment applied further in: injected on the split
+            // view alone, the utility area's terminal would miss it entirely — and `@EnvironmentObject`
+            // traps rather than degrading to nil, the way the retired theme environment key did.
+            .environmentObject(themeModel.activeTheme)
             .accessibilityElement(children: .contain)
             .accessibilityLabel("workspace area")
         }

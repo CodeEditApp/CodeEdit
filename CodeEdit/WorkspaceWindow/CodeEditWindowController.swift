@@ -223,7 +223,7 @@ final class CodeEditWindowController: NSWindowController, NSToolbarDelegate, Obs
                 .environment(\.workspaceFileProvider, workspace.workspaceFileManager)
                 .environment(\.filePreview) { file in AnyView(FilePreviewView(item: file)) }
                 .environment(\.languageServices, dependencies.languageServicesProvider)
-                .environment(\.currentTheme, ThemeModel.shared.selectedTheme ?? ThemeModel.shared.themes.first!)
+                .environmentObject(ThemeModel.shared.activeTheme)
 
                 panel.contentView = NSHostingView(
                     rootView: SettingsInjector(store: dependencies.settingsStore) { contentView }
