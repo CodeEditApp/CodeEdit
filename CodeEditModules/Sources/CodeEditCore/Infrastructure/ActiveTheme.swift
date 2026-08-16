@@ -27,13 +27,16 @@ public final class ActiveTheme: ObservableObject {
 
     public init() {}
 
-    /// Publishes only when something actually changed.
+    /// Assigns unconditionally, publishing on every call.
     ///
-    /// `@Published` fires on every assignment regardless of equality, so an unguarded write would
-    /// re-render both observers for nothing. The guard lives here rather than at the call site so no
-    /// writer can bypass it.
+    /// **Do not reinstate an equality guard here.** One was tried and removed: ``Theme`` is
+    /// `Equatable` by *name* (`Theme.==` compares `id`, which is `name`), because
+    /// `themes.firstIndex(of:)` relies on that to find a theme to update in place. A `!=` guard
+    /// therefore reads "same theme" for an edited copy of the active theme and silently swallows
+    /// colour changes, leaving this holder on a stale struct forever. Writes are human-scale — a
+    /// theme switch or a colour edit — so the redundant publishes cost nothing worth guarding.
     public func update(current: Theme?, dark: Theme?) {
-        if self.current != current { self.current = current }
-        if self.dark != dark { self.dark = dark }
+        self.current = current
+        self.dark = dark
     }
 }

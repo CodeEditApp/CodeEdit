@@ -115,7 +115,10 @@ final class ThemeModel: ObservableObject {
         }
     }
 
-    /// Pushes the current selection into ``activeTheme``, which publishes only on a real change.
+    /// Pushes the current selection into ``activeTheme``, which assigns and publishes unconditionally.
+    ///
+    /// Unconditional on purpose: ``Theme`` equality is by name, so any `!=` guard would drop colour
+    /// edits made to the theme that is already active. See ``ActiveTheme/update(current:dark:)``.
     ///
     /// The `?? themes.first` carries over the fallback both former injection sites applied: if no
     /// theme matches the current appearance, any loaded theme beats none. It is deliberately not

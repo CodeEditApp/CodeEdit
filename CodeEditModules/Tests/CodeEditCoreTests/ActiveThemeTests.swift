@@ -13,6 +13,9 @@ import Testing
 struct ActiveThemeTests {
 
     /// A change must reach observers — this is the whole reason the type exists.
+    ///
+    /// The count is asserted as "at least one": `update` assigns both `@Published` properties
+    /// unconditionally, so one call emits twice. Only *reaching* observers is the contract.
     @Test
     func publishesWhenTheCurrentThemeChanges() {
         let active = ActiveTheme()
@@ -21,39 +24,31 @@ struct ActiveThemeTests {
 
         active.update(current: Self.makeTheme(name: "Solarized"), dark: nil)
 
-        #expect(emissions == 1)
+        #expect(emissions >= 1)
         #expect(active.current?.name == "Solarized")
         token.cancel()
     }
 
-    /// Assigning an equal value must NOT publish. `@Published` fires on every set regardless of
-    /// equality, and both observers are expensive views — without this guard, any repeated write
-    /// re-renders the editor and the terminal for nothing.
+    /// Editing a colour of the *active* theme must reach observers, and must be stored.
+    ///
+    /// ``Theme`` is `Equatable` by name, so an edited copy of the active theme compares *equal* to
+    /// it. An equality guard in `update` therefore dropped this write entirely: the editor and the
+    /// terminal kept rendering the old colours while the settings preview showed the new ones.
     @Test
-    func doesNotPublishWhenAssignedAnEqualValue() {
-        let theme = Self.makeTheme(name: "Solarized")
+    func publishesAndStoresAThemeEditedUnderTheSameName() {
+        let original = Self.makeTheme(name: "Solarized", editorText: "#000000")
+        let edited = Self.makeTheme(name: "Solarized", editorText: "#FF00FF")
         let active = ActiveTheme()
-        active.update(current: theme, dark: nil)
+        active.update(current: original, dark: nil)
 
         var emissions = 0
         let token = active.objectWillChange.sink { _ in emissions += 1 }
 
-        active.update(current: theme, dark: nil)
+        active.update(current: edited, dark: nil)
 
-        #expect(emissions == 0)
-        token.cancel()
-    }
-
-    /// A fresh holder is already `nil`; setting `nil` again must be a no-op too.
-    @Test
-    func doesNotPublishWhenSettingNilOnAFreshHolder() {
-        let active = ActiveTheme()
-        var emissions = 0
-        let token = active.objectWillChange.sink { _ in emissions += 1 }
-
-        active.update(current: nil, dark: nil)
-
-        #expect(emissions == 0)
+        #expect(original == edited, "Precondition: Theme equality is by name, not by value.")
+        #expect(emissions >= 1)
+        #expect(active.current?.editor.text.color == "#FF00FF")
         token.cancel()
     }
 
@@ -63,9 +58,10 @@ struct ActiveThemeTests {
         Theme.Attributes(color: "#000000")
     }
 
-    private static func makeTheme(name: String) -> Theme {
+    private static func makeTheme(name: String, editorText: String = "#000000") -> Theme {
         let editor = Theme.EditorColors(
-            text: attr(), insertionPoint: attr(), invisibles: attr(), background: attr(),
+            text: Theme.Attributes(color: editorText),
+            insertionPoint: attr(), invisibles: attr(), background: attr(),
             lineHighlight: attr(), selection: attr(), keywords: attr(), commands: attr(),
             types: attr(), attributes: attr(), variables: attr(), values: attr(),
             numbers: attr(), strings: attr(), characters: attr(), comments: attr()
