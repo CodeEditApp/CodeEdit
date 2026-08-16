@@ -8,6 +8,7 @@
 import SwiftUI
 import CodeEditCore
 import CodeEditSettings
+import CodeEditUI
 import SwiftTerm
 
 /// # TerminalEmulatorView
@@ -96,7 +97,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         guard let selectedTheme = useDarkTheme ? activeTheme.dark : activeTheme.current else {
             return NSColor(.accentColor)
         }
-        return NSColor(selectedTheme.terminal.cursor.swiftColor)
+        return NSColor(hex: selectedTheme.terminal.cursor.color)
     }
 
     /// Returns the `selection` color of the selected theme
@@ -104,7 +105,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         guard let selectedTheme = useDarkTheme ? activeTheme.dark : activeTheme.current else {
             return NSColor(.accentColor)
         }
-        return NSColor(selectedTheme.terminal.selection.swiftColor)
+        return NSColor(hex: selectedTheme.terminal.selection.color)
     }
 
     /// Returns the `text` color of the selected theme
@@ -112,7 +113,7 @@ public struct TerminalEmulatorView: NSViewRepresentable {
         guard let selectedTheme = useDarkTheme ? activeTheme.dark : activeTheme.current else {
             return NSColor(.primary)
         }
-        return NSColor(selectedTheme.terminal.text.swiftColor)
+        return NSColor(hex: selectedTheme.terminal.text.color)
     }
 
     /// Returns the `background` color of the selected theme

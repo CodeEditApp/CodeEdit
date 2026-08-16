@@ -119,6 +119,7 @@ let package = Package(
             dependencies: [
                 "CodeEditCore",
                 "CodeEditSettings",
+                "CodeEditUI",
                 .product(name: "SwiftTerm", package: "SwiftTerm")
             ]
         ),
