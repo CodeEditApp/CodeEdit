@@ -67,11 +67,20 @@ struct SettingsValueWriteTests {
     ///
     /// `refreshStatusLocally` is the untouched sibling: the probes never write it, so it is what
     /// distinguishes a read-modify-write from a section rebuilt at its defaults.
-    private func makeSeededStore() -> RecordingSettingsStore {
-        var section = SourceControlSettings()
+    ///
+    /// A **real** store on a temporary file, not a protocol double: `@SettingsValue` injects through
+    /// `@EnvironmentObject`, which cannot carry an existential, so a view-level test cannot
+    /// substitute a recorder. `RecordingSettingsStore` still serves the initializer-injected
+    /// consumers, which is where the protocol seam still applies.
+    private func makeSeededStore() -> PersistentSettingsStore {
+        let url = FileManager.default.temporaryDirectory
+            .appendingPathComponent("settings-\(UUID().uuidString).json")
+        let store = PersistentSettingsStore(settingsURL: url)
+        var section = store.value(SourceControlSettings.self)
         section.general.sourceControlIsEnabled = false
         section.general.refreshStatusLocally = false
-        return RecordingSettingsStore([SourceControlSettings.settingsKey: section])
+        store.setValue(section)
+        return store
     }
 
     /// Hosts `view` long enough for SwiftUI to evaluate its body, then waits until it writes.
@@ -80,7 +89,7 @@ struct SettingsValueWriteTests {
     /// drive the update cycle, and an on-screen window makes the shared app-hosted test process
     /// talk to the window server, which destabilised the whole test plan when this suite ran
     /// concurrently with others.
-    private func render(_ view: some View, until store: RecordingSettingsStore) async {
+    private func render(_ view: some View, until store: PersistentSettingsStore) async {
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 64, height: 64),
             styleMask: [.borderless],
@@ -94,7 +103,8 @@ struct SettingsValueWriteTests {
         hostingView.layoutSubtreeIfNeeded()
 
         var attempts = 0
-        while store.writes.isEmpty && attempts < 200 {
+        while store.value(SourceControlSettings.self).general.sourceControlIsEnabled == false
+                && attempts < 200 {
             attempts += 1
             try? await Task.sleep(for: .milliseconds(10))
         }
@@ -106,22 +116,18 @@ struct SettingsValueWriteTests {
         let observed = ObservedValue()
 
         await render(
-            WrappedValueProbe(observed: observed).environment(\.settingsAccessor, store),
+            WrappedValueProbe(observed: observed).environmentObject(store),
             until: store
         )
 
         // The view read through the injected store, not through defaults.
         #expect(observed.value == false)
 
-        let written = try #require(
-            store.lastWrite(SourceControlSettings.self),
-            "@SettingsValue's setter never reached the accessor"
-        )
-        #expect(written.general.sourceControlIsEnabled == true)
+        let written = store.value(SourceControlSettings.self)
+        #expect(written.general.sourceControlIsEnabled == true, "the setter never reached the store")
         // Read-modify-write, not replace-with-defaults: the sibling field the probe never touched
         // still carries its seeded, non-default value.
         #expect(written.general.refreshStatusLocally == false)
-        #expect(store.value(SourceControlSettings.self).general.sourceControlIsEnabled == true)
     }
 
     @Test
@@ -130,18 +136,14 @@ struct SettingsValueWriteTests {
         let observed = ObservedValue()
 
         await render(
-            ProjectedValueProbe(observed: observed).environment(\.settingsAccessor, store),
+            ProjectedValueProbe(observed: observed).environmentObject(store),
             until: store
         )
 
         #expect(observed.value == false)
 
-        let written = try #require(
-            store.lastWrite(SourceControlSettings.self),
-            "@SettingsValue's projectedValue binding never reached the accessor"
-        )
-        #expect(written.general.sourceControlIsEnabled == true)
+        let written = store.value(SourceControlSettings.self)
+        #expect(written.general.sourceControlIsEnabled == true, "the binding never reached the store")
         #expect(written.general.refreshStatusLocally == false)
-        #expect(store.value(SourceControlSettings.self).general.sourceControlIsEnabled == true)
     }
 }

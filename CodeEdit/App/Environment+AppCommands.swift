@@ -107,13 +107,6 @@ extension View {
             .environment(\.workspaceFileOpener, dependencies.workspaceFileOpener)
             .environment(\.workspaceNavigator, dependencies.workspaceNavigator)
             .environment(\.languageServices, dependencies.languageServicesProvider)
-            // Accessor only — deliberately *not* `\.settingsRevision`. `dependencies` observes
-            // nothing, so any revision from here would be frozen, and this modifier is applied
-            // closer to the leaf than `SettingsInjector` is: it would overwrite a live signal with
-            // a dead one. The revision comes from the observing injectors instead
-            // (`SettingsInjector`, `CodeEditApp`), and the accessor injected here is equivalent to
-            // theirs, so overwriting it changes nothing.
-            .environment(\.settingsAccessor, dependencies.settingsAccessor)
     }
 }
 
@@ -131,12 +124,5 @@ extension Scene {
             .environment(\.workspaceFileOpener, dependencies.workspaceFileOpener)
             .environment(\.workspaceNavigator, dependencies.workspaceNavigator)
             .environment(\.languageServices, dependencies.languageServicesProvider)
-            // Accessor only — deliberately *not* `\.settingsRevision`. `dependencies` observes
-            // nothing, so any revision from here would be frozen, and this modifier is applied
-            // closer to the leaf than `SettingsInjector` is: it would overwrite a live signal with
-            // a dead one. The revision comes from the observing injectors instead
-            // (`SettingsInjector`, `CodeEditApp`), and the accessor injected here is equivalent to
-            // theirs, so overwriting it changes nothing.
-            .environment(\.settingsAccessor, dependencies.settingsAccessor)
     }
 }

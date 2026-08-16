@@ -27,17 +27,10 @@ struct SettingsInjector<Content: View>: View {
 
     var body: some View {
         content
-            // The store as an observed object. SwiftUI subscribes to it directly, so this one
-            // injection carries both the value and the change signal that the two `.environment`
-            // keys below need two keys to express.
+            // One injection carries both the value and the change signal. SwiftUI subscribes to
+            // the object itself, which is what the retired pair of environment keys — an accessor
+            // plus an `Int` revision — needed two keys and a hand-maintained counter to express.
             .environmentObject(store)
-            .environment(\.settingsAccessor, store)
-            // The seam's invalidation signal. Rewriting the accessor above is *not* enough: it is a
-            // stable instance behind an existential, so whether SwiftUI treats the rewrite as a
-            // change is unspecified — and `.appServices(_:)`, applied closer to the leaf in
-            // `CodeEditSplitViewController`, overwrites it with the same instance anyway.
-            // `settingsRevision` is `Equatable` and lives in its own key, so neither can defeat it.
-            .environment(\.settingsRevision, store.revision)
     }
 }
 
@@ -67,7 +60,5 @@ struct SettingsSceneInjector<Content: Scene>: Scene {
     var body: some Scene {
         content
             .environmentObject(store)
-            .environment(\.settingsAccessor, store)
-            .environment(\.settingsRevision, store.revision)
     }
 }

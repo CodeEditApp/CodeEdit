@@ -47,7 +47,20 @@ final class ProjectNavigatorViewController: NSViewController {
 
     /// The settings store, pushed in from `ProjectNavigatorOutlineView`. AppKit controllers cannot
     /// read the SwiftUI environment, so the representable that owns this one hands it down.
-    var settingsAccessor: SettingsAccessing = DefaultSettingsReader()
+    ///
+    /// Optional with no default rather than a defaulting reader: a controller reached before its
+    /// representable has pushed a store is a wiring bug, and a stand-in value would answer with
+    /// plausible defaults and hide it. Read through ``settings``.
+    var settingsAccessor: SettingsAccessing?
+
+    /// The pushed-in store, or a loud failure in debug.
+    var settings: SettingsAccessing {
+        guard let settingsAccessor else {
+            assertionFailure("ProjectNavigatorViewController used before a settings store was pushed in")
+            return DefaultSettingsReader()
+        }
+        return settingsAccessor
+    }
 
     /// The general settings, by value — the source for cell construction and the four fields that
     /// require a reload when they change.
@@ -198,7 +211,7 @@ final class ProjectNavigatorViewController: NSViewController {
             } else {
                 outlineView.expandItem(item)
             }
-        } else if settingsAccessor.value(NavigationSettings.self).navigationStyle == .openInTabs {
+        } else if settings.value(NavigationSettings.self).navigationStyle == .openInTabs {
             workspaceNavigator.open(file: item, asTemporary: false)
         }
     }

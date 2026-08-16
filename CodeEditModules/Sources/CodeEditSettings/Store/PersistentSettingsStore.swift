@@ -33,13 +33,14 @@ public final class PersistentSettingsStore: ObservableObject, SettingsAccessing 
 
     /// A counter incremented once per change to any section.
     ///
-    /// This is the settings seam's **invalidation signal**. Views reach settings through
-    /// ``SettingsValue`` or `AppSettings`, whose only other environment dependency is
-    /// ``EnvironmentValues/settingsAccessor`` — an existential holding a store that never compares
-    /// unequal to itself. Re-rendering on a settings change would then rest on SwiftUI treating a
-    /// rewritten non-`Equatable` existential as a change, which is unspecified. An `Int` is
-    /// `Equatable`, so an injector publishing it into ``EnvironmentValues/settingsRevision`` makes
-    /// the invalidation explicit and precise.
+    /// Kept for **AppKit** consumers, which cannot observe an `ObservableObject` and instead watch
+    /// this counter to know when to reload.
+    ///
+    /// SwiftUI no longer needs it: views observe this store directly through ``SettingsValue``, so
+    /// the change signal is the object's own. It previously had to be a separate `Equatable`
+    /// environment key, because the accessor was injected as an existential that never compares
+    /// unequal to itself — leaving re-render to depend on SwiftUI treating a rewritten
+    /// non-`Equatable` value as a change, which is unspecified.
     @Published public private(set) var revision: Int = 0
 
     /// `~/Library/Application Support/CodeEdit/` — the folder settings and adjacent app data live in.

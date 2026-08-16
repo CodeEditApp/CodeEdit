@@ -113,7 +113,7 @@ extension ProjectNavigatorViewController: NSOutlineViewDelegate {
         }
         // If the user has set "Reveal file on selection change" to on or it is forced to reveal,
         // we need to reveal the item before selecting the row.
-        if settingsAccessor.value(GeneralSettings.self).revealFileOnFocusChange || forcesReveal {
+        if settings.value(GeneralSettings.self).revealFileOnFocusChange || forcesReveal {
             reveal(item)
         }
         let row = outlineView.row(forItem: item)

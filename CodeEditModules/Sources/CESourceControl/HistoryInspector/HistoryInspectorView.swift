@@ -20,8 +20,7 @@ struct HistoryInspectorView: View {
     /// `CESourceControl`.
     private let activeEditorState: ActiveEditorState
 
-    @Environment(\.settingsAccessor)
-    private var settingsAccessor
+    @EnvironmentObject private var settingsStore: PersistentSettingsStore
 
     @ObservedObject private var model: HistoryInspectorModel
 
@@ -62,7 +61,7 @@ struct HistoryInspectorView: View {
         .task {
             // The model is created by this view, so this view configures it — the same shape as
             // `setWorkspace` below.
-            model.settingsAccessor = settingsAccessor
+            model.settingsAccessor = settingsStore
             await model.setWorkspace(sourceControlManager: sourceControlManager)
             await model.setFile(url: activeEditorState.selectedFile?.url.path())
         }

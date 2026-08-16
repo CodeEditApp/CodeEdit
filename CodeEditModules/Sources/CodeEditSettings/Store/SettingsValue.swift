@@ -13,23 +13,30 @@ import SwiftUI
 /// Feature packages depend on this rather than on the concrete store, so they never name the
 /// app-wide aggregate and never reach a singleton.
 ///
+/// This is the seam for **non-SwiftUI** consumers — models, services, AppKit controllers — which take
+/// it by initializer. SwiftUI views observe ``PersistentSettingsStore`` directly through
+/// ``SettingsValue`` instead, because `@EnvironmentObject` cannot carry a protocol existential.
+///
 /// Deliberately neither `Sendable` nor `@MainActor`: conforming types include a store class whose
-/// methods cannot be actor-isolated without breaking this conformance, and `EnvironmentKey`
-/// requires a nonisolated static default.
+/// methods cannot be actor-isolated without breaking this conformance. The other former reason —
+/// that `EnvironmentKey` requires a nonisolated static default — no longer applies, since that key
+/// is gone. What still blocks isolation is the Swift 5 app target, where annotating this protocol
+/// cascades into its callers.
 public protocol SettingsReading {
     /// The current value of `type`, or its defaults if the section is absent.
     func value<S: SettingsSection>(_ type: S.Type) -> S
 }
 
-/// A reader that always answers with defaults, and **discards every write**. The environment's
-/// fallback, so a preview with no store configured still renders.
+/// A reader that answers with defaults and **discards every write**, trapping in debug.
 ///
-/// The discarding write is the dangerous half: a view whose subtree never received a real store
-/// (most easily by sitting behind an `NSHostingView`/`NSHostingController` boundary, which
-/// `@Environment` does not cross) will read plausible defaults and *appear* to save, losing the
-/// user's change with no error. Reaching this type outside a `#Preview` is therefore treated as a
-/// wiring bug: both methods `assertionFailure` unless `XCODE_RUNNING_FOR_PREVIEWS` is set, so the
-/// bug is loud in debug and unchanged in release.
+/// This was the environment key's fallback. That key is gone — a view with no store now traps
+/// immediately — but the type survives for its *other* role: the stand-in that pre-existing
+/// singletons (`ThemeModel`, `FeedbackModel`, `SearchSettingsModel`, `HistoryInspectorModel`) hold
+/// between construction and `configure(_:)`. Being used at all still means a wiring bug, so both
+/// methods `assertionFailure` unless `XCODE_RUNNING_FOR_PREVIEWS` is set.
+///
+/// The discarding write is the dangerous half: a consumer that never received a real store reads
+/// plausible defaults and *appears* to save, losing the user's change with no error.
 public struct DefaultSettingsReader: SettingsAccessing {
     /// Previews legitimately render with no store configured; everywhere else, reaching this type
     /// is a wiring bug worth a debug trap.
@@ -40,14 +47,12 @@ public struct DefaultSettingsReader: SettingsAccessing {
     public init() {}
 
     /// Answers with defaults. Reads are only *misleading*, not destructive, so they trap in debug
-    /// but the value is still returned — a preview or a mis-wired subtree keeps rendering.
+    /// but the value is still returned — a preview or a mis-wired consumer keeps working.
     public func value<S: SettingsSection>(_ type: S.Type) -> S {
         if !Self.isRunningInPreviews {
             assertionFailure(
-                "Read of '\(S.settingsKey)' fell back to defaults: this view subtree never received "
-                + "a settings accessor. A standalone NSHostingView/NSHostingController root needs "
-                + "`.appServices(_:)` or `SettingsInjector` — `@Environment` does not cross a "
-                + "hosting boundary."
+                "Read of '\(S.settingsKey)' fell back to defaults: this consumer never received a "
+                + "settings store. Singletons receive one through `configure(_:)` at launch."
             )
         }
         return S()
@@ -57,10 +62,8 @@ public struct DefaultSettingsReader: SettingsAccessing {
     public func setValue<S: SettingsSection>(_ value: S) {
         if !Self.isRunningInPreviews {
             assertionFailure(
-                "Write to '\(S.settingsKey)' was discarded: this view subtree never received a "
-                + "settings accessor. A standalone NSHostingView/NSHostingController root needs "
-                + "`.appServices(_:)` or `SettingsInjector` — `@Environment` does not cross a "
-                + "hosting boundary."
+                "Write to '\(S.settingsKey)' was discarded: this consumer never received a settings "
+                + "store. Singletons receive one through `configure(_:)` at launch."
             )
         }
     }
@@ -79,42 +82,6 @@ public struct SnapshotSettingsReader: SettingsReading {
     }
 }
 
-public struct SettingsAccessorKey: EnvironmentKey {
-    /// Defaults are a legitimate value here — a preview with no store configured should render.
-    nonisolated(unsafe) public static let defaultValue: SettingsAccessing = DefaultSettingsReader()
-}
-
-public struct SettingsRevisionKey: EnvironmentKey {
-    /// `0` forever: a subtree with no injector has no settings to change under it.
-    public static let defaultValue: Int = 0
-}
-
-public extension EnvironmentValues {
-    /// The settings accessor for the current view tree.
-    ///
-    /// Typed as ``SettingsAccessing`` rather than ``SettingsReading`` so that ``SettingsValue`` can
-    /// vend a `Binding` from the same value it reads through.
-    var settingsAccessor: SettingsAccessing {
-        get { self[SettingsAccessorKey.self] }
-        set { self[SettingsAccessorKey.self] = newValue }
-    }
-
-    /// Changes once per settings change; see `PersistentSettingsStore.revision`.
-    ///
-    /// The seam's invalidation signal, kept in its own `Equatable` key rather than folded into
-    /// ``settingsAccessor``. Two keys, two jobs: the accessor answers *what the value is* and is
-    /// legitimately a stable, stateless instance, while the revision answers *whether anything
-    /// changed*. That separation is what lets a non-observing injection point (`appServices(_:)`)
-    /// supply the accessor without also having to fake a change signal it cannot compute.
-    ///
-    /// Injected by any view that observes the store. A subtree that receives an accessor but no
-    /// revision reads correct values and never re-renders on change — inject both, or neither.
-    var settingsRevision: Int {
-        get { self[SettingsRevisionKey.self] }
-        set { self[SettingsRevisionKey.self] = newValue }
-    }
-}
-
 /// Reads and writes one property of one settings section inside a SwiftUI view.
 ///
 /// ```swift
@@ -128,34 +95,32 @@ public extension EnvironmentValues {
 ///
 /// The key path is a `WritableKeyPath` even for read-only uses: every settings field is a `var`, so
 /// requiring it costs read-only call sites nothing and keeps one property wrapper for both jobs.
+///
+/// **A missing injection traps.** This replaced a pair of environment *keys* — one for the value,
+/// one for an `Int` invalidation signal — whose failure modes were both silent: a subtree given
+/// neither read plausible defaults and discarded writes, and a subtree given the value but not the
+/// signal read correctly and never re-rendered. `@EnvironmentObject` makes both unrepresentable.
+/// SwiftUI subscribes to the object itself, so there is no second key to forget and nothing to keep
+/// in sync.
 @propertyWrapper
 public struct SettingsValue<S: SettingsSection, Value>: DynamicProperty {
-    @Environment(\.settingsAccessor)
-    private var accessor
-
-    /// Not a source of data — a source of *invalidation*. See ``EnvironmentValues/settingsRevision``.
-    @Environment(\.settingsRevision)
-    private var revision
+    @EnvironmentObject private var store: PersistentSettingsStore
 
     private let keyPath: WritableKeyPath<S, Value>
 
     public init(_ section: S.Type, _ keyPath: WritableKeyPath<S, Value>) {
+        self._store = EnvironmentObject()
         self.keyPath = keyPath
     }
 
     public var wrappedValue: Value {
-        get {
-            // Read, not merely declared: an unread `@Environment` is a dependency SwiftUI does not
-            // document itself as tracking, and being tracked is this property's entire purpose.
-            _ = revision
-            return accessor.value(S.self)[keyPath: keyPath]
-        }
-        // Read-modify-write of the whole section: the accessor is section-granular, and this is the
+        get { store.value(S.self)[keyPath: keyPath] }
+        // Read-modify-write of the whole section: the store is section-granular, and this is the
         // only way to change one field without naming the settings aggregate.
         nonmutating set {
-            var section = accessor.value(S.self)
+            var section = store.value(S.self)
             section[keyPath: keyPath] = newValue
-            accessor.setValue(section)
+            store.setValue(section)
         }
     }
 

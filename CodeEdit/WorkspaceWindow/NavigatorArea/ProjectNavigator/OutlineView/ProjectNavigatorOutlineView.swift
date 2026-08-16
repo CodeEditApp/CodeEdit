@@ -27,15 +27,14 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
     @AppSettings(\.general)
     private var generalSettings
 
-    @Environment(\.settingsAccessor)
-    private var settingsAccessor
+    @EnvironmentObject private var settingsStore: PersistentSettingsStore
 
     typealias NSViewControllerType = ProjectNavigatorViewController
 
     func makeNSViewController(context: Context) -> ProjectNavigatorViewController {
         let controller = ProjectNavigatorViewController()
         controller.generalSettings = generalSettings
-        controller.settingsAccessor = settingsAccessor
+        controller.settingsAccessor = settingsStore
         controller.activeEditorState = activeEditorState
         controller.workspaceNavigator = workspaceNavigator
 
@@ -53,7 +52,7 @@ struct ProjectNavigatorOutlineView: NSViewControllerRepresentable {
     }
 
     func updateNSViewController(_ nsViewController: ProjectNavigatorViewController, context: Context) {
-        nsViewController.settingsAccessor = settingsAccessor
+        nsViewController.settingsAccessor = settingsStore
         nsViewController.generalSettings = generalSettings
         nsViewController.rowHeight = generalSettings.projectNavigatorSize.rowHeight
         /// if the window becomes active from background, it will restore the selection to outline view.
