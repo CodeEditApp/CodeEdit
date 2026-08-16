@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CodeEditCore
 import CodeEditSettings
 
 /// Handles all file I/O operations for themes.

@@ -5,6 +5,7 @@
 //  Created by Nanashi Li on 2022/04/08.
 //
 
+import CodeEditCore
 import Foundation
 
 /// A dictionary containing the keys and associated ``Theme/Attributes`` of overridden properties

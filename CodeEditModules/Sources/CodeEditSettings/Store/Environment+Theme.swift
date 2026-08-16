@@ -5,6 +5,7 @@
 //  Created by Matthijs Eikelenboom on 10.07.26.
 //
 
+import CodeEditCore
 import SwiftUI
 
 private struct CurrentThemeKey: EnvironmentKey {
