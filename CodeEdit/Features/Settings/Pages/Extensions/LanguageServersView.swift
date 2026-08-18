@@ -10,51 +10,72 @@ import SwiftUI
 /// Displays a searchable list of packages from the ``RegistryManager``.
 struct LanguageServersView: View {
     @StateObject var registryManager: RegistryManager = .shared
-    @StateObject private var searchModel = FuzzySearchUIModel<RegistryItem>()
     @State private var searchText: String = ""
+    @State private var filteredItems: [RegistryItem]?
     @State private var selectedInstall: PackageManagerInstallOperation?
 
-    @State private var showingInfoPanel = false
-
     var body: some View {
-        Group {
+        VStack {
             SettingsForm {
-                if registryManager.isDownloadingRegistry {
-                    HStack {
-                        Spacer()
-                        ProgressView()
-                            .controlSize(.small)
-                        Spacer()
-                    }
+                Section {
+                    SearchField("Search", text: $searchText)
                 }
 
                 Section {
-                    List(searchModel.items ?? registryManager.registryItems, id: \.name) { item in
-                        LanguageServerRowView(
-                            package: item,
-                            onCancel: {
-                                registryManager.cancelInstallation()
-                            },
-                            onInstall: { [item] in
-                                do {
-                                    selectedInstall = try registryManager.installOperation(package: item)
-                                } catch {
-                                    // Display the error
-                                    NSAlert(error: error).runModal()
-                                }
+                    HStack(alignment: .firstTextBaseline, spacing: 4) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.footnote)
+                            .foregroundColor(.yellow)
+                        Text("Warning: Language server installation is experimental. Use at your own risk.")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                    if registryManager.isDownloadingRegistry {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                                .controlSize(.small)
+                            Spacer()
+                        }
+                    } else {
+                        LazyVStack(spacing: 0) {
+                            ForEach(
+                                filteredItems ?? registryManager.registryItems,
+                                id: \.name
+                            ) { item in
+                                Divider().padding(.horizontal, 10)
+                                LanguageServerRowView(
+                                    package: item,
+                                    onCancel: {
+                                        registryManager.cancelInstallation()
+                                    },
+                                    onInstall: { [item] in
+                                        do {
+                                            selectedInstall = try registryManager.installOperation(
+                                                package: item
+                                            )
+                                        } catch {
+                                            NSAlert(error: error).runModal()
+                                        }
+                                    }
+                                )
+                                .padding(10)
                             }
-                        )
-                        .listRowInsets(EdgeInsets(top: 8, leading: 8, bottom: 8, trailing: 8))
+                        }
+                        .padding(-10)
                     }
-                    .searchable(text: $searchText)
-                    .onChange(of: searchText) { _, newValue in
-                        searchModel.searchTextUpdated(searchText: newValue, allItems: registryManager.registryItems)
+                }
+            }
+            .onChange(of: searchText) { _, newValue in
+                if newValue.isEmpty {
+                    filteredItems = nil
+                } else {
+                    let query = newValue.lowercased()
+                    filteredItems = registryManager.registryItems.filter { item in
+                        item.sanitizedName.lowercased().split(separator: " ").contains {
+                            $0.hasPrefix(query)
+                        }
                     }
-                } header: {
-                    Label(
-                        "Warning: Language server installation is experimental. Use at your own risk.",
-                        systemImage: "exclamationmark.triangle.fill"
-                    )
                 }
             }
             .sheet(item: $selectedInstall) { operation in
@@ -62,22 +83,5 @@ struct LanguageServersView: View {
             }
         }
         .environmentObject(registryManager)
-    }
-
-    private func getInfoString() -> AttributedString {
-        let string = "CodeEdit makes use of the Mason Registry for language server installation. To install a package, "
-        + "CodeEdit uses the package manager directed by the Mason Registry, and installs a copy of "
-        + "the language server in Application Support.\n\n"
-        + "Language server installation is still experimental, there may be bugs and expect this flow "
-        + "to change over time."
-
-        var attrString = AttributedString(string)
-
-        if let linkRange = attrString.range(of: "Mason Registry") {
-            attrString[linkRange].link = URL(string: "https://mason-registry.dev/")
-            attrString[linkRange].foregroundColor = NSColor.linkColor
-        }
-
-        return attrString
     }
 }

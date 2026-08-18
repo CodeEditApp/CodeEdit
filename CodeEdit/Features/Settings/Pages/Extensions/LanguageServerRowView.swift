@@ -27,8 +27,6 @@ struct LanguageServerRowView: View, Equatable {
     @State private var removalError: Error?
     @State private var showingRemovalError = false
 
-    @State private var showMore: Bool = false
-
     @EnvironmentObject var registryManager: RegistryManager
 
     init(
@@ -46,49 +44,10 @@ struct LanguageServerRowView: View, Equatable {
             Label {
                 VStack(alignment: .leading) {
                     Text(package.sanitizedName)
-
-                    ZStack(alignment: .leadingLastTextBaseline) {
-                        VStack(alignment: .leading) {
-                            Text(package.sanitizedDescription)
-                                .font(.footnote)
-                                .foregroundColor(.secondary)
-                                .lineLimit(showMore ? nil : 1)
-                                .truncationMode(.tail)
-                            if showMore {
-                                Button(package.homepagePretty) {
-                                    guard let url = package.homepageURL else { return }
-                                    NSWorkspace.shared.open(url)
-                                }
-                                .buttonStyle(.plain)
-                                .foregroundColor(Color(NSColor.linkColor))
-                                .font(.footnote)
-                                .cursor(.pointingHand)
-                                if let installerName = package.installMethod?.packageManagerType?.rawValue {
-                                    Text("Install using \(installerName)")
-                                        .font(.footnote)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                        }
-                        if isHovering {
-                            HStack {
-                                Spacer()
-                                Button {
-                                    showMore.toggle()
-                                } label: {
-                                    Text(showMore ? "Show Less" : "Show More")
-                                        .font(.footnote)
-                                }
-                                .buttonStyle(.plain)
-                                .background(
-                                    Rectangle()
-                                        .inset(by: -2)
-                                        .fill(.clear)
-                                        .background(Color(NSColor.windowBackgroundColor))
-                                )
-                            }
-                        }
-                    }
+                    Text(package.sanitizedDescription)
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
                 }
             } icon: {
                 letterIcon()
