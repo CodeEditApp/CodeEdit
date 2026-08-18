@@ -132,16 +132,14 @@ public class FeedbackModel: ObservableObject {
     }
 
     public func createIssue(
+        gitAccount: String,
         title: String,
         description: String,
         steps: String?,
         expectation: String?,
         actuallyHappened: String?
     ) {
-        let gitAccounts = Settings[\.accounts].sourceControlAccounts.gitAccounts
-        let firstGitAccount = gitAccounts.first
-
-        let config = GitHubTokenConfiguration(keychain.get(firstGitAccount!.name))
+        let config = GitHubTokenConfiguration(keychain.get(gitAccount))
         GitHubAccount(config).postIssue(
             owner: "CodeEditApp",
             repository: "CodeEdit",
