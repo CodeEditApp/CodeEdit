@@ -223,17 +223,15 @@ struct EditorTabs: View {
                         .frame(in: .global)
                 }
                 .onChange(
-                    of: tabItemGeoReader.frame(in: .global),
-                    perform: { tabCGRect in
-                        tabLocations[id] = tabCGRect
-                    }
-                )
+                    of: tabItemGeoReader.frame(in: .global)
+                ) { _, tabCGRect in
+                    tabLocations[id] = tabCGRect
+                }
                 .onChange(
-                    of: tabItemGeoReader.size.width,
-                    perform: { newWidth in
-                        tabWidth[id] = newWidth
-                    }
-                )
+                    of: tabItemGeoReader.size.width
+                ) { _, newWidth in
+                    tabWidth[id] = newWidth
+                }
         }
     }
 
@@ -313,7 +311,7 @@ struct EditorTabs: View {
                         // On first tab appeared, jump to the corresponding position.
                         scrollReader.scrollTo(editor.selectedTab)
                     }
-                    .onChange(of: editor.tabs) { [tabs = editor.tabs] newValue in
+                    .onChange(of: editor.tabs) { tabs, newValue in
                         if tabs.count == newValue.count {
                             updateForTabCountChange(geometryProxy: geometryProxy)
                         } else {
@@ -331,14 +329,14 @@ struct EditorTabs: View {
                         }
                     }
                     // When selected tab is changed, scroll to it if possible.
-                    .onChange(of: editor.selectedTab) { newValue in
+                    .onChange(of: editor.selectedTab) { _, newValue in
                         withAnimation {
                             scrollReader.scrollTo(newValue?.file.id)
                         }
                     }
 
                     // When window size changes, re-compute the expected tab width.
-                    .onChange(of: geometryProxy.size.width) { _ in
+                    .onChange(of: geometryProxy.size.width) { _, _ in
                         withAnimation {
                             scrollReader.scrollTo(editor.selectedTab?.file.id)
                         }

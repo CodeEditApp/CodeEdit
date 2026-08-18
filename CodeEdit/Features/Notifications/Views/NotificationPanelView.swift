@@ -89,7 +89,7 @@ struct NotificationPanelView: View {
                         }
                         .background(
                             GeometryReader { proxy in
-                                Color.clear.onChange(of: proxy.size.height) { newValue in
+                                Color.clear.onChange(of: proxy.size.height) { _, newValue in
                                     contentHeight = newValue
                                     updateOverflow(contentHeight: newValue, containerHeight: geometry.size.height)
                                 }
@@ -100,13 +100,13 @@ struct NotificationPanelView: View {
                     .frame(height: min(geometry.size.height, contentHeight))
                     .scrollDisabled(!hasOverflow)
                     .coordinateSpace(name: "scroll")
-                    .onChange(of: isFocused) { newValue in
+                    .onChange(of: isFocused) { _, newValue in
                         workspace.notificationPanel.handleFocusChange(isFocused: newValue)
                     }
-                    .onChange(of: geometry.size.height) { newValue in
+                    .onChange(of: geometry.size.height) { _, newValue in
                         updateOverflow(contentHeight: contentHeight, containerHeight: newValue)
                     }
-                    .onChange(of: workspace.notificationPanel.isPresented) { isPresented in
+                    .onChange(of: workspace.notificationPanel.isPresented) { _, isPresented in
                         if !isPresented && !workspace.notificationPanel.scrolledToTop {
                             // If scrolled, delay scroll animation until after notifications are hidden
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -133,12 +133,12 @@ struct NotificationPanelView: View {
                     .focusable()
                     .focusEffectDisabled()
                     .focused($isFocused)
-                    .onChange(of: workspace.notificationPanel.isPresented) { isPresented in
+                    .onChange(of: workspace.notificationPanel.isPresented) { _, isPresented in
                         if isPresented {
                             isFocused = true
                         }
                     }
-                    .onChange(of: controlActiveState) { newState in
+                    .onChange(of: controlActiveState) { _, newState in
                         if newState != .active && newState != .key && workspace.notificationPanel.isPresented {
                             // Delay hiding notifications to match animation timing
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {

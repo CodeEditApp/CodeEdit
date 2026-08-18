@@ -116,13 +116,13 @@ struct ThemeSettingsView: View {
                 .onAppear {
                     updateFilteredThemes()
                 }
-                .onChange(of: themeSearchQuery) { _ in
+                .onChange(of: themeSearchQuery) { _, _ in
                     updateFilteredThemes()
                 }
-                .onChange(of: themeModel.themes) { _ in
+                .onChange(of: themeModel.themes) { _, _ in
                     updateFilteredThemes()
                 }
-                .onChange(of: colorScheme) { newColorScheme in
+                .onChange(of: colorScheme) { _, newColorScheme in
                     updateFilteredThemes(overrideColorScheme: newColorScheme)
                 }
             }
@@ -165,7 +165,7 @@ private extension ThemeSettingsView {
             "Automatically change theme based on system appearance",
             isOn: $settings.matchAppearance
         )
-        .onChange(of: settings.matchAppearance) { value in
+        .onChange(of: settings.matchAppearance) { _, value in
             if value {
                 if colorScheme == .dark {
                     themeModel.selectedTheme = themeModel.selectedDarkTheme

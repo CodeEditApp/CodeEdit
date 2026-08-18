@@ -48,7 +48,7 @@ struct UtilityAreaTerminalSidebar: View {
                 }
             }
         }
-        .onChange(of: utilityAreaViewModel.terminals) { newValue in
+        .onChange(of: utilityAreaViewModel.terminals) { _, newValue in
             if newValue.isEmpty {
                 utilityAreaViewModel.addTerminal(rootURL: workspace.fileURL)
             }

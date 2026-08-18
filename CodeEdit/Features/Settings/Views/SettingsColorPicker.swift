@@ -40,7 +40,7 @@ struct SettingsColorPicker<Content>: View where Content: View {
                     .labelsHidden()
             }
         }
-        .onChange(of: selectedColor) { newValue in
+        .onChange(of: selectedColor) { _, newValue in
             color = newValue
         }
     }

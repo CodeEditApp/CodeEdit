@@ -80,7 +80,7 @@ struct SourceControlNavigatorHistoryView: View {
                         .onAppear {
                             self.width = geometry.size.width
                         }
-                        .onChange(of: geometry.size.width) { newWidth in
+                        .onChange(of: geometry.size.width) { _, newWidth in
                             self.width = newWidth
                         }
                     }
@@ -108,7 +108,7 @@ struct SourceControlNavigatorHistoryView: View {
         .task {
             await updateCommitHistory()
         }
-        .onChange(of: showMergeCommitsPerFileLog) { _ in
+        .onChange(of: showMergeCommitsPerFileLog) { _, _ in
             Task {
                 await updateCommitHistory()
             }

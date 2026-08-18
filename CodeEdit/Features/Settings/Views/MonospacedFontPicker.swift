@@ -62,7 +62,7 @@ struct MonospacedFontPicker: View {
                 }
             }
         }
-        .onChange(of: selectedFontName) { _ in
+        .onChange(of: selectedFontName) { _, _ in
             if selectedFontName != "SF Mono" {
                 pushIntoRecentFonts(selectedFontName)
 

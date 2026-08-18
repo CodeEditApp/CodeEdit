@@ -88,7 +88,7 @@ struct EditorJumpBarView: View {
                                     textWidth = proxy.size.width
                                 }
                             }
-                            .onChange(of: proxy.size.width) { newValue in
+                            .onChange(of: proxy.size.width) { _, newValue in
                                 if crumbWidth == nil {
                                     textWidth = newValue
                                 }
@@ -99,15 +99,15 @@ struct EditorJumpBarView: View {
             .onAppear {
                 containerWidth = containerProxy.size.width
             }
-            .onChange(of: containerProxy.size.width) { newValue in
+            .onChange(of: containerProxy.size.width) { _, newValue in
                 containerWidth = newValue
             }
-            .onChange(of: textWidth) { _ in
+            .onChange(of: textWidth) { _, _ in
                 withAnimation(.easeInOut(duration: 0.2)) {
                     resize()
                 }
             }
-            .onChange(of: containerWidth) { _ in
+            .onChange(of: containerWidth) { _, _ in
                 withAnimation(.easeInOut(duration: 0.2)) {
                     resize()
                 }

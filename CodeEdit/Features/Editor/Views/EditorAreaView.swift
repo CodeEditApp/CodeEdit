@@ -188,12 +188,12 @@ struct EditorAreaView: View {
 //                editor.temporaryTab = nil
 //            }
 //        }
-        .onChange(of: navigationStyle) { newValue in
+        .onChange(of: navigationStyle) { _, newValue in
             if newValue == .openInPlace && editor.tabs.count == 1 {
                 editor.temporaryTab = editor.tabs[0]
             }
         }
-        .onChange(of: editor.selectedTab) { newValue in
+        .onChange(of: editor.selectedTab) { _, newValue in
             if let file = newValue?.file.fileDocument {
                 codeFile = { [weak file] in file }
             }
