@@ -38,6 +38,7 @@ extension WorkspaceDocument {
         @Published var shouldFocusSearchField: Bool = false
 
         unowned var workspace: WorkspaceDocument
+        var indexingTask: Task<Void, Never>?
         var tempSearchResults = [SearchResultModel]()
         var caseSensitive: Bool = false
         var indexer: SearchIndexer?
@@ -51,6 +52,10 @@ extension WorkspaceDocument {
             self.workspace = workspace
             self.indexer = SearchIndexer.Memory.create()
             addProjectToIndex()
+        }
+
+        deinit {
+            indexingTask?.cancel()
         }
 
         /// Represents the compare options to be used for find and replace.

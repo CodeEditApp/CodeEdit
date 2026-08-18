@@ -88,7 +88,7 @@ extension WorkspaceDocument.SearchState {
     ///
     /// - Parameter query: The search query to search for.
     func search(_ query: String) async {
-        clearResults()
+        await resetResults()
 
         await MainActor.run {
             self.searchQuery = query
@@ -104,44 +104,33 @@ extension WorkspaceDocument.SearchState {
         }
 
         let asyncController = SearchIndexer.AsyncManager(index: indexer)
-        let evaluateResultGroup = DispatchGroup()
-        let evaluateSearchQueue = DispatchQueue(label: "app.codeedit.CodeEdit.EvaluateSearch")
 
         let searchStream = await asyncController.search(query: searchQuery, 20)
         for try await result in searchStream {
-            for file in result.results {
-                let fileURL = file.url
-                let fileScore = file.score
-                let capturedRegexPattern = regexPattern
+            await withTaskGroup(of: SearchResultModel?.self) { group in
+                for file in result.results {
+                    let fileURL = file.url
+                    let fileScore = file.score
+                    let capturedRegexPattern = regexPattern
 
-                evaluateSearchQueue.async(group: evaluateResultGroup) {
-                    evaluateResultGroup.enter()
-                    Task { [weak self] in
-                        guard let self else {
-                            evaluateResultGroup.leave()
-                            return
-                        }
-
-                        let result = await self.evaluateSearchResult(
+                    group.addTask { [weak self] in
+                        await self?.evaluateSearchResult(
                             fileURL: fileURL,
                             fileScore: fileScore,
                             regexPattern: capturedRegexPattern
                         )
+                    }
+                }
 
-                        if let result = result {
-                            await self.appendNewResultsToTempResults(newResult: result)
-                        }
-                        evaluateResultGroup.leave()
+                for await evaluatedResult in group {
+                    if let evaluatedResult {
+                        await appendNewResultsToTempResults(newResult: evaluatedResult)
                     }
                 }
             }
         }
 
-        evaluateResultGroup.notify(queue: evaluateSearchQueue) {
-            Task { @MainActor [weak self] in
-                self?.setSearchResults()
-            }
-        }
+        await setSearchResults()
     }
 
     /// Appends a new search result to the temporary search results array on the main thread.
@@ -346,7 +335,13 @@ extension WorkspaceDocument.SearchState {
 
     /// Resets the search results along with counts for overall results and file-specific results.
     func clearResults() {
-        DispatchQueue.main.async {
+        Task {
+            await resetResults()
+        }
+    }
+
+    private func resetResults() async {
+        await MainActor.run {
             self.searchResult.removeAll()
             self.searchResultsCount = 0
             self.searchResultsFileCount = 0

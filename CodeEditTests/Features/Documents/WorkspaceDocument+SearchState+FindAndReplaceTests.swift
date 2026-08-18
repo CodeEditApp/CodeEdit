@@ -9,7 +9,7 @@ import XCTest
 @testable import CodeEdit
 
 @MainActor
-final class FindAndReplaceTests: XCTestCase { // swiftlint:disable:this type_body_length
+final class FindAndReplaceTests: XCTestCase {
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
     private var mockWorkspace: WorkspaceDocument!
@@ -64,20 +64,11 @@ final class FindAndReplaceTests: XCTestCase { // swiftlint:disable:this type_bod
         files[1].parent = folder1File
         files[2].parent = folder2File
 
-        mockWorkspace.searchState?.addProjectToIndex()
+        await mockWorkspace.searchState?.indexProject()
 
         // NOTE: This is a temporary solution. In the future, a file watcher should track file updates
         // and trigger an index update.
-        let startTime = Date()
-        let timeoutInSeconds = 2.0
-        while searchState.indexStatus != .done {
-            // Check every 0.1 seconds for index completion
-            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-            if Date().timeIntervalSince(startTime) > timeoutInSeconds {
-                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
-                return
-            }
-        }
+        XCTAssertEqual(searchState.indexStatus, .done)
 
         // Retrieve indexed documents from the indexer
         guard let documentsInIndex = searchState.indexer?.documents() else {
@@ -99,15 +90,8 @@ final class FindAndReplaceTests: XCTestCase { // swiftlint:disable:this type_bod
         // IMPORTANT:
         // This is only a temporary solution, in the feature a file watcher would track the file update
         // and trigger a index update.
-        searchState.addProjectToIndex()
-        let startTime = Date()
-        while searchState.indexStatus != .done {
-            try? await Task.sleep(nanoseconds: 100_000_000)
-            if Date().timeIntervalSince(startTime) > 2.0 {
-                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
-                return
-            }
-        }
+        await searchState.indexProject()
+        XCTAssertEqual(searchState.indexStatus, .done)
     }
 
     func testFindAndReplace() async {

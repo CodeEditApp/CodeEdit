@@ -60,20 +60,11 @@ final class FindTests: XCTestCase {
         files[1].parent = parent1
         files[2].parent = parent2
 
-        await mockWorkspace.searchState?.addProjectToIndex()
+        await mockWorkspace.searchState?.indexProject()
 
         // The following code also tests whether the workspace is indexed correctly
         // Wait until the index is up to date and flushed
-        let startTime = Date()
-        let timeoutInSeconds = 2.0
-        while searchState.indexStatus != .done {
-            // Check every 0.1 seconds for index completion
-            try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-            if Date().timeIntervalSince(startTime) > timeoutInSeconds {
-                XCTFail("TIMEOUT: Indexing took to long or did not complete.")
-                return
-            }
-        }
+        XCTAssertEqual(searchState.indexStatus, .done)
 
         // Retrieve indexed documents from the indexer
         guard let documentsInIndex = searchState.indexer?.documents() else {
