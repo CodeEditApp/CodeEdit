@@ -16,6 +16,7 @@ struct TerminalSettingsView: View {
             Section {
                 shellSelector
                 optionAsMetaToggle
+                clearToStartToggle
             }
             Section {
                 useTextEditorFontToggle
@@ -67,6 +68,11 @@ private extension TerminalSettingsView {
 
     private var optionAsMetaToggle: some View {
         Toggle("Use \"Option\" key as \"Meta\"", isOn: $settings.optionAsMeta)
+    }
+
+    private var clearToStartToggle: some View {
+        Toggle("Clear to Start with ⌘K", isOn: $settings.clearToStartOnCommandK)
+            .help("When enabled, ⌘K clears the terminal viewport and scrollback buffer while the terminal is focused.")
     }
 
     private var useTextEditorFontToggle: some View {

@@ -37,6 +37,32 @@ class CETerminalView: TerminalView {
         pasteboard.setString(text, forType: .string)
     }
 
+    /// Clears the visible terminal contents and the scrollback buffer.
+    ///
+    /// Equivalent to Terminal.app / VS Code "Clear to Start" (⌘K). Operates on the
+    /// emulator buffer only — nothing is sent to the shell process.
+    ///
+    /// Uses CSI sequences processed by SwiftTerm:
+    /// - `CSI H` — move cursor home
+    /// - `CSI 2 J` — erase the entire display
+    /// - `CSI 3 J` — erase saved lines (scrollback)
+    func clearToStart() {
+        feed(text: "\u{001B}[H\u{001B}[2J\u{001B}[3J")
+    }
+
+    /// Intercepts ⌘K when ``SettingsData/TerminalSettings/clearToStartOnCommandK`` is enabled.
+    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+        let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
+        guard flags == .command,
+              event.charactersIgnoringModifiers?.lowercased() == "k",
+              Settings.shared.preferences.terminal.clearToStartOnCommandK else {
+            return super.performKeyEquivalent(with: event)
+        }
+
+        clearToStart()
+        return true
+    }
+
     override open func isAccessibilityElement() -> Bool {
         true
     }

@@ -18,6 +18,7 @@ extension SettingsData {
             [
                 "Shell",
                 "Use \"Option\" key as \"Meta\"",
+                "Clear to Start with ⌘K",
                 "Use text editor font",
                 "Font",
                 "Font Size",
@@ -38,6 +39,11 @@ extension SettingsData {
 
         /// If true, the terminal treats the `Option` key as the `Meta` key
         var optionAsMeta: Bool = false
+
+        /// If true, pressing ⌘K while the terminal is focused clears the viewport and scrollback.
+        ///
+        /// Matches Terminal.app / VS Code "Clear to Start" behavior. Enabled by default.
+        var clearToStartOnCommandK: Bool = true
 
         /// The selected shell to use.
         var shell: TerminalShell = .system
@@ -68,6 +74,10 @@ extension SettingsData {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.darkAppearance = try container.decodeIfPresent(Bool.self, forKey: .darkAppearance) ?? false
             self.optionAsMeta = try container.decodeIfPresent(Bool.self, forKey: .optionAsMeta) ?? false
+            self.clearToStartOnCommandK = try container.decodeIfPresent(
+                Bool.self,
+                forKey: .clearToStartOnCommandK
+            ) ?? true
             self.shell = try container.decodeIfPresent(TerminalShell.self, forKey: .shell) ?? .system
             self.font = try container.decodeIfPresent(TerminalFont.self, forKey: .font) ?? .init()
             self.cursorStyle = try container.decodeIfPresent(
