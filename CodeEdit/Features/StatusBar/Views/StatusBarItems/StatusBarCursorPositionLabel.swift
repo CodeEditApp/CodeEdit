@@ -23,7 +23,9 @@ struct StatusBarCursorPositionLabel: View {
     var body: some View {
         Group {
             if let currentTab = tab {
+                // Identity by object, not file equality — ``EditorInstance`` compares equal by file.
                 LineLabel(editorInstance: currentTab)
+                    .id(ObjectIdentifier(currentTab))
             } else {
                 Text("").accessibilityLabel("No Selection")
             }
@@ -38,6 +40,65 @@ struct StatusBarCursorPositionLabel: View {
         .onReceive(editorManager.tabBarTabIdSubject) { _ in
             updateSource()
         }
+        .onReceive(editorManager.$activeEditor) { _ in
+            updateSource()
+        }
+        .onChange(of: editorManager.activeEditor.selectedTab) { _, newTab in
+            tab = newTab
+        }
+    }
+
+    /// Formats the status-bar cursor label from cursor positions.
+    ///
+    /// Extracted for unit testing. When line/column are unresolved (`<= 0`), falls back to a safe
+    /// `Line: 1  Col: 1` caret label (or character offset when Option is held).
+    static func formatLabel(
+        cursorPositions: [CursorPosition],
+        optionKeyPressed: Bool,
+        linesInRange: (NSRange) -> Int
+    ) -> String {
+        if cursorPositions.isEmpty {
+            return ""
+        }
+
+        // More than one selection, display the number of selections.
+        if cursorPositions.count > 1 {
+            return "\(cursorPositions.count) selected ranges"
+        }
+
+        let position = cursorPositions[0]
+
+        // If the selection is more than just a cursor, return the length.
+        if position.range.length > 0 {
+            // When the option key is pressed display the character range.
+            if optionKeyPressed {
+                return "Char: \(position.range.location) Len: \(position.range.length)"
+            }
+
+            let lineCount = linesInRange(position.range)
+
+            if lineCount > 1 {
+                return "\(lineCount) lines"
+            }
+
+            return "\(position.range.length) characters"
+        }
+
+        // When the option key is pressed display the character offset.
+        if optionKeyPressed {
+            if position.range != .notFound {
+                return "Char: \(position.range.location) Len: 0"
+            }
+            return "Char: 0 Len: 0"
+        }
+
+        // Unresolved line/column (range-only positions from SourceEditor) until the controller fills them in.
+        if position.start.line <= 0 || position.start.column <= 0 {
+            return "Line: 1  Col: 1"
+        }
+
+        // When there's a single cursor, display the line and column.
+        return "Line: \(position.start.line)  Col: \(position.start.column)"
     }
 
     struct LineLabel: View {
@@ -50,10 +111,11 @@ struct StatusBarCursorPositionLabel: View {
 
         let editorInstance: EditorInstance
 
-        @State private var cursorPositions: [CursorPosition] = []
+        @State private var cursorPositions: [CursorPosition]
 
         init(editorInstance: EditorInstance) {
             self.editorInstance = editorInstance
+            self._cursorPositions = State(initialValue: editorInstance.cursorPositions)
         }
 
         var body: some View {
@@ -61,8 +123,16 @@ struct StatusBarCursorPositionLabel: View {
                 .font(statusBarViewModel.statusBarFont)
                 .foregroundColor(foregroundColor)
                 .lineLimit(1)
+                .onAppear {
+                    cursorPositions = editorInstance.cursorPositions
+                }
                 .onReceive(editorInstance.$cursorPositions) { newValue in
                     self.cursorPositions = newValue
+                }
+                .onReceive(editorInstance.rangeTranslator.controllerDidAppearSubject) { _ in
+                    self.cursorPositions = editorInstance.cursorPositions.map {
+                        editorInstance.rangeTranslator.resolveCursorPosition($0)
+                    }
                 }
         }
 
@@ -84,38 +154,12 @@ struct StatusBarCursorPositionLabel: View {
         /// Create a label string for cursor positions.
         /// - Returns: A string describing the user's location in a document.
         func getLabel() -> String {
-            if cursorPositions.isEmpty {
-                return ""
-            }
-
-            // More than one selection, display the number of selections.
-            if cursorPositions.count > 1 {
-                return "\(cursorPositions.count) selected ranges"
-            }
-
-            // If the selection is more than just a cursor, return the length.
-            if cursorPositions[0].range.length > 0 {
-                // When the option key is pressed display the character range.
-                if modifierKeys.contains(.option) {
-                    return "Char: \(cursorPositions[0].range.location) Len: \(cursorPositions[0].range.length)"
-                }
-
-                let lineCount = getLines(cursorPositions[0].range)
-
-                if lineCount > 1 {
-                    return "\(lineCount) lines"
-                }
-
-                return "\(cursorPositions[0].range.length) characters"
-            }
-
-            // When the option key is pressed display the character offset.
-            if modifierKeys.contains(.option) {
-                return "Char: \(cursorPositions[0].range.location) Len: 0"
-            }
-
-            // When there's a single cursor, display the line and column.
-            return "Line: \(cursorPositions[0].start.line)  Col: \(cursorPositions[0].start.column)"
+            let resolved = cursorPositions.map { editorInstance.rangeTranslator.resolveCursorPosition($0) }
+            return StatusBarCursorPositionLabel.formatLabel(
+                cursorPositions: resolved,
+                optionKeyPressed: modifierKeys.contains(.option),
+                linesInRange: getLines
+            )
         }
     }
 }

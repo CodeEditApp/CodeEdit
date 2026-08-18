@@ -185,8 +185,11 @@ final class Editor: ObservableObject, Identifiable {
         let item = EditorInstance(workspace: workspace, file: file)
         // Item is already opened in a tab.
         guard !tabs.contains(item) || !asTemporary else {
-            selectedTab = item
-            addToHistory(item)
+            // Reuse the instance already in `tabs`. ``EditorInstance`` equality is by file, so a fresh
+            // instance would leave the editor and status bar observing different objects (#1729).
+            let existing = tabs.first(where: { $0.file == file }) ?? item
+            selectedTab = existing
+            addToHistory(existing)
             return
         }
 
@@ -203,7 +206,7 @@ final class Editor: ObservableObject, Identifiable {
             openTab(file: item.file)
         case (.none, true):
             openTab(file: item.file)
-            temporaryTab = item
+            temporaryTab = selectedTab
         case (.none, false):
             openTab(file: item.file)
         }
@@ -230,7 +233,7 @@ final class Editor: ObservableObject, Identifiable {
         } else {
             // If we couldn't find the current temporary tab (invalid state) we should still do *something*
             openTab(file: newItem.file)
-            temporaryTab = newItem
+            temporaryTab = selectedTab
         }
     }
 
@@ -240,6 +243,21 @@ final class Editor: ObservableObject, Identifiable {
     ///   - index: Index where the tab needs to be added. If nil, it is added to the back.
     ///   - fromHistory: Indicates whether the tab has been opened from going back in history.
     func openTab(file: CEWorkspaceFile, at index: Int? = nil, fromHistory: Bool = false) {
+        // Always select the instance that lives in `tabs` so cursor publishers stay shared with the editor view.
+        if let existing = tabs.first(where: { $0.file == file }) {
+            selectedTab = existing
+            if !fromHistory {
+                clearFuture()
+                addToHistory(existing)
+            }
+            do {
+                try openFile(item: existing)
+            } catch {
+                logger.error("Error opening file: \(error)")
+            }
+            return
+        }
+
         let item = Tab(workspace: workspace, file: file)
         if let index {
             tabs.insert(item, at: index)
@@ -251,13 +269,15 @@ final class Editor: ObservableObject, Identifiable {
             }
         }
 
-        selectedTab = item
+        // `tabs` may keep a previously inserted equal element; bind selection to that stored instance.
+        let stored = tabs.first(where: { $0.file == file }) ?? item
+        selectedTab = stored
         if !fromHistory {
             clearFuture()
-            addToHistory(item)
+            addToHistory(stored)
         }
         do {
-            try openFile(item: item)
+            try openFile(item: stored)
         } catch {
             logger.error("Error opening file: \(error)")
         }

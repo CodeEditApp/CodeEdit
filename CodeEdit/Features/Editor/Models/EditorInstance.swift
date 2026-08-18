@@ -14,6 +14,8 @@ import CodeEditSourceEditor
 /// A single instance of an editor in a group with a published ``EditorInstance/cursorPositions`` variable to publish
 /// the user's current location in a file.
 class EditorInstance: ObservableObject, Hashable {
+    private static let defaultCursorPositions = [CursorPosition(line: 1, column: 1)]
+
     /// The file presented in this editor instance.
     let file: CEWorkspaceFile
 
@@ -43,9 +45,12 @@ class EditorInstance: ObservableObject, Hashable {
         replaceText = workspace?.searchState?.replaceText
         replaceTextSubject = PassthroughSubject()
 
-        self.cursorPositions = (
-            cursorPositions ?? editorState?.editorCursorPositions ?? [CursorPosition(line: 1, column: 1)]
-        )
+        // Prefer an explicit position, then a non-empty restored position, else a caret at 1:1.
+        // Empty restored arrays must not wipe the default — the status bar would show nothing.
+        let restoredCursorPositions = editorState?.editorCursorPositions
+        self.cursorPositions = cursorPositions
+            ?? (restoredCursorPositions?.isEmpty == false ? restoredCursorPositions : nil)
+            ?? Self.defaultCursorPositions
         self.scrollPosition = editorState?.scrollPosition
 
         // Setup listeners
@@ -124,6 +129,9 @@ class EditorInstance: ObservableObject, Hashable {
 
     /// Translates ranges (eg: from a cursor position) to other information like the number of lines in a range.
     class RangeTranslator: TextViewCoordinator {
+        /// Emits when the text view controller becomes visible so observers can refresh resolved cursor labels.
+        let controllerDidAppearSubject = PassthroughSubject<Void, Never>()
+
         private weak var textViewController: TextViewController?
 
         init() { }
@@ -136,6 +144,7 @@ class EditorInstance: ObservableObject, Hashable {
             if controller.isEditable && controller.isSelectable {
                 controller.view.window?.makeFirstResponder(controller.textView)
             }
+            controllerDidAppearSubject.send()
         }
 
         func destroy() {
@@ -156,6 +165,11 @@ class EditorInstance: ObservableObject, Hashable {
                 return 0
             }
             return (endTextLine.index - startTextLine.index) + 1
+        }
+
+        /// Resolves a cursor position through the text view when available; otherwise returns the input unchanged.
+        func resolveCursorPosition(_ cursorPosition: CursorPosition) -> CursorPosition {
+            textViewController?.resolveCursorPosition(cursorPosition) ?? cursorPosition
         }
 
         func moveLinesUp() {

@@ -158,7 +158,11 @@ struct CodeFileView: View {
                     )
                 },
                 set: { newState in
-                    editorInstance.cursorPositions = newState.cursorPositions ?? []
+                    // Keep the last known caret when SourceEditor omits cursor state (e.g. scroll-only updates).
+                    // Writing `?? []` cleared the status bar until the next tab switch (#1729).
+                    if let cursorPositions = newState.cursorPositions {
+                        editorInstance.cursorPositions = cursorPositions
+                    }
                     editorInstance.scrollPosition = newState.scrollPosition
                     editorInstance.findText = newState.findText
                     editorInstance.findTextSubject.send(newState.findText)
