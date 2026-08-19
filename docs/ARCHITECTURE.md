@@ -145,6 +145,19 @@ The reason to keep it out anyway: Core stays deterministic and testable with no 
 already has a designated home — rule 4 of [Where does my code go?](#where-does-my-code-go) sends
 services to their own target, which is what `CEWorkspaceFileManager` and `ShellClient` are.
 
+**`ShellClient` is one file, and stays its own target** (asked and settled 2026-08-16). Size is the
+wrong measure: `ShellClientProtocol` in Core is used by **19 files** across `CESourceControl` and
+`CELSP` — `GitClient`, `SourceControlManager`, `RegistryManager`, all five package managers — and
+**none of them imports the implementation**. Only the app target does, six files, composing it at
+the root. The abstraction is load-bearing, not ceremonial.
+
+What the separate target buys, stated precisely: reaching for the implementation from a feature
+needs a **manifest edit**, visible in review, rather than an import line inside a file. It is
+reviewability, not prevention — import honesty checks that imports are *declared*, so a feature that
+declared the dependency would pass the audit. Folding it into the app target is a coherent
+alternative (the app is the only consumer, and composing platform adapters is a composition-root
+job); it would cost the manifest-level visibility and nothing else demonstrable.
+
 **Known exception, recorded rather than pretended away:** `CEWorkspaceFile` exposes
 `static let fileManager = FileManager.default` and uses it for `isEmptyFolder` and `doesExist`.
 Those are filesystem reads from a domain type. Moving them onto the file-manager service is the pure fix; it is
