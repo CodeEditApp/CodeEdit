@@ -275,10 +275,17 @@ Grouping is **purpose-first**:
   `Features/SemanticTokens/`, and the three that cross the protocol boundary became
   `Conversions/`. `Registry/`'s `Model/` and `Protocols/` dissolved into its root, where
   `PackageManagerProtocol` already sat.
-- **8 kind-grouped folders remain.** Three are the excluded `CESourceControl/Accounts/`.
-  `CELSP/Service` matches the pattern but is named after `LSPService`, like `Registry/` and
-  `LanguageServer/` — it is not a layer. That leaves `CESearch` (two) and one each in
-  `CodeEditSettings` and `CodeEditUI` as genuine remaining work. Follow the convention
+- **`CodeEditUI` is the second stated exception, and was deliberately left grouped by kind.**
+  Grouping by kind is wrong *inside a feature*; this target is a component library with no feature
+  semantics by charter, so there is no domain to group by and `Styles/`, `Views/` and
+  `EnvironmentKeys/` are the subject — the terms SwiftUI itself is documented in. Consumers browse
+  it asking "is there a button style for this?". Imposing subjects would yield several two-file
+  folders; `SplitView/` remains the one genuine subsystem. Two files that were not styles moved out
+  of `Styles/`, and `MenuWithButtonStyle` — a `View`, not a `MenuStyle` — became `ButtonStyledMenu`.
+- **8 kind-grouped folders remain**, but only two are work: `CESearch`'s `Model/` and
+  `Extensions/`, pending its rebuild. Three are the excluded `CESourceControl/Accounts/`,
+  `CodeEditUI/Views` is the exception above, `CELSP/Service` is named after `LSPService` rather
+  than being a layer, and `CodeEditSettings/Models` waits on that target's naming question. Follow the convention
   in new code; those are a pending cleanup, not a counter-precedent. **`CESourceControl/Accounts/`
   is deliberately excluded** until its dead surface is settled: it is 58 of that target's 133
   files with three call sites in the whole codebase, and BitBucket is unreferenced outside its own
