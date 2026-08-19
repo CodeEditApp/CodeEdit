@@ -7,7 +7,7 @@ before you add files will save you a failed check.
 ## Package topology
 
 The workspace contains one app project and one local Swift package holding 12 library targets
-and 5 test targets:
+and 6 test targets:
 
 ```
 CodeEdit.xcworkspace
@@ -17,15 +17,16 @@ CodeEdit.xcworkspace
     ├── Sources/
     │   ├── CodeEditCore              — pure types, EventBus, command interfaces (no UI/IO, zero deps)
     │   ├── CodeEditUI                — shared presentation atoms (→ CodeEditSymbols only)
-    │   ├── CodeEditSettings          — settings seam + store + theme (UI pages stay app-side)
+    │   ├── CodeEditSettings          — settings seam + store (UI pages stay app-side)
     │   ├── CodeEditDocument          — CodeFileDocument + editor-framework bridging protocols
     │   │                               (consumed only by CEEditor and CELSP)
     │   ├── ShellClient               — Process adapter (app-linked; no package-internal consumer)
     │   ├── CEWorkspaceFileManager    — FileManager + FSEvents workspace tree (app-linked, ditto)
     │   └── CEEditor, CESearch, CENotifications, CELSP, CESourceControl, CETerminal
     │                                 — one target per feature
-    └── Tests/                        — CodeEditCoreTests, CodeEditUIUnitTests, CESearchTests,
-                                        CELSPTests, CESourceControlTests
+    └── Tests/                        — CodeEditCoreTests, CodeEditSettingsTests,
+                                        CodeEditUIUnitTests, CESearchTests, CELSPTests,
+                                        CESourceControlTests
 ```
 
 Each library target publishes a like-named `.library` product, and the app target links the ones
@@ -98,13 +99,17 @@ Three checks are enforced in CI. Each one blocks a specific failure documented i
    it, Core becomes the place everything shared goes, which is what `AppPreferences` was and one of
    the two documented causes of the 2022 collapse.
 
-   The friction this produces is usually the rule working. Three worked examples already in this
+   The friction this produces is usually the rule working. Four worked examples already in this
    codebase: `FileIcon` is keyed on `URL` rather than a domain type, so it needs neither
    `CodeEditCore` nor a charter exception (see rule 2 below); `WorkspacePanelContribution` was shaped
    to need only SwiftUI, so it lives in `CodeEditUI`
-   (`CodeEditModules/Sources/CodeEditUI/WorkspacePanelContribution.swift`); and fuzzy matching's
+   (`CodeEditModules/Sources/CodeEditUI/WorkspacePanelContribution.swift`); fuzzy matching's
    concurrency helper was rewritten over `withTaskGroup` rather than admit `CollectionConcurrencyKit`
-   (below).
+   (below); and `ActiveTheme` — the active light/dark theme, observed by the editor and terminal —
+   lives *in* Core, because `ObservableObject` comes from Combine rather than SwiftUI. That last one
+   is worth remembering: the charter forbids `SwiftUI`/`AppKit`/`Cocoa` specifically, so observation
+   is available in Core and an "it needs to be observable, therefore it needs SwiftUI" argument is
+   simply false.
 
    The counter-example people will cite: `TextEditingSettings` and `TerminalSettings.Font` carry
    `NSFont.Weight`, which forces them out of Core. That is the rule flagging a presentation type
@@ -138,7 +143,8 @@ as of the panel-contributions work (`CEEditor`, `CELSP`, `CESearch`, `CESourceCo
 — up from four; `CESearch` joined when `FindNavigatorContribution` started reading its own settings
 instead of taking them from an app-side wrapper) but only one dependency (`CodeEditCore`), so it
 stays a well-formed shared substrate rather than a hub — and it imports `AppKit` in 1 file and
-`SwiftUI` in 7 (both unchanged; re-measured, not carried forward).
+`SwiftUI` in 4, down from 7 once the theme moved to Core and the colour conversion to `CodeEditUI`
+(re-measured 2026-08-16, not carried forward).
 
 ## Where does my code go?
 
@@ -246,6 +252,24 @@ what lets a new contribution source arrive without the panel code changing.
 contribution vends a `content: AnyView`, and Core's charter (rule 1, above) forbids UI imports
 outright. `CodeEditUI`'s own charter (rule 2) is satisfied too — the protocol needs SwiftUI and
 nothing else.
+
+A contribution vends two views. `content` is the tab itself. `bottomView` is an optional bar pinned
+below it — the navigator's filter field and sort controls are the existing examples — defaulted to
+`nil` so a tab with no such bar says nothing about it. It is a *requirement* rather than something
+the panel is handed deliberately: it arrived from upstream as a `switch` over the retired tab enum,
+where every new tab had to remember to add its case, and a package could not contribute one at all
+because the switch lived app-side. Vended by the contribution, a tab cannot forget, and where the bar
+is placed stays the panel's business — pre-Tahoe it insets the tab's own content, from macOS 26 it
+spans the panel below the tab bar.
+
+**A panel's tab list changes at runtime**, so a stored selection can outlive the tab it names: the
+inspector rebuilds its list when a setting changes, and any panel's list changes when an extension is
+enabled or disabled. `Collection.reconcilingSelection(_:)` (alongside the protocol) keeps a selection
+that still resolves and otherwise falls back to the first tab; `WorkspacePanelView` applies it on
+appear and on every change to the list. Without it the panel reads "No Selection" until the user
+clicks something, because the stored id is stale rather than absent and nothing recovers on its own.
+The rule lives in the package rather than the view so it holds for every panel and can be tested
+without one.
 
 A contribution's owner follows the same placement rule as everything else in
 [Where does my code go?](#where-does-my-code-go): a feature that owns a tab vends its own
@@ -396,7 +420,7 @@ section), and `SearchSettings.ignoreGlobPatterns` is dead.
 
 ## Enforcement
 
-Two automated checks keep this document honest; both run on every PR:
+Two tools enforce the three [Rules](#rules) above; both run on every PR:
 
 - **SwiftLint** (`swiftlint --strict`, config in `.swiftlint.yml`) — includes custom rules
   that reject UI imports in CodeEditCore and model/feature imports in CodeEditUI. These fire
@@ -412,9 +436,12 @@ Two automated checks keep this document honest; both run on every PR:
 Run both locally from the repo root:
 
 ```bash
-swiftlint lint --quiet
+swiftlint lint --strict --quiet
 python3 .github/scripts/audit_package_imports.py
 ```
+
+`--strict` matters: without it SwiftLint reports violations as warnings and exits 0, so a local run
+looks clean and CI fails on the same tree.
 
 ### Known weakness in the CodeEditUI charter (2026-08-05)
 
