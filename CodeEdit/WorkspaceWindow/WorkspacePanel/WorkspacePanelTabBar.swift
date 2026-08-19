@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CodeEditCore
 import CodeEditSettings
 import CodeEditUI
 
@@ -323,13 +324,5 @@ private extension WorkspacePanelTabBar {
                     self.tabWidth[tab.id] = newWidth
                 }
         }
-    }
-}
-
-/// Bounds-checked lookup, for the Tahoe tab bar's peek at the following tab when deciding whether to
-/// draw a divider.
-private extension Collection {
-    subscript(safe index: Index) -> Element? {
-        indices.contains(index) ? self[index] : nil
     }
 }
