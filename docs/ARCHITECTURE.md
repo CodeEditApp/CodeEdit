@@ -255,8 +255,11 @@ Grouping is **purpose-first**:
   target the layer *is* the purpose: `GitBranch` is a fact features share, `WorkspaceNavigator` is
   a seam they talk through, and this guide already describes the target in exactly those terms.
   Do not "fix" this one.
-- **14 kind-grouped folders remain**, in `CodeEditSettings`, `CodeEditUI`, `CELSP`, `CESearch`,
-  `CETerminal`, and inside `CESourceControl/Accounts/`. Follow the convention
+- **`CETerminal` followed**: `Shell/` (configuration) is the one subgroup that earned a folder,
+  while the three-level `CETerminalView` inheritance chain and its representable stay together —
+  splitting them would separate a base class from its subclasses.
+- **10 kind-grouped folders remain**, in `CodeEditSettings`, `CodeEditUI`, `CELSP`, `CESearch`,
+  and inside `CESourceControl/Accounts/` — three of the ten being the excluded `Accounts/`. Follow the convention
   in new code; those are a pending cleanup, not a counter-precedent. **`CESourceControl/Accounts/`
   is deliberately excluded** until its dead surface is settled: it is 58 of that target's 133
   files with three call sites in the whole codebase, and BitBucket is unreferenced outside its own
