@@ -233,16 +233,21 @@ Grouping is **purpose-first**:
 - Group by sub-feature (`ProjectNavigator/`, `History/`, `StatusBarItems/`, `Toolbar/`), never
   by kind — the app target has no `Models/`, `Views/`, `ViewModels/`, `Services/` or `UseCases/`
   folders.
-- **`CEEditor` is the worked example** (2026-08-16). Its `Models/`, `Views/` and `UseCases/` were
-  replaced by nine groups named for what their files are about — `Editor/`, `Layout/`,
-  `FileViews/`, `TabBar/` (with `Tabs/` and `Tab/`), `JumpBar/`, `Documents/`, `Restoration/`,
-  `Theme/`, `Adapters/`. Pure renames: 55 files, zero content changes, because Swift ignores
-  directory layout and SwiftPM takes the whole target tree.
-- **Five targets still group by kind** — `CENotifications`, `CESourceControl`, `CETerminal`,
-  `CodeEditSettings` and `CodeEditUI`, 10 such folders — and `CESourceControl/UseCases/` is the
-  last one carrying the retired name, though the type inside was correctly renamed to a doer
-  (`RepositoryCloner`). Follow the convention in new code; those folders are a pending cleanup,
-  not a counter-precedent.
+- **`CEEditor` and `CESourceControl` are the worked examples** (2026-08-16). `CEEditor`'s
+  `Models/`, `Views/` and `UseCases/` became nine groups named for what their files are about —
+  `Editor/`, `Layout/`, `FileViews/`, `TabBar/` (with `Tabs/` and `Tab/`), `JumpBar/`,
+  `Documents/`, `Restoration/`, `Theme/`, `Adapters/`. `CESourceControl`'s `Views/` grab-bag split
+  into `Operations/` and `Branches/`, its cloner joined `Clone/`, and its settings types moved to
+  `Settings/`. Both were pure renames — 55 and 19 files, zero content changes — because Swift
+  ignores directory layout and SwiftPM takes the whole target tree.
+- **`UseCases/` is now gone from every package.** The type-level rename to doers
+  (`EditorRestorer`, `RepositoryCloner`) had stopped at the folder level; it no longer does.
+- **13 kind-grouped folders remain**, in `CELSP`, `CENotifications`, `CESearch`, `CETerminal`,
+  `CodeEditSettings`, `CodeEditUI`, and inside `CESourceControl/Accounts/`. Follow the convention
+  in new code; those are a pending cleanup, not a counter-precedent. **`CESourceControl/Accounts/`
+  is deliberately excluded** until its dead surface is settled: it is 58 of that target's 133
+  files with three call sites in the whole codebase, and BitBucket is unreferenced outside its own
+  subtree.
 - **Two placements from `CEEditor` worth reusing.** A conformance file belongs beside the protocol
   it satisfies (`CEWorkspaceFile+Editor` sits in `TabBar/Tab/` with `EditorTabRepresentable`), and
   environment keys are distributed to their subject rather than gathered into an `Environment/`
