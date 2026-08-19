@@ -233,12 +233,20 @@ Grouping is **purpose-first**:
 - Group by sub-feature (`ProjectNavigator/`, `History/`, `StatusBarItems/`, `Toolbar/`), never
   by kind — the app target has no `Models/`, `Views/`, `ViewModels/`, `Services/` or `UseCases/`
   folders.
-- **The packages do not yet follow this.** `CEEditor`, `CENotifications`, `CESourceControl`,
-  `CETerminal`, `CodeEditSettings` and `CodeEditUI` still group by kind (17 such folders), and
-  `CEEditor/UseCases/` and
-  `CESourceControl/UseCases/` still carry the retired name even though the types inside were
-  renamed to doers (`EditorRestorer`, `RepositoryCloner`). Follow the convention in new code;
-  the existing folders are a pending cleanup, not a counter-precedent.
+- **`CEEditor` is the worked example** (2026-08-16). Its `Models/`, `Views/` and `UseCases/` were
+  replaced by nine groups named for what their files are about — `Editor/`, `Layout/`,
+  `FileViews/`, `TabBar/` (with `Tabs/` and `Tab/`), `JumpBar/`, `Documents/`, `Restoration/`,
+  `Theme/`, `Adapters/`. Pure renames: 55 files, zero content changes, because Swift ignores
+  directory layout and SwiftPM takes the whole target tree.
+- **Five targets still group by kind** — `CENotifications`, `CESourceControl`, `CETerminal`,
+  `CodeEditSettings` and `CodeEditUI`, 10 such folders — and `CESourceControl/UseCases/` is the
+  last one carrying the retired name, though the type inside was correctly renamed to a doer
+  (`RepositoryCloner`). Follow the convention in new code; those folders are a pending cleanup,
+  not a counter-precedent.
+- **Two placements from `CEEditor` worth reusing.** A conformance file belongs beside the protocol
+  it satisfies (`CEWorkspaceFile+Editor` sits in `TabBar/Tab/` with `EditorTabRepresentable`), and
+  environment keys are distributed to their subject rather than gathered into an `Environment/`
+  group — which would be grouping by kind again.
 - A feature with roughly ten files or fewer stays flat.
 - Shell/entry views and the feature's primary models sit at the feature root.
 - Single-consumer helpers live next to their consumer.
