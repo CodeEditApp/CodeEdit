@@ -1,5 +1,5 @@
 //
-//  LSPUtil.swift
+//  LSPCompletionItemsUtil.swift
 //  CodeEdit
 //
 //  Created by Abe Malla on 2/10/24.
