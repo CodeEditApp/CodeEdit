@@ -242,12 +242,29 @@ Grouping is **purpose-first**:
   ignores directory layout and SwiftPM takes the whole target tree.
 - **`UseCases/` is now gone from every package.** The type-level rename to doers
   (`EditorRestorer`, `RepositoryCloner`) had stopped at the folder level; it no longer does.
-- **13 kind-grouped folders remain**, in `CELSP`, `CENotifications`, `CESearch`, `CETerminal`,
-  `CodeEditSettings`, `CodeEditUI`, and inside `CESourceControl/Accounts/`. Follow the convention
+- **`CENotifications` followed** (13 files): `Models/`, `Protocols/`, `ViewModels/` and `Views/`
+  held 1, 1, 4 and 3 files; a single `Panel/` group now holds the view model and every view that
+  observes it, and the rest sits flat at the root.
+- **15 kind-grouped folders remain**, in `CodeEditCore`, `CodeEditSettings`, `CodeEditUI`,
+  `CELSP`, `CESearch`, `CETerminal`, and inside `CESourceControl/Accounts/`. Follow the convention
   in new code; those are a pending cleanup, not a counter-precedent. **`CESourceControl/Accounts/`
   is deliberately excluded** until its dead surface is settled: it is 58 of that target's 133
   files with three call sites in the whole codebase, and BitBucket is unreferenced outside its own
   subtree.
+
+  Note `Extensions/` counts too (`CodeEditCore`, `CESearch`, `CETerminal`): a folder of "things
+  that are extensions" says nothing about what they extend.
+
+  Measure with this exact pattern, and widen it rather than trusting a smaller number — four
+  successive counts here were wrong because the pattern matched `Models` but not `Model`, then not
+  `Protocols`, then not `Extensions` or singular `Service`:
+
+  ```bash
+  find CodeEditModules/Sources -type d \
+    \( -name Model -o -name Models -o -name View -o -name Views -o -name ViewModel \
+       -o -name ViewModels -o -name Service -o -name Services -o -name Protocol \
+       -o -name Protocols -o -name UseCase -o -name UseCases -o -name Extensions \) | wc -l
+  ```
 - **Two placements from `CEEditor` worth reusing.** A conformance file belongs beside the protocol
   it satisfies (`CEWorkspaceFile+Editor` sits in `TabBar/Tab/` with `EditorTabRepresentable`), and
   environment keys are distributed to their subject rather than gathered into an `Environment/`
