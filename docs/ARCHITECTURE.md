@@ -245,8 +245,18 @@ Grouping is **purpose-first**:
 - **`CENotifications` followed** (13 files): `Models/`, `Protocols/`, `ViewModels/` and `Views/`
   held 1, 1, 4 and 3 files; a single `Panel/` group now holds the view model and every view that
   observes it, and the rest sits flat at the root.
-- **15 kind-grouped folders remain**, in `CodeEditCore`, `CodeEditSettings`, `CodeEditUI`,
-  `CELSP`, `CESearch`, `CETerminal`, and inside `CESourceControl/Accounts/`. Follow the convention
+- **`CodeEditCore` followed**, with one deliberate exception. Its `Extensions/` became `Paths/`
+  (the four `URL` helpers, `String+ValidFileName`, and `String+Escaped` — whose escaping exists to
+  make paths safe as shell arguments), with the two genuinely unrelated helpers at the target root.
+  `Event`/`EventBus` joined `Events/`, and `FindReplaceQuery` moved to `Domain/`, being a query
+  model shared by `CEEditor` and `CESearch` rather than a seam.
+
+  **`Domain/` and `Infrastructure/` stay.** A layer split is normally kind-grouping, but in this
+  target the layer *is* the purpose: `GitBranch` is a fact features share, `WorkspaceNavigator` is
+  a seam they talk through, and this guide already describes the target in exactly those terms.
+  Do not "fix" this one.
+- **14 kind-grouped folders remain**, in `CodeEditSettings`, `CodeEditUI`, `CELSP`, `CESearch`,
+  `CETerminal`, and inside `CESourceControl/Accounts/`. Follow the convention
   in new code; those are a pending cleanup, not a counter-precedent. **`CESourceControl/Accounts/`
   is deliberately excluded** until its dead surface is settled: it is 58 of that target's 133
   files with three call sites in the whole codebase, and BitBucket is unreferenced outside its own
