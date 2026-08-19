@@ -258,8 +258,14 @@ Grouping is **purpose-first**:
 - **`CETerminal` followed**: `Shell/` (configuration) is the one subgroup that earned a folder,
   while the three-level `CETerminalView` inheritance chain and its representable stay together —
   splitting them would separate a base class from its subclasses.
-- **10 kind-grouped folders remain**, in `CodeEditSettings`, `CodeEditUI`, `CELSP`, `CESearch`,
-  and inside `CESourceControl/Accounts/` — three of the ten being the excluded `Accounts/`. Follow the convention
+- **`CELSP` followed**: `Utils/` split — two semantic-token helpers joined
+  `Features/SemanticTokens/`, and the three that cross the protocol boundary became
+  `Conversions/`. `Registry/`'s `Model/` and `Protocols/` dissolved into its root, where
+  `PackageManagerProtocol` already sat.
+- **8 kind-grouped folders remain.** Three are the excluded `CESourceControl/Accounts/`.
+  `CELSP/Service` matches the pattern but is named after `LSPService`, like `Registry/` and
+  `LanguageServer/` — it is not a layer. That leaves `CESearch` (two) and one each in
+  `CodeEditSettings` and `CodeEditUI` as genuine remaining work. Follow the convention
   in new code; those are a pending cleanup, not a counter-precedent. **`CESourceControl/Accounts/`
   is deliberately excluded** until its dead surface is settled: it is 58 of that target's 133
   files with three call sites in the whole codebase, and BitBucket is unreferenced outside its own
