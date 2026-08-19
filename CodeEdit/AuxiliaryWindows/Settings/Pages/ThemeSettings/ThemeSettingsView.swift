@@ -44,7 +44,7 @@ struct ThemeSettingsView: View {
                         .disabled(themeModel.selectedTheme == nil)
                         .help("Create a new Theme")
 
-                        MenuWithButtonStyle(systemImage: "ellipsis", menu: {
+                        ButtonStyledMenu(systemImage: "ellipsis", menu: {
                             Group {
                                 Button {
                                     themeModel.importTheme()

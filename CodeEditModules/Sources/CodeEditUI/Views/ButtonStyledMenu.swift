@@ -1,5 +1,5 @@
 //
-//  MenuWithButtonStyle.swift
+//  ButtonStyledMenu.swift
 //  CodeEdit
 //
 //  Created by Tommy Ludwig on 08.09.24.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// A menu styled to resemble a bordered button.
-public struct MenuWithButtonStyle<MenuView: View>: View {
+public struct ButtonStyledMenu<MenuView: View>: View {
     var systemImage: String
     var menu: () -> MenuView
 
