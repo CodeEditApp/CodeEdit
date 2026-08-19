@@ -24,6 +24,7 @@ struct StatusBarCursorPositionLabel: View {
         Group {
             if let currentTab = tab {
                 LineLabel(editorInstance: currentTab)
+                    .id(ObjectIdentifier(currentTab))
             } else {
                 Text("").accessibilityLabel("No Selection")
             }
@@ -35,8 +36,16 @@ struct StatusBarCursorPositionLabel: View {
         .onAppear {
             updateSource()
         }
-        .onReceive(editorManager.tabBarTabIdSubject) { _ in
+        .onReceive(editorManager.activeEditor.objectWillChange) { _ in
+            DispatchQueue.main.async {
+                updateSource()
+            }
+        }
+        .onReceive(editorManager.$activeEditor) { _ in
             updateSource()
+        }
+        .onChange(of: editorManager.activeEditor.selectedTab) { _, newTab in
+            tab = newTab
         }
     }
 
@@ -54,6 +63,7 @@ struct StatusBarCursorPositionLabel: View {
 
         init(editorInstance: EditorInstance) {
             self.editorInstance = editorInstance
+            self._cursorPositions = State(initialValue: editorInstance.cursorPositions)
         }
 
         var body: some View {
@@ -63,6 +73,9 @@ struct StatusBarCursorPositionLabel: View {
                 .lineLimit(1)
                 .onReceive(editorInstance.$cursorPositions) { newValue in
                     self.cursorPositions = newValue
+                }
+                .onReceive(editorInstance.rangeTranslator.controllerDidAppearSubject) { _ in
+                    self.cursorPositions = editorInstance.cursorPositions
                 }
         }
 
@@ -84,6 +97,8 @@ struct StatusBarCursorPositionLabel: View {
         /// Create a label string for cursor positions.
         /// - Returns: A string describing the user's location in a document.
         func getLabel() -> String {
+            let cursorPositions = cursorPositions.map(editorInstance.rangeTranslator.resolveCursorPosition)
+
             if cursorPositions.isEmpty {
                 return ""
             }
@@ -115,6 +130,13 @@ struct StatusBarCursorPositionLabel: View {
             }
 
             // When there's a single cursor, display the line and column.
+            if cursorPositions[0].start.line <= 0 || cursorPositions[0].start.column <= 0 {
+                if cursorPositions[0].range != .notFound && cursorPositions[0].range.location > 0 {
+                    return "Char: \(cursorPositions[0].range.location) Len: \(cursorPositions[0].range.length)"
+                }
+                return "Line: 1  Col: 1"
+            }
+
             return "Line: \(cursorPositions[0].start.line)  Col: \(cursorPositions[0].start.column)"
         }
     }

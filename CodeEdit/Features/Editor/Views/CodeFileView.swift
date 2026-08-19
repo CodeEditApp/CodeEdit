@@ -158,7 +158,9 @@ struct CodeFileView: View {
                     )
                 },
                 set: { newState in
-                    editorInstance.cursorPositions = newState.cursorPositions ?? []
+                    if let cursorPositions = newState.cursorPositions {
+                        editorInstance.cursorPositions = cursorPositions
+                    }
                     editorInstance.scrollPosition = newState.scrollPosition
                     editorInstance.findText = newState.findText
                     editorInstance.findTextSubject.send(newState.findText)
