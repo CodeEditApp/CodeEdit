@@ -146,8 +146,8 @@ already has a designated home — rule 4 of [Where does my code go?](#where-does
 services to their own target, which is what `CEWorkspaceFileManager` and `ShellClient` are.
 
 **Known exception, recorded rather than pretended away:** `CEWorkspaceFile` exposes
-`static let fileManager = FileManager.default` and uses it for `children` and `doesExist`. Those are
-filesystem reads from a domain type. Moving them onto the file-manager service is the pure fix; it is
+`static let fileManager = FileManager.default` and uses it for `isEmptyFolder` and `doesExist`.
+Those are filesystem reads from a domain type. Moving them onto the file-manager service is the pure fix; it is
 not worth it today against 294 references. What was worth fixing, and has been, is code *outside*
 Core borrowing that static to mutate the filesystem — a write routed through the domain layer. There
 is now no such caller.
