@@ -13,9 +13,6 @@ import CodeEditCore
 @MainActor
 final class FileDropHandler {
 
-    /// This handler's own file manager. Deliberately not `CEWorkspaceFile.fileManager`: borrowing a
-    /// static off a domain type to *mutate* the filesystem routes a write through `CodeEditCore`,
-    /// which holds domain types rather than services.
     private let fileManager: FileManager = .default
 
     struct Operation {

@@ -44,7 +44,7 @@ public final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable 
 
     /// True if this directory has no contents. (Check ``isFolder`` first.)
     public var isEmptyFolder: Bool {
-        (try? Self.fileManager.contentsOfDirectory(
+        (try? FileManager.default.contentsOfDirectory(
             at: resolvedURL,
             includingPropertiesForKeys: nil,
             options: .skipsSubdirectoryDescendants
@@ -55,7 +55,7 @@ public final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable 
     public var isRoot: Bool { parent == nil }
 
     /// True if the file exists on disk.
-    public var doesExist: Bool { Self.fileManager.fileExists(atPath: self.url.path) }
+    public var doesExist: Bool { FileManager.default.fileExists(atPath: self.url.path) }
 
     /// The file's UTType.
     public var contentType: UTType? { url.contentType }
@@ -112,11 +112,6 @@ public final class CEWorkspaceFile: Codable, Comparable, Hashable, Identifiable 
     public var nearestFolder: URL {
         isFolder ? url : url.deletingLastPathComponent()
     }
-
-    // MARK: Statics
-
-    /// `FileManager.default` is documented thread-safe; the shared instance is only read from here.
-    nonisolated(unsafe) public static let fileManager = FileManager.default
 
     // MARK: Comparable / Hashable
 
