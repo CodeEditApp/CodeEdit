@@ -44,6 +44,24 @@ final class AppCodeFileDocumentDelegate: CodeFileDocumentDelegate {
         self.languageServices = languageServices
     }
 
+    /// The **workspace** undo manager for `url`, or `nil` — never a standalone window's.
+    ///
+    /// `CodeFileDocument` calls this to register an external change to an open file as one undo
+    /// mutation. A file shown in a standalone single-file window has its own registry, private to
+    /// `WindowCodeFileView`, which this cannot reach: there is no workspace to look it up through.
+    ///
+    /// Normally the two cannot disagree, because every route to a standalone window
+    /// (`DocumentOpener`, `WorkspaceWindowManager`'s new-file path, `AppDelegate`'s open handler)
+    /// tries `openFileInWorkspace(url:)` first and only falls through when it fails — and that check
+    /// uses the same predicate as `workspace(containing:)`. So if a workspace holds the file there
+    /// is no standalone window, and if none does this returns `nil` and nothing is registered.
+    ///
+    /// The guard is evaluated once, though. Open a loose file, *then* open its parent folder as a
+    /// workspace, and the standalone window keeps its private registry while this starts finding
+    /// the workspace's. An external change then registers onto a stack that window does not read.
+    /// Editing undo inside the window is unaffected. Left as-is deliberately: migrating a window
+    /// onto a workspace registry, or letting this search every registry, is more machinery than a
+    /// three-step ordering edge case earns.
     func undoManager(forFile url: URL) -> CEUndoManager? {
         windowManager.workspace(containing: url)?.undoRegistry.managerIfExists(forFile: url)
     }
