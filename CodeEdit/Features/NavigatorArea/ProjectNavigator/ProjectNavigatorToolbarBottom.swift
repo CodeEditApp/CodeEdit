@@ -126,14 +126,13 @@ struct ProjectNavigatorToolbarBottom: View {
                     alert.runModal()
                 }
             }
-        } label: {}
-        .background {
+        } label: {
             Image(systemName: "plus")
                 .accessibilityHidden(true)
         }
         .menuStyle(.borderlessButton)
         .menuIndicator(.hidden)
-        .frame(maxWidth: 18, alignment: .center)
+        .frame(width: 18, alignment: .center)
         .opacity(activeState == .inactive ? 0.45 : 1)
         .accessibilityLabel("Add Folder or File")
         .accessibilityIdentifier("addButton")

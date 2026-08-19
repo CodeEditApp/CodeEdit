@@ -24,6 +24,20 @@ enum App {
         return (application, tempDirURL)
     }
 
+    // Launches CodeEdit with an app-writable directory that CodeEdit creates before opening.
+    static func launchWithAppWritableTempDir() -> (XCUIApplication, String) {
+        let tempDirID = appWritableTempProjectID()
+        let application = XCUIApplication()
+        application.launchArguments = [
+            "-ApplePersistenceIgnoreState",
+            "YES",
+            "--codeedit-uitest-open-temp-workspace",
+            tempDirID
+        ]
+        application.launch()
+        return (application, appWritableTempProjectPath(id: tempDirID))
+    }
+
     static func launch() -> XCUIApplication {
         let application = XCUIApplication()
         application.launchArguments = ["-ApplePersistenceIgnoreState", "YES"]

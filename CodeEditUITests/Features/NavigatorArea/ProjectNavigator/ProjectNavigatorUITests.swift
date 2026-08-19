@@ -27,6 +27,7 @@ final class ProjectNavigatorUITests: XCTestCase {
 
         // Open the README.md
         let readmeRow = Query.Navigator.getProjectNavigatorRow(fileTitle: "README.md", navigator)
+        XCTAssertTrue(readmeRow.waitForExistence(timeout: 5.0))
         XCTAssertFalse(Query.Navigator.rowContainsDisclosureIndicator(readmeRow), "File has disclosure indicator")
         readmeRow.click()
 
@@ -42,19 +43,27 @@ final class ProjectNavigatorUITests: XCTestCase {
         let rowCount = navigator.descendants(matching: .outlineRow).count
 
         // Open a folder
-        let codeEditFolderRow = Query.Navigator.getProjectNavigatorRow(fileTitle: "CodeEdit", index: 1, navigator)
-        XCTAssertTrue(codeEditFolderRow.exists)
+        let codeEditFolderRow = Query.Navigator.getLastProjectNavigatorRow(fileTitle: "CodeEdit", navigator)
+        XCTAssertTrue(codeEditFolderRow.waitForExistence(timeout: 5.0))
+        let folderDisclosureIndicator = Query.Navigator.disclosureIndicatorForRow(codeEditFolderRow)
         XCTAssertTrue(
-            Query.Navigator.rowContainsDisclosureIndicator(codeEditFolderRow),
+            folderDisclosureIndicator.waitForExistence(timeout: 2.0),
             "Folder doesn't have disclosure indicator"
         )
-        let folderDisclosureIndicator = Query.Navigator.disclosureIndicatorForRow(codeEditFolderRow)
         folderDisclosureIndicator.click()
 
+        XCTAssertTrue(
+            Query.Navigator.waitForRowCount(navigator, greaterThan: rowCount, timeout: 2.0),
+            "No new rows were loaded after opening the folder"
+        )
         let newRowCount = navigator.descendants(matching: .outlineRow).count
         XCTAssertTrue(newRowCount > rowCount, "No new rows were loaded after opening the folder")
 
         folderDisclosureIndicator.click()
+        XCTAssertTrue(
+            Query.Navigator.waitForRowCount(navigator, equalTo: rowCount, timeout: 2.0),
+            "Rows were not hidden after closing a folder"
+        )
         let finalRowCount = navigator.descendants(matching: .outlineRow).count
         XCTAssertTrue(newRowCount > finalRowCount, "Rows were not hidden after closing a folder")
         XCTAssertEqual(rowCount, finalRowCount, "Different Number of rows loaded")
