@@ -15,7 +15,7 @@ CodeEdit.xcworkspace
 └── CodeEditModules/
     ├── Package.swift                 — the entire local dependency graph, in one file
     ├── Sources/
-    │   ├── CodeEditCore              — pure types, EventBus, command interfaces (no UI/IO, zero deps)
+    │   ├── CodeEditCore              — domain types, EventBus, command interfaces (no UI, zero deps)
     │   ├── CodeEditUI                — shared presentation atoms (→ CodeEditSymbols only)
     │   ├── CodeEditSettings          — settings seam + store (UI pages stay app-side)
     │   ├── CodeEditDocument          — CodeFileDocument + editor-framework bridging protocols
@@ -136,6 +136,22 @@ features is genuinely needed, try the three
 [cycle-resolution moves](#cycle-resolution-playbook) first, then declare the edge in the manifest
 where it is visible to everyone. Acyclicity itself needs no rule — SwiftPM enforces it.
 
+**Keep I/O out of Core.** A norm, not a gate — and worth being precise about, because the guide
+previously implied it was enforced. It is not: the SwiftLint rule forbids `SwiftUI`/`AppKit`/`Cocoa`
+and nothing more, and `Foundation` — which Core needs for `URL`, `Data` and `Codable`, and which 47
+of its files import — *is* the I/O surface, so an import check cannot express this.
+
+The reason to keep it out anyway: Core stays deterministic and testable with no filesystem, and I/O
+already has a designated home — rule 4 of [Where does my code go?](#where-does-my-code-go) sends
+services to their own target, which is what `CEWorkspaceFileManager` and `ShellClient` are.
+
+**Known exception, recorded rather than pretended away:** `CEWorkspaceFile` exposes
+`static let fileManager = FileManager.default` and uses it for `children` and `doesExist`. Those are
+filesystem reads from a domain type. Moving them onto the file-manager service is the pure fix; it is
+not worth it today against 294 references. What was worth fixing, and has been, is code *outside*
+Core borrowing that static to mutate the filesystem — a write routed through the domain layer. There
+is now no such caller.
+
 **Hub heuristic.** Any target both depended on by three or more others *and* itself depending on
 three or more is a hub under review. 2022's `AppPreferences` was exactly this and would have been
 flagged years before it became fatal. `CodeEditSettings` is the current watch item: five dependents
@@ -162,7 +178,7 @@ Work through these in order; the first match wins.
    permanent app-side tab is `ProjectNavigatorContribution`, because the project navigator has
    no owning package to move to, not because it is a tab.
 2. **A type, protocol, event, or command interface needed by two or more features?** →
-   `CodeEditModules/Sources/CodeEditCore`, *if* it passes the charter (no UI/IO imports, no
+   `CodeEditModules/Sources/CodeEditCore`, *if* it passes the charter (no UI imports, no
    external dependencies). Events (facts, e.g. `TaskNotificationEvent`) and command interfaces
    (requests with exactly one handler, e.g. `WorkspaceNavigator`) always live here.
 3. **A reusable view, style, or view modifier with no feature semantics?** →

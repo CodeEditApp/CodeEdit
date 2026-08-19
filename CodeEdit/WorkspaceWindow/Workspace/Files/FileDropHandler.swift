@@ -13,6 +13,11 @@ import CodeEditCore
 @MainActor
 final class FileDropHandler {
 
+    /// This handler's own file manager. Deliberately not `CEWorkspaceFile.fileManager`: borrowing a
+    /// static off a domain type to *mutate* the filesystem routes a write through `CodeEditCore`,
+    /// which holds domain types rather than services.
+    private let fileManager: FileManager = .default
+
     struct Operation {
         let source: CEWorkspaceFile
         let destination: URL
@@ -45,11 +50,11 @@ final class FileDropHandler {
                 ?? CEWorkspaceFile(url: URL(fileURLWithPath: url.path))
 
             // Handle existing destination via the supplied confirmation closure
-            if CEWorkspaceFile.fileManager.fileExists(atPath: destURL.path) {
+            if fileManager.fileExists(atPath: destURL.path) {
                 guard confirmReplace(url.lastPathComponent) else {
                     continue
                 }
-                try CEWorkspaceFile.fileManager.removeItem(at: destURL)
+                try fileManager.removeItem(at: destURL)
             }
 
             operations.append(Operation(source: source, destination: destURL, isCopy: isCopyOperation))
