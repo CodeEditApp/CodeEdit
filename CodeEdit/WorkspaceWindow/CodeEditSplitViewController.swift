@@ -288,8 +288,14 @@ final class CodeEditSplitViewController: NSSplitViewController {
         }
 
         if resizedDivider == 0 {
-            let panel = splitView.subviews[0]
-            let width = panel.frame.size.width
+            let width: CGFloat
+            if #available(macOS 26, *) {
+                let panel = splitViewItems[0]
+                width = panel.viewController.view.frame.size.width
+            } else {
+                let panel = splitView.subviews[0]
+                width = panel.frame.size.width
+            }
             if width > 0 {
                 statePersistence?.set(key: .splitViewWidth, value: width)
             }

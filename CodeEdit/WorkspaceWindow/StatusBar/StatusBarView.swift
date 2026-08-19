@@ -23,7 +23,19 @@ struct StatusBarView: View {
     @Environment(\.controlActiveState)
     private var controlActive
 
-    static let height = LayoutMetrics.statusBarHeight
+    @EnvironmentObject private var utilityAreaViewModel: UtilityAreaViewModel
+
+    /// Read from `LayoutMetrics` rather than declared locally: `CEEditor` insets its content by the
+    /// same value in three places, and a second source of truth would desync them on macOS 26.
+    static var height: CGFloat { LayoutMetrics.statusBarHeight }
+
+    private var trailingPadding: CGFloat {
+        if #available(macOS 26, *) {
+            8
+        } else {
+            0
+        }
+    }
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -35,6 +47,18 @@ struct StatusBarView: View {
     /// The actual status bar
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
+            ForEach(utilityAreaViewModel.tabItems, id: \.id) { tab in
+                let isSelected = utilityAreaViewModel.selectedTabID == tab.id
+                let tint: NSColor = isSelected ? .controlAccentColor : .secondaryLabelColor
+                Button {
+                    utilityAreaViewModel.selectedTabID = tab.id
+                } label: {
+                    Image(systemName: tab.systemImage)
+                        .foregroundStyle(Color(nsColor: tint))
+                }
+                .buttonStyle(.icon)
+                .help(tab.title)
+            }
 //            StatusBarBreakpointButton()
 //            StatusBarDivider()
             Spacer()
@@ -44,8 +68,9 @@ struct StatusBarView: View {
             StatusBarToggleUtilityAreaButton()
         }
         .padding(.horizontal, 10)
+        .padding(.trailing, trailingPadding)
         .cursor(.resizeUpDown)
-        .frame(height: Self.height)
+        .frame(height: Self.height - 1.0)
         .background(.bar)
         .padding(.top, 1)
         .overlay(alignment: .top) {

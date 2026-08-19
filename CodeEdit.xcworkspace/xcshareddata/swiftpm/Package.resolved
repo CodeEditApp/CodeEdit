@@ -1,13 +1,13 @@
 {
-  "originHash" : "9f3ffaf512dafa48c6a63229ac8dfbf9fe483823402bc3f215cc353a3a127fb2",
+  "originHash" : "56533eb948f3299004db23c63ba5d288ce60da898dee73acd05b73a6d3707a06",
   "pins" : [
     {
       "identity" : "aboutwindow",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/CodeEditApp/AboutWindow",
       "state" : {
-        "revision" : "79c7c01fb739d024a3ca07fe153a068339213baf",
-        "version" : "1.0.0"
+        "revision" : "bdec18efb0dbee79613e7efa446ed3cc8e834842",
+        "version" : "1.0.1"
       }
     },
     {

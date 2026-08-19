@@ -43,11 +43,6 @@ struct SourceControlNavigatorView: View {
                     }
                 }
         }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            SourceControlNavigatorToolbarBottom()
-                .environmentObject(sourceControlManager)
-                .environmentObject(sourceControlViewModel)
-        }
     }
 }
 

@@ -38,4 +38,22 @@ public protocol WorkspacePanelContribution: Identifiable {
     /// Only this requirement is isolated: `id`, `title` and `systemImage` are plain values read from
     /// non-isolated positions.
     @MainActor var content: AnyView { get }
+
+    /// A bar pinned below the tab's content — filters, counts, the navigator's sort controls.
+    ///
+    /// Defaults to nothing, so a contribution that has no such bar says nothing about it.
+    ///
+    /// A requirement rather than a parameter the panel is handed: it arrived upstream as a `switch`
+    /// over the retired tab enum, where every new tab had to remember to add its case. Vended by the
+    /// contribution, a tab cannot forget, and a package can supply one without the panel — which
+    /// cannot see the package — knowing it exists.
+    ///
+    /// Placement is the panel's business, not the tab's: pre-Tahoe it insets the tab's own content,
+    /// and from macOS 26 it spans the panel below the tab bar.
+    @MainActor var bottomView: AnyView? { get }
+}
+
+public extension WorkspacePanelContribution {
+    /// Most tabs have no bottom bar.
+    @MainActor var bottomView: AnyView? { nil }
 }

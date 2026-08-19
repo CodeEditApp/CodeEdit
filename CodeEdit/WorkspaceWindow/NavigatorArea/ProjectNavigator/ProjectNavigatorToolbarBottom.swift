@@ -29,58 +29,54 @@ struct ProjectNavigatorToolbarBottom: View {
     @State var recentsFilter: Bool = false
 
     var body: some View {
-        HStack(spacing: 5) {
-            addNewFileButton
-            PaneTextField(
-                "Filter",
-                text: $projectNavigatorViewModel.navigatorFilter,
-                leadingAccessories: {
-                    FilterDropDownIconButton(menu: {
-                        ForEach([(true, "Folders on top"), (false, "Alphabetically")], id: \.0) { value, title in
-                            Toggle(title, isOn: Binding(get: {
-                                projectNavigatorViewModel.sortFoldersOnTop == value
-                            }, set: { _ in
-                                // Avoid calling the handleFilterChange method
-                                if projectNavigatorViewModel.sortFoldersOnTop != value {
-                                    projectNavigatorViewModel.sortFoldersOnTop = value
-                                }
-                            }))
-                        }
-                    }, isOn: !projectNavigatorViewModel.navigatorFilter.isEmpty)
-                    .padding(.leading, 4)
-                    .foregroundStyle(
-                        projectNavigatorViewModel.navigatorFilter.isEmpty
-                        ? Color(nsColor: .secondaryLabelColor)
-                        : Color(nsColor: .controlAccentColor)
-                    )
-                    .help("Show files with matching name")
-                },
-                trailingAccessories: {
-                    HStack(spacing: 0) {
-                        Toggle(isOn: $recentsFilter) {
-                            Image(systemName: "clock")
-                        }
-                        .help("Show only recent files")
-                        Toggle(isOn: $projectNavigatorViewModel.sourceControlFilter) {
-                            Image(systemName: "plusminus.circle")
-                        }
-                        .help("Show only files with source-control status")
-                    }
-                    .toggleStyle(.icon(font: .system(size: 14), size: CGSize(width: 18, height: 20)))
-                    .padding(.trailing, 2.5)
-                },
-                clearable: true,
-                hasValue: !projectNavigatorViewModel.navigatorFilter.isEmpty
+        NavigatorFilterView(
+            text: $projectNavigatorViewModel.navigatorFilter,
+            hasValue: {
+                !projectNavigatorViewModel.navigatorFilter.isEmpty
                     || recentsFilter
                     || projectNavigatorViewModel.sourceControlFilter
-            )
+            },
+            menu: { addNewFileButton },
+            leadingAccessories: { leadingAccessories },
+            trailingAccessories: { trailingAccessories }
+        )
+    }
+
+    @ViewBuilder private var leadingAccessories: some View {
+        FilterDropDownIconButton(menu: {
+            ForEach([(true, "Folders on top"), (false, "Alphabetically")], id: \.0) { value, title in
+                Toggle(title, isOn: Binding(get: {
+                    projectNavigatorViewModel.sortFoldersOnTop == value
+                }, set: { _ in
+                    // Avoid calling the handleFilterChange method
+                    if projectNavigatorViewModel.sortFoldersOnTop != value {
+                        projectNavigatorViewModel.sortFoldersOnTop = value
+                    }
+                }))
+            }
+        }, isOn: !projectNavigatorViewModel.navigatorFilter.isEmpty)
+        .padding(.leading, 4)
+        .foregroundStyle(
+            projectNavigatorViewModel.navigatorFilter.isEmpty
+            ? Color(nsColor: .secondaryLabelColor)
+            : Color(nsColor: .controlAccentColor)
+        )
+        .help("Show files with matching name")
+    }
+
+    @ViewBuilder private var trailingAccessories: some View {
+        HStack(spacing: 0) {
+            Toggle(isOn: $recentsFilter) {
+                Image(systemName: "clock")
+            }
+            .help("Show only recent files")
+            Toggle(isOn: $projectNavigatorViewModel.sourceControlFilter) {
+                Image(systemName: "plusminus.circle")
+            }
+            .help("Show only files with source-control status")
         }
-        .padding(.horizontal, 5)
-        .frame(height: 28, alignment: .center)
-        .frame(maxWidth: .infinity)
-        .overlay(alignment: .top) {
-            Divider()
-        }
+        .toggleStyle(.icon(font: .system(size: 14), size: CGSize(width: 18, height: 20)))
+        .padding(.trailing, 2.5)
     }
 
     /// Retrieves the active tab URL from the underlying editor instance, if theres no
@@ -107,7 +103,7 @@ struct ProjectNavigatorToolbarBottom: View {
         return workspaceFileManager.unsafelyUnwrapped.folderUrl
     }
 
-    private var addNewFileButton: some View {
+    @ViewBuilder private var addNewFileButton: some View {
         Menu {
             Button("Add File") {
                 let filePathURL = activeTabURL()
@@ -168,30 +164,5 @@ struct ProjectNavigatorToolbarBottom: View {
         }
         .buttonStyle(.plain)
         .opacity(activeState == .inactive ? 0.45 : 1)
-    }
-}
-
-struct FilterDropDownIconButton<MenuView: View>: View {
-    @Environment(\.controlActiveState)
-    private var activeState
-
-    var menu: () -> MenuView
-
-    var isOn: Bool?
-
-    var body: some View {
-        Menu { menu() } label: {}
-            .background {
-                if isOn == true {
-                    Image(ImageResource.line3HorizontalDecreaseChevronFilled)
-                        .foregroundStyle(.tint)
-                } else {
-                    Image(ImageResource.line3HorizontalDecreaseChevron)
-                }
-            }
-            .menuStyle(.borderlessButton)
-            .menuIndicator(.hidden)
-            .frame(width: 26, height: 13)
-            .clipShape(.rect(cornerRadius: 6.5))
     }
 }

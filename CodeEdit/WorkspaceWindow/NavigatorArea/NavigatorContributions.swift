@@ -14,4 +14,5 @@ struct ProjectNavigatorContribution: WorkspacePanelContribution {
     let title = "Project"
     let systemImage = "folder"
     var content: AnyView { AnyView(ProjectNavigatorView()) }
+    var bottomView: AnyView? { AnyView(ProjectNavigatorToolbarBottom()) }
 }

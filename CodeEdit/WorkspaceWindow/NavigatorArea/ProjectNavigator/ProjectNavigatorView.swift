@@ -17,8 +17,5 @@ import SwiftUI
 struct ProjectNavigatorView: View {
     var body: some View {
         ProjectNavigatorOutlineView()
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                ProjectNavigatorToolbarBottom()
-            }
     }
 }

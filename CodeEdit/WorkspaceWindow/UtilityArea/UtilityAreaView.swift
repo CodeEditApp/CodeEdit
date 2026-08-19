@@ -16,7 +16,8 @@ struct UtilityAreaView: View {
             selectedTabID: $utilityAreaViewModel.selectedTabID,
             tabItems: $utilityAreaViewModel.tabItems,
             sidebarPosition: .side,
-            darkDivider: true
+            darkDivider: true,
+            padSideItemVertically: true
         )
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Utility Area")

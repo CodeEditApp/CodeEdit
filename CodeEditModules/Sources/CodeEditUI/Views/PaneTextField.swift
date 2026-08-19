@@ -122,7 +122,6 @@ public struct PaneTextField<LeadingAccessories: View, TrailingAccessories: View>
                 .disabled(true)
                 .edgesIgnoringSafeArea(.all)
         )
-
         .onTapGesture {
             isFocused = true
         }

@@ -31,4 +31,9 @@ public struct SourceControlNavigatorContribution: WorkspacePanelContribution {
     }
 
     public var content: AnyView { AnyView(SourceControlNavigatorView(navigator: navigator)) }
+
+    /// The toolbar reads both source-control models. It no longer injects them itself: the bar is
+    /// rendered by the panel, which sits inside the navigator subtree that
+    /// `CodeEditSplitViewController` already supplies them to.
+    public var bottomView: AnyView? { AnyView(SourceControlNavigatorToolbarBottom()) }
 }

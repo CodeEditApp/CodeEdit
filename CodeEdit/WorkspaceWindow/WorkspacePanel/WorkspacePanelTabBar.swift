@@ -19,7 +19,7 @@ struct WorkspacePanelTabBar: View {
     @State private var tabWidth: [String: CGFloat] = [:]
     @State private var tabOffsets: [String: CGFloat] = [:]
 
-    /// The id of the tab currently being dragged.
+    /// The tab currently being dragged.
     ///
     /// It will be `nil` when there is no tab dragged currently.
     @State private var draggingTabID: String?
@@ -43,26 +43,35 @@ struct WorkspacePanelTabBar: View {
         }
     }
 
-    var topBody: some View {
+    @ViewBuilder var topBody: some View {
         GeometryReader { proxy in
             iconsView(size: proxy.size)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .animation(.default, value: items.map(\.id))
         }
         .clipped()
-        .frame(maxWidth: .infinity, idealHeight: 27)
+        .if(.tahoe) {
+            $0.frame(maxWidth: .infinity, idealHeight: 28).padding(.horizontal, 8)
+        } else: {
+            $0.frame(maxWidth: .infinity, idealHeight: 27)
+        }
         .fixedSize(horizontal: false, vertical: true)
     }
 
-    var sideBody: some View {
+    @ViewBuilder var sideBody: some View {
         GeometryReader { proxy in
             iconsView(size: proxy.size)
-                .padding(.vertical, 5)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .if(!.tahoe) {
+                    $0.padding(.vertical, 5).frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
                 .animation(.default, value: items.map(\.id))
         }
         .clipped()
-        .frame(idealWidth: 40, maxHeight: .infinity)
+        .if(.tahoe) {
+            $0.frame(idealWidth: 26, maxHeight: .infinity)
+        } else: {
+            $0.frame(idealWidth: 40, maxHeight: .infinity)
+        }
         .fixedSize(horizontal: true, vertical: false)
     }
 
@@ -71,50 +80,79 @@ struct WorkspacePanelTabBar: View {
         let layout = position == .top
             ? AnyLayout(HStackLayout(spacing: 0))
             : AnyLayout(VStackLayout(spacing: 0))
+
         layout {
-            ForEach(items, id: \.id) { tab in
-                makeIcon(tab: tab, size: size)
-                    .offset(
-                        x: (position == .top) ? (tabOffsets[tab.id] ?? 0) : 0,
-                        y: (position == .side) ? (tabOffsets[tab.id] ?? 0) : 0
-                    )
-                    .background(makeTabItemGeometryReader(tab: tab))
-                    .simultaneousGesture(makeAreaTabDragGesture(tab: tab))
+            if #available(macOS 26, *) {
+                ForEach(Array(items.enumerated()), id: \.element.id) { (idx, tab) in
+                    tabViewTahoe(tab, next: items[safe: idx + 1], size: size)
+                }
+            } else {
+                ForEach(items, id: \.id) { tab in
+                    tabView(tab, size: size)
+                }
             }
-            if position == .side {
+
+            if position == .side, #unavailable(macOS 26) {
                 Spacer()
             }
         }
+        .if(.tahoe) {
+            if #available(macOS 14.0, *) {
+                $0.background(GlassEffectView(tintColor: .secondarySystemFill)).clipShape(Capsule())
+            }
+        }
     }
 
-    private func makeIcon(
-        tab: any WorkspacePanelContribution,
-        scale: Image.Scale = .medium,
+    @ViewBuilder
+    private func tabView(_ tab: any WorkspacePanelContribution, size: CGSize) -> some View {
+        IconButton(tab: tab, size: size, position: position, selectionID: $selectionID)
+            .offset(
+                x: (position == .top) ? (tabOffsets[tab.id] ?? 0) : 0,
+                y: (position == .side) ? (tabOffsets[tab.id] ?? 0) : 0
+            )
+            .background(makeTabItemGeometryReader(tab: tab))
+            .simultaneousGesture(makeAreaTabDragGesture(tab: tab))
+    }
+
+    @available(macOS 26, *)
+    @ViewBuilder
+    private func tabViewTahoe(
+        _ tab: any WorkspacePanelContribution,
+        next: (any WorkspacePanelContribution)?,
         size: CGSize
     ) -> some View {
-        Button {
-            selectionID = tab.id
-        } label: {
-            getSafeImage(named: tab.systemImage, accessibilityDescription: tab.title)
-                .font(.system(size: 12.5))
-                .symbolVariant(tab.id == selectionID ? .fill : .none)
-                .help(tab.title)
-        }
-        .buttonStyle(
-            .icon(
-                isActive: tab.id == selectionID,
-                size: CGSize(
-                    width: position == .side ? 40 : 24,
-                    height: position == .side ? 28 : size.height
-                )
-            )
-        )
-        .focusable(false)
-        .accessibilityIdentifier("WorkspacePanelTab-\(tab.title)")
-        .accessibilityLabel(tab.title)
-    }
+        let layout = position == .top
+            ? AnyLayout(HStackLayout(spacing: 0))
+            : AnyLayout(VStackLayout(spacing: 0))
+        let paddingDirection: Edge.Set = position == .top
+            ? .vertical
+            : .horizontal
+        let paddingAmount: CGFloat = position == .top
+            ? 5
+            : 2
 
-    private func makeAreaTabDragGesture(tab: any WorkspacePanelContribution) -> some Gesture {
+        IconButton(tab: tab, size: size, position: position, selectionID: $selectionID)
+            .offset(
+                x: (position == .top) ? (tabOffsets[tab.id] ?? 0) : 0,
+                y: (position == .side) ? (tabOffsets[tab.id] ?? 0) : 0
+            )
+            .background(makeTabItemGeometryReader(tab: tab))
+            .simultaneousGesture(makeAreaTabDragGesture(tab: tab))
+            .overlay { // overlay to avoid layout adjustment when appearing/disappearing
+                layout {
+                    Spacer()
+                    if tab.id != items.last?.id && selectionID != tab.id && next?.id != selectionID {
+                        Divider().padding(paddingDirection, paddingAmount)
+                    }
+                }
+            }
+    }
+}
+
+// MARK: - Drag Gesture
+
+private extension WorkspacePanelTabBar {
+    func makeAreaTabDragGesture(tab: any WorkspacePanelContribution) -> some Gesture {
         DragGesture(minimumDistance: 2, coordinateSpace: .global)
             .onChanged({ value in
                 if draggingTabID != tab.id {
@@ -170,7 +208,7 @@ struct WorkspacePanelTabBar: View {
             })
     }
 
-    private func initializeDragGesture(value: DragGesture.Value, for tab: any WorkspacePanelContribution) {
+    func initializeDragGesture(value: DragGesture.Value, for tab: any WorkspacePanelContribution) {
         draggingTabID = tab.id
         let initialLocation = position == .top ? value.startLocation.x : value.startLocation.y
         draggingStartLocation = initialLocation
@@ -183,7 +221,7 @@ struct WorkspacePanelTabBar: View {
     }
 
     // swiftlint:disable:next function_parameter_count
-    private func swapTab(
+    func swapTab(
         tab: any WorkspacePanelContribution,
         currentIndex: Int,
         currentLocation: CGFloat,
@@ -234,7 +272,7 @@ struct WorkspacePanelTabBar: View {
         }
     }
 
-    private func isWithinPrevTopBounds(
+    func isWithinPrevTopBounds(
         _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat
     ) -> Bool {
         return curLocation < max(
@@ -243,7 +281,7 @@ struct WorkspacePanelTabBar: View {
         )
     }
 
-    private func isWithinNextTopBounds(
+    func isWithinNextTopBounds(
         _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat, _ curWidth: CGFloat
     ) -> Bool {
         return curLocation > min(
@@ -252,7 +290,7 @@ struct WorkspacePanelTabBar: View {
         )
     }
 
-    private func isWithinPrevBottomBounds(
+    func isWithinPrevBottomBounds(
         _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat
     ) -> Bool {
         return curLocation < max(
@@ -261,7 +299,7 @@ struct WorkspacePanelTabBar: View {
         )
     }
 
-    private func isWithinNextBottomBounds(
+    func isWithinNextBottomBounds(
         _ curLocation: CGFloat, _ swapLocation: CGRect, _ swapWidth: CGFloat, _ curWidth: CGFloat
     ) -> Bool {
         return curLocation > min(
@@ -270,7 +308,7 @@ struct WorkspacePanelTabBar: View {
         )
     }
 
-    private func makeTabItemGeometryReader(tab: any WorkspacePanelContribution) -> some View {
+    func makeTabItemGeometryReader(tab: any WorkspacePanelContribution) -> some View {
         GeometryReader { geometry in
             Rectangle()
                 .foregroundColor(.clear)
@@ -286,13 +324,12 @@ struct WorkspacePanelTabBar: View {
                 }
         }
     }
+}
 
-    private func getSafeImage(named: String, accessibilityDescription: String?) -> Image {
-        // We still use the NSImage init to check if a symbol with the name exists.
-        if NSImage(systemSymbolName: named, accessibilityDescription: nil) != nil {
-            return Image(systemName: named)
-        } else {
-            return Image(symbol: named)
-        }
+/// Bounds-checked lookup, for the Tahoe tab bar's peek at the following tab when deciding whether to
+/// draw a divider.
+private extension Collection {
+    subscript(safe index: Index) -> Element? {
+        indices.contains(index) ? self[index] : nil
     }
 }

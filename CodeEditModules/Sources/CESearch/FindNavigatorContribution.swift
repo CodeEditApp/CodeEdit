@@ -27,6 +27,8 @@ public struct FindNavigatorContribution: WorkspacePanelContribution {
     public init() {}
 
     public var content: AnyView { AnyView(FindNavigatorContentView()) }
+
+    public var bottomView: AnyView? { AnyView(FindNavigatorToolbarBottom()) }
 }
 
 /// Reads the settings the find navigator needs, so the contribution itself stays a plain value.

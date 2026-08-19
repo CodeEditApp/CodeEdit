@@ -30,8 +30,16 @@ struct NavigatorAreaView: View {
             viewModel: viewModel,
             selectedTabID: $viewModel.selectedTabID,
             tabItems: $viewModel.tabItems,
-            sidebarPosition: sidebarPosition
+            sidebarPosition: sidebarPosition,
+            sidebarPadding: {
+                if sidebarPosition == .side {
+                    return (.trailing, 8)
+                }
+
+                return ([], 0)
+            }
         )
+        .listStyle(.inset)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("navigator")
     }
