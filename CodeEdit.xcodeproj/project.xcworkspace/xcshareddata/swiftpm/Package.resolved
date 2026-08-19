@@ -229,7 +229,7 @@
     {
       "identity" : "swiftlintplugin",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/lukepistrol/SwiftLintPlugin",
+      "location" : "https://github.com/lukepistrol/SwiftLintPlugin.git",
       "state" : {
         "revision" : "3780efccceaa87f17ec39638a9d263d0e742b71c",
         "version" : "0.59.1"
@@ -258,8 +258,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
       "state" : {
-        "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
-        "version" : "1.3.0"
+        "revision" : "668a65735751432b640260c56dfa621cec568368",
+        "version" : "1.2.0"
       }
     },
     {
