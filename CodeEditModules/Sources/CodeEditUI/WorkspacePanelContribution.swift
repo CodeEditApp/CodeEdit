@@ -57,3 +57,22 @@ public extension WorkspacePanelContribution {
     /// Most tabs have no bottom bar.
     @MainActor var bottomView: AnyView? { nil }
 }
+
+public extension Collection where Element == any WorkspacePanelContribution {
+    /// The selection that should be in effect for this list, given the one currently stored.
+    ///
+    /// Keeps `current` when it still names a tab here, and otherwise falls back to the first — or to
+    /// `nil` when there are no tabs at all.
+    ///
+    /// A panel's tab list is not fixed: the inspector rebuilds it when a setting changes, and any
+    /// panel's list changes when an extension is enabled or disabled. Without this, a selection
+    /// pointing at a tab that has just gone away leaves the panel reading "No Selection" until the
+    /// user clicks something — the stored id is stale rather than absent, so nothing recovers on its
+    /// own.
+    func reconcilingSelection(_ current: String?) -> String? {
+        if let current, contains(where: { $0.id == current }) {
+            return current
+        }
+        return first?.id
+    }
+}

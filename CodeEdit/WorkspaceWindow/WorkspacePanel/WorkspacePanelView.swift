@@ -98,6 +98,13 @@ struct WorkspacePanelView<ViewModel: ObservableObject>: View {
         .if(.tahoe) {
             $0.clipped()
         }
+        // The tab list is rebuilt at runtime, so a selection can outlive the tab it names.
+        .onAppear {
+            selectedTabID = tabItems.reconcilingSelection(selectedTabID)
+        }
+        .onChange(of: tabItems.map(\.id)) { _, _ in
+            selectedTabID = tabItems.reconcilingSelection(selectedTabID)
+        }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             if #available(macOS 26, *), let selection = selectedTab {
                 selection.bottomView
