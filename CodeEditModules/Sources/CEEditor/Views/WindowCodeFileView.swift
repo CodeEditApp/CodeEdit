@@ -14,7 +14,7 @@ import SwiftUI
 /// # Should **not** be used other than in a single file window.
 public struct WindowCodeFileView: View {
     @StateObject var editorInstance: EditorInstance
-    @StateObject var undoRegistration: UndoManagerRegistration = UndoManagerRegistration()
+    @StateObject var undoRegistry: UndoManagerRegistry = UndoManagerRegistry()
     var codeFile: CodeFileDocument
 
     public init(codeFile: CodeFileDocument) {
@@ -33,7 +33,7 @@ public struct WindowCodeFileView: View {
     public var body: some View {
         if let utType = codeFile.utType, utType.conforms(to: .text) {
             CodeFileView(editorInstance: editorInstance, codeFile: codeFile, languageServices: languageServices)
-                .environmentObject(undoRegistration)
+                .environmentObject(undoRegistry)
         } else {
             NonTextFileView(fileDocument: codeFile)
         }

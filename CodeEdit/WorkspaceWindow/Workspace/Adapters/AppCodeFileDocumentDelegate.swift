@@ -45,7 +45,7 @@ final class AppCodeFileDocumentDelegate: CodeFileDocumentDelegate {
     }
 
     func undoManager(forFile url: URL) -> CEUndoManager? {
-        windowManager.workspace(containing: url)?.undoRegistration.managerIfExists(forFile: url)
+        windowManager.workspace(containing: url)?.undoRegistry.managerIfExists(forFile: url)
     }
 
     func makeWindowContentView(for document: CodeFileDocument) -> NSView {

@@ -14,7 +14,7 @@ public struct FilePreviewView: View {
 
     @StateObject private var editorInstance: EditorInstance
     @StateObject private var document: CodeFileDocument
-    @StateObject private var undoRegistration = UndoManagerRegistration()
+    @StateObject private var undoRegistry = UndoManagerRegistry()
 
     public init(item: CEWorkspaceFile) {
         self.item = item
@@ -38,7 +38,7 @@ public struct FilePreviewView: View {
                 languageServices: languageServices,
                 isEditable: false
             )
-                .environmentObject(undoRegistration)
+                .environmentObject(undoRegistry)
         } else {
             NonTextFileView(fileDocument: document)
         }

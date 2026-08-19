@@ -47,11 +47,11 @@ enum WorkspaceFactory {
             workspaceURL: url,
             eventBus: eventBus
         )
-        let undoRegistration = UndoManagerRegistration()
+        let undoRegistry = UndoManagerRegistry()
 
         // Observer registration
-        workspaceFileManager.addObserver(undoRegistration)
-        undoRegistration.editorManager = editorManager
+        workspaceFileManager.addObserver(undoRegistry)
+        undoRegistry.editorManager = editorManager
 
         let workspace = Workspace(
             fileURL: url,
@@ -64,7 +64,7 @@ enum WorkspaceFactory {
             taskManager: taskManager,
             workspaceSettingsManager: workspaceSettingsManager,
             statePersistence: statePersistence,
-            undoRegistration: undoRegistration,
+            undoRegistry: undoRegistry,
             projectNavigatorViewModel: ProjectNavigatorViewModel(),
             securityScopedURL: securityScopedURL
         )

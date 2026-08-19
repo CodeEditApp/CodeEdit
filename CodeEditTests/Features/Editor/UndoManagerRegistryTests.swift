@@ -1,5 +1,5 @@
 //
-//  UndoManagerRegistrationTests.swift
+//  UndoManagerRegistryTests.swift
 //  CodeEditTests
 //
 //  Created by Khan Winter on 7/3/25.
@@ -14,8 +14,8 @@ import CodeEditTextView
 
 @MainActor
 @Suite
-struct UndoManagerRegistrationTests {
-    let registrar = UndoManagerRegistration()
+struct UndoManagerRegistryTests {
+    let registrar = UndoManagerRegistry()
     let file = CEWorkspaceFile(url: URL(filePath: "/fake/dir/file.txt"))
     let textView = TextView(string: "hello world")
 

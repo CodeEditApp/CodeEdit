@@ -33,7 +33,7 @@ final class Workspace {
     let taskManager: TaskManager
     let workspaceSettingsManager: CEWorkspaceSettings
     let statePersistence: WorkspaceStatePersistence
-    let undoRegistration: UndoManagerRegistration
+    let undoRegistry: UndoManagerRegistry
 
     // Navigator-coupled — stays until the Navigator feature is packaged
     // (consumed by the ProjectNavigator AppKit cluster and by-workspace command paths).
@@ -60,7 +60,7 @@ final class Workspace {
         taskManager: TaskManager,
         workspaceSettingsManager: CEWorkspaceSettings,
         statePersistence: WorkspaceStatePersistence,
-        undoRegistration: UndoManagerRegistration,
+        undoRegistry: UndoManagerRegistry,
         projectNavigatorViewModel: ProjectNavigatorViewModel,
         securityScopedURL: URL?
     ) {
@@ -74,7 +74,7 @@ final class Workspace {
         self.taskManager = taskManager
         self.workspaceSettingsManager = workspaceSettingsManager
         self.statePersistence = statePersistence
-        self.undoRegistration = undoRegistration
+        self.undoRegistry = undoRegistry
         self.projectNavigatorViewModel = projectNavigatorViewModel
         self.securityScopedURL = securityScopedURL
     }

@@ -67,7 +67,7 @@ struct CodeFileView: View {
     @Environment(\.colorScheme)
     private var colorScheme
 
-    @EnvironmentObject var undoRegistration: UndoManagerRegistration
+    @EnvironmentObject var undoRegistry: UndoManagerRegistry
 
     @EnvironmentObject private var activeTheme: ActiveTheme
 
@@ -172,7 +172,7 @@ struct CodeFileView: View {
                 }
             ),
             highlightProviders: highlightProviders,
-            undoManager: undoRegistration.manager(forFile: editorInstance.file),
+            undoManager: undoRegistry.manager(forFile: editorInstance.file),
             coordinators: textViewCoordinators
         )
         // This view needs to refresh when the codefile changes. The file URL is too stable.

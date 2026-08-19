@@ -1,5 +1,5 @@
 //
-//  UndoManagerRegistration.swift
+//  UndoManagerRegistry.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 6/27/25.
@@ -17,7 +17,7 @@ import CodeEditTextView
 /// - `CEWorkspaceFile` can be refreshed and reloaded at any point.
 /// - `CodeFileDocument` is released once there are no editors viewing it.
 /// Undo stacks need to be retained for the duration of a workspace session, enduring editor closes..
-public final class UndoManagerRegistration: ObservableObject {
+public final class UndoManagerRegistry: ObservableObject {
     private var managerMap: [String: CEUndoManager] = [:]
 
     /// Used to check whether a file still has an open document. Wired by `WorkspaceFactory`.
@@ -53,7 +53,7 @@ public final class UndoManagerRegistration: ObservableObject {
     }
 }
 
-extension UndoManagerRegistration: WorkspaceFileObserver {
+extension UndoManagerRegistry: WorkspaceFileObserver {
     /// Managers need to be cleared when the following is true:
     /// - The file is not open in any editors
     /// - The file is updated externally

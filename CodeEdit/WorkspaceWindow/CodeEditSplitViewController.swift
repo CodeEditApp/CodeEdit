@@ -147,7 +147,7 @@ final class CodeEditSplitViewController: NSSplitViewController {
                     .environmentObject(workspace.taskManager)
                     .environmentObject(workspace.sourceControlManager)
                     .environmentObject(workspace.sourceControlViewModel)
-                    .environmentObject(workspace.undoRegistration)
+                    .environmentObject(workspace.undoRegistry)
                     .environmentObject(notificationPanel)
                     .environment(\.workspaceFileManager, workspace.workspaceFileManager)
                     .environment(\.workspaceFileProvider, workspace.workspaceFileManager)
