@@ -175,8 +175,11 @@ Work through these in order; the first match wins.
    features' tabs and has no single owner, so it stays app-side; a *tab* is one feature's own
    UI and belongs in that feature's package — `CESearch` owns `FindNavigatorContribution` for
    exactly this reason (see [Panel tab contributions](#panel-tab-contributions)). The only
-   permanent app-side tab is `ProjectNavigatorContribution`, because the project navigator has
-   no owning package to move to, not because it is a tab.
+   app-side tabs that stay are the ones with no owning package to move to —
+   `ProjectNavigatorContribution`, `FileInspectorContribution`,
+   `InternalDevelopmentInspectorContribution`, `DebugConsoleUtilityContribution` and
+   `OutputUtilityContribution`. `TerminalUtilityContribution` is the one expected to move, to
+   `CETerminal`. None of them stays because it is a tab.
 2. **A type, protocol, event, or command interface needed by two or more features?** →
    `CodeEditModules/Sources/CodeEditCore`, *if* it passes the charter (no UI imports, no
    external dependencies). Events (facts, e.g. `TaskNotificationEvent`) and command interfaces
@@ -228,8 +231,14 @@ a move possible. Rewrite the helper, or mirror it locally, instead.
 Grouping is **purpose-first**:
 
 - Group by sub-feature (`ProjectNavigator/`, `History/`, `StatusBarItems/`, `Toolbar/`), never
-  by kind — there are no `Models/`, `Views/`, `ViewModels/`, `Services/`, or `UseCases/`
+  by kind — the app target has no `Models/`, `Views/`, `ViewModels/`, `Services/` or `UseCases/`
   folders.
+- **The packages do not yet follow this.** `CEEditor`, `CENotifications`, `CESourceControl`,
+  `CETerminal`, `CodeEditSettings` and `CodeEditUI` still group by kind (17 such folders), and
+  `CEEditor/UseCases/` and
+  `CESourceControl/UseCases/` still carry the retired name even though the types inside were
+  renamed to doers (`EditorRestorer`, `RepositoryCloner`). Follow the convention in new code;
+  the existing folders are a pending cleanup, not a counter-precedent.
 - A feature with roughly ten files or fewer stays flat.
 - Shell/entry views and the feature's primary models sit at the feature root.
 - Single-consumer helpers live next to their consumer.
@@ -245,12 +254,68 @@ Grouping is **purpose-first**:
     CodeEditCore, implemented by an app-side adapter.
 - No custom `Notification.Name`s. `NotificationCenter` is only used to observe platform
   notifications (NSWindow, NSApplication, NSMenu).
-- No singletons and no DI container. `AppDependencies` is the app-scope composition root;
-  objects receive dependencies through initializers, SwiftUI views through environment keys
-  (`appServices(_:)`). Only composition roots may hold the whole `AppDependencies`.
+- **No DI container.** `AppDependencies` is the app-scope composition root; objects receive
+  dependencies through initializers, SwiftUI views through environment keys (`appServices(_:)`).
+  Only composition roots may hold the whole `AppDependencies`. A container — ask for a type, get
+  an instance — was removed deliberately: it hides who owns a thing and how long it lives, which
+  is the question this section exists to answer.
+- **Scope determines owner; nothing scoped is reached ambiently.** See
+  [Scopes and ownership](#scopes-and-ownership) below. A `static shared` is legitimate only where
+  the platform constructs the object and no initialiser parameter is available — today that is
+  `CodeFileDocument`, which is why `delegateProvider` is a static closure set at launch. Eight
+  other singletons remain, listed there as known exceptions.
 - No SwiftUI view observes a service directly — services expose a concrete view-state object
   (the presentation-state split), and views issue commands through protocol-typed environment
   keys.
+
+### Scopes and ownership
+
+Four lifetimes exist. Each has an owner, and a type belongs to the narrowest one that fits.
+
+| Scope | Owner | Examples |
+| --- | --- | --- |
+| Process | `AppDependencies` | `eventBus`, `lspService`, `settingsStore`, `workspaceWindowManager` |
+| Workspace | `Workspace` | `editorManager`, `workspaceFileManager`, `sourceControlManager`, `taskManager` |
+| Window | `CodeEditWindowController` | `utilityAreaModel`, `statusBarViewModel`, `notificationPanel`, `openQuicklyViewModel` |
+| Document | `CodeFileDocument` | per-file editing state |
+
+Window scope is not a subdivision of workspace scope: two windows may show one project, and their
+utility areas, status bars and palettes must not be shared. That is why window-UI state lives on
+`CodeEditWindowController` and not on `Workspace`.
+
+Document scope is where the platform pushes back. `NSDocument` subclasses are created by the
+document architecture, not by us, so no initialiser parameter is available — hence
+`CodeFileDocument.delegateProvider`, a static closure set at launch. That is the shape of a
+legitimate exception: the platform owns construction.
+
+**Note on idiom:** "no singletons" is not the goal and never was. Apple's own frameworks are full of
+them (`NSApplication.shared`, `FileManager.default`, `NSDocumentController.shared`). What was
+removed was a *container*. A `shared` is a problem here only when it gives ambient access to
+something whose lifetime is narrower than the process, or when it hides an owner that could hold it.
+
+#### Known exceptions (2026-08-16)
+
+Eight singletons remain. None is load-bearing; each is listed with the scope it actually has.
+
+| Singleton | True scope | Note |
+| --- | --- | --- |
+| `ThemeModel` | process | already takes its settings store via `configure(_:)` at launch |
+| `FeedbackModel` | process | ditto |
+| `SearchSettingsModel` | process | ditto |
+| `ExtensionManager` | process | |
+| `ExtensionDiscovery` | process | |
+| `InternalDevelopmentOutputSource` | process | debug-only |
+| `EditorStateRestoration` | process | a GRDB database; `nonisolated(unsafe)` and optional |
+| `TerminalCache` | **workspace** | see below |
+
+The first seven are process-scoped services that simply have not moved to `AppDependencies`; doing
+so is mechanical and changes no behaviour.
+
+`TerminalCache` is different, and is the one worth fixing rather than relocating. It is a
+process-global `[UUID: CELocalShellTerminalView]` holding views that belong to a workspace window.
+Eviction is per-terminal only — nothing clears it when a workspace or window closes — so two open
+projects share one bag of live terminal views. It works because UUIDs do not collide, but the
+lifetime is wrong, and a wrong lifetime surfaces as a leak rather than as a compile error.
 
 ## Panel tab contributions
 
@@ -299,9 +364,11 @@ rather than duplicating the literal, so there is exactly one source of truth eve
 still needs a compile-checked constant to select the tab by.
 
 `ProjectNavigatorContribution` (`CodeEdit/WorkspaceWindow/NavigatorArea/NavigatorContributions.swift`)
-is the one contribution that stays app-side permanently — not because it is a tab (see the
+stays app-side — not because it is a tab (see the
 [chrome exemption correction](#where-does-my-code-go)) but because the project navigator has no
-owning package to move to.
+owning package to move to. The same holds for the file inspector, the internal-development
+inspector, and the debug and output utility tabs. `TerminalUtilityContribution` is the one that
+should move, to `CETerminal`; it has not because it is coupled to app-side utility-area chrome.
 
 `CESourceControl` is the second feature package to own a panel tab, after `CESearch`.
 `SourceControlNavigatorContribution` and `GitHistoryInspectorContribution`
@@ -345,7 +412,7 @@ so a caller changing one field reads its section, mutates it and writes it back.
   addresses a section field through the app-wide `SettingsData` façade instead of naming one
   section directly. There is no `Settings.shared` singleton any more — `PersistentSettingsStore`
   (owned by `AppDependencies`) is the concrete store, injected like everything else. `@AppSettings`
-  is what 29 app-target files still use (46 declarations); feature packages must not use it, and
+  is what 24 app-target files still use (40 declarations, re-counted 2026-08-16); feature packages must not use it, and
   new app-target code should prefer the seam.
 - **Neither wrapper works in a `Commands` conformer.** `.commands { }` attaches beside a scene's
   content, not inside it, so nothing guarantees the environment `SettingsSceneInjector` supplies
@@ -402,7 +469,9 @@ guard across two bundle mechanisms to satisfy a boundary nothing enforces.
 Two field-level misplacements are **recorded but not fixed**, because both keys live in users'
 `settings.json` and moving a field is a data migration rather than a refactor:
 `GeneralSettings.findNavigatorDetail` is read by `CESearch` (a feature-specific field in a shared
-section), and `SearchSettings.ignoreGlobPatterns` is dead.
+section), and `SearchSettings.ignoreGlobPatterns` is wired to its settings page and persisted but
+never read by `CESearch` — the control works and has no effect, which is worse than dead code
+because nothing looks unused.
 
 ## Creating a new feature target
 
