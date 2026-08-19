@@ -21,6 +21,9 @@ struct CodeEditApp: App {
         ServiceContainer.register(
             LSPService()
         )
+        ServiceContainer.register(
+            CopilotService.shared
+        )
 
         _ = CodeEditDocumentController.shared
         NSMenuItem.swizzle()

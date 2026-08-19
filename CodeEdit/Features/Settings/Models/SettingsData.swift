@@ -53,6 +53,9 @@ struct SettingsData: Codable, Hashable {
     /// Language Server Settings
     var languageServers: LanguageServerSettings = .init()
 
+    /// GitHub Copilot settings
+    var copilot: CopilotSettings = .init()
+
     /// Developer settings for CodeEdit developers
     var developerSettings: DeveloperSettings = .init()
 
@@ -79,6 +82,9 @@ struct SettingsData: Codable, Hashable {
         ) ?? .init()
         self.languageServers = try container.decodeIfPresent(
             LanguageServerSettings.self, forKey: .languageServers
+        ) ?? .init()
+        self.copilot = try container.decodeIfPresent(
+            CopilotSettings.self, forKey: .copilot
         ) ?? .init()
         self.developerSettings = try container.decodeIfPresent(
             DeveloperSettings.self, forKey: .developerSettings
@@ -110,6 +116,10 @@ struct SettingsData: Codable, Hashable {
             LocationsSettings().searchKeys.forEach { settings.append(.init(name, isSetting: true, settingName: $0)) }
         case .languageServers:
             LanguageServerSettings().searchKeys.forEach {
+                settings.append(.init(name, isSetting: true, settingName: $0))
+            }
+        case .copilot:
+            CopilotSettings().searchKeys.forEach {
                 settings.append(.init(name, isSetting: true, settingName: $0))
             }
         case .developer:

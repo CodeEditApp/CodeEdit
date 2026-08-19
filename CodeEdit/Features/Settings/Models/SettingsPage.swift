@@ -33,6 +33,7 @@ struct SettingsPage: Hashable, Equatable, Identifiable {
         case location = "Locations"
         case advanced = "Advanced"
         case languageServers = "Language Servers"
+        case copilot = "GitHub Copilot"
         case developer = "Developer"
     }
 

@@ -94,6 +94,13 @@ struct SettingsView: View {
         ),
         .init(
             SettingsPage(
+                .copilot,
+                baseColor: Color(hex: "#24292F"), // GitHub dark
+                icon: .system("sparkles")
+            )
+        ),
+        .init(
+            SettingsPage(
                 .developer,
                 baseColor: .pink,
                 icon: .system("bolt")
@@ -200,6 +207,8 @@ struct SettingsView: View {
                     LocationsSettingsView()
                 case .languageServers:
                     LanguageServersView()
+                case .copilot:
+                    CopilotSettingsView()
                 case .developer:
                     DeveloperSettingsView()
                 default:
