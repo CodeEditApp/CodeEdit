@@ -1,5 +1,5 @@
 //
-//  ThemePreferencesView.swift
+//  ThemeSettingsView.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 30.03.22.
