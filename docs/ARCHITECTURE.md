@@ -1,8 +1,7 @@
 # CodeEdit Architecture Guide
 
-This guide explains how the codebase is organized and — most importantly — **where new code
-goes**. CI enforces the rules described here (see [Enforcement](#enforcement)), so reading this
-before you add files will save you a failed check.
+This guide explains how the codebase is organized and, most importantly, **where new code
+goes**. The CI enforces the rules described here (see [Enforcement](#enforcement)), so reading this before you add files will save you a failed check.
 
 ## Package topology
 
@@ -31,20 +30,18 @@ CodeEdit.xcworkspace
 
 Each library target publishes a like-named `.library` product, and the app target links the ones
 it needs. Inside the manifest, targets reference each other by bare name, so the whole graph is
-legible in a single file — which is the point. See
+legible in a single file, which is the point. See
 [History](#history-why-the-2022-module-split-failed) for what the previous arrangement cost.
 
 Naming: `CodeEdit*` marks substrate peer-named with the external CodeEdit libraries
 (`CodeEditSourceEditor`, `CodeEditSymbols`, …); `CE*` marks app-internal feature contexts,
-peer-named with the `CE*` domain types. Apply `CE` only where the bare name would collide with a
-stdlib/SwiftUI/AppKit/vendor type — it is a collision-avoider, not a namespace.
+peer-named with the `CE*` domain types. Apply `CE` only where the bare name would collide with a stdlib/SwiftUI/AppKit/vendor type, it is a collision-avoider, not a namespace.
 
 Every target builds with Swift 6 strict concurrency **except `CEEditor`**, which declares
-`.swiftLanguageMode(.v5)` and is the sole exception. The app target is still Swift 5 — write new
-app-side code Swift-6-ready, and don't add `@MainActor` to app types whose callers aren't
+`.swiftLanguageMode(.v5)` and is the sole exception. The app target is still Swift 5, write new app-side code Swift-6-ready, and don't add `@MainActor` to app types whose callers aren't
 isolated (it cascades).
 
-## History: why the 2022 module split failed
+## History: Why the 2022 module split failed
 
 The project already tried a single multi-target `CodeEditModules` package. It was deleted on
 2022-12-03 (commit `4858de16`) after repeated cyclic-dependency problems, and everything moved into
@@ -58,38 +55,25 @@ explain them:
 | **Shared UI depended on domain** | `CodeEditUI → WorkspaceClient, Git` |
 | **A god-module hub** | `AppPreferences → CodeEditUI, Git, Keybindings, CodeEditUtils, Sparkle, CodeEditTextView`, itself depended on by half the tree |
 
-With the bottom of the graph pointing up into the top, cycles were the steady state rather than an
-accident. The same manifest split across eleven separate packages fails identically — SwiftPM refuses
-to resolve a cyclic graph either way.
+With the bottom of the graph pointing up into the top, cycles were the steady state rather than an accident. The same manifest split across eleven separate packages fails identically, SwiftPM refuses to resolve a cyclic graph either way.
 
-**`CodeEditCore` is the fix, and it now exists.** Zero dependencies, framework-free, holding domain
-values, the typed `EventBus`, and the cross-feature command interfaces. Every "A and B both need X"
-now resolves *downward*. Both 2022 killers are structurally impossible today: the domain lives in
-`CodeEditCore`, which may import nothing, and `CodeEditUI → Git` is blocked by the `CodeEditUI`
+**`CodeEditCore` is the fix, and it now exists.** Zero dependencies, framework-free, holding domain values, the typed `EventBus`, and the cross-feature command interfaces. Every "A and B both need X" now resolves *downward*. Both 2022 killers are structurally impossible today: the domain lives in `CodeEditCore`, which may import nothing, and `CodeEditUI → Git` is blocked by the `CodeEditUI`
 purity rule.
 
 ### Cycle-resolution playbook
 
-Detection was never the problem — SwiftPM refuses a cyclic target graph as a hard error. The 2022
-failure was that detection had no accompanying *resolution* technique, so the exit taken was to
-collapse everything into the app target. When you hit a cycle, the legal moves, in preference order:
+Detection was never the problem, SwiftPM refuses a cyclic target graph as a hard error. The 2022 failure was that detection had no accompanying *resolution* technique, so the exit taken was to collapse everything into the app target. When you hit a cycle, the legal moves, in preference order:
 
-1. **Push the shared thing down to `CodeEditCore`** — a protocol, an event, or a value type. This is
-   what `EventBus` and the command interfaces (`WorkspaceNavigator`, `TasksConfigurationProviding`, …)
-   are for. The default answer.
-2. **Push the coordination up to the app target** — the app may depend on everything. Two leaf
-   features never need to know each other if a doer wires them (`WorkspaceOpener`, `DocumentOpener`).
-3. **Merge the two targets** — if A and B genuinely will not separate, the boundary was drawn wrong.
-   Merging is a correct outcome, not a defeat; in one package it is a folder move plus a three-line
-   manifest edit.
+1. **Push the shared thing down to `CodeEditCore`** — a protocol, an event, or a value type. This is what `EventBus` and the command interfaces (`WorkspaceNavigator` `TasksConfigurationProviding`, …) are for. The default answer.
+2. **Push the coordination up to the app target** — the app may depend on everything. Two leaf features never need to know each other if a doer wires them (`WorkspaceOpener`, `DocumentOpener`).
+3. **Merge the two targets** — if A and B genuinely will not separate, the boundary was drawn wrong. Merging is a correct outcome, not a defeat; in one package it is a folder move plus a three-line manifest edit.
 
-Never resolve a cycle by moving code back into the app target. That is what happened in 2022 and it
-cost four years of enforced boundaries.
+Never resolve a cycle by moving code back into the app target. That is what happened in 2022 and it cost four years of enforced boundaries.
 
 ## Rules
 
 Three checks are enforced in CI. Each one blocks a specific failure documented in
-[History](#history-why-the-2022-module-split-failed) — none is enforced on principle alone.
+[History](#history-why-the-2022-module-split-failed), none is enforced on principle alone.
 
 1. **`CodeEditCore` purity.** Zero dependencies, local or external. No `SwiftUI`, `AppKit`, or
    `Cocoa` import. Blocks 2022's `WorkspaceClient → TabBar`. The two constraints earn their keep
@@ -141,9 +125,19 @@ previously implied it was enforced. It is not: the SwiftLint rule forbids `Swift
 and nothing more, and `Foundation` — which Core needs for `URL`, `Data` and `Codable`, and which 47
 of its files import — *is* the I/O surface, so an import check cannot express this.
 
-The reason to keep it out anyway: Core stays deterministic and testable with no filesystem, and I/O
-already has a designated home — rule 4 of [Where does my code go?](#where-does-my-code-go) sends
-services to their own target, which is what `CEWorkspaceFileManager` and `ShellClient` are.
+The reason to keep it out anyway is concrete, not decorative. `CodeEditCoreTests` is five files with
+zero use of `FileManager`, `temporaryDirectory` or `Data(contentsOf:)`: Core's tests need no
+filesystem, no temp directories and no cleanup. And I/O already has a designated home, since rule 4
+of [Where does my code go?](#where-does-my-code-go) sends services to their own target, which is what
+`CEWorkspaceFileManager` and `ShellClient` are.
+
+**What the norm actually prevents** (asked 2026-08-20): merging `CEWorkspaceFileManager` into Core.
+That target holds 50 `FileManager` calls and a complete FSEvents implementation, `FSEventStreamCreate`
+with a C callback, its own dispatch queue, and start/stop/invalidate/release. Without this norm the
+merge looks reasonable, because that target depends on nothing but Core and folding it in removes a
+target. With the norm it is obviously wrong: it would put a live filesystem event stream inside the
+dependency sink all twelve targets rest on, and end Core's filesystem-free tests the same day. State
+the norm with this example, not on principle alone.
 
 **`CodeEditDocument` and `CELSP` both stay their own targets** (asked and settled 2026-08-20).
 Neither is a leftover, and the two conclusions depend on each other.
@@ -169,6 +163,15 @@ The abstraction is already sound where it counts: `LanguageServer`, `LSPContentC
 `getLanguage()`. Only `LSPService` itself pins the generic to `CodeFileDocument`. Decoupling that
 would mean making the service generic and forcing `LSPServiceProtocol` to gain an associated type —
 breaking its use as an existential for DI — to delete a five-file target. A bad trade.
+
+**`CEWorkspaceFileManager` stays its own target, and must not merge into Core** (asked and settled
+2026-08-20). The inversion is already in place: Core declares `WorkspaceFileProviding` and
+`WorkspaceFileObserver`, and `CEWorkspaceFileManager.swift:263` is `extension CEWorkspaceFileManager:
+WorkspaceFileProviding {}`. Four `CEEditor` files depend on the *protocol* (`EditorRestorer`,
+`EditorJumpBarMenu`, `EditorLayout+StateRestoration`, the environment key) and **no package imports
+the implementation**. Its 22 consumers are app-side, plus 6 test files. Same shape as `ShellClient`
+below: contract in Core, adapter in its own target, app composes. See the I/O norm above for why the
+merge is worse than it looks.
 
 **`ShellClient` is one file, and stays its own target** (asked and settled 2026-08-16). Size is the
 wrong measure: `ShellClientProtocol` in Core is used by **19 files** across `CESourceControl` and
