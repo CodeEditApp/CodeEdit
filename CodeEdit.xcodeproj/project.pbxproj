@@ -151,6 +151,7 @@
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		816BB1303036109C008206B6 /* ProductIcons */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductIcons; sourceTree = "<group>"; };
 		B624520B2D78A3CC009A86D1 /* CodeEdit */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (B62454482D78A3CC009A86D1 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, B62454492D78A3CC009A86D1 /* PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = CodeEdit; sourceTree = "<group>"; };
 		B624544F2D78A3D3009A86D1 /* Configs */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Configs; sourceTree = "<group>"; };
 		B62454602D78A3D4009A86D1 /* CodeEditUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = CodeEditUITests; sourceTree = "<group>"; };
@@ -239,6 +240,7 @@
 		B658FB2327DA9E0F00EA4DBD = {
 			isa = PBXGroup;
 			children = (
+				816BB1303036109C008206B6 /* ProductIcons */,
 				B624520B2D78A3CC009A86D1 /* CodeEdit */,
 				B62454A32D78A3D4009A86D1 /* CodeEditTests */,
 				B62454602D78A3D4009A86D1 /* CodeEditUITests */,
@@ -308,6 +310,7 @@
 				2BE487F328245162003F3F64 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				816BB1303036109C008206B6 /* ProductIcons */,
 				B624520B2D78A3CC009A86D1 /* CodeEdit */,
 			);
 			name = CodeEdit;

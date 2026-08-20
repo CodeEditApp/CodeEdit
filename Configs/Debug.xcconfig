@@ -8,6 +8,6 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-CE_APPICON_NAME = AppIconDev
+CE_APPICON_NAME = CodeEditDevIcon
 CE_VERSION_POSTFIX = -dev
 CE_COPYRIGHT = Copyright © 2022-2025 CodeEdit
