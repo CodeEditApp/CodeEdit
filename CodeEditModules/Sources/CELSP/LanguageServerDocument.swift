@@ -6,7 +6,6 @@
 //
 
 import AppKit
-import CodeEditDocument
 import CodeEditLanguages
 
 /// A set of properties a language server sets when a document is registered.

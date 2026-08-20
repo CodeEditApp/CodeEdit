@@ -145,6 +145,31 @@ The reason to keep it out anyway: Core stays deterministic and testable with no 
 already has a designated home — rule 4 of [Where does my code go?](#where-does-my-code-go) sends
 services to their own target, which is what `CEWorkspaceFileManager` and `ShellClient` are.
 
+**`CodeEditDocument` and `CELSP` both stay their own targets** (asked and settled 2026-08-20).
+Neither is a leftover, and the two conclusions depend on each other.
+
+`CEEditor` and `CELSP` reference each other **zero times, in either direction**. They are siblings.
+What keeps them apart is `LanguageServicesProvider`, declared in `CodeEditDocument`, implemented by
+`CELSP`'s `AppLanguageServicesProvider`, and consumed by `CEEditor` through an environment key — it
+even ships a `NoOpLanguageServicesProvider`, so the editor works with no language service at all.
+So `CodeEditDocument` is not "the document type plus some bridging": **it is the contract that keeps
+two features independent.** `CodeFileDocument` imports AppKit, SwiftUI and the editor frameworks, so
+it cannot live in Core; two features need it, so it cannot live in either. Its own target is forced,
+not chosen.
+
+`CELSP` is not part of the editor either. Its consumers are the settings UI (installing servers), the
+utility area (reading logs) and app lifecycle — nothing in `CEEditor` imports it — and **28 of its 78
+files are `Registry/`**: package managers, install steps and source parsers for Cargo, NPM, Pip, Go
+and GitHub. That is downloading and installing language servers, not editing text. Folding it into
+`CEEditor` would make a ~130-file target mixing the two.
+
+The abstraction is already sound where it counts: `LanguageServer`, `LSPContentCoordinator`,
+`SemanticTokenHighlightProvider` and `LanguageServerDocumentObjects` are all generic over
+`LanguageServerDocument`, a protocol requiring only `content`, `languageServerURI` and
+`getLanguage()`. Only `LSPService` itself pins the generic to `CodeFileDocument`. Decoupling that
+would mean making the service generic and forcing `LSPServiceProtocol` to gain an associated type —
+breaking its use as an existential for DI — to delete a five-file target. A bad trade.
+
 **`ShellClient` is one file, and stays its own target** (asked and settled 2026-08-16). Size is the
 wrong measure: `ShellClientProtocol` in Core is used by **19 files** across `CESourceControl` and
 `CELSP` — `GitClient`, `SourceControlManager`, `RegistryManager`, all five package managers — and
