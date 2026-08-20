@@ -282,6 +282,11 @@ Grouping is **purpose-first**:
   it asking "is there a button style for this?". Imposing subjects would yield several two-file
   folders; `SplitView/` remains the one genuine subsystem. Two files that were not styles moved out
   of `Styles/`, and `MenuWithButtonStyle` — a `View`, not a `MenuStyle` — became `ButtonStyledMenu`.
+- **All 12 library targets have been reviewed** (2026-08-16/20). Six were regrouped; two are stated
+  exceptions (`CodeEditCore`, `CodeEditUI`); `CodeEditDocument` (5 files) and
+  `CEWorkspaceFileManager` (7) are correctly flat and need nothing; `ShellClient` is one file by
+  design. Two are blocked on decisions rather than effort: `CodeEditSettings` on its naming
+  question, `CESearch` on its rebuild.
 - **8 kind-grouped folders remain**, but only two are work: `CESearch`'s `Model/` and
   `Extensions/`, pending its rebuild. Three are the excluded `CESourceControl/Accounts/`,
   `CodeEditUI/Views` is the exception above, `CELSP/Service` is named after `LSPService` rather
