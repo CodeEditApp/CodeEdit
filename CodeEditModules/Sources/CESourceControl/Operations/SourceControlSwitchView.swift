@@ -1,5 +1,5 @@
 //
-//  SourceControlFetchView.swift
+//  SourceControlSwitchView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 7/9/24.

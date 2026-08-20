@@ -1,5 +1,5 @@
 //
-//  OutlineTableViewCell.swift
+//  ProjectNavigatorTableViewCell.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 07.04.22.

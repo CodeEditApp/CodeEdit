@@ -1,5 +1,5 @@
 //
-//  AccountSettingsView.swift
+//  AccountsSettingsView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 4/4/23.

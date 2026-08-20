@@ -1,5 +1,5 @@
 //
-//  OutlintViewController+OutlineTableViewCellDelegate.swift
+//  ProjectNavigatorViewController+OutlineTableViewCellDelegate.swift
 //  CodeEdit
 //
 //  Created by Ziyuan Zhao on 2023/2/5.

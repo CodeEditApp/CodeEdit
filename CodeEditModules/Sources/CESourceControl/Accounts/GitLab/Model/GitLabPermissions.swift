@@ -1,5 +1,5 @@
 //
-//  Permissions.swift
+//  GitLabPermissions.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Nanashi Li on 2022/03/31.

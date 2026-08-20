@@ -1,5 +1,5 @@
 //
-//  FindNavigatorListCell.swift
+//  FindNavigatorMatchListCell.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 7/7/22.

@@ -1,5 +1,5 @@
 //
-//  AcknowledgementsRowView.swift
+//  AcknowledgementRowView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 1/19/23.

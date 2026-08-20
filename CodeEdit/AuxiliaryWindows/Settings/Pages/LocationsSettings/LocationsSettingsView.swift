@@ -1,5 +1,5 @@
 //
-//  LocationSettingsView.swift
+//  LocationsSettingsView.swift
 //  CodeEdit
 //
 //  Created by Raymond Vleeshouwer on 02/04/23.

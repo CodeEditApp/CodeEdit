@@ -1,5 +1,5 @@
 //
-//  EditorTabID.swift
+//  EditorItemID.swift
 //
 //
 //  Created by Pavel Kasila on 30.04.22.

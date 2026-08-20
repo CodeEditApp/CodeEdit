@@ -1,5 +1,5 @@
 //
-//  ChangedFile.swift
+//  GitChangedFile.swift
 //
 //
 //  Created by Nanashi Li on 2022/05/20.

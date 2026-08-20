@@ -1,5 +1,5 @@
 //
-//  GitType.swift
+//  GitStatus.swift
 //
 //
 //  Created by Nanashi Li on 2022/05/20.

@@ -1,5 +1,5 @@
 //
-//  GitLabAccount.swift
+//  GitLabAccountModel.swift
 //  CodeEditModules/GitAccounts
 //
 //  Created by Wesley de Groot on 02/04/2022.

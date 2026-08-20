@@ -1,5 +1,5 @@
 //
-//  SearchResultLineMatchModel.swift
+//  SearchResultMatchModel.swift
 //  CodeEditModules/Search
 //
 //  Created by Khan Winter on 7/6/22.

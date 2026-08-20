@@ -1,5 +1,5 @@
 //
-//  SettingsData+Search.swift
+//  SettingsSearchKeys.swift
 //  CodeEdit
 //
 //  Created by Matthijs Eikelenboom.

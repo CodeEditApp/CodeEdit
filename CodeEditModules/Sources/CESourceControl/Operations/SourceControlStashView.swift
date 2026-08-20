@@ -1,5 +1,5 @@
 //
-//  SourceControlAddRemoteView.swift
+//  SourceControlStashView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 11/17/23.

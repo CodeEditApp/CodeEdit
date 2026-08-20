@@ -1,5 +1,5 @@
 //
-//  TabManager.swift
+//  EditorManager.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 03/03/2023.

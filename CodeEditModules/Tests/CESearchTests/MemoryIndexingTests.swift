@@ -1,5 +1,5 @@
 //
-//  MemoryIndexing.swift
+//  MemoryIndexingTests.swift
 //  CodeEditTests
 //
 //  Created by Tommy Ludwig on 08.12.23.

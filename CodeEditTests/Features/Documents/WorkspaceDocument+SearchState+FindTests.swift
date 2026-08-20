@@ -1,5 +1,5 @@
 //
-//  Workspace+SearchState+FindTests.swift
+//  WorkspaceDocument+SearchState+FindTests.swift
 //  CodeEditTests
 //
 //  Created by Tommy Ludwig on 26.01.24.

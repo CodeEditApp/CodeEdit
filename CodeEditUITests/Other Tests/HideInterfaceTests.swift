@@ -1,5 +1,5 @@
 //
-//  HiderInterfaceTests.swift
+//  HideInterfaceTests.swift
 //  CodeEditUITests
 //
 //  Created by Simon Kudsk on 14/05/2025.

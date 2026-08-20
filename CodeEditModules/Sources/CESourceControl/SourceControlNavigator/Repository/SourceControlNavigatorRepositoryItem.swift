@@ -1,5 +1,5 @@
 //
-//  SourceControlNavigatorRepositoriesItem.swift
+//  SourceControlNavigatorRepositoryItem.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 11/29/23.

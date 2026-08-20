@@ -1,5 +1,5 @@
 //
-//  CommandPaletteView.swift
+//  QuickActionsView.swift
 //  CodeEdit
 //
 //  Created by Alex Sinelnikov on 24.05.2022.

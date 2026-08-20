@@ -1,5 +1,5 @@
 //
-//  AccoundsSettingsAccountRow.swift
+//  AccountsSettingsProviderRow.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 4/5/23.

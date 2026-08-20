@@ -1,5 +1,5 @@
 //
-//  ThemePreferences.swift
+//  ThemeSettings.swift
 //  CodeEditModules/Settings
 //
 //  Created by Nanashi Li on 2022/04/08.

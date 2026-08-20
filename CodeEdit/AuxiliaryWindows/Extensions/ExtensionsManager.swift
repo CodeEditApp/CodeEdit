@@ -1,5 +1,5 @@
 //
-//  ExtensionManager.swift
+//  ExtensionsManager.swift
 //  CodeEdit
 //
 //  Created by Wouter Hennen on 30/12/2022.

@@ -1,5 +1,5 @@
 //
-//  ShellIntegration.swift
+//  Shell.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 6/1/24.

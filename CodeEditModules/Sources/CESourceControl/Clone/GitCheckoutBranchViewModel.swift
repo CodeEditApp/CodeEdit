@@ -1,5 +1,5 @@
 //
-//  GitCheckoutBranchView.swift
+//  GitCheckoutBranchViewModel.swift
 //  CodeEdit
 //
 //  Created by Albert Vinizhanau on 10/17/23.

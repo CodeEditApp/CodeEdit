@@ -1,5 +1,5 @@
 //
-//  SettingPageView.swift
+//  SettingsPageView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 3/31/23.

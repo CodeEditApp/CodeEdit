@@ -1,5 +1,5 @@
 //
-//  UtilityAreaTerminal.swift
+//  UtilityAreaTerminalView.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 5/25/23.

@@ -1,5 +1,5 @@
 //
-//  IconButton.swift
+//  WorkspacePanelTabBar+IconButton.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 9/3/25.

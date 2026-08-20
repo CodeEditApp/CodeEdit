@@ -1,5 +1,5 @@
 //
-//  SearchResultList.swift
+//  FindNavigatorResultList.swift
 //  CodeEdit
 //
 //  Created by Ziyuan Zhao on 2022/3/22.

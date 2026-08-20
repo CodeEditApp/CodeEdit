@@ -1,5 +1,5 @@
 //
-//  CEWorkspaceSettingsManager.swift
+//  CEWorkspaceSettings.swift
 //  CodeEdit
 //
 //  Created by Axel Martinez on 27/3/24.

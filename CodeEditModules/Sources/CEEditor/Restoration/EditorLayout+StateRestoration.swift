@@ -1,5 +1,5 @@
 //
-//  Editor+StateRestoration.swift
+//  EditorLayout+StateRestoration.swift
 //  CodeEdit
 //
 //  Created by Khan Winter on 7/3/23.

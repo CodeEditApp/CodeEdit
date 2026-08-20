@@ -1,5 +1,5 @@
 //
-//  OutlineMenu.swift
+//  ProjectNavigatorMenu.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 07.04.22.

@@ -1,5 +1,5 @@
 //
-//  FileEditorTabCloseButton.swift
+//  EditorFileTabCloseButton.swift
 //  CodeEdit
 //
 //  Created by Albert Vinizhanau on 10/13/23.

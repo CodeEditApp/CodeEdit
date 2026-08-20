@@ -1,5 +1,5 @@
 //
-//  RecentsStoreTests.swift
+//  RecentProjectsTests.swift
 //  CodeEditTests
 //
 //  Created by Khan Winter on 5/27/25.

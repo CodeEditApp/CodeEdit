@@ -1,5 +1,5 @@
 //
-//  EditorTabSwitchExtension.swift
+//  Editor+TabSwitch.swift
 //  CodeEdit
 //
 //  Created by Roscoe Rubin-Rottenberg on 4/22/24.

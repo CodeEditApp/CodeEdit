@@ -1,5 +1,5 @@
 //
-//  EditorJumpBar.swift
+//  EditorJumpBarComponent.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 18.03.22.

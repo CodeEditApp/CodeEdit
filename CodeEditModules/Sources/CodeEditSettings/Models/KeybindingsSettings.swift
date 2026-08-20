@@ -1,5 +1,5 @@
 //
-//  KeybindingsPreferences.swift
+//  KeybindingsSettings.swift
 //  CodeEditModules/Settings
 //  
 //  Created by Alex on 18.05.2022.

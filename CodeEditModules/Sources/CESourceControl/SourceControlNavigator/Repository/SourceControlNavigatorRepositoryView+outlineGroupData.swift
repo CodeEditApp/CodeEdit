@@ -1,5 +1,5 @@
 //
-//  SourceControlNavigatorRepositoriesView+outlineGroupData.swift
+//  SourceControlNavigatorRepositoryView+outlineGroupData.swift
 //  CodeEdit
 //
 //  Created by Austin Condiff on 11/29/23.

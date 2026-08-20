@@ -1,5 +1,5 @@
 //
-//  OutlineView.swift
+//  ProjectNavigatorOutlineView.swift
 //  CodeEdit
 //
 //  Created by Lukas Pistrol on 05.04.22.
