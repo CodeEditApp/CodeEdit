@@ -37,6 +37,70 @@ Apply `CE` only where the bare name would collide with a stdlib/SwiftUI/AppKit/v
 Every target builds with Swift 6 strict concurrency **except `CEEditor`**, which declares `.swiftLanguageMode(.v5)` and is the sole exception.
 The app target is still Swift 5, write new app-side code Swift-6-ready, and don't add `@MainActor` to app types whose callers aren't isolated (it cascades).
 
+## Design principles
+
+Verified against the codebase on 2026-08-21.
+Each is a claim about how the code is arranged today, not an aspiration.
+
+1. **Dependencies point one way.**
+   App shell, then features, then services, then foundation, with dependency-free `CodeEditCore` at the base.
+   Acyclic, every edge pointing at something more fundamental, and no peer edges between features: there are currently zero feature-to-feature imports.
+   Enforced by package boundaries, not convention.
+2. **Every boundary is a protocol.**
+   Anything performing I/O or reached across a feature boundary is protocol-backed and substitutable in tests: `ShellClientProtocol`, `GitClientProtocol`, `LSPServiceProtocol`, `RegistryManaging`, `KeybindingManaging`, `NotificationManaging`, `WorkspaceWindowManaging`, `SettingsAccessing`.
+3. **Features are islands.**
+   No feature imports another.
+   Cross-feature interaction happens only through events, command interfaces, and shared substrate.
+4. **State has one owner.**
+   See [State ownership](#state-ownership) below.
+5. **Facts are broadcast; commands have one handler.**
+   The mechanism follows the intent, see [Communication rules](#communication-rules).
+6. **Native first, framework-light.**
+   SwiftUI and AppKit plus one local package.
+   No meta-frameworks: there is no Composable Architecture or equivalent anywhere in the tree.
+   The architecture is conventions plus compile-time boundaries.
+7. **Testability is the acceptance test.**
+   If a feature cannot be tested without building the whole app graph, the architecture has failed at that spot.
+8. **Idiomatic by default.**
+   Follow standard Swift and Xcode conventions rather than inventing project-specific layouts.
+   Local code lives in one multi-target package, `CodeEditModules`, whose whole dependency graph is legible in a single manifest.
+   The Swift API Design Guidelines and the repo's SwiftLint rules govern code.
+   When a choice is unclear, prefer the community-idiomatic option over a bespoke one.
+
+### State ownership
+
+**Domain state lives in the object that owns the domain**: `SourceControlManager` for git status, `TaskManager` for running tasks, `LSPService` for language servers, `CEWorkspaceFileManager` for the file tree.
+Note that most of those live in the *feature* that owns them (`CESourceControl`, `CETerminal`, `CELSP`), not in a service target; only the file tree does.
+Such an object never holds UI state: `SourceControlManager` does not know that sheets exist.
+
+**Presentation state lives in a view-state object**, which is the presentation-state split described under [Communication rules](#communication-rules).
+Sheet and popover flags, selection, expansion, scroll targets.
+
+**Views own only ephemera**, via `@State`: hover, focus, in-progress text.
+
+Data flows down through observation, actions flow up through method calls and operation doers, and cross-feature effects travel only via events and command interfaces.
+
+### Deliberately not chosen (or not yet)
+
+- **The `@Observable` macro.**
+  Not adopted.
+  Every observable model is `ObservableObject` with `@Published` (48 conformances); the only two mentions of `@Observable` in the tree are TODO comments.
+  Note that the deployment target *is* macOS 14 in both `project.pbxproj` and `Package.swift`, so the blocker is team agreement on that minimum rather than the code, and adopting `@Observable` would make the 14+ floor irreversible.
+- **Swapping the `EventBus` off Combine cheaply.**
+  It is not cheap, contrary to an earlier claim in this guide.
+  `subscribe(_:)` returns `AnyPublisher`, so Combine is in the bus's public signature rather than hidden behind it, and all five subscribers use `sink` and `AnyCancellable`.
+  An `AsyncStream` backend would change the return type and rewrite every call site.
+  The bus is still regarded as a stopgap, with the platform's typed notifications as its natural replacement, but treat that as a migration rather than a substitution.
+- **DI frameworks.**
+  The explicit `AppDependencies` composition root is the whole mechanism, and there is no container anywhere in the tree.
+  Dependencies are visible in initialisers and resolution failures are compile errors.
+- **Architecture frameworks such as TCA.**
+  The cost, meaning a learning curve for a community codebase, framework lock-in, and fighting AppKit interop, outweighs the benefit.
+  Conventions plus package boundaries achieve the same testability.
+- **Per-feature interface micro-packages.**
+  Interface and implementation splits per feature are overkill at this scale.
+  `CodeEditCore` carries the interfaces, 12 files under `Infrastructure/`.
+
 ## History: Why the 2022 module split failed
 
 The project already tried a single multi-target `CodeEditModules` package.
@@ -85,13 +149,8 @@ Each one blocks a specific failure documented in [History](#history-why-the-2022
    **No UI frameworks** keeps the placement question answerable.
    Without it, Core becomes the place everything shared goes, which is what `AppPreferences` was and one of the two documented causes of the 2022 collapse.
 
-   The friction this produces is usually the rule working.
-   Four worked examples already in this codebase: `FileIcon` is keyed on `URL` rather than a domain type, so it needs neither `CodeEditCore` nor a charter exception (see rule 2 below); `WorkspacePanelContribution` was shaped to need only SwiftUI, so it lives in `CodeEditUI` (`CodeEditModules/Sources/CodeEditUI/WorkspacePanelContribution.swift`); fuzzy matching's concurrency helper was rewritten over `withTaskGroup` rather than admit `CollectionConcurrencyKit` (below); and `ActiveTheme`, the active light/dark theme, observed by the editor and terminal, lives *in* Core, because `ObservableObject` comes from Combine rather than SwiftUI.
-   That last one is worth remembering: the charter forbids `SwiftUI`/`AppKit`/`Cocoa` specifically, so observation is available in Core and an "it needs to be observable, therefore it needs SwiftUI" argument is simply false.
-
-   The counter-example people will cite: `TextEditingSettings` and `TerminalSettings.Font` carry `NSFont.Weight`, which forces them out of Core.
-   That is the rule flagging a presentation type inside a settings model, not the rule obstructing a reasonable design.
-   Storing the weight as a `Double` and converting at the presentation boundary would make both structs Core-eligible with no rule change.
+   The friction this produces is usually the rule working, not obstructing you.
+   Four worked examples, and the `NSFont.Weight` counter-example people cite, are in [docs/architecture-decisions.md](docs/architecture-decisions.md).
 2. **`CodeEditUI` purity.** No local target dependencies; external `CodeEditSymbols` only.
    Blocks 2022's `CodeEditUI → Git`.
    This is why `FileIcon` is keyed on `URL` rather than on a domain type: a deliberate consequence, not an accident.
@@ -116,47 +175,8 @@ The reason to keep it out anyway is concrete, not decorative.
 `CodeEditCoreTests` is five files with zero use of `FileManager`, `temporaryDirectory` or `Data(contentsOf:)`: Core's tests need no filesystem, no temp directories and no cleanup.
 And I/O already has a designated home, since rule 4 of [Where does my code go?](#where-does-my-code-go) sends services to their own target, which is what `CEWorkspaceFileManager` and `ShellClient` are.
 
-**What the norm actually prevents** (asked 2026-08-20): merging `CEWorkspaceFileManager` into Core.
-That target holds 50 `FileManager` calls and a complete FSEvents implementation, `FSEventStreamCreate` with a C callback, its own dispatch queue, and start/stop/invalidate/release.
-Without this norm the merge looks reasonable, because that target depends on nothing but Core and folding it in removes a target.
-With the norm it is obviously wrong: it would put a live filesystem event stream inside the dependency sink all twelve targets rest on, and end Core's filesystem-free tests the same day.
-State the norm with this example, not on principle alone.
+See [docs/architecture-decisions.md](docs/architecture-decisions.md) for what this norm has actually prevented, and for why `ShellClient`, `CEWorkspaceFileManager`, `CodeEditDocument` and `CELSP` each stay separate targets.
 
-**`CodeEditDocument` and `CELSP` both stay their own targets** (asked and settled 2026-08-20).
-Neither is a leftover, and the two conclusions depend on each other.
-
-`CEEditor` and `CELSP` reference each other **zero times, in either direction**.
-They are siblings.
-What keeps them apart is `LanguageServicesProvider`, declared in `CodeEditDocument`, implemented by `CELSP`'s `AppLanguageServicesProvider`, and consumed by `CEEditor` through an environment key.
-It even ships a `NoOpLanguageServicesProvider`, so the editor works with no language service at all.
-So `CodeEditDocument` is not "the document type plus some bridging": **it is the contract that keeps two features independent.** `CodeFileDocument` imports AppKit, SwiftUI and the editor frameworks, so it cannot live in Core; two features need it, so it cannot live in either.
-Its own target is forced, not chosen.
-
-`CELSP` is not part of the editor either.
-Its consumers are the settings UI (installing servers), the utility area (reading logs) and app lifecycle (nothing in `CEEditor` imports it), and **28 of its 78 files are `Registry/`**: package managers, install steps and source parsers for Cargo, NPM, Pip, Go and GitHub.
-That is downloading and installing language servers, not editing text.
-Folding it into `CEEditor` would make a ~130-file target mixing the two.
-
-The abstraction is already sound where it counts: `LanguageServer`, `LSPContentCoordinator`, `SemanticTokenHighlightProvider` and `LanguageServerDocumentObjects` are all generic over `LanguageServerDocument`, a protocol requiring only `content`, `languageServerURI` and `getLanguage()`.
-Only `LSPService` itself pins the generic to `CodeFileDocument`.
-Decoupling that would mean making the service generic and forcing `LSPServiceProtocol` to gain an associated type, breaking its use as an existential for DI, all to delete a five-file target.
-A bad trade.
-
-**`CEWorkspaceFileManager` stays its own target, and must not merge into Core** (asked and settled 2026-08-20).
-The inversion is already in place: Core declares `WorkspaceFileProviding` and `WorkspaceFileObserver`, and `CEWorkspaceFileManager.swift:263` is `extension CEWorkspaceFileManager: WorkspaceFileProviding {}`.
-Four `CEEditor` files depend on the *protocol* (`EditorRestorer`, `EditorJumpBarMenu`, `EditorLayout+StateRestoration`, the environment key) and **no package imports the implementation**.
-Its 22 consumers are app-side, plus 6 test files.
-Same shape as `ShellClient` below: contract in Core, adapter in its own target, app composes.
-See the I/O norm above for why the merge is worse than it looks.
-
-**`ShellClient` is one file, and stays its own target** (asked and settled 2026-08-16).
-Size is the wrong measure: `ShellClientProtocol` in Core is used by **19 files** across `CESourceControl` and `CELSP` (`GitClient`, `SourceControlManager`, `RegistryManager`, all five package managers), and **none of them imports the implementation**.
-Only the app target does, six files, composing it at the root.
-The abstraction is load-bearing, not ceremonial.
-
-What the separate target buys, stated precisely: reaching for the implementation from a feature needs a **manifest edit**, visible in review, rather than an import line inside a file.
-It is reviewability, not prevention: import honesty checks that imports are *declared*, so a feature that declared the dependency would pass the audit.
-Folding it into the app target is a coherent alternative (the app is the only consumer, and composing platform adapters is a composition-root job); it would cost the manifest-level visibility and nothing else demonstrable.
 
 **Known exception, recorded rather than pretended away:** `CEWorkspaceFile` exposes `static let fileManager = FileManager.default` and uses it for `isEmptyFolder` and `doesExist`.
 Those are filesystem reads from a domain type.
@@ -208,57 +228,26 @@ The fix was to rewrite the helper over `withTaskGroup` (about ten lines) rather 
 **Dependency honesty beats tidiness**: never add a dependency to a foundation package to make a move possible.
 Rewrite the helper, or mirror it locally, instead.
 
-## Folder conventions (app target)
+## Folder conventions
 
-Grouping is **purpose-first**:
+Grouping is **by purpose, never by kind**.
+There are no `Models/`, `Views/`, `ViewModels/`, `Services/`, `Protocols/`, `UseCases/` or `Extensions/` folders.
 
-- Group by sub-feature (`ProjectNavigator/`, `History/`, `StatusBarItems/`, `Toolbar/`), never by kind.
-  The app target has no `Models/`, `Views/`, `ViewModels/`, `Services/` or `UseCases/` folders.
-- **`CEEditor` and `CESourceControl` are the worked examples** (2026-08-16).
-  `CEEditor`'s `Models/`, `Views/` and `UseCases/` became nine groups named for what their files are about: `Editor/`, `Layout/`, `FileViews/`, `TabBar/` (with `Tabs/` and `Tab/`), `JumpBar/`, `Documents/`, `Restoration/`, `Theme/`, `Adapters/`.
-  `CESourceControl`'s `Views/` grab-bag split into `Operations/` and `Branches/`, its cloner joined `Clone/`, and its settings types moved to `Settings/`.
-  Both were pure renames (55 and 19 files, zero content changes), because Swift ignores directory layout and SwiftPM takes the whole target tree.
-- **`UseCases/` is now gone from every package.** The type-level rename to doers (`EditorRestorer`, `RepositoryCloner`) had stopped at the folder level; it no longer does.
-- **`CENotifications` followed** (13 files): `Models/`, `Protocols/`, `ViewModels/` and `Views/` held 1, 1, 4 and 3 files; a single `Panel/` group now holds the view model and every view that observes it, and the rest sits flat at the root.
-- **`CodeEditCore` followed**, with one deliberate exception.
-  Its `Extensions/` became `Paths/` (the four `URL` helpers, `String+ValidFileName`, and `String+Escaped`, whose escaping exists to make paths safe as shell arguments), with the two genuinely unrelated helpers at the target root.
-  `Event`/`EventBus` joined `Events/`, and `FindReplaceQuery` moved to `Domain/`, being a query model shared by `CEEditor` and `CESearch` rather than a seam.
-
-  **`Domain/` and `Infrastructure/` stay.** A layer split is normally kind-grouping, but in this target the layer *is* the purpose: `GitBranch` is a fact features share, `WorkspaceNavigator` is a seam they talk through, and this guide already describes the target in exactly those terms.
-  Do not "fix" this one.
-- **`CETerminal` followed**: `Shell/` (configuration) is the one subgroup that earned a folder, while the three-level `CETerminalView` inheritance chain and its representable stay together, because splitting them would separate a base class from its subclasses.
-- **`CELSP` followed**: `Utils/` split in two: the semantic-token helpers joined `Features/SemanticTokens/`, and the three that cross the protocol boundary became `Conversions/`.
-  `Registry/`'s `Model/` and `Protocols/` dissolved into its root, where `PackageManagerProtocol` already sat.
-- **`CodeEditUI` is the second stated exception, and was deliberately left grouped by kind.** Grouping by kind is wrong *inside a feature*; this target is a component library with no feature semantics by charter, so there is no domain to group by and `Styles/`, `Views/` and `EnvironmentKeys/` are the subject, being the terms SwiftUI itself is documented in.
-  Consumers browse it asking "is there a button style for this?".
-  Imposing subjects would yield several two-file folders; `SplitView/` remains the one genuine subsystem.
-  Two files that were not styles moved out of `Styles/`, and `MenuWithButtonStyle` (a `View`, not a `MenuStyle`) became `ButtonStyledMenu`.
-- **All 12 library targets have been reviewed** (2026-08-16/20).
-  Six were regrouped; two are stated exceptions (`CodeEditCore`, `CodeEditUI`); `CodeEditDocument` (5 files) and `CEWorkspaceFileManager` (7) are correctly flat and need nothing; `ShellClient` is one file by design.
-  Two are blocked on decisions rather than effort: `CodeEditSettings` on its naming question, `CESearch` on its rebuild.
-- **8 kind-grouped folders remain**, but only two are work: `CESearch`'s `Model/` and `Extensions/`, pending its rebuild.
-  Three are the excluded `CESourceControl/Accounts/`, `CodeEditUI/Views` is the exception above, `CELSP/Service` is named after `LSPService` rather than being a layer, and `CodeEditSettings/Models` waits on that target's naming question.
-  Follow the convention in new code; those are a pending cleanup, not a counter-precedent.
-  **`CESourceControl/Accounts/` is deliberately excluded** until its dead surface is settled: it is 58 of that target's 133 files with three call sites in the whole codebase, and BitBucket is unreferenced outside its own subtree.
-
-  Note `Extensions/` counts too (`CodeEditCore`, `CESearch`, `CETerminal`): a folder of "things that are extensions" says nothing about what they extend.
-
-  Measure with this exact pattern, and widen it rather than trusting a smaller number.
-  Four successive counts here were wrong because the pattern matched `Models` but not `Model`, then not `Protocols`, then not `Extensions` or singular `Service`:
-
-  ```bash
-  find CodeEditModules/Sources -type d \
-    \( -name Model -o -name Models -o -name View -o -name Views -o -name ViewModel \
-       -o -name ViewModels -o -name Service -o -name Services -o -name Protocol \
-       -o -name Protocols -o -name UseCase -o -name UseCases -o -name Extensions \) | wc -l
-  ```
-- **Two placements from `CEEditor` worth reusing.** A conformance file belongs beside the protocol it satisfies (`CEWorkspaceFile+Editor` sits in `TabBar/Tab/` with `EditorTabRepresentable`), and environment keys are distributed to their subject rather than gathered into an `Environment/` group, which would be grouping by kind again.
+- Group by sub-feature or subject (`ProjectNavigator/`, `Restoration/`, `TabBar/`, `Shell/`), and if you cannot name the group without saying what kind of type it holds, it is not a group.
+  A conformance file belongs beside the protocol it satisfies, and environment keys belong with their subject rather than in an `Environment/` folder.
 - A feature with roughly ten files or fewer stays flat.
-- Shell/entry views and the feature's primary models sit at the feature root.
+- Shell and entry views, plus the feature's primary models, sit at the feature root.
 - Single-consumer helpers live next to their consumer.
-- `Utils/` is closed.
-  Every file in it carries a justification (an app-wide platform patch, a helper genuinely shared by multiple features with no better home).
-  "It's generic" is not a justification.
+- `Utils/` is closed. Place a new utility next to its consumer, and argue the case if you think it belongs in `Utils/`.
+
+**Worked example.** `CEEditor` had 55 files under `Models/`, `Views/` and `UseCases/`.
+They became `Editor/`, `Layout/`, `FileViews/`, `TabBar/` (with `Tabs/` and `Tab/`), `JumpBar/`, `Documents/`, `Restoration/`, `Theme/` and `Adapters/`, as pure renames with no content change.
+Two placements are worth copying: `CEWorkspaceFile+Editor` sits in `TabBar/Tab/` beside the `EditorTabRepresentable` protocol it conforms to, and `UndoManagerRegistry` sits in `Documents/` rather than `Restoration/`, because it performs no saving.
+
+**Two targets are stated exceptions.**
+`CodeEditCore` keeps its `Domain/` and `Infrastructure/` split, because there the layer *is* the purpose.
+`CodeEditUI` keeps `Styles/`, `Views/` and `EnvironmentKeys/`, because it is a component library with no feature semantics by charter, so kind is the subject a consumer browses by.
+Do not "fix" either.
 
 ## Communication rules
 
@@ -301,70 +290,23 @@ Apple's own frameworks are full of them (`NSApplication.shared`, `FileManager.de
 What was removed was a *container*.
 A `shared` is a problem here only when it gives ambient access to something whose lifetime is narrower than the process, or when it hides an owner that could hold it.
 
-#### Known exceptions (2026-08-16)
-
-Eight singletons remain.
-None is load-bearing; each is listed with the scope it actually has.
-
-| Singleton | True scope | Note |
-| --- | --- | --- |
-| `ThemeModel` | process | already takes its settings store via `configure(_:)` at launch |
-| `FeedbackModel` | process | ditto |
-| `SearchSettingsModel` | process | ditto |
-| `ExtensionManager` | process | |
-| `ExtensionDiscovery` | process | |
-| `InternalDevelopmentOutputSource` | process | debug-only |
-| `EditorStateRestoration` | process | a GRDB database; `nonisolated(unsafe)` and optional |
-| `TerminalCache` | **workspace** | see below |
-
-The first seven are process-scoped services that simply have not moved to `AppDependencies`; doing so is mechanical and changes no behaviour.
-
-`TerminalCache` is different, and is the one worth fixing rather than relocating.
-It is a process-global `[UUID: CELocalShellTerminalView]` holding views that belong to a workspace window.
-Eviction is per-terminal only, and nothing clears it when a workspace or window closes, so two open projects share one bag of live terminal views.
-It works because UUIDs do not collide, but the lifetime is wrong, and a wrong lifetime surfaces as a leak rather than as a compile error.
+Eight singletons remain, none load-bearing.
+They are listed with the scope each actually has, plus the one that is a scope error rather than a leftover, in [docs/architecture-decisions.md](docs/architecture-decisions.md).
 
 ## Panel tab contributions
 
-The navigator, inspector and utility area no longer switch on closed enums (`NavigatorTab`, `InspectorTab`, `UtilityAreaTab`).
-Each panel is a list of `WorkspacePanelContribution` values, so a tab is a value, not a case, assembled by one function per panel in `CodeEdit/WorkspaceWindow/WorkspacePanel/PanelContributions.swift`: first-party entries named directly, conditional ones (`InternalDevelopmentInspectorContribution`) as a plain `if`, then extension-provided ones appended through a single adapter call.
-The panel that renders the list cannot tell a first-party tab from an extension's.
-That indistinguishability is the point; it is what lets a new contribution source arrive without the panel code changing.
+The navigator, inspector and utility area do not switch on closed enums.
+Each panel is a `[any WorkspacePanelContribution]` assembled by one function per panel in `CodeEdit/WorkspaceWindow/WorkspacePanel/PanelContributions.swift`, so a first-party tab, app shell chrome and an extension's tab are the same kind of value.
 
-`WorkspacePanelContribution` lives in `CodeEditUI` (`CodeEditModules/Sources/CodeEditUI/WorkspacePanelContribution.swift`), not `CodeEditCore`: a contribution vends a `content: AnyView`, and Core's charter (rule 1, above) forbids UI imports outright.
-`CodeEditUI`'s own charter (rule 2) is satisfied too: the protocol needs SwiftUI and nothing else.
+**This is the pattern any future seam should follow**, and there will be others (settings pages, menu commands, the extension contract):
 
-A contribution vends two views.
-`content` is the tab itself.
-`bottomView` is an optional bar pinned below it.
-The navigator's filter field and sort controls are the existing examples.
-It defaults to `nil` so a tab with no such bar says nothing about it.
-It is a *requirement* rather than something the panel is handed deliberately: it arrived from upstream as a `switch` over the retired tab enum, where every new tab had to remember to add its case, and a package could not contribute one at all because the switch lived app-side.
-Vended by the contribution, a tab cannot forget, and where the bar is placed stays the panel's business: pre-Tahoe it insets the tab's own content, and from macOS 26 it spans the panel below the tab bar.
+- The feature vends its own contribution from its own package, reading whatever it needs directly.
+- The app assembles the list at a composition root.
+- Whatever the contribution needs and its package cannot see becomes a **required initialiser parameter**, never a defaulted one, so a missing injection is a compile error rather than a silently empty tab.
+- Vendor vocabulary stays in one adapter: `ExtensionPanelContribution` is the only app file outside `AuxiliaryWindows/Extensions/` permitted to name `AppExtensionIdentity` or `ResolvedSidebar`.
 
-**A panel's tab list changes at runtime**, so a stored selection can outlive the tab it names: the inspector rebuilds its list when a setting changes, and any panel's list changes when an extension is enabled or disabled.
-`Collection.reconcilingSelection(_:)` (alongside the protocol) keeps a selection that still resolves and otherwise falls back to the first tab; `WorkspacePanelView` applies it on appear and on every change to the list.
-Without it the panel reads "No Selection" until the user clicks something, because the stored id is stale rather than absent and nothing recovers on its own.
-The rule lives in the package rather than the view so it holds for every panel and can be tested without one.
-
-A contribution's owner follows the same placement rule as everything else in [Where does my code go?](#where-does-my-code-go): a feature that owns a tab vends its own contribution from its package, reading whatever it needs (including settings, through the seam) directly rather than having the app assemble it.
-`CESearch`'s `FindNavigatorContribution` (`CodeEditModules/Sources/CESearch/FindNavigatorContribution.swift`) replaced an app-side `FindNavigatorTab` wrapper that existed only to shuttle settings values down.
-Once the feature could read its own settings, the wrapper had no reason to exist.
-The tab's id is now owned by the same package (`FindNavigatorContribution.tabID`); the app's `PanelTabID.search` references it rather than duplicating the literal, so there is exactly one source of truth even though the app still needs a compile-checked constant to select the tab by.
-
-`ProjectNavigatorContribution` (`CodeEdit/WorkspaceWindow/NavigatorArea/NavigatorContributions.swift`) stays app-side, not because it is a tab (see the [chrome exemption correction](#where-does-my-code-go)) but because the project navigator has no owning package to move to.
-The same holds for the file inspector, the internal-development inspector, and the debug and output utility tabs.
-`TerminalUtilityContribution` is the one that should move, to `CETerminal`; it has not because it is coupled to app-side utility-area chrome.
-
-`CESourceControl` is the second feature package to own a panel tab, after `CESearch`.
-`SourceControlNavigatorContribution` and `GitHistoryInspectorContribution` (`CodeEditModules/Sources/CESourceControl/SourceControlNavigator/` and `.../HistoryInspector/`) vend `SourceControlNavigatorView` and `HistoryInspectorView` from the package; the app-side `WorkspaceWindow/NavigatorArea/SourceControlNavigator/` and `WorkspaceWindow/InspectorArea/HistoryInspector/` groups no longer exist.
-The relocation is the shape a future one follows: whatever the view needs that the package cannot see becomes a **required** initialiser parameter on the contribution (`WorkspaceNavigator` for the navigator tab, `ActiveEditorState` for the inspector tab) rather than an environment key moved down with it; both are non-optional so a missing injection at the call site (`PanelContributions.swift`) is a compile error, not a silently no-op tab.
-Each contribution still owns its own `tabID` constant, and the app's `PanelTabID.sourceControl` / `.gitHistory` reference it rather than duplicating the literal, same as `PanelTabID.search`.
-A third relocation onto this shape is expected.
-
-Extensions are the third contribution source.
-`ExtensionPanelContribution` (`CodeEdit/WorkspaceWindow/WorkspacePanel/ExtensionPanelContribution.swift`) is the **only** app file, outside the pre-existing extension-management UI under `AuxiliaryWindows/Extensions/`, that may name `AppExtensionIdentity` or `ResolvedSidebar`.
-Confining ExtensionKit's vocabulary to this one adapter is what let the app-side panel-contribution list above be written without an ExtensionKit import in sight, and is what would let a second, non-ExtensionKit contribution source arrive later without touching the panels.
+`WorkspacePanelContribution` lives in `CodeEditUI` because it needs SwiftUI and nothing else; it cannot live in `CodeEditCore`, which forbids UI imports.
+Specifics of this seam, including `bottomView` and selection reconciliation, are documented on the protocol itself and in [docs/architecture-decisions.md](docs/architecture-decisions.md).
 
 ## Reading and writing settings
 
@@ -489,4 +431,5 @@ These are the intended meanings; prefer the qualified term whenever the bare one
 | **Workspace** (`Workspace`) | The session aggregate for one open project: the project-scoped services and their lifetime. It owns lifecycle, *not* mutation routing, features mutate the sub-models they are handed. |
 | **Workspace window** (`WorkspaceWindow/`) | The window and its chrome around a workspace: navigator, inspector, utility area, status bar. Window-UI state lives on `CodeEditWindowController`, not on `Workspace`. |
 | **Document** (`CodeFileDocument`) | An open, editable file backed by NSDocument. Distinct from `CEWorkspaceFile` (a node in the file tree) and from the file on disk. |
+| **Service** | A *target* holding an I/O adapter with no UI: `ShellClient`, `CEWorkspaceFileManager`. Do not use it loosely for "a long-lived object owning domain state", because most of those (`SourceControlManager`, `TaskManager`, `LSPService`) live in feature targets. |
 | **Doer** | A role-noun class performing one operation that spans services (`WorkspaceOpener`, `FileMover`, `RepositoryCloner`), following the `NSFileCoordinator` naming idiom. Formerly called UseCases. |

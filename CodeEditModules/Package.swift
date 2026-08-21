@@ -37,7 +37,7 @@ let package = Package(
     ],
     targets: [
         // MARK: - Kernel
-        // Rule: zero dependencies, no UI imports, platform-free. See docs/ARCHITECTURE.md.
+        // Rule: zero dependencies, no UI imports, platform-free. See ARCHITECTURE.md.
         .target(name: "CodeEditCore"),
 
         // MARK: - Shared substrate
@@ -84,7 +84,7 @@ let package = Package(
                 .product(name: "OrderedCollections", package: "swift-collections"),
                 .product(name: "DequeModule", package: "swift-collections")
             ],
-            // The ONLY target permitted to opt out of Swift 6. See docs/ARCHITECTURE.md.
+            // The ONLY target permitted to opt out of Swift 6. See ARCHITECTURE.md.
             swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .target(
