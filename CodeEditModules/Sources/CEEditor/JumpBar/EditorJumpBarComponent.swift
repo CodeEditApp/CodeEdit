@@ -176,6 +176,7 @@ struct EditorJumpBarComponent: View {
             return Coordinator(self)
         }
 
+        @MainActor
         class Coordinator: NSObject {
             var parent: NSPopUpButtonView
 
@@ -192,7 +193,11 @@ struct EditorJumpBarComponent: View {
                     .sink { [weak self] notification in
                         if let menuItem = notification.userInfo?["MenuItem"] as? NSMenuItem,
                            let selection = menuItem as? ItemType {
-                            self?.parent.selection = selection
+                            // AppKit posts `NSMenu.didSendActionNotification` on the main thread,
+                            // so this delivery is main-thread and the binding may be written here.
+                            MainActor.assumeIsolated {
+                                self?.parent.selection = selection
+                            }
                         }
                     }
             }
