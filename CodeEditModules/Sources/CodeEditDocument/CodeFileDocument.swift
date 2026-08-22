@@ -294,13 +294,16 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
             if self.hasUnautosavedChanges {
                 guard autosaveTimer == nil else { return }
                 autosaveTimer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [weak self] timer in
-                    self?.autosaveTimerLock.withLock {
+                    // Bound once, rather than optional-chained per access: the isolation below
+                    // cannot state itself for a value the escaping timer block still shares.
+                    guard let document = self else { return }
+                    document.autosaveTimerLock.withLock {
                         guard timer.isValid else { return }
-                        self?.autosaveTimer = nil
+                        document.autosaveTimer = nil
                         // Delivered on the main runloop the timer was scheduled on; assert that
                         // rather than hopping, which would fire outside the lock.
                         MainActor.assumeIsolated {
-                            self?.autosave(withDelegate: nil, didAutosave: nil, contextInfo: nil)
+                            document.autosave(withDelegate: nil, didAutosave: nil, contextInfo: nil)
                         }
                     }
                 }
