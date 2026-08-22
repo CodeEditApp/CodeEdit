@@ -12,13 +12,20 @@ import XCTest
 final class SourceControlViewModelTests: XCTestCase {
     var viewModel: SourceControlViewModel!
 
+    // `setUp` and `tearDown` override nonisolated declarations on `XCTestCase`, so they stay
+    // nonisolated even though this class is `@MainActor`. XCTest runs both on the main thread for
+    // synchronous test cases, so state that here rather than weakening the isolation.
     override func setUp() {
         super.setUp()
-        viewModel = SourceControlViewModel()
+        MainActor.assumeIsolated {
+            viewModel = SourceControlViewModel()
+        }
     }
 
     override func tearDown() {
-        viewModel = nil
+        MainActor.assumeIsolated {
+            viewModel = nil
+        }
         super.tearDown()
     }
 
