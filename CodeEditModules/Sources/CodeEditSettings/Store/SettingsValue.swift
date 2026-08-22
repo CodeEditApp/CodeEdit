@@ -102,7 +102,17 @@ public struct SnapshotSettingsReader: SettingsReading {
 /// signal read correctly and never re-rendered. `@EnvironmentObject` makes both unrepresentable.
 /// SwiftUI subscribes to the object itself, so there is no second key to forget and nothing to keep
 /// in sync.
+///
+/// **Main-actor isolated deliberately, and it must stay that way.**
+///
+/// `EnvironmentObject`'s initialiser and wrapped value are `@MainActor` in the SDK, so a
+/// nonisolated wrapper touching them fails under Swift 6 strict concurrency. Newer SwiftUI carries
+/// `@preconcurrency` annotations that hide this, which is why it compiled on Xcode 26 and failed on
+/// the CI runner's Xcode 16.4. The isolation is also true on the merits: this is documented as valid
+/// only inside a `View`, and `PersistentSettingsStore.setValue` already asserts the main thread.
+/// Same shape as SwiftUI's own `@StateObject` and `@ObservedObject`.
 @propertyWrapper
+@MainActor
 public struct SettingsValue<S: SettingsSection, Value>: DynamicProperty {
     @EnvironmentObject private var store: PersistentSettingsStore
 
