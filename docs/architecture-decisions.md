@@ -152,3 +152,23 @@ That is a redesign of the document's state ownership and is deliberately deferre
 The general lesson is worth stating separately, because it applies to every future extraction: **moving a file into `CodeEditModules` is also a Swift 6 migration of that file.**
 The app target is `SWIFT_VERSION = 5.0` with no `SWIFT_STRICT_CONCURRENCY` setting, so it defaults to `minimal`; the package is `swift-tools-version: 6.0`, so every target defaults to Swift 6 language mode.
 Code that compiled without complaint for years can arrive in a package with a dozen errors, none of them regressions.
+
+## The app is not sandboxed
+
+`ENABLE_APP_SANDBOX = NO` on all five app and app-hosted-test build configurations, and
+`CodeEdit.entitlements` carries no `com.apple.security.app-sandbox` key.
+This is deliberate and is the project's long-standing configuration, not a workaround left in place.
+
+The App Sandbox blocks `Process` from spawning subprocesses, and CodeEdit's core features are built on exactly that.
+`ShellClient` spawns `/bin/zsh`; `CETerminal` (`Shell`, `CELocalShellTerminalView`) runs the user's shell; `RepositoryCloner` and the rest of source control shell out to `git`, which itself shims through `xcrun`.
+Sandboxed, all of these fail with `xcrun: error: cannot be used within an App Sandbox.`
+
+The history is worth recording because it has already been changed once by accident.
+Community PR #2147 (commit `78c3be9c`, 2025-12-12) enabled the sandbox as part of an unrelated deprecations and memory-leak fix, which broke git, LSP, the terminal, and package installs.
+Commit `a2fff0c9` reverted to the pre-#2147 configuration and restored the `com.apple.security.cs.allow-jit` and `com.apple.security.cs.disable-library-validation` exceptions it had removed.
+Anyone tempted to enable the sandbox should read this section first: it is not a build-setting toggle.
+
+Two consequences follow.
+Mac App Store distribution is out of scope, since the store requires sandboxing, and getting there would mean rearchitecting every subprocess path rather than flipping a flag.
+And the security-scoped bookmark handling added for recents (`WorkspaceFactory`, `Workspace.tearDown`) is a no-op while unsandboxed, because `startAccessingSecurityScopedResource()` returns `false`; it is kept so the code stays correct if this decision is ever revisited.
+
