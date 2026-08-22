@@ -11,7 +11,10 @@ import CodeEditCore
 
 extension GitClient {
     /// A snapshot of clone progress: the total percentage (0-100) and the phase git is currently in.
-    public struct CloneProgress {
+    ///
+    /// `Sendable` because these are produced by an `AsyncSequence` and consumed on the main actor.
+    /// It holds a `Double` and a payload-free internal enum, so the conformance is free.
+    public struct CloneProgress: Sendable {
         let progress: Double
         let state: GitCloneProgressState
     }
