@@ -27,7 +27,11 @@ import CodeEditCore
 
 extension GitClient {
     /// The parsed result of `git status`: ordinary changes, unmerged (conflicting) paths, and untracked files.
-    public struct Status {
+    ///
+    /// `Sendable` because this crosses ``GitClientProtocol``, which is itself `Sendable`, and every
+    /// other type returned by that protocol declares the conformance. It holds only
+    /// `[GitChangedFile]`, which is `Sendable`, so the conformance is free.
+    public struct Status: Sendable {
         var changedFiles: [GitChangedFile]
         var unmergedChanges: [GitChangedFile]
         var untrackedFiles: [GitChangedFile]
