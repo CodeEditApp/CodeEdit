@@ -193,19 +193,29 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
             Self.logger.error("Failed to read file from data using encoding: \(rawEncoding)")
             return
         }
-        // `read(from:ofType:)` overrides a nonisolated `NSDocument` method, but everything below
-        // touches main-actor state. Reads are main-thread only, which
-        // `canConcurrentlyReadDocuments(ofType:)` above pins, so stating the isolation is sound.
         let text = nsString as String
-        MainActor.assumeIsolated {
-            self.sourceEncoding = validEncoding
+        let installContents: @MainActor () -> Void = { [self] in
+            sourceEncoding = validEncoding
             if let content {
                 registerContentChangeUndo(fileURL: fileURL, text: text, content: content)
                 content.mutableString.setString(text)
             } else {
-                self.content = NSTextStorage(string: text)
+                content = NSTextStorage(string: text)
             }
             notifyLSPDidOpen()
+        }
+
+        // This overrides a nonisolated `NSDocument` method while everything above touches
+        // main-actor state. `canConcurrentlyReadDocuments(ofType:)` keeps AppKit's own reads on the
+        // main thread, but that says nothing about an in-process caller constructing a document off
+        // it, which has happened before and trapped a bare `assumeIsolated` here. So branch, like
+        // ``notifyLSPDidOpen()`` and ``presentedItemDidChange()`` do. Unlike those, this blocks:
+        // `NSDocument` requires the document to be loaded by the time `read` returns, so an async
+        // hop would return an empty document.
+        if Thread.isMainThread {
+            MainActor.assumeIsolated { installContents() }
+        } else {
+            DispatchQueue.main.sync { MainActor.assumeIsolated { installContents() } }
         }
     }
 

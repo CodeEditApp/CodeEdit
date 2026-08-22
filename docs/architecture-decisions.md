@@ -140,9 +140,9 @@ That surfaced six pre-existing isolation errors, all in code that is byte-identi
 Both touch main-actor document state.
 Three things now hold that together, and none of them is a static guarantee:
 
-1. `canConcurrentlyReadDocuments(ofType:)` is overridden to return `false`, pinning AppKit's default so reads stay on the main thread. Returning `true` would make the isolation unsound with no compile error.
-2. `read(from:ofType:)` uses `MainActor.assumeIsolated`, which relies on (1).
-3. `presentedItemDidChange()` branches on `Thread.isMainThread`, because it genuinely arrives on the file-presenter thread in production but on the main thread from tests. An unconditional `DispatchQueue.main.sync` deadlocks the second case.
+1. `canConcurrentlyReadDocuments(ofType:)` is overridden to return `false`, pinning AppKit's default so its own reads stay on the main thread. Returning `true` would make that half unsound with no compile error.
+2. All four sites that touch main-actor state from a nonisolated override branch on `Thread.isMainThread` and use `MainActor.assumeIsolated` on the main-thread side: `read(from:ofType:)`, `presentedItemDidChange()`, `notifyLSPDidOpen()`/`notifyLSPDidClose(_:)`, and `registerContentChangeUndo`. The pin is not load-bearing on its own, because it says nothing about an in-process caller constructing a document off the main actor, which has happened here before and trapped a bare `assumeIsolated`.
+3. Two of the four block rather than hop. `read(from:ofType:)` must, because `NSDocument` requires the document loaded by the time it returns; `presentedItemDidChange()` must, or repeated change notifications pile up. Both therefore carry a `DispatchQueue.main.sync`, whose safety rests on no caller blocking the main thread while triggering an off-main read. Nothing enforces that.
 
 This is accepted as a bridge so the extraction can land, not as the end state.
 The real problem is that the type mixes main-actor UI state (`content` is an `NSTextStorage` that SwiftUI observes) with an I/O lifecycle driven from arbitrary threads.
