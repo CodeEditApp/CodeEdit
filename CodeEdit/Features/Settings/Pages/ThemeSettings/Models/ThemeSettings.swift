@@ -35,6 +35,13 @@ extension SettingsData {
         var searchKeys: [String] {
             [
                 "Automatically Change theme based on system appearance",
+                "Automatically generate syntax colors from system accent color",
+                "Color harmony",
+                "Complementary",
+                "Monochromatic",
+                "Analogous",
+                "Triadic",
+                "Tetradic",
                 "Always use dark terminal appearance",
                 "Use theme background",
                 "Light Appearance",
@@ -63,6 +70,19 @@ extension SettingsData {
 
         /// Automatically change theme based on system appearance
         var matchAppearance: Bool = true
+
+        /// Automatically derive editor syntax colors from the macOS system accent color.
+        var automaticallyGenerateTheme: Bool = false
+
+        /// The color harmony used when generating syntax colors.
+        var generatedThemeStrategy: GeneratedThemeStrategy = .analogous
+
+        /// Whether the source editor should render an opaque theme background.
+        /// Generated palettes need a known surface color to preserve their contrast guarantees,
+        /// while the stored preference continues to control other theme-backed surfaces.
+        var useThemeBackgroundInEditor: Bool {
+            useThemeBackground || automaticallyGenerateTheme
+        }
 
         /// Dictionary of themes containing overrides
         ///
@@ -108,6 +128,12 @@ extension SettingsData {
             self.matchAppearance = try container.decodeIfPresent(
                 Bool.self, forKey: .matchAppearance
             ) ?? true
+            self.automaticallyGenerateTheme = try container.decodeIfPresent(
+                Bool.self, forKey: .automaticallyGenerateTheme
+            ) ?? false
+            self.generatedThemeStrategy = try container.decodeIfPresent(
+                GeneratedThemeStrategy.self, forKey: .generatedThemeStrategy
+            ) ?? .analogous
             self.overrides = try container.decodeIfPresent([String: ThemeOverrides].self, forKey: .overrides) ?? [:]
         }
     }

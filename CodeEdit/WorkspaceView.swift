@@ -17,9 +17,6 @@ struct WorkspaceView: View {
 
     @FocusState var focusedEditor: Editor?
 
-    @AppSettings(\.theme.matchAppearance)
-    var matchAppearance
-
     @AppSettings(\.sourceControl.general.sourceControlIsEnabled)
     var sourceControlIsEnabled
 
@@ -69,15 +66,10 @@ struct WorkspaceView: View {
                     // MARK: - Theme Color Scheme
 
                     .task {
-                        themeModel.colorScheme = colorScheme
+                        themeModel.syncAppearance(with: colorScheme)
                     }
                     .onChange(of: colorScheme) { _, newValue in
-                        themeModel.colorScheme = newValue
-                        if matchAppearance {
-                            themeModel.selectedTheme = newValue == .dark
-                            ? themeModel.selectedDarkTheme
-                            : themeModel.selectedLightTheme
-                        }
+                        themeModel.syncAppearance(with: newValue)
                     }
 
                     // MARK: - Source Control

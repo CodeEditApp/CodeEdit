@@ -35,10 +35,8 @@ struct CodeFileView: View {
     var overscroll
     @AppSettings(\.textEditing.font)
     var settingsFont
-    @AppSettings(\.theme.useThemeBackground)
-    var useThemeBackground
-    @AppSettings(\.theme.matchAppearance)
-    var matchAppearance
+    @AppSettings(\.theme)
+    var themeSettings
     @AppSettings(\.textEditing.letterSpacing)
     var letterSpacing
     @AppSettings(\.textEditing.bracketEmphasis)
@@ -105,7 +103,7 @@ struct CodeFileView: View {
     }
 
     private var currentTheme: Theme {
-        themeModel.selectedTheme ?? themeModel.themes.first!
+        themeModel.effectiveTheme ?? themeModel.themes.first!
     }
 
     @State private var font: NSFont = Settings[\.textEditing].font.current
@@ -120,7 +118,7 @@ struct CodeFileView: View {
             configuration: SourceEditorConfiguration(
                 appearance: .init(
                     theme: currentTheme.editor.editorTheme,
-                    useThemeBackground: useThemeBackground,
+                    useThemeBackground: themeSettings.useThemeBackgroundInEditor,
                     font: font,
                     lineHeightMultiple: lineHeightMultiple,
                     letterSpacing: letterSpacing,

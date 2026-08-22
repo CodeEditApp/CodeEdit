@@ -63,6 +63,11 @@ struct ThemeSettingsView: View {
                 if themeSearchQuery.isEmpty {
                     Section {
                         changeThemeOnSystemAppearance
+                        automaticThemeGeneration
+                        if settings.automaticallyGenerateTheme {
+                            generatedThemeStrategy
+                            generatedThemePreview
+                        }
                         if settings.matchAppearance {
                             alwaysUseDarkTerminalAppearance
                         }
@@ -114,6 +119,7 @@ struct ThemeSettingsView: View {
                     }
                 })
                 .onAppear {
+                    themeModel.syncAppearance(with: colorScheme)
                     updateFilteredThemes()
                 }
                 .onChange(of: themeSearchQuery) { _, _ in
@@ -123,6 +129,7 @@ struct ThemeSettingsView: View {
                     updateFilteredThemes()
                 }
                 .onChange(of: colorScheme) { _, newColorScheme in
+                    themeModel.syncAppearance(with: newColorScheme)
                     updateFilteredThemes(overrideColorScheme: newColorScheme)
                 }
             }
@@ -152,8 +159,44 @@ struct ThemeSettingsView: View {
 }
 
 private extension ThemeSettingsView {
+    private var automaticThemeGeneration: some View {
+        Toggle(
+            "Automatically generate syntax colors from system accent color",
+            isOn: $settings.automaticallyGenerateTheme
+        )
+        .onChange(of: settings.automaticallyGenerateTheme) { _, _ in
+            themeModel.refreshGeneratedTheme()
+        }
+        .help("Uses the accent color selected in System Settings and updates when it changes.")
+    }
+
+    private var generatedThemeStrategy: some View {
+        Picker("Color harmony", selection: $settings.generatedThemeStrategy) {
+            ForEach(GeneratedThemeStrategy.allCases) { strategy in
+                Text(strategy.displayName).tag(strategy)
+            }
+        }
+        .onChange(of: settings.generatedThemeStrategy) { _, _ in
+            themeModel.refreshGeneratedTheme()
+        }
+    }
+
+    @ViewBuilder private var generatedThemePreview: some View {
+        if let generatedTheme = themeModel.generatedTheme {
+            LabeledContent("Generated palette") {
+                ThemeSettingsColorPreview(generatedTheme)
+            }
+        }
+    }
+
     private var useThemeBackground: some View {
-        Toggle("Use theme background ", isOn: $settings.useThemeBackground)
+        Toggle("Use theme background", isOn: $settings.useThemeBackground)
+        .help(
+            settings.automaticallyGenerateTheme
+                ? "Generated syntax colors keep the source editor's theme background on to maintain readable "
+                    + "contrast; this setting continues to control other surfaces."
+                : "Use the selected theme's background color in the editor."
+        )
     }
 
     private var alwaysUseDarkTerminalAppearance: some View {
@@ -167,16 +210,13 @@ private extension ThemeSettingsView {
         )
         .onChange(of: settings.matchAppearance) { _, value in
             if value {
-                if colorScheme == .dark {
-                    themeModel.selectedTheme = themeModel.selectedDarkTheme
-                } else {
-                    themeModel.selectedTheme = themeModel.selectedLightTheme
-                }
+                themeModel.syncAppearance(with: colorScheme)
             } else {
                 themeModel.selectedTheme = themeModel.themes.first {
                     $0.name == settings.selectedTheme
                 }
             }
+            themeModel.refreshGeneratedTheme()
         }
     }
 }

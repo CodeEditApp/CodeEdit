@@ -129,6 +129,7 @@ extension ThemeModel {
                 }
             }
         }
+        refreshGeneratedTheme()
     }
 
     func importTheme() {

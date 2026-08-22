@@ -49,7 +49,13 @@ final class ThemeModel: ObservableObject {
     }
 
     /// System color scheme
-    @Published var colorScheme: ColorScheme = .light
+    @Published var colorScheme: ColorScheme = .light {
+        didSet {
+            refreshGeneratedTheme()
+        }
+    }
+
+    private var systemColorsObserver: NSObjectProtocol?
 
     /// Selected 'light' theme
     /// Used for auto-switching theme to match macOS system appearance
@@ -82,6 +88,9 @@ final class ThemeModel: ObservableObject {
     /// An array of loaded ``Theme``.
     @Published var themes: [Theme] = []
 
+    /// A transient editor theme derived from the current system accent color.
+    @Published private(set) var generatedTheme: Theme?
+
     /// The currently selected ``Theme``.
     @Published var selectedTheme: Theme? {
         didSet {
@@ -92,6 +101,11 @@ final class ThemeModel: ObservableObject {
     }
 
     @Published var previousTheme: Theme?
+
+    /// The theme currently used by the source editor.
+    var effectiveTheme: Theme? {
+        generatedTheme ?? selectedTheme
+    }
 
     /// Only themes where ``Theme/appearance`` == ``Theme/ThemeType/dark``
     var darkThemes: [Theme] {
@@ -104,11 +118,61 @@ final class ThemeModel: ObservableObject {
     }
 
     private init() {
+        colorScheme = NSApp.effectiveAppearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua
+            ? .dark
+            : .light
         do {
             try loadThemes()
         } catch {
             print(error)
         }
+
+        systemColorsObserver = NotificationCenter.default.addObserver(
+            forName: NSColor.systemColorsDidChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.refreshGeneratedTheme()
+        }
+        refreshGeneratedTheme()
+    }
+
+    deinit {
+        if let systemColorsObserver {
+            NotificationCenter.default.removeObserver(systemColorsObserver)
+        }
+    }
+
+    /// Rebuilds the transient generated theme, or removes it when generation is disabled.
+    func refreshGeneratedTheme() {
+        guard settings.automaticallyGenerateTheme else {
+            generatedTheme = nil
+            return
+        }
+
+        let baseTheme: Theme? = if settings.matchAppearance {
+            colorScheme == .dark ? selectedDarkTheme : selectedLightTheme
+        } else {
+            selectedTheme
+        }
+
+        guard let baseTheme else {
+            generatedTheme = nil
+            return
+        }
+
+        generatedTheme = GeneratedThemeGenerator.generate(
+            from: baseTheme,
+            seedColor: GeneratedThemeGenerator.systemAccentColor(for: baseTheme.appearance),
+            strategy: settings.generatedThemeStrategy
+        )
+    }
+
+    /// Synchronizes the model with the active appearance and selects the matching manual theme when requested.
+    func syncAppearance(with colorScheme: ColorScheme) {
+        self.colorScheme = colorScheme
+        guard settings.matchAppearance else { return }
+        selectedTheme = colorScheme == .dark ? selectedDarkTheme : selectedLightTheme
     }
 
     /// This function stores  'dark' and 'light' themes into `ThemePreferences` if user happens to select a theme
@@ -139,13 +203,17 @@ final class ThemeModel: ObservableObject {
     }
 
     func getThemeActive(_ theme: Theme) -> Bool {
-        return selectedTheme == theme
+        return generatedTheme == nil && selectedTheme == theme
     }
 
     /// Activates the current theme, setting ``selectedTheme`` and ``selectedLightTheme``/``selectedDarkTheme`` as
     /// necessary.
     /// - Parameter theme: The theme to activate.
     func activateTheme(_ theme: Theme) {
+        if settings.automaticallyGenerateTheme {
+            settings.automaticallyGenerateTheme = false
+            generatedTheme = nil
+        }
         selectedTheme = theme
         if colorScheme == .light {
             selectedLightTheme = theme
