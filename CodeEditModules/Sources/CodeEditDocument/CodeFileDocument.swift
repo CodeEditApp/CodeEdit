@@ -165,6 +165,16 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
 
     // MARK: - Read
 
+    /// Never read concurrently.
+    ///
+    /// This is AppKit's default, stated explicitly because ``read(from:ofType:)`` depends on it:
+    /// that method overrides a nonisolated `NSDocument` entry point but touches this document's
+    /// main-actor state, which is only sound while reads stay on the main thread. Returning `true`
+    /// here would make that unsound with no compile-time error.
+    override public static func canConcurrentlyReadDocuments(ofType typeName: String) -> Bool {
+        false
+    }
+
     /// This function is used for decoding files.
     /// It should not throw error as unsupported files can still be opened by QLPreviewView.
     override public func read(from data: Data, ofType _: String) throws {
@@ -183,14 +193,20 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
             Self.logger.error("Failed to read file from data using encoding: \(rawEncoding)")
             return
         }
-        self.sourceEncoding = validEncoding
-        if let content {
-            registerContentChangeUndo(fileURL: fileURL, nsString: nsString, content: content)
-            content.mutableString.setString(nsString as String)
-        } else {
-            self.content = NSTextStorage(string: nsString as String)
+        // `read(from:ofType:)` overrides a nonisolated `NSDocument` method, but everything below
+        // touches main-actor state. Reads are main-thread only, which
+        // `canConcurrentlyReadDocuments(ofType:)` above pins, so stating the isolation is sound.
+        let text = nsString as String
+        MainActor.assumeIsolated {
+            self.sourceEncoding = validEncoding
+            if let content {
+                registerContentChangeUndo(fileURL: fileURL, text: text, content: content)
+                content.mutableString.setString(text)
+            } else {
+                self.content = NSTextStorage(string: text)
+            }
+            notifyLSPDidOpen()
         }
-        notifyLSPDidOpen()
     }
 
     /// The delegate is main-actor isolated, but document reads and closes can happen off the main
@@ -219,12 +235,12 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
     /// - Note: This is inefficient memory-wise. We could do a diff of the file and only register the
     ///         mutations that would recreate the diff. However, that would instead be CPU intensive.
     ///         Tradeoffs.
-    nonisolated private func registerContentChangeUndo(fileURL: URL?, nsString: NSString, content: NSTextStorage) {
+    nonisolated private func registerContentChangeUndo(fileURL: URL?, text: String, content: NSTextStorage) {
         guard let fileURL else { return }
         // The delegate's undo registry is main-actor isolated. Capture only Sendable primitives and build
         // the (non-Sendable) `TextMutation` on the main actor so nothing non-Sendable crosses the boundary.
         // Re-reads reach here on the main thread; mirror the `queue: .main` bridge used for LSP notifications.
-        let string = nsString as String
+        let string = text
         let length = content.length
         let register: @MainActor () -> Void = { [weak self] in
             let mutation = TextMutation(
@@ -293,47 +309,6 @@ public final class CodeFileDocument: NSDocument, ObservableObject {
                 autosaveTimer = nil
             }
         }
-    }
-
-    // MARK: - External Changes
-
-    /// Handle the notification that the represented file item changed.
-    ///
-    /// We check if a file has been modified and can be read again to display to the user.
-    /// To determine if a file has changed, we check the modification date. If it's different from the stored one,
-    /// we continue.
-    /// To determine if we can reload the file, we check if the document has outstanding edits. If not, we reload the
-    /// file.
-    override public func presentedItemDidChange() {
-        if fileModificationDate != getModificationDate() {
-            guard isDocumentEdited else {
-                fileModificationDate = getModificationDate()
-                if let fileURL, let fileType {
-                    // This blocks the presented item thread intentionally. If we don't wait, we'll receive more updates
-                    // that the file has changed and we'll end up dispatching multiple reads.
-                    // The presented item thread expects this operation to by synchronous anyways.
-
-                    // https://github.com/CodeEditApp/CodeEdit/issues/2091
-                    // We can't use `.asyncAndWait` on Ventura as it seems the symbol is missing on that platform.
-                    // Could be just for x86 machines.
-                    DispatchQueue.main.sync {
-                        try? self.read(from: fileURL, ofType: fileType)
-                    }
-                }
-                return
-            }
-        }
-
-        super.presentedItemDidChange()
-    }
-
-    /// Helper to find the last modified date of the represented file item.
-    /// 
-    /// Different from `NSDocument.fileModificationDate`. This returns the *current* modification date, whereas the
-    /// alternative stores the date that existed when we last read the file.
-    private func getModificationDate() -> Date? {
-        guard let path = fileURL?.absolutePath else { return nil }
-        return try? FileManager.default.attributesOfItem(atPath: path)[.modificationDate] as? Date
     }
 
     // MARK: - Close

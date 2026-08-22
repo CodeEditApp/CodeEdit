@@ -130,3 +130,25 @@ The first seven are process-scoped services that simply have not moved to `AppDe
 It is a process-global `[UUID: CELocalShellTerminalView]` holding views that belong to a workspace window.
 Eviction is per-terminal only, and nothing clears it when a workspace or window closes, so two open projects share one bag of live terminal views.
 It works because UUIDs do not collide, but the lifetime is wrong, and a wrong lifetime surfaces as a leak rather than as a compile error.
+
+## Document isolation is bridged, not solved
+
+`CodeFileDocument` moved into `CodeEditDocument` during the package extraction, which put it under Swift 6 strict concurrency for the first time.
+That surfaced six pre-existing isolation errors, all in code that is byte-identical on `main` and compiles silently there.
+
+`NSDocument` is main-actor isolated, but declares `read(from:ofType:)` and `presentedItemDidChange()` nonisolated, because AppKit may call them off the main thread.
+Both touch main-actor document state.
+Three things now hold that together, and none of them is a static guarantee:
+
+1. `canConcurrentlyReadDocuments(ofType:)` is overridden to return `false`, pinning AppKit's default so reads stay on the main thread. Returning `true` would make the isolation unsound with no compile error.
+2. `read(from:ofType:)` uses `MainActor.assumeIsolated`, which relies on (1).
+3. `presentedItemDidChange()` branches on `Thread.isMainThread`, because it genuinely arrives on the file-presenter thread in production but on the main thread from tests. An unconditional `DispatchQueue.main.sync` deadlocks the second case.
+
+This is accepted as a bridge so the extraction can land, not as the end state.
+The real problem is that the type mixes main-actor UI state (`content` is an `NSTextStorage` that SwiftUI observes) with an I/O lifecycle driven from arbitrary threads.
+Separating those, so decoding produces a `Sendable` value that a single main-actor step installs, removes all three props at once.
+That is a redesign of the document's state ownership and is deliberately deferred.
+
+The general lesson is worth stating separately, because it applies to every future extraction: **moving a file into `CodeEditModules` is also a Swift 6 migration of that file.**
+The app target is `SWIFT_VERSION = 5.0` with no `SWIFT_STRICT_CONCURRENCY` setting, so it defaults to `minimal`; the package is `swift-tools-version: 6.0`, so every target defaults to Swift 6 language mode.
+Code that compiled without complaint for years can arrive in a package with a dozen errors, none of them regressions.
