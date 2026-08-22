@@ -49,6 +49,11 @@ playground.xcworkspace
 
 .build/
 
+# Resolved file for the local CodeEditModules package — the workspace's
+# shared Package.resolved is authoritative; this is Xcode/SwiftPM-generated noise.
+CodeEditModules/Package.resolved
+CodeEditModules/.swiftpm/
+
 # CocoaPods
 #
 # We recommend against adding the Pods directory to your .gitignore. However
@@ -96,3 +101,8 @@ iOSInjectionProject/
 .codeedit
 .idea
 .vscode
+
+# The .xcodeproj's implicit workspace is not a build entry point — CodeEdit.xcworkspace is.
+# Xcode regenerates this lockfile whenever the bare project is opened; it drifts and misleads.
+# The app bundles the workspace's lockfile as its Acknowledgements data source.
+CodeEdit.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved

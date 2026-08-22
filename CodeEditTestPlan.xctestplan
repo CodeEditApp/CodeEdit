@@ -18,27 +18,7 @@
   "testTargets" : [
     {
       "skippedTests" : [
-        "CodeEditUIUnitTests",
-        "CodeEditUIUnitTests\/testBranchPickerDark()",
-        "CodeEditUIUnitTests\/testBranchPickerLight()",
-        "CodeEditUIUnitTests\/testEffectViewDark()",
-        "CodeEditUIUnitTests\/testEffectViewLight()",
-        "CodeEditUIUnitTests\/testFontPickerViewDark()",
-        "CodeEditUIUnitTests\/testFontPickerViewLight()",
-        "CodeEditUIUnitTests\/testHelpButtonDark()",
-        "CodeEditUIUnitTests\/testHelpButtonLight()",
-        "CodeEditUIUnitTests\/testSegmentedControlDark()",
-        "CodeEditUIUnitTests\/testSegmentedControlLight()",
-        "CodeEditUIUnitTests\/testSegmentedControlProminentDark()",
-        "CodeEditUIUnitTests\/testSegmentedControlProminentLight()",
-        "RegistryTests",
-        "WelcomeModuleUnitTests",
-        "WelcomeModuleUnitTests\/testRecentJSFileDarkSnapshot()",
-        "WelcomeModuleUnitTests\/testRecentJSFileLightSnapshot()",
-        "WelcomeModuleUnitTests\/testRecentProjectItemDarkSnapshot()",
-        "WelcomeModuleUnitTests\/testRecentProjectItemLightSnapshot()",
-        "WelcomeModuleUnitTests\/testWelcomeActionViewDarkSnapshot()",
-        "WelcomeModuleUnitTests\/testWelcomeActionViewLightSnapshot()"
+        "RegistryTests"
       ],
       "target" : {
         "containerPath" : "container:CodeEdit.xcodeproj",
@@ -51,6 +31,48 @@
         "containerPath" : "container:CodeEdit.xcodeproj",
         "identifier" : "B658FB4627DA9E1000EA4DBD",
         "name" : "CodeEditUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:CodeEditModules",
+        "identifier" : "CodeEditCoreTests",
+        "name" : "CodeEditCoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:CodeEditModules",
+        "identifier" : "CodeEditSettingsTests",
+        "name" : "CodeEditSettingsTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:CodeEditModules",
+        "identifier" : "CESearchTests",
+        "name" : "CESearchTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:CodeEditModules",
+        "identifier" : "CodeEditUIUnitTests",
+        "name" : "CodeEditUIUnitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:CodeEditModules",
+        "identifier" : "CELSPTests",
+        "name" : "CELSPTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:CodeEditModules",
+        "identifier" : "CESourceControlTests",
+        "name" : "CESourceControlTests"
       }
     }
   ],

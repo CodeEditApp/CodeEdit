@@ -1,0 +1,15 @@
+{
+  "general" : {
+    "fileIconStyle" : "monochrome"
+  },
+  "someFutureFeature" : {
+    "enabled" : true,
+    "threshold" : 42
+  },
+  "extensions" : {
+    "com.example.myextension" : {
+      "apiKey" : "abc123",
+      "nested" : { "deep" : [ 1, 2, 3 ] }
+    }
+  }
+}

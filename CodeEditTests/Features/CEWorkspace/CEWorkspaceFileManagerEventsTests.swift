@@ -1,0 +1,101 @@
+//
+//  CEWorkspaceFileManagerEventsTests.swift
+//  CodeEditTests
+//
+//  Created by Matthijs Eikelenboom on 06/07/2026.
+//
+
+import CEWorkspaceFileManager
+import XCTest
+import CodeEditCore
+@testable import CodeEdit
+
+final class CEWorkspaceFileManagerEventsTests: XCTestCase {
+    private var directory: URL!
+
+    override func setUpWithError() throws {
+        directory = FileManager.default.temporaryDirectory
+            .appending(path: "CEWSFMEvents-\(UUID().uuidString)", directoryHint: .isDirectory)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        try Data("x".utf8).write(to: directory.appending(path: "changed.swift"))
+    }
+
+    override func tearDownWithError() throws {
+        try? FileManager.default.removeItem(at: directory)
+    }
+
+    func testAppliesGitStatusChangedEvent() throws {
+        let bus = EventBus()
+        let manager = CEWorkspaceFileManager(
+            folderUrl: directory,
+            ignoredFilesAndFolders: [],
+            eventBus: bus
+        )
+        let key = directory.appending(path: "changed.swift").relativePath
+        XCTAssertNotNil(manager.getFile(key), "file should be cached after init")
+
+        bus.publish(GitStatusChangedEvent(workspaceURL: directory, changed: [key: .modified]))
+
+        let expectation = expectation(description: "status applied")
+        DispatchQueue.main.async {
+            XCTAssertEqual(manager.getFile(key)?.gitStatus, .modified)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2)
+    }
+
+    func testClearsStaleGitStatus() throws {
+        let bus = EventBus()
+        let manager = CEWorkspaceFileManager(
+            folderUrl: directory,
+            ignoredFilesAndFolders: [],
+            eventBus: bus
+        )
+        let key = directory.appending(path: "changed.swift").relativePath
+        manager.getFile(key)?.gitStatus = .modified
+
+        bus.publish(GitStatusChangedEvent(workspaceURL: directory, changed: [:]))
+
+        let expectation = expectation(description: "status cleared")
+        DispatchQueue.main.async {
+            XCTAssertNil(manager.getFile(key)?.gitStatus)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2)
+    }
+
+    func testIgnoresEventsForOtherWorkspaces() throws {
+        let bus = EventBus()
+        let manager = CEWorkspaceFileManager(
+            folderUrl: directory,
+            ignoredFilesAndFolders: [],
+            eventBus: bus
+        )
+        let key = directory.appending(path: "changed.swift").relativePath
+
+        bus.publish(GitStatusChangedEvent(workspaceURL: URL(filePath: "/tmp/other"), changed: [key: .modified]))
+
+        let expectation = expectation(description: "no apply")
+        DispatchQueue.main.async {
+            XCTAssertNil(manager.getFile(key)?.gitStatus)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 2)
+    }
+
+    func testInitPublishesChildrenIndexed() throws {
+        let bus = EventBus()
+        var kinds: [String] = []
+        let cancellable = bus.subscribe(WorkspaceFileEvent.self)
+            .sink { event in
+                if case .childrenIndexed = event.kind { kinds.append("childrenIndexed") }
+            }
+        _ = CEWorkspaceFileManager(
+            folderUrl: directory,
+            ignoredFilesAndFolders: [],
+            eventBus: bus
+        )
+        XCTAssertTrue(kinds.contains("childrenIndexed"), "init loads root children and should emit .childrenIndexed")
+        cancellable.cancel()
+    }
+}

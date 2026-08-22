@@ -1,0 +1,15 @@
+//
+//  NoSelectionInspectorView.swift
+//  CodeEdit
+//
+//  Created by Nanashi Li on 2022/04/18.
+//
+
+import SwiftUI
+import CodeEditUI
+
+struct NoSelectionInspectorView: View {
+    var body: some View {
+        CEContentUnavailableView("No Selection")
+    }
+}

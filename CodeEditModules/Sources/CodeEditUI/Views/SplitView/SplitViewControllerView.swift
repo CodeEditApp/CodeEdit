@@ -1,0 +1,159 @@
+//
+//  SplitViewControllerView.swift
+//  CodeEditUI
+//
+//  Created by Wouter Hennen on 20/02/2023.
+//
+
+import SwiftUI
+
+public struct SplitViewControllerView: NSViewControllerRepresentable {
+
+    var axis: Axis
+    var dividerStyle: CodeEditDividerStyle
+    var children: _VariadicView.Children
+    @Binding var viewController: () -> SplitViewController?
+
+    public func makeNSViewController(context: Context) -> SplitViewController {
+        let controller = SplitViewController(axis: axis, parentView: self) { controller in
+            updateItems(controller: controller)
+        }
+        return controller
+    }
+
+    public func updateNSViewController(_ controller: SplitViewController, context: Context) {
+        updateItems(controller: controller)
+        controller.setDividerStyle(dividerStyle)
+    }
+
+    private func updateItems(controller: SplitViewController) {
+        var hasChanged = false
+        // Reorder viewcontrollers if needed and add new ones.
+        controller.items = children.map { child in
+            let item: SplitViewItem
+            if let foundItem = controller.items.first(where: { $0.id == child.id }) {
+                item = foundItem
+                item.update(child: child)
+            } else {
+                hasChanged = true
+                item = SplitViewItem(child: child)
+            }
+            return item
+        }
+
+        controller.splitViewItems = controller.items.map(\.item)
+
+        if hasChanged && controller.splitViewItems.count > 1 {
+            let splitView = controller.splitView
+            let numerator = splitView.isVertical ? splitView.frame.width : splitView.frame.height
+
+            for idx in 0..<controller.items.count-1 {
+                guard !controller.items[idx+1].item.isCollapsed else { continue }
+
+                splitView.setPosition(
+                    CGFloat(idx + 1) * numerator/CGFloat(controller.items.count),
+                    ofDividerAt: idx
+                )
+                splitView.setPosition(
+                    CGFloat(idx + 1) * numerator/CGFloat(controller.items.count),
+                    ofDividerAt: idx
+                )
+            }
+        }
+    }
+}
+
+public final class SplitViewController: NSSplitViewController {
+    public final class CustomSplitView: NSSplitView {
+        @Invalidating(.display)
+        var customDividerStyle: CodeEditDividerStyle = .system(.thin) {
+            didSet {
+                switch customDividerStyle {
+                case .system(let dividerStyle):
+                    self.dividerStyle = dividerStyle
+                case .editorDivider:
+                    return
+                }
+            }
+        }
+
+        init() {
+            super.init(frame: .zero)
+            dividerStyle = .thin
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        override public var dividerColor: NSColor {
+            customDividerStyle.customColor ?? super.dividerColor
+        }
+
+        override public var dividerThickness: CGFloat {
+            customDividerStyle.customThickness ?? super.dividerThickness
+        }
+
+        override public func drawDivider(in rect: NSRect) {
+            let safeRect = NSRect(
+                x: rect.origin.x,
+                y: max(rect.origin.y, safeAreaRect.origin.y),
+                width: isVertical ? dividerThickness : rect.width,
+                height: isVertical ? safeAreaRect.height : dividerThickness
+            )
+            super.drawDivider(in: safeRect)
+        }
+    }
+
+    public var items: [SplitViewItem] = []
+    public var axis: Axis
+    var parentView: SplitViewControllerView?
+
+    var setUpItems: ((SplitViewController) -> Void)?
+
+    init(axis: Axis, parentView: SplitViewControllerView?, setUpItems: ((SplitViewController) -> Void)?) {
+        self.axis = axis
+        self.parentView = parentView
+        self.setUpItems = setUpItems
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override public func loadView() {
+        splitView = CustomSplitView()
+        super.loadView()
+    }
+
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        splitView.isVertical = axis != .vertical
+        setUpItems?(self)
+        DispatchQueue.main.async { [weak self] in
+            self?.parentView?.viewController = { [weak self] in
+                self
+            }
+        }
+    }
+
+    override public func splitView(
+        _ splitView: NSSplitView,
+        shouldHideDividerAt dividerIndex: Int
+    ) -> Bool {
+        guard items.count > 1 else { return false }
+        return super.splitView(splitView, shouldHideDividerAt: dividerIndex)
+    }
+
+    public func setDividerStyle(_ dividerStyle: CodeEditDividerStyle) {
+        guard let splitView = splitView as? CustomSplitView else {
+            return
+        }
+        splitView.customDividerStyle = dividerStyle
+    }
+
+    public func collapse(for id: AnyHashable, enabled: Bool) {
+        items.first { $0.id == id }?.item.animator().isCollapsed = enabled
+    }
+}

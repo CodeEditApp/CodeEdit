@@ -5,14 +5,26 @@
 //  Created by Abe Malla on 2/2/25.
 //
 
+@testable import CELSP
 import Testing
 import Foundation
+import CodeEditCore
+import CodeEditSettings
+import ShellClient
 @testable import CodeEdit
 
 @MainActor
 @Suite()
 struct RegistryTests {
-    var registry: RegistryManager = RegistryManager()
+    var registry: RegistryManager = RegistryManager(
+        eventBus: EventBus(),
+        errorNotifier: NoOpErrorNotifier(),
+        shellClient: ShellClient(),
+        settingsAccessor: RecordingSettingsStore(),
+        // The same path the manager used to read off the settings singleton, so these tests keep
+        // exercising the real install location.
+        installPath: SettingsLocation.baseURL.appending(path: "Language Servers")
+    )
 
     // MARK: - Download Tests
 
@@ -20,7 +32,7 @@ struct RegistryTests {
     func registryDownload() async throws {
         await registry.downloadRegistryItems()
 
-        #expect(registry.downloadError == nil)
+        #expect(registry.viewState.downloadError == nil)
 
         let registryJsonPath = registry.installPath.appending(path: "registry.json")
         let checksumPath = registry.installPath.appending(path: "checksums.txt")

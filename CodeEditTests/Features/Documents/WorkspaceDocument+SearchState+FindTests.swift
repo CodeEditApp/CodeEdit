@@ -6,16 +6,17 @@
 //
 
 import XCTest
+import CodeEditCore
+@testable import CESearch
 @testable import CodeEdit
 
 final class FindTests: XCTestCase {
     private var directory: URL!
     private var files: [CEWorkspaceFile] = []
-    private var mockWorkspace: WorkspaceDocument!
-    private var searchState: WorkspaceDocument.SearchState!
+    private var searchState: SearchState!
 
     // MARK: - Setup
-    /// A mock WorkspaceDocument is created
+    /// A mock Workspace is created
     /// 3 mock files are added to the index
     /// which will be removed in the teardown function
     override func setUp() async throws {
@@ -29,9 +30,6 @@ final class FindTests: XCTestCase {
         .appending(path: "WorkspaceClientTests", directoryHint: .isDirectory)
         try? FileManager.default.removeItem(at: directory)
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-
-        mockWorkspace = try await WorkspaceDocument(for: directory, withContentsOf: directory, ofType: "")
-        searchState = await mockWorkspace.searchState
 
         // Add a few files
         let folder1 = directory.appending(path: "Folder 2")
@@ -60,7 +58,8 @@ final class FindTests: XCTestCase {
         files[1].parent = parent1
         files[2].parent = parent2
 
-        await mockWorkspace.searchState?.addProjectToIndex()
+        // SearchState indexes the workspace as part of its initializer.
+        searchState = SearchState(workspaceURL: directory, eventBus: EventBus())
 
         // The following code also tests whether the workspace is indexed correctly
         // Wait until the index is up to date and flushed
@@ -137,7 +136,7 @@ final class FindTests: XCTestCase {
         XCTAssertEqual(searchState.getRegexPattern(query), "\\b@\\(test\\. !\\*#Query\\b")
     }
 
-    /// Tests the search functionality of the `WorkspaceDocument.SearchState` and `SearchIndexer`.
+    /// Tests the search functionality of the `SearchState` and `SearchIndexer`.
     func testSearch() async {
         await searchState.search("Ipsum")
         // Wait for the first search expectation to be fulfilled

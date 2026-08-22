@@ -1,0 +1,245 @@
+//
+//  CodeFileView.swift
+//  CodeEditModules/CodeFile
+//
+//  Created by Marco Carnevali on 17/03/22.
+//
+
+import Foundation
+import CodeEditSettings
+import CodeEditDocument
+import SwiftUI
+import CodeEditUI
+import CodeEditSourceEditor
+import CodeEditTextView
+import CodeEditLanguages
+import CodeEditCore
+import Combine
+
+/// CodeFileView is just a wrapper of the `CodeEditor` dependency
+struct CodeFileView: View {
+    @ObservedObject private var editorInstance: EditorInstance
+    @ObservedObject private var codeFile: CodeFileDocument
+
+    @State private var treeSitterClient: TreeSitterClient = TreeSitterClient()
+
+    /// Any coordinators passed to the view.
+    private var textViewCoordinators: [TextViewCoordinator]
+    private var highlightProviders: [any HighlightProviding] = []
+
+    @SettingsValue(TextEditingSettings.self, \.defaultTabWidth)
+    var defaultTabWidth
+    @SettingsValue(TextEditingSettings.self, \.indentOption)
+    var indentOption
+    @SettingsValue(TextEditingSettings.self, \.lineHeightMultiple)
+    var lineHeightMultiple
+    @SettingsValue(TextEditingSettings.self, \.wrapLinesToEditorWidth)
+    var wrapLinesToEditorWidth
+    @SettingsValue(TextEditingSettings.self, \.overscroll)
+    var overscroll
+    @SettingsValue(TextEditingSettings.self, \.font)
+    var settingsFont
+    @SettingsValue(ThemeSettings.self, \.useThemeBackground)
+    var useThemeBackground
+    @SettingsValue(ThemeSettings.self, \.matchAppearance)
+    var matchAppearance
+    @SettingsValue(TextEditingSettings.self, \.letterSpacing)
+    var letterSpacing
+    @SettingsValue(TextEditingSettings.self, \.bracketEmphasis)
+    var bracketEmphasis
+    @SettingsValue(TextEditingSettings.self, \.useSystemCursor)
+    var useSystemCursor
+    @SettingsValue(TextEditingSettings.self, \.showGutter)
+    var showGutter
+    @SettingsValue(TextEditingSettings.self, \.showMinimap)
+    var showMinimap
+    @SettingsValue(TextEditingSettings.self, \.showFoldingRibbon)
+    var showFoldingRibbon
+    @SettingsValue(TextEditingSettings.self, \.reformatAtColumn)
+    var reformatAtColumn
+    @SettingsValue(TextEditingSettings.self, \.showReformattingGuide)
+    var showReformattingGuide
+    @SettingsValue(TextEditingSettings.self, \.invisibleCharacters)
+    var invisibleCharactersConfiguration
+    @SettingsValue(TextEditingSettings.self, \.warningCharacters)
+    var warningCharacters
+
+    @Environment(\.colorScheme)
+    private var colorScheme
+
+    @EnvironmentObject var undoRegistry: UndoManagerRegistry
+
+    @EnvironmentObject private var activeTheme: ActiveTheme
+
+    @State private var treeSitter = TreeSitterClient()
+
+    private var cancellables = Set<AnyCancellable>()
+
+    private let isEditable: Bool
+
+    init(
+        editorInstance: EditorInstance,
+        codeFile: CodeFileDocument,
+        languageServices languageServicesProvider: LanguageServicesProvider,
+        textViewCoordinators: [TextViewCoordinator] = [],
+        isEditable: Bool = true
+    ) {
+        self._editorInstance = .init(wrappedValue: editorInstance)
+        self._codeFile = .init(wrappedValue: codeFile)
+
+        let languageServices = languageServicesProvider.languageServices(for: codeFile)
+
+        self.textViewCoordinators = textViewCoordinators
+            + [editorInstance.rangeTranslator]
+            + [codeFile.contentCoordinator]
+            + [languageServices.textCoordinator]
+        self.isEditable = isEditable
+
+        if let openOptions = codeFile.openOptions {
+            codeFile.openOptions = nil
+            editorInstance.cursorPositions = openOptions.cursorPositions
+        }
+
+        highlightProviders = [languageServices.highlightProvider] + [treeSitterClient]
+
+        codeFile
+            .contentCoordinator
+            .textUpdatePublisher
+            .sink { [weak codeFile] _ in
+                codeFile?.updateChangeCount(.changeDone)
+            }
+            .store(in: &cancellables)
+    }
+
+    private var currentTheme: Theme {
+        activeTheme.current!
+    }
+
+    @Environment(\.edgeInsets)
+    private var edgeInsets
+
+    var body: some View {
+        SourceEditor(
+            codeFile.content ?? NSTextStorage(),
+            language: codeFile.getLanguage(),
+            configuration: SourceEditorConfiguration(
+                appearance: .init(
+                    theme: currentTheme.editor.editorTheme,
+                    useThemeBackground: useThemeBackground,
+                    font: settingsFont.current,
+                    lineHeightMultiple: lineHeightMultiple,
+                    letterSpacing: letterSpacing,
+                    wrapLines: codeFile.wrapLines ?? wrapLinesToEditorWidth,
+                    useSystemCursor: useSystemCursor,
+                    tabWidth: codeFile.defaultTabWidth ?? defaultTabWidth,
+                    bracketPairEmphasis: getBracketPairEmphasis()
+                ),
+                behavior: .init(
+                    isEditable: isEditable,
+                    indentOption: (codeFile.indentOption ?? indentOption).textViewOption(),
+                    reformatAtColumn: reformatAtColumn
+                ),
+                layout: .init(
+                    editorOverscroll: overscroll.overscrollPercentage,
+                    contentInsets: edgeInsets.nsEdgeInsets,
+                    additionalTextInsets: NSEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
+                ),
+                peripherals: .init(
+                    showGutter: showGutter,
+                    showMinimap: showMinimap,
+                    showReformattingGuide: showReformattingGuide,
+                    showFoldingRibbon: showFoldingRibbon,
+                    invisibleCharactersConfiguration: invisibleCharactersConfiguration.textViewOption(),
+                    warningCharacters: Set(warningCharacters.characters.keys)
+                )
+            ),
+            state: Binding(
+                get: {
+                    SourceEditorState(
+                        cursorPositions: editorInstance.cursorPositions,
+                        scrollPosition: editorInstance.scrollPosition,
+                        findText: editorInstance.findText,
+                        replaceText: editorInstance.replaceText
+                    )
+                },
+                set: { newState in
+                    editorInstance.cursorPositions = newState.cursorPositions ?? []
+                    editorInstance.scrollPosition = newState.scrollPosition
+                    editorInstance.findText = newState.findText
+                    editorInstance.findTextSubject.send(newState.findText)
+                    editorInstance.replaceText = newState.replaceText
+                    editorInstance.replaceTextSubject.send(newState.replaceText)
+                }
+            ),
+            highlightProviders: highlightProviders,
+            undoManager: undoRegistry.manager(forFile: editorInstance.file),
+            coordinators: textViewCoordinators
+        )
+        // This view needs to refresh when the codefile changes. The file URL is too stable.
+        .id(ObjectIdentifier(codeFile))
+        .background {
+            if colorScheme == .dark {
+                EffectView(.underPageBackground)
+            } else {
+                EffectView(.contentBackground)
+            }
+        }
+        .colorScheme(currentTheme.appearance == .dark ? .dark : .light)
+        // minHeight zero fixes a bug where the app would freeze if the contents of the file are empty.
+        .frame(minHeight: .zero, maxHeight: .infinity)
+    }
+
+    /// Determines the style of bracket emphasis based on the `bracketEmphasis` setting and the current theme.
+    /// - Returns: The emphasis style to use for bracket pair emphasis.
+    private func getBracketPairEmphasis() -> BracketPairEmphasis? {
+        let color = if bracketEmphasis.useCustomColor {
+            bracketEmphasis.color.nsColor
+        } else {
+            currentTheme.editor.text.nsColor.withAlphaComponent(0.8)
+        }
+
+        switch bracketEmphasis.highlightType {
+        case .disabled:
+            return nil
+        case .flash:
+            return .flash
+        case .bordered:
+            return .bordered(color: color)
+        case .underline:
+            return .underline(color: color)
+        }
+    }
+}
+
+// This extension is kept here because it should not be used elsewhere in the app and may cause confusion
+// due to the similar type name from the CETV module.
+private extension TextEditingSettings.IndentOption {
+    func textViewOption() -> CodeEditSourceEditor.IndentOption {
+        switch self.indentType {
+        case .spaces:
+            return CodeEditSourceEditor.IndentOption.spaces(count: spaceCount)
+        case .tab:
+            return CodeEditSourceEditor.IndentOption.tab
+        }
+    }
+}
+
+private extension TextEditingSettings.InvisibleCharactersConfig {
+    func textViewOption() -> InvisibleCharactersConfiguration {
+        guard self.enabled else { return .empty }
+        var config = InvisibleCharactersConfiguration(
+            showSpaces: self.showSpaces,
+            showTabs: self.showTabs,
+            showLineEndings: self.showLineEndings
+        )
+
+        config.spaceReplacement = self.spaceReplacement
+        config.tabReplacement = self.tabReplacement
+        config.carriageReturnReplacement = self.carriageReturnReplacement
+        config.lineFeedReplacement = self.lineFeedReplacement
+        config.paragraphSeparatorReplacement = self.paragraphSeparatorReplacement
+        config.lineSeparatorReplacement = self.lineSeparatorReplacement
+
+        return config
+    }
+}

@@ -28,6 +28,18 @@ We also have a [troubleshooting guide](https://github.com/CodeEditApp/CodeEdit/w
 
 Please read our guide on [Code Style](https://github.com/CodeEditApp/CodeEdit/wiki/Code-Style) in our wiki.
 
+## Architecture
+
+CodeEdit is a thin app target plus one local multi-target Swift package, `CodeEditModules`,
+whose single `Package.swift` holds the entire local dependency graph. Before adding files,
+please consult the decision tree in [ARCHITECTURE.md](ARCHITECTURE.md). It answers
+"where does my code go?" in a few steps. The short version: a new feature starts as a new
+target in `CodeEditModules/Package.swift`, `CodeEditCore` stays dependency-free and UI-free,
+and `CodeEditUI` depends on `CodeEditSymbols` alone. CI enforces those as hard rules (SwiftLint
+charter rules + a package import audit), so a misplaced file will fail checks. Features should
+also prefer to be leaves that nothing else depends on, though that one is a review preference rather
+than a gate, so declare any target-to-target edge in the manifest where reviewers can see it.
+
 ## Pull Request
 
 Once you are happy with your changes, submit a `Pull Request`.

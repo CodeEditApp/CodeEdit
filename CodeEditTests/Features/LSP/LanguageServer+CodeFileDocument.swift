@@ -5,7 +5,11 @@
 //  Created by Khan Winter on 9/9/24.
 //
 
+@testable import CELSP
+import CEWorkspaceFileManager
+import CodeEditDocument
 import XCTest
+import CodeEditCore
 import CodeEditTextView
 import CodeEditSourceEditor
 import LanguageClient
@@ -25,8 +29,25 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
 
     var tempTestDir: URL!
 
+    /// A dedicated dependency graph for this test class. `NSApp.delegate` is SwiftUI's
+    /// adaptor wrapper (not our `AppDelegate`), so the host graph isn't reachable from
+    /// tests; an isolated graph is cleaner anyway. The static
+    /// `CodeFileDocument.delegateProvider` is repointed at it in `setUp` so document
+    /// lifecycle notifications reach THIS graph's `LSPService`, and restored in `tearDown`.
+    private var testDependencies: AppDependencies!
+    private var previousDelegateProvider: (() -> CodeFileDocumentDelegate?)!
+
+    @MainActor var appDependencies: AppDependencies { testDependencies }
+
     override func setUp() {
         continueAfterFailure = false
+        // XCTest invokes setUp on the main thread; AppDependencies is main-actor isolated.
+        MainActor.assumeIsolated {
+            let dependencies = AppDependencies()
+            testDependencies = dependencies
+            previousDelegateProvider = CodeFileDocument.delegateProvider
+            CodeFileDocument.delegateProvider = { dependencies.codeFileDocumentDelegate }
+        }
         do {
             let tempDir = FileManager.default.temporaryDirectory.appending(
                 path: "codeedit-lsp-tests"
@@ -43,6 +64,10 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
     }
 
     override func tearDown() {
+        MainActor.assumeIsolated {
+            CodeFileDocument.delegateProvider = previousDelegateProvider
+            testDependencies = nil
+        }
         do {
             try FileManager.default.removeItem(at: tempTestDir)
         } catch {
@@ -50,6 +75,7 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         }
     }
 
+    @MainActor
     func makeTestServer() async throws -> (connection: BufferingServerConnection, server: LanguageServerType) {
         let bufferingConnection = BufferingServerConnection()
         var capabilities = ServerCapabilities()
@@ -72,22 +98,28 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             lspPid: -1,
             serverCapabilities: capabilities,
             rootPath: tempTestDir,
-            logContainer: LanguageServerLogContainer(language: .swift)
+            logContainer: LanguageServerLogContainer(language: .swift),
+            provideObjects: { self.appDependencies.lspService.languageServerObjects(for: $0) },
+            clearObjects: { self.appDependencies.lspService.removeLanguageServerObjects(for: $0) }
         )
         _ = try await server.lspInstance.initializeIfNeeded()
         return (connection: bufferingConnection, server: server)
     }
 
-    func makeTestWorkspace() throws -> (WorkspaceDocument, CEWorkspaceFileManager) {
-        let workspace = WorkspaceDocument()
-        try workspace.read(from: tempTestDir, ofType: "")
-        guard let fileManager = workspace.workspaceFileManager else {
-            XCTFail("No File Manager")
-            fatalError("No File Manager") // never runs
+    @MainActor
+    func makeTestWorkspace() throws -> (Workspace, CEWorkspaceFileManager) {
+        let windowManager = appDependencies.workspaceWindowManager
+        try windowManager.openWorkspace(at: tempTestDir)
+        guard let workspace = windowManager.openWorkspaces.first(where: {
+            $0.fileURL.standardizedFileURL.path() == tempTestDir.standardizedFileURL.path()
+        }) else {
+            XCTFail("Workspace was not registered with the window manager")
+            fatalError("Workspace was not registered with the window manager") // never runs
         }
-        return (workspace, fileManager)
+        return (workspace, workspace.workspaceFileManager)
     }
 
+    @MainActor
     func openCodeFile(
         for server: LanguageServerType,
         connection: BufferingServerConnection,
@@ -146,12 +178,11 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
         let (connection, server) = try await makeTestServer()
 
         // This service should receive the didOpen/didClose notifications
-        let lspService = ServiceContainer.resolve(.singleton, LSPService.self)
-        await MainActor.run { lspService?.languageClients[.init(.swift, tempTestDir.path() + "/")] = server }
+        let lspService = appDependencies.lspService
+        lspService.languageClients[.init(.swift, tempTestDir.path() + "/")] = server
 
-        // Set up workspace
+        // Set up workspace. Registers it with the workspace window manager.
         let (workspace, fileManager) = try makeTestWorkspace()
-        CodeEditDocumentController.shared.addDocument(workspace)
 
         // Add a CEWorkspaceFile
         _ = try fileManager.addFile(fileName: "example", toFile: fileManager.workspaceItem, useExtension: "swift")
@@ -166,8 +197,8 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             withContentsOf: file.url,
             ofType: "public.swift-source"
         )
-        file.fileDocument = codeFile
-        CodeEditDocumentController.shared.addDocument(codeFile)
+        workspace.editorManager.setDocument(codeFile, for: file)
+        NSDocumentController.shared.addDocument(codeFile)
 
         await waitForClientState(
             (
@@ -232,13 +263,14 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             let (connection, server) = try await makeTestServer()
             // Create a CodeFileDocument to test with, attach it to the workspace and file
             let codeFile = try await openCodeFile(for: server, connection: connection, file: file, syncOption: option)
-            XCTAssertNotNil(codeFile.languageServerObjects.textCoordinator.languageServer)
-            codeFile.languageServerObjects.textCoordinator.setUpUpdatesTask()
+            let lspObjects = appDependencies.lspService.languageServerObjects(for: codeFile)
+            XCTAssertNotNil(lspObjects.textCoordinator.languageServer)
+            lspObjects.textCoordinator.setUpUpdatesTask()
             codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
 
             let textView = TextView(string: "")
             textView.setTextStorage(codeFile.content!)
-            textView.delegate = codeFile.languageServerObjects.textCoordinator
+            textView.delegate = lspObjects.textCoordinator
 
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "Worlld")
             textView.replaceCharacters(in: NSRange(location: 39, length: 6), with: "")
@@ -289,14 +321,15 @@ final class LanguageServerCodeFileDocumentTests: XCTestCase {
             // Set up test server
             let (connection, server) = try await makeTestServer()
             let codeFile = try await openCodeFile(for: server, connection: connection, file: file, syncOption: option)
+            let lspObjects = appDependencies.lspService.languageServerObjects(for: codeFile)
 
-            XCTAssertNotNil(codeFile.languageServerObjects.textCoordinator.languageServer)
-            codeFile.languageServerObjects.textCoordinator.setUpUpdatesTask()
+            XCTAssertNotNil(lspObjects.textCoordinator.languageServer)
+            lspObjects.textCoordinator.setUpUpdatesTask()
             codeFile.content?.replaceString(in: .zero, with: #"func testFunction() -> String { "Hello " }"#)
 
             let textView = TextView(string: "")
             textView.setTextStorage(codeFile.content!)
-            textView.delegate =  codeFile.languageServerObjects.textCoordinator
+            textView.delegate =  lspObjects.textCoordinator
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "Worlld")
             textView.replaceCharacters(in: NSRange(location: 39, length: 6), with: "")
             textView.replaceCharacters(in: NSRange(location: 39, length: 0), with: "World")

@@ -6,32 +6,43 @@
 //
 
 import Foundation
+import Combine
+import CodeEditSettings
 import Testing
+import CodeEditCore
 @testable import CodeEdit
+@testable import CETerminal
+
+/// In-memory stand-in for `CEWorkspaceSettings`: task configuration without disk I/O.
+final class TasksConfigurationStub: TasksConfigurationProviding {
+    @Published var tasks: [CETask] = []
+    var tasksPublisher: AnyPublisher<[CETask], Never> { $tasks.eraseToAnyPublisher() }
+}
 
 @MainActor
 @Suite(.serialized)
 class TaskManagerTests {
     var taskManager: TaskManager!
-    var mockWorkspaceSettings: CEWorkspaceSettingsData!
+    var tasksConfiguration: TasksConfigurationStub!
 
     init() throws {
-        let workspaceSettings = try JSONDecoder().decode(CEWorkspaceSettingsData.self, from: Data("{}".utf8))
-        mockWorkspaceSettings = workspaceSettings
-        taskManager = TaskManager(workspaceSettings: mockWorkspaceSettings, workspaceURL: nil)
+        tasksConfiguration = TasksConfigurationStub()
+        taskManager = TaskManager(tasksConfiguration: tasksConfiguration, workspaceURL: nil, eventBus: EventBus())
     }
 
     func testInitialization() {
         #expect(taskManager != nil)
-        #expect(taskManager.availableTasks == mockWorkspaceSettings.tasks)
+        #expect(taskManager.availableTasks == tasksConfiguration.tasks)
     }
 
     @Test
     func executeTaskInZsh() async throws {
-        Settings.shared.preferences.terminal.shell = .zsh
+        // Deliberately configures no shell. The shell preference reaches a task through
+        // `TerminalEmulatorView`'s `@SettingsValue`, which this headless test never constructs, so
+        // the singleton write that used to stand here changed nothing about what ran.
 
         let task = CETask(name: "Test Task", command: "echo 'Hello World'")
-        mockWorkspaceSettings.tasks.append(task)
+        tasksConfiguration.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
@@ -47,10 +58,10 @@ class TaskManagerTests {
 
     @Test
     func executeTaskInBash() async throws {
-        Settings.shared.preferences.terminal.shell = .bash
+        // See `executeTaskInZsh` — the shell preference never reached this path.
 
         let task = CETask(name: "Test Task", command: "echo 'Hello World'")
-        mockWorkspaceSettings.tasks.append(task)
+        tasksConfiguration.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
@@ -67,7 +78,7 @@ class TaskManagerTests {
     @Test(.disabled("Not sure why but tasks run in shells seem to never receive signals."))
     func terminateSelectedTask() async throws {
         let task = CETask(name: "Test Task", command: "sleep 10")
-        mockWorkspaceSettings.tasks.append(task)
+        tasksConfiguration.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
@@ -93,7 +104,7 @@ class TaskManagerTests {
     @Test(.disabled("Not sure why but tasks run in shells seem to never receive signals."))
     func suspendAndResumeTask() async throws {
         let task = CETask(name: "Test Task", command: "sleep 5")
-        mockWorkspaceSettings.tasks.append(task)
+        tasksConfiguration.tasks.append(task)
         taskManager.selectedTaskID = task.id
         taskManager.executeActiveTask()
 
