@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import AppKit
 
 extension SearchState {
     /// Performs a search and replace operation in a collection of files based on the provided query.
@@ -105,63 +104,6 @@ extension SearchState {
         )
 
         try updatedContent.write(to: fileURL, atomically: true, encoding: .utf8)
-    }
-
-    /// Replaces a specified range of text within a file with a new string.
-    ///
-    /// - Parameters:
-    ///   - file: The URL of the file to be modified.
-    ///   - searchTerm: The string to be replaced within the specified range.
-    ///   - replacingTerm: The string to replace the specified searchTerm.
-    ///   - keywordRange: The range within which the replacement should occur.
-    ///
-    /// - Note: This function  can be utilised for two specific use cases:
-    ///         1. To replace a particular occurrence of a string within a file,
-    ///         provide the range of the keyword to be replaced.
-    ///         2. To replace all occurrences of the string within the file,
-    ///         pass the start and end index covering the entire range.
-    func replaceRange(
-        file: URL,
-        searchTerm: String,
-        replacingTerm: String,
-        keywordRange: Range<String.Index>
-    ) {
-        guard let fileContent = try? String(contentsOf: file, encoding: .utf8) else {
-            let alert = NSAlert()
-            alert.messageText = "Error"
-            alert.informativeText = "An error occurred while reading file contents of: \(file)"
-            alert.alertStyle = .critical
-            alert.addButton(withTitle: "OK")
-            alert.runModal()
-
-            return
-        }
-
-        var replaceOptions = NSString.CompareOptions()
-        if selectedMode.second == .RegularExpression {
-            replaceOptions = [.regularExpression]
-        }
-        if !caseSensitive {
-            replaceOptions = [.caseInsensitive]
-        }
-
-        let updatedContent = fileContent.replacingOccurrences(
-            of: searchTerm,
-            with: replacingTerm,
-            options: replaceOptions,
-            range: keywordRange
-        )
-
-        do {
-            try updatedContent.write(to: file, atomically: true, encoding: .utf8)
-        } catch {
-            let alert = NSAlert()
-            alert.messageText = "Error"
-            alert.informativeText = "An error occurred while writing to: \(error.localizedDescription)"
-            alert.alertStyle = .critical
-            alert.addButton(withTitle: "OK")
-            alert.runModal()
-        }
     }
 
     func setStatus(_ status: FindNavigatorStatus) async {
