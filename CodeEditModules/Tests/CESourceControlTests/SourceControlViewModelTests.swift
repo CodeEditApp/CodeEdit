@@ -10,24 +10,10 @@ import XCTest
 
 @MainActor
 final class SourceControlViewModelTests: XCTestCase {
-    var viewModel: SourceControlViewModel!
-
-    // `setUp` and `tearDown` override nonisolated declarations on `XCTestCase`, so they stay
-    // nonisolated even though this class is `@MainActor`. XCTest runs both on the main thread for
-    // synchronous test cases, so state that here rather than weakening the isolation.
-    override func setUp() {
-        super.setUp()
-        MainActor.assumeIsolated {
-            viewModel = SourceControlViewModel()
-        }
-    }
-
-    override func tearDown() {
-        MainActor.assumeIsolated {
-            viewModel = nil
-        }
-        super.tearDown()
-    }
+    /// Built lazily rather than in `setUp`, which overrides a nonisolated `XCTestCase` method and so
+    /// cannot touch this `@MainActor` class's state. XCTest creates a fresh test-case instance per
+    /// test method, so each test still gets its own view model.
+    private lazy var viewModel = SourceControlViewModel()
 
     // MARK: - Operation field reset
 
