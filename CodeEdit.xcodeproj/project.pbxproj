@@ -46,6 +46,8 @@
 		6CD3CA552C8B508200D83DCD /* CodeEditSourceEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 6CD3CA542C8B508200D83DCD /* CodeEditSourceEditor */; };
 		6CE21E872C650D2C0031B056 /* SwiftTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 6CE21E862C650D2C0031B056 /* SwiftTerm */; };
 		B6FF04782B6C08AC002C2C78 /* DefaultThemes in Resources */ = {isa = PBXBuildFile; fileRef = B6FF04772B6C08AC002C2C78 /* DefaultThemes */; };
+		CE5F10032EBA000100000001 /* SwiftSyntax in Frameworks */ = {isa = PBXBuildFile; productRef = CE5F10022EBA000100000001 /* SwiftSyntax */; };
+		CE5F10052EBA000100000001 /* SwiftParser in Frameworks */ = {isa = PBXBuildFile; productRef = CE5F10042EBA000100000001 /* SwiftParser */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -188,6 +190,8 @@
 				5E4485612DF600D9008BBE69 /* AboutWindow in Frameworks */,
 				6C6BD6F429CD142C00235D17 /* CollectionConcurrencyKit in Frameworks */,
 				6C85BB442C210EFD00EB5DEF /* SwiftUIIntrospect in Frameworks */,
+				CE5F10032EBA000100000001 /* SwiftSyntax in Frameworks */,
+				CE5F10052EBA000100000001 /* SwiftParser in Frameworks */,
 				6CB446402B6DFF3A00539ED0 /* CodeEditSourceEditor in Frameworks */,
 				6C73A6D32D4F1E550012D95C /* CodeEditSourceEditor in Frameworks */,
 				2816F594280CF50500DD548B /* CodeEditSymbols in Frameworks */,
@@ -295,7 +299,6 @@
 				B658FB2827DA9E0F00EA4DBD /* Sources */,
 				B658FB2927DA9E0F00EA4DBD /* Frameworks */,
 				B658FB2A27DA9E0F00EA4DBD /* Resources */,
-				2B18499A27F8A7A0005119F0 /* Mark // swiftlint:disable:all as errors | Run Script */,
 				04ADA0CC27E6043B00BF00B2 /* Add TODO/FIXME as warnings | Run Script */,
 				04C3255A2801B43A00C8DA2D /* Embed Frameworks */,
 				2BE487F528245162003F3F64 /* Embed Foundation Extensions */,
@@ -304,7 +307,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				6C7B1C762A1D57CE005CBBFC /* PBXTargetDependency */,
 				2BE487F328245162003F3F64 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
@@ -337,6 +339,8 @@
 				6C76D6D32E15B91E00EF52C3 /* CodeEditSourceEditor */,
 				6CCF6DD22E26D48F00B94F75 /* SwiftTerm */,
 				6CCF73CF2E26DE3200B94F75 /* SwiftTerm */,
+				CE5F10022EBA000100000001 /* SwiftSyntax */,
+				CE5F10042EBA000100000001 /* SwiftParser */,
 			);
 			productName = CodeEdit;
 			productReference = B658FB2C27DA9E0F00EA4DBD /* CodeEdit.app */;
@@ -443,6 +447,7 @@
 				5E44855F2DF600D9008BBE69 /* XCRemoteSwiftPackageReference "AboutWindow" */,
 				6C76D6D22E15B91E00EF52C3 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */,
 				6CCF73CE2E26DE3200B94F75 /* XCRemoteSwiftPackageReference "SwiftTerm" */,
+				CE5F10012EBA000100000001 /* XCRemoteSwiftPackageReference "swift-syntax" */,
 			);
 			preferredProjectObjectVersion = 55;
 			productRefGroup = B658FB2D27DA9E0F00EA4DBD /* Products */;
@@ -511,25 +516,6 @@
 			shellPath = /bin/sh;
 			shellScript = "TAGS=\"TODO:|FIXME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\"\n";
 		};
-		2B18499A27F8A7A0005119F0 /* Mark // swiftlint:disable:all as errors | Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Mark // swiftlint:disable:all as errors | Run Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "TAGS=\"\\/\\/ swiftlint:disable all\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" | perl -p -e \"s/($TAGS)/ error: Usage of \\$1 is prohibited/\"\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -573,10 +559,6 @@
 			isa = PBXTargetDependency;
 			target = 2BE487EB28245162003F3F64 /* OpenWithCodeEdit */;
 			targetProxy = 2BE487F228245162003F3F64 /* PBXContainerItemProxy */;
-		};
-		6C7B1C762A1D57CE005CBBFC /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 6C7B1C752A1D57CE005CBBFC /* SwiftLint */;
 		};
 		B658FB3F27DA9E1000EA4DBD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -673,8 +655,8 @@
 				CURRENT_PROJECT_VERSION = 47;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				ENABLE_APP_SANDBOX = YES;
+				DEVELOPMENT_TEAM = B9P888266K;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -874,8 +856,8 @@
 				CURRENT_PROJECT_VERSION = 47;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				ENABLE_APP_SANDBOX = YES;
+				DEVELOPMENT_TEAM = B9P888266K;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -1147,8 +1129,8 @@
 				CURRENT_PROJECT_VERSION = 47;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				ENABLE_APP_SANDBOX = YES;
+				DEVELOPMENT_TEAM = B9P888266K;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -1420,8 +1402,8 @@
 				CURRENT_PROJECT_VERSION = 47;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				ENABLE_APP_SANDBOX = YES;
+				DEVELOPMENT_TEAM = B9P888266K;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -1464,8 +1446,8 @@
 				CURRENT_PROJECT_VERSION = 47;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"CodeEdit/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				ENABLE_APP_SANDBOX = YES;
+				DEVELOPMENT_TEAM = B9P888266K;
+				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -1846,6 +1828,14 @@
 				kind = branch;
 			};
 		};
+		CE5F10012EBA000100000001 /* XCRemoteSwiftPackageReference "swift-syntax" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-syntax.git";
+			requirement = {
+				kind = exactVersion;
+				version = 509.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1930,11 +1920,6 @@
 			package = 6C76D6D22E15B91E00EF52C3 /* XCRemoteSwiftPackageReference "CodeEditSourceEditor" */;
 			productName = CodeEditSourceEditor;
 		};
-		6C7B1C752A1D57CE005CBBFC /* SwiftLint */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 287136B1292A407E00E9F5F4 /* XCRemoteSwiftPackageReference "SwiftLintPlugin" */;
-			productName = "plugin:SwiftLint";
-		};
 		6C81916A29B41DD300B75C92 /* DequeModule */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6C147C4329A329350089B630 /* XCRemoteSwiftPackageReference "swift-collections" */;
@@ -1988,6 +1973,16 @@
 		6CE21E862C650D2C0031B056 /* SwiftTerm */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SwiftTerm;
+		};
+		CE5F10022EBA000100000001 /* SwiftSyntax */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE5F10012EBA000100000001 /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftSyntax;
+		};
+		CE5F10042EBA000100000001 /* SwiftParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE5F10012EBA000100000001 /* XCRemoteSwiftPackageReference "swift-syntax" */;
+			productName = SwiftParser;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

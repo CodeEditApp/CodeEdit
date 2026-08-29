@@ -21,13 +21,26 @@ struct EditorAreaFileView: View {
 
     var editorInstance: EditorInstance
     var codeFile: CodeFileDocument
+    @StateObject private var previewRunner = SwiftUIPreviewRunner()
+    @State private var hasSwiftUIPreview = false
 
     @ViewBuilder var editorAreaFileView: some View {
         if let utType = codeFile.utType, utType.conforms(to: .text) {
-            CodeFileView(
-                editorInstance: editorInstance,
-                codeFile: codeFile
-            )
+            if hasSwiftUIPreview {
+                HSplitView {
+                    CodeFileView(
+                        editorInstance: editorInstance,
+                        codeFile: codeFile
+                    )
+
+                    SwiftUIPreviewCanvasView(runner: previewRunner)
+                }
+            } else {
+                CodeFileView(
+                    editorInstance: editorInstance,
+                    codeFile: codeFile
+                )
+            }
         } else {
             NonTextFileView(fileDocument: codeFile)
                 .padding(.top, edgeInsets.top - 1.74)
@@ -43,6 +56,15 @@ struct EditorAreaFileView: View {
     var body: some View {
         editorAreaFileView
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .onAppear {
+                updateSwiftUIPreview()
+            }
+            .onChange(of: codeFile.fileURL) { _, _ in
+                updateSwiftUIPreview()
+            }
+            .onReceive(codeFile.contentCoordinator.textUpdatePublisher) { _ in
+                updateSwiftUIPreview()
+            }
             .onHover { hover in
                 DispatchQueue.main.async {
                     if hover {
@@ -52,5 +74,18 @@ struct EditorAreaFileView: View {
                     }
                 }
             }
+    }
+
+    private func updateSwiftUIPreview() {
+        guard codeFile.fileURL?.pathExtension.lowercased() == "swift",
+              let source = codeFile.content?.string,
+              SwiftUIPreviewParser.firstPreview(in: source) != nil else {
+            hasSwiftUIPreview = false
+            previewRunner.clear()
+            return
+        }
+
+        hasSwiftUIPreview = true
+        previewRunner.compile(source: source, fileURL: codeFile.fileURL)
     }
 }
